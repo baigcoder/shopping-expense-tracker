@@ -1,11 +1,12 @@
 // Landing Page - Gen-Z Expense Tracker with Extension Showcase
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Chrome, ArrowRight, Sparkles, CreditCard, PieChart, Target,
     Wallet, TrendingUp, Bell, Shield, Zap, FileText, Receipt,
     Brain, Calendar, BarChart3, Lock, Smartphone, Download,
-    CheckCircle, Monitor, Package
+    CheckCircle, Monitor, Package, Menu, X
 } from 'lucide-react';
 import styles from './LandingPage.module.css';
 
@@ -123,14 +124,22 @@ const LandingPage = () => {
         }
     };
 
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+
+    // Close mobile menu when a link is clicked
+    const handleMobileLinkClick = () => setIsMobileMenuOpen(false);
+
     return (
         <div className={styles.landingPage}>
             {/* Navigation */}
             <nav className={styles.navbar}>
                 <Link to="/" className={styles.navLogo}>
                     <span className={styles.logoIcon}>💰</span>
-                    <span>Expense Tracker</span>
+                    <span>Vibe Tracker</span>
                 </Link>
+
+                {/* Desktop Links */}
                 <div className={styles.navLinks}>
                     <a href="#features" className={styles.navLink}>Features</a>
                     <a href="#extension" className={styles.navLink}>Extension</a>
@@ -140,6 +149,37 @@ const LandingPage = () => {
                         Get Started <ArrowRight size={16} />
                     </Link>
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className={styles.mobileMenuBtn}
+                    onClick={toggleMobileMenu}
+                    aria-label="Toggle menu"
+                >
+                    {isMobileMenuOpen ? <X size={24} /> : <div className={styles.hamburger}><Menu size={24} /></div>}
+                </button>
+
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            className={styles.mobileMenu}
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                        >
+                            <a href="#features" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>Features</a>
+                            <a href="#extension" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>Extension</a>
+                            <a href="#how-it-works" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>How It Works</a>
+                            <div className={styles.mobileNavActions}>
+                                <Link to="/login" className={styles.mobilenavLinkBtn} onClick={handleMobileLinkClick}>Log In</Link>
+                                <Link to="/signup" className={styles.mobileNavCta} onClick={handleMobileLinkClick}>
+                                    Get Started <ArrowRight size={16} />
+                                </Link>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
 
             {/* Hero Section */}
@@ -294,7 +334,7 @@ const LandingPage = () => {
                     >
                         <div className={styles.extensionMockup}>
                             <div className={styles.mockupHeader}>
-                                <span>💰 Expense Tracker</span>
+                                <span>💰 Vibe Tracker</span>
                                 <span className={styles.mockupBadge}>v2.0</span>
                             </div>
                             <div className={styles.mockupStats}>
@@ -573,7 +613,7 @@ const LandingPage = () => {
             <footer className={styles.footer}>
                 <div className={styles.footerTop}>
                     <div className={styles.footerBrand}>
-                        <span className={styles.footerLogo}>💰 Expense Tracker</span>
+                        <span className={styles.footerLogo}>💰 Vibe Tracker</span>
                         <p>The Gen-Z way to manage money.</p>
                     </div>
                     <div className={styles.footerLinks}>
@@ -599,7 +639,7 @@ const LandingPage = () => {
                     </div>
                 </div>
                 <div className={styles.footerBottom}>
-                    <p>© 2024 Expense Tracker. Made with 💜 for Gen-Z.</p>
+                    <p>© 2024 Vibe Tracker. Made with 💜 for Gen-Z.</p>
                 </div>
             </footer>
         </div>

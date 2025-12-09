@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type NotificationType = 'purchase' | 'budget_alert' | 'subscription' | 'goal' | 'info' | 'success' | 'warning';
+export type NotificationType = 'purchase' | 'budget_alert' | 'subscription' | 'goal' | 'info' | 'success' | 'warning' | 'system';
 
 export interface Notification {
     id: string;

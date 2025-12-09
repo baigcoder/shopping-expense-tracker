@@ -1186,10 +1186,86 @@
 @media (max-width: 768px) {
     .navbar {
         padding: 1rem 1.5rem;
+        flex-wrap: wrap;
     }
 
     .navLinks {
         display: none;
+    }
+
+    /* Mobile Menu Button */
+    .mobileMenuBtn {
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #000;
+        padding: 0.5rem;
+        z-index: 101;
+    }
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Mobile Menu Overlay */
+    .mobileMenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(16px);
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        border-bottom: 2px solid #000;
+        z-index: 99;
+    }
+
+    .mobileNavLink {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #000;
+        text-decoration: none;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .mobileNavActions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .mobilenavLinkBtn {
+        text-align: center;
+        padding: 1rem;
+        border: 2px solid #000;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #000;
+    }
+
+    .mobileNavCta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: #000;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        border: 2px solid #000;
+        box-shadow: 4px 4px 0 #8B5CF6;
     }
 
     .hero {
@@ -1244,5 +1320,11 @@
     .downloadBtn {
         width: 100%;
         justify-content: center;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobileMenuBtn {
+        display: none;
     }
 }

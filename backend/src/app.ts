@@ -52,20 +52,7 @@ app.use((_req, res) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
-    // Initialize email transporter
-    initializeEmailTransporter();
-
-    console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║   🛒 Shopping Expense Tracker API                            ║
-║                                                               ║
-║   Server running on: http://localhost:${PORT}                   ║
-║   Environment: ${process.env.NODE_ENV || 'development'}                              ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
-  `);
-});
+// Export for server.ts and Vercel
+export default app;
 
 export default app;

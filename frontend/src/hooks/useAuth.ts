@@ -161,9 +161,7 @@ export const useAuth = () => {
             addNotification({
               type: 'system',
               title: '🔗 Extension Synced!',
-              message: 'Browser extension is now connected and tracking your purchases.',
-              priority: 'normal',
-              read: false
+              message: 'Browser extension is now connected and tracking your purchases.'
             });
           }
         });

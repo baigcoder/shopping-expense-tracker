@@ -480,7 +480,7 @@ const CardsPage = () => {
 
     const isCVVRevealed = (cardId: string) => {
         const expiresAt = revealedCVVs[cardId];
-        return expiresAt && expiresAt > Date.now();
+        return !!(expiresAt && expiresAt > Date.now());
     };
 
     return (
