@@ -478,9 +478,9 @@ const CardsPage = () => {
         });
     }, []);
 
-    const isCVVRevealed = (cardId: string) => {
+    const isCVVRevealed = (cardId: string): boolean => {
         const expiresAt = revealedCVVs[cardId];
-        return !!(expiresAt && expiresAt > Date.now());
+        return Boolean(expiresAt && expiresAt > Date.now());
     };
 
     return (

@@ -85,7 +85,7 @@ class ExtensionService {
                         chrome.runtime.sendMessage(
                             this.extensionId,
                             { type: 'GET_EXTENSION_STATUS' },
-                            (response) => {
+                            (response: any) => {
                                 clearTimeout(timeout);
                                 if (chrome.runtime.lastError) {
                                     resolve({ installed: false });
@@ -140,7 +140,7 @@ class ExtensionService {
                                 type: 'SYNC_SESSION',
                                 data: { session, user }
                             },
-                            (response) => {
+                            (response: any) => {
                                 clearTimeout(timeout);
                                 if (chrome.runtime.lastError) {
                                     console.log('Extension sync failed:', chrome.runtime.lastError);
@@ -232,6 +232,9 @@ class ExtensionService {
 // Singleton instance
 export const extensionService = new ExtensionService();
 
+// Import React hooks at runtime
+import { useState, useEffect } from 'react';
+
 // Hook for React components to detect extension
 export function useExtensionDetection() {
     const [status, setStatus] = useState<ExtensionStatus>({ installed: false });
@@ -277,6 +280,3 @@ export function useExtensionDetection() {
 
     return { status, checking };
 }
-
-// Import React hooks at runtime
-import { useState, useEffect } from 'react';
