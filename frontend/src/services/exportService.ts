@@ -234,7 +234,7 @@ const exportToPDF = (transactions: Transaction[], fileName: string): void => {
     </div>
 
     <div class="footer">
-        <p>Expense Tracker Report • Currency: ${getCurrencyCode()}</p>
+        <p>Vibe Tracker Report • Currency: ${getCurrencyCode()}</p>
     </div>
 
     <script>
