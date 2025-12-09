@@ -1,0 +1,463 @@
+/* Accounts Page Styles */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 25%, #fde68a 50%, #fef3c7 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+    padding: 0 2rem 2rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 3px solid #000;
+    margin-bottom: 2rem;
+}
+
+.titleSection h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+}
+
+.titleSection p {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.headerActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.refreshBtn {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 0.75rem;
+    cursor: pointer;
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.addBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #FBBF24;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.addBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FBBF24;
+}
+
+/* Net Worth Card */
+.netWorthCard {
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 8px 8px 0px #FBBF24;
+}
+
+.netWorthMain {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.netWorthLabel {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+.netWorthValue {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+.netWorthValue.negative {
+    color: #EF4444;
+}
+
+.netWorthBreakdown {
+    display: flex;
+    gap: 2rem;
+}
+
+.breakdownItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+}
+
+.breakdownItem span {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.breakdownItem strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.positive {
+    color: #10B981;
+}
+
+.negative {
+    color: #EF4444;
+}
+
+/* Accounts Grid */
+.accountsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.loading,
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+}
+
+.empty svg {
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.empty h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty p {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+/* Account Card */
+.accountCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cardIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardInfo {
+    flex: 1;
+}
+
+.cardInfo h3 {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.cardInfo p {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.cardActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cardActions button {
+    background: #f0f0f0;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.15s;
+}
+
+.cardActions button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.deleteBtn:hover {
+    background: #EF4444 !important;
+}
+
+.cardBalance {
+    text-align: center;
+    padding: 1.5rem;
+    background: #fafafa;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.cardBalance:hover {
+    border-color: #000;
+}
+
+.balanceLabel {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.balanceValue {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.balanceValue.negative {
+    color: #EF4444;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.accountType {
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.lastUpdated {
+    color: #94a3b8;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 10px 10px 0px #000;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modalHeader h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.modalHeader button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.form {
+    padding: 1.25rem;
+}
+
+.formGroup {
+    margin-bottom: 1rem;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.formGroup input,
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.colorPicker {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.colorOption {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.colorOption.selected {
+    border-color: #000;
+    transform: scale(1.1);
+}
+
+.formActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.submitBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 4px 4px 0px #FBBF24;
+}
+
+.submitBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FBBF24;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem 2rem;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .netWorthCard {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .netWorthBreakdown {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .accountsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,141 @@
+/* Recent Transactions Styles */
+.list {
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-4);
+    border-radius: var(--radius-lg);
+    transition: background var(--transition-fast);
+    cursor: pointer;
+}
+
+.item:hover {
+    background: var(--surface-glass);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    flex: 1;
+    min-width: 0;
+}
+
+.categoryIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    min-width: 0;
+}
+
+.storeName {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.storeLink {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+}
+
+.storeLink:hover {
+    color: var(--primary-400);
+}
+
+.details {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+.productName {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.productName::after {
+    content: '•';
+    margin-left: var(--spacing-2);
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-1);
+}
+
+.amount {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--danger-400);
+}
+
+.category {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-10);
+    text-align: center;
+}
+
+.empty p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-2);
+}
+
+.empty span {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .item {
+        padding: var(--spacing-3);
+    }
+
+    .categoryIcon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .productName {
+        max-width: 100px;
+    }
+}

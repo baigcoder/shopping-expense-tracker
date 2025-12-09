@@ -1,0 +1,1211 @@
+/* Gen Z / Neo-Brutalist Dashboard CSS - Clean & Bold */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 25%, #ede9fe 50%, #faf5ff 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    padding: 0 0 2rem 0;
+    overflow-x: hidden;
+    color: #000;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Page Header */
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    margin-bottom: 1rem;
+}
+
+.greeting h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    letter-spacing: -1px;
+}
+
+.greeting p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Live Monitoring Indicator */
+.liveMonitor {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.liveDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9CA3AF;
+}
+
+.liveDot.active {
+    background: #10B981;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+.liveText {
+    color: #6B7280;
+}
+
+.lastUpdate {
+    opacity: 0.7;
+}
+
+/* Gen Z Action Button - Yellow Accent */
+.addBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #FBBF24;
+    transition: all 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.addBtn:hover {
+    box-shadow: 6px 6px 0px #FBBF24;
+    transform: translate(-2px, -2px);
+}
+
+.addBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #FBBF24;
+}
+
+/* Alert Banner */
+.alertBanner {
+    background: #FEF2F2;
+    border: 3px solid #EF4444;
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    margin: 0 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #991B1B;
+    font-weight: 700;
+    box-shadow: 4px 4px 0px #EF4444;
+}
+
+.alertTitle {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 2px;
+}
+
+/* Bento Grid Layout */
+.bentoGrid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.2fr;
+    gap: 1.5rem;
+    padding: 0 2rem;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Base Card Style - Neo Brutalism */
+.card {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 0px #000;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* Card Headers */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+}
+
+.viewDetails {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #64748b;
+    transition: color 0.2s;
+}
+
+.viewDetails:hover {
+    color: #000;
+}
+
+/* Income Card */
+.incomeCard {
+    background: #FFF;
+}
+
+.incomeAmount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    font-size: 0.75rem;
+    background: #F0FDF4;
+    color: #166534;
+    border: 2px solid #000;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.badgePositive {
+    background: #F0FDF4;
+    color: #166534;
+}
+
+.badgeNegative {
+    background: #FEF2F2;
+    color: #991B1B;
+}
+
+.chartWrapper {
+    margin-top: 1.5rem;
+    height: 60px;
+}
+
+.sparkline {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================
+   SPENDING VIBE CARD - Main Feature
+   ============================================ */
+.spendingVibeCard {
+    background: #FFFFFF;
+    min-height: 380px;
+}
+
+.vibeHero {
+    margin-bottom: 2.5rem;
+}
+
+.vibeAmount {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #000;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.vibeSubtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.flameIcon {
+    color: #F97316;
+    animation: flicker 1s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+/* Horizontal Progress Bars - Like the reference image */
+.progressBars {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 1rem;
+}
+
+.progressItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.progressHeader {
+    width: 100%;
+    text-align: center;
+}
+
+.progressValue {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.progressBarTrack {
+    width: 100%;
+    height: 6px;
+    background: #E5E7EB;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressBarFill {
+    height: 100%;
+    border-radius: 3px;
+    background: #000;
+}
+
+.progressLabel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   STASH/GAUGE CARD
+   ============================================ */
+.stashCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #FAFAFA;
+}
+
+.gaugeContainer {
+    position: relative;
+    width: 180px;
+    height: 100px;
+    margin: 1rem 0;
+}
+
+.gaugeSvg {
+    width: 100%;
+    height: 100%;
+}
+
+.gaugeEmoji {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+}
+
+.stashValue {
+    margin-top: 0.5rem;
+}
+
+.stashValue h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #000;
+    margin: 0;
+}
+
+.stashValue p {
+    font-weight: 600;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ============================================
+   CASH FLOW CARD
+   ============================================ */
+.cashFlowCard {
+    background: #F8FAFC;
+}
+
+.flowBadge {
+    background: #000;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.cashFlowAmount h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* ============================================
+   FINANCES / CARDS SECTION
+   ============================================ */
+.financesCard {
+    background: #FAFAFA;
+    display: flex;
+    flex-direction: column;
+}
+
+.addCardBtn {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #000;
+    transition: all 0.15s;
+}
+
+.addCardBtn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.creditCardWrapper {
+    margin: 0.5rem 0 1.5rem;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.creditCard {
+    background: #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    color: #fff;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.creditCard:hover {
+    transform: translateY(-4px);
+}
+
+/* Card Shine Effect */
+.cardShine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 2;
+}
+
+.cardChip {
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(135deg, #FFD700 0%, #FDB931 50%, #D4A200 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cardChip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+
+.cardBrandName {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cardNumber {
+    font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    margin: 1rem 0;
+}
+
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.cardLabel {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 2px;
+    letter-spacing: 0.5px;
+}
+
+.cardValue {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.emptyCard {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    color: #666;
+}
+
+/* ============================================
+   HORIZONTAL SCROLL CARDS
+   ============================================ */
+.cardsScrollWrapper {
+    margin: 0.5rem -1.5rem 1rem;
+    padding: 0 1rem;
+}
+
+.cardsScroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.5rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.cardsScroll::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollCard {
+    flex: 0 0 280px;
+    min-width: 280px;
+    border-radius: 16px;
+    padding: 1.25rem;
+    color: #fff;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.scrollCard .cardChip {
+    width: 40px;
+    height: 28px;
+}
+
+.scrollCard .cardNumber {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin: 0.75rem 0;
+}
+
+.scrollCard .cardLabel {
+    font-size: 0.55rem;
+}
+
+.scrollCard .cardValue {
+    font-size: 0.75rem;
+}
+
+/* Reveal Link on Card */
+.revealLink {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s;
+}
+
+.revealLink:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(2px);
+}
+
+.emptyCardScroll {
+    flex: 0 0 280px;
+    min-width: 280px;
+    border: 3px dashed #D1D5DB;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #9CA3AF;
+    cursor: pointer;
+    min-height: 180px;
+    transition: all 0.2s;
+    background: #FAFAFA;
+}
+
+.emptyCardScroll:hover {
+    border-color: #000;
+    color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.emptyCardScroll span {
+    font-weight: 700;
+}
+
+.addMoreCard {
+    flex: 0 0 80px;
+    min-width: 80px;
+    border: 2px dashed #D1D5DB;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    color: #9CA3AF;
+    cursor: pointer;
+    min-height: 180px;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.addMoreCard:hover {
+    border-color: #000;
+    color: #000;
+}
+
+.addMoreCard span {
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* ============================================
+   TRANSACTIONS LIST
+   ============================================ */
+.recentTransactions {
+    flex: 1;
+    margin-top: 0.5rem;
+}
+
+.recentTransactions h4 {
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.loadingTx,
+.emptyTx {
+    text-align: center;
+    color: #9CA3AF;
+    padding: 2rem;
+    font-weight: 600;
+}
+
+.transactionItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1rem;
+    background: #fff;
+    border: 2px solid #E5E7EB;
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.transactionItem:hover {
+    border-color: #000;
+    box-shadow: 3px 3px 0px #000;
+}
+
+.txLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.txIcon {
+    width: 40px;
+    height: 40px;
+    background: #F3F4F6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.2rem;
+}
+
+.txName {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #000;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.txAmount {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.txPositive {
+    color: #059669;
+}
+
+.txNegative {
+    color: #000;
+}
+
+.seeAllBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 14px;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.seeAllBtn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1200px) {
+    .bentoGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .financesCard {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .bentoGrid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+
+    .financesCard {
+        grid-column: span 1;
+    }
+
+    .pageHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .greeting h1 {
+        font-size: 1.8rem;
+    }
+
+    .vibeAmount {
+        font-size: 2.5rem;
+    }
+
+    .progressBars {
+        gap: 1rem;
+    }
+
+    .progressValue {
+        font-size: 0.95rem;
+    }
+
+    .incomeAmount {
+        font-size: 1.8rem;
+    }
+
+    .stashValue h2 {
+        font-size: 2rem;
+    }
+
+    .alertBanner {
+        margin: 0 1rem 1rem;
+        padding: 0.875rem 1rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes popIn {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   CARD DETAILS MODAL
+   ============================================ */
+.cardModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    padding: 2rem;
+}
+
+.cardDetailsModal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 12px 12px 0px #000;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalCloseBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    border: 2px solid #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    z-index: 10;
+}
+
+.modalCloseBtn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.modalCardPreview {
+    position: relative;
+    border-radius: 16px;
+    padding: 1.5rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.modalCardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalCardBrand {
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.modalCardNumber {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin: 1rem 0;
+}
+
+.modalCardInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modalCardInfo>div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cardDetailsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #FAFAFA;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    transition: all 0.15s;
+}
+
+.detailItem:hover {
+    border-color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.detailLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6B7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.detailValue {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+
+.copyBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #E5E7EB;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    color: #6B7280;
+}
+
+.copyBtn:hover {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+.cvvRevealed {
+    color: #10B981;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.cvvHidden {
+    color: #9CA3AF;
+    letter-spacing: 4px;
+}
+
+.cvvTimer {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #10B981;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.revealCvvBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.revealCvvBtn:hover {
+    transform: scale(1.05);
+}
+
+.pinInputSection {
+    background: #FEF3C7;
+    border: 2px solid #F59E0B;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.pinLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #92400E;
+}
+
+.pinInputRow {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pinInput {
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    letter-spacing: 6px;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.pinInput:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.pinSubmitBtn {
+    padding: 0.75rem 1.25rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.pinSubmitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pinError {
+    color: #DC2626;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.copyAllBtn {
+    width: 100%;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    box-shadow: 4px 4px 0px #10B981;
+}
+
+.copyAllBtn:hover {
+    box-shadow: 6px 6px 0px #10B981;
+}
+
+.cardClickHint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.scrollCard:hover .cardClickHint {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .cardModalOverlay {
+        padding: 1rem;
+    }
+
+    .cardDetailsModal {
+        padding: 1.5rem;
+    }
+
+    .modalCardNumber {
+        font-size: 1.1rem;
+    }
+
+    .detailValue {
+        font-size: 0.8rem;
+    }
+}

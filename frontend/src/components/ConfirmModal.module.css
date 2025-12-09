@@ -1,0 +1,167 @@
+/* Confirm Modal Styles - Neo-Brutalist */
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.modalContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    width: 100%;
+    max-width: 400px;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 10px 10px 0px #000;
+    text-align: center;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.closeBtn:hover {
+    color: #000;
+}
+
+.iconContainer {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.emoji {
+    font-size: 2.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+.message {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 3px 3px 0px #E2E8F0;
+}
+
+.cancelBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #E2E8F0;
+}
+
+.confirmBtn {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 3px 3px 0px #FFD93D;
+}
+
+.confirmBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #FFD93D;
+}
+
+.confirmBtn.danger {
+    background: #FF6B6B;
+    border-color: #FF6B6B;
+    box-shadow: 3px 3px 0px #000;
+}
+
+.confirmBtn.danger:hover {
+    box-shadow: 5px 5px 0px #000;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .modalContainer {
+        max-width: calc(100% - 2rem);
+    }
+
+    .modal {
+        padding: 1.5rem;
+        box-shadow: 6px 6px 0px #000;
+    }
+
+    .iconContainer {
+        width: 60px;
+        height: 60px;
+    }
+
+    .emoji {
+        font-size: 2rem;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+    }
+}

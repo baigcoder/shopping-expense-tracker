@@ -1,0 +1,439 @@
+/* CSV Import Modal Styles */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 12px 12px 0px #000;
+    position: relative;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0.25rem;
+}
+
+.closeBtn:hover {
+    color: #000;
+}
+
+/* Upload Step */
+.uploadStep {
+    text-align: center;
+}
+
+.uploadStep h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    margin: 0 0 1.5rem;
+}
+
+.dropZone {
+    border: 3px dashed #e2e8f0;
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.dropZone:hover {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+}
+
+.dropZone.dragging {
+    border-color: #4ECDC4;
+    background: #ecfdf5;
+    border-style: solid;
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadIcon {
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+.dropText {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0 0 0.5rem;
+}
+
+.orText {
+    display: block;
+    color: #94a3b8;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+}
+
+.browseBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.processing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #4ECDC4;
+}
+
+.processing p {
+    color: #64748b;
+    margin: 0;
+    font-weight: 600;
+}
+
+.supportedFormats {
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.supportedFormats h4 {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.formatList {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.formatBadge {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.sampleSection {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.sampleSection p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0 0 0.75rem;
+}
+
+.downloadSample {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 2px solid #000;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.downloadSample:hover {
+    background: #f8fafc;
+}
+
+/* Preview Step */
+.previewStep h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    text-align: center;
+}
+
+.fileName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    margin: 1rem 0;
+}
+
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.summaryCard {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.summaryCard.income {
+    background: #ecfdf5;
+    border-color: #10B981;
+}
+
+.summaryCard.expense {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+.summaryNumber {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.summaryLabel {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.dateRange {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.categoriesSection {
+    margin-bottom: 1rem;
+}
+
+.categoriesSection h4 {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.categoryTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.categoryTag {
+    background: #FFD93D;
+    color: #000;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 2px solid #000;
+}
+
+.transactionPreview {
+    margin-bottom: 1rem;
+}
+
+.transactionPreview h4 {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.transactionList {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.transactionItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.transactionItem:last-child {
+    border-bottom: none;
+}
+
+.txInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.txDesc {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.txDate {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.txAmount {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.txAmount.income {
+    color: #10B981;
+}
+
+.txAmount.expense {
+    color: #ef4444;
+}
+
+.errorsSection {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fef2f2;
+    color: #ef4444;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.previewActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.backBtn {
+    flex: 1;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.importBtn {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #10B981;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #000;
+    transition: all 0.1s;
+}
+
+.importBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* Complete Step */
+.completeStep {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.successIcon {
+    color: #10B981;
+    margin-bottom: 1rem;
+}
+
+.completeStep h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+}
+
+.completeStep p {
+    color: #64748b;
+    margin: 0 0 1.5rem;
+}
+
+.doneBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #4ECDC4;
+}
+
+@media (max-width: 480px) {
+    .summaryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal {
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,564 @@
+/* Gen Z Auth Page CSS - Split Screen Design */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&display=swap');
+
+/* ========== SPLIT SCREEN CONTAINER ========== */
+.splitContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    z-index: 100;
+    background: #fff;
+}
+
+/* ========== LEFT PANEL - BRANDING ========== */
+.leftPanel {
+    flex: 1;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 50%, #fdf4ff 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.brandContent {
+    text-align: center;
+    z-index: 10;
+    max-width: 400px;
+}
+
+.logoContainer {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 4px solid #000;
+    box-shadow: 8px 8px 0px #000;
+    background: #fff;
+}
+
+.logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.brandTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.brandTagline {
+    font-size: 1.1rem;
+    color: #475569;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* Card Preview */
+.cardPreview {
+    margin-top: 3rem;
+}
+
+.previewCard {
+    width: 280px;
+    height: 160px;
+    background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+    border-radius: 16px;
+    border: 3px solid #000;
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    color: #fff;
+    position: relative;
+    transform: rotate(-5deg);
+    transition: transform 0.3s;
+}
+
+.previewCard:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.cardType {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cardAmount {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #a7f3d0;
+}
+
+.cardNumber {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+/* Stats Preview (for signup page) */
+.statsPreview {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 3px solid #000;
+    border-radius: 16px;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.statNumber {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Decorative circles */
+.decorCircle1 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(78, 205, 196, 0.2);
+    top: -100px;
+    left: -100px;
+}
+
+.decorCircle2 {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 107, 107, 0.15);
+    bottom: -50px;
+    right: -50px;
+}
+
+/* ========== RIGHT PANEL - FORM ========== */
+.rightPanel {
+    flex: 1;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+}
+
+.authCard {
+    background: #fff;
+    width: 100%;
+    max-width: 400px;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    z-index: 10;
+    box-shadow: 10px 10px 0px #000;
+}
+
+.floatingEmoji {
+    position: absolute;
+    top: -30px;
+    right: -20px;
+    font-size: 3rem;
+    background: #FFD93D;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: #000;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Form Styles */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputGroup {
+    position: relative;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 1rem;
+    color: #000;
+    z-index: 2;
+}
+
+.input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 4px 4px 0px #000;
+    transform: translate(-2px, -2px);
+}
+
+.input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.togglePassword:hover {
+    color: #000;
+}
+
+.submitBtn {
+    background: #000;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 800;
+    border: 2px solid #000;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    box-shadow: 4px 4px 0px #FFD93D;
+    transition: all 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.submitBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FFD93D;
+}
+
+.submitBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #FFD93D;
+}
+
+.submitBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.25rem 0;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    gap: 1rem;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.googleBtn {
+    background: #fff;
+    border: 2px solid #000;
+    color: #000;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #E2E8F0;
+    font-size: 0.95rem;
+}
+
+.googleBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #E2E8F0;
+    background: #f8fafc;
+}
+
+.googleBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #E2E8F0;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: 500;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.link {
+    color: #000;
+    text-decoration: none;
+    font-weight: 800;
+    margin-left: 0.25rem;
+    position: relative;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #FF6B6B;
+    transform: scaleX(0);
+    transition: transform 0.2s;
+}
+
+.link:hover::after {
+    transform: scaleX(1);
+}
+
+/* Floating shapes */
+.floatingShape1 {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    font-size: 2rem;
+    opacity: 0.6;
+}
+
+.floatingShape2 {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+/* ========== OLD STYLES (kept for backwards compat) ========== */
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+    position: relative;
+    padding: 2rem;
+}
+
+.shape {
+    position: absolute;
+    z-index: 1;
+    animation: float 10s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.shape1 {
+    top: -10%;
+    right: -10%;
+    width: 80px;
+    height: 80px;
+    background: #FFD93D;
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+
+.shape2 {
+    bottom: -5%;
+    left: -5%;
+    width: 60px;
+    height: 60px;
+    background: #FF6B6B;
+    border: 2px solid #000;
+    transform: rotate(45deg);
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(10px, -20px) rotate(10deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+    .splitContainer {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .leftPanel {
+        flex: none;
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    .logoContainer {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 1rem;
+    }
+
+    .brandTitle {
+        font-size: 1.75rem;
+    }
+
+    .brandTagline {
+        font-size: 0.95rem;
+    }
+
+    .cardPreview {
+        display: none;
+    }
+
+    .decorCircle1,
+    .decorCircle2 {
+        display: none;
+    }
+
+    .rightPanel {
+        flex: 1;
+        padding: 1.5rem;
+    }
+
+    .authCard {
+        padding: 1.5rem;
+        box-shadow: 6px 6px 0px #000;
+    }
+
+    .floatingEmoji {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        top: -20px;
+        right: -10px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .floatingShape1,
+    .floatingShape2 {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .authCard {
+        border-radius: 16px;
+        padding: 1.25rem;
+    }
+
+    .title {
+        font-size: 1.35rem;
+    }
+
+    .input {
+        padding: 0.85rem 0.85rem 0.85rem 2.75rem;
+        font-size: 0.95rem;
+    }
+
+    .submitBtn {
+        padding: 0.85rem;
+        font-size: 0.9rem;
+    }
+
+    .googleBtn {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}

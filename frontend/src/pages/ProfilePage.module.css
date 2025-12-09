@@ -1,0 +1,254 @@
+/* Gen Z Profile CSS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+.container {
+    min-height: 100vh;
+    padding: 0 2rem 2rem;
+    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 25%, #fecdd3 50%, #fce7f3 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.header {
+    border-bottom: 3px solid #000;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Profile Card */
+.profileCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 8px 8px 0px #000;
+    margin-bottom: 2rem;
+}
+
+.avatarWrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    object-fit: cover;
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    overflow: hidden;
+}
+
+.avatarInitials {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #000;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.editAvatarBtn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.editAvatarBtn:hover {
+    transform: scale(1.1);
+}
+
+.username {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.userhandle {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 600;
+    background: #F1F5F9;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    border: 1px solid #000;
+}
+
+/* Grid Layout for Details */
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+/* Form Section */
+.formSection {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 6px 6px 0px #E2E8F0;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 4px 4px 0px #000;
+    transform: translate(-2px, -2px);
+}
+
+.saveBtn {
+    background: #000;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 800;
+    border: 2px solid #000;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #4ECDC4;
+    text-transform: uppercase;
+    transition: all 0.1s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.saveBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #4ECDC4;
+}
+
+.saveBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #4ECDC4;
+}
+
+/* Stats Section */
+.statsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.statCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 4px 4px 0px #FF6B6B;
+    transition: transform 0.2s;
+}
+
+.statCard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FF6B6B;
+}
+
+.statValue {
+    font-size: 2rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.statLabel {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Verified Badge */
+.verified {
+    color: #3B82F6;
+    display: inline-flex;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

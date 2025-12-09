@@ -1,0 +1,471 @@
+/* Budgets Page - Light Gen-Z Theme with Neo-Brutalist Accents */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+
+.container {
+    min-height: 100vh;
+    padding: 0 2rem 2rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 25%, #fefce8 50%, #fffbeb 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    color: #1a1a1a;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.syncStatus {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.syncDot {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.syncDot.syncing {
+    background: #F59E0B;
+    animation: blink 0.5s linear infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.refreshBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.refreshBtn:hover {
+    color: #F59E0B;
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #F59E0B;
+    color: #fff;
+    border: 3px solid #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 #000;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.addBtn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 #000;
+    background: #D97706;
+}
+
+/* Summary Card */
+.summaryCard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.summaryItem {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+}
+
+.summaryValue {
+    font-size: 1.75rem;
+    font-weight: 800;
+    display: block;
+    color: #000;
+}
+
+.summaryLabel {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Budget Grid */
+.budgetGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Budget Card */
+.budgetCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.budgetCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 10px 10px 0 rgba(245, 158, 11, 0.2);
+}
+
+.budgetHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.categoryInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.categoryIcon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.categoryName {
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: block;
+}
+
+/* Budget Amount */
+.budgetAmount {
+    margin-bottom: 1rem;
+}
+
+.spent {
+    font-size: 1.75rem;
+    font-weight: 800;
+    display: block;
+}
+
+.limit {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Progress */
+.progressContainer {
+    margin-bottom: 1rem;
+}
+
+.progressBar {
+    height: 14px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progressFill.safe {
+    background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+}
+
+.progressFill.warning {
+    background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%);
+}
+
+.progressFill.danger {
+    background: linear-gradient(90deg, #EF4444 0%, #F87171 100%);
+}
+
+.progressText {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Recent Transactions */
+.recentTxSection {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px dashed #e5e7eb;
+}
+
+.recentTxHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.recentTxItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+}
+
+.txDesc {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.txAmount {
+    font-weight: 700;
+    color: #EF4444;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 28px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem;
+    text-align: center;
+}
+
+/* Form */
+.formGroup {
+    margin-bottom: 1.25rem;
+}
+
+.label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    background: #f9fafb;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #F59E0B;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+}
+
+.inputHint {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 0.5rem 0 0;
+}
+
+/* Modal Actions */
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #fff;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.cancelBtn:hover {
+    background: #f1f5f9;
+    border-color: #000;
+}
+
+.saveBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #F59E0B;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.saveBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+    background: #D97706;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem 2rem;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .summaryCard {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .summaryItem {
+        padding: 0.75rem;
+    }
+
+    .budgetGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal {
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,420 @@
+/* Add Card Modal - Gen Z Split Layout */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1rem;
+}
+
+.expandedModal {
+    background: #fff;
+    width: 900px;
+    height: 550px;
+    /* Fixed height! No scroll */
+    border-radius: 32px;
+    display: flex;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    position: relative;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.closeBtnAbsolute {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.closeBtnAbsolute:hover {
+    background: #000;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.splitLayout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* LEFT COLUMN: Visuals */
+.leftColumn {
+    flex: 0 0 45%;
+    /* Slightly less than half */
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.modalHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+    z-index: 2;
+}
+
+.modalHeader h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.modalHeader p {
+    color: #666;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.cardPreviewBig {
+    width: 100%;
+    aspect-ratio: 1.586;
+    border-radius: 20px;
+    padding: 1.5rem;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform: rotateY(10deg) rotateX(5deg);
+    /* Slight 3D tilt */
+    transition: all 0.5s ease;
+    margin-bottom: 2rem;
+}
+
+.cardPreviewBig:hover {
+    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+}
+
+.cardPattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+}
+
+/* Mascot Sticker */
+.mascot {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 3rem;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chip {
+    width: 45px;
+    height: 32px;
+    background: linear-gradient(135deg, #FFD700, #FDB931);
+    border-radius: 6px;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brandName {
+    font-weight: 800;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cardNumberBig {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 1.5rem 0;
+    z-index: 2;
+}
+
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label {
+    font-size: 0.6rem;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.val {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.themeSelector {
+    width: 100%;
+}
+
+.themeSelector label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #444;
+}
+
+.themeRow {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.themeCircle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.activeTheme {
+    border-color: #000;
+    transform: scale(1.1);
+}
+
+
+/* RIGHT COLUMN: Form */
+.rightColumn {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.formContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inputGroup label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #374151;
+}
+
+.inputIconWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 1rem;
+    color: #9CA3AF;
+    pointer-events: none;
+}
+
+.modernInput {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    /* Space for icon */
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    background: #F9FAFB;
+    transition: all 0.2s;
+}
+
+.modernInput:focus {
+    outline: none;
+    border-color: #000;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Error States */
+.inputError .modernInput {
+    border-color: #EF4444;
+    background: #FEF2F2;
+}
+
+.inputError .modernInput:focus {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.inputError .inputIcon {
+    color: #EF4444;
+}
+
+.errorText {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #EF4444;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: -0.25rem;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.eyeBtn {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.optional {
+    color: #9CA3AF;
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.submitBtnBig {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.2s;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.submitBtnBig:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.4);
+    background: #111;
+}
+
+.submitBtnBig:active {
+    transform: translateY(0);
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 950px) {
+    .expandedModal {
+        flex-direction: column;
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .leftColumn {
+        padding: 2rem 1.5rem 1rem;
+        flex: 0 0 auto;
+    }
+
+    .cardPreviewBig {
+        margin-bottom: 1rem;
+    }
+
+    .rightColumn {
+        padding: 1.5rem;
+    }
+
+    .closeBtnAbsolute {
+        top: 1rem;
+        right: 1rem;
+        color: #000;
+        background: rgba(255, 255, 255, 0.8);
+    }
+}

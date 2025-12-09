@@ -1,0 +1,709 @@
+/* Gen Z Subscriptions Page CSS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+.container {
+    min-height: 100vh;
+    padding: 0 2rem 2rem;
+    background: linear-gradient(135deg, #ecfeff 0%, #cffafe 25%, #a5f3fc 50%, #e0f2fe 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.header {
+    border-bottom: 3px solid #000;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin: 0;
+}
+
+.addBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #4ECDC4;
+    transition: all 0.15s;
+}
+
+.addBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #4ECDC4;
+}
+
+/* Loading State */
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    gap: 1rem;
+    color: #666;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Total Card */
+.totalCard {
+    background: linear-gradient(135deg, #4ECDC4 0%, #44A4A0 100%);
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 8px 8px 0px #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.totalInfo h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.totalAmount {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.totalMeta {
+    text-align: right;
+}
+
+.subCount {
+    font-size: 2rem;
+    font-weight: 800;
+    display: block;
+}
+
+.subLabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Subscriptions List */
+.subList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.subCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 4px 4px 0px #E2E8F0;
+    transition: all 0.2s;
+}
+
+.subCard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #FF6B6B;
+}
+
+.subLogo {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.subDetails {
+    flex: 1;
+}
+
+.subName {
+    font-size: 1.25rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.subCategory {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.subMeta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+}
+
+.renewDate {
+    background: #FEF3C7;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1px solid #000;
+}
+
+.subPricing {
+    text-align: right;
+}
+
+.subPrice {
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: block;
+}
+
+.subCycle {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Status */
+.statusActive {
+    background: #D1FAE5;
+    color: #065F46;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 2px solid #000;
+}
+
+.cancelBtn {
+    background: transparent;
+    border: 2px solid #EF4444;
+    color: #EF4444;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+    background: #EF4444;
+    color: #fff;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border: 3px dashed #ccc;
+    border-radius: 16px;
+}
+
+.emptyState h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 8px 8px 0px #000;
+}
+
+.modal h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.formGroup {
+    margin-bottom: 1rem;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.formGroup input,
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: #000;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.iconPicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.iconOption {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.iconOption:hover {
+    border-color: #000;
+}
+
+.iconOption.selected {
+    border-color: #000;
+    background: #F3F4F6;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cancelModalBtn {
+    flex: 1;
+    padding: 0.75rem;
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.saveBtn {
+    flex: 1;
+    padding: 0.75rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.saveBtn:hover {
+    background: #222;
+}
+
+.saveBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .totalCard {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .totalMeta {
+        text-align: center;
+    }
+
+    .subCard {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .subPricing {
+        text-align: center;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================================
+   TRIAL TRACKING STYLES
+   ================================ */
+
+/* Header Actions */
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.refreshBtn {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.refreshBtn:hover {
+    transform: rotate(90deg);
+}
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.trialCard {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%) !important;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 14px;
+    padding: 0.5rem;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.tab {
+    flex: 1;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.tab:hover {
+    background: #f5f5f5;
+}
+
+.activeTab {
+    background: #000 !important;
+    color: #fff;
+}
+
+/* Trial Status Badge */
+.statusTrial {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.trialDays {
+    background: #FEF3C7;
+    color: #92400E;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.trialDays.urgent {
+    background: #FEE2E2;
+    color: #DC2626;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.expired {
+    background: #FEE2E2;
+    color: #DC2626;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Trial Progress Bar */
+.trialProgress {
+    width: 100%;
+    height: 6px;
+    background: #e5e5e5;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.trialProgressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6, #EC4899);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Trial Sub Card */
+.trialSubCard {
+    border-color: #8B5CF6 !important;
+    box-shadow: 5px 5px 0px #8B5CF6 !important;
+}
+
+/* Free Price */
+.freePrice {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+/* Sub Actions */
+.subActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.convertBtn {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    transition: all 0.15s;
+}
+
+.convertBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px #000;
+}
+
+/* Trial Toggle */
+.trialToggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: #f5f5f5;
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 0.25rem;
+}
+
+.toggleBtn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.toggleBtn:hover {
+    background: #fff;
+}
+
+.toggleBtn.active {
+    background: #000;
+    color: #fff;
+}
+
+/* Trial Days Picker */
+.trialDaysPicker {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.trialDayOption {
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.trialDayOption:hover {
+    border-color: #000;
+}
+
+.trialDayOption.selected {
+    background: #8B5CF6;
+    color: #fff;
+    border-color: #8B5CF6;
+}
+
+/* Color Input */
+.colorInput {
+    width: 100%;
+    height: 44px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+/* Hint Text */
+.hint {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .subActions {
+        flex-direction: row;
+        width: 100%;
+        margin-top: 1rem;
+    }
+}

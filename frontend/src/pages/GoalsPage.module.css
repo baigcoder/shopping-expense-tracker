@@ -1,0 +1,600 @@
+/* Goals Page - Light Gen-Z Theme */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+
+.container {
+    min-height: 100vh;
+    padding: 0 2rem 2rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 25%, #f0fdfa 50%, #f5f3ff 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    color: #1a1a1a;
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Loading State */
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 1rem;
+    color: #64748b;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: #10B981;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.currencyBadge {
+    background: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #10B981;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #10B981;
+    color: #fff;
+    border: 3px solid #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 #000;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.addBtn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 #000;
+    background: #059669;
+}
+
+/* Goals Grid */
+.goalsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Goal Card */
+.goalCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.goalCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 12px 12px 0 rgba(16, 185, 129, 0.2);
+}
+
+.goalCard.completed {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border-color: #10B981;
+}
+
+.completedBadge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #10B981;
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.goalIcon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    margin-bottom: 1rem;
+}
+
+.goalName {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 0.25rem;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.goalDescription {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0 0 1rem;
+    font-weight: 500;
+}
+
+/* Progress Section */
+.goalProgress {
+    margin: 1rem 0;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.75rem;
+}
+
+.currentAmount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #10B981;
+}
+
+.targetAmount {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.progressBar {
+    height: 14px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #000;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981 0%, #34D399 50%, #6EE7B7 100%);
+    border-radius: 8px;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.remaining {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Goal Footer */
+.goalFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 2px dashed #e5e7eb;
+}
+
+.deadline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.fundBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    box-shadow: 3px 3px 0 #10B981;
+}
+
+.fundBtn:hover {
+    background: #10B981;
+    color: #fff;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #000;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border: 3px dashed #e2e8f0;
+    border-radius: 24px;
+    grid-column: 1 / -1;
+}
+
+.emptyState h3 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 1rem 0 0.5rem;
+    color: #000;
+}
+
+.emptyState p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0 0 2rem;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+/* Modal */
+.modal,
+.fundModal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 28px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #64748b;
+}
+
+.closeBtn:hover {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* Form Styles */
+.formGroup {
+    margin-bottom: 1.25rem;
+}
+
+.label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    background: #f9fafb;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: #10B981;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Icon Picker - HORIZONTAL GRID */
+.iconPicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.iconOption {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconOption:hover {
+    border-color: #10B981;
+    background: #ecfdf5;
+    transform: scale(1.1);
+}
+
+.iconOption.selected {
+    border-color: #10B981;
+    background: #10B981;
+    box-shadow: 3px 3px 0 #000;
+}
+
+/* Modal Actions */
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #fff;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.cancelBtn:hover {
+    background: #f1f5f9;
+    border-color: #000;
+}
+
+.saveBtn {
+    flex: 1;
+    padding: 0.85rem;
+    background: #10B981;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.15s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.saveBtn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+}
+
+.saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Fund Modal Specifics */
+.fundModal h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+    text-align: center;
+}
+
+.fundGoalInfo {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 2px solid #10B981;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.fundGoalInfo h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.fundGoalInfo p {
+    color: #059669;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.quickAmounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.quickBtn {
+    padding: 0.65rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.quickBtn:hover {
+    border-color: #10B981;
+    background: #ecfdf5;
+}
+
+.quickBtn.selected {
+    background: #10B981;
+    color: #fff;
+    border-color: #000;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.fundInput {
+    font-size: 1.75rem !important;
+    text-align: center;
+    font-weight: 800 !important;
+}
+
+.fundActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem 2rem;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .headerLeft {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .goalsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal,
+    .fundModal {
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
+    .quickAmounts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .iconPicker {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Test Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #FAFAFA;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A4A0 100%);
+            border: 3px solid #000;
+            border-radius: 16px;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .check {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 6px 6px 0px #FFD93D;
+        }
+
+        .info-card h2 {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #000;
+            padding-bottom: 0.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border: 2px solid #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .item-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-details .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #FF6B6B;
+        }
+
+        .item-details .qty {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+        }
+
+        .total-row.grand-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            border-top: 3px solid #000;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+
+        .thank-you {
+            text-align: center;
+            padding: 2rem;
+            background: #000;
+            color: #fff;
+            border-radius: 16px;
+            border: 3px solid #000;
+        }
+
+        .thank-you h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .extension-notice {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #FEF3C7;
+            border: 3px solid #000;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .extension-notice h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .extension-notice p {
+            color: #92400e;
+        }
+
+        /* Hidden data for extension to pick up */
+        .order-number {
+            display: none;
+        }
+
+        .order-date {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="check">✅</div>
+            <h1>Order Confirmed!</h1>
+            <p>Thank you for your purchase</p>
+        </div>
+
+        <!-- Hidden metadata for extension -->
+        <span class="order-number">ORD-2024-TEST-001</span>
+        <span class="order-date">December 8, 2024</span>
+
+        <div class="info-card">
+            <h2>📦 Order Details</h2>
+
+            <div class="order-item" data-product>
+                <div class="item-image">🎧</div>
+                <div class="item-details">
+                    <h3 class="product-name">Sony WH-1000XM5 Wireless Headphones</h3>
+                    <p class="qty">Qty: 1</p>
+                    <p class="price" data-price="349.99">$349.99</p>
+                </div>
+            </div>
+
+            <div class="order-item" data-product>
+                <div class="item-image">📱</div>
+                <div class="item-details">
+                    <h3 class="product-name">iPhone 15 Pro Case - MagSafe</h3>
+                    <p class="qty">Qty: 1</p>
+                    <p class="price" data-price="49.99">$49.99</p>
+                </div>
+            </div>
+
+            <div class="order-item" data-product>
+                <div class="item-image">⌨️</div>
+                <div class="item-details">
+                    <h3 class="product-name">Keychron K3 Mechanical Keyboard</h3>
+                    <p class="qty">Qty: 1</p>
+                    <p class="price" data-price="84.00">$84.00</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2>💰 Order Summary</h2>
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>$483.98</span>
+            </div>
+            <div class="total-row">
+                <span>Shipping</span>
+                <span>FREE</span>
+            </div>
+            <div class="total-row">
+                <span>Tax</span>
+                <span>$38.72</span>
+            </div>
+            <div class="total-row grand-total">
+                <span>Order Total</span>
+                <span class="total-amount">$522.70</span>
+            </div>
+        </div>
+
+        <div class="thank-you">
+            <h3>🎉 Thanks for shopping!</h3>
+            <p>Your order will arrive in 2-3 business days</p>
+        </div>
+
+        <div class="extension-notice">
+            <h4>🧩 VibeTracker Extension Test Page</h4>
+            <p>If you have the extension installed, it should detect this as a purchase and offer to track it!</p>
+            <p style="margin-top: 0.5rem; font-weight: 600;">Check the extension popup or wait for a notification.</p>
+        </div>
+    </div>
+</body>
+
+</html>

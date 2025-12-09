@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="#FFD93D"/>
+  <rect width="128" height="128" rx="24" fill="none" stroke="#000" stroke-width="6"/>
+  
+  <!-- Shopping Cart Icon -->
+  <g transform="translate(20, 24)">
+    <!-- Cart body -->
+    <path d="M10 30 L20 30 L30 70 L70 70 L80 40 L25 40" 
+          fill="none" stroke="#000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Cart wheels -->
+    <circle cx="35" cy="82" r="8" fill="#000"/>
+    <circle cx="65" cy="82" r="8" fill="#000"/>
+    
+    <!-- Dollar sign in cart -->
+    <text x="48" y="60" font-family="Arial Black, sans-serif" font-size="24" font-weight="900" 
+          fill="#000" text-anchor="middle">$</text>
+  </g>
+  
+  <!-- Sparkle -->
+  <circle cx="100" cy="28" r="6" fill="#FF6B6B"/>
+  <circle cx="90" cy="20" r="4" fill="#4ECDC4"/>
+</svg>

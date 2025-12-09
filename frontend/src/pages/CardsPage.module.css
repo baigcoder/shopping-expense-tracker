@@ -1,0 +1,1054 @@
+/* Cards Page - Professional Design with PIN Security */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+.container {
+    min-height: 100vh;
+    background: #FAFAFA;
+    font-family: 'Space Grotesk', sans-serif;
+    padding-bottom: 2rem;
+}
+
+/* ============================================
+   HERO HEADER
+   ============================================ */
+.heroHeader {
+    background: #000;
+    color: #fff;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.heroContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.heroContent h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+}
+
+.heroContent p {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+.addBtn {
+    background: #fff;
+    color: #000;
+    border: 2px solid #fff;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.3);
+}
+
+.addBtn:hover {
+    box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.4);
+}
+
+.statsRow {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s;
+}
+
+.stat div {
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
+.mainContent {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.cardsSection h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   CARDS GRID
+   ============================================ */
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.cardWrapper {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cardWrapper.selected .card {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 3px #10B981;
+}
+
+.card {
+    position: relative;
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-height: 220px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s;
+}
+
+/* Card Shine Effect */
+.cardShine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.chip {
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(135deg, #FFD700 0%, #FDB931 50%, #D4A200 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.chip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.brandArea {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brandLogo {
+    width: 60px;
+    height: 30px;
+}
+
+.cardNumber {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin: 1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.cardBottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.cardInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.infoLabel {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    letter-spacing: 1px;
+}
+
+.infoValue {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   CVV AREA
+   ============================================ */
+.cvvArea {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 2;
+}
+
+.revealBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.revealBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.cvvReveal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(16, 185, 129, 0.9);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cvvValue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cvvTimer {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.65rem;
+    opacity: 0.9;
+}
+
+/* Delete button on card */
+.deleteCardBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.9);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 3;
+}
+
+.cardWrapper:hover .deleteCardBtn {
+    opacity: 1;
+}
+
+.deleteCardBtn:hover {
+    background: #EF4444;
+}
+
+/* ============================================
+   ADD CARD PLACEHOLDER
+   ============================================ */
+.addCardPlaceholder {
+    min-height: 220px;
+    border: 3px dashed #D1D5DB;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: #9CA3AF;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.addCardPlaceholder:hover {
+    border-color: #000;
+    color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.addCardPlaceholder span {
+    font-weight: 700;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    box-shadow: 8px 8px 0px #000;
+}
+
+.emptyState svg {
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.emptyState h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+}
+
+.emptyState p {
+    color: #6B7280;
+    margin-bottom: 2rem;
+}
+
+.emptyState .addBtn {
+    margin: 0 auto;
+    background: #000;
+    color: #fff;
+}
+
+/* ============================================
+   DETAILS PANEL
+   ============================================ */
+.detailsPanel {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0px #000;
+    position: sticky;
+    top: 2rem;
+}
+
+.detailsPanel h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem 0;
+}
+
+.detailsCard {
+    border-radius: 16px;
+    padding: 1.25rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.detailsCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.detailsBrand {
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.detailsNumber {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.detailsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.detailRow:last-child {
+    border-bottom: none;
+}
+
+.detailRow span {
+    color: #6B7280;
+    font-size: 0.9rem;
+}
+
+.detailRow strong {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.statusRevealed {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #10B981;
+}
+
+.statusHidden {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #6B7280;
+}
+
+.detailsActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.revealFullBtn {
+    width: 100%;
+    padding: 1rem;
+    background: #10B981;
+    color: #fff;
+    border: 2px solid #10B981;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.revealFullBtn:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
+.removeBtn {
+    width: 100%;
+    padding: 1rem;
+    background: #fff;
+    color: #EF4444;
+    border: 2px solid #EF4444;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.removeBtn:hover {
+    background: #FEF2F2;
+}
+
+/* ============================================
+   PIN MODAL
+   ============================================ */
+.pinOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1rem;
+}
+
+.pinModal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 8px 8px 0px #000;
+}
+
+.pinHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.pinIcon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.pinHeader h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+}
+
+.pinHeader p {
+    color: #6B7280;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.pinInputWrapper {
+    margin-bottom: 1rem;
+}
+
+.pinInput {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    letter-spacing: 8px;
+    border: 3px solid #E5E7EB;
+    border-radius: 12px;
+    background: #FAFAFA;
+    transition: all 0.2s;
+}
+
+.pinInput:focus {
+    outline: none;
+    border-color: #000;
+    background: #fff;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.pinInput.pinError {
+    border-color: #EF4444;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    75% {
+        transform: translateX(8px);
+    }
+}
+
+.errorMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #EF4444;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.pinActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 1rem;
+    background: #fff;
+    color: #000;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.cancelBtn:hover {
+    border-color: #000;
+}
+
+.verifyBtn {
+    flex: 1;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    box-shadow: 4px 4px 0px #10B981;
+}
+
+.verifyBtn:hover:not(:disabled) {
+    box-shadow: 6px 6px 0px #10B981;
+}
+
+.verifyBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+    .mainContent {
+        grid-template-columns: 1fr;
+    }
+
+    .detailsPanel {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroHeader {
+        padding: 1.5rem;
+    }
+
+    .heroContent {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .heroContent h1 {
+        font-size: 2rem;
+    }
+
+    .statsRow {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .mainContent {
+        padding: 0 1rem;
+    }
+
+    .cardsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cardNumber {
+        font-size: 1.1rem;
+    }
+
+    .pinModal {
+        padding: 1.5rem;
+    }
+}
+
+/* ============================================
+   CARD CLICK HINT
+   ============================================ */
+.cardClickHint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+}
+
+.cardWrapper:hover .cardClickHint {
+    opacity: 1;
+}
+
+.sectionHint {
+    color: #6B7280;
+    font-size: 0.9rem;
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cvvVisible {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* ============================================
+   CARD DETAILS MODAL
+   ============================================ */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    padding: 2rem;
+}
+
+.cardDetailsModal {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 12px 12px 0px #000;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalCloseBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    border: 2px solid #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    z-index: 10;
+}
+
+.modalCloseBtn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Modal Card Preview */
+.modalCardPreview {
+    position: relative;
+    border-radius: 20px;
+    padding: 1.5rem;
+    color: #fff;
+    margin-bottom: 2rem;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modalCardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.modalCardNumber {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin: 1.5rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.modalCardBottom {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.modalCardBottom>div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Card Details List */
+.cardDetailsList {
+    margin-bottom: 1.5rem;
+}
+
+.cardDetailsList h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #000;
+}
+
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #FAFAFA;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    transition: all 0.15s;
+}
+
+.detailItem:hover {
+    border-color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.detailLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6B7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.detailValue {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.copyBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #fff;
+    border: 2px solid #E5E7EB;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    color: #6B7280;
+}
+
+.copyBtn:hover {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+/* CVV Specific Styles */
+.cvvRevealed {
+    color: #10B981;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.cvvHidden {
+    color: #9CA3AF;
+    letter-spacing: 4px;
+}
+
+.revealCvvBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.revealCvvBtn:hover {
+    transform: scale(1.05);
+}
+
+.detailValue .cvvTimer {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #10B981;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* Modal Actions */
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #E5E7EB;
+}
+
+.copyAllBtn {
+    flex: 1;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    box-shadow: 4px 4px 0px #10B981;
+}
+
+.copyAllBtn:hover {
+    box-shadow: 6px 6px 0px #10B981;
+}
+
+.deleteBtn {
+    padding: 1rem;
+    background: #fff;
+    color: #EF4444;
+    border: 2px solid #EF4444;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+}
+
+.deleteBtn:hover {
+    background: #FEF2F2;
+}
+
+/* Responsive for Modal */
+@media (max-width: 768px) {
+    .modalOverlay {
+        padding: 1rem;
+    }
+
+    .cardDetailsModal {
+        padding: 1.5rem;
+    }
+
+    .modalCardNumber {
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+
+    .modalActions {
+        flex-direction: column;
+    }
+
+    .detailValue {
+        font-size: 0.85rem;
+    }
+}

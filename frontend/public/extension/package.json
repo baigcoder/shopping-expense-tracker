@@ -1,0 +1,24 @@
+{
+    "name": "vibe-tracker-extension",
+    "version": "2.0.0",
+    "description": "Vibe Tracker Browser Extension - Auto-track online purchases",
+    "scripts": {
+        "build": "node build.js",
+        "build:chrome": "node build.js chrome",
+        "build:firefox": "node build.js firefox",
+        "build:all": "node build.js all",
+        "zip:chrome": "node build.js chrome --zip",
+        "zip:firefox": "node build.js firefox --zip",
+        "zip:all": "node build.js all --zip"
+    },
+    "keywords": [
+        "expense",
+        "tracker",
+        "shopping",
+        "chrome",
+        "firefox",
+        "brave"
+    ],
+    "author": "Vibe Tracker Team",
+    "license": "MIT"
+}

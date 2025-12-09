@@ -1,0 +1,95 @@
+// Prisma Schema for Shopping Expense Tracker
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String        @id @default(uuid())
+  supabaseId    String        @unique
+  email         String        @unique
+  name          String?
+  avatarUrl     String?
+  currency      String        @default("USD")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  transactions  Transaction[]
+  budgets       Budget[]
+  categories    Category[]
+}
+
+model Transaction {
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount        Decimal       @db.Decimal(10, 2)
+  currency      String        @default("USD")
+  storeName     String
+  storeUrl      String?
+  productName   String?
+  categoryId    String?
+  category      Category?     @relation(fields: [categoryId], references: [id])
+  
+  purchaseDate  DateTime      @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  notes         String?
+  
+  @@index([userId])
+  @@index([purchaseDate])
+  @@index([categoryId])
+}
+
+model Category {
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name          String
+  icon          String        @default("🏷️")
+  color         String        @default("#6366f1")
+  
+  transactions  Transaction[]
+  
+  @@unique([userId, name])
+}
+
+model Budget {
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount        Decimal       @db.Decimal(10, 2)
+  period        String        @default("monthly") // weekly, monthly, yearly
+  categoryId    String?       // null = overall budget
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  @@unique([userId, period, categoryId])
+}
+
+// OTP verification for email confirmation
+model EmailOTP {
+  id            String        @id @default(uuid())
+  email         String        
+  otp           String        
+  expiresAt     DateTime
+  verified      Boolean       @default(false)
+  attempts      Int           @default(0)
+  createdAt     DateTime      @default(now())
+  
+  // Metadata stored as JSON (name, password hash for pending signup)
+  metadata      String?       // JSON string for signup data
+  
+  @@index([email])
+  @@index([expiresAt])
+}
+

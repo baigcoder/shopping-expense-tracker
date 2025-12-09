@@ -1,0 +1,629 @@
+/* PDF Analyzer Modal Styles */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 28px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 16px 16px 0px #000;
+    position: relative;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0.25rem;
+    transition: color 0.2s;
+}
+
+.closeBtn:hover {
+    color: #000;
+}
+
+/* Upload Step */
+.uploadStep {
+    text-align: center;
+}
+
+.headerIcon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: #fff;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px #000;
+}
+
+.uploadStep h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    margin: 0 0 2rem;
+    font-size: 0.95rem;
+}
+
+.dropZone {
+    border: 3px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.dropZone:hover {
+    border-color: #8B5CF6;
+    background: #faf5ff;
+}
+
+.dropZone.dragging {
+    border-color: #8B5CF6;
+    background: #f3e8ff;
+    border-style: solid;
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadIcon {
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+.dropText {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 0.5rem;
+}
+
+.orText {
+    display: block;
+    color: #94a3b8;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+}
+
+.browseBtn {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #8B5CF6;
+    transition: all 0.1s;
+}
+
+.browseBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #8B5CF6;
+}
+
+.errorMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-top: 1rem;
+    border: 2px solid #fecaca;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Analyzing Step */
+.analyzingStep {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.brainAnimation {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: #fff;
+    border: 3px solid #000;
+}
+
+.analyzingStep h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+}
+
+.fileName {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f1f5f9;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 2rem;
+}
+
+.progressContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.progressBar {
+    flex: 1;
+    height: 16px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #000;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B5CF6 0%, #EC4899 100%);
+    border-radius: 8px;
+    transition: width 0.3s ease;
+}
+
+.progressText {
+    font-weight: 800;
+    font-size: 1.1rem;
+    min-width: 50px;
+}
+
+.steps {
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.stepItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.stepItem.done {
+    color: #10B981;
+}
+
+.stepItem.done svg {
+    fill: #10B981;
+}
+
+/* Results Step */
+.resultsStep {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.successHeader {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.successIcon {
+    color: #10B981;
+    margin-bottom: 0.5rem;
+}
+
+.successHeader h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.bankInfo {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+}
+
+.bankItem {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.summaryCard {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.summaryCard.income {
+    background: #ecfdf5;
+    border-color: #10B981;
+    color: #10B981;
+}
+
+.summaryCard.expense {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.summaryCard svg {
+    margin-bottom: 0.25rem;
+}
+
+.summaryAmount {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: inherit;
+}
+
+.summaryCard.income .summaryAmount,
+.summaryCard.expense .summaryAmount {
+    color: inherit;
+}
+
+.summaryCard:not(.income):not(.expense) .summaryAmount {
+    color: #000;
+}
+
+.summaryLabel {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Categories */
+.categoriesSection {
+    margin-bottom: 1.5rem;
+}
+
+.categoriesSection h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #475569;
+}
+
+.categoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.categoryItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.categoryRank {
+    background: #000;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+}
+
+.categoryName {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.categoryAmount {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Insights */
+.insightsSection {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+    border-radius: 14px;
+    border: 2px solid #e9d5ff;
+}
+
+.insightsSection h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #7c3aed;
+}
+
+.insightsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.insightsList li {
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.insightsList li::before {
+    content: '💡';
+    position: absolute;
+    left: 0;
+    font-size: 0.7rem;
+}
+
+/* Transaction Preview */
+.previewSection {
+    margin-bottom: 1.5rem;
+}
+
+.previewSection h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #475569;
+}
+
+.transactionsList {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.transactionRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.transactionRow:last-child {
+    border-bottom: none;
+}
+
+.txInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.txDesc {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.txMeta {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.txAmount {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.txAmount.income {
+    color: #10B981;
+}
+
+.txAmount.expense {
+    color: #ef4444;
+}
+
+.moreTransactions {
+    padding: 0.75rem;
+    text-align: center;
+    background: #f1f5f9;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.savedNotice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #ecfdf5;
+    color: #10B981;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+    border: 2px solid #10B981;
+}
+
+.saveBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #10B981;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.85rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #000;
+    transition: all 0.1s;
+}
+
+.saveBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+.loginPrompt {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.doneBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    padding: 0.85rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 4px 4px 0px #8B5CF6;
+    transition: all 0.1s;
+}
+
+.doneBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #8B5CF6;
+}
+
+/* Saved Step */
+.savedStep {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.bigSuccess {
+    color: #10B981;
+    margin-bottom: 1rem;
+}
+
+.savedStep h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+}
+
+.savedStep p {
+    color: #64748b;
+    margin: 0 0 2rem;
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+    .modal {
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
+
+    .summaryGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .bankInfo {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .features {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

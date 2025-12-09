@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Tracker Dashboard</title>
+    <style>
+        :root {
+            --pop-yellow: #FFD93D;
+            --pop-pink: #FF6B6B;
+            --pop-blue: #4D96FF;
+            --pop-teal: #4ECDC4;
+            --pop-black: #2D2D2D;
+            --pop-white: #FFFFFF;
+            --pop-grey: #F7F7F7;
+            --border-thick: 3px solid var(--pop-black);
+            --shadow-hard: 4px 4px 0px var(--pop-black);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 380px;
+            /* Standard Popup Width (+ a bit of margin) */
+            height: 560px;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mock-popup {
+            width: 350px;
+            height: 520px;
+            background: var(--pop-white);
+            border: var(--border-thick);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            background: var(--pop-yellow);
+            padding: 15px;
+            border-bottom: var(--border-thick);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+        }
+
+        .brand {
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            background: var(--pop-black);
+            color: var(--pop-white);
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.synced {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 2px solid #065F46;
+        }
+
+        /* Main Content */
+        .dashboard {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stats-card {
+            background: var(--pop-white);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-hard);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            background-image: radial-gradient(circle at 10px 10px, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+
+        .month-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .amount-big {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--pop-black);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .tx-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--pop-pink);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 2px solid var(--pop-black);
+            display: inline-block;
+        }
+
+        /* Recent Transactions */
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tx-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tx-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #FAFAFA;
+            border: 2px solid #E5E5E5;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .tx-item.new {
+            background: #F0FDFA;
+            border-color: var(--pop-teal);
+        }
+
+        .tx-icon {
+            font-size: 1.2rem;
+            background: var(--pop-white);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--pop-black);
+            border-radius: 50%;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .tx-details {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .tx-store {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .tx-prod {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tx-price {
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Actions */
+        .footer-actions {
+            padding: 15px;
+            border-top: var(--border-thick);
+            background: var(--pop-grey);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            padding: 8px;
+            border: 2px solid var(--pop-black);
+            background: var(--pop-white);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 2px 2px 0px var(--pop-black);
+        }
+
+        .clip-btn {
+            background: var(--pop-pink);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mock-popup">
+        <div class="header">
+            <div class="title-row">
+                <div class="logo">⚡</div>
+                <div class="brand">Vibe Tracker</div>
+            </div>
+            <div class="status-badge synced">Synced 🔗</div>
+        </div>
+
+        <div class="dashboard">
+            <div class="stats-card">
+                <div class="month-label">December Spending</div>
+                <div class="amount-big">$342.50</div>
+                <div class="tx-count">12 Vibes Tracked</div>
+            </div>
+
+            <div>
+                <div class="section-title">
+                    <span>Recent Vibes</span>
+                    <span style="font-size: 0.7rem;">Last 5</span>
+                </div>
+                <div class="tx-list">
+                    <div class="tx-item new">
+                        <div class="tx-icon">📦</div>
+                        <div class="tx-details">
+                            <span class="tx-store">Amazon</span>
+                            <span class="tx-prod">Sony WH-1000XM5 Headphones</span>
+                        </div>
+                        <span class="tx-price">-$298.00</span>
+                    </div>
+                    <div class="tx-item">
+                        <div class="tx-icon">☕</div>
+                        <div class="tx-details">
+                            <span class="tx-store">Starbucks</span>
+                            <span class="tx-prod">Caramel Macchiato Venti</span>
+                        </div>
+                        <span class="tx-price">-$6.50</span>
+                    </div>
+                    <div class="tx-item">
+                        <div class="tx-icon">🎵</div>
+                        <div class="tx-details">
+                            <span class="tx-store">Spotify</span>
+                            <span class="tx-prod">Premium Subscription</span>
+                        </div>
+                        <span class="tx-price">-$11.99</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <button class="action-btn clip-btn">📌 Clip Page</button>
+            <button class="action-btn">📊 Dashboard</button>
+        </div>
+    </div>
+</body>
+
+</html>
