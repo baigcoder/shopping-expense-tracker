@@ -624,6 +624,17 @@ const LandingPage = () => {
                     <div className={styles.footerBrand}>
                         <span className={styles.footerLogo}>💰 Vibe Tracker</span>
                         <p>The Gen-Z way to manage money.</p>
+                        <div className={styles.footerSocials}>
+                            <a href="https://github.com/baigcoder" target="_blank" rel="noopener noreferrer" title="GitHub">
+                                <span>🐙</span>
+                            </a>
+                            <a href="https://hassan-baigo-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer" title="Portfolio">
+                                <span>🌐</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/hassanbaig" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                                <span>💼</span>
+                            </a>
+                        </div>
                     </div>
                     <div className={styles.footerLinks}>
                         <div>
@@ -647,10 +658,25 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className={styles.footerDivider} />
+
                 <div className={styles.footerBottom}>
-                    <p>© 2024 Vibe Tracker. Made with 💜 for Gen-Z.</p>
+                    <p>© 2024 Vibe Tracker. All rights reserved.</p>
+                    <div className={styles.footerCredit}>
+                        <span>Crafted with 💜 by</span>
+                        <a
+                            href="https://hassan-baigo-portfolio.vercel.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.developerLink}
+                        >
+                            Hassan Baig
+                        </a>
+                    </div>
                 </div>
             </footer>
+
         </div>
     );
 };

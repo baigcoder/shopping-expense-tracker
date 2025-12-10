@@ -34,16 +34,19 @@ const ExtensionAlert = ({ onDismiss }: ExtensionAlertProps) => {
 
             if (status.installed) {
                 setIsExtensionInstalled(true);
-                setIsSynced(status.syncStatus?.synced || false);
+                // Check if user is logged in the extension
+                const synced = status.loggedIn === true;
+                setIsSynced(synced);
 
                 // Show synced message briefly
-                if (status.syncStatus?.synced) {
+                if (synced) {
                     setIsVisible(true);
                     setTimeout(() => {
                         setIsVisible(false);
                     }, 3000);
                 }
             } else {
+
                 // Extension not installed - show install prompt
                 setIsVisible(true);
             }
