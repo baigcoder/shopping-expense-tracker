@@ -27,6 +27,12 @@
     box-shadow: 6px 6px 0px #10B981;
 }
 
+.warningCard {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    box-shadow: 6px 6px 0px #F59E0B;
+}
+
+
 .alertEmoji {
     font-size: 2rem;
     flex-shrink: 0;
