@@ -64,3 +64,4 @@ npm run dev
 - `POST /api/categories` - Create category
 - `PATCH /api/categories/:id` - Update category
 - `DELETE /api/categories/:id` - Delete category
+# Trigger deploy
