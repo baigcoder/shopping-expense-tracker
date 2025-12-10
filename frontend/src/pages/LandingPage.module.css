@@ -808,6 +808,57 @@
     color: #64748b;
 }
 
+.developerCard {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #1a1a2e;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 2px solid #2d2d44;
+    transition: all 0.2s;
+}
+
+.developerCard:hover {
+    border-color: #FF6B35;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.developerAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2d2d44;
+}
+
+.developerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.developerName {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.orangeText {
+    color: #FF6B35;
+}
+
+.developerRole {
+    font-size: 0.65rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
 .developerLink {
     background: linear-gradient(135deg, #8B5CF6, #EC4899);
     -webkit-background-clip: text;
@@ -821,6 +872,7 @@
 .developerLink:hover {
     text-decoration: underline;
 }
+
 
 /* ============================================
    EXTENSION SECTION

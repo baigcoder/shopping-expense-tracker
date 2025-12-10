@@ -664,18 +664,22 @@ const LandingPage = () => {
 
                 <div className={styles.footerBottom}>
                     <p>© 2024 Vibe Tracker. All rights reserved.</p>
-                    <div className={styles.footerCredit}>
-                        <span>Crafted with 💜 by</span>
-                        <a
-                            href="https://hassan-baigo-portfolio.vercel.app/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.developerLink}
-                        >
-                            Hassan Baig
-                        </a>
-                    </div>
+                    <a
+                        href="https://hassan-baigo-portfolio.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.developerCard}
+                    >
+                        <img src="/developer.png" alt="Hassan Baig" className={styles.developerAvatar} />
+                        <div className={styles.developerInfo}>
+                            <span className={styles.developerName}>
+                                Hassan<span className={styles.orangeText}>Baig</span>
+                            </span>
+                            <span className={styles.developerRole}>FULL STACK DEV</span>
+                        </div>
+                    </a>
                 </div>
+
             </footer>
 
         </div>
