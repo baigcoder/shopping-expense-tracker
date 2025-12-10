@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Zap, CheckCircle, ExternalLink } from 'lucide-react';
-import { extensionService } from '../services/extensionService';
 import { useAuthStore } from '../store/useStore';
 import styles from './ExtensionAlert.module.css';
 
@@ -13,85 +12,53 @@ interface ExtensionAlertProps {
 const ExtensionAlert = ({ onDismiss }: ExtensionAlertProps) => {
     const { user } = useAuthStore();
     const [isVisible, setIsVisible] = useState(false);
-    const [isExtensionInstalled, setIsExtensionInstalled] = useState(false);
-    const [isSynced, setIsSynced] = useState(false);
-    const [showSyncSuccess, setShowSyncSuccess] = useState(false);
+    const [alertType, setAlertType] = useState<'install' | 'synced'>('install');
 
     useEffect(() => {
-        // Only check if user is logged in
-        if (user?.id) {
-            // Small delay to let page settle
+        // Only show for logged in users
+        if (!user?.id) return;
+
+        // Check if dismissed recently (show again after 24 hours)
+        const dismissed = localStorage.getItem('extension_alert_dismissed');
+        if (dismissed) {
+            const dismissedTime = parseInt(dismissed);
+            if (Date.now() - dismissedTime < 24 * 60 * 60 * 1000) {
+                return; // Still within 24 hour dismiss period
+            }
+        }
+
+        // Check if extension is synced
+        const extensionSynced = localStorage.getItem('extension_synced');
+        if (extensionSynced === 'true') {
+            // Show synced message briefly
+            setAlertType('synced');
+            setIsVisible(true);
+            localStorage.removeItem('extension_synced');
+            setTimeout(() => setIsVisible(false), 4000);
+        } else {
+            // Show install prompt after 2 seconds
             const timer = setTimeout(() => {
-                checkExtensionStatus();
-            }, 1500);
+                setAlertType('install');
+                setIsVisible(true);
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [user?.id]);
 
-    // Listen for extension sync events
+    // Listen for extension sync message from content script
     useEffect(() => {
-        const handleExtensionMessage = (event: MessageEvent) => {
-            if (event.data?.source === 'extension' && event.data?.type === 'SYNC_COMPLETE') {
-                setIsExtensionInstalled(true);
-                setIsSynced(true);
-                setShowSyncSuccess(true);
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data?.source === 'vibe-tracker-extension' && event.data?.type === 'SYNC_SUCCESS') {
+                localStorage.setItem('extension_synced', 'true');
+                setAlertType('synced');
                 setIsVisible(true);
-
-                // Hide after 4 seconds
-                setTimeout(() => {
-                    setIsVisible(false);
-                    setShowSyncSuccess(false);
-                }, 4000);
+                setTimeout(() => setIsVisible(false), 4000);
             }
         };
 
-        window.addEventListener('message', handleExtensionMessage);
-        return () => window.removeEventListener('message', handleExtensionMessage);
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
     }, []);
-
-    const checkExtensionStatus = async () => {
-        // Check if user has dismissed recently (24 hours for install prompt)
-        const dismissed = localStorage.getItem('extension_alert_dismissed');
-        if (dismissed) {
-            const dismissedTime = parseInt(dismissed);
-            // Show again after 24 hours (not 7 days - more frequent reminder)
-            if (Date.now() - dismissedTime < 24 * 60 * 60 * 1000) {
-                return;
-            }
-        }
-
-        try {
-            const status = await extensionService.checkExtension();
-            console.log('Extension status:', status);
-
-            if (status.installed) {
-                setIsExtensionInstalled(true);
-                const synced = status.loggedIn === true;
-                setIsSynced(synced);
-
-                // Show synced message briefly if connected
-                if (synced) {
-                    setShowSyncSuccess(true);
-                    setIsVisible(true);
-                    setTimeout(() => {
-                        setIsVisible(false);
-                        setShowSyncSuccess(false);
-                    }, 4000);
-                } else {
-                    // Extension installed but not synced - prompt to sync
-                    setIsVisible(true);
-                }
-            } else {
-                // Extension NOT installed - show install prompt
-                console.log('Extension not installed, showing prompt');
-                setIsVisible(true);
-            }
-        } catch (error) {
-            console.log('Extension check error, showing install prompt');
-            // Extension check failed - show install prompt
-            setIsVisible(true);
-        }
-    };
 
     const handleDismiss = () => {
         setIsVisible(false);
@@ -99,8 +66,7 @@ const ExtensionAlert = ({ onDismiss }: ExtensionAlertProps) => {
         onDismiss?.();
     };
 
-    const handleDownload = () => {
-        // Open extension section in new tab or scroll
+    const handleGetExtension = () => {
         window.open('/#extension', '_blank');
     };
 
@@ -115,8 +81,7 @@ const ExtensionAlert = ({ onDismiss }: ExtensionAlertProps) => {
                 exit={{ y: -100, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-                {showSyncSuccess ? (
-                    // Synced Alert - Success Message
+                {alertType === 'synced' ? (
                     <div className={`${styles.alertCard} ${styles.syncedCard}`}>
                         <motion.div
                             className={styles.iconBounce}
@@ -127,51 +92,29 @@ const ExtensionAlert = ({ onDismiss }: ExtensionAlertProps) => {
                         </motion.div>
                         <div className={styles.alertContent}>
                             <strong>🎉 Extension Synced!</strong>
-                            <p>Auto-tracking enabled! Your purchases will be logged automatically.</p>
+                            <p>Auto-tracking enabled - your purchases will be logged automatically!</p>
                         </div>
-                        <button className={styles.closeBtn} onClick={handleDismiss}>
-                            <X size={18} />
-                        </button>
-                    </div>
-                ) : isExtensionInstalled && !isSynced ? (
-                    // Extension installed but not synced
-                    <div className={`${styles.alertCard} ${styles.warningCard}`}>
-                        <motion.span
-                            className={styles.alertEmoji}
-                            animate={{ scale: [1, 1.1, 1] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                        >
-                            🔗
-                        </motion.span>
-                        <div className={styles.alertContent}>
-                            <strong>Extension Found! Login to Sync</strong>
-                            <p>Click the extension icon and sign in to enable auto-tracking.</p>
-                        </div>
-                        <button className={styles.laterBtn} onClick={handleDismiss}>
-                            Got it
-                        </button>
                         <button className={styles.closeBtn} onClick={handleDismiss}>
                             <X size={18} />
                         </button>
                     </div>
                 ) : (
-                    // Install Alert - Extension not installed
                     <div className={styles.alertCard}>
                         <motion.span
                             className={styles.alertEmoji}
-                            animate={{ rotate: [0, -10, 10, 0] }}
-                            transition={{ duration: 0.5, repeat: 3 }}
+                            animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
+                            transition={{ duration: 1, repeat: 2 }}
                         >
                             🧩
                         </motion.span>
                         <div className={styles.alertContent}>
-                            <strong>Get the Browser Extension!</strong>
-                            <p>Auto-track purchases from Amazon, eBay & 100+ stores 🛒</p>
+                            <strong>Supercharge Your Tracking!</strong>
+                            <p>Install our extension to auto-track purchases from 100+ stores 🛒</p>
                         </div>
                         <div className={styles.alertActions}>
-                            <button className={styles.installBtn} onClick={handleDownload}>
+                            <button className={styles.installBtn} onClick={handleGetExtension}>
                                 <Zap size={16} />
-                                Install Free
+                                Get Extension
                                 <ExternalLink size={14} />
                             </button>
                             <button className={styles.laterBtn} onClick={handleDismiss}>
