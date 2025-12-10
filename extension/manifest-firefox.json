@@ -1,13 +1,15 @@
 {
-    "manifest_version": 2,
-    "name": "Vibe Tracker - Expense Tracker",
-    "version": "2.0.1",
-    "description": "Auto-track online purchases. Sync with your Vibe Tracker account. Get notified on every purchase.",
+    "manifest_version": 3,
+    "name": "Vibe Tracker - Auto Purchase Tracker",
+    "version": "2.1.0",
+    "description": "Auto-track online purchases. Sync with your Vibe Tracker account. Get real-time notifications.",
     "permissions": [
         "storage",
         "activeTab",
         "notifications",
-        "tabs",
+        "tabs"
+    ],
+    "host_permissions": [
         "https://*.amazon.com/*",
         "https://*.ebay.com/*",
         "https://*.walmart.com/*",
@@ -16,9 +18,11 @@
         "https://*.etsy.com/*",
         "https://*.aliexpress.com/*",
         "https://*.shopify.com/*",
+        "https://*.daraz.pk/*",
+        "https://*.foodpanda.pk/*",
         "<all_urls>"
     ],
-    "browser_action": {
+    "action": {
         "default_popup": "popup.html",
         "default_title": "Vibe Tracker",
         "default_icon": {
@@ -29,11 +33,22 @@
     },
     "background": {
         "scripts": [
-            "background-firefox.js"
+            "background.js"
         ],
-        "persistent": false
+        "type": "module"
     },
     "content_scripts": [
+        {
+            "matches": [
+                "https://*.vercel.app/*",
+                "http://localhost:*/*",
+                "http://127.0.0.1:*/*"
+            ],
+            "js": [
+                "content-website.js"
+            ],
+            "run_at": "document_start"
+        },
         {
             "matches": [
                 "https://*.amazon.com/*",
@@ -43,6 +58,8 @@
                 "https://*.target.com/*",
                 "https://*.etsy.com/*",
                 "https://*.aliexpress.com/*",
+                "https://*.daraz.pk/*",
+                "https://*.foodpanda.pk/*",
                 "<all_urls>"
             ],
             "js": [
@@ -60,18 +77,20 @@
         "128": "icons/icon128.png"
     },
     "web_accessible_resources": [
-        "content.css"
+        {
+            "resources": [
+                "content.css",
+                "icons/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "vibetracker@example.com",
-            "strict_min_version": "140.0",
-            "data_collection_permissions": {
-                "required": [
-                    "financialAndPaymentInfo",
-                    "websiteActivity"
-                ]
-            }
+            "id": "vibetracker@vibe-tracker.com",
+            "strict_min_version": "109.0"
         }
     }
 }

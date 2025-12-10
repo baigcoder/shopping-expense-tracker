@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Expense Tracker - Auto Purchase Tracker",
-    "version": "2.0.0",
-    "description": "Auto-track online purchases. Sync with your Expense Tracker account. Get real-time notifications.",
+    "name": "Vibe Tracker - Auto Purchase Tracker",
+    "version": "2.1.0",
+    "description": "Auto-track online purchases. Sync with your Vibe Tracker account. Get real-time notifications.",
     "permissions": [
         "storage",
         "activeTab",
@@ -29,12 +29,12 @@
             "http://localhost:*/*",
             "http://127.0.0.1:*/*",
             "https://*.vercel.app/*",
-            "https://expense-tracker.vercel.app/*"
+            "https://vibe-tracker-expense-genz.vercel.app/*"
         ]
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "Expense Tracker",
+        "default_title": "Vibe Tracker",
         "default_icon": {
             "16": "icons/icon16.png",
             "48": "icons/icon48.png",
@@ -48,7 +48,8 @@
         {
             "matches": [
                 "http://localhost:*/*",
-                "http://127.0.0.1:*/*"
+                "http://127.0.0.1:*/*",
+                "https://*.vercel.app/*"
             ],
             "js": [
                 "content-website.js"
