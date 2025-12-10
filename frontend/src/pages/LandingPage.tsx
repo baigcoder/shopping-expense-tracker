@@ -150,7 +150,7 @@ const LandingPage = () => {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Download failed:', error);
-            window.open('/vibetracker-chrome-v2.7.0.zip', '_blank');
+            window.open('/vibetracker-chrome-v2.7.1.zip', '_blank');
         }
     };
 
@@ -360,14 +360,14 @@ const LandingPage = () => {
             < section id="extension" className={styles.extensionSection} >
                 <div className={styles.extensionContent}>
                     <div className={styles.extensionText}>
-                        <span className={styles.heroBadge}>v2.7.0 • AVAILABLE ON CHROME</span>
+                        <span className={styles.heroBadge}>v2.7.1 • AVAILABLE ON CHROME</span>
                         <h2 className={styles.extensionTitle}>BROWSE. CLICK. TRACKED. 🪄</h2>
                         <p className={styles.extensionDesc}>
                             Our extension sits quietly in your browser. When you visit Amazon, eBay, or 100+ other stores, it lights up.
                             <br /><br />
                             <strong>See a price? One click to save it.</strong> Manage categories, add notes, and sync to your dashboard instantly.
                             <br /><br />
-                            <span style={{ color: '#10B981', fontWeight: 800 }}>✨ NEW in v2.7:</span> Secure auto-logout sync, improved login UI, and smarter notifications!
+                            <span style={{ color: '#10B981', fontWeight: 800 }}>✨ NEW in v2.7.1:</span> Secure auto-logout sync, improved login UI, and smarter notifications!
                         </p>
 
                         <div className={styles.installBox}>

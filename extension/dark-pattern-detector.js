@@ -665,8 +665,12 @@
 
     function runDarkPatternDetection() {
         // Don't run on the Vibe Tracker website itself
-        if (window.location.hostname.includes('vibe-tracker') ||
-            window.location.hostname.includes('localhost')) {
+        // Don't run on the Vibe Tracker website itself (production, preview, or local)
+        const hostname = window.location.hostname;
+        if (hostname.includes('vibe-tracker') ||
+            hostname.includes('vibetracker') ||
+            hostname.includes('localhost') ||
+            hostname.includes('127.0.0.1')) {
             return;
         }
 
