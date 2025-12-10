@@ -8,7 +8,11 @@ import styles from './Header.module.css';
 // Custom Logo Component - Vibe Tracker
 const BrandLogo = () => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span style={{ fontSize: '1.75rem' }}>💰</span>
+        <img
+            src="/logo.png"
+            alt="Vibe Tracker"
+            style={{ width: '32px', height: '32px', objectFit: 'contain' }}
+        />
         <span style={{
             fontWeight: 800,
             fontSize: '1.1rem',
@@ -20,6 +24,7 @@ const BrandLogo = () => (
         </span>
     </div>
 );
+
 
 
 const navItems = [

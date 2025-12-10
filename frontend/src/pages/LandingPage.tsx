@@ -135,9 +135,10 @@ const LandingPage = () => {
             {/* Navigation */}
             <nav className={styles.navbar}>
                 <Link to="/" className={styles.navLogo}>
-                    <span className={styles.logoIcon}>💰</span>
+                    <img src="/logo.png" alt="Vibe Tracker" className={styles.logoImage} />
                     <span>Vibe Tracker</span>
                 </Link>
+
 
                 {/* Desktop Links */}
                 <div className={styles.navLinks}>
@@ -622,7 +623,11 @@ const LandingPage = () => {
             <footer className={styles.footer}>
                 <div className={styles.footerTop}>
                     <div className={styles.footerBrand}>
-                        <span className={styles.footerLogo}>💰 Vibe Tracker</span>
+                        <span className={styles.footerLogo}>
+                            <img src="/logo.png" alt="Vibe Tracker" className={styles.footerLogoImage} />
+                            Vibe Tracker
+                        </span>
+
                         <p>The Gen-Z way to manage money.</p>
                         <div className={styles.footerSocials}>
                             <a href="https://github.com/baigcoder" target="_blank" rel="noopener noreferrer" title="GitHub">
