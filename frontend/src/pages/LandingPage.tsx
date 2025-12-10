@@ -631,7 +631,7 @@ const LandingPage = () => {
                             <a href="https://hassan-baigo-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer" title="Portfolio">
                                 <span>🌐</span>
                             </a>
-                            <a href="https://www.linkedin.com/in/hassanbaig" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                            <a href="https://www.linkedin.com/in/hassan-baig-672778111/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
                                 <span>💼</span>
                             </a>
                         </div>
