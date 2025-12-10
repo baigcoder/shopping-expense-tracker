@@ -56,6 +56,35 @@ const AnalyticsPage = () => {
         fetchData();
     }, [fetchData]);
 
+    // Listen for real-time updates from extension
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const handleNewTransaction = () => {
+            console.log('📊 Analytics: Auto-refreshing after new transaction');
+            fetchData();
+        };
+
+        // Listen for custom events and postMessage
+        window.addEventListener('new-transaction', handleNewTransaction);
+        window.addEventListener('transactions-synced', handleNewTransaction);
+
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data?.source === 'vibe-tracker-extension') {
+                if (['TRANSACTION_ADDED', 'NEW_TRANSACTION', 'TRANSACTIONS_SYNCED'].includes(event.data.type)) {
+                    handleNewTransaction();
+                }
+            }
+        };
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('new-transaction', handleNewTransaction);
+            window.removeEventListener('transactions-synced', handleNewTransaction);
+            window.removeEventListener('message', handleMessage);
+        };
+    }, [user?.id, fetchData]);
+
     // Filter transactions by time range
     const getFilteredTransactions = () => {
         const now = new Date();
@@ -179,12 +208,19 @@ const AnalyticsPage = () => {
         return (
             <div className={styles.container}>
                 <div className={styles.loadingState}>
-                    <Loader2 size={48} className={styles.spinner} />
-                    <p>Crunching your numbers...</p>
+                    <motion.div
+                        className={styles.loaderCard}
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                    >
+                        <span style={{ fontSize: '3rem' }}>📊</span>
+                    </motion.div>
+                    <p>crunching your numbers bestie<span className={styles.loadingDots}></span></p>
                 </div>
             </div>
         );
     }
+
 
     return (
         <div className={styles.container}>

@@ -1,11 +1,14 @@
-/* Loading Skeleton CSS */
+/* High Contrast Skeleton CSS */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
 
 /* Base Skeleton with Shimmer */
 .skeleton {
-    background: linear-gradient(90deg, #E5E7EB 0%, #F3F4F6 50%, #E5E7EB 100%);
+    /* Higher contrast for that graphical look */
+    background: linear-gradient(90deg, #E2E8F0 0%, #FFFFFF 50%, #E2E8F0 100%);
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+    animation: shimmer 1.5s infinite linear;
+    border: 1px solid #000;
+    /* Distinct border */
 }
 
 @keyframes shimmer {
@@ -21,12 +24,15 @@
 /* Card Skeleton */
 .cardSkeleton {
     background: #fff;
-    border: 2px solid #E5E7EB;
+    border: 3px solid #000;
+    /* Thicker border */
     border-radius: 16px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    box-shadow: 4px 4px 0px #E5E7EB;
+    /* Subtle shadow placeholder */
 }
 
 .cardHeader {
@@ -44,12 +50,14 @@
 /* Stat Skeleton */
 .statSkeleton {
     background: #fff;
-    border: 2px solid #E5E7EB;
+    border: 3px solid #000;
     border-radius: 16px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    box-shadow: 4px 4px 0px #000;
+    /* Matching hard shadow */
 }
 
 /* Transaction Skeleton */
@@ -58,9 +66,12 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: #FAFAFA;
+    background: #fff;
+    border: 2px solid #000;
+    /* Bordered list items */
     border-radius: 12px;
     margin-bottom: 0.75rem;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .txDetails {
@@ -79,12 +90,13 @@
 /* Chart Skeleton */
 .chartSkeleton {
     background: #fff;
-    border: 2px solid #E5E7EB;
+    border: 3px solid #000;
     border-radius: 20px;
     padding: 2rem;
     height: 280px;
     display: flex;
     flex-direction: column;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
 .chartBars {
@@ -97,17 +109,19 @@
 
 .chartBar {
     width: 40px;
-    background: linear-gradient(90deg, #E5E7EB 0%, #F3F4F6 50%, #E5E7EB 100%);
+    background: linear-gradient(90deg, #F3F4F6 0%, #FFFFFF 50%, #F3F4F6 100%);
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 20px;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 8px 8px 0 0;
+    border: 2px solid #000;
+    border-bottom: none;
 }
 
 .chartLabels {
     display: flex;
     justify-content: space-around;
     padding-top: 0.5rem;
-    border-top: 1px solid #E5E7EB;
+    border-top: 3px solid #000;
 }
 
 /* Page Skeleton */
@@ -133,12 +147,13 @@
 /* Budget Skeleton */
 .budgetSkeleton {
     background: #fff;
-    border: 2px solid #E5E7EB;
+    border: 3px solid #000;
     border-radius: 16px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    box-shadow: 4px 4px 0px #000;
 }
 
 .budgetHeader {

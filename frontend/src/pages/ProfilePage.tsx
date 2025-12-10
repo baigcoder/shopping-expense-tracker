@@ -1,10 +1,13 @@
-// Profile Page - Gen Z Edition with Fixed Avatar
-import { useState, useEffect } from 'react';
+// Profile Page - Gen Z Edition with Dynamic Stats
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Shield, Camera, Edit2, CheckCircle, Calendar, DollarSign } from 'lucide-react';
+import { User, Mail, Shield, Camera, Edit2, CheckCircle, Calendar, TrendingUp, Wallet, Target, ShoppingBag, Zap } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
-import { toast } from 'react-toastify';
+import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
+import { goalService, Goal } from '../services/goalService';
+import { formatCurrency } from '../services/currencyService';
+import genZToast from '../services/genZToast';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {
@@ -14,66 +17,87 @@ const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
     const [avatarLoaded, setAvatarLoaded] = useState(false);
+    const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
+    const [goals, setGoals] = useState<Goal[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Fetch the avatar URL from Supabase Auth user metadata
+    // Fetch user data and stats
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const { data: { user: authUser } } = await supabase.auth.getUser();
 
                 if (authUser) {
-                    console.log('Auth User Metadata:', authUser.user_metadata);
-                    console.log('Identities:', authUser.identities);
-
                     // Try multiple sources for avatar
-                    let avatar = null;
-
-                    // 1. Direct metadata
-                    avatar = authUser.user_metadata?.avatar_url ||
+                    let avatar = authUser.user_metadata?.avatar_url ||
                         authUser.user_metadata?.picture ||
                         authUser.user_metadata?.photo;
 
-                    // 2. From Google identity
+                    // From Google identity
                     if (!avatar && authUser.identities) {
-                        const googleIdentity = authUser.identities.find(
-                            id => id.provider === 'google'
-                        );
+                        const googleIdentity = authUser.identities.find(id => id.provider === 'google');
                         if (googleIdentity?.identity_data) {
-                            avatar = googleIdentity.identity_data.avatar_url ||
-                                googleIdentity.identity_data.picture;
+                            avatar = googleIdentity.identity_data.avatar_url || googleIdentity.identity_data.picture;
                         }
                     }
 
-                    console.log('Found Avatar URL:', avatar);
+                    if (avatar) setAvatarUrl(avatar);
 
-                    if (avatar) {
-                        setAvatarUrl(avatar);
-                    }
-
-                    // Update name from auth
                     const userName = authUser.user_metadata?.full_name ||
                         authUser.user_metadata?.name ||
                         authUser.email?.split('@')[0];
-                    if (userName) {
-                        setName(userName);
-                    }
-
+                    if (userName) setName(userName);
                     setEmail(authUser.email || '');
+
+                    // Fetch transactions and goals for stats
+                    const [txData, goalData] = await Promise.all([
+                        supabaseTransactionService.getAll(authUser.id),
+                        goalService.getAll(authUser.id)
+                    ]);
+                    setTransactions(txData);
+                    setGoals(goalData);
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchUserData();
     }, []);
 
+    // Calculate dynamic stats
+    const stats = useMemo(() => {
+        const now = new Date();
+        const thisMonth = transactions.filter(t => {
+            const d = new Date(t.date);
+            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
+
+        const totalTransactions = transactions.length;
+        const thisMonthSpent = thisMonth.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+        const totalSaved = goals.reduce((s, g) => s + g.saved, 0);
+        const activeGoals = goals.filter(g => g.saved < g.target).length;
+        const completedGoals = goals.filter(g => g.saved >= g.target).length;
+
+        // Calculate streak (days with at least one transaction)
+        const uniqueDays = new Set(transactions.map(t => new Date(t.date).toDateString()));
+        const streak = uniqueDays.size;
+
+        // Member since
+        const createdAt = user?.createdAt ? new Date(user.createdAt) : new Date();
+        const memberSince = createdAt.getFullYear();
+
+
+        return { totalTransactions, thisMonthSpent, totalSaved, activeGoals, completedGoals, streak, memberSince };
+    }, [transactions, goals, user]);
+
     const handleSave = () => {
         setIsEditing(false);
-        toast.success("Profile updated! ✨");
+        genZToast.success("Profile updated! ✨");
     };
 
-    // Generate initials for fallback avatar
     const getInitials = () => {
         if (!name) return '👤';
         const words = name.split(' ');
@@ -82,6 +106,23 @@ const ProfilePage = () => {
         }
         return name.substring(0, 2).toUpperCase();
     };
+
+    if (loading) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.loadingState}>
+                    <motion.div
+                        className={styles.loaderCard}
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                    >
+                        <span style={{ fontSize: '3rem' }}>👤</span>
+                    </motion.div>
+                    <p>loading your profile<span className={styles.loadingDots}></span></p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
@@ -108,10 +149,7 @@ const ProfilePage = () => {
                                 alt="Profile"
                                 className={styles.avatarImage}
                                 onLoad={() => setAvatarLoaded(true)}
-                                onError={(e) => {
-                                    console.error('Avatar failed to load:', avatarUrl);
-                                    setAvatarUrl(null);
-                                }}
+                                onError={() => setAvatarUrl(null)}
                                 style={{ display: avatarLoaded ? 'block' : 'none' }}
                             />
                         ) : null}
@@ -178,7 +216,7 @@ const ProfilePage = () => {
                     )}
                 </motion.div>
 
-                {/* Stats / Sidebar */}
+                {/* Dynamic Stats */}
                 <motion.div
                     className={styles.statsSection}
                     initial={{ x: 20, opacity: 0 }}
@@ -186,25 +224,56 @@ const ProfilePage = () => {
                     transition={{ delay: 0.2 }}
                 >
                     <div className={styles.statCard}>
-                        <span className={styles.statValue}>Member</span>
-                        <div className={styles.statLabel} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Calendar size={16} /> Since 2024
+                        <div className={styles.statIconBox} style={{ background: '#E0E7FF' }}>
+                            <Calendar size={20} color="#3B82F6" />
+                        </div>
+                        <div className={styles.statInfo}>
+                            <span className={styles.statValue}>Since {stats.memberSince}</span>
+                            <span className={styles.statLabel}>Member</span>
                         </div>
                     </div>
 
-                    <div className={styles.statCard} style={{ boxShadow: '4px 4px 0px #4ECDC4' }}>
-                        <span className={styles.statValue}>PRO</span>
-                        <div className={styles.statLabel} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Shield size={16} /> Status
+                    <div className={styles.statCard}>
+                        <div className={styles.statIconBox} style={{ background: '#D1FAE5' }}>
+                            <TrendingUp size={20} color="#10B981" />
+                        </div>
+                        <div className={styles.statInfo}>
+                            <span className={styles.statValue}>{stats.totalTransactions}</span>
+                            <span className={styles.statLabel}>Transactions</span>
                         </div>
                     </div>
 
-                    <div className={styles.statCard} style={{ boxShadow: '4px 4px 0px #FFE66D' }}>
-                        <span className={styles.statValue}>$420</span>
-                        <div className={styles.statLabel} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <DollarSign size={16} /> Saved
+                    <div className={styles.statCard}>
+                        <div className={styles.statIconBox} style={{ background: '#FEF3C7' }}>
+                            <Target size={20} color="#F59E0B" />
+                        </div>
+                        <div className={styles.statInfo}>
+                            <span className={styles.statValue}>{stats.activeGoals} active</span>
+                            <span className={styles.statLabel}>Goals</span>
                         </div>
                     </div>
+
+                    <div className={styles.statCard}>
+                        <div className={styles.statIconBox} style={{ background: '#FCE7F3' }}>
+                            <Wallet size={20} color="#EC4899" />
+                        </div>
+                        <div className={styles.statInfo}>
+                            <span className={styles.statValue}>{formatCurrency(stats.totalSaved)}</span>
+                            <span className={styles.statLabel}>Goals Saved</span>
+                        </div>
+                    </div>
+
+                    {stats.completedGoals > 0 && (
+                        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #10B981, #34D399)', color: '#fff' }}>
+                            <div className={styles.statIconBox} style={{ background: 'rgba(255,255,255,0.2)' }}>
+                                <Zap size={20} color="#fff" />
+                            </div>
+                            <div className={styles.statInfo}>
+                                <span className={styles.statValue} style={{ color: '#fff' }}>{stats.completedGoals} 🎉</span>
+                                <span className={styles.statLabel} style={{ color: 'rgba(255,255,255,0.8)' }}>Goals Crushed</span>
+                            </div>
+                        </div>
+                    )}
                 </motion.div>
             </div>
         </div>

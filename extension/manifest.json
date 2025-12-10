@@ -1,14 +1,18 @@
 {
     "manifest_version": 3,
-    "name": "Vibe Tracker - Auto Purchase Tracker",
-    "version": "2.1.0",
-    "description": "Auto-track online purchases. Sync with your Vibe Tracker account. Get real-time notifications.",
+    "name": "Vibe Tracker 💸",
+    "version": "2.7.0",
+    "description": "🛡️ Dark Pattern Shield + Auto-track purchases! Protect yourself from sneaky subscriptions, get trial reminders, and stay on budget. The ultimate Gen-Z expense tracker! 💰",
+    "short_name": "VibeTracker",
+    "author": "Vibe Tracker Team",
+    "homepage_url": "https://vibe-tracker-expense-genz.vercel.app",
     "permissions": [
         "storage",
         "activeTab",
         "notifications",
         "tabs",
-        "scripting"
+        "scripting",
+        "alarms"
     ],
     "host_permissions": [
         "https://*.amazon.com/*",
@@ -21,6 +25,10 @@
         "https://*.shopify.com/*",
         "https://*.daraz.pk/*",
         "https://*.foodpanda.pk/*",
+        "https://*.buymeacoffee.com/*",
+        "https://*.gumroad.com/*",
+        "https://*.stripe.com/*",
+        "https://*.paypal.com/*",
         "http://localhost:*/*",
         "<all_urls>"
     ],
@@ -34,9 +42,10 @@
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "Vibe Tracker",
+        "default_title": "Vibe Tracker - Track Your Spending 💸",
         "default_icon": {
             "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
             "48": "icons/icon48.png",
             "128": "icons/icon128.png"
         }
@@ -67,10 +76,28 @@
                 "https://*.aliexpress.com/*",
                 "https://*.daraz.pk/*",
                 "https://*.foodpanda.pk/*",
+                "https://*.buymeacoffee.com/*",
+                "https://*.gumroad.com/*",
+                "https://*.stripe.com/*",
+                "https://*.paypal.com/*",
+                "https://*.netflix.com/*",
+                "https://*.spotify.com/*",
+                "https://*.hulu.com/*",
+                "https://*.disney.com/*",
+                "https://*.disneyplus.com/*",
+                "https://*.apple.com/*",
+                "https://*.youtube.com/*",
+                "https://*.audible.com/*",
+                "https://*.adobe.com/*",
+                "https://*.canva.com/*",
+                "https://*.notion.so/*",
+                "https://*.figma.com/*",
+                "https://*.grammarly.com/*",
                 "<all_urls>"
             ],
             "js": [
-                "content.js"
+                "content.js",
+                "dark-pattern-detector.js"
             ],
             "css": [
                 "content.css"
@@ -80,6 +107,7 @@
     ],
     "icons": {
         "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
     },

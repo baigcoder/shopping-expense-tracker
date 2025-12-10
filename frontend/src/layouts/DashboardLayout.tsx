@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import AddCardModal from '../components/AddCardModal';
 import AIChatbot from '../components/AIChatbot';
 import ExtensionAlert from '../components/ExtensionAlert';
+import QuickAddFAB from '../components/QuickAddFAB';
 
 const DashboardLayout = () => {
     return (
@@ -15,6 +16,7 @@ const DashboardLayout = () => {
                 <Outlet />
             </main>
             <AddCardModal />
+            <QuickAddFAB />
             <AIChatbot />
         </div>
     );

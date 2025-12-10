@@ -1,0 +1,304 @@
+/* Spending Streak - "Level Up" Aesthetic */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+.card {
+    background: #000;
+    color: #fff;
+    border: 4px solid #000;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    /* Cool dark mesh gradient */
+    background: radial-gradient(circle at top right, #1F2937, #000);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Scanline effect */
+.card::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 3;
+    border-bottom: 2px dashed #374151;
+    padding-bottom: 1rem;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #FBBF24;
+}
+
+.header h3 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.levelBadge {
+    background: #FBBF24;
+    color: #000;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    border: 2px solid #fff;
+    box-shadow: 3px 3px 0 #fff;
+    transform: rotate(2deg);
+}
+
+.streakDisplay {
+    text-align: center;
+    margin: 1rem 0;
+    position: relative;
+    z-index: 3;
+}
+
+.streakNumber {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.emoji {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+.number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 0.9;
+    background: linear-gradient(180deg, #fff 0%, #FBBF24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+/* Glitch effect on number hover */
+.number:hover {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch {
+    0% {
+        transform: translate(0)
+    }
+
+    20% {
+        transform: translate(-2px, 2px)
+    }
+
+    40% {
+        transform: translate(-2px, -2px)
+    }
+
+    60% {
+        transform: translate(2px, 2px)
+    }
+
+    80% {
+        transform: translate(2px, -2px)
+    }
+
+    100% {
+        transform: translate(0)
+    }
+}
+
+.label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #6B7280;
+}
+
+.streakMessage {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 1rem;
+    text-shadow: 2px 2px 0 #000;
+}
+
+/* Progress Section */
+.progressSection {
+    margin: 2rem 0;
+    position: relative;
+    z-index: 3;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.levelName {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #FBBF24;
+}
+
+.nextLevel {
+    font-size: 0.75rem;
+    color: #9CA3AF;
+}
+
+.progressBar {
+    height: 16px;
+    background: #000;
+    border-radius: 8px;
+    border: 2px solid #374151;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #F59E0B, #FCD34D);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+/* Today's Status - Integrated into HUD */
+.todayStatus {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed #374151;
+    position: relative;
+    z-index: 3;
+}
+
+.todayLabel {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #9CA3AF;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.todayInfo {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.todayInfo strong {
+    color: #FBBF24;
+}
+
+.statusBadge {
+    display: block;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid transparent;
+}
+
+.statusBadge.under {
+    background: #064E3B;
+    color: #34D399;
+    border-color: #34D399;
+    box-shadow: 0 0 15px rgba(52, 211, 153, 0.2);
+}
+
+.statusBadge.over {
+    background: #450A0A;
+    color: #FCA5A5;
+    border-color: #FCA5A5;
+}
+
+.statusBadge.pending {
+    background: #1F2937;
+    color: #9CA3AF;
+    border-color: #4B5563;
+}
+
+/* Week View */
+.weekView {
+    margin-top: 2rem;
+    position: relative;
+    z-index: 3;
+}
+
+.weekLabel {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #9CA3AF;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+/* Best Streak Footer */
+.bestStreak {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #374151;
+    color: #9CA3AF;
+    font-size: 0.9rem;
+    font-weight: 600;
+}

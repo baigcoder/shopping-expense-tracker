@@ -19,7 +19,10 @@ const commonFiles = [
     'popup.css',
     'popup.js',
     'content.js',
-    'content.css'
+    'content.css',
+    'content-website.js',
+    'background.js',
+    'dark-pattern-detector.js'
 ];
 
 // Create dist directory
@@ -109,9 +112,10 @@ function buildFirefox() {
     );
 
     // Copy Firefox background script
+    // Copy background script (same as Chrome now)
     copyFile(
-        path.join(SRC_DIR, 'background-firefox.js'),
-        path.join(distDir, 'background-firefox.js')
+        path.join(SRC_DIR, 'background.js'),
+        path.join(distDir, 'background.js')
     );
 
     // Copy icons

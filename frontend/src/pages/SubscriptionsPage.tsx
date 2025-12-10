@@ -6,7 +6,7 @@ import {
     Clock, Bell, AlertTriangle, CheckCircle, Timer, Zap,
     TrendingUp, RefreshCw
 } from 'lucide-react';
-import { toast } from 'react-toastify';
+import genZToast from '../services/genZToast';
 import { subscriptionService, Subscription, TrialInfo } from '../services/subscriptionService';
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
@@ -71,11 +71,11 @@ const SubscriptionsPage = () => {
             const trialInfo = subscriptionService.getTrialInfo(sub);
 
             if (trialInfo.daysRemaining === 0) {
-                toast.error(`⚠️ ${sub.name} trial ends TODAY!`, { autoClose: false });
+                genZToast.error(`⚠️ ${sub.name} trial ends TODAY!`, { autoClose: false });
             } else if (trialInfo.daysRemaining === 1) {
-                toast.warning(`⏰ ${sub.name} trial ends TOMORROW!`);
+                genZToast.warning(`⏰ ${sub.name} trial ends TOMORROW!`);
             } else if (trialInfo.daysRemaining <= 3) {
-                toast.info(`📢 ${sub.name} trial ends in ${trialInfo.daysRemaining} days`);
+                genZToast.info(`📢 ${sub.name} trial ends in ${trialInfo.daysRemaining} days`);
             }
         });
     };
@@ -102,12 +102,12 @@ const SubscriptionsPage = () => {
 
     const handleAddSub = async () => {
         if (!newSub.name || !user?.id) {
-            toast.error('Please enter a subscription name!');
+            genZToast.error('Please enter a subscription name!');
             return;
         }
 
         if (!newSub.is_trial && !newSub.price) {
-            toast.error('Please enter a price for paid subscription!');
+            genZToast.error('Please enter a price for paid subscription!');
             return;
         }
 
@@ -150,14 +150,15 @@ const SubscriptionsPage = () => {
                 setSubscriptions([created, ...subscriptions]);
                 resetForm();
                 setShowModal(false);
-                toast.success(
+                genZToast.success(
                     newSub.is_trial
                         ? `🎉 ${newSub.name} trial started! ${newSub.trial_days} days free!`
                         : `${newSub.name} added! 🔔`
                 );
             }
         } catch (error) {
-            toast.error('Failed to add subscription');
+            console.error(error);
+            genZToast.error('Failed to add subscription');
         } finally {
             setSaving(false);
         }
@@ -177,10 +178,11 @@ const SubscriptionsPage = () => {
                 setSubscriptions(subs =>
                     subs.map(s => s.id === sub.id ? updated : s)
                 );
-                toast.success(`✅ ${sub.name} converted to paid subscription!`);
+                genZToast.success(`✅ ${sub.name} converted to paid subscription!`);
             }
         } catch (error) {
-            toast.error('Failed to convert subscription');
+            console.error(error);
+            genZToast.error('Failed to convert subscription');
         }
     };
 
@@ -191,10 +193,11 @@ const SubscriptionsPage = () => {
             const success = await subscriptionService.cancel(id);
             if (success) {
                 setSubscriptions(subs => subs.filter(s => s.id !== id));
-                toast.success(`${name} subscription cancelled! 🗑️`);
+                genZToast.success(`${name} subscription cancelled! 🗑️`);
             }
         } catch (error) {
-            toast.error('Failed to cancel subscription');
+            console.error(error);
+            genZToast.error('Failed to cancel subscription');
         }
     };
 
@@ -220,69 +223,16 @@ const SubscriptionsPage = () => {
     if (loading) {
         return (
             <div className={styles.container}>
-                <motion.div
-                    className={styles.loadingState}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                >
+                <div className={styles.loadingState}>
                     <motion.div
                         className={styles.loaderCard}
-                        animate={{
-                            y: [0, -10, 0],
-                            rotate: [-2, 2, -2]
-                        }}
-                        transition={{
-                            duration: 1.5,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
                     >
                         <span style={{ fontSize: '3rem' }}>🔄</span>
                     </motion.div>
-                    <motion.h3
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        style={{ margin: '1rem 0 0.5rem', fontWeight: 800 }}
-                    >
-                        Loading your subs...
-                    </motion.h3>
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        style={{ color: '#64748b', fontSize: '0.9rem' }}
-                    >
-                        hold up bestie, we're grabbing your subscriptions 💅
-                    </motion.p>
-                    <motion.div
-                        className={styles.loadingDots}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6 }}
-                    >
-                        {[0, 1, 2].map(i => (
-                            <motion.span
-                                key={i}
-                                style={{
-                                    display: 'inline-block',
-                                    width: '8px',
-                                    height: '8px',
-                                    background: '#000',
-                                    borderRadius: '50%',
-                                    margin: '0 4px'
-                                }}
-                                animate={{ scale: [1, 1.5, 1] }}
-                                transition={{
-                                    duration: 0.6,
-                                    repeat: Infinity,
-                                    delay: i * 0.2
-                                }}
-                            />
-                        ))}
-                    </motion.div>
-                </motion.div>
+                    <p style={{ fontWeight: 800 }}>loading your subs bestie<span className={styles.loadingDots}></span></p>
+                </div>
             </div>
         );
     }
@@ -295,13 +245,15 @@ const SubscriptionsPage = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
             >
-                <h1>Subscriptions 🔄</h1>
+                <div>
+                    <h1>Subscriptions 🔄</h1>
+                </div>
                 <div className={styles.headerActions}>
-                    <button className={styles.refreshBtn} onClick={loadSubscriptions}>
-                        <RefreshCw size={18} />
+                    <button className={styles.refreshBtn} onClick={loadSubscriptions} title="Refresh">
+                        <RefreshCw size={20} />
                     </button>
                     <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-                        <Plus size={18} /> Add Sub
+                        <Plus size={20} /> New Sub
                     </button>
                 </div>
             </motion.div>
@@ -314,15 +266,12 @@ const SubscriptionsPage = () => {
                     animate={{ scale: 1, opacity: 1 }}
                 >
                     <div className={styles.totalInfo}>
-                        <h2>Monthly Burn Rate</h2>
+                        <h2 className={styles.statsLabel}>Monthly Burn Rate</h2>
                         <span className={styles.totalAmount}>{formatCurrency(totalMonthly)}</span>
                     </div>
                     <div className={styles.totalMeta}>
                         <span className={styles.subCount}>{activeCount}</span>
                         <span className={styles.subLabel}>Paid Subs</span>
-                        <span style={{ fontSize: '0.8rem', marginTop: '0.5rem', display: 'block', opacity: 0.8 }}>
-                            ~{formatCurrency(totalYearly)}/year
-                        </span>
                     </div>
                 </motion.div>
 
@@ -333,11 +282,11 @@ const SubscriptionsPage = () => {
                     transition={{ delay: 0.1 }}
                 >
                     <div className={styles.totalInfo}>
-                        <h2>Active Trials</h2>
+                        <h2 className={styles.statsLabel}>Active Trials</h2>
                         <span className={styles.totalAmount}>{trialsCount}</span>
                     </div>
                     <div className={styles.totalMeta}>
-                        <Timer size={24} />
+                        <span className={styles.subCount}>{trialsCount}</span>
                         <span className={styles.subLabel}>Free Trials</span>
                     </div>
                 </motion.div>
@@ -381,7 +330,7 @@ const SubscriptionsPage = () => {
                                 ? 'Start a free trial to track it here.'
                                 : 'Add subscriptions to track your recurring expenses.'}
                         </p>
-                        <button className={styles.addBtn} onClick={() => setShowModal(true)}>
+                        <button className={styles.addBtn} onClick={() => setShowModal(true)} style={{ margin: '0 auto' }}>
                             <Plus size={18} /> Add Subscription
                         </button>
                     </div>
@@ -393,22 +342,32 @@ const SubscriptionsPage = () => {
                             <motion.div
                                 key={sub.id}
                                 className={`${styles.subCard} ${sub.is_trial ? styles.trialSubCard : ''}`}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
                             >
-                                <div className={styles.subLogo} style={{ background: sub.color + '20' }}>
-                                    {sub.logo}
+                                <div className={styles.subHeader}>
+                                    <div className={styles.subLogo}>
+                                        {sub.logo}
+                                    </div>
+                                    <div className={styles.subHeaderInfo}>
+                                        <span className={styles.subName}>{sub.name}</span>
+                                        <span className={styles.subCategory}>{sub.category}</span>
+                                    </div>
+                                    <button 
+                                        className={styles.closeBtnSmall} 
+                                        onClick={(e) => { e.stopPropagation(); handleCancel(sub.id, sub.name); }}
+                                    >
+                                        <X size={16} />
+                                    </button>
                                 </div>
 
-                                <div className={styles.subDetails}>
-                                    <span className={styles.subName}>{sub.name}</span>
-                                    <span className={styles.subCategory}>{sub.category}</span>
+                                <div className={styles.subBody}>
                                     <div className={styles.subMeta}>
                                         {sub.is_trial ? (
                                             <>
                                                 <span className={styles.statusTrial}>
-                                                    <Timer size={12} /> Trial
+                                                    <Timer size={14} /> Trial
                                                 </span>
                                                 {trialInfo.daysRemaining > 0 ? (
                                                     <span className={`${styles.trialDays} ${trialInfo.daysRemaining <= 3 ? styles.urgent : ''}`}>
@@ -421,11 +380,10 @@ const SubscriptionsPage = () => {
                                         ) : (
                                             <>
                                                 <span className={styles.statusActive}>
-                                                    <CheckCircle size={12} /> Active
+                                                    <CheckCircle size={14} /> Active
                                                 </span>
                                                 {sub.renew_date && (
                                                     <span className={styles.renewDate}>
-                                                        <Calendar size={12} style={{ marginRight: '4px' }} />
                                                         Renews {sub.renew_date}
                                                     </span>
                                                 )}
@@ -444,20 +402,20 @@ const SubscriptionsPage = () => {
                                     )}
                                 </div>
 
-                                <div className={styles.subPricing}>
-                                    {sub.is_trial ? (
-                                        <span className={styles.freePrice}>FREE</span>
-                                    ) : (
-                                        <>
-                                            <span className={styles.subPrice}>{formatCurrency(sub.price)}</span>
-                                            <span className={styles.subCycle}>
-                                                /{sub.cycle === 'monthly' ? 'mo' : sub.cycle === 'yearly' ? 'yr' : 'wk'}
-                                            </span>
-                                        </>
-                                    )}
-                                </div>
-
-                                <div className={styles.subActions}>
+                                <div className={styles.subFooter}>
+                                    <div className={styles.subPricing}>
+                                        {sub.is_trial ? (
+                                            <span className={styles.freePrice}>FREE</span>
+                                        ) : (
+                                            <>
+                                                <span className={styles.subPrice}>{formatCurrency(sub.price)}</span>
+                                                <span className={styles.subCycle}>
+                                                    /{sub.cycle === 'monthly' ? 'mo' : sub.cycle === 'yearly' ? 'yr' : 'wk'}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                    
                                     {sub.is_trial && trialInfo.isOnTrial && (
                                         <button
                                             className={styles.convertBtn}
@@ -467,12 +425,6 @@ const SubscriptionsPage = () => {
                                             <Zap size={16} /> Upgrade
                                         </button>
                                     )}
-                                    <button
-                                        className={styles.cancelBtn}
-                                        onClick={() => handleCancel(sub.id, sub.name)}
-                                    >
-                                        Cancel
-                                    </button>
                                 </div>
                             </motion.div>
                         );
@@ -501,7 +453,7 @@ const SubscriptionsPage = () => {
                                 <X size={20} />
                             </button>
 
-                            <h2>Add Subscription 📦</h2>
+                            <h2>{newSub.is_trial ? 'Start Free Trial ⏰' : 'Add Subscription 📦'}</h2>
 
                             {/* Trial Toggle */}
                             <div className={styles.trialToggle}>

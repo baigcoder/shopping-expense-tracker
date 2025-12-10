@@ -1,6 +1,7 @@
-/* Add Card Modal - Gen Z Split Layout */
+/* Add Card Modal - Gen-Z Neo-Brutalist Redesign 🌟 */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
 
 .overlay {
     position: fixed;
@@ -8,7 +9,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
@@ -19,39 +20,46 @@
 
 .expandedModal {
     background: #fff;
-    width: 900px;
-    height: 550px;
-    /* Fixed height! No scroll */
-    border-radius: 32px;
+    width: 950px;
+    height: 650px;
+    border: 5px solid #000;
+    border-radius: 30px;
     display: flex;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 20px 20px 0px #000;
     overflow: hidden;
     position: relative;
     font-family: 'Space Grotesk', sans-serif;
 }
 
+/* Close Button - Red Square Pop */
 .closeBtnAbsolute {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    width: 36px;
-    height: 36px;
-    background: rgba(0, 0, 0, 0.05);
-    border: none;
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    background: #EF4444;
+    border: 4px solid #000;
+    border-radius: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #000;
-    z-index: 10;
-    transition: all 0.2s;
+    color: #fff;
+    z-index: 50;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 6px 6px 0px #000;
 }
 
 .closeBtnAbsolute:hover {
-    background: #000;
-    color: #fff;
-    transform: rotate(90deg);
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0px #000;
+    background: #FF6B6B;
+}
+
+.closeBtnAbsolute:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
 }
 
 .splitLayout {
@@ -60,193 +68,230 @@
     height: 100%;
 }
 
-/* LEFT COLUMN: Visuals */
+/* =========================================
+   LEFT COLUMN: Visuals
+   ========================================= */
 .leftColumn {
     flex: 0 0 45%;
-    /* Slightly less than half */
-    padding: 2.5rem;
+    padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden;
+    background: #F3E8FF;
+    /* Light Purple Match */
+    border-right: 5px solid #000;
 }
 
+/* Header Sticker */
 .modalHeader {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     z-index: 2;
+    background: #fff;
+    padding: 1.25rem 2.5rem;
+    border: 4px solid #000;
+    box-shadow: 10px 10px 0px #000;
+    transform: rotate(-3deg);
+    border-radius: 16px;
+    display: inline-block;
 }
 
 .modalHeader h2 {
-    font-size: 2rem;
-    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    text-transform: uppercase;
+    color: #000;
+    line-height: 1;
+    letter-spacing: -1px;
 }
 
 .modalHeader p {
-    color: #666;
+    font-family: 'JetBrains Mono', monospace;
+    color: #000;
     margin-top: 0.5rem;
-    font-weight: 500;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
 }
 
+/* Card Preview */
 .cardPreviewBig {
     width: 100%;
+    max-width: 360px;
     aspect-ratio: 1.586;
-    border-radius: 20px;
+    border-radius: 24px;
     padding: 1.5rem;
     color: #fff;
     position: relative;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+    border: 4px solid #000;
+    box-shadow: 14px 14px 0px #000;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-    transform-style: preserve-3d;
-    transform: rotateY(10deg) rotateX(5deg);
-    /* Slight 3D tilt */
-    transition: all 0.5s ease;
-    margin-bottom: 2rem;
+    transform: rotate(2deg);
+    transition: all 0.3s;
+    margin-bottom: 4rem;
+    background-size: cover;
 }
 
 .cardPreviewBig:hover {
-    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+    transform: scale(1.02) rotate(0deg);
+    box-shadow: 18px 18px 0px #000;
 }
 
-.cardPattern {
-    position: absolute;
-    inset: 0;
-    opacity: 0.4;
-    mix-blend-mode: overlay;
-}
-
-/* Mascot Sticker */
-.mascot {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 3rem;
-    opacity: 0.8;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
-    animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
+/* Card Elements */
 .cardTop {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    z-index: 10;
 }
 
 .chip {
-    width: 45px;
-    height: 32px;
-    background: linear-gradient(135deg, #FFD700, #FDB931);
-    border-radius: 6px;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(135deg, #FFD700 0%, #F59E0B 100%);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.brandWrapper {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    transform: rotate(-3deg);
 }
 
 .brandName {
+    font-family: 'Outfit', sans-serif;
     font-weight: 800;
-    letter-spacing: 1px;
-    font-size: 1.1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-style: italic;
+    font-size: 1.2rem;
+    text-transform: uppercase;
 }
 
 .cardNumberBig {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
     letter-spacing: 2px;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    margin: 1.5rem 0;
+    font-weight: 700;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+    margin: 1rem 0;
     z-index: 2;
 }
 
 .cardBottom {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
+    z-index: 10;
 }
 
 .label {
-    font-size: 0.6rem;
-    opacity: 0.8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 800;
+    opacity: 0.9;
     letter-spacing: 1px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
 }
 
 .val {
-    font-size: 0.9rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
 }
 
+/* Theme Selector */
 .themeSelector {
     width: 100%;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .themeSelector label {
-    font-weight: 700;
-    display: block;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #444;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #000;
+    background: #fff;
+    padding: 0.6rem 1.8rem;
+    border: 3px solid #000;
+    border-radius: 50px;
+    box-shadow: 5px 5px 0px #000;
+    margin-bottom: 2rem;
+    transform: rotate(-1deg);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .themeRow {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .themeCircle {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 4px solid #fff;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
 }
 
-.activeTheme {
+.themeCircle:hover {
+    transform: scale(1.15) rotate(10deg);
     border-color: #000;
-    transform: scale(1.1);
 }
 
+.activeTheme {
+    border: 4px solid #000;
+    transform: scale(1.2);
+    box-shadow: 5px 5px 0px #000;
+}
 
-/* RIGHT COLUMN: Form */
+/* =========================================
+   RIGHT COLUMN: Form
+   ========================================= */
 .rightColumn {
     flex: 1;
     padding: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    background: #fff;
+    overflow-y: auto;
 }
 
 .formContent {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
+    max-width: 450px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .inputGroup {
@@ -256,165 +301,175 @@
 }
 
 .inputGroup label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #374151;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .inputIconWrapper {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .inputIcon {
     position: absolute;
     left: 1rem;
-    color: #9CA3AF;
+    color: #000;
     pointer-events: none;
+    z-index: 5;
+    width: 20px;
+    height: 20px;
 }
 
 .modernInput {
     width: 100%;
-    padding: 0.85rem 1rem 0.85rem 2.8rem;
-    /* Space for icon */
-    border: 2px solid #E5E7EB;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 3px solid #000;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
-    background: #F9FAFB;
+    background: #fff;
+    box-shadow: 4px 4px 0px #000;
     transition: all 0.2s;
+    height: 3.5rem;
+    outline: none;
 }
 
 .modernInput:focus {
-    outline: none;
-    border-color: #000;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0px #000;
 }
 
-/* Error States */
-.inputError .modernInput {
+.modernInput::placeholder {
+    color: #9CA3AF;
+    font-weight: 500;
+}
+
+/* Error State */
+.inputError input {
     border-color: #EF4444;
-    background: #FEF2F2;
-}
-
-.inputError .modernInput:focus {
-    border-color: #EF4444;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-}
-
-.inputError .inputIcon {
-    color: #EF4444;
 }
 
 .errorText {
+    color: #EF4444;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.25rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #EF4444;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-top: -0.25rem;
 }
 
+/* Row Layout for Expiry/CVV */
 .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     gap: 1rem;
 }
 
-.eyeBtn {
-    position: absolute;
-    right: 0.75rem;
-    background: none;
-    border: none;
-    color: #9CA3AF;
-    cursor: pointer;
-    padding: 0.25rem;
-}
-
-.optional {
-    color: #9CA3AF;
-    font-weight: 400;
-    font-size: 0.75rem;
-}
-
-.spacer {
+.row .inputGroup {
     flex: 1;
 }
 
+/* Eye Button */
+.eyeBtn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 8px;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.eyeBtn:hover {
+    transform: translateY(-50%) translate(-1px, -1px);
+    box-shadow: 3px 3px 0px #000;
+}
+
+/* Submit Button */
 .submitBtnBig {
     margin-top: 1rem;
-    padding: 1rem;
+    padding: 1.25rem;
     background: #000;
-    color: #fff;
-    border: none;
+    color: #FBBF24;
+    border: 3px solid #000;
     border-radius: 14px;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.2rem;
+    font-weight: 900;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 1rem;
+    text-transform: uppercase;
     transition: all 0.2s;
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+    font-family: 'Outfit', sans-serif;
 }
 
 .submitBtnBig:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.4);
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0px #FBBF24;
     background: #111;
 }
 
-.submitBtnBig:active {
-    transform: translateY(0);
+.submitBtnBig:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
-.spinner {
-    animation: spin 1s linear infinite;
+.optional {
+    color: #6B7280;
+    font-size: 0.7rem;
+    text-transform: none;
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 950px) {
+/* Responsive */
+@media (max-width: 960px) {
     .expandedModal {
         flex-direction: column;
         width: 100%;
         max-width: 500px;
         height: auto;
-        max-height: 90vh;
-        overflow-y: auto;
+        border-radius: 20px;
     }
 
     .leftColumn {
-        padding: 2rem 1.5rem 1rem;
         flex: 0 0 auto;
+        padding: 2rem;
+        border-right: none;
+        border-bottom: 4px solid #000;
     }
 
-    .cardPreviewBig {
-        margin-bottom: 1rem;
+    .modalHeader {
+        transform: rotate(0deg);
+        margin-bottom: 2rem;
     }
 
     .rightColumn {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
     }
 
     .closeBtnAbsolute {
         top: 1rem;
         right: 1rem;
-        color: #000;
-        background: rgba(255, 255, 255, 0.8);
+        width: 40px;
+        height: 40px;
     }
 }

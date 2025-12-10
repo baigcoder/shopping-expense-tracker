@@ -1,0 +1,373 @@
+/* Quick Add FAB - "Action Button" Aesthetic */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* The Button Itself */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    /* Squircle */
+    background: #000;
+    color: #FBBF24;
+    border: 3px solid #fff;
+    box-shadow: 4px 4px 0 #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 10px 10px 0 #FBBF24;
+    border-color: #000;
+}
+
+.fab:active {
+    transform: scale(0.95);
+    box-shadow: 2px 2px 0 #000;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+/* Modal Staging */
+.modal {
+    background: #fff;
+    width: 90%;
+    max-width: 440px;
+    border: 5px solid #000;
+    border-radius: 32px;
+    padding: 2rem;
+    box-shadow: 15px 15px 0 #FBBF24;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Modal Decoration - Corner folded effect */
+.modal::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 60px;
+    height: 60px;
+    background: #000;
+    transform: rotate(45deg);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.modalHeader h3 {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.closeBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #F3F4F6;
+    border: 3px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 900;
+}
+
+.closeBtn:hover {
+    background: #EF4444;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* Grid Layouts */
+.categorySection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Featured Category - Full Width Black */
+.featuredCategoryBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.featuredCategoryBtn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 #FBBF24;
+}
+
+.featuredEmoji {
+    font-size: 2rem;
+}
+
+.featuredName {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.categoryBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 #000;
+    text-align: center;
+    min-height: 100px;
+}
+
+.categoryBtn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 #FBBF24;
+    background: #FEF3C7;
+}
+
+.categoryBtn:first-child:hover {
+    background: #222;
+    color: #FBBF24;
+    box-shadow: 8px 8px 0 #FBBF24;
+}
+
+.categoryBtn:first-child .categoryName {
+    color: inherit;
+    font-size: 1.1rem;
+}
+
+.categoryEmoji {
+    font-size: 1.75rem;
+    /* Slightly smaller */
+}
+
+.categoryName {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    /* Smaller font for better fit */
+    color: #000;
+    text-transform: uppercase;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Amount Screen */
+.quickAmounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.amountBtn {
+    padding: 1rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: 4px 4px 0 #E5E7EB;
+}
+
+.amountBtn:hover {
+    background: #000;
+    color: #fff;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #FBBF24;
+}
+
+.customAmount {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #F9FAFB;
+    border: 4px solid #000;
+    border-radius: 16px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.currencySymbol {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.customAmount input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    outline: none;
+}
+
+.goBtn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #10B981;
+    color: #fff;
+    border: 3px solid #000;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.goBtn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #000;
+}
+
+/* Confirm Screen */
+.confirmPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FEF3C7;
+    border: 4px dashed #000;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.confirmEmoji {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+.confirmCategory {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    color: #92400E;
+}
+
+.confirmAmount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    color: #000;
+    margin: 0.5rem 0;
+}
+
+.confirmActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 1rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #E5E7EB;
+}
+
+.submitBtn {
+    flex: 2;
+    padding: 1rem;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 #10B981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.submitBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 #10B981;
+    background: #10B981;
+    color: #000;
+}

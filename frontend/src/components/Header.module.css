@@ -1,5 +1,5 @@
-/* Gen Z Header CSS */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+/* Gen Z Neo-Brutalist Header CSS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
 
 .header {
     display: flex;
@@ -7,69 +7,90 @@
     justify-content: space-between;
     padding: 1rem 2rem;
     background: #fff;
-    border-bottom: 3px solid #000;
+    border-bottom: 4px solid #000;
     font-family: 'Space Grotesk', sans-serif;
     position: sticky;
     top: 0;
     z-index: 50;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+    /* content wrapping handled via responsiveness, DO NOT wrap flex items */
+    gap: 1rem;
 }
 
-/* Left Section: Logo + Nav */
-.left {
+/* 1. Logo Section */
+.logoSection {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 2rem;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    color: #000;
-    transition: transform 0.2s;
+.logoLink {
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: block;
 }
 
-.logo:hover {
-    transform: rotate(10deg) scale(1.1);
+.logoLink:hover {
+    transform: rotate(-2deg) scale(1.02);
 }
 
-.nav {
+/* 2. Navigation Section */
+.navSection {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    overflow-x: auto;
+    /* Allow Scroll if too many items */
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar IE/Edge */
+    padding: 0 1rem;
+}
+
+.navSection::-webkit-scrollbar {
+    display: none;
 }
 
 .navLink {
     text-decoration: none;
-    color: #64748b;
-    font-weight: 600;
+    color: #000;
+    font-weight: 700;
     font-size: 0.85rem;
-    position: relative;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
+    white-space: nowrap;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
     text-transform: uppercase;
     transition: all 0.2s;
+    border: 2px solid transparent;
+    font-family: 'Outfit', sans-serif;
 }
 
 .navLink:hover {
-    color: #000;
-    background: #F1F5F9;
+    background: #FFD93D;
+    /* Yellow */
+    border: 2px solid #000;
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px #000;
 }
 
 .activeLink {
     color: #fff;
     background: #000;
-    font-weight: 800;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px #8B5CF6;
+    /* Purple shadow */
 }
 
 .activeLink:hover {
-    color: #fff;
-    background: #333;
+    background: #111;
+    transform: translateY(-1px);
+    box-shadow: 4px 4px 0px #8B5CF6;
 }
 
-/* Right Section: Icons + Profile */
-.right {
+/* 3. Actions Section (Right) */
+.actionsSection {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -77,26 +98,28 @@
 
 .iconButton {
     background: #fff;
-    border: 2px solid #000;
-    width: 40px;
-    height: 40px;
+    border: 3px solid #000;
+    width: 42px;
+    height: 42px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 2px 2px 0px #000;
-    transition: all 0.1s;
+    box-shadow: 3px 3px 0px #000;
+    transition: all 0.15s;
     position: relative;
+    color: #000;
 }
 
 .iconButton:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0px #000;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+    background: #F3F4F6;
 }
 
 .iconButton:active {
-    transform: translate(1px, 1px);
+    transform: translate(2px, 2px);
     box-shadow: 1px 1px 0px #000;
 }
 
@@ -106,19 +129,19 @@
 
 .notificationBadge {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -8px;
+    right: -8px;
     background: #EF4444;
     color: #fff;
-    font-size: 0.7rem;
-    font-weight: 800;
-    width: 18px;
-    height: 18px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 2px solid #000;
+    border: 3px solid #000;
 }
 
 .profileAvatar {
@@ -126,14 +149,16 @@
     height: 44px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #000;
+    border: 3px solid #000;
     overflow: hidden;
     transition: all 0.2s;
+    box-shadow: 3px 3px 0px #000;
 }
 
 .profileAvatar:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 3px #FF6B6B;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 5px 5px 0px #000;
+    border-color: #000;
 }
 
 .profileAvatar img {
@@ -145,59 +170,81 @@
 /* Mobile Menu Button */
 .mobileMenuBtn {
     display: none;
-    background: none;
-    border: none;
+    background: #fff;
+    border: 3px solid #000;
     cursor: pointer;
     padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px #000;
+    margin-left: 0.5rem;
+}
+
+.mobileMenuBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
 }
 
 /* Mobile Menu */
 .mobileMenu {
     display: none;
     width: 100%;
-    padding: 1rem 0;
-    border-top: 2px solid #E2E8F0;
+    padding: 1.5rem 0;
+    border-top: 4px solid #000;
     margin-top: 1rem;
+    background: #F8FAFC;
+    position: absolute;
+    /* Fix absolute positioning to overlay content if needed, but context here is flex parent... */
+    /* Actually Header is Sticky, so this would expand the header height */
+    left: 0;
+    top: 100%;
 }
 
 .mobileNavLink {
     display: block;
     text-decoration: none;
     color: #000;
-    font-weight: 600;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    font-weight: 800;
+    padding: 1rem 1.5rem;
+    border: 3px solid #000;
+    margin-bottom: 0.75rem;
+    border-radius: 12px;
     text-transform: uppercase;
     transition: all 0.2s;
+    background: #fff;
+    box-shadow: 4px 4px 0px #000;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
 }
 
 .mobileNavLink:hover {
-    background: #F1F5F9;
+    background: #FFD93D;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
 }
 
 /* Responsive */
-@media (max-width: 1100px) {
-    .nav {
+@media (max-width: 1200px) {
+    .navSection {
         display: none;
+        /* Hide standard nav on smaller desktops */
     }
 
     .mobileMenuBtn {
         display: block;
     }
 
-    .mobileMenu {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+    .header:has(.mobileMenu) {
+        flex-wrap: wrap;
+        /* Only wrap when menu is open/present if managed purely by CSS flow, though usually handled conditionally in JS */
     }
+
+    /* Conditional rendering in React means we don't strictly need :has, but nice to be safe */
 }
 
-@media (max-width: 500px) {
-    .header {
-        padding: 1rem;
-    }
-
-    .left {
-        gap: 1rem;
-    }
+/* Ensure mobile menu shows up correctly when open */
+.header:has(.mobileMenu) {
+    padding-bottom: 0;
 }

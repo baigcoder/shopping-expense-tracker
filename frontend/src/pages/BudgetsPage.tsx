@@ -7,6 +7,8 @@ import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
 import { budgetService, Budget } from '../services/budgetService';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { useAuth } from '../hooks/useAuth';
+import { notificationSound } from '../services/notificationSoundService';
+import genZToast from '../services/genZToast';
 import styles from './BudgetsPage.module.css';
 
 // Predefined categories for consistency
@@ -117,6 +119,9 @@ const BudgetsPage = () => {
         });
 
         if (hasOverBudget) {
+            // Play alert sound
+            notificationSound.playAlert();
+
             try {
                 if ('Notification' in window && Notification.permission === 'granted') {
                     new Notification("Budget Alert! ⚠️", { body: "You have exceeded one or more budget limits." });
@@ -149,9 +154,11 @@ const BudgetsPage = () => {
 
                     setNewBudget({ category: 'Shopping', limit: '' });
                     setShowModal(false);
+                    genZToast.success(`Budget set for ${newBudget.category}! 💸`);
                 }
             } catch (error) {
                 console.error("Error creating budget", error);
+                genZToast.error("Couldn't save that budget. Try again? 🤷‍♀️");
             }
         }
     };
@@ -160,6 +167,7 @@ const BudgetsPage = () => {
         const success = await budgetService.delete(id);
         if (success) {
             setBudgets(budgets.filter(b => b.id !== id));
+            genZToast.success("Budget deleted! Free as a bird 🕊️");
         }
     };
 
@@ -202,31 +210,28 @@ const BudgetsPage = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
             >
-                <div>
-                    <h1>Budgets 🛡️</h1>
-                    <p style={{ opacity: 0.6, fontSize: '0.9rem', fontWeight: 600 }}>
-                        Monthly limits & alerts
-                    </p>
-                    {/* Live sync indicator */}
-                    <div className={styles.syncStatus}>
-                        <span className={`${styles.syncDot} ${isRefreshing ? styles.syncing : ''}`}></span>
-                        <span>
-                            {isRefreshing ? 'Syncing...' : 'Live Sync'}
-                            {lastRefresh && !isRefreshing && (
-                                <span style={{ opacity: 0.5 }}> • {lastRefresh.toLocaleTimeString()}</span>
-                            )}
-                        </span>
-                        <button
-                            onClick={fetchData}
-                            className={styles.refreshBtn}
-                            disabled={isRefreshing}
-                        >
-                            <RefreshCw size={14} className={isRefreshing ? styles.spinning : ''} />
-                        </button>
+                <div className={styles.headerLeft}>
+                    <h1>BUDGET <span>VAULT</span> 🔐</h1>
+                    <div className={styles.statusRow}>
+                        <div className={styles.subtitle}>
+                            Monthly Limits Active
+                        </div>
+                        {/* Live sync indicator */}
+                        <div className={styles.syncStatus}>
+                            <span className={`${styles.syncDot} ${isRefreshing ? styles.syncing : ''}`}></span>
+                            <span>{isRefreshing ? 'TX_SYNCING...' : 'SYSTEM_LIVE'}</span>
+                            <button
+                                onClick={fetchData}
+                                className={styles.refreshBtn}
+                                disabled={isRefreshing}
+                            >
+                                <RefreshCw size={12} className={isRefreshing ? styles.spinning : ''} />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-                    <Plus size={18} /> Set Limit
+                    <Plus size={24} strokeWidth={4} /> ADD LIMIT
                 </button>
             </motion.div>
 
@@ -254,8 +259,8 @@ const BudgetsPage = () => {
 
             {/* Empty State */}
             {!isLoading && budgets.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '4rem', opacity: 0.5 }}>
-                    <Wallet size={48} style={{ marginBottom: '1rem' }} />
+                <div className={styles.emptyState}>
+                    <Wallet size={48} style={{ marginBottom: '1rem', color: '#CBD5E1' }} />
                     <h3>No budgets set yet</h3>
                     <p>Create a budget to track your spending habits.</p>
                 </div>

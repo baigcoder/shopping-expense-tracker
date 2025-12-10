@@ -1,1211 +1,1448 @@
-/* Gen Z / Neo-Brutalist Dashboard CSS - Clean & Bold */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap');
+/* Dashboard - Neo-Brutalist GenZ Edition */
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
-.container {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 25%, #ede9fe 50%, #faf5ff 100%);
-    font-family: 'Space Grotesk', sans-serif;
-    padding: 0 0 2rem 0;
-    overflow-x: hidden;
+.dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    font-family: 'Outfit', sans-serif;
     color: #000;
-    position: relative;
 }
 
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 400px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-/* Page Header */
-.pageHeader {
+/* Header */
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
-.greeting h1 {
+/* Header with Pop Art Typography */
+.header h1 {
+    font-family: 'Outfit', sans-serif;
     font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
+    font-weight: 900;
+    margin: 0;
+    color: #000;
+    text-transform: uppercase;
     letter-spacing: -1px;
-}
-
-.greeting p {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #64748b;
-}
-
-/* Live Monitoring Indicator */
-.liveMonitor {
+    /* Pop Outline Effect */
+    text-shadow:
+        2px 2px 0 #fff,
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff,
+        4px 4px 0 rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.5rem;
+}
+
+.header p {
+    margin: 0.25rem 0 0;
+    color: #4B5563;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.headerActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.headerBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 3px solid #000;
+    border-radius: 12px;
+    background: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 4px 4px 0 #000;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+}
+
+.headerBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+    background: #FFEDD5;
+    /* Light Orange */
+}
+
+.headerBtnPrimary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 3px solid #000;
+    border-radius: 12px;
+    background: #FBBF24;
+    /* Vibe Yellow */
+    color: #000;
+    font-weight: 900;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 4px 4px 0 #000;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+}
+
+.headerBtnPrimary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+    background: #FCD34D;
+}
+
+/* Grid Layout (Compacted 3-Col) */
+.grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    gap: 1.5rem;
+    align-items: start;
+    /* Fix height stretching */
+}
+
+.leftCol,
+.middleCol,
+.rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Hero Card - Gen Z Layered Card Style 💰 */
+/* Hero Card - Gen Z Vibe Check 💰 */
+.heroCard {
+    background: #FBBF24;
+    border: 4px solid #000;
+    border-radius: 28px;
+    padding: 2.5rem 2rem;
+    color: #000;
+    position: relative;
+    overflow: visible;
+    /* changing to visible so shadow isn't clipped if needed, but usually hidden is safer for content. Let's stick to default or hidden if radius applies */
+    overflow: hidden;
+    /* Hard shadow for pop */
+    box-shadow: 8px 8px 0 #000;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.heroCard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 #000;
+}
+
+/* Decorative stripe accent - Notebook Spiral Look */
+.heroCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+    height: 16px;
+    background: repeating-linear-gradient(90deg,
+            #000 0px,
+            #000 12px,
+            transparent 12px,
+            transparent 24px);
+    border-bottom: 4px solid #000;
+    border-radius: 0 0 4px 4px;
+    z-index: 10;
+}
+
+/* Removed the ::after fake card to match the cleaner vector look */
+
+.heroTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.heroLabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.9;
+}
+
+.heroBadge {
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    transform: rotate(-2deg);
+    transition: all 0.2s;
+    animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-2deg);
+    }
+
+    50% {
+        transform: translateY(-4px) rotate(-2deg);
+    }
+}
+
+.heroBadge:hover {
+    transform: rotate(0deg) scale(1.05);
+    background: #1F2937;
+}
+
+.heroAmount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 800;
+    margin: 0.5rem 0 2rem;
+    line-height: 1;
+    letter-spacing: -3px;
+    position: relative;
+    z-index: 2;
+}
+
+.heroStats {
+    display: flex;
+    gap: 3rem;
+    position: relative;
+    z-index: 2;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.statIconUp {
+    color: #000;
+    background: #34D399;
+    padding: 6px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.statIconDown {
+    color: #000;
+    background: #F87171;
+    padding: 6px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.statItem span {
     font-size: 0.75rem;
-    font-weight: 600;
+    text-transform: uppercase;
+    font-weight: 800;
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.statItem strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+/* Chart Card - Clean Gen Z White Theme 📉 */
+.chartCard {
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 10px 10px 0 #3B82F6;
+    position: relative;
+    overflow: hidden;
+    color: #000;
+}
+
+/* Subtle grid pattern */
+.chartCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+    pointer-events: none;
+}
+
+/* Corner fold effect */
+.chartCard::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 40px;
+    height: 40px;
+    background: #3B82F6;
+    transform: rotate(45deg);
+}
+
+.chartHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.chartHeader h3 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #000;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.chartSubtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6B7280;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* LIVE Badge - Gen Z Pill Style */
+.liveBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #000;
+    color: #10B981;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #10B981;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .liveDot {
     width: 8px;
     height: 8px;
-    border-radius: 50%;
-    background: #9CA3AF;
-}
-
-.liveDot.active {
     background: #10B981;
-    animation: pulse 2s infinite;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
 
     0%,
     100% {
-        opacity: 1;
         transform: scale(1);
+        opacity: 1;
     }
 
     50% {
-        opacity: 0.5;
-        transform: scale(1.2);
+        transform: scale(1.4);
+        opacity: 0.6;
     }
 }
 
-.liveText {
-    color: #6B7280;
+.chartContainer {
+    height: 160px;
+    position: relative;
+    z-index: 2;
+    margin: 0 -0.5rem;
+    padding-top: 0.5rem;
 }
 
-.lastUpdate {
-    opacity: 0.7;
-}
-
-/* Gen Z Action Button - Yellow Accent */
-.addBtn {
-    background: #000;
-    color: #fff;
-    border: 2px solid #000;
-    padding: 0.8rem 1.5rem;
-    border-radius: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #FBBF24;
-    transition: all 0.15s;
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.addBtn:hover {
-    box-shadow: 6px 6px 0px #FBBF24;
-    transform: translate(-2px, -2px);
-}
-
-.addBtn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px #FBBF24;
-}
-
-/* Alert Banner */
-.alertBanner {
-    background: #FEF2F2;
-    border: 3px solid #EF4444;
-    border-radius: 16px;
-    padding: 1rem 1.5rem;
-    margin: 0 2rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: #991B1B;
-    font-weight: 700;
-    box-shadow: 4px 4px 0px #EF4444;
-}
-
-.alertTitle {
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    font-weight: 800;
-    margin-bottom: 2px;
-}
-
-/* Bento Grid Layout */
-.bentoGrid {
+/* Spending DNA + Quick Stats Row */
+.dnaStatsRow {
     display: grid;
-    grid-template-columns: 1.2fr 1fr 1.2fr;
-    gap: 1.5rem;
-    padding: 0 2rem;
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* Base Card Style - Neo Brutalism */
-.card {
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 24px;
-    padding: 1.5rem;
-    box-shadow: 4px 4px 0px #000;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-}
-
-/* Card Headers */
-.cardHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.cardTitle {
-    font-weight: 800;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #64748b;
-}
-
-.viewDetails {
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-decoration: none;
-    color: #64748b;
-    transition: color 0.2s;
-}
-
-.viewDetails:hover {
-    color: #000;
-}
-
-/* Income Card */
-.incomeCard {
-    background: #FFF;
-}
-
-.incomeAmount {
-    font-size: 2.2rem;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.badge {
-    font-size: 0.75rem;
-    background: #F0FDF4;
-    color: #166534;
-    border: 2px solid #000;
-    padding: 0.3rem 0.6rem;
-    border-radius: 8px;
-    font-weight: 700;
-    box-shadow: 2px 2px 0px #000;
-}
-
-.badgePositive {
-    background: #F0FDF4;
-    color: #166534;
-}
-
-.badgeNegative {
-    background: #FEF2F2;
-    color: #991B1B;
-}
-
-.chartWrapper {
-    margin-top: 1.5rem;
-    height: 60px;
-}
-
-.sparkline {
-    width: 100%;
-    height: 100%;
-}
-
-/* ============================================
-   SPENDING VIBE CARD - Main Feature
-   ============================================ */
-.spendingVibeCard {
-    background: #FFFFFF;
-    min-height: 380px;
-}
-
-.vibeHero {
-    margin-bottom: 2.5rem;
-}
-
-.vibeAmount {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: #000;
-    line-height: 1;
-    letter-spacing: -2px;
-}
-
-.vibeSubtitle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: #64748b;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-}
-
-.flameIcon {
-    color: #F97316;
-    animation: flicker 1s ease-in-out infinite alternate;
-}
-
-@keyframes flicker {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    100% {
-        opacity: 0.8;
-        transform: scale(1.1);
-    }
-}
-
-/* Horizontal Progress Bars - Like the reference image */
-.progressBars {
-    display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding-top: 1rem;
-}
-
-.progressItem {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.progressHeader {
-    width: 100%;
-    text-align: center;
-}
-
-.progressValue {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: #000;
-}
-
-.progressBarTrack {
-    width: 100%;
-    height: 6px;
-    background: #E5E7EB;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.progressBarFill {
-    height: 100%;
-    border-radius: 3px;
-    background: #000;
-}
-
-.progressLabel {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #9CA3AF;
-    letter-spacing: 0.5px;
-}
-
-/* ============================================
-   STASH/GAUGE CARD
-   ============================================ */
-.stashCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background: #FAFAFA;
-}
-
-.gaugeContainer {
-    position: relative;
-    width: 180px;
-    height: 100px;
-    margin: 1rem 0;
-}
-
-.gaugeSvg {
-    width: 100%;
-    height: 100%;
-}
-
-.gaugeEmoji {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2rem;
-}
-
-.stashValue {
-    margin-top: 0.5rem;
-}
-
-.stashValue h2 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #000;
-    margin: 0;
-}
-
-.stashValue p {
-    font-weight: 600;
-    color: #64748b;
-    margin: 0;
-}
-
-/* ============================================
-   CASH FLOW CARD
-   ============================================ */
-.cashFlowCard {
-    background: #F8FAFC;
-}
-
-.flowBadge {
-    background: #000;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.cashFlowAmount h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0;
-}
-
-/* ============================================
-   FINANCES / CARDS SECTION
-   ============================================ */
-.financesCard {
-    background: #FAFAFA;
-    display: flex;
-    flex-direction: column;
-}
-
-.addCardBtn {
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 2px 2px 0px #000;
-    transition: all 0.15s;
-}
-
-.addCardBtn:hover {
-    background: #000;
-    color: #fff;
-}
-
-.creditCardWrapper {
-    margin: 0.5rem 0 1.5rem;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-}
-
-.creditCard {
-    background: #000;
-    border-radius: 20px;
-    padding: 1.5rem;
-    color: #fff;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
-}
-
-.creditCard:hover {
-    transform: translateY(-4px);
-}
-
-/* Card Shine Effect */
-.cardShine {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.cardTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    z-index: 2;
-}
-
-.cardChip {
-    width: 50px;
-    height: 35px;
-    background: linear-gradient(135deg, #FFD700 0%, #FDB931 50%, #D4A200 100%);
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.cardChip::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
-}
-
-.cardBrandName {
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.cardNumber {
-    font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
-    font-size: 1.2rem;
-    letter-spacing: 3px;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 2;
-    margin: 1rem 0;
-}
-
-.cardBottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: relative;
-    z-index: 2;
-}
-
-.cardLabel {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    opacity: 0.7;
-    display: block;
-    margin-bottom: 2px;
-    letter-spacing: 0.5px;
-}
-
-.cardValue {
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-}
-
-.emptyCard {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
-    color: #666;
-}
-
-/* ============================================
-   HORIZONTAL SCROLL CARDS
-   ============================================ */
-.cardsScrollWrapper {
-    margin: 0.5rem -1.5rem 1rem;
-    padding: 0 1rem;
-}
-
-.cardsScroll {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 0.5rem;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.cardsScroll::-webkit-scrollbar {
-    display: none;
-}
-
-.scrollCard {
-    flex: 0 0 280px;
-    min-width: 280px;
-    border-radius: 16px;
-    padding: 1.25rem;
-    color: #fff;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    scroll-snap-align: start;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.scrollCard .cardChip {
-    width: 40px;
-    height: 28px;
-}
-
-.scrollCard .cardNumber {
-    font-size: 1rem;
-    letter-spacing: 2px;
-    margin: 0.75rem 0;
-}
-
-.scrollCard .cardLabel {
-    font-size: 0.55rem;
-}
-
-.scrollCard .cardValue {
-    font-size: 0.75rem;
-}
-
-/* Reveal Link on Card */
-.revealLink {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.4rem 0.75rem;
-    border-radius: 8px;
-    text-decoration: none;
-    z-index: 5;
-    backdrop-filter: blur(4px);
-    transition: all 0.2s;
-}
-
-.revealLink:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateX(2px);
-}
-
-.emptyCardScroll {
-    flex: 0 0 280px;
-    min-width: 280px;
-    border: 3px dashed #D1D5DB;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: #9CA3AF;
-    cursor: pointer;
-    min-height: 180px;
-    transition: all 0.2s;
-    background: #FAFAFA;
-}
-
-.emptyCardScroll:hover {
-    border-color: #000;
-    color: #000;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.emptyCardScroll span {
-    font-weight: 700;
-}
-
-.addMoreCard {
-    flex: 0 0 80px;
-    min-width: 80px;
-    border: 2px dashed #D1D5DB;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-    color: #9CA3AF;
-    cursor: pointer;
-    min-height: 180px;
-    transition: all 0.2s;
-    background: #fff;
-}
-
-.addMoreCard:hover {
-    border-color: #000;
-    color: #000;
-}
-
-.addMoreCard span {
-    font-size: 0.7rem;
-    font-weight: 700;
-}
-
-/* ============================================
-   TRANSACTIONS LIST
-   ============================================ */
-.recentTransactions {
-    flex: 1;
-    margin-top: 0.5rem;
-}
-
-.recentTransactions h4 {
-    font-weight: 800;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: #000;
-}
-
-.loadingTx,
-.emptyTx {
-    text-align: center;
-    color: #9CA3AF;
-    padding: 2rem;
-    font-weight: 600;
-}
-
-.transactionItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.875rem 1rem;
-    background: #fff;
-    border: 2px solid #E5E7EB;
-    border-radius: 14px;
-    margin-bottom: 0.75rem;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.transactionItem:hover {
-    border-color: #000;
-    box-shadow: 3px 3px 0px #000;
-}
-
-.txLeft {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.txIcon {
-    width: 40px;
-    height: 40px;
-    background: #F3F4F6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    font-size: 1.2rem;
-}
-
-.txName {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #000;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.txAmount {
-    font-weight: 800;
-    font-size: 0.95rem;
-}
-
-.txPositive {
-    color: #059669;
-}
-
-.txNegative {
-    color: #000;
-}
-
-.seeAllBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1rem;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 1.25rem;
+    align-items: start;
     margin-top: 1rem;
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 14px;
-    font-weight: 700;
-    color: #000;
-    text-decoration: none;
-    transition: all 0.15s;
-    font-family: 'Space Grotesk', sans-serif;
 }
 
-.seeAllBtn:hover {
-    background: #000;
-    color: #fff;
+.dnaStatsRow .chartCard {
+    margin-top: 0 !important;
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-@media (max-width: 1200px) {
-    .bentoGrid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .financesCard {
-        grid-column: span 2;
-    }
-}
-
-@media (max-width: 768px) {
-    .bentoGrid {
-        grid-template-columns: 1fr;
-        padding: 0 1rem;
-    }
-
-    .financesCard {
-        grid-column: span 1;
-    }
-
-    .pageHeader {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1.5rem 1rem;
-    }
-
-    .greeting h1 {
-        font-size: 1.8rem;
-    }
-
-    .vibeAmount {
-        font-size: 2.5rem;
-    }
-
-    .progressBars {
-        gap: 1rem;
-    }
-
-    .progressValue {
-        font-size: 0.95rem;
-    }
-
-    .incomeAmount {
-        font-size: 1.8rem;
-    }
-
-    .stashValue h2 {
-        font-size: 2rem;
-    }
-
-    .alertBanner {
-        margin: 0 1rem 1rem;
-        padding: 0.875rem 1rem;
-    }
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-@keyframes popIn {
-    0% {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    0% {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* ============================================
-   CARD DETAILS MODAL
-   ============================================ */
-.cardModalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(12px);
+.quickStatsVert {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3000;
-    padding: 2rem;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.cardDetailsModal {
+/* Quick Stats - Vibrant Cards ⚡ */
+.quickStats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Quick Stats Cards - Sticker 3D Style 🏷️ */
+.quickStatCard {
+    border-radius: 28px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+}
+
+.quickStatCard:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 16px 16px 0 #000;
+}
+
+/* Streak Card - Deep Amber Sticker */
+.streakCard {
+    background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+    border: 4px solid #78350F;
+    /* Dark Amber/Brown Border */
+    box-shadow: 12px 12px 0 #000;
+}
+
+.streakCard:hover {
+    border-color: #000;
+    /* Pop to black on hover */
+}
+
+.streakCard strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 0.9;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.streakCard span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #451a03;
+    /* Deep brown text */
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+/* Budget Card - Clean White Sticker */
+.budgetCard {
+    background: #fff;
+    border: 4px solid #000;
+    box-shadow: 12px 12px 0 #000;
+}
+
+.budgetCard strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 0.9;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+.budgetCard span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #4B5563;
+    opacity: 1;
+    letter-spacing: 1px;
+}
+
+/* Icons */
+.cardIcon {
+    transition: all 0.3s;
+}
+
+.streakCard .cardIcon {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    opacity: 0.1;
+    color: #000;
+    transform: scale(2);
+    pointer-events: none;
+}
+
+.budgetCard .cardIcon {
+    opacity: 1;
+    color: #A855F7;
+    /* Purple */
+    position: static;
+    margin-bottom: auto;
+    /* Push to top if flex container allows */
+    margin-bottom: 0.5rem;
+    width: fit-content;
+    transform: rotate(0deg);
+}
+
+.budgetCard:hover .cardIcon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+/* Cards Section - Clean White Theme */
+.cardsSection {
     background: #fff;
     border: 3px solid #000;
     border-radius: 24px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 12px 12px 0px #000;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modalCloseBtn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #f5f5f5;
-    border: 2px solid #000;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    z-index: 10;
-}
-
-.modalCloseBtn:hover {
-    background: #000;
-    color: #fff;
-}
-
-.modalCardPreview {
-    position: relative;
-    border-radius: 16px;
     padding: 1.5rem;
-    color: #fff;
-    margin-bottom: 1.5rem;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    color: #000;
+    box-shadow: 8px 8px 0 #8B5CF6;
+    position: relative;
     overflow: hidden;
 }
 
-.modalCardTop {
+.sectionHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
 }
 
-.modalCardBrand {
+.sectionHeader h3 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #000;
+    text-shadow: none;
+}
+
+.addBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 3px solid #000;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 3px 3px 0 #000;
+}
+
+.addBtn:hover {
+    background: #FBBF24;
+    color: #000;
+    border-color: #000;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 4px 4px 0 #000;
+}
+
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    position: relative;
+    z-index: 2;
+}
+
+.cardMini {
+    height: 100px;
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    color: #fff;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background-blend-mode: overlay;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Chip Simulation */
+.cardMini::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 30px;
+    height: 20px;
+    background: linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 100%);
+    border-radius: 4px;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+/* Shine effect */
+.cardMini::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(125deg, rgba(255, 255, 255, 0.4) 0%, transparent 40%);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.cardMini:hover {
+    transform: translateY(-5px) scale(1.03);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
+
+.cardMiniTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.cardMiniNumber {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.emptyCard {
+    grid-column: span 2;
+    height: 100px;
+    border: 2px dashed #000;
+    background: #F9FAFB;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #6B7280;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.emptyCard:hover {
+    border-color: #8B5CF6;
+    color: #8B5CF6;
+    background: #F3E8FF;
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 #000;
+}
+
+.viewAllLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    color: #6B7280;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.viewAllLink:hover {
+    color: #8B5CF6;
+    transform: translateX(4px);
+}
+
+/* Transactions Card - Gen Z Notebook/List Vibe 📝 */
+.transactionsCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 24px;
+    padding: 1.5rem;
+    flex: 1;
+    box-shadow: 8px 8px 0 #F59E0B;
+    /* Orange - matches Transactions page */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    /* Constrain height */
+}
+
+/* Specific Header Override for Light Card */
+.transactionsCard .sectionHeader h3 {
+    color: #000;
+    text-shadow: none;
+    font-size: 1.4rem;
+    background: #FBBF24;
+    /* Highlight effect */
+    padding: 0 8px;
+    transform: rotate(-1deg);
+    display: inline-block;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.seeAllLink {
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: 'Space Grotesk', monospace;
+    transition: all 0.2s;
+    border: 2px solid #000;
+    text-transform: uppercase;
+}
+
+.seeAllLink:hover {
+    background: #FBBF24;
+    color: #000;
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.txList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    flex: 1;
+}
+
+/* Custom Scrollbar for the list */
+.txList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.txList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.txList::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 3px;
+}
+
+.txList::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+.txItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem;
+    border-radius: 12px;
+    background: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 2px 2px 0 #000;
+}
+
+.txItem:hover {
+    background: #FFEDD5;
+    /* Light Orange */
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 #000;
+}
+
+.txIcon {
+    width: 42px;
+    height: 42px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    /* Round for receipt items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    border: 2px solid #000;
+    color: #000;
+}
+
+.txInfo {
+    flex: 1;
+}
+
+.txInfo strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #000;
+    font-family: 'Space Grotesk', monospace;
+    /* Mono for receipt vibe */
+    letter-spacing: -0.5px;
+}
+
+.txInfo span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+}
+
+.txAmount {
+    font-family: 'Space Grotesk', monospace;
     font-weight: 800;
     font-size: 1rem;
 }
 
-.modalCardNumber {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    margin: 1rem 0;
+.txAmount.income {
+    color: #059669;
 }
 
-.modalCardInfo {
-    display: flex;
-    justify-content: space-between;
+.txAmount.expense {
+    color: #000;
 }
 
-.modalCardInfo>div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.cardDetailsList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-}
-
-.detailItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background: #FAFAFA;
-    border: 2px solid #E5E7EB;
+.emptyState {
+    text-align: center;
+    padding: 2rem;
+    border: 2px dashed #E5E7EB;
     border-radius: 12px;
-    transition: all 0.15s;
 }
 
-.detailItem:hover {
-    border-color: #000;
-    box-shadow: 4px 4px 0px #000;
+.emptyState span {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
-.detailLabel {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #6B7280;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.detailValue {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+.emptyState p {
+    margin: 0;
     font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
+    color: #9CA3AF;
 }
 
-.copyBtn {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: #fff;
-    border: 2px solid #E5E7EB;
-    cursor: pointer;
+/* Modal - Keeping it Clean but Bold */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s;
-    color: #6B7280;
+    z-index: 2005;
+    /* Above Chatbot */
 }
 
-.copyBtn:hover {
-    border-color: #000;
+.modalContent {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    border: 4px solid #000;
+    box-shadow: 12px 12px 0 #FBBF24;
+}
+
+.modalCard {
+    height: 220px;
+    border-radius: 18px;
+    padding: 2rem;
+    color: #fff;
+    position: relative;
+    margin-bottom: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modalCardChip {
+    width: 45px;
+    height: 32px;
+    background: linear-gradient(135deg, #FFD700, #B8860B);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.modalCardType {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 1.2rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.modalCardNum {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-family: 'Space Grotesk', monospace;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.modalCardBottom {
+    display: flex;
+    gap: 3rem;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+}
+
+.modalCardBottom span {
+    display: block;
+    opacity: 0.8;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.modalCardBottom strong {
+    font-size: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 1px;
+}
+
+.modalActions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cvvBtn,
+.closeBtn {
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    border: 3px solid #000;
+}
+
+.cvvBtn {
+    background: #fff;
+    color: #000;
+    box-shadow: 4px 4px 0 #E5E7EB;
+}
+
+.cvvBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+}
+
+.closeBtn {
     background: #000;
     color: #fff;
 }
 
-.cvvRevealed {
-    color: #10B981;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
+.closeBtn:hover {
+    background: #333;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #999;
 }
 
-.cvvHidden {
-    color: #9CA3AF;
-    letter-spacing: 4px;
-}
-
-.cvvTimer {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: #10B981;
-    color: #fff;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 700;
-}
-
-.revealCvvBtn {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    background: linear-gradient(135deg, #10B981, #059669);
-    color: #fff;
-    border: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 700;
+.deleteCardBtn {
+    background: #FEE2E2;
+    color: #DC2626;
+    padding: 0.75rem;
+    border-radius: 12px;
+    border: 2px solid #DC2626;
     cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-    transition: all 0.15s;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.revealCvvBtn:hover {
+.deleteCardBtn:hover {
+    background: #DC2626;
+    color: #fff;
     transform: scale(1.05);
 }
 
-.pinInputSection {
+/* PIN Prompt for CVV Reveal */
+.pinPrompt {
     background: #FEF3C7;
-    border: 2px solid #F59E0B;
-    border-radius: 12px;
-    padding: 1rem;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1.5rem;
     margin-bottom: 1rem;
-    overflow: hidden;
+    box-shadow: 4px 4px 0 #F59E0B;
 }
 
-.pinLabel {
+.pinHeader {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: #92400E;
-}
-
-.pinInputRow {
-    display: flex;
     gap: 0.75rem;
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .pinInput {
-    flex: 1;
-    padding: 0.75rem;
-    font-size: 1.25rem;
-    font-family: 'JetBrains Mono', monospace;
+    width: 100%;
+    padding: 1rem;
+    border: 3px solid #000;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-family: 'Space Grotesk', monospace;
     text-align: center;
-    letter-spacing: 6px;
-    border: 2px solid #E5E7EB;
-    border-radius: 8px;
-    background: #fff;
+    letter-spacing: 8px;
+    font-weight: 700;
+    box-shadow: 4px 4px 0 #000;
+    margin-bottom: 0.75rem;
 }
 
 .pinInput:focus {
     outline: none;
-    border-color: #000;
-}
-
-.pinSubmitBtn {
-    padding: 0.75rem 1.25rem;
-    background: #000;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.pinSubmitBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    box-shadow: 6px 6px 0 #000;
+    transform: translate(-2px, -2px);
 }
 
 .pinError {
     color: #DC2626;
     font-size: 0.85rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    display: block;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: #FEE2E2;
+    border-radius: 8px;
+    border: 2px solid #DC2626;
 }
 
-.copyAllBtn {
-    width: 100%;
-    padding: 1rem;
-    background: #000;
+.pinActions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pinCancelBtn,
+.pinVerifyBtn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    border: 3px solid #000;
+}
+
+.pinCancelBtn {
+    background: #fff;
+    color: #000;
+}
+
+.pinCancelBtn:hover {
+    background: #F3F4F6;
+}
+
+.pinVerifyBtn {
+    background: #10B981;
     color: #fff;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.pinVerifyBtn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 #000;
+}
+
+.pinVerifyBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Goals Card - Gen Z Progress Style 🎯 */
+.goalsCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 #F59E0B;
+    /* Amber - matches Goals page */
+    color: #000;
+}
+
+.goalsCard .sectionHeader h3 {
+    color: #000;
+    text-shadow: none;
+}
+
+.goalsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.goalItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #F9FAFB;
+    border: 2px solid #000;
+    border-radius: 14px;
+    transition: all 0.2s;
+}
+
+.goalItem:hover {
+    transform: translateX(4px);
+    box-shadow: 4px 4px 0 #000;
+}
+
+.goalIcon {
+    width: 48px;
+    height: 48px;
+    background: #fff;
     border: 2px solid #000;
     border-radius: 12px;
-    font-weight: 700;
-    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.goalInfo {
+    flex: 1;
+}
+
+.goalTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.goalTop strong {
     font-family: 'Space Grotesk', sans-serif;
-    transition: all 0.15s;
-    box-shadow: 4px 4px 0px #10B981;
+    font-size: 0.95rem;
+    font-weight: 800;
 }
 
-.copyAllBtn:hover {
-    box-shadow: 6px 6px 0px #10B981;
+.goalTop span {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #8B5CF6;
 }
 
-.cardClickHint {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+.goalProgress {
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.goalProgressFill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease-out;
+}
+
+.goalAmount {
+    font-size: 0.75rem;
+    color: #6B7280;
+    font-weight: 600;
+}
+
+/* Budget Alerts Card - Warning Style ⚠️ */
+.alertsCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 #7C3AED;
+    /* Purple - matches Budgets page */
+    color: #000;
+}
+
+.alertSuccess {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #ECFDF5;
+    border: 2px solid #10B981;
+    border-radius: 14px;
+}
+
+.alertSuccess p {
+    margin: 0;
+    font-weight: 700;
+}
+
+.alertsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.alertItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
     border-radius: 12px;
+    border: 2px solid #000;
+    transition: all 0.2s;
+}
+
+.alertItem.warning {
+    background: #FFFBEB;
+    border-color: #F59E0B;
+}
+
+.alertItem.exceeded {
+    background: #FEF2F2;
+    border-color: #EF4444;
+}
+
+.alertItem.safe {
+    background: #F3F4F6;
+}
+
+.alertIcon {
+    font-size: 1.25rem;
+}
+
+.alertInfo {
+    flex: 1;
+}
+
+.alertInfo strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.alertInfo span {
+    font-size: 0.75rem;
+    color: #6B7280;
+    font-weight: 600;
+}
+
+.alertBadge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 0.85rem;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.alertBadge.warning {
+    background: #F59E0B;
+    color: #000;
+}
+
+.alertBadge.exceeded {
+    background: #EF4444;
+    color: #fff;
+}
+
+.alertBadge.safe {
+    background: #10B981;
+    color: #fff;
+}
+
+/* Subscriptions Preview Card 📅 */
+.subsCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 #E11D48;
+    /* Rose/Red - matches Subscriptions page */
+    color: #000;
+}
+
+.subsStats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.subsStat {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    background: #F9FAFB;
+    border: 2px solid #000;
+    border-radius: 12px;
+}
+
+.subsStat strong {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #000;
+}
+
+.subsStat span {
+    font-size: 0.75rem;
+    color: #6B7280;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.trialAlert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: #FEF3C7;
+    border: 2px solid #F59E0B;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #92400E;
+}
+
+/* Loading State */
+.chartLoading {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.85rem;
-    opacity: 0;
-    transition: opacity 0.2s;
+    height: 100px;
+    color: #9CA3AF;
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
-.scrollCard:hover .cardClickHint {
-    opacity: 1;
+/* Responsive */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .rightCol {
+        grid-column: span 2;
+    }
 }
 
 @media (max-width: 768px) {
-    .cardModalOverlay {
-        padding: 1rem;
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
-    .cardDetailsModal {
-        padding: 1.5rem;
+    .headerActions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
     }
 
-    .modalCardNumber {
-        font-size: 1.1rem;
+    .headerBtn,
+    .headerBtnPrimary {
+        justify-content: center;
+        width: 100%;
     }
 
-    .detailValue {
-        font-size: 0.8rem;
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rightCol {
+        grid-column: auto;
+    }
+
+    .heroAmount {
+        font-size: 3rem;
+    }
+
+    .cardsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cardMini {
+        height: 80px;
+    }
+
+    .emptyCard {
+        grid-column: auto;
+    }
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
     }
 }

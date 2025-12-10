@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: #F3F4F6;">
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
+
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="description"
     content="Track your online shopping expenses automatically. Get insights on your spending habits with beautiful analytics dashboard." />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#F3F4F6" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Vibe Tracker" />
 
   <!-- PWA Manifest -->
@@ -34,9 +36,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
+
+  <!-- Prevent Flash of Black Background -->
+  <style>
+    html,
+    body,
+    #root {
+      background-color: #F3F4F6;
+      min-height: 100vh;
+    }
+  </style>
 </head>
 
-<body>
+<body style="background-color: #F3F4F6;">
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

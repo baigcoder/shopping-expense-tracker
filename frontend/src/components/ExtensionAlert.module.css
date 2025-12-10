@@ -32,6 +32,15 @@
     box-shadow: 6px 6px 0px #F59E0B;
 }
 
+.successCard {
+    background: linear-gradient(135deg, #E0E7FF, #C7D2FE);
+    box-shadow: 6px 6px 0px #8B5CF6;
+}
+
+.successCard .iconBounce {
+    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+}
+
 
 .alertEmoji {
     font-size: 2rem;

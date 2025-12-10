@@ -5,7 +5,56 @@ import { supabase, onAuthStateChange } from "../config/supabase";
 import { cardService } from "../services/cardService";
 import { extensionService } from "../services/extensionService";
 import { useNotificationStore } from "../services/notificationService";
+import { genZToast } from "../services/genZToast";
 import { User } from "../types";
+
+// Extension detection helper
+const checkExtensionInstalled = async (): Promise<{ installed: boolean; synced: boolean }> => {
+  try {
+    // Method 1: Check localStorage flag set by content script
+    const extensionFlag = localStorage.getItem('vibe_tracker_extension') ||
+      localStorage.getItem('expense_tracker_extension');
+    const isSynced = localStorage.getItem('extension_synced') === 'true';
+
+    if (extensionFlag || isSynced) {
+      return { installed: true, synced: isSynced };
+    }
+
+    // Method 2: Try chrome runtime message (if available)
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+      return new Promise((resolve) => {
+        const timeout = setTimeout(() => {
+          resolve({ installed: false, synced: false });
+        }, 1000);
+
+        try {
+          // Try to send a message to the extension
+          chrome.runtime.sendMessage(
+            { type: 'CHECK_EXTENSION' },
+            (response: any) => {
+              clearTimeout(timeout);
+              if (chrome.runtime.lastError || !response) {
+                resolve({ installed: false, synced: false });
+              } else {
+                resolve({
+                  installed: true,
+                  synced: response.loggedIn || false
+                });
+              }
+            }
+          );
+        } catch {
+          clearTimeout(timeout);
+          resolve({ installed: false, synced: false });
+        }
+      });
+    }
+
+    return { installed: false, synced: false };
+  } catch {
+    return { installed: false, synced: false };
+  }
+};
 
 export const useAuth = () => {
   const { setUser, setLoading, logout } = useAuthStore();
@@ -47,6 +96,49 @@ export const useAuth = () => {
       console.log('🔄 Using locally stored cards');
     }
   }, [setCards, initializeCards]);
+
+  // Handle post-login extension sync with appropriate alerts
+  // STREAMLINED: Only show ONE notification instead of multiple
+  const handleLoginExtensionSync = useCallback(async (session: any, user: any) => {
+    try {
+      // Check if extension is installed
+      const extensionStatus = await checkExtensionInstalled();
+      console.log('Extension status:', extensionStatus);
+
+      if (extensionStatus.installed) {
+        // Extension IS installed - try to sync
+        const synced = await extensionService.notifyLogin(session, user);
+
+        if (synced) {
+          // SUCCESS: Extension installed AND synced!
+          console.log('✅ Extension synced with website session');
+          localStorage.setItem('extension_synced', 'true');
+
+          // Show ONLY ONE success toast - no banner, no notification center
+          genZToast.success('🔗 Extension synced! Auto-tracking active ✨', {
+            autoClose: 4000,
+            toastId: 'extension-synced' // Prevent duplicates
+          });
+        } else {
+          // Extension installed but sync failed - let user know
+          genZToast.info('🔌 Extension detected! Open popup to sync.', {
+            autoClose: 4000,
+            toastId: 'extension-needs-sync'
+          });
+        }
+      } else {
+        // Extension NOT installed - show ONE install prompt after delay
+        console.log('📌 Extension not detected');
+
+        setTimeout(() => {
+          // Dispatch event for ExtensionAlert banner ONLY (no toast)
+          window.dispatchEvent(new CustomEvent('show-extension-install-prompt'));
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Extension sync check error:', error);
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -99,10 +191,11 @@ export const useAuth = () => {
             // Load THIS user's cards from Supabase
             loadUserCards(session.user.id);
 
-            // Sync session with extension if installed
+            // Sync session with extension (silently on restore)
             extensionService.notifyLogin(session, session.user).then(synced => {
               if (synced) {
-                console.log('✅ Extension synced with website session');
+                console.log('✅ Extension synced with website session (restore)');
+                localStorage.setItem('extension_synced', 'true');
               }
             });
           }
@@ -154,24 +247,29 @@ export const useAuth = () => {
         // Load THIS user's cards
         loadUserCards(session.user.id);
 
-        // Sync session with extension and show notification
-        extensionService.notifyLogin(session, session.user).then(synced => {
-          if (synced) {
-            console.log('✅ Extension synced on login');
-            addNotification({
-              type: 'system',
-              title: '🔗 Extension Synced!',
-              message: 'Browser extension is now connected and tracking your purchases.'
-            });
-          }
-        });
+        // Handle extension sync with appropriate alerts
+        handleLoginExtensionSync(session, session.user);
 
       } else if (event === "SIGNED_OUT") {
         console.log("User signed out - clearing all data");
         clearCards(); // Clear cards on logout
-        extensionService.notifyLogout(); // Notify extension
+
+        // Notify extension to logout too
+        extensionService.notifyLogout();
+
+        // Clear extension sync state
+        localStorage.removeItem('extension_synced');
+        localStorage.removeItem('expense_tracker_session');
+        localStorage.removeItem('expense_tracker_extension');
+        localStorage.removeItem('vibe_tracker_extension');
+
         logout();
         setLoading(false);
+
+        // Show logout toast
+        genZToast.info('Logged out. Extension also signed out! 👋', {
+          autoClose: 3000
+        });
 
       } else if (event === "USER_UPDATED" && session?.user) {
         // User profile updated - refresh avatar
@@ -200,7 +298,7 @@ export const useAuth = () => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [setUser, setLoading, logout, setCards, clearCards, loadUserCards]);
+  }, [setUser, setLoading, logout, setCards, clearCards, loadUserCards, handleLoginExtensionSync]);
 
   // Return the state for components to use
   const { isAuthenticated, isLoading, user } = useAuthStore();

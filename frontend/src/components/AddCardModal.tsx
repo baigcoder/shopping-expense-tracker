@@ -1,7 +1,7 @@
-// Add Card Modal - Gen Z Expanded Design with Enhanced Validation
+// Add Card Modal - Neo-Brutalist & Gen-Z Vibe 🌟
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, CreditCard, Calendar, Lock, User, Eye, EyeOff, Loader2, Shield, KeyRound, Check, Sparkles, AlertCircle } from 'lucide-react';
+import { X, CreditCard, Calendar, Lock, User, Eye, EyeOff, Loader2, Shield, KeyRound, Check, Sparkles, AlertCircle, Wallet } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useModalStore, useCardStore, useAuthStore, detectCardBrand, CardBrand } from '../store/useStore';
 import { cardService, CARD_THEMES, getThemeById } from '../services/cardService';
@@ -45,21 +45,18 @@ const isValidCardNumber = (number: string): boolean => {
 // Validate expiry date
 const isValidExpiry = (expiry: string): { valid: boolean; error?: string } => {
     if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-        return { valid: false, error: 'Use MM/YY format' };
+        return { valid: false, error: 'Use MM/YY' };
     }
 
     const [month, year] = expiry.split('/').map(Number);
-
-    if (month < 1 || month > 12) {
-        return { valid: false, error: 'Invalid month (01-12)' };
-    }
+    if (month < 1 || month > 12) return { valid: false, error: 'Invalid month' };
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear() % 100;
     const currentMonth = currentDate.getMonth() + 1;
 
     if (year < currentYear || (year === currentYear && month < currentMonth)) {
-        return { valid: false, error: 'Card has expired' };
+        return { valid: false, error: 'Expired' };
     }
 
     return { valid: true };
@@ -69,7 +66,7 @@ const isValidExpiry = (expiry: string): { valid: boolean; error?: string } => {
 const isValidCVV = (cvv: string, brand: CardBrand): { valid: boolean; error?: string } => {
     const expectedLength = brand === 'amex' ? 4 : 3;
     if (cvv.length !== expectedLength) {
-        return { valid: false, error: `CVV should be ${expectedLength} digits for ${getBrandName(brand)}` };
+        return { valid: false, error: `${expectedLength} digits req.` };
     }
     return { valid: true };
 };
@@ -105,11 +102,8 @@ const AddCardModal = () => {
         setCardBrand(brand);
     }, [cardNumber]);
 
-    // Initialize cards when user is available
     useEffect(() => {
-        if (user?.id) {
-            initializeCards(user.id);
-        }
+        if (user?.id) initializeCards(user.id);
     }, [user?.id, initializeCards]);
 
     const currentTheme = getThemeById(selectedTheme);
@@ -126,75 +120,46 @@ const AddCardModal = () => {
             formatted = value.replace(/(\d{4})/g, '$1 ').trim();
         }
         setCardNumber(formatted);
-
-        // Validate on change
-        if (touched.cardNumber) {
-            validateField('cardNumber', formatted);
-        }
+        if (touched.cardNumber) validateField('cardNumber', formatted);
     };
 
     const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length > 4) return;
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + '/' + value.slice(2);
-        }
+        if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
         setExpiry(value);
-
-        if (touched.expiry && value.length === 5) {
-            validateField('expiry', value);
-        }
+        if (touched.expiry && value.length === 5) validateField('expiry', value);
     };
 
     const validateField = (field: string, value: string) => {
         const newErrors = { ...errors };
-
         switch (field) {
             case 'cardNumber':
-                if (!value) {
-                    newErrors.cardNumber = 'Card number is required';
-                } else if (!isValidCardNumber(value)) {
-                    newErrors.cardNumber = 'Invalid card number';
-                } else {
-                    delete newErrors.cardNumber;
-                }
+                if (!value) newErrors.cardNumber = 'Required';
+                else if (!isValidCardNumber(value)) newErrors.cardNumber = 'Invalid Number';
+                else delete newErrors.cardNumber;
                 break;
             case 'cardHolder':
-                if (!value) {
-                    newErrors.cardHolder = 'Cardholder name is required';
-                } else if (value.length < 2) {
-                    newErrors.cardHolder = 'Name too short';
-                } else {
-                    delete newErrors.cardHolder;
-                }
+                if (!value) newErrors.cardHolder = 'Required';
+                else if (value.length < 2) newErrors.cardHolder = 'Too short';
+                else delete newErrors.cardHolder;
                 break;
             case 'expiry':
-                const expiryResult = isValidExpiry(value);
-                if (!expiryResult.valid) {
-                    newErrors.expiry = expiryResult.error;
-                } else {
-                    delete newErrors.expiry;
-                }
+                const r = isValidExpiry(value);
+                if (!r.valid) newErrors.expiry = r.error;
+                else delete newErrors.expiry;
                 break;
             case 'cvv':
-                const cvvResult = isValidCVV(value, cardBrand);
-                if (!cvvResult.valid) {
-                    newErrors.cvv = cvvResult.error;
-                } else {
-                    delete newErrors.cvv;
-                }
+                const c = isValidCVV(value, cardBrand);
+                if (!c.valid) newErrors.cvv = c.error;
+                else delete newErrors.cvv;
                 break;
             case 'pin':
-                if (!value) {
-                    newErrors.pin = 'PIN is required';
-                } else if (value.length < 4) {
-                    newErrors.pin = 'PIN must be 4-6 digits';
-                } else {
-                    delete newErrors.pin;
-                }
+                if (!value) newErrors.pin = 'Required';
+                else if (value.length < 4) newErrors.pin = '4-6 digits';
+                else delete newErrors.pin;
                 break;
         }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -206,79 +171,26 @@ const AddCardModal = () => {
 
     const validateAll = (): boolean => {
         const newErrors: ValidationErrors = {};
-
-        // Card number
-        if (!cardNumber) {
-            newErrors.cardNumber = 'Card number is required';
-        } else if (!isValidCardNumber(cardNumber)) {
-            newErrors.cardNumber = 'Invalid card number (check digits)';
-        }
-
-        // Holder
-        if (!cardHolder) {
-            newErrors.cardHolder = 'Cardholder name is required';
-        } else if (cardHolder.length < 2) {
-            newErrors.cardHolder = 'Name too short';
-        }
-
-        // Expiry
-        if (!expiry) {
-            newErrors.expiry = 'Expiry date is required';
-        } else {
-            const expiryResult = isValidExpiry(expiry);
-            if (!expiryResult.valid) {
-                newErrors.expiry = expiryResult.error;
-            }
-        }
-
-        // CVV
-        if (!cvv) {
-            newErrors.cvv = 'CVV is required';
-        } else {
-            const cvvResult = isValidCVV(cvv, cardBrand);
-            if (!cvvResult.valid) {
-                newErrors.cvv = cvvResult.error;
-            }
-        }
-
-        // PIN
-        if (!pin) {
-            newErrors.pin = 'PIN is required';
-        } else if (pin.length < 4) {
-            newErrors.pin = 'PIN must be 4-6 digits';
-        }
+        if (!cardNumber || !isValidCardNumber(cardNumber)) newErrors.cardNumber = 'Invalid/Missing';
+        if (!cardHolder || cardHolder.length < 2) newErrors.cardHolder = 'Invalid Name';
+        if (!isValidExpiry(expiry).valid) newErrors.expiry = 'Invalid Date';
+        if (!isValidCVV(cvv, cardBrand).valid) newErrors.cvv = 'Invalid CVV';
+        if (!pin || pin.length < 4) newErrors.pin = 'Invalid PIN';
 
         setErrors(newErrors);
         setTouched({ cardNumber: true, cardHolder: true, expiry: true, cvv: true, pin: true });
-
         return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!validateAll()) {
-            toast.error('Please fix the errors before saving 🔍');
+            toast.error('Check fields! 🚩');
             return;
         }
-
         setIsSubmitting(true);
-
         try {
-            // Prepare card data for Supabase (using correct field names)
-            const supabaseCardData = {
-                user_id: user?.id || '',
-                card_type: cardBrand, // Supabase uses 'card_type' not 'type'
-                number: cardNumber,
-                holder: cardHolder,
-                expiry: expiry,
-                cvv: cvv,
-                pin: pin,
-                theme: selectedTheme
-            };
-
-            // Local store format
-            const localCardData = {
+            const cardData = {
                 user_id: user?.id || '',
                 type: cardBrand,
                 number: cardNumber,
@@ -289,49 +201,35 @@ const AddCardModal = () => {
                 theme: selectedTheme
             };
 
-            if (user?.id) {
-                // Try to save to Supabase first
-                const savedCard = await cardService.create(supabaseCardData);
+            const supabaseData = { ...cardData, card_type: cardBrand };
 
-                if (savedCard) {
-                    // Add to local store with Supabase-generated ID
-                    addCard({
-                        ...localCardData,
-                        id: savedCard.id
-                    } as any);
-                    toast.success('Card saved securely! 🔒✅', {
-                        icon: () => <span>💳</span>
-                    });
+            if (user?.id) {
+                const saved = await cardService.create(supabaseData);
+                if (saved) {
+                    addCard({ ...cardData, id: saved.id } as any);
+                    toast.success('Card added! Secure & Loaded 🔒');
+                    // Notify dashboard to refresh cards
+                    window.dispatchEvent(new CustomEvent('new-card'));
                 } else {
-                    // Fallback to local storage only
-                    addCard(localCardData);
-                    toast.warning('Saved locally (sync failed) 💾', {
-                        icon: () => <span>⚠️</span>
-                    });
+                    addCard(cardData);
+                    toast.warning('Saved locally (Sync pending) 💾');
                 }
             } else {
-                addCard(localCardData);
-                toast.info('Card saved locally! Log in to sync. 💾');
+                addCard(cardData);
+                toast.info('Saved locally 💾');
             }
-
             resetAndClose();
         } catch (error) {
-            console.error('Error saving card:', error);
-            toast.error('Failed to save card. Please try again.');
+            console.error(error);
+            toast.error('Failed to add card');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const resetAndClose = () => {
-        setCardNumber('');
-        setCardHolder('');
-        setExpiry('');
-        setCvv('');
-        setPin('');
-        setCardBrand('unknown');
-        setErrors({});
-        setTouched({});
+        setCardNumber(''); setCardHolder(''); setExpiry(''); setCvv(''); setPin('');
+        setCardBrand('unknown'); setErrors({}); setTouched({});
         closeAddCard();
     };
 
@@ -349,30 +247,31 @@ const AddCardModal = () => {
                 >
                     <motion.div
                         className={styles.expandedModal}
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        transition={{ type: "spring", stiffness: 100 }}
+                        initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+                        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                        exit={{ scale: 0.8, opacity: 0, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 120, damping: 12 }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button className={styles.closeBtnAbsolute} onClick={resetAndClose}>
-                            <X size={20} />
+                            <X size={24} strokeWidth={3} />
                         </button>
 
                         <div className={styles.splitLayout}>
                             {/* LEFT COLUMN: Visuals */}
-                            <div className={styles.leftColumn} style={{ background: currentTheme.accent + '20' }}>
-                                <motion.div className={styles.modalHeader}>
-                                    <h2>New Card <Sparkles size={24} fill="#FFD700" color="#000" /></h2>
-                                    <p>Add your payment card securely</p>
-                                </motion.div>
+                            <div className={styles.leftColumn}>
+                                <div className={styles.modalHeader}>
+                                    <h2>New Card <Sparkles size={24} fill="#FCD34D" color="#000" /></h2>
+                                    <p>Safe • Secure • Vibey</p>
+                                </div>
 
                                 <motion.div
                                     className={styles.cardPreviewBig}
                                     style={{ background: currentTheme.gradient }}
                                     layoutId="cardPreview"
+                                    whileHover={{ rotate: 1, scale: 1.02 }}
                                 >
-                                    <div className={styles.cardPattern} data-pattern={currentTheme.pattern}></div>
+                                    <div className={styles.cardPattern}></div>
                                     <div className={styles.mascot}>{currentTheme.mascot}</div>
 
                                     <div className={styles.cardTop}>
@@ -394,6 +293,23 @@ const AddCardModal = () => {
                                             <div className={styles.val}>{expiry || 'MM/YY'}</div>
                                         </div>
                                     </div>
+                                    {/* Quote Display based on Theme */}
+                                    {currentTheme.quote && (
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '50%',
+                                            right: '0',
+                                            left: '0',
+                                            textAlign: 'center',
+                                            transform: 'translateY(50%)',
+                                            fontSize: '1.5rem',
+                                            fontWeight: 900,
+                                            opacity: 0.15,
+                                            pointerEvents: 'none'
+                                        }}>
+                                            {currentTheme.quote}
+                                        </div>
+                                    )}
                                 </motion.div>
 
                                 <div className={styles.themeSelector}>
@@ -405,10 +321,10 @@ const AddCardModal = () => {
                                                 className={`${styles.themeCircle} ${selectedTheme === theme.id ? styles.activeTheme : ''}`}
                                                 style={{ background: theme.gradient }}
                                                 onClick={() => setSelectedTheme(theme.id)}
-                                                whileHover={{ scale: 1.1 }}
+                                                whileHover={{ scale: 1.2 }}
                                                 whileTap={{ scale: 0.9 }}
                                             >
-                                                {selectedTheme === theme.id && <Check size={14} color="#fff" />}
+                                                {selectedTheme === theme.id && <Check size={20} color="#000" strokeWidth={3} />}
                                             </motion.button>
                                         ))}
                                     </div>
@@ -420,8 +336,8 @@ const AddCardModal = () => {
                                 <form onSubmit={handleSubmit} className={styles.formContent}>
                                     <div className={styles.inputGroup}>
                                         <label>Card Number</label>
-                                        <div className={`${styles.inputIconWrapper} ${errors.cardNumber && touched.cardNumber ? styles.inputError : ''}`}>
-                                            <CreditCard size={18} className={styles.inputIcon} />
+                                        <div className={`${styles.inputIconWrapper} ${errors.cardNumber ? styles.inputError : ''}`}>
+                                            <CreditCard size={20} className={styles.inputIcon} />
                                             <input
                                                 type="text"
                                                 className={styles.modernInput}
@@ -433,17 +349,13 @@ const AddCardModal = () => {
                                                 autoFocus
                                             />
                                         </div>
-                                        {errors.cardNumber && touched.cardNumber && (
-                                            <span className={styles.errorText}>
-                                                <AlertCircle size={12} /> {errors.cardNumber}
-                                            </span>
-                                        )}
+                                        {errors.cardNumber && <span className={styles.errorText}><AlertCircle size={12} />{errors.cardNumber}</span>}
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                         <label>Card Holder</label>
-                                        <div className={`${styles.inputIconWrapper} ${errors.cardHolder && touched.cardHolder ? styles.inputError : ''}`}>
-                                            <User size={18} className={styles.inputIcon} />
+                                        <div className={`${styles.inputIconWrapper} ${errors.cardHolder ? styles.inputError : ''}`}>
+                                            <User size={20} className={styles.inputIcon} />
                                             <input
                                                 type="text"
                                                 className={styles.modernInput}
@@ -453,18 +365,14 @@ const AddCardModal = () => {
                                                 onBlur={() => handleBlur('cardHolder', cardHolder)}
                                             />
                                         </div>
-                                        {errors.cardHolder && touched.cardHolder && (
-                                            <span className={styles.errorText}>
-                                                <AlertCircle size={12} /> {errors.cardHolder}
-                                            </span>
-                                        )}
+                                        {errors.cardHolder && <span className={styles.errorText}><AlertCircle size={12} />{errors.cardHolder}</span>}
                                     </div>
 
                                     <div className={styles.row}>
                                         <div className={styles.inputGroup}>
                                             <label>Expiry</label>
-                                            <div className={`${styles.inputIconWrapper} ${errors.expiry && touched.expiry ? styles.inputError : ''}`}>
-                                                <Calendar size={18} className={styles.inputIcon} />
+                                            <div className={`${styles.inputIconWrapper} ${errors.expiry ? styles.inputError : ''}`}>
+                                                <Calendar size={20} className={styles.inputIcon} />
                                                 <input
                                                     type="text"
                                                     className={styles.modernInput}
@@ -475,67 +383,47 @@ const AddCardModal = () => {
                                                     maxLength={5}
                                                 />
                                             </div>
-                                            {errors.expiry && touched.expiry && (
-                                                <span className={styles.errorText}>
-                                                    <AlertCircle size={12} /> {errors.expiry}
-                                                </span>
-                                            )}
+                                            {errors.expiry && <span className={styles.errorText}><AlertCircle size={12} />{errors.expiry}</span>}
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label>CVV</label>
-                                            <div className={`${styles.inputIconWrapper} ${errors.cvv && touched.cvv ? styles.inputError : ''}`}>
-                                                <Lock size={18} className={styles.inputIcon} />
+                                            <div className={`${styles.inputIconWrapper} ${errors.cvv ? styles.inputError : ''}`}>
+                                                <Lock size={20} className={styles.inputIcon} />
                                                 <input
                                                     type={showCvv ? "text" : "password"}
                                                     className={styles.modernInput}
-                                                    placeholder={cardBrand === 'amex' ? '1234' : '123'}
+                                                    placeholder="123"
                                                     value={cvv}
                                                     onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                                                     onBlur={() => handleBlur('cvv', cvv)}
                                                     maxLength={4}
                                                 />
-                                                <button
-                                                    type="button"
-                                                    className={styles.eyeBtn}
-                                                    onClick={() => setShowCvv(!showCvv)}
-                                                >
-                                                    {showCvv ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                <button type="button" className={styles.eyeBtn} onClick={() => setShowCvv(!showCvv)}>
+                                                    {showCvv ? <EyeOff size={18} /> : <Eye size={18} />}
                                                 </button>
                                             </div>
-                                            {errors.cvv && touched.cvv && (
-                                                <span className={styles.errorText}>
-                                                    <AlertCircle size={12} /> {errors.cvv}
-                                                </span>
-                                            )}
+                                            {errors.cvv && <span className={styles.errorText}><AlertCircle size={12} />{errors.cvv}</span>}
                                         </div>
                                     </div>
 
                                     <div className={styles.inputGroup}>
                                         <label>Secure PIN <span className={styles.optional}>(For CVV Reveal)</span></label>
-                                        <div className={`${styles.inputIconWrapper} ${errors.pin && touched.pin ? styles.inputError : ''}`}>
-                                            <KeyRound size={18} className={styles.inputIcon} />
+                                        <div className={`${styles.inputIconWrapper} ${errors.pin ? styles.inputError : ''}`}>
+                                            <KeyRound size={20} className={styles.inputIcon} />
                                             <input
                                                 type={showPin ? "text" : "password"}
                                                 className={styles.modernInput}
-                                                placeholder="4-6 Digits"
+                                                placeholder="****"
                                                 value={pin}
                                                 onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
                                                 onBlur={() => handleBlur('pin', pin)}
                                                 maxLength={6}
                                             />
-                                            <button
-                                                type="button"
-                                                className={styles.eyeBtn}
-                                                onClick={() => setShowPin(!showPin)}
-                                            >
-                                                {showPin ? <EyeOff size={16} /> : <Eye size={16} />}
+                                            <button type="button" className={styles.eyeBtn} onClick={() => setShowPin(!showPin)}>
+                                                {showPin ? <EyeOff size={18} /> : <Eye size={18} />}
                                             </button>
                                         </div>
-                                        {errors.pin && touched.pin && (
-                                            <span className={styles.errorText}>
-                                                <AlertCircle size={12} /> {errors.pin}
-                                            </span>
-                                        )}
+                                        {errors.pin && <span className={styles.errorText}><AlertCircle size={12} />{errors.pin}</span>}
                                     </div>
 
                                     <div className={styles.spacer}></div>
@@ -544,7 +432,7 @@ const AddCardModal = () => {
                                         {isSubmitting ? (
                                             <Loader2 className={styles.spinner} />
                                         ) : (
-                                            <>Save Card <Shield size={18} /></>
+                                            <>Save Card <Wallet size={20} /></>
                                         )}
                                     </button>
                                 </form>

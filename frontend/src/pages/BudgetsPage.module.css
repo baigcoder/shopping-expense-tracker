@@ -1,471 +1,645 @@
-/* Budgets Page - Light Gen-Z Theme with Neo-Brutalist Accents */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+/* Gen Z Budgets CSS - Secure Vault Theme 🔐 */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Outfit:wght@700;900&display=swap');
 
 .container {
     min-height: 100vh;
-    padding: 0 2rem 2rem;
-    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 25%, #fefce8 50%, #fffbeb 100%);
+    padding: 1.5rem;
     font-family: 'Space Grotesk', sans-serif;
-    color: #1a1a1a;
+    color: #000;
     position: relative;
+    background-color: #F5F3FF;
+    /* Rich Violet Base */
+    background-image: radial-gradient(#7C3AED 1.5px, transparent 1.5px);
+    /* Purple Dots */
+    background-size: 24px 24px;
+    background-attachment: fixed;
 }
 
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 400px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-    pointer-events: none;
+/* Empty State - High Visibility */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+    color: #000;
+    opacity: 1;
+    /* High visibility */
+    background: #fff;
+    border: 3px dashed #E2E8F0;
+    border-radius: 20px;
+    margin-top: 2rem;
 }
 
-/* Header */
+.emptyState h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 1rem 0 0.5rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.emptyState p {
+    font-size: 1rem;
+    color: #64748B;
+    font-weight: 600;
+    max-width: 300px;
+    line-height: 1.5;
+}
+
+/* Header Section */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 2rem 0;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    background: transparent;
+    /* Removed white bg box to let sticker pop */
+    border: none;
+    padding: 1rem 0;
+    border-radius: 0;
+    box-shadow: none;
     position: relative;
-    z-index: 2;
+    overflow: visible;
+    /* Allow pop */
+}
+
+.header::after {
+    display: none;
+}
+
+.headerLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    /* Bigger */
+    font-weight: 900;
+    text-transform: uppercase;
     margin: 0;
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: #000;
+    /* Sticker Effect */
+    text-shadow:
+        3px 3px 0 #fff,
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff,
+        6px 6px 0px rgba(0, 0, 0, 0.15);
+    /* Soft shadow behind the 'sticker' */
+    position: relative;
+    z-index: 1;
 }
 
+.header h1 span {
+    color: #000;
+    /* Keep it uniform for the sticker look */
+    font-style: normal;
+    -webkit-text-stroke: 0;
+}
+
+.statusRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Pill Subtitle - Matches Image */
+.subtitle {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #000;
+    background: #fff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    /* Full visual pill */
+    border: 3px solid #000;
+    text-transform: none;
+    /* Sentence case from image */
+    box-shadow: 4px 4px 0px #000;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Sync Status - Tech Pill */
 .syncStatus {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    color: #64748b;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    background: #000;
+    color: #0F0;
+    /* Hacker Green */
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    /* Square edges */
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .syncDot {
-    width: 8px;
-    height: 8px;
-    background: #10B981;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+    width: 6px;
+    height: 6px;
+    background: #0F0;
+    box-shadow: 0 0 5px #0F0;
+    border-radius: 0;
+    /* Square dot */
 }
 
 .syncDot.syncing {
-    background: #F59E0B;
-    animation: blink 0.5s linear infinite;
+    background: #FACC15;
+    box-shadow: 0 0 5px #FACC15;
+    animation: blink 0.2s steps(2) infinite;
 }
 
-@keyframes pulse {
+.refreshBtn {
+    background: transparent;
+    border: none;
+    color: #0F0;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
 
-    0%,
+.refreshBtn:hover {
+    opacity: 0.8;
+}
+
+.spinning {
+    animation: spin 1s steps(8) infinite;
+}
+
+@keyframes spin {
     100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
+        transform: rotate(360deg);
     }
 }
 
 @keyframes blink {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
     50% {
         opacity: 0;
     }
 }
 
-.refreshBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.25rem;
-    color: #64748b;
-    transition: all 0.2s;
-}
-
-.refreshBtn:hover {
-    color: #F59E0B;
-}
-
-.spinning {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
+/* Add Button */
 .addBtn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: #F59E0B;
-    color: #fff;
+    gap: 0.75rem;
+    background: #FBBF24;
+    /* Vibe Yellow */
+    color: #000;
     border: 3px solid #000;
-    padding: 0.75rem 1.5rem;
-    border-radius: 16px;
-    font-size: 0.95rem;
-    font-weight: 700;
+    padding: 1rem 2rem;
+    /* Chunky */
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 900;
     cursor: pointer;
-    box-shadow: 5px 5px 0 #000;
-    transition: all 0.15s ease;
+    box-shadow: 6px 6px 0px #000;
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-family: inherit;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.addBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+}
+
+.addBtn:hover::before {
+    transform: translateX(100%);
 }
 
 .addBtn:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 8px 8px 0 #000;
-    background: #D97706;
+    box-shadow: 9px 9px 0px #000;
 }
 
-/* Summary Card */
+.addBtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+
+/* Summary - The Dashboard Strip */
 .summaryCard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 24px;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    background: #000;
+    /* Dark Mode Strip */
+    color: #fff;
+    border-radius: 16px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.2);
+    border: 3px solid #000;
 }
 
 .summaryItem {
-    text-align: center;
-    padding: 1rem;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.summaryItem:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    /* Should be roughly between items, but flex gap handles spacing better. This is decorative. */
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    background: #333;
+    display: none;
+    /* Removed separator for clean flex */
 }
 
 .summaryValue {
-    font-size: 1.75rem;
-    font-weight: 800;
-    display: block;
-    color: #000;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #FBBF24;
+    /* Yellow pop on black */
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -1px;
 }
 
 .summaryLabel {
-    font-size: 0.85rem;
-    color: #64748b;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #9CA3AF;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 2px;
+    margin-top: 0.25rem;
 }
+
 
 /* Budget Grid */
 .budgetGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
 }
 
-/* Budget Card */
+
+/* Budget Card - The "Folder" Look */
 .budgetCard {
     background: #fff;
     border: 3px solid #000;
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 1.5rem;
     position: relative;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+    box-shadow: 6px 6px 0 #000;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
 .budgetCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 10px 10px 0 rgba(245, 158, 11, 0.2);
+    transform: translate(-4px, -4px) rotate(-1deg);
+    box-shadow: 10px 10px 0 #000;
+    z-index: 5;
 }
 
 .budgetHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 1rem;
 }
 
 .categoryInfo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .categoryIcon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    border-radius: 14px;
+    background: #E0E7FF;
+    border-radius: 10px;
+    /* Squircle */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
     border: 2px solid #000;
     box-shadow: 3px 3px 0 #000;
+    color: #000;
+    font-size: 1.25rem;
 }
 
 .categoryName {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 800;
     text-transform: uppercase;
-    display: block;
+    line-height: 1;
 }
 
-/* Budget Amount */
 .budgetAmount {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .spent {
-    font-size: 1.75rem;
-    font-weight: 800;
-    display: block;
+    font-size: 1.2rem;
+    font-weight: 900;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .limit {
-    font-size: 0.9rem;
-    color: #64748b;
-    font-weight: 600;
+    font-size: 0.75rem;
+    color: #64748B;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #F1F5F9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
 }
 
-/* Progress */
+/* Chunky Progress Bar */
 .progressContainer {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .progressBar {
-    height: 14px;
-    background: #e5e7eb;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid #000;
+    height: 18px;
+    /* Chunky */
+    background: #fff;
+    border-radius: 4px;
+    border: 3px solid #000;
+    position: relative;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .progressFill {
     height: 100%;
-    border-radius: 8px;
-    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    border-right: 3px solid #000;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    /* Striped pattern for fill */
+    background-image: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent);
+    background-size: 10px 10px;
 }
 
+/* Distinct Status Colors */
 .progressFill.safe {
-    background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+    background-color: #4ADE80;
+    /* Green */
 }
 
 .progressFill.warning {
-    background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%);
+    background-color: #FACC15;
+    /* Yellow */
 }
 
 .progressFill.danger {
-    background: linear-gradient(90deg, #EF4444 0%, #F87171 100%);
+    background-color: #EF4444;
+    /* Red */
 }
 
 .progressText {
     display: flex;
     justify-content: space-between;
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
 }
 
-/* Recent Transactions */
+/* Recent Activity "Ticket" Look */
 .recentTxSection {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 2px dashed #e5e7eb;
+    margin-top: auto;
+    background: #F8FAFC;
+    border: 2px solid #000;
+    border-radius: 8px;
+    padding: 0.75rem;
 }
 
 .recentTxHeader {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #94a3b8;
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #000;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
+    border-bottom: 2px dotted #CBD5E1;
+    padding-bottom: 0.5rem;
 }
 
 .recentTxItem {
     display: flex;
     justify-content: space-between;
-    padding: 0.4rem 0;
-    font-size: 0.85rem;
+    padding: 0.25rem 0;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .txDesc {
-    color: #64748b;
-    font-weight: 500;
+    color: #475569;
 }
 
 .txAmount {
-    font-weight: 700;
-    color: #EF4444;
+    font-family: 'JetBrains Mono', monospace;
+    color: #DC2626;
 }
 
-/* Modal */
+/* Modal Styles */
 .modalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
+    /* Darker overlay */
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 2000;
     padding: 1rem;
 }
 
 .modal {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 28px;
-    padding: 2rem;
+    background: #FBBF24;
+    /* Yellow Modal! */
+    border: 4px solid #000;
+    border-radius: 20px;
+    padding: 2.5rem;
     width: 100%;
     max-width: 440px;
-    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 12px 12px 0 #000;
+    transform: rotate(1deg);
 }
 
 .modal h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 0 0 1.5rem;
+    font-size: 2rem;
+    font-weight: 900;
     text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: #000;
+    text-shadow: 2px 2px 0 #fff;
 }
 
-/* Form */
 .formGroup {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .label {
     display: block;
-    font-weight: 700;
     font-size: 0.9rem;
+    font-weight: 800;
     margin-bottom: 0.5rem;
-    color: #374151;
+    text-transform: uppercase;
+    color: #000;
+    background: #fff;
+    width: fit-content;
+    padding: 2px 8px;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0 #000;
 }
 
 .input {
     width: 100%;
-    padding: 0.85rem 1rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 14px;
-    font-size: 1rem;
+    padding: 1rem;
+    border: 3px solid #000;
+    border-radius: 10px;
     font-family: inherit;
-    font-weight: 600;
-    background: #f9fafb;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 4px 4px 0 #000;
     transition: all 0.2s;
-    box-sizing: border-box;
+    background: #fff;
 }
 
 .input:focus {
     outline: none;
-    border-color: #F59E0B;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
 }
 
 .inputHint {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: #000;
 }
 
-/* Modal Actions */
 .modalActions {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
+.saveBtn,
 .cancelBtn {
     flex: 1;
-    padding: 0.85rem;
-    background: #fff;
-    color: #374151;
-    border: 2px solid #e5e7eb;
-    border-radius: 14px;
-    font-size: 1rem;
-    font-weight: 700;
+    padding: 1rem;
+    border-radius: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: 3px solid #000;
     cursor: pointer;
-    transition: all 0.15s;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.1s;
     font-family: inherit;
-}
-
-.cancelBtn:hover {
-    background: #f1f5f9;
-    border-color: #000;
+    font-size: 1rem;
 }
 
 .saveBtn {
-    flex: 1;
-    padding: 0.85rem;
-    background: #F59E0B;
+    background: #000;
     color: #fff;
-    border: 3px solid #000;
-    border-radius: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 #000;
-    transition: all 0.15s;
-    font-family: inherit;
 }
 
 .saveBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #000;
-    background: #D97706;
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 #000;
+}
+
+.cancelBtn {
+    background: #fff;
+    color: #000;
+}
+
+.cancelBtn:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 7px 7px 0 #000;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        padding: 0 1rem 2rem;
+        padding: 1rem;
     }
 
     .header {
         flex-direction: column;
-        gap: 1rem;
+        align-items: stretch;
+        gap: 1.5rem;
+        text-align: center;
     }
 
-    .header h1 {
-        font-size: 2rem;
+    .headerLeft {
+        align-items: center;
     }
 
-    .summaryCard {
-        grid-template-columns: 1fr;
+    .statusRow {
+        flex-direction: column;
         gap: 0.5rem;
     }
 
-    .summaryItem {
-        padding: 0.75rem;
+    .addBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .summaryCard {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
     }
 
     .budgetGrid {
         grid-template-columns: 1fr;
     }
 
-    .modal {
-        padding: 1.5rem;
+    .budgetCard:hover {
+        transform: none;
+        box-shadow: 5px 5px 0 #000;
     }
 }

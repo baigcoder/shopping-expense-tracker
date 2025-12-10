@@ -1,0 +1,369 @@
+/* Quick Add Transaction - Neo-Brutalist Gen Z Style 🎯 */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 3000;
+}
+
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 28px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 12px 12px 0 #FBBF24;
+}
+
+/* Corner Fold Effect */
+.cornerFold {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, transparent 50%, #000 50%);
+    border-radius: 0 24px 0 0;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1rem;
+    right: 3.5rem;
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.closeBtn:hover {
+    background: #000;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.stepContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Featured Category (Full Width Top) */
+.featuredCategory {
+    width: 100%;
+    background: #000;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.featuredCategory:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 #FBBF24;
+}
+
+.featuredEmoji {
+    font-size: 2rem;
+}
+
+.featuredName {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* Category Grid */
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.categoryCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.categoryCard:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 #000;
+}
+
+.categoryEmoji {
+    font-size: 2rem;
+}
+
+.categoryName {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+}
+
+/* More Categories */
+.moreCategories {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+}
+
+.miniCategory {
+    width: 48px;
+    height: 48px;
+    background: #F3F4F6;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.miniCategory:hover {
+    background: #FBBF24;
+    transform: scale(1.1);
+}
+
+/* Back Button */
+.backBtn {
+    background: none;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #6B7280;
+    cursor: pointer;
+    align-self: flex-start;
+    padding: 0.5rem 0;
+}
+
+.backBtn:hover {
+    color: #000;
+}
+
+/* Selected Badge */
+.selectedBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 100px;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0 #000;
+    align-self: center;
+}
+
+.selectedBadge span:first-child {
+    font-size: 1.5rem;
+}
+
+/* Type Toggle */
+.typeToggle {
+    display: flex;
+    gap: 0.5rem;
+    background: #F3F4F6;
+    padding: 4px;
+    border-radius: 100px;
+    border: 2px solid #000;
+}
+
+.typeBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: transparent;
+    border: none;
+    border-radius: 100px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.typeBtn.typeActive {
+    background: #000;
+    color: #fff;
+}
+
+/* Amount Input */
+.amountWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.currency {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #9CA3AF;
+}
+
+.amountInput {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #000;
+    background: transparent;
+    border: none;
+    width: 200px;
+    text-align: left;
+    outline: none;
+}
+
+.amountInput::placeholder {
+    color: #E5E7EB;
+}
+
+/* Remove number input spinners */
+.amountInput::-webkit-outer-spin-button,
+.amountInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.amountInput[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Description Input */
+.descInput {
+    width: 100%;
+    padding: 1rem;
+    background: #F3F4F6;
+    border: 3px solid #000;
+    border-radius: 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: #000;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.descInput:focus {
+    box-shadow: 4px 4px 0 #8B5CF6;
+}
+
+.descInput::placeholder {
+    color: #9CA3AF;
+}
+
+/* Submit Button */
+.submitBtn {
+    width: 100%;
+    padding: 1.25rem;
+    background: #000;
+    border: 3px solid #000;
+    border-radius: 16px;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 #10B981;
+}
+
+.submitBtn:hover:not(:disabled) {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 #10B981;
+}
+
+.submitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .modal {
+        max-width: 100%;
+        border-radius: 28px 28px 0 0;
+        margin-top: auto;
+    }
+
+    .amountInput {
+        font-size: 3rem;
+        width: 150px;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+}

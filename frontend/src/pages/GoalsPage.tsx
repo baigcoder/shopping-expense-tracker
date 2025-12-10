@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Target, Calendar, TrendingUp, X, Wallet, Sparkles, Loader2 } from 'lucide-react';
-import { toast } from 'react-toastify';
+import genZToast from '../services/genZToast';
 import { formatCurrency, getCurrencySymbol, getCurrencyInfo } from '../services/currencyService';
 import { goalService, Goal } from '../services/goalService';
 import { useAuthStore } from '../store/useStore';
@@ -68,12 +68,12 @@ const GoalsPage = () => {
                 setGoals([created, ...goals]);
                 setNewGoal({ name: '', description: '', target: '', icon: '🎯', deadline: '' });
                 setShowModal(false);
-                toast.success('New goal added! Let\'s get it! 🎯');
+                genZToast.success('New goal added! Let\'s get it! 🎯');
             } else {
-                toast.error('Failed to save goal');
+                genZToast.error('Failed to save goal');
             }
         } catch (error) {
-            toast.error('Error creating goal');
+            genZToast.error('Error creating goal');
         } finally {
             setSaving(false);
         }
@@ -90,7 +90,7 @@ const GoalsPage = () => {
 
         const amount = parseFloat(fundAmount);
         if (isNaN(amount) || amount <= 0) {
-            toast.error('Please enter a valid amount');
+            genZToast.error('Please enter a valid amount');
             return;
         }
 
@@ -105,13 +105,13 @@ const GoalsPage = () => {
                 const progress = (newTotal / updated.target) * 100;
 
                 if (newTotal >= updated.target) {
-                    toast.success(`🎉 Congrats! You've reached your ${selectedGoal.name} goal!`);
+                    genZToast.goalComplete(selectedGoal.name);
                 } else {
-                    toast.success(`Added ${formatCurrency(amount)} to ${selectedGoal.name}! (${progress.toFixed(0)}% complete)`);
+                    genZToast.cash(`Added ${formatCurrency(amount)} to ${selectedGoal.name}! (${progress.toFixed(0)}% complete)`);
                 }
             }
         } catch (error) {
-            toast.error('Error adding funds');
+            genZToast.error('Error adding funds');
         } finally {
             setShowFundModal(false);
             setSelectedGoal(null);
@@ -136,12 +136,19 @@ const GoalsPage = () => {
         return (
             <div className={styles.container}>
                 <div className={styles.loadingState}>
-                    <Loader2 size={40} className={styles.spinner} />
-                    <p>Loading goals...</p>
+                    <motion.div
+                        className={styles.loaderCard}
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                    >
+                        <span style={{ fontSize: '3rem' }}>🎯</span>
+                    </motion.div>
+                    <p>loading your goals bestie<span className={styles.loadingDots}></span></p>
                 </div>
             </div>
         );
     }
+
 
     return (
         <div className={styles.container}>
@@ -354,13 +361,13 @@ const GoalsPage = () => {
                             <div className={styles.fundHeader}>
                                 <span className={styles.fundIcon}>{selectedGoal.icon}</span>
                                 <h2>Add Funds</h2>
-                                <p>to {selectedGoal.name}</p>
+                                <p>Adding to: <strong>{selectedGoal.name}</strong></p>
                             </div>
 
                             <div className={styles.fundProgress}>
                                 <div className={styles.fundProgressInfo}>
-                                    <span>{formatCurrency(selectedGoal.saved)}</span>
-                                    <span>of {formatCurrency(selectedGoal.target)}</span>
+                                    <span>{formatCurrency(selectedGoal.saved)} saved</span>
+                                    <span>Target: {formatCurrency(selectedGoal.target)}</span>
                                 </div>
                                 <div className={styles.fundProgressBar}>
                                     <div

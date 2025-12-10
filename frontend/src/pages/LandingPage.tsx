@@ -1,693 +1,464 @@
-// Landing Page - Gen-Z Expense Tracker with Extension Showcase
-import { useState } from 'react';
+// Landing Page - The Ultimate Gen-Z Vibe 🚀
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
     Chrome, ArrowRight, Sparkles, CreditCard, PieChart, Target,
-    Wallet, TrendingUp, Bell, Shield, Zap, FileText, Receipt,
-    Brain, Calendar, BarChart3, Lock, Smartphone, Download,
-    CheckCircle, Monitor, Package, Menu, X
+    Bell, Shield, Zap, Globe, Menu, X, Download, Star, TrendingUp, DollarSign, CheckCircle, Smartphone
 } from 'lucide-react';
 import styles from './LandingPage.module.css';
 
-// All App Features
-const features = [
-    {
-        icon: <Wallet size={28} />,
-        title: 'Smart Dashboard',
-        description: 'Beautiful overview of your finances with real-time stats, spending patterns, and quick actions.',
-        color: '#8B5CF6'
-    },
-    {
-        icon: <Receipt size={28} />,
-        title: 'Transaction Tracking',
-        description: 'Log expenses manually or import from CSV/PDF bank statements with AI parsing.',
-        color: '#10B981'
-    },
-    {
-        icon: <CreditCard size={28} />,
-        title: 'Card Vault',
-        description: 'Securely store your card details with PIN-protected CVV reveal. Multiple card themes.',
-        color: '#F59E0B'
-    },
-    {
-        icon: <Target size={28} />,
-        title: 'Savings Goals',
-        description: 'Set financial goals, track progress, and celebrate when you hit your targets.',
-        color: '#EC4899'
-    },
-    {
-        icon: <PieChart size={28} />,
-        title: 'Budget Limits',
-        description: 'Set spending limits per category. Get alerts when you\'re approaching or over budget.',
-        color: '#3B82F6'
-    },
-    {
-        icon: <BarChart3 size={28} />,
-        title: 'Analytics & Insights',
-        description: 'AI-powered spending analysis with charts, trends, and personalized recommendations.',
-        color: '#6366F1'
-    },
-    {
-        icon: <Calendar size={28} />,
-        title: 'Subscription Tracker',
-        description: 'Never miss a renewal. See your monthly burn rate and upcoming payments.',
-        color: '#14B8A6'
-    },
-    {
-        icon: <FileText size={28} />,
-        title: 'Reports Export',
-        description: 'Generate detailed reports in PDF/CSV. Filter by date, category, or merchant.',
-        color: '#F97316'
-    },
-    {
-        icon: <Brain size={28} />,
-        title: 'AI PDF Import',
-        description: 'Upload bank statements and let AI extract transactions automatically.',
-        color: '#A855F7'
-    },
-    {
-        icon: <Bell size={28} />,
-        title: 'Smart Notifications',
-        description: 'Real-time alerts for budget limits, goal progress, and subscription renewals.',
-        color: '#EF4444'
-    },
-    {
-        icon: <Shield size={28} />,
-        title: 'Secure Auth',
-        description: 'Email OTP verification, Google OAuth, and bank-level encryption.',
-        color: '#059669'
-    },
-    {
-        icon: <Smartphone size={28} />,
-        title: 'Browser Extension',
-        description: 'Auto-track purchases from Amazon, eBay, and 100+ stores. Available now!',
-        color: '#0EA5E9'
-    },
-];
+// Feature Visual Components (Mini UIs)
+const VisualAnalytics = () => (
+    <div className={styles.mockUI}>
+        <div className={styles.mockChart}>
+            {[40, 70, 50, 90, 60, 80].map((h, i) => (
+                <motion.div
+                    key={i}
+                    className={styles.chartBar}
+                    initial={{ height: 0 }}
+                    whileInView={{ height: `${h}%` }}
+                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                />
+            ))}
+        </div>
+    </div>
+);
 
-// Extension Features
-const extensionFeatures = [
-    { icon: '🛒', title: 'Auto-Track', desc: 'Automatically detects purchases on 50+ stores' },
-    { icon: '🔔', title: 'Instant Alerts', desc: 'Get notified when you buy something' },
-    { icon: '🎯', title: 'Budget Warnings', desc: 'Alerts when approaching budget limits' },
-    { icon: '📌', title: 'Clip Page', desc: 'Manually save any page as a purchase' },
-    { icon: '🔄', title: 'Real-time Sync', desc: 'All data syncs with web dashboard' },
-    { icon: '➕', title: 'Quick Add', desc: 'Add expenses directly from extension' },
-];
+// New Dynamic Auto-Save Visual
+const VisualAutoSave = () => {
+    return (
+        <div className={`${styles.mockUI} ${styles.autoSaveContainer}`}>
+            <div className={styles.autoSaveWrapper}>
+                {/* Step 1: Purchase */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className={styles.autoSaveCard}
+                >
+                    <div className={styles.autoSaveIcon}>🛒</div>
+                    <div className={styles.autoSaveText}>
+                        <div className={styles.autoSaveLabel}>CHECKOUT COMPLETED</div>
+                        <div className={styles.autoSaveValue}>Nike Air Max</div>
+                    </div>
+                    <div className={styles.autoSavePrice}>$120.00</div>
+                </motion.div>
 
-const stats = [
-    { value: '50+', label: 'Features' },
-    { value: '100%', label: 'Free' },
-    { value: '10s', label: 'Sign Up' },
-    { value: '∞', label: 'Transactions' },
-];
+                {/* Arrow */}
+                <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                >
+                    <ArrowRight style={{ transform: 'rotate(90deg)' }} />
+                </motion.div>
+
+                {/* Step 2: Auto Saved */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.2, type: 'spring' }}
+                    className={styles.autoSaveSuccess}
+                >
+                    <div className={styles.successIcon}>
+                        <CheckCircle size={14} />
+                    </div>
+                    <div className={styles.autoSaveText}>
+                        <div className={styles.successLabel}>AUTO-SAVED</div>
+                        <div className={styles.autoSaveValue}>Transaction Recorded</div>
+                    </div>
+                </motion.div>
+            </div>
+        </div>
+    );
+};
+
+const VisualChat = () => (
+    <div className={styles.mockUI}>
+        <div className={styles.mockChat}>
+            <div className={`${styles.chatMsg} ${styles.msgLeft}`}>"You spent $400 on boba..."</div>
+            <div className={`${styles.chatMsg} ${styles.msgRight}`}>"Oops 😅"</div>
+        </div>
+    </div>
+);
+
+const VisualGoal = () => (
+    <div className={styles.mockUI}>
+        <div className={styles.mockGoal}>
+            <motion.div
+                className={styles.goalCircle}
+                initial={{ rotate: 0 }}
+                whileInView={{ rotate: 360 }}
+                transition={{ duration: 2 }}
+            >
+                85%
+            </motion.div>
+            <p style={{ fontWeight: 800, fontSize: '0.8rem' }}>BALI TRIP ✈️</p>
+        </div>
+    </div>
+);
+
+// NEW: Dark Pattern Shield Visual
+const VisualShield = () => (
+    <div className={`${styles.mockUI} ${styles.shieldVisualContainer}`}>
+        <div className={styles.shieldWrapper}>
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className={styles.shieldAlertCard}
+            >
+                <span className={styles.shieldEmoji}>⚠️</span>
+                <div className={styles.shieldTextContent}>
+                    <div className={styles.shieldAlertTitle}>DARK PATTERN DETECTED</div>
+                    <div className={styles.shieldDesc}>Auto-renewal enabled</div>
+                </div>
+            </motion.div>
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+                className={styles.shieldSuccessCard}
+            >
+                <span className={styles.shieldEmoji}>🛡️</span>
+                <div className={styles.shieldTextContent}>
+                    <div className={styles.shieldSuccessTitle}>BLOCKED & SAVED</div>
+                    <div className={styles.shieldDesc}>Rs 2,500/month avoided</div>
+                </div>
+            </motion.div>
+        </div>
+    </div>
+);
 
 const LandingPage = () => {
-    // Download extension handler - uses fetch to properly download the zip
+    const { scrollYProgress } = useScroll();
+    const yHero = useTransform(scrollYProgress, [0, 1], [0, 400]);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const handleDownloadExtension = async () => {
         try {
-            const response = await fetch('/expense-tracker-chrome-v2.zip');
+            const response = await fetch('/vibetracker-chrome-v2.7.0.zip');
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'expense-tracker-chrome-v2.zip';
+            link.download = 'vibetracker-chrome-v2.7.0.zip';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Download failed:', error);
-            // Fallback: open the file directly
-            window.open('/expense-tracker-chrome-v2.zip', '_blank');
+            window.open('/vibetracker-chrome-v2.7.0.zip', '_blank');
         }
     };
 
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
-    // Close mobile menu when a link is clicked
-    const handleMobileLinkClick = () => setIsMobileMenuOpen(false);
-
     return (
-        <div className={styles.landingPage}>
-            {/* Navigation */}
-            <nav className={styles.navbar}>
-                <Link to="/" className={styles.navLogo}>
-                    <img src="/logo.png" alt="Vibe Tracker" className={styles.logoImage} />
-                    <span>Vibe Tracker</span>
-                </Link>
-
-
-                {/* Desktop Links */}
-                <div className={styles.navLinks}>
-                    <a href="#features" className={styles.navLink}>Features</a>
-                    <a href="#extension" className={styles.navLink}>Extension</a>
-                    <a href="#how-it-works" className={styles.navLink}>How It Works</a>
-                    <Link to="/login" className={styles.navLinkBtn}>Log In</Link>
-                    <Link to="/signup" className={styles.navCta}>
-                        Get Started <ArrowRight size={16} />
-                    </Link>
+        <div className={styles.landingContainer}>
+            {/* NAVIGATION */}
+            <nav className={styles.nav}>
+                <div className={styles.logo}>
+                    <div className={styles.logoIcon}>⚡</div>
+                    <span>VIBE TRACKER</span>
                 </div>
-
-                {/* Mobile Menu Button */}
-                <button
-                    className={styles.mobileMenuBtn}
-                    onClick={toggleMobileMenu}
-                    aria-label="Toggle menu"
-                >
-                    {isMobileMenuOpen ? <X size={24} /> : <div className={styles.hamburger}><Menu size={24} /></div>}
+                <div className={styles.navLinks}>
+                    <a href="#features">Features</a>
+                    <a href="#extension">Extension</a>
+                    <Link to="/login" className={styles.loginBtn}>Login</Link>
+                    <Link to="/signup" className={styles.signupBtn}>GET RICH 🤑</Link>
+                </div>
+                <button className={styles.mobileMenuBtn} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
-
-                {/* Mobile Menu Overlay */}
-                <AnimatePresence>
-                    {isMobileMenuOpen && (
-                        <motion.div
-                            className={styles.mobileMenu}
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                        >
-                            <a href="#features" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>Features</a>
-                            <a href="#extension" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>Extension</a>
-                            <a href="#how-it-works" className={styles.mobileNavLink} onClick={handleMobileLinkClick}>How It Works</a>
-                            <div className={styles.mobileNavActions}>
-                                <Link to="/login" className={styles.mobilenavLinkBtn} onClick={handleMobileLinkClick}>Log In</Link>
-                                <Link to="/signup" className={styles.mobileNavCta} onClick={handleMobileLinkClick}>
-                                    Get Started <ArrowRight size={16} />
-                                </Link>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </nav>
 
-            {/* Hero Section */}
-            <section className={styles.hero}>
-                <div className={styles.heroGlow}></div>
-                <motion.div
-                    className={styles.heroContent}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className={styles.heroBadge}>
-                        <Sparkles size={16} />
-                        <span>Gen-Z Financial Freedom</span>
-                    </div>
-                    <h1>
-                        Track Every <span className={styles.highlight}>Penny</span>,<br />
-                        Save Every <span className={styles.highlight2}>Dream</span> ✨
-                    </h1>
-                    <p>
-                        The most beautiful expense tracker you'll ever use. AI-powered insights,
-                        stunning dashboards, and zero boring spreadsheets. Your money, your rules.
-                    </p>
-                    <div className={styles.heroCtas}>
+            {/* HERO SECTION */}
+            <header className={styles.hero}>
+                <div className={styles.heroContent}>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={styles.heroBadge}
+                    >
+                        <Sparkles size={16} /> EST. 2024 • FINANCE FOR GEN Z
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className={styles.heroTitle}
+                    >
+                        STOP BEING<br />
+                        <span className={styles.highlight}>BROKE.</span> PERIOD.
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className={styles.heroSubtitle}
+                    >
+                        Track expenses, expose your spending habits, and actually save money for once.
+                        No boring spreadsheets. Just vibes.
+                    </motion.p>
+
+                    <div className={styles.heroActions}>
                         <Link to="/signup" className={styles.ctaPrimary}>
-                            Start Free Today <ArrowRight size={20} />
+                            START TRACKING <ArrowRight size={20} />
                         </Link>
-                        <a href="#extension" className={styles.ctaSecondary}>
-                            <Chrome size={20} /> Get Extension
-                        </a>
+                        <button onClick={() => document.getElementById('extension')?.scrollIntoView()} className={styles.ctaSecondary}>
+                            EXTENSION <Chrome size={20} />
+                        </button>
                     </div>
 
-                    {/* Stats Row */}
-                    <div className={styles.statsRow}>
-                        {stats.map((stat, i) => (
-                            <motion.div
-                                key={i}
-                                className={styles.statItem}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 + i * 0.1 }}
-                            >
-                                <span className={styles.statValue}>{stat.value}</span>
-                                <span className={styles.statLabel}>{stat.label}</span>
-                            </motion.div>
-                        ))}
+                    <div className={styles.activeUsers}>
+                        <div className={styles.avatars}>
+                            {[1, 2, 3].map(i => <div key={i} className={styles.avatar}>😎</div>)}
+                        </div>
+                        <p>Join <strong>10k+</strong> besties saving money</p>
                     </div>
-                </motion.div>
-
-                {/* Hero Visual */}
-                <motion.div
-                    className={styles.heroVisual}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                >
-                    <div className={styles.dashboardPreview}>
-                        <div className={styles.previewHeader}>
-                            <div className={styles.previewDots}>
-                                <span></span><span></span><span></span>
-                            </div>
-                            <span>Dashboard</span>
-                        </div>
-                        <div className={styles.previewContent}>
-                            <div className={styles.previewCard}>
-                                <span>This Month</span>
-                                <strong>$2,847</strong>
-                            </div>
-                            <div className={styles.previewCard}>
-                                <span>Saved</span>
-                                <strong className={styles.green}>+$653</strong>
-                            </div>
-                            <div className={styles.previewTransaction}>
-                                <span>🛍️</span>
-                                <div>
-                                    <strong>Amazon</strong>
-                                    <small>Shopping</small>
-                                </div>
-                                <span className={styles.amount}>-$89.99</span>
-                            </div>
-                            <div className={styles.previewTransaction}>
-                                <span>☕</span>
-                                <div>
-                                    <strong>Starbucks</strong>
-                                    <small>Food</small>
-                                </div>
-                                <span className={styles.amount}>-$7.50</span>
-                            </div>
-                            <div className={styles.previewProgress}>
-                                <div className={styles.progressLabel}>
-                                    <span>Shopping Budget</span>
-                                    <span>65%</span>
-                                </div>
-                                <div className={styles.progressBar}>
-                                    <motion.div
-                                        className={styles.progressFill}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: '65%' }}
-                                        transition={{ duration: 1, delay: 1 }}
-                                    ></motion.div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Floating Elements */}
-                    <motion.div
-                        className={`${styles.floater} ${styles.floater1}`}
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                    >
-                        🎯 Goal Reached!
-                    </motion.div>
-                    <motion.div
-                        className={`${styles.floater} ${styles.floater2}`}
-                        animate={{ y: [0, 10, 0] }}
-                        transition={{ duration: 4, repeat: Infinity }}
-                    >
-                        💳 Card Added
-                    </motion.div>
-                    <motion.div
-                        className={`${styles.floater} ${styles.floater3}`}
-                        animate={{ y: [0, -8, 0] }}
-                        transition={{ duration: 2.5, repeat: Infinity }}
-                    >
-                        📊 AI Insights
-                    </motion.div>
-                </motion.div>
-            </section>
-
-            {/* ============================================
-               EXTENSION SECTION
-               ============================================ */}
-            <section id="extension" className={styles.extensionSection}>
-                <motion.div
-                    className={styles.sectionHeader}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <span className={styles.sectionBadge}>🧩 Browser Extension</span>
-                    <h2>Auto-Track Your Purchases</h2>
-                    <p>Install our Chrome extension and never manually log a purchase again.</p>
-                </motion.div>
-
-                <div className={styles.extensionGrid}>
-                    {/* Extension Preview */}
-                    <motion.div
-                        className={styles.extensionPreview}
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <div className={styles.extensionMockup}>
-                            <div className={styles.mockupHeader}>
-                                <span>💰 Vibe Tracker</span>
-                                <span className={styles.mockupBadge}>v2.0</span>
-                            </div>
-                            <div className={styles.mockupStats}>
-                                <div className={styles.mockupStat}>
-                                    <span>💸</span>
-                                    <div>
-                                        <strong>$847.50</strong>
-                                        <small>This Month</small>
-                                    </div>
-                                </div>
-                                <div className={styles.mockupStat}>
-                                    <span>🛒</span>
-                                    <div>
-                                        <strong>24</strong>
-                                        <small>Purchases</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.mockupAlert}>
-                                ⚠️ Shopping budget at 85%
-                            </div>
-                            <div className={styles.mockupActions}>
-                                <button>📌 Clip</button>
-                                <button>➕ Add</button>
-                                <button>📊 Dashboard</button>
-                                <button>🎯 Budgets</button>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Extension Info */}
-                    <motion.div
-                        className={styles.extensionInfo}
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <h3>Extension Features</h3>
-                        <div className={styles.extFeaturesList}>
-                            {extensionFeatures.map((f, i) => (
-                                <div key={i} className={styles.extFeature}>
-                                    <span className={styles.extFeatureIcon}>{f.icon}</span>
-                                    <div>
-                                        <strong>{f.title}</strong>
-                                        <p>{f.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
                 </div>
 
-                {/* Download Section */}
-                <motion.div
-                    className={styles.downloadSection}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <div className={styles.downloadCard}>
-                        <div className={styles.downloadMain}>
-                            <div className={styles.browserIcon}>
-                                <Chrome size={40} />
+                <div className={styles.heroVisual}>
+                    <motion.div style={{ y: yHero }} className={styles.dashboardCard}>
+                        {/* Mock Dashboard Representation */}
+                        <div className={styles.browserHeader}>
+                            <div className={`${styles.browserDot} ${styles.red}`} />
+                            <div className={`${styles.browserDot} ${styles.yellow}`} />
+                            <div className={`${styles.browserDot} ${styles.green}`} />
+                            <div className={styles.browserUrl}>vibetracker.app/dashboard</div>
+                        </div>
+                        <div className={styles.mockDashContent}>
+                            <div className={styles.mockStatRow}>
+                                <div className={styles.mockStatCard}>
+                                    <span className={styles.mockStatValue}>$12,450</span>
+                                    <span className={styles.mockStatLabel}>Total Balance</span>
+                                </div>
+                                <div className={styles.mockStatCard}>
+                                    <span className={styles.mockStatValue}>-$850</span>
+                                    <span className={styles.mockStatLabel}>This Month</span>
+                                </div>
                             </div>
-                            <div className={styles.downloadInfo}>
-                                <h4>Chrome Extension</h4>
-                                <p>Developer Mode • Store Coming Soon</p>
-                                <span className={styles.devBadge}>🛠️ Dev Mode</span>
+                            <div className={styles.mockGraph}>
+                                {[40, 60, 45, 80, 55, 90, 70].map((h, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className={styles.graphBar}
+                                        initial={{ height: 0 }}
+                                        animate={{ height: `${h}%` }}
+                                        transition={{ duration: 1, delay: 0.5 + (i * 0.1) }}
+                                    />
+                                ))}
                             </div>
-                            <button
-                                onClick={handleDownloadExtension}
-                                className={styles.downloadBtn}
-                            >
-                                <Download size={20} />
-                                Download v2.1
+                        </div>
+
+                        {/* Floating elements */}
+                        <motion.div
+                            className={`${styles.floatSticker} ${styles.sticker1}`}
+                            animate={{ y: [-10, 10, -10] }}
+                            transition={{ repeat: Infinity, duration: 4 }}
+                        >
+                            💸 SAVED $500!
+                        </motion.div>
+                        <motion.div
+                            className={`${styles.floatSticker} ${styles.sticker2}`}
+                            animate={{ y: [10, -10, 10] }}
+                            transition={{ repeat: Infinity, duration: 5 }}
+                        >
+                            🔥 ON STREAK
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </header>
+
+            {/* MARQUEE */}
+            <div className={styles.marqueeContainer}>
+                <div className={styles.marqueeTrack}>
+                    {[...Array(10)].map((_, i) => (
+                        <span key={i} className={styles.marqueeItem}>
+                            TRACK MONEY 💸 SAVE VIBES ✨ NO CAP 🧢 STAY RICH 💰
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            {/* FEATURES GRID */}
+            <section id="features" className={styles.featuresSection}>
+                <h2 className={styles.sectionTitle}>EVERYTHING YOU NEED 📦</h2>
+                <p className={styles.sectionSubtitle}>We packed this bad boy with features to help you stop impulse buying used items at 3AM.</p>
+
+                <div className={styles.bentoGrid}>
+                    {/* Dark Pattern Shield - NEW FEATURE */}
+                    <div className={`${styles.bentoCard} ${styles.span2}`} style={{ background: '#F0FDF4', borderColor: '#10B981', position: 'relative' }}>
+                        <div className={styles.newBadge}>NEW ✨</div>
+                        <div className={styles.featureIcon} style={{ background: '#10B981', color: '#fff' }}>
+                            <Shield size={30} />
+                        </div>
+                        <h3 className={styles.featureTitle}>Dark Pattern Shield 🛡️</h3>
+                        <p className={styles.featureDesc}>
+                            We detect sneaky subscriptions, hidden charges, and guilt-trip buttons.
+                            Get warned BEFORE you get charged. Set trial reminders. Stay protected.
+                        </p>
+                        <VisualShield />
+                    </div>
+
+                    {/* Dynamic Auto-Tracking */}
+                    <div className={`${styles.bentoCard} ${styles.span2}`} style={{ background: '#F0FDFA', borderColor: '#059669' }}>
+                        <div className={styles.featureIcon} style={{ background: '#0891B2', color: '#fff' }}>
+                            <Zap size={30} fill="currentColor" />
+                        </div>
+                        <h3 className={styles.featureTitle}>Auto-Save Magic ✨</h3>
+                        <p className={styles.featureDesc}>
+                            You shop. We save it. Instantly. <br />
+                            Our tech detects transactions and logs them for you. No manual entry required.
+                        </p>
+                        <VisualAutoSave />
+                    </div>
+
+                    {/* Analytics Card */}
+                    <div className={`${styles.bentoCard} ${styles.span2}`}>
+                        <div className={styles.featureIcon}><PieChart /></div>
+                        <h3 className={styles.featureTitle}>The Command Center</h3>
+                        <p className={styles.featureDesc}>Real-time analytics that look sexy.</p>
+                        <VisualAnalytics />
+                    </div>
+
+                    {/* AI Chat Card */}
+                    <div className={`${styles.bentoCard} ${styles.span1} ${styles.rowSpan2}`}>
+                        <div className={styles.featureIcon}><Sparkles /></div>
+                        <h3 className={styles.featureTitle}>AI Roast Master</h3>
+                        <p className={styles.featureDesc}>Get roasted when you overspend.</p>
+                        <VisualChat />
+                    </div>
+
+                    {/* Goals Card */}
+                    <div className={`${styles.bentoCard} ${styles.span1}`}>
+                        <div className={styles.featureIcon}><Target /></div>
+                        <h3 className={styles.featureTitle}>Dream Big</h3>
+                        <p className={styles.featureDesc}>Saving for a trip? Track it here.</p>
+                        <VisualGoal />
+                    </div>
+
+                    {/* Other Features */}
+                    <div className={`${styles.bentoCard} ${styles.span1}`}>
+                        <div className={styles.featureIcon}><CreditCard /></div>
+                        <h3 className={styles.featureTitle}>Budgets</h3>
+                        <p className={styles.featureDesc}>Set limits. Don't cross them.</p>
+                    </div>
+
+                    <div className={`${styles.bentoCard} ${styles.span1}`}>
+                        <div className={styles.featureIcon}><Bell /></div>
+                        <h3 className={styles.featureTitle}>Sub Slayers</h3>
+                        <p className={styles.featureDesc}>Kill unused subscriptions.</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* EXTENSION SHOWCASE */}
+            < section id="extension" className={styles.extensionSection} >
+                <div className={styles.extensionContent}>
+                    <div className={styles.extensionText}>
+                        <span className={styles.heroBadge}>v2.7.0 • AVAILABLE ON CHROME</span>
+                        <h2 className={styles.extensionTitle}>BROWSE. CLICK. TRACKED. 🪄</h2>
+                        <p className={styles.extensionDesc}>
+                            Our extension sits quietly in your browser. When you visit Amazon, eBay, or 100+ other stores, it lights up.
+                            <br /><br />
+                            <strong>See a price? One click to save it.</strong> Manage categories, add notes, and sync to your dashboard instantly.
+                            <br /><br />
+                            <span style={{ color: '#10B981', fontWeight: 800 }}>✨ NEW in v2.7:</span> Secure auto-logout sync, improved login UI, and smarter notifications!
+                        </p>
+
+                        <div className={styles.installBox}>
+                            <div className={styles.stepsGrid}>
+                                <div className={styles.stepCard}>
+                                    <div className={styles.stepNum}>1</div>
+                                    <div className={styles.stepTitle}>DOWNLOAD</div>
+                                    <div className={styles.stepDesc}>Get the .zip file</div>
+                                </div>
+                                <div className={styles.stepCard}>
+                                    <div className={styles.stepNum}>2</div>
+                                    <div className={styles.stepTitle}>LOAD</div>
+                                    <div className={styles.stepDesc}>Unpack in Chrome</div>
+                                </div>
+                                <div className={styles.stepCard}>
+                                    <div className={styles.stepNum}>3</div>
+                                    <div className={styles.stepTitle}>PROFIT</div>
+                                    <div className={styles.stepDesc}>Start tracking!</div>
+                                </div>
+                            </div>
+
+                            <button onClick={handleDownloadExtension} className={styles.ctaPrimary}>
+                                <Download size={24} /> DOWNLOAD EXTENSION
                             </button>
                         </div>
-
-                        <div className={styles.browserRow}>
-                            <div className={styles.browserItem}>
-                                <span>🌐</span>
-                                <div>
-                                    <strong>Brave</strong>
-                                    <small>Use Chrome version</small>
-                                </div>
-                                <span className={styles.compatBadge}>Compatible</span>
-                            </div>
-                            <div className={styles.browserItem}>
-                                <span>🦊</span>
-                                <div>
-                                    <strong>Firefox</strong>
-                                    <small>Dev Mode Available</small>
-                                </div>
-                                <span className={styles.devBadge}>🛠️ Dev</span>
-                            </div>
-                            <div className={styles.browserItem}>
-                                <span>🔷</span>
-                                <div>
-                                    <strong>Edge</strong>
-                                    <small>Dev Mode Available</small>
-                                </div>
-                                <span className={styles.devBadge}>🛠️ Dev</span>
-                            </div>
-                        </div>
-
-                        <div className={styles.storeNotice}>
-                            <span>🏪</span>
-                            <div>
-                                <strong>Chrome Web Store Coming Soon!</strong>
-                                <p>We're working on publishing to official browser stores. For now, use Developer Mode installation.</p>
-                            </div>
-                        </div>
                     </div>
-                </motion.div>
 
-
-                {/* Installation Guide */}
-                <motion.div
-                    className={styles.installGuide}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <h3>How to Install (Developer Mode)</h3>
-                    <div className={styles.installSteps}>
-                        <div className={styles.installStep}>
-                            <div className={styles.stepNumber}>1</div>
-                            <div className={styles.stepContent}>
-                                <h4>Download & Extract</h4>
-                                <p>Download the .zip file above and extract it to a folder on your computer.</p>
-                            </div>
-                        </div>
-                        <div className={styles.installStep}>
-                            <div className={styles.stepNumber}>2</div>
-                            <div className={styles.stepContent}>
-                                <h4>Open Extensions Page</h4>
-                                <p>Go to <code>chrome://extensions</code> in Chrome or <code>brave://extensions</code> in Brave.</p>
-                            </div>
-                        </div>
-                        <div className={styles.installStep}>
-                            <div className={styles.stepNumber}>3</div>
-                            <div className={styles.stepContent}>
-                                <h4>Enable Developer Mode</h4>
-                                <p>Toggle "Developer mode" ON in the top-right corner of the extensions page.</p>
-                            </div>
-                        </div>
-                        <div className={styles.installStep}>
-                            <div className={styles.stepNumber}>4</div>
-                            <div className={styles.stepContent}>
-                                <h4>Load Extension</h4>
-                                <p>Click "Load unpacked" and select the extracted folder. The extension is now installed!</p>
-                            </div>
-                        </div>
-                        <div className={styles.installStep}>
-                            <div className={styles.stepNumber}>5</div>
-                            <div className={styles.stepContent}>
-                                <h4>Sign In & Sync</h4>
-                                <p>Click the extension icon, sign in with your account, and start tracking!</p>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-            </section>
-
-            {/* Features Grid */}
-            <section id="features" className={styles.features}>
-                <motion.div
-                    className={styles.sectionHeader}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <span className={styles.sectionBadge}>✨ Everything You Need</span>
-                    <h2>Packed with Features</h2>
-                    <p>From basic tracking to AI-powered insights, we've got you covered.</p>
-                </motion.div>
-
-                <div className={styles.featuresGrid}>
-                    {features.map((feature, index) => (
+                    <div className={styles.extensionVisual}>
                         <motion.div
-                            key={index}
-                            className={styles.featureCard}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.05 }}
-                            whileHover={{ y: -5 }}
+                            className={styles.mockExtensionPopup}
+                            initial={{ y: 50, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.5 }}
                         >
-                            <div
-                                className={styles.featureIcon}
-                                style={{ background: `${feature.color}15`, color: feature.color }}
-                            >
-                                {feature.icon}
+                            <div className={styles.popupHeader}>
+                                <div className={styles.popupBrand}>
+                                    <div className={styles.popupLogo}>⚡</div>
+                                    <div className={styles.popupTitle}>VIBE TRACKER</div>
+                                </div>
                             </div>
-                            <h3>{feature.title}</h3>
-                            <p>{feature.description}</p>
+                            <div className={styles.popupBody}>
+                                <div className={`${styles.popupCard} ${styles.primary}`}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                                        <span style={{ fontWeight: 800 }}>THIS MONTH</span>
+                                        <span style={{ fontWeight: 800 }}>💸</span>
+                                    </div>
+                                    <span style={{ fontSize: '1.8rem', fontWeight: 900, display: 'block' }}>$342.50</span>
+                                </div>
+
+                                <div className={styles.popupCard}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <div style={{ width: '30px', height: '30px', background: '#E5E7EB', borderRadius: '50%', border: '2px solid #000' }} />
+                                        <div>
+                                            <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>Amazon</div>
+                                            <div style={{ fontSize: '0.8rem', color: '#6B7280' }}>Headphones</div>
+                                        </div>
+                                        <div style={{ marginLeft: 'auto', fontWeight: 800 }}>-$298</div>
+                                    </div>
+                                </div>
+
+                                <div className={styles.popupBtn}>
+                                    + ADD EXPENSE
+                                </div>
+                            </div>
                         </motion.div>
-                    ))}
-                </div>
-            </section>
-
-            {/* How It Works */}
-            <section id="how-it-works" className={styles.howItWorks}>
-                <motion.div
-                    className={styles.sectionHeader}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <span className={styles.sectionBadge}>🚀 Quick Start</span>
-                    <h2>Up & Running in Minutes</h2>
-                    <p>No complex setup. Just sign up and start tracking.</p>
-                </motion.div>
-
-                <div className={styles.stepsContainer}>
-                    {[
-                        { num: '01', title: 'Create Account', desc: 'Sign up with email or Google. Takes 10 seconds.', icon: '📧' },
-                        { num: '02', title: 'Add a Transaction', desc: 'Log your first expense or import from CSV/PDF.', icon: '➕' },
-                        { num: '03', title: 'Set Budgets', desc: 'Define limits per category. Get smart alerts.', icon: '🎯' },
-                        { num: '04', title: 'Track & Grow', desc: 'Watch your savings grow. Hit your goals.', icon: '📈' },
-                    ].map((step, i) => (
-                        <motion.div
-                            key={i}
-                            className={styles.stepCard}
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.15 }}
-                        >
-                            <div className={styles.stepNum}>{step.num}</div>
-                            <div className={styles.stepIcon}>{step.icon}</div>
-                            <h3>{step.title}</h3>
-                            <p>{step.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Security Section */}
-            <section className={styles.securitySection}>
-                <motion.div
-                    className={styles.securityContent}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    <div className={styles.securityIcon}>
-                        <Lock size={40} />
-                    </div>
-                    <h2>Your Data is <span>Fort Knox</span> Safe</h2>
-                    <p>
-                        We use bank-level encryption, secure authentication, and never sell your data.
-                        Your financial information stays private. Always.
-                    </p>
-                    <div className={styles.securityBadges}>
-                        <div className={styles.badge}>🔐 256-bit Encryption</div>
-                        <div className={styles.badge}>✅ Email OTP Verification</div>
-                        <div className={styles.badge}>🔑 OAuth 2.0</div>
-                        <div className={styles.badge}>🛡️ Row-Level Security</div>
-                    </div>
-                </motion.div>
-            </section>
-
-            {/* CTA Section */}
-            <section className={styles.ctaSection}>
-                <motion.div
-                    className={styles.ctaContent}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                >
-                    <Sparkles className={styles.ctaSparkle} size={40} />
-                    <h2>Ready to Take Control? 🚀</h2>
-                    <p>Join thousands who've transformed their financial habits. It's free, forever.</p>
-                    <div className={styles.ctaButtons}>
-                        <Link to="/signup" className={styles.ctaPrimaryLarge}>
-                            Create Free Account <ArrowRight size={24} />
-                        </Link>
-                    </div>
-                    <span className={styles.ctaNote}>No credit card required • Free forever • Cancel anytime</span>
-                </motion.div>
-            </section>
-
-            {/* Footer */}
-            <footer className={styles.footer}>
-                <div className={styles.footerTop}>
-                    <div className={styles.footerBrand}>
-                        <span className={styles.footerLogo}>
-                            <img src="/logo.png" alt="Vibe Tracker" className={styles.footerLogoImage} />
-                            Vibe Tracker
-                        </span>
-
-                        <p>The Gen-Z way to manage money.</p>
-                        <div className={styles.footerSocials}>
-                            <a href="https://github.com/baigcoder" target="_blank" rel="noopener noreferrer" title="GitHub">
-                                <span>🐙</span>
-                            </a>
-                            <a href="https://hassan-baigo-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer" title="Portfolio">
-                                <span>🌐</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/hassan-baig-672778111/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                                <span>💼</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div className={styles.footerLinks}>
-                        <div>
-                            <h4>Product</h4>
-                            <a href="#features">Features</a>
-                            <a href="#extension">Extension</a>
-                            <a href="#how-it-works">How It Works</a>
-                            <Link to="/login">Login</Link>
-                        </div>
-                        <div>
-                            <h4>Legal</h4>
-                            <Link to="/privacy">Privacy Policy</Link>
-                            <Link to="/terms">Terms of Service</Link>
-                            <Link to="/faq">Cookie Policy</Link>
-                        </div>
-                        <div>
-                            <h4>Support</h4>
-                            <Link to="/faq">Help Center</Link>
-                            <Link to="/contact">Contact Us</Link>
-                            <Link to="/faq">FAQ</Link>
-                        </div>
-
                     </div>
                 </div>
+            </section >
 
-                <div className={styles.footerDivider} />
-
-                <div className={styles.footerBottom}>
-                    <p>© 2024 Vibe Tracker. All rights reserved.</p>
-                    <a
-                        href="https://hassan-baigo-portfolio.vercel.app/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.developerCard}
-                    >
-                        <img src="/developer.png" alt="Hassan Baig" className={styles.developerAvatar} />
-                        <div className={styles.developerInfo}>
-                            <span className={styles.developerName}>
-                                Hassan<span className={styles.orangeText}>Baig</span>
-                            </span>
-                            <span className={styles.developerRole}>FULL STACK DEV</span>
-                        </div>
-                    </a>
+            {/* FINAL CTA */}
+            < section className={styles.finalCta} >
+                <div className={styles.ctaContent}>
+                    <h2 className={styles.finalTitle}>READY TO FIX YOUR FINANCES?</h2>
+                    <Link to="/signup" className={styles.finalBtn}>
+                        CREATE FREE ACCOUNT <Star fill="currentColor" />
+                    </Link>
                 </div>
+            </section >
 
-            </footer>
-
-        </div>
+            {/* FOOTER */}
+            < footer className={styles.nav} style={{ position: 'relative', borderTop: '3px solid #000', borderBottom: 'none' }}>
+                <div className={styles.logo}>
+                    <div className={styles.logoIcon}>⚡</div>
+                    <span>VIBE TRACKER</span>
+                </div>
+                <div style={{ display: 'flex', gap: '1rem', fontWeight: 800 }}>
+                    <Globe size={20} />
+                    <span>Built by Hassan Baig</span>
+                </div>
+            </footer >
+        </div >
     );
 };
 

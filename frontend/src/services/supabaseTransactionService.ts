@@ -24,8 +24,7 @@ export const supabaseTransactionService = {
             .from('transactions')
             .select('*')
             .eq('user_id', userId)
-            .order('date', { ascending: false })
-            .limit(100);
+            .order('date', { ascending: false });
 
         if (error) {
             console.error('Error fetching transactions:', error);

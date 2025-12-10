@@ -1,95 +1,36 @@
-// Loading Screen Component - Neo-Brutalist Style
+// Loading Screen Component - Compact Gen-Z Vibe ⚡
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { notificationSound } from '../services/notificationSoundService';
 import styles from './LoadingScreen.module.css';
 
 const LoadingScreen = () => {
+
+    useEffect(() => {
+        // Play a subtle pop sound on mount
+        const timer = setTimeout(() => {
+            notificationSound.playPop();
+        }, 100);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <div className={styles.container}>
-            {/* Decorative Background Shapes */}
             <motion.div
-                className={styles.shape1}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-                className={styles.shape2}
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-            />
-            <motion.div
-                className={styles.shape3}
-                animate={{ x: [0, 15, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-            />
-
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className={styles.content}
+                className={styles.loaderCard}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-                {/* Logo Icon */}
-                <motion.div
-                    className={styles.logoContainer}
-                    animate={{
-                        rotate: [0, -5, 5, -5, 0],
-                    }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                >
-                    <img src="/logo.png" alt="Vibe Tracker" className={styles.logo} />
-                </motion.div>
+                <div className={styles.spinner}></div>
 
-                {/* Title */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className={styles.title}
-                >
-                    Vibe Tracker
-                </motion.h1>
-
-                {/* Loading Bar Container */}
-                <div className={styles.loadingBarContainer}>
-                    <motion.div
-                        initial={{ width: "0%" }}
-                        animate={{ width: "100%" }}
-                        transition={{
-                            duration: 1.2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                        className={styles.loadingBar}
-                    />
+                <div style={{ textAlign: 'center' }}>
+                    <h2 className={styles.loadingText}>Loading Vibes...</h2>
+                    <p className={styles.subText}>Hold tight, we're crunching the numbers.</p>
                 </div>
 
-                {/* Loading Text */}
-                <motion.p
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className={styles.loadingText}
-                >
-                    Getting your vibes ready... ⚡
-                </motion.p>
-
-                {/* Bouncing Dots */}
-                <div className={styles.dotsContainer}>
-                    {[0, 1, 2].map((i) => (
-                        <motion.div
-                            key={i}
-                            className={styles.dot}
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{
-                                duration: 0.6,
-                                repeat: Infinity,
-                                delay: i * 0.15
-                            }}
-                        />
-                    ))}
+                <div className={styles.progressContainer}>
+                    <div className={styles.progressBar}></div>
                 </div>
             </motion.div>
         </div>

@@ -1,10 +1,10 @@
 // Content Script for Website - Handles session sharing between website and extension
-// This script runs on the expense tracker website to enable seamless sync
+// This script runs on the Vibe Tracker website to enable seamless sync
 
 (function () {
     'use strict';
 
-    console.log('💰 Expense Tracker Extension: Website content script loaded');
+    console.log('💸 Vibe Tracker Extension: Website sync loaded');
 
     // Set a flag so website knows extension is installed
     const setExtensionFlag = () => {
@@ -14,10 +14,10 @@
                 version: chrome.runtime.getManifest().version,
                 timestamp: Date.now()
             };
-            localStorage.setItem('expense_tracker_extension', JSON.stringify(extensionData));
+            localStorage.setItem('vibe_tracker_extension', JSON.stringify(extensionData));
 
             // Also dispatch a custom event
-            window.dispatchEvent(new CustomEvent('expense-tracker-extension-ready', {
+            window.dispatchEvent(new CustomEvent('vibe-tracker-extension-ready', {
                 detail: extensionData
             }));
         } catch (e) {
@@ -113,9 +113,14 @@
 
             case 'LOGOUT':
                 try {
+                    // Clear extension sync flags
+                    localStorage.removeItem('extension_synced');
+                    localStorage.removeItem('expense_tracker_session');
+
                     await chrome.runtime.sendMessage({
                         type: 'USER_LOGGED_OUT'
                     });
+                    console.log('🚪 Logout forwarded to extension');
                 } catch (e) {
                     console.log('Could not forward logout:', e);
                 }
@@ -244,10 +249,41 @@
                         }
                     }).catch(e => console.log('Auto-sync failed:', e));
                 }
+            } else {
+                // No session found - make sure extension is logged out too
+                chrome.runtime.sendMessage({
+                    type: 'USER_LOGGED_OUT'
+                }).catch(e => { });
             }
         } catch (e) {
             // Ignore errors
         }
     }, 1000);
+
+    // SECURITY: Watch for storage changes (handles cross-tab logout)
+    window.addEventListener('storage', (event) => {
+        if (event.key && event.key.startsWith('sb-') && event.key.endsWith('-auth-token')) {
+            if (!event.newValue || event.newValue === 'null') {
+                console.log('🚪 Detected logout via storage event');
+                chrome.runtime.sendMessage({
+                    type: 'USER_LOGGED_OUT'
+                }).catch(e => { });
+            }
+        }
+    });
+
+    // SECURITY: Periodically verify session is still valid
+    setInterval(() => {
+        const supabaseKey = Object.keys(localStorage).find(key =>
+            key.startsWith('sb-') && key.endsWith('-auth-token')
+        );
+
+        if (!supabaseKey) {
+            // No session - ensure extension knows
+            chrome.runtime.sendMessage({
+                type: 'CHECK_AND_LOGOUT_IF_NEEDED'
+            }).catch(e => { });
+        }
+    }, 30000); // Check every 30 seconds
 
 })();

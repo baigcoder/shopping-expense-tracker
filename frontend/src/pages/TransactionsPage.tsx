@@ -15,7 +15,7 @@ import ExportModal from '../components/ExportModal';
 import { ParsedTransaction } from '../services/csvImportService';
 import { ExtractedTransaction } from '../services/pdfAnalyzerService';
 import styles from './TransactionsPage.module.css';
-import { toast } from 'react-toastify';
+import genZToast from '../services/genZToast';
 
 const TransactionsPage = () => {
     const [page, setPage] = useState(1);
@@ -98,9 +98,9 @@ const TransactionsPage = () => {
         try {
             const transactions = await supabaseTransactionService.getAll(supabaseUserId);
             setSupabaseTransactions(transactions);
-            toast.success('Transactions refreshed! 🔄');
+            genZToast.success('Transactions refreshed! 🔄');
         } catch (error) {
-            toast.error('Failed to refresh');
+            genZToast.error('Failed to refresh');
         } finally {
             setIsLoadingSupabase(false);
         }

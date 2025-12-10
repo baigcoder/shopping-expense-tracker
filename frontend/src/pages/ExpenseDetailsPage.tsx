@@ -236,12 +236,19 @@ const ExpenseDetailsPage = () => {
         return (
             <div className={styles.container}>
                 <div className={styles.loadingState}>
-                    <Loader2 size={40} className={styles.spinner} />
-                    <p>Loading your money moves...</p>
+                    <motion.div
+                        className={styles.loaderCard}
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                    >
+                        <span style={{ fontSize: '3rem' }}>💸</span>
+                    </motion.div>
+                    <p>loading your money moves<span className={styles.loadingDots}></span></p>
                 </div>
             </div>
         );
     }
+
 
     return (
         <div className={styles.container}>

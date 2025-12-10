@@ -7,18 +7,32 @@ import styles from './Header.module.css';
 
 // Custom Logo Component - Vibe Tracker
 const BrandLogo = () => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <img
-            src="/logo.png"
-            alt="Vibe Tracker"
-            style={{ width: '32px', height: '32px', objectFit: 'contain' }}
-        />
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+        <div style={{
+            background: '#FBBF24',
+            border: '3px solid #000',
+            borderRadius: '8px',
+            padding: '4px',
+            boxShadow: '3px 3px 0px #000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <img
+                src="/logo.png"
+                alt="Vibe Tracker"
+                style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+            />
+        </div>
         <span style={{
-            fontWeight: 800,
-            fontSize: '1.1rem',
+            fontWeight: 900,
+            fontSize: '1.4rem',
             color: '#000',
-            fontFamily: "'Space Grotesk', sans-serif",
-            letterSpacing: '-0.5px'
+            fontFamily: "'Outfit', sans-serif",
+            textTransform: 'uppercase',
+            letterSpacing: '-1px',
+            textShadow: '2px 2px 0px #CBD5E1',
+            fontStyle: 'italic'
         }}>
             Vibe Tracker
         </span>
@@ -47,25 +61,25 @@ const Header = () => {
 
     return (
         <header className={styles.header}>
-            <div className={styles.left}>
-                <Link to="/dashboard" className={styles.logo}>
+            <div className={styles.logoSection}>
+                <Link to="/dashboard" className={styles.logoLink}>
                     <BrandLogo />
                 </Link>
-
-                <nav className={styles.nav}>
-                    {navItems.map(item => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeLink : ''}`}
-                        >
-                            {item.label}
-                        </NavLink>
-                    ))}
-                </nav>
             </div>
 
-            <div className={styles.right}>
+            <nav className={styles.navSection}>
+                {navItems.map(item => (
+                    <NavLink
+                        key={item.path}
+                        to={item.path}
+                        className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeLink : ''}`}
+                    >
+                        {item.label}
+                    </NavLink>
+                ))}
+            </nav>
+
+            <div className={styles.actionsSection}>
                 <button
                     className={styles.iconButton}
                     aria-label="Settings"

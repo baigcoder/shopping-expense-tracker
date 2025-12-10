@@ -30,8 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const clipPageBtn = document.getElementById('clipPageBtn');
     const addManualBtn = document.getElementById('addManualBtn');
     const openDashboardBtn = document.getElementById('openDashboard');
-    const viewBudgetsBtn = document.getElementById('viewBudgetsBtn');
+    const viewProtectionBtn = document.getElementById('viewProtection');
     const refreshBtn = document.getElementById('refreshBtn');
+
+    // Shield stats elements
+    const patternsBlockedEl = document.getElementById('patternsBlocked');
+    const moneySavedEl = document.getElementById('moneySaved');
 
     // Settings elements
     const backFromSettings = document.getElementById('backFromSettings');
@@ -39,6 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const notificationsToggle = document.getElementById('notificationsToggle');
     const budgetAlertsToggle = document.getElementById('budgetAlertsToggle');
     const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkPatternToggle = document.getElementById('darkPatternToggle');
+    const trialRemindersToggle = document.getElementById('trialRemindersToggle');
 
     // Manual add elements
     const backFromManual = document.getElementById('backFromManual');
@@ -52,9 +58,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ================================
     const SUPABASE_URL = 'https://ebfolvhqjvavrwrfcbhn.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViZm9sdmhxanZhdnJ3cmZjYmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM2NjI0NDgsImV4cCI6MjA0OTIzODQ0OH0.RC7d0vMx1F4Z2J2Ovl9m2hZV8HCmZ2f6pBWSN-GJ3O0';
-    const WEBSITE_URL = 'http://localhost:5173';
+    const WEBSITE_URL = 'https://vibe-tracker-expense-genz.vercel.app';
     const DASHBOARD_URL = `${WEBSITE_URL}/dashboard`;
-    const BUDGETS_URL = `${WEBSITE_URL}/budgets`;
+    const PROTECTION_URL = `${WEBSITE_URL}/protection`;
 
     // ================================
     // INITIALIZATION
@@ -78,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         switch (viewName) {
             case 'login':
-                loginView.style.display = 'block';
+                loginView.style.display = 'flex'; // Flex for centering content
                 break;
             case 'main':
                 mainView.style.display = 'block';
@@ -148,7 +154,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loadStats(),
                 loadRecentTransactions(),
                 loadCategories(),
-                checkBudgetAlerts()
+                checkBudgetAlerts(),
+                loadShieldStats()
             ]);
         } else {
             showView('login');
@@ -220,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ================================
 
     logoutBtn.addEventListener('click', async () => {
-        if (confirm('Sign out from Expense Tracker?')) {
+        if (confirm('Sign out from Vibe Tracker? 👋')) {
             await chrome.storage.local.remove([
                 'supabaseSession', 'accessToken', 'userId', 'userEmail',
                 'userName', 'syncedFromWebsite', 'lastSync'
@@ -244,9 +251,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         chrome.tabs.create({ url: DASHBOARD_URL });
     });
 
-    viewBudgetsBtn.addEventListener('click', () => {
-        chrome.tabs.create({ url: BUDGETS_URL });
-    });
+    if (viewProtectionBtn) {
+        viewProtectionBtn.addEventListener('click', () => {
+            chrome.tabs.create({ url: PROTECTION_URL });
+        });
+    }
 
     refreshBtn.addEventListener('click', async () => {
         refreshBtn.style.animation = 'spin 0.5s ease';
@@ -254,7 +263,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadStats(),
             loadRecentTransactions(),
             loadCategories(),
-            checkBudgetAlerts()
+            checkBudgetAlerts(),
+            loadShieldStats()
         ]);
         setTimeout(() => {
             refreshBtn.style.animation = '';
@@ -266,7 +276,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ================================
 
     clipPageBtn.addEventListener('click', async () => {
-        clipPageBtn.querySelector('span').textContent = '⏳';
+        const iconSpan = clipPageBtn.querySelector('.action-icon');
+        const originalIcon = iconSpan ? iconSpan.textContent : '📌';
+
+        if (iconSpan) iconSpan.textContent = '⏳';
         clipPageBtn.disabled = true;
 
         try {
@@ -274,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_PRODUCT' }, async (response) => {
                 if (chrome.runtime.lastError) {
-                    showActionFeedback(clipPageBtn, '❌', 'Clip');
+                    showActionFeedback(clipPageBtn, '❌');
                     return;
                 }
 
@@ -285,16 +298,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                         category: getCategoryFromStore(response.data.storeName),
                         source: 'extension-clip'
                     });
-                    showActionFeedback(clipPageBtn, '✅', 'Clip');
+                    showActionFeedback(clipPageBtn, '✅');
                     await loadStats();
                     await loadRecentTransactions();
                 } else {
-                    showActionFeedback(clipPageBtn, '🚫', 'Clip');
+                    showActionFeedback(clipPageBtn, '🚫');
                 }
             });
         } catch (error) {
             console.error('Clip error:', error);
-            showActionFeedback(clipPageBtn, '❌', 'Clip');
+            showActionFeedback(clipPageBtn, '❌');
         }
     });
 
@@ -349,7 +362,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (autoTrackToggle) autoTrackToggle.checked = settings.autoTrack !== false;
         if (notificationsToggle) notificationsToggle.checked = settings.showNotifications !== false;
         if (budgetAlertsToggle) budgetAlertsToggle.checked = settings.budgetAlerts !== false;
-        if (darkModeToggle) darkModeToggle.checked = settings.darkMode || false;
+        if (darkModeToggle) {
+            darkModeToggle.checked = settings.darkMode || false;
+            if (settings.darkMode) document.body.classList.add('dark-mode');
+        }
     }
 
     if (autoTrackToggle) {
@@ -595,6 +611,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ================================
+    // DARK PATTERN SHIELD STATS
+    // ================================
+
+    async function loadShieldStats() {
+        try {
+            const stats = await chrome.storage.local.get(['vt_dark_pattern_stats']);
+            const data = stats.vt_dark_pattern_stats || { totalBlocked: 0, totalSaved: 0 };
+
+            if (patternsBlockedEl) {
+                patternsBlockedEl.textContent = data.totalBlocked || 0;
+            }
+            if (moneySavedEl) {
+                const saved = data.totalSaved || 0;
+                moneySavedEl.textContent = saved >= 1000
+                    ? `Rs ${(saved / 1000).toFixed(1)}K`
+                    : `Rs ${saved.toFixed(0)}`;
+            }
+        } catch (error) {
+            console.log('Shield stats load error:', error);
+        }
+    }
+
+    // ================================
     // RENDER FUNCTIONS
     // ================================
 
@@ -670,15 +709,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         loginError.style.display = 'block';
     }
 
-    function showActionFeedback(button, emoji, originalText) {
-        const span = button.querySelector('span') || button;
-        span.textContent = emoji;
+    function showActionFeedback(button, emoji) {
+        const iconSpan = button.querySelector('.action-icon');
+        const originalIcon = iconSpan ? iconSpan.textContent : '';
+
+        if (iconSpan) iconSpan.textContent = emoji;
         button.disabled = true;
 
         setTimeout(() => {
-            span.textContent = `📌`;
+            if (iconSpan) iconSpan.textContent = originalIcon;
             button.disabled = false;
-        }, 2000);
+        }, 1500);
     }
 
     function formatDate(dateString) {
@@ -725,6 +766,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (message.type === 'SESSION_UPDATED') {
             checkAuthAndShowView();
+        }
+        // SECURITY: Force logout when website logs out
+        if (message.type === 'USER_LOGGED_OUT') {
+            console.log('🚪 Received logout signal - showing login view');
+            showView('login');
         }
     });
 });

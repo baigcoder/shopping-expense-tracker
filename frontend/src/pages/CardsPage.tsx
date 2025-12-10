@@ -1,8 +1,9 @@
-// Cards Page - Professional Design with Card Details Modal
+// Cards Page - Gen Z Design 💳
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, CreditCard, Trash2, Eye, EyeOff, Shield, Zap, Smartphone, X, Clock, Lock, CheckCircle, AlertCircle, Copy, Check } from 'lucide-react';
 import { useCardStore, useModalStore, useAuthStore, Card, CardBrand } from '../store/useStore';
+import { cardService } from '../services/cardService';
 import { toast } from 'react-toastify';
 import styles from './CardsPage.module.css';
 
@@ -429,22 +430,61 @@ const PinModal = ({ isOpen, onClose, onVerify, cardBrand }: PinModalProps) => {
 };
 
 const CardsPage = () => {
-    const { cards, removeCard } = useCardStore();
+    const { removeCard } = useCardStore();
     const { openAddCard } = useModalStore();
     const { user } = useAuthStore();
+
+    // Cards state from Supabase
+    const [cards, setCards] = useState<Card[]>([]);
+    const [loading, setLoading] = useState(true);
 
     // CVV reveal state with expiry timestamps
     const [revealedCVVs, setRevealedCVVs] = useState<{ [cardId: string]: number }>({});
     const [pinModalCard, setPinModalCard] = useState<Card | null>(null);
     const [detailsModalCard, setDetailsModalCard] = useState<Card | null>(null);
 
-    const handleDelete = (id: string) => {
-        removeCard(id);
-        toast.success("Card removed! 🗑️", { icon: () => <span>🗑️</span> });
-        setRevealedCVVs(prev => {
-            const { [id]: _, ...rest } = prev;
-            return rest;
-        });
+    // Load cards from Supabase
+    const loadCards = useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            setLoading(true);
+            const data = await cardService.getAll(user.id);
+            // Map Supabase data to Card type
+            setCards(data.map((c: any) => ({
+                ...c,
+                type: c.card_type || c.type || 'unknown'
+            })));
+        } catch (error) {
+            console.error('Failed to load cards:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [user?.id]);
+
+    useEffect(() => {
+        loadCards();
+
+        // Listen for new cards
+        const handleNewCard = () => loadCards();
+        window.addEventListener('new-card', handleNewCard);
+        return () => window.removeEventListener('new-card', handleNewCard);
+    }, [loadCards]);
+
+    const handleDelete = async (id: string) => {
+        // Delete from Supabase
+        const success = await cardService.delete(id);
+        if (success) {
+            setCards(prev => prev.filter(c => c.id !== id));
+            removeCard(id); // Also remove from local store
+            toast.success("Card removed! 🗑️", { icon: () => <span>🗑️</span> });
+            setRevealedCVVs(prev => {
+                const { [id]: _, ...rest } = prev;
+                return rest;
+            });
+            setDetailsModalCard(null);
+        } else {
+            toast.error('Failed to delete card');
+        }
     };
 
     const handleRevealClick = (card: Card) => {
@@ -519,11 +559,12 @@ const CardsPage = () => {
             <div className={styles.heroHeader}>
                 <div className={styles.heroContent}>
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
+                        transition={{ type: "spring", stiffness: 100 }}
                     >
-                        <h1>My Wallet 💳</h1>
-                        <p>Secure the bag. Manage your cards.</p>
+                        <h1>THE STASH 💸</h1>
+                        <p>Secure the bag. Spend different. 💅</p>
                     </motion.div>
                     <motion.button
                         className={styles.addBtn}
@@ -531,47 +572,59 @@ const CardsPage = () => {
                         whileHover={{ scale: 1.05, rotate: -2 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Plus size={20} /> Add New
+                        <Plus size={24} strokeWidth={3} /> NEW CARD
                     </motion.button>
-                </div>
-
-                {/* Stats Row */}
-                <div className={styles.statsRow}>
-                    <motion.div className={styles.stat} whileHover={{ y: -5 }}>
-                        <CreditCard size={24} />
-                        <div>
-                            <span className={styles.statValue}>{cards.length}</span>
-                            <span className={styles.statLabel}>Cards</span>
-                        </div>
-                    </motion.div>
-                    <motion.div className={styles.stat} whileHover={{ y: -5 }}>
-                        <Shield size={24} />
-                        <div>
-                            <span className={styles.statValue}>256-bit</span>
-                            <span className={styles.statLabel}>Encrypted</span>
-                        </div>
-                    </motion.div>
                 </div>
             </div>
 
             {/* Main Content */}
             <div className={styles.mainContent}>
+                {/* Stats Row */}
+                <div className={styles.statsRow} style={{ marginBottom: '3rem' }}>
+                    <motion.div
+                        className={styles.stat}
+                        whileHover={{ y: -5, rotate: 2 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        <CreditCard size={32} strokeWidth={2.5} />
+                        <div>
+                            <span className={styles.statValue}>{cards.length}</span>
+                            <span className={styles.statLabel}>Cards in Rotation</span>
+                        </div>
+                    </motion.div>
+                    <motion.div
+                        className={styles.stat}
+                        whileHover={{ y: -5, rotate: -2 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Shield size={32} strokeWidth={2.5} />
+                        <div>
+                            <span className={styles.statValue}>LOCKED</span>
+                            <span className={styles.statLabel}>256-bit Encrypted</span>
+                        </div>
+                    </motion.div>
+                </div>
+
                 {/* Cards Grid */}
                 <div className={styles.cardsSection}>
-                    <h2>Your Collection ✨</h2>
-                    <p className={styles.sectionHint}>Click on a card to view details & copy info</p>
+                    <h2>YOUR PLASTIC 💳</h2>
+                    <span className={styles.sectionHint}>Tap for details fam</span>
 
                     {cards.length === 0 ? (
                         <motion.div
                             className={styles.emptyState}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
                         >
-                            <CreditCard size={64} />
-                            <h3>No cards yet fam</h3>
-                            <p>Add a card to start tracking!</p>
-                            <button onClick={openAddCard} className={styles.addBtn}>
-                                <Plus size={20} /> Add First Card
+                            <CreditCard size={80} strokeWidth={1} style={{ marginBottom: '1rem' }} />
+                            <h3>NO CARDS YET BESTIE 💀</h3>
+                            <p>You need plastic to make it fantastic.</p>
+                            <button onClick={openAddCard} className={styles.addBtn} style={{ background: '#000', color: '#fff', margin: '0 auto' }}>
+                                <Plus size={24} /> ADD FIRST CARD
                             </button>
                         </motion.div>
                     ) : (
@@ -582,11 +635,10 @@ const CardsPage = () => {
                                         key={card.id}
                                         className={styles.cardWrapper}
                                         onClick={() => setDetailsModalCard(card)}
-                                        initial={{ opacity: 0, y: 30 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.9 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        whileHover={{ y: -8, scale: 1.02 }}
+                                        initial={{ opacity: 0, y: 100, rotate: -5 }}
+                                        animate={{ opacity: 1, y: 0, rotate: 0 }}
+                                        exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                                        transition={{ delay: index * 0.1, type: "spring", stiffness: 150 }}
                                         layout
                                     >
                                         <div
@@ -594,14 +646,21 @@ const CardsPage = () => {
                                             style={{ background: getBrandGradient(card.type) }}
                                         >
                                             <div className={styles.cardShine}></div>
-                                            <div className={styles.cardClickHint}>
-                                                <Eye size={16} /> View Details
-                                            </div>
+
+                                            <button
+                                                className={styles.deleteCardBtn}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDelete(card.id);
+                                                }}
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
 
                                             <div className={styles.cardTop}>
                                                 <div className={styles.chip}></div>
                                                 <div className={styles.brandArea}>
-                                                    <Smartphone size={20} opacity={0.7} />
+                                                    <Smartphone size={24} opacity={0.7} />
                                                     {getBrandLogo(card.type)}
                                                 </div>
                                             </div>
@@ -629,13 +688,13 @@ const CardsPage = () => {
                                                         e.stopPropagation();
                                                         handleRevealClick(card);
                                                     }}
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
                                                 >
                                                     {isCVVRevealed(card.id) ? (
                                                         <><span className={styles.cvvVisible}>{card.cvv}</span></>
                                                     ) : (
-                                                        <><Eye size={14} /> Reveal CVV →</>
+                                                        <><Eye size={16} /> REVEAL CVV</>
                                                     )}
                                                 </motion.button>
                                             </div>
@@ -648,11 +707,11 @@ const CardsPage = () => {
                             <motion.div
                                 className={styles.addCardPlaceholder}
                                 onClick={openAddCard}
-                                whileHover={{ scale: 1.02 }}
+                                whileHover={{ scale: 1.02, rotate: 2 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <Plus size={48} strokeWidth={2} />
-                                <span>Add New Card</span>
+                                <Plus size={64} strokeWidth={3} />
+                                <span>ADD NEW CARD</span>
                             </motion.div>
                         </div>
                     )}

@@ -23,6 +23,7 @@ import InsightsPage from './pages/InsightsPage';
 import ReportsPage from './pages/ReportsPage';
 import RecurringPage from './pages/RecurringPage';
 import AccountsPage from './pages/AccountsPage';
+import ProtectionPage from './pages/ProtectionPage';
 import LandingPage from './pages/LandingPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 // Legal & Support Pages
@@ -160,6 +161,7 @@ function App() {
                         <Route path="/reports" element={<ReportsPage />} />
                         <Route path="/recurring" element={<RecurringPage />} />
                         <Route path="/accounts" element={<AccountsPage />} />
+                        <Route path="/protection" element={<ProtectionPage />} />
                     </Route>
 
                     {/* Landing Page for non-authenticated users */}

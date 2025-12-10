@@ -1,7 +1,7 @@
 // AI Financial Assistant Chatbot
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, Sparkles, Loader2, Zap } from 'lucide-react';
 import { getAIResponse } from '../services/aiService';
 import styles from './AIChatbot.module.css';
 
@@ -13,10 +13,10 @@ interface Message {
 }
 
 const QUICK_ACTIONS = [
-    { label: "💰 Save money", message: "How can I save more money?" },
-    { label: "📊 Analyze spending", message: "Analyze my spending patterns" },
-    { label: "🔄 Subscriptions", message: "Review my subscriptions" },
-    { label: "🎯 Goals", message: "How long to reach my goals?" },
+    { label: "💰 Save $$", message: "Tips to save money?" },
+    { label: "📈 Roast My Spending", message: "Roast my spending habits based on recent trends" },
+    { label: "💳 Subscriptions", message: "What subscriptions do I have?" },
+    { label: "🚀 Goal Hype", message: "Hype me up for my financial goals!" },
 ];
 
 const AIChatbot = () => {
@@ -25,7 +25,7 @@ const AIChatbot = () => {
         {
             id: '0',
             role: 'assistant',
-            content: "Hey! 👋 I'm your AI financial buddy. Ask me anything about your spending, savings tips, or financial advice!",
+            content: "Yo! 🤖 I'm your Vibe-Bot. Ask me about your cash, goals, or just rant about inflation. I got you.",
             timestamp: new Date()
         }
     ]);
@@ -69,7 +69,7 @@ const AIChatbot = () => {
             const errorMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: "Oops! Something went wrong. Try again? 🙈",
+                content: "My bad, brain freeze 🥶. Try asking again?",
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, errorMessage]);
@@ -92,11 +92,11 @@ const AIChatbot = () => {
                 className={styles.floatingBtn}
                 onClick={() => setIsOpen(!isOpen)}
                 whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
                 animate={{ rotate: isOpen ? 180 : 0 }}
             >
-                {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
-                {!isOpen && <span className={styles.badge}>AI</span>}
+                {isOpen ? <X size={24} strokeWidth={3} /> : <MessageSquare size={24} strokeWidth={3} />}
+                {!isOpen && <span className={styles.badge}>NEW</span>}
             </motion.button>
 
             {/* Chat Window */}
@@ -104,27 +104,27 @@ const AIChatbot = () => {
                 {isOpen && (
                     <motion.div
                         className={styles.chatWindow}
-                        initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        initial={{ opacity: 0, y: 50, scale: 0.9, rotate: 5 }}
+                        animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                        exit={{ opacity: 0, y: 50, scale: 0.9, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                         {/* Header */}
                         <div className={styles.header}>
                             <div className={styles.headerInfo}>
                                 <div className={styles.botAvatar}>
-                                    <Bot size={20} />
+                                    <Bot size={24} strokeWidth={2.5} />
                                 </div>
                                 <div>
-                                    <h3>AI Financial Buddy</h3>
+                                    <h3>Fin-Bot 3000</h3>
                                     <span className={styles.status}>
                                         <span className={styles.statusDot}></span>
-                                        Online
+                                        LOCKED IN
                                     </span>
                                 </div>
                             </div>
                             <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
-                                <X size={18} />
+                                <X size={20} strokeWidth={3} />
                             </button>
                         </div>
 
@@ -134,11 +134,11 @@ const AIChatbot = () => {
                                 <motion.div
                                     key={msg.id}
                                     className={`${styles.message} ${styles[msg.role]}`}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
                                 >
                                     <div className={styles.messageAvatar}>
-                                        {msg.role === 'assistant' ? <Bot size={16} /> : <User size={16} />}
+                                        {msg.role === 'assistant' ? <Zap size={18} fill="#000" /> : <User size={18} />}
                                     </div>
                                     <div className={styles.messageContent}>
                                         <div className={styles.messageText}>
@@ -159,7 +159,7 @@ const AIChatbot = () => {
                                     animate={{ opacity: 1 }}
                                 >
                                     <div className={styles.messageAvatar}>
-                                        <Bot size={16} />
+                                        <Loader2 size={18} className={styles.spinner} />
                                     </div>
                                     <div className={styles.typingIndicator}>
                                         <span></span>
@@ -190,18 +190,19 @@ const AIChatbot = () => {
                         <div className={styles.inputContainer}>
                             <input
                                 type="text"
-                                placeholder="Ask about your finances..."
+                                placeholder="Type something..."
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                onKeyPress={handleKeyPress}
+                                onKeyDown={handleKeyPress}
                                 disabled={isLoading}
+                                autoFocus
                             />
                             <button
                                 className={styles.sendBtn}
                                 onClick={() => handleSend()}
                                 disabled={!input.trim() || isLoading}
                             >
-                                {isLoading ? <Loader2 size={18} className={styles.spinner} /> : <Send size={18} />}
+                                {isLoading ? <Loader2 size={24} className={styles.spinner} /> : <Send size={24} strokeWidth={3} />}
                             </button>
                         </div>
                     </motion.div>

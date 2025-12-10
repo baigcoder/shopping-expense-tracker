@@ -10,7 +10,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const WEBSITE_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://expense-tracker.vercel.app' // Add production URL when deployed
+    'https://vibe-tracker-expense-genz.vercel.app' // Production URL
 ];
 
 // ================================
@@ -54,6 +54,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             // Website sharing session with extension
             handleSessionSync(message.data, sendResponse);
             return true;
+
+        case 'DARK_PATTERN_DETECTED':
+            // Dark pattern detector found something
+            handleDarkPatternDetected(message.data);
+            break;
+
+        case 'SET_TRIAL_REMINDER':
+            // User wants a reminder before trial ends
+            setTrialReminder(message.data, sendResponse);
+            return true;
+
+        case 'GET_PROTECTION_STATS':
+            // Get dark pattern protection statistics
+            getProtectionStats(sendResponse);
+            return true;
+
+        case 'CHECK_AND_LOGOUT_IF_NEEDED':
+            // Website has no session - if we synced from website, logout
+            checkAndLogoutIfNeeded();
+            break;
     }
 
     sendResponse({ received: true });
@@ -212,15 +232,55 @@ async function handleUserLoggedIn(data) {
 }
 
 async function handleUserLoggedOut() {
-    console.log('User logged out');
+    console.log('🚪 User logged out - clearing all session data');
 
+    // Clear ALL user-related data from storage
     await chrome.storage.local.remove([
         'supabaseSession', 'accessToken', 'userId', 'userEmail',
-        'userName', 'syncedFromWebsite', 'lastSync'
+        'userName', 'syncedFromWebsite', 'lastSync',
+        'pendingSync', 'pendingTransactions', 'pendingSubscriptions'
     ]);
+
+    // CRITICAL: Notify popup to refresh and show login view
+    try {
+        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED' });
+        chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
+    } catch (e) {
+        // Popup might not be open, that's fine
+    }
 
     // Notify website tabs
     notifyWebsiteTabs('EXTENSION_LOGGED_OUT', {});
+
+    // Show logout notification
+    try {
+        chrome.notifications.create(`logout-${Date.now()}`, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/logo.png'),
+            title: '👋 Logged Out',
+            message: 'You have been signed out of Vibe Tracker extension.',
+            priority: 2
+        });
+    } catch (error) {
+        console.log('Logout notification error:', error);
+    }
+
+    console.log('✅ All session data cleared');
+}
+
+// Check if extension was synced from website and website is now logged out
+async function checkAndLogoutIfNeeded() {
+    try {
+        const data = await chrome.storage.local.get(['syncedFromWebsite', 'accessToken']);
+
+        // If we synced from website and website has no session, logout extension too
+        if (data.syncedFromWebsite && data.accessToken) {
+            console.log('📋 Website session gone, but extension still has session from website sync');
+            await handleUserLoggedOut();
+        }
+    } catch (e) {
+        console.log('Check logout error:', e);
+    }
 }
 
 // ================================
@@ -653,7 +713,7 @@ function showNotification(transaction, isSync = false) {
         chrome.notifications.create(notificationId, {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: isSync ? '✓ Expense Tracker Synced' : '💸 Purchase Tracked!',
+            title: isSync ? '✓ Vibe Tracker Synced' : '💸 Purchase Tracked!',
             message: isSync
                 ? transaction.product
                 : `${transaction.store}: Rs ${transaction.amount?.toFixed(0) || '0'} - ${(transaction.product || '').slice(0, 30)}`,
@@ -712,22 +772,202 @@ function getCategoryFromStore(storeName) {
 }
 
 // ================================
+// DARK PATTERN PROTECTION
+// ================================
+async function handleDarkPatternDetected(data) {
+    console.log('🛡️ Dark pattern detected:', data);
+
+    // Store detection for statistics
+    const statsKey = 'vt_dark_pattern_stats';
+    const storage = await chrome.storage.local.get([statsKey]);
+    const stats = storage[statsKey] || {
+        totalDetected: 0,
+        totalBlocked: 0,
+        totalSaved: 0,
+        detections: [],
+        lastUpdated: null
+    };
+
+    stats.totalDetected++;
+    stats.detections.unshift({
+        url: data.hostname,
+        patterns: data.patterns,
+        priceInfo: data.priceInfo,
+        date: new Date().toISOString()
+    });
+
+    // Keep only last 50 detections
+    stats.detections = stats.detections.slice(0, 50);
+    stats.lastUpdated = new Date().toISOString();
+
+    await chrome.storage.local.set({ [statsKey]: stats });
+
+    // Show notification for critical patterns
+    const hasCritical = data.patterns.some(p => p.severity === 'CRITICAL');
+    if (hasCritical) {
+        showDarkPatternNotification(data);
+    }
+}
+
+function showDarkPatternNotification(data) {
+    const notificationId = `dark-pattern-${Date.now()}`;
+
+    try {
+        chrome.notifications.create(notificationId, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/logo.png'),
+            title: '🛡️ Hidden Charge Detected!',
+            message: `Watch out! ${data.hostname} may have sneaky subscription tactics.`,
+            priority: 2
+        });
+
+        setTimeout(() => {
+            chrome.notifications.clear(notificationId);
+        }, 8000);
+    } catch (error) {
+        console.log('Dark pattern notification error:', error);
+    }
+}
+
+async function setTrialReminder(data, sendResponse) {
+    try {
+        console.log('📝 Setting trial reminder:', data);
+
+        // Save reminder data
+        const remindersKey = 'vt_trial_reminders';
+        const storage = await chrome.storage.local.get([remindersKey]);
+        const reminders = storage[remindersKey] || [];
+
+        reminders.push(data);
+        await chrome.storage.local.set({ [remindersKey]: reminders });
+
+        // Create alarm for reminder
+        const reminderDate = new Date(data.reminderDate);
+        const alarmName = `trial_reminder_${data.id}`;
+
+        chrome.alarms.create(alarmName, {
+            when: reminderDate.getTime()
+        });
+
+        console.log('✅ Reminder set for:', reminderDate);
+
+        // Update stats
+        const statsKey = 'vt_dark_pattern_stats';
+        const statsStorage = await chrome.storage.local.get([statsKey]);
+        const stats = statsStorage[statsKey] || {
+            totalDetected: 0,
+            totalBlocked: 0,
+            totalSaved: 0,
+            detections: [],
+            lastUpdated: null
+        };
+
+        stats.totalBlocked++;
+        if (data.monthlyPrice) {
+            stats.totalSaved += data.monthlyPrice * 12;
+        }
+        stats.lastUpdated = new Date().toISOString();
+
+        await chrome.storage.local.set({ [statsKey]: stats });
+
+        sendResponse({ success: true, reminder: data });
+    } catch (error) {
+        console.error('Set reminder error:', error);
+        sendResponse({ success: false, error: error.message });
+    }
+}
+
+async function getProtectionStats(sendResponse) {
+    try {
+        const statsKey = 'vt_dark_pattern_stats';
+        const remindersKey = 'vt_trial_reminders';
+
+        const storage = await chrome.storage.local.get([statsKey, remindersKey]);
+        const stats = storage[statsKey] || {
+            totalDetected: 0,
+            totalBlocked: 0,
+            totalSaved: 0,
+            detections: [],
+            lastUpdated: null
+        };
+
+        const reminders = storage[remindersKey] || [];
+        const activeReminders = reminders.filter(r => r.status === 'active');
+
+        sendResponse({
+            success: true,
+            stats: {
+                ...stats,
+                activeReminders: activeReminders.length,
+                upcomingTrials: activeReminders
+            }
+        });
+    } catch (error) {
+        sendResponse({ success: false, error: error.message });
+    }
+}
+
+// Handle alarm triggers
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+    if (alarm.name.startsWith('trial_reminder_')) {
+        const reminderId = alarm.name.replace('trial_reminder_', '');
+
+        // Get reminder details
+        const remindersKey = 'vt_trial_reminders';
+        const storage = await chrome.storage.local.get([remindersKey]);
+        const reminders = storage[remindersKey] || [];
+        const reminder = reminders.find(r => r.id === reminderId);
+
+        if (reminder) {
+            // Show notification
+            chrome.notifications.create(`trial-ending-${Date.now()}`, {
+                type: 'basic',
+                iconUrl: chrome.runtime.getURL('icons/logo.png'),
+                title: '⏰ Trial Ending Soon!',
+                message: `Your ${reminder.service} trial ends in 2 days! Cancel now to avoid ${reminder.currency} ${reminder.monthlyPrice}/month charge.`,
+                priority: 2,
+                requireInteraction: true
+            });
+
+            // Update reminder status
+            reminder.status = 'notified';
+            await chrome.storage.local.set({ [remindersKey]: reminders });
+        }
+    }
+});
+
+// ================================
 // LIFECYCLE EVENTS
 // ================================
 chrome.runtime.onStartup.addListener(() => {
-    console.log('🚀 Expense Tracker extension started');
+    console.log('🚀 Vibe Tracker extension started with Dark Pattern Protection');
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log('📦 Expense Tracker extension installed');
+    console.log('📦 Vibe Tracker extension installed');
+
+    // Initialize dark pattern stats
+    chrome.storage.local.get(['vt_dark_pattern_stats'], (result) => {
+        if (!result.vt_dark_pattern_stats) {
+            chrome.storage.local.set({
+                vt_dark_pattern_stats: {
+                    totalDetected: 0,
+                    totalBlocked: 0,
+                    totalSaved: 0,
+                    detections: [],
+                    lastUpdated: new Date().toISOString()
+                }
+            });
+        }
+    });
 
     // Show welcome notification
     try {
         chrome.notifications.create('welcome', {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: '💰 Expense Tracker Installed!',
-            message: 'Sign in to start auto-tracking your purchases.',
+            title: '💸 Vibe Tracker Installed!',
+            message: 'Now with Dark Pattern Protection! Stay safe from sneaky subscriptions 🛡️',
             priority: 2
         });
     } catch (error) {

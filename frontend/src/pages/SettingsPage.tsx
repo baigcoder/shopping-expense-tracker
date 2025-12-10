@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import { Bell, Moon, Lock, Globe, Volume2, ShieldAlert, LogOut, ChevronRight } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { logout as supabaseLogout } from '../config/supabase';
 import ConfirmModal from '../components/ConfirmModal';
+import genZToast from '../services/genZToast';
 import styles from './SettingsPage.module.css';
 
 const SettingsPage = () => {
@@ -30,7 +30,7 @@ const SettingsPage = () => {
             logout();
             // Clear ALL localStorage
             localStorage.clear();
-            toast.success("Later skater! 👋");
+            genZToast.success("Later skater! 👋");
             navigate('/login');
         } catch (error) {
             console.error('Logout error:', error);
@@ -42,7 +42,7 @@ const SettingsPage = () => {
     };
 
     const handleDeleteAccount = () => {
-        toast.error("Can't do that yet, but I admire the boldness.");
+        genZToast.error("Can't do that yet, but I admire the boldness.");
     };
 
     return (
@@ -84,7 +84,7 @@ const SettingsPage = () => {
                             checked={darkMode}
                             onChange={(e) => {
                                 setDarkMode(e.target.checked);
-                                toast.info("Still working on the goth vibes! 🖤");
+                                genZToast.info("Still working on the goth vibes! 🖤");
                             }}
                         />
                     </div>

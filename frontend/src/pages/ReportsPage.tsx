@@ -1,10 +1,9 @@
-// Reports Page - Export spending reports with REAL DATA
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Download, FileSpreadsheet, Calendar, Eye, RefreshCw, TrendingUp, DollarSign } from 'lucide-react';
-import { toast } from 'react-toastify';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
+import genZToast from '../services/genZToast';
 import styles from './ReportsPage.module.css';
 
 interface Transaction {
@@ -112,7 +111,7 @@ const ReportsPage = () => {
     // Export CSV - Transaction Report
     const handleExportTransactionCSV = () => {
         if (transactions.length === 0) {
-            toast.warning('No transactions to export!');
+            genZToast.warning('No transactions to export! 🤷‍♀️');
             return;
         }
 
@@ -123,13 +122,13 @@ const ReportsPage = () => {
         const csv = [headers.join(','), ...rows].join('\n');
 
         downloadFile(csv, `transactions-${startDate}-to-${endDate}.csv`, 'text/csv');
-        toast.success('Transaction report exported! 📊');
+        genZToast.success('Transaction report exported! 📊');
     };
 
     // Export CSV - Category Summary
     const handleExportCategoryCSV = () => {
         if (categorySummary.length === 0) {
-            toast.warning('No category data to export!');
+            genZToast.warning('No category data to export! 🤷‍♀️');
             return;
         }
 
@@ -141,7 +140,7 @@ const ReportsPage = () => {
         const csv = [headers.join(','), ...rows].join('\n');
 
         downloadFile(csv, `category-summary-${startDate}-to-${endDate}.csv`, 'text/csv');
-        toast.success('Category summary exported! 📊');
+        genZToast.success('Category summary exported! 📊');
     };
 
     // Generate PDF Report
@@ -154,7 +153,7 @@ const ReportsPage = () => {
             printWindow.document.close();
             printWindow.print();
         }
-        toast.success('PDF ready to print! 📄');
+        genZToast.success('PDF ready to print! 📄');
     };
 
     const generatePrintHTML = (type: string) => {

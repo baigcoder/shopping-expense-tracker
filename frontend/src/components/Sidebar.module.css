@@ -1,5 +1,12 @@
-/* Sidebar Styles - Minimal */
+/* Gen Z Neo-Brutalist Sidebar CSS - VIBE CHECK PASSED ✅ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
+
 .overlay {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    position: fixed;
+    inset: 0;
+    z-index: 90;
     display: none;
 }
 
@@ -8,176 +15,183 @@
     left: 0;
     top: 0;
     height: 100vh;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    background: #FFFEF9;
+    border-right: 4px solid #000;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    /* Increased padding */
     z-index: 100;
-    overflow: hidden;
-    transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Removed global overflow hidden to allow shadows to breathe, 
+       transition might need width containment elsewhere */
+    transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 6px 0px 0px rgba(0, 0, 0, 0.15);
+    font-family: 'Space Grotesk', sans-serif;
 }
 
-:global(.dark-theme) .sidebar {
-    background: rgba(10, 10, 10, 0.6);
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-}
+/* ... Logo Area ... */
 
-/* Logo Area */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem;
-    margin-bottom: 2rem;
-    text-decoration: none;
-    color: var(--text-primary);
-}
-
-.logoIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--brand-primary);
-    border-radius: var(--radius-lg);
-    color: white;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-glow);
-}
-
-.logoText {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.025em;
-    white-space: nowrap;
-}
-
-/* Add Button */
-.addButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--brand-primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-lg);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 2rem;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-md);
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.addButton:hover {
-    background: var(--brand-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-lg);
-}
-
-.addButtonCollapsed {
-    padding: 0.75rem;
-    width: 40px;
-    /* Force square for icon only */
-}
-
-/* Navigation */
+/* Navigation Container */
 .nav {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.8rem;
+    /* Use gap for spacing between items */
     flex: 1;
+    overflow-y: auto;
+    overflow-x: visible;
+    /* Allow shadows to show */
+    scrollbar-width: none;
+    /* Ensure padding helps shadows not clip */
+    padding: 0.5rem 4px;
+    margin: 0 -4px;
+    /* Counteract padding to keep alignment */
+}
+
+.nav::-webkit-scrollbar {
+    display: none;
 }
 
 .navItem {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: var(--text-secondary);
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    color: #6B7280;
     text-decoration: none;
-    border-radius: var(--radius-lg);
-    font-size: 0.875rem;
-    font-weight: 500;
+    border-radius: 14px;
+    /* Fuller Roundness */
+    font-size: 0.95rem;
+    font-weight: 700;
     transition: all 0.2s ease;
     cursor: pointer;
     background: transparent;
-    border: none;
+    border: 3px solid transparent;
+    /* Ensure border width matches active state */
     width: 100%;
     text-align: left;
     white-space: nowrap;
+    position: relative;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    margin-bottom: 0px;
 }
 
 .navItem:hover {
-    background: var(--bg-card-hover);
-    color: var(--text-primary);
+    background: #fff;
+    color: #000;
+    border-color: #000;
+    box-shadow: 4px 4px 0px #000;
+    transform: translateY(-2px);
+    z-index: 10;
 }
 
+/* ACTIVE STATE */
 .navItem.active {
-    background: var(--brand-subtle);
-    color: var(--brand-primary);
+    background: #000;
+    color: #fff;
+    border-color: #000;
+    box-shadow: 4px 4px 0px #8B5CF6;
+    /* Purple active shadow */
+    transform: translateY(-2px);
+    z-index: 10;
+}
+
+.navItem.active:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #8B5CF6;
+}
+
+/* Support Icons spacing in collapsed mode */
+.navItem svg {
+    min-width: 20px;
 }
 
 /* Bottom Section */
 .bottom {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    border-top: 1px solid var(--border-subtle);
-    padding-top: 1rem;
+    gap: 0.8rem;
+    border-top: 4px solid #000;
+    padding-top: 1.5rem;
     margin-top: auto;
+    background: #FFFEF9;
+    /* Match sidebar bg */
+    padding-right: 6px;
+    /* Safety padding */
+}
+
+.logout {
+    color: #EF4444;
 }
 
 .logout:hover {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
+    color: #fff;
+    background: #EF4444;
+    border-color: #000;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #000;
 }
 
 /* Toggle Button */
 .toggle {
     position: absolute;
-    right: -12px;
+    right: -18px;
     top: 50%;
     transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-default);
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 10px;
+    /* Squircle */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
+    color: #000;
     cursor: pointer;
     transition: all 0.2s ease;
-    z-index: 10;
-    box-shadow: var(--shadow-sm);
+    z-index: 110;
+    box-shadow: 3px 3px 0px #000;
 }
 
 .toggle:hover {
-    color: var(--text-primary);
-    border-color: var(--border-strong);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 5px 5px 0px #000;
+    background: #FBBF24;
 }
 
 /* Collapsed State Overrides */
+.collapsed {
+    padding: 1.5rem 0.5rem;
+    /* Tighter padding to fit contents */
+    width: 90px !important;
+    /* Slightly wider than 80 to fit borders */
+}
+
 .collapsed .navItem {
     justify-content: center;
-    padding: 0.75rem;
+    padding: 0.9rem;
+    width: 54px;
+    /* Fixed square width */
+    height: 54px;
+    margin: 0 auto;
 }
 
 .collapsed .logo {
     justify-content: center;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0.5rem;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 2.5rem;
+}
+
+.collapsed .logoIcon {
+    width: auto;
+    height: auto;
+    border: none;
+    background: none;
+    box-shadow: none;
 }
 
 .collapsed .logoText {
@@ -188,21 +202,43 @@
 @media (max-width: 1024px) {
     .overlay {
         display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(2px);
-        z-index: 99;
     }
 
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        width: 280px !important;
+        border-right: 4px solid #000;
+        box-shadow: 100px 0px 0px rgba(0, 0, 0, 0.5);
+        /* Shadow on overlay */
     }
 
     .sidebar:not(.collapsed) {
         transform: translateX(0);
+    }
+
+    /* When active on mobile, it's always full width */
+    .collapsed {
+        /* Reset collapsed styles on mobile if the state logic persists */
+        padding: 1.5rem 1rem;
         width: 280px !important;
+    }
+
+    .collapsed .navItem {
+        justify-content: flex-start;
+        padding: 0.9rem 1rem;
+        width: 100%;
+        height: auto;
+    }
+
+    .collapsed .logo {
+        width: 100%;
+        height: auto;
+        padding: 0.8rem;
+    }
+
+    .collapsed .logoText {
+        display: block;
     }
 
     .toggle {

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useUIStore, useModalStore, useAuthStore } from '../store/useStore';
 import { logout as supabaseLogout } from '../config/supabase';
+import genZToast from '../services/genZToast';
 import styles from './Sidebar.module.css';
 
 const navItems = [
@@ -44,6 +45,7 @@ const Sidebar = () => {
             storeLogout();
             // Clear ALL localStorage to prevent zombie sessions
             localStorage.clear();
+            genZToast.success("Later skater! 👋");
             navigate('/login');
         } catch (error) {
             console.error('Logout error:', error);
@@ -73,7 +75,7 @@ const Sidebar = () => {
             <motion.aside
                 className={`${styles.sidebar} ${!sidebarOpen ? styles.collapsed : ''}`}
                 initial={false}
-                animate={{ width: sidebarOpen ? 280 : 80 }}
+                animate={{ width: sidebarOpen ? 280 : 90 }}
                 transition={{ duration: 0.3 }}
             >
                 {/* Logo */}

@@ -4,7 +4,17 @@
 (function () {
     'use strict';
 
-    console.log('💰 Expense Tracker: Auto-tracking v2 loaded');
+    // IMPORTANT: Don't run on our own website - it has its own handling
+    const hostname = window.location.hostname;
+    if (hostname.includes('vibe-tracker') ||
+        hostname.includes('localhost') ||
+        hostname.includes('127.0.0.1') ||
+        hostname.includes('vercel.app')) {
+        console.log('💸 Vibe Tracker: Skipping our own website');
+        return; // Exit early
+    }
+
+    console.log('💸 Vibe Tracker: Auto-tracking loaded');
 
     // ================================
     // STRICT CONFIRMATION DETECTION
