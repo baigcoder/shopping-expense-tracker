@@ -646,16 +646,17 @@ const LandingPage = () => {
                         </div>
                         <div>
                             <h4>Legal</h4>
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                            <a href="#">Cookie Policy</a>
+                            <Link to="/privacy">Privacy Policy</Link>
+                            <Link to="/terms">Terms of Service</Link>
+                            <Link to="/faq">Cookie Policy</Link>
                         </div>
                         <div>
                             <h4>Support</h4>
-                            <a href="#">Help Center</a>
-                            <a href="#">Contact Us</a>
-                            <a href="#">FAQ</a>
+                            <Link to="/faq">Help Center</Link>
+                            <Link to="/contact">Contact Us</Link>
+                            <Link to="/faq">FAQ</Link>
                         </div>
+
                     </div>
                 </div>
 

@@ -25,12 +25,18 @@ import RecurringPage from './pages/RecurringPage';
 import AccountsPage from './pages/AccountsPage';
 import LandingPage from './pages/LandingPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
+// Legal & Support Pages
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import FAQPage from './pages/FAQPage';
+import ContactPage from './pages/ContactPage';
 import LoadingScreen from './components/LoadingScreen';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/toast.css'; // Custom Gen-Z toast styles
+
 
 
 // Auth Callback Handler - handles both OAuth and Email Confirmation
@@ -158,8 +164,16 @@ function App() {
 
                     {/* Landing Page for non-authenticated users */}
                     <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
+
+                    {/* Public Legal & Support Pages */}
+                    <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                    <Route path="/terms" element={<TermsOfServicePage />} />
+                    <Route path="/faq" element={<FAQPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
+
             </BrowserRouter>
         </ErrorBoundary>
     );
