@@ -1148,3 +1148,139 @@
     font-size: 0.8rem;
     font-weight: 700;
 }
+
+/* ============================================
+   TV / EXTRA LARGE SCREENS (4K+)
+   ============================================ */
+@media (min-width: 1921px) {
+    .landingContainer {
+        font-size: 18px;
+        /* Scale base font */
+    }
+
+    .hero,
+    .featuresSection,
+    .extensionContent,
+    .installSection {
+        max-width: 2200px;
+        /* Let it breathe on big screens */
+    }
+
+    .heroTitle {
+        font-size: 7rem;
+    }
+
+    .sectionTitle {
+        font-size: 4.5rem;
+    }
+
+    .bentoGrid {
+        gap: 3rem;
+    }
+
+    .finalTitle {
+        font-size: 6rem;
+    }
+}
+
+/* ============================================
+   DEEP MOBILE (Small Phones < 480px)
+   ============================================ */
+@media (max-width: 480px) {
+    .hero {
+        padding: 6rem 1rem 3rem;
+        gap: 3rem;
+    }
+
+    .heroTitle {
+        font-size: 2.5rem;
+        /* Prevent overflow */
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 0 #fff;
+        /* Tighter shadow */
+    }
+
+    .heroSubtitle {
+        font-size: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .heroActions {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .ctaPrimary,
+    .ctaSecondary {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .nav {
+        padding: 1rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .logoIcon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .bentoCard {
+        padding: 1.5rem;
+    }
+
+    .featureTitle {
+        font-size: 1.2rem;
+    }
+
+    .extensionTitle {
+        font-size: 2rem;
+    }
+
+    .popupHeader {
+        padding: 0.8rem;
+    }
+
+    .popupTitle {
+        font-size: 0.7rem;
+    }
+
+    .finalTitle {
+        font-size: 2rem;
+    }
+
+    .finalBtn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    /* Hide/Adjust floating stickers on mobile to prevent overflow */
+    .floatSticker {
+        scale: 0.7;
+        width: max-content;
+    }
+
+    .sticker1 {
+        right: -10px;
+        top: -10px;
+    }
+
+    .sticker2 {
+        left: -10px;
+        bottom: 20px;
+    }
+
+    .activeUsers {
+        scale: 0.8;
+        transform-origin: center;
+    }
+}

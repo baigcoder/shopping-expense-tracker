@@ -3,7 +3,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    max-width: 1600px;
+    max-width: 2400px;
     /* Limit max width for large screens */
     margin: 0 auto;
     padding: 1rem 2rem;
@@ -18,5 +18,12 @@
 @media (max-width: 1024px) {
     .appContainer {
         padding: 0.5rem 1rem;
+    }
+}
+
+/* Deep Mobile */
+@media (max-width: 480px) {
+    .appContainer {
+        padding: 0.5rem 0.5rem;
     }
 }
