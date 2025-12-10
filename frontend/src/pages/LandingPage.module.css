@@ -1051,6 +1051,45 @@
     margin-left: auto;
 }
 
+.devBadge {
+    display: inline-block;
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1.5px solid #000;
+}
+
+.storeNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border-top: 2px solid #000;
+    margin-top: 0;
+}
+
+.storeNotice span {
+    font-size: 1.5rem;
+}
+
+.storeNotice strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+}
+
+.storeNotice p {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.4;
+}
+
 /* Installation Guide */
 .installGuide {
     max-width: 900px;

@@ -220,13 +220,73 @@ const SubscriptionsPage = () => {
     if (loading) {
         return (
             <div className={styles.container}>
-                <div className={styles.loadingState}>
-                    <Loader2 size={40} className={styles.spinner} />
-                    <p>Loading subscriptions...</p>
-                </div>
+                <motion.div
+                    className={styles.loadingState}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <motion.div
+                        className={styles.loaderCard}
+                        animate={{
+                            y: [0, -10, 0],
+                            rotate: [-2, 2, -2]
+                        }}
+                        transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    >
+                        <span style={{ fontSize: '3rem' }}>🔄</span>
+                    </motion.div>
+                    <motion.h3
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        style={{ margin: '1rem 0 0.5rem', fontWeight: 800 }}
+                    >
+                        Loading your subs...
+                    </motion.h3>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        style={{ color: '#64748b', fontSize: '0.9rem' }}
+                    >
+                        hold up bestie, we're grabbing your subscriptions 💅
+                    </motion.p>
+                    <motion.div
+                        className={styles.loadingDots}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6 }}
+                    >
+                        {[0, 1, 2].map(i => (
+                            <motion.span
+                                key={i}
+                                style={{
+                                    display: 'inline-block',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: '#000',
+                                    borderRadius: '50%',
+                                    margin: '0 4px'
+                                }}
+                                animate={{ scale: [1, 1.5, 1] }}
+                                transition={{
+                                    duration: 0.6,
+                                    repeat: Infinity,
+                                    delay: i * 0.2
+                                }}
+                            />
+                        ))}
+                    </motion.div>
+                </motion.div>
             </div>
         );
     }
+
 
     return (
         <div className={styles.container}>

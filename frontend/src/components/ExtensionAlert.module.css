@@ -1,0 +1,164 @@
+/* Extension Alert Styles - Gen Z Style */
+
+.alertContainer {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: calc(100% - 2rem);
+    max-width: 600px;
+}
+
+.alertCard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    box-shadow: 6px 6px 0px #8B5CF6;
+    position: relative;
+}
+
+.syncedCard {
+    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    box-shadow: 6px 6px 0px #10B981;
+}
+
+.alertEmoji {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.iconBounce {
+    width: 40px;
+    height: 40px;
+    background: #10B981;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.alertContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.alertContent strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 0.15rem;
+}
+
+.alertContent p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alertActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.installBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    box-shadow: 3px 3px 0px #8B5CF6;
+}
+
+.installBtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #8B5CF6;
+}
+
+.laterBtn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0.6rem 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: color 0.2s;
+}
+
+.laterBtn:hover {
+    color: #000;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.closeBtn:hover {
+    color: #000;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .alertContainer {
+        top: 70px;
+        max-width: calc(100% - 1rem);
+    }
+
+    .alertCard {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .alertContent {
+        flex: 1 1 100%;
+        order: 1;
+    }
+
+    .alertEmoji {
+        order: 0;
+    }
+
+    .alertActions {
+        order: 2;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .alertContent p {
+        white-space: normal;
+    }
+}

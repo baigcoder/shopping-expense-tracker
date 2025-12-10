@@ -59,15 +59,33 @@
     box-shadow: 6px 6px 0px #4ECDC4;
 }
 
-/* Loading State */
+/* Loading State - Gen Z Style */
 .loadingState {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 50vh;
-    gap: 1rem;
-    color: #666;
+    min-height: 60vh;
+    text-align: center;
+}
+
+.loaderCard {
+    width: 100px;
+    height: 100px;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 6px 6px 0px #8B5CF6;
+}
+
+.loadingDots {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .spinner {
@@ -83,6 +101,7 @@
         transform: rotate(360deg);
     }
 }
+
 
 /* Total Card */
 .totalCard {

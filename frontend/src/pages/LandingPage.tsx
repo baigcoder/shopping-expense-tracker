@@ -401,15 +401,15 @@ const LandingPage = () => {
                             </div>
                             <div className={styles.downloadInfo}>
                                 <h4>Chrome Extension</h4>
-                                <p>Available now in Developer Mode</p>
-                                <span className={styles.availableBadge}>✓ Available</span>
+                                <p>Developer Mode • Store Coming Soon</p>
+                                <span className={styles.devBadge}>🛠️ Dev Mode</span>
                             </div>
                             <button
                                 onClick={handleDownloadExtension}
                                 className={styles.downloadBtn}
                             >
                                 <Download size={20} />
-                                Download v2.0
+                                Download v2.1
                             </button>
                         </div>
 
@@ -426,21 +426,30 @@ const LandingPage = () => {
                                 <span>🦊</span>
                                 <div>
                                     <strong>Firefox</strong>
-                                    <small>Coming soon</small>
+                                    <small>Dev Mode Available</small>
                                 </div>
-                                <span className={styles.soonBadge}>Soon</span>
+                                <span className={styles.devBadge}>🛠️ Dev</span>
                             </div>
                             <div className={styles.browserItem}>
                                 <span>🔷</span>
                                 <div>
                                     <strong>Edge</strong>
-                                    <small>Coming soon</small>
+                                    <small>Dev Mode Available</small>
                                 </div>
-                                <span className={styles.soonBadge}>Soon</span>
+                                <span className={styles.devBadge}>🛠️ Dev</span>
+                            </div>
+                        </div>
+
+                        <div className={styles.storeNotice}>
+                            <span>🏪</span>
+                            <div>
+                                <strong>Chrome Web Store Coming Soon!</strong>
+                                <p>We're working on publishing to official browser stores. For now, use Developer Mode installation.</p>
                             </div>
                         </div>
                     </div>
                 </motion.div>
+
 
                 {/* Installation Guide */}
                 <motion.div
