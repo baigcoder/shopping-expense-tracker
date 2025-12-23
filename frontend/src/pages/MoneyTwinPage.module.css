@@ -1,0 +1,864 @@
+/* ============================================
+   CASHLY - Money Twin Page
+   Clean SaaS Theme with Emerald Accent
+   ============================================ */
+
+.container {
+    width: 100%;
+    background: #F8FAFC;
+    min-height: 100vh;
+    padding: 24px 32px;
+}
+
+/* Loading State */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    gap: 1.5rem;
+    color: #64748B;
+}
+
+.loading p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* === HEADER === */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.titleSection h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -1px;
+    color: #0F172A;
+}
+
+.titleSection p {
+    margin: 4px 0 0;
+    color: #64748B;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.healthScore {
+    display: flex;
+    align-items: center;
+}
+
+.scoreCircle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.scoreValue {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #0F172A;
+    line-height: 1;
+}
+
+.scoreLabel {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #64748B;
+    margin-top: 2px;
+}
+
+.refreshBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: white;
+    color: #64748B;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refreshBtn:hover {
+    background: #F8FAFC;
+    color: #0F172A;
+    border-color: #CBD5E1;
+}
+
+/* === QUICK STATS === */
+.quickStats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.statCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    transition: all 0.2s;
+}
+
+.statCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.statCard svg {
+    color: #0F172A;
+    background: #F1F5F9;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.statCard>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0F172A;
+    line-height: 1.2;
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #64748B;
+}
+
+/* === TABS === */
+.tabs {
+    display: inline-flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 6px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #64748B;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: #0F172A;
+    background: #F1F5F9;
+}
+
+.tab.active {
+    background: linear-gradient(135deg, #10B981 0%, #7C3AED 100%);
+    color: white;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+/* === TAB CONTENT === */
+.tabContent {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 32px;
+    min-height: 500px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.tabContent h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 16px;
+    color: #0F172A;
+}
+
+.subtitle {
+    color: #64748B;
+    margin: 0 0 32px;
+    font-size: 1rem;
+}
+
+.forecastSubheading {
+    color: #64748B;
+    margin: -8px 0 24px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* === FORECAST GRID === */
+.forecastGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.forecastCard {
+    padding: 20px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    transition: all 0.2s;
+}
+
+.forecastCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background: white;
+}
+
+.forecastCard.low {
+    border-left: 4px solid #10B981;
+}
+
+.forecastCard.medium {
+    border-left: 4px solid #F59E0B;
+}
+
+.forecastCard.high {
+    border-left: 4px solid #F97316;
+}
+
+.forecastCard.critical {
+    border-left: 4px solid #EF4444;
+}
+
+.forecastHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.forecastMonth {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.riskBadge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.riskBadge.low {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.riskBadge.medium {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.riskBadge.high {
+    background: #FFEDD5;
+    color: #9A3412;
+}
+
+.riskBadge.critical {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.forecastStats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.forecastStat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+.forecastStat.positive {
+    color: #059669;
+}
+
+.forecastStat.negative {
+    color: #EF4444;
+}
+
+.warnings {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed #CBD5E1;
+}
+
+.warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #D97706;
+    margin-bottom: 6px;
+    padding: 6px;
+    background: #FFFBEB;
+    border-radius: 6px;
+    border: 1px solid #FEF3C7;
+}
+
+/* === WHAT-IF SCENARIOS === */
+.scenarioSelector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.scenarioBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    color: #64748B;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.scenarioBtn:hover {
+    background: #F1F5F9;
+    color: #0F172A;
+    border-color: #CBD5E1;
+}
+
+.scenarioBtn.active {
+    background: linear-gradient(135deg, #10B981 0%, #7C3AED 100%);
+    color: white;
+    border-color: #10B981;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+.scenarioForm {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    max-width: 600px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="number"],
+.formGroup select {
+    width: 100%;
+    padding: 12px;
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    color: #0F172A;
+    font-size: 0.95rem;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: #10B981;
+    background: white;
+}
+
+.subsList {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.subItem {
+    padding: 10px;
+    border-radius: 8px;
+    color: #475569;
+    transition: background 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.subItem:hover {
+    background: #E2E8F0;
+}
+
+.runBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.runBtn:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* === SCENARIO RESULTS === */
+.scenarioResult {
+    padding: 24px;
+    border-radius: 16px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.scenarioResult h3 {
+    font-size: 1.25rem;
+    color: #0F172A;
+    margin-bottom: 8px;
+}
+
+.scenarioDesc {
+    color: #64748B;
+    margin-bottom: 24px;
+}
+
+.resultStats {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #F8FAFC;
+    border-radius: 12px;
+    border: 1px solid #F1F5F9;
+}
+
+.resultLabel {
+    color: #64748B;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.resultValue {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0F172A;
+}
+
+.resultValue.positive {
+    color: #059669;
+}
+
+.resultValue.negative {
+    color: #EF4444;
+}
+
+.recommendation {
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.recommendation.highly_recommended {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.recommendation.recommended {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.recommendation.neutral {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.recommendation.not_recommended {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.prosConsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.pros,
+.cons {
+    padding: 20px;
+    border-radius: 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+}
+
+.pros h4 {
+    color: #059669;
+    margin-bottom: 12px;
+}
+
+.cons h4 {
+    color: #EF4444;
+    margin-bottom: 12px;
+}
+
+.pros li,
+.cons li {
+    color: #475569;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* === PARALLEL UNIVERSE === */
+.universeGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.universeCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.universeCard:hover {
+    transform: translateY(-2px);
+    background: white;
+    border-color: #CBD5E1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.universeCard.selected {
+    background: linear-gradient(135deg, #10B981 0%, #7C3AED 100%);
+    color: white;
+    border-color: #10B981;
+}
+
+.universeEmoji {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.universeDiff {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.universeCard.selected .universeDiff {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.universeDetails {
+    margin-top: 40px;
+    padding: 32px;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.universeHeader {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.bigEmoji {
+    font-size: 4rem;
+}
+
+.comparisonStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 32px;
+}
+
+.compLabel {
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #64748B;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.compValue {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0F172A;
+}
+
+.vsCircle {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #10B981 0%, #7C3AED 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.differenceBox {
+    text-align: center;
+    background: #F8FAFC;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.diffLabel {
+    display: block;
+    font-size: 0.9rem;
+    color: #64748B;
+    margin-bottom: 8px;
+}
+
+.diffValue {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0F172A;
+    display: block;
+}
+
+.diffValue.positive {
+    color: #059669;
+}
+
+.insightItem,
+.actionItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #FAFAFA;
+    border: 1px solid #F1F5F9;
+    border-radius: 10px;
+    color: #475569;
+    margin-bottom: 10px;
+}
+
+/* === RISK RADAR === */
+.risksList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.riskCard {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+    padding-left: 28px;
+}
+
+.riskIndicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+}
+
+.riskHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.riskTitle {
+    font-weight: 700;
+    color: #0F172A;
+    font-size: 1.1rem;
+}
+
+.riskMessage {
+    color: #64748B;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.riskProbability {
+    background: #F8FAFC;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.probBar {
+    height: 6px;
+    background: #E2E8F0;
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.probFill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .quickStats {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+
+    .tabContent {
+        padding: 20px;
+    }
+
+    .forecastGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .prosConsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .universeHeader {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .comparisonStats {
+        flex-direction: column;
+        gap: 20px;
+    }
+}

@@ -1,0 +1,377 @@
+// Shopping Activity Page - Shows user's shopping/payment site visits
+// Modern SaaS design with real-time extension sync
+
+import { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import {
+    ShoppingCart, CreditCard, Clock, Store,
+    Globe, Activity, RefreshCw, Zap, ExternalLink,
+    Landmark, Smartphone, MonitorPlay, Package,
+    ShoppingBag, Tag, CreditCard as CardIcon
+} from 'lucide-react';
+import { useAuthStore } from '../store/useStore';
+import { supabase } from '../config/supabase';
+import styles from './ShoppingActivityPage.module.css';
+
+interface SiteVisit {
+    id: string;
+    site_name: string;
+    hostname: string;
+    url: string;
+    category: 'shopping' | 'payment' | 'finance' | 'other';
+    visit_count: number;
+    last_visited: string;
+    first_visited: string;
+    favicon?: string; // We'll keep this but prefer Lucide icons
+    iconType?: 'lucide' | 'emoji';
+}
+
+// Known shopping/payment sites for categorization
+// Updated to map to specific Lucide icons where possible
+const SITE_CATEGORIES: Record<string, { category: 'shopping' | 'payment' | 'finance'; iconComponent: any }> = {
+    'amazon': { category: 'shopping', iconComponent: ShoppingBag },
+    'daraz': { category: 'shopping', iconComponent: ShoppingBag },
+    'aliexpress': { category: 'shopping', iconComponent: Store },
+    'ebay': { category: 'shopping', iconComponent: Tag },
+    'walmart': { category: 'shopping', iconComponent: ShoppingCart },
+    'flipkart': { category: 'shopping', iconComponent: Smartphone },
+    'shopify': { category: 'shopping', iconComponent: ShoppingBag },
+    'etsy': { category: 'shopping', iconComponent: Store },
+    'paypal': { category: 'payment', iconComponent: CreditCard },
+    'stripe': { category: 'payment', iconComponent: CreditCard },
+    'jazzcash': { category: 'payment', iconComponent: Smartphone },
+    'easypaisa': { category: 'payment', iconComponent: Smartphone },
+    'paypak': { category: 'payment', iconComponent: CardIcon },
+    'bank': { category: 'finance', iconComponent: Landmark },
+    'hbl': { category: 'finance', iconComponent: Landmark },
+    'meezan': { category: 'finance', iconComponent: Landmark },
+    'ubl': { category: 'finance', iconComponent: Landmark },
+    'mcb': { category: 'finance', iconComponent: Landmark },
+};
+
+const ShoppingActivityPage = () => {
+    const { user } = useAuthStore();
+    const [siteVisits, setSiteVisits] = useState<SiteVisit[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [activeFilter, setActiveFilter] = useState<'all' | 'shopping' | 'payment' | 'finance'>('all');
+
+    // Helper to get site icon
+    const getSiteCategory = (siteName: string) => {
+        const lower = siteName.toLowerCase();
+        for (const [key, value] of Object.entries(SITE_CATEGORIES)) {
+            if (lower.includes(key)) return { category: value.category, Icon: value.iconComponent };
+        }
+        return { category: 'other', Icon: Globe };
+    };
+
+    // Fetch site visits
+    const fetchSiteVisits = useCallback(async () => {
+        if (!user?.id) return;
+        setIsRefreshing(true);
+
+        try {
+            // FIRST: Try to get site visits from extension cache (localStorage)
+            const extensionCache = localStorage.getItem('finzen_site_visits');
+            if (extensionCache) {
+                try {
+                    const cachedSites = JSON.parse(extensionCache);
+                    const siteArray: SiteVisit[] = Object.values(cachedSites).map((site: any, i) => ({
+                        id: `ext-${i}`,
+                        site_name: site.siteName,
+                        hostname: site.hostname,
+                        url: site.url,
+                        category: site.category || 'shopping',
+                        visit_count: site.visitCount || 1,
+                        last_visited: new Date(site.lastVisited).toISOString(),
+                        first_visited: new Date(site.firstVisited).toISOString()
+                    }));
+                    if (siteArray.length > 0) {
+                        setSiteVisits(siteArray);
+                        setLoading(false);
+                        setIsRefreshing(false);
+                        return;
+                    }
+                } catch (e) {
+                    console.log('Could not parse extension cache');
+                }
+            }
+
+            // SECOND: Try to get site visits from Supabase
+            const { data, error } = await supabase
+                .from('site_visits')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('last_visited', { ascending: false });
+
+            if (!error && data && data.length > 0) {
+                setSiteVisits(data);
+            } else {
+                // THIRD: Use transactions as proxy
+                const { data: txData } = await supabase
+                    .from('transactions')
+                    .select('store, description, created_at')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (txData) {
+                    const siteMap = new Map<string, SiteVisit>();
+                    txData.forEach((tx, i) => {
+                        const siteName = tx.store || extractSiteName(tx.description);
+                        if (siteName && !siteMap.has(siteName.toLowerCase())) {
+                            const { category } = getSiteCategory(siteName);
+                            siteMap.set(siteName.toLowerCase(), {
+                                id: `tx-${i}`,
+                                site_name: siteName,
+                                hostname: `${siteName.toLowerCase().replace(/\s/g, '')}.com`,
+                                url: `https://${siteName.toLowerCase().replace(/\s/g, '')}.com`,
+                                category: category as any,
+                                visit_count: 1,
+                                last_visited: tx.created_at,
+                                first_visited: tx.created_at
+                            });
+                        } else if (siteName) {
+                            const existing = siteMap.get(siteName.toLowerCase())!;
+                            existing.visit_count++;
+                        }
+                    });
+                    setSiteVisits(Array.from(siteMap.values()));
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch site visits:', error);
+        } finally {
+            setLoading(false);
+            setIsRefreshing(false);
+        }
+    }, [user?.id]);
+
+    const extractSiteName = (description: string): string | null => {
+        if (!description) return null;
+        const keywords = ['amazon', 'daraz', 'paypal', 'stripe', 'jazzcash', 'easypaisa'];
+        for (const kw of keywords) {
+            if (description.toLowerCase().includes(kw)) return kw.charAt(0).toUpperCase() + kw.slice(1);
+        }
+        return description.split(' ')[0];
+    };
+
+    useEffect(() => {
+        fetchSiteVisits();
+    }, [fetchSiteVisits]);
+
+    // Listen for real-time updates from extension
+    useEffect(() => {
+        const handleExtensionUpdate = () => {
+            console.log('🛒 Extension sent site update - refetching');
+            fetchSiteVisits();
+        };
+
+        const handleLiveSiteVisit = (event: CustomEvent) => {
+            const data = event.detail;
+            if (!data?.siteName) return;
+
+            setSiteVisits(prev => {
+                const existingIdx = prev.findIndex(
+                    s => s.hostname.toLowerCase() === data.hostname?.toLowerCase()
+                );
+
+                if (existingIdx >= 0) {
+                    const updated = [...prev];
+                    updated[existingIdx] = {
+                        ...updated[existingIdx],
+                        visit_count: updated[existingIdx].visit_count + 1,
+                        last_visited: new Date().toISOString()
+                    };
+                    return updated;
+                } else {
+                    const { category } = getSiteCategory(data.siteName);
+                    const newSite: SiteVisit = {
+                        id: `live-${Date.now()}`,
+                        site_name: data.siteName,
+                        hostname: data.hostname || `${data.siteName.toLowerCase()}.com`,
+                        url: data.url || `https://${data.hostname || data.siteName.toLowerCase()}`,
+                        category: category as any,
+                        visit_count: 1,
+                        last_visited: new Date().toISOString(),
+                        first_visited: new Date().toISOString()
+                    };
+                    return [newSite, ...prev];
+                }
+            });
+        };
+
+        window.addEventListener('site-visit-tracked', handleLiveSiteVisit as EventListener);
+        window.addEventListener('shopping-site-detected', handleLiveSiteVisit as EventListener);
+        window.addEventListener('transactions-synced', handleExtensionUpdate);
+
+        return () => {
+            window.removeEventListener('site-visit-tracked', handleLiveSiteVisit as EventListener);
+            window.removeEventListener('shopping-site-detected', handleLiveSiteVisit as EventListener);
+            window.removeEventListener('transactions-synced', handleExtensionUpdate);
+        };
+    }, [fetchSiteVisits]);
+
+    const filteredSites = siteVisits.filter(site =>
+        activeFilter === 'all' || site.category === activeFilter
+    );
+
+    const stats = {
+        totalSites: siteVisits.length,
+        shoppingSites: siteVisits.filter(s => s.category === 'shopping').length,
+        paymentSites: siteVisits.filter(s => s.category === 'payment').length,
+        totalVisits: siteVisits.reduce((sum, s) => sum + s.visit_count, 0)
+    };
+
+    const timeAgo = (dateStr: string): string => {
+        const date = new Date(dateStr);
+        const now = new Date();
+        const diff = now.getTime() - date.getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 60) return `${mins}m ago`;
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) return `${hours}h ago`;
+        const days = Math.floor(hours / 24);
+        return `${days}d ago`;
+    };
+
+    if (loading) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.loadingState}>
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
+                        <RefreshCw size={32} className="text-slate-400" />
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={styles.container}>
+            {/* Header */}
+            <motion.div className={styles.header} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+                <div className={styles.headerLeft}>
+                    <h1>
+                        Shopping Activity
+                        <span className={styles.liveBadge}>
+                            <Activity size={12} />
+                            LIVE
+                        </span>
+                    </h1>
+                    <p>Track your shopping & payment site visits automatically</p>
+                </div>
+                <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
+                    <RefreshCw size={16} className={isRefreshing ? styles.spinner : ''} />
+                    Sync Now
+                </button>
+            </motion.div>
+
+            {/* Stats Cards */}
+            <div className={styles.statsGrid}>
+                <div className={`${styles.statCard} ${styles.shopping}`}>
+                    <div className={styles.statIcon}><ShoppingCart size={20} /></div>
+                    <div>
+                        <div className={styles.statValue}>{stats.shoppingSites}</div>
+                        <div className={styles.statLabel}>Shopping Sites</div>
+                    </div>
+                </div>
+                <div className={`${styles.statCard} ${styles.payment}`}>
+                    <div className={styles.statIcon}><CreditCard size={20} /></div>
+                    <div>
+                        <div className={styles.statValue}>{stats.paymentSites}</div>
+                        <div className={styles.statLabel}>Payment Sites</div>
+                    </div>
+                </div>
+                <div className={`${styles.statCard} ${styles.visits}`}>
+                    <div className={styles.statIcon}><Clock size={20} /></div>
+                    <div>
+                        <div className={styles.statValue}>{stats.totalVisits}</div>
+                        <div className={styles.statLabel}>Total Visits</div>
+                    </div>
+                </div>
+                <div className={`${styles.statCard} ${styles.total}`}>
+                    <div className={styles.statIcon}><Globe size={20} /></div>
+                    <div>
+                        <div className={styles.statValue}>{stats.totalSites}</div>
+                        <div className={styles.statLabel}>Sites Tracked</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className={styles.filterTabs}>
+                {(['all', 'shopping', 'payment', 'finance'] as const).map(filter => (
+                    <button
+                        key={filter}
+                        className={`${styles.filterTab} ${activeFilter === filter ? styles.active : ''}`}
+                        onClick={() => setActiveFilter(filter)}
+                    >
+                        {filter === 'all' && <Zap size={14} />}
+                        {filter === 'shopping' && <ShoppingCart size={14} />}
+                        {filter === 'payment' && <CreditCard size={14} />}
+                        {filter === 'finance' && <Landmark size={14} />}
+                        {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                    </button>
+                ))}
+            </div>
+
+            {/* Site List */}
+            <div className={styles.siteGrid}>
+                {filteredSites.length === 0 ? (
+                    <div className={styles.emptyState}>
+                        <ShoppingBag size={48} strokeWidth={1.5} />
+                        <h3>No Activity Detected</h3>
+                        <p>Visit shopping or payment sites with the extension active to see them appear here instantly.</p>
+                    </div>
+                ) : (
+                    filteredSites.map((site, index) => {
+                        const { Icon } = getSiteCategory(site.site_name);
+                        return (
+                            <motion.div
+                                key={site.id}
+                                className={`${styles.siteCard} ${styles[site.category]}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                            >
+                                <div className={styles.siteHeader}>
+                                    <div className={styles.siteIcon}>
+                                        <Icon size={24} strokeWidth={1.5} />
+                                    </div>
+                                    <div className={styles.siteInfo}>
+                                        <h3>{site.site_name}</h3>
+                                        <span className={styles.siteHostname}>{site.hostname}</span>
+                                    </div>
+                                    <a
+                                        href={site.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.visitLink}
+                                    >
+                                        <ExternalLink size={16} />
+                                    </a>
+                                </div>
+                                <div className={styles.siteStats}>
+                                    <div className={styles.siteStat}>
+                                        <Clock size={14} />
+                                        <span>{timeAgo(site.last_visited)}</span>
+                                    </div>
+                                    <div className={styles.siteStat}>
+                                        <Activity size={14} />
+                                        <span>{site.visit_count} visits</span>
+                                    </div>
+                                </div>
+                                <span className={`${styles.categoryBadge} ${styles[site.category]}`}>
+                                    {site.category}
+                                </span>
+                            </motion.div>
+                        );
+                    })
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default ShoppingActivityPage;
+

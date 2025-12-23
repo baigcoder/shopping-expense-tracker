@@ -1,0 +1,511 @@
+/* Hero.module.css - Vibrant Redesign */
+.heroSection {
+    position: relative;
+    padding: 8rem 2rem 6rem;
+    overflow: hidden;
+    background: #FFFFFF;
+}
+
+/* Vibrant Animated Background Mesh */
+/* Vibrant Animated Background Mesh */
+.heroSection::before {
+    display: none;
+}
+
+.heroSection::after {
+    display: none;
+}
+
+@keyframes rotateBackground {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateBackgroundReverse {
+    0% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+@media (min-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Text Content */
+.content {
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .content {
+        text-align: left;
+    }
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 999px;
+    color: #DC2626;
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1);
+    animation: fadeDown 0.8s ease-out;
+}
+
+.title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0F172A;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 4.5rem;
+    }
+}
+
+.gradientText {
+    color: #DC2626;
+    position: relative;
+    display: inline-block;
+}
+
+/* Underline decoration for gradient text */
+.gradientText::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: rgba(220, 38, 38, 0.2);
+    z-index: -1;
+    border-radius: 4px;
+    transform: skewX(-10deg);
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #475569;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 500;
+    animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+@media (min-width: 1024px) {
+    .subtitle {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease-out 0.6s backwards;
+}
+
+@media (min-width: 1024px) {
+    .actions {
+        justify-content: flex-start;
+    }
+}
+
+.primaryBtn {
+    padding: 1rem 2.5rem;
+    background: #DC2626;
+    color: white;
+    font-weight: 700;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.primaryBtn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 30px -10px rgba(220, 38, 38, 0.5);
+}
+
+.secondaryBtn {
+    padding: 1rem 2.5rem;
+    background: white;
+    color: #0F172A;
+    border: 1px solid #E2E8F0;
+    font-weight: 700;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.secondaryBtn:hover {
+    border-color: #CBD5E1;
+    background: #F8FAFC;
+    transform: translateY(-2px);
+}
+
+/* Dashboard Mockup Wrapper */
+.mockupContainer {
+    position: relative;
+    perspective: 1500px;
+    z-index: 20;
+}
+
+/* Floating Elements (Bubbles) */
+.floatingElement {
+    position: absolute;
+    background: white;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 30;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #0F172A;
+    white-space: nowrap;
+}
+
+.float1 {
+    top: 10%;
+    left: -10%;
+    animation: floatBubble 6s ease-in-out infinite;
+}
+
+.float2 {
+    bottom: 20%;
+    right: -5%;
+    animation: floatBubble 7s ease-in-out infinite 1s;
+}
+
+.float3 {
+    top: 40%;
+    right: -15%;
+    animation: floatBubble 5s ease-in-out infinite 0.5s;
+}
+
+@keyframes floatBubble {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Main Mockup */
+.mockup {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 25px 50px -12px rgba(15, 23, 42, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    position: relative;
+    transform-style: preserve-3d;
+    overflow: hidden;
+}
+
+/* Glossy Sheen Effect */
+.mockup::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent);
+    transform: skewX(-20deg);
+    animation: sheen 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+}
+
+@keyframes sheen {
+
+    0%,
+    80% {
+        left: -150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+/* Enhanced Mockup Internals */
+/* Enhanced Mockup Internals */
+.mockupHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #F8FAFC;
+    border-radius: 1rem;
+}
+
+.mockupBody {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1rem;
+    height: 400px;
+    overflow: hidden;
+}
+
+.mockSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+}
+
+.sidebarItem {
+    height: 2.25rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    gap: 0.5rem;
+    color: #64748B;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+
+/* Clean Dashboard Layout */
+.mockMain {
+    background: white;
+    border-radius: 1.5rem;
+    border: 1px solid #F1F5F9;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    position: relative;
+    overflow: hidden;
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.heroStatCard {
+    background: #0F172A;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.billReminder {
+    background: #FFF1F2;
+    border: 1px solid #FECACA;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+    transition: transform 0.3s ease;
+}
+
+.billReminder:hover {
+    transform: translateY(-5px);
+}
+
+/* Typography Fixes */
+.statLabel {
+    color: #94A3B8;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.statValue {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0.5rem 0;
+}
+
+.statSub {
+    color: #64748B;
+    font-size: 0.75rem;
+}
+
+/* Graph Section */
+.graphSection {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 1;
+}
+
+.chartArea {
+    width: 100%;
+    height: 100%;
+}
+
+/* Floating Savings Bubble */
+.savingsBubble {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10;
+    border: 1px solid #F1F5F9;
+    animation: floatBubble 6s ease-in-out infinite;
+}
+
+.savingsText {
+    font-weight: 700;
+    color: #059669;
+    font-size: 0.95rem;
+}
+
+.liveBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    background: #FEF2F2;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #DC2626;
+    margin-left: auto;
+}
+
+.liveDot {
+    width: 6px;
+    height: 6px;
+    background: #DC2626;
+    border-radius: 50%;
+    animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseRed {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+    }
+}
+
+/* Remove old cluttered classes */
+.dashboardGrid,
+.transactionList,
+.heroGraph,
+.tContent,
+.salaryBubble,
+.salaryText {
+    display: none;
+}
+
+/* Animations */
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

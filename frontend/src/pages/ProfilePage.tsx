@@ -1,281 +1,238 @@
-// Profile Page - Gen Z Edition with Dynamic Stats
-import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { User, Mail, Shield, Camera, Edit2, CheckCircle, Calendar, TrendingUp, Wallet, Target, ShoppingBag, Zap } from 'lucide-react';
+// ProfilePage - Cashly User Profile
+import { useState, useEffect } from 'react';
+import { User, Mail, Calendar, MapPin, Edit2, Save, X, Camera, Shield, Sparkles, Receipt, CreditCard } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { useAuthStore } from '../store/useStore';
-import { supabase } from '../config/supabase';
-import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
-import { goalService, Goal } from '../services/goalService';
-import { formatCurrency } from '../services/currencyService';
-import genZToast from '../services/genZToast';
-import styles from './ProfilePage.module.css';
+import { toast } from 'react-toastify';
+import { useSound } from '@/hooks/useSound';
+import { motion } from 'framer-motion';
 
 const ProfilePage = () => {
-    const { user, setUser } = useAuthStore();
-    const [name, setName] = useState(user?.name || 'Cool Kid');
-    const [email, setEmail] = useState(user?.email || 'email@vibes.com');
+    const { user } = useAuthStore();
+    const sound = useSound();
     const [isEditing, setIsEditing] = useState(false);
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-    const [avatarLoaded, setAvatarLoaded] = useState(false);
-    const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
-    const [goals, setGoals] = useState<Goal[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+        location: '',
+        bio: ''
+    });
 
-    // Fetch user data and stats
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const { data: { user: authUser } } = await supabase.auth.getUser();
-
-                if (authUser) {
-                    // Try multiple sources for avatar
-                    let avatar = authUser.user_metadata?.avatar_url ||
-                        authUser.user_metadata?.picture ||
-                        authUser.user_metadata?.photo;
-
-                    // From Google identity
-                    if (!avatar && authUser.identities) {
-                        const googleIdentity = authUser.identities.find(id => id.provider === 'google');
-                        if (googleIdentity?.identity_data) {
-                            avatar = googleIdentity.identity_data.avatar_url || googleIdentity.identity_data.picture;
-                        }
-                    }
-
-                    if (avatar) setAvatarUrl(avatar);
-
-                    const userName = authUser.user_metadata?.full_name ||
-                        authUser.user_metadata?.name ||
-                        authUser.email?.split('@')[0];
-                    if (userName) setName(userName);
-                    setEmail(authUser.email || '');
-
-                    // Fetch transactions and goals for stats
-                    const [txData, goalData] = await Promise.all([
-                        supabaseTransactionService.getAll(authUser.id),
-                        goalService.getAll(authUser.id)
-                    ]);
-                    setTransactions(txData);
-                    setGoals(goalData);
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
-    // Calculate dynamic stats
-    const stats = useMemo(() => {
-        const now = new Date();
-        const thisMonth = transactions.filter(t => {
-            const d = new Date(t.date);
-            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-        });
-
-        const totalTransactions = transactions.length;
-        const thisMonthSpent = thisMonth.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-        const totalSaved = goals.reduce((s, g) => s + g.saved, 0);
-        const activeGoals = goals.filter(g => g.saved < g.target).length;
-        const completedGoals = goals.filter(g => g.saved >= g.target).length;
-
-        // Calculate streak (days with at least one transaction)
-        const uniqueDays = new Set(transactions.map(t => new Date(t.date).toDateString()));
-        const streak = uniqueDays.size;
-
-        // Member since
-        const createdAt = user?.createdAt ? new Date(user.createdAt) : new Date();
-        const memberSince = createdAt.getFullYear();
-
-
-        return { totalTransactions, thisMonthSpent, totalSaved, activeGoals, completedGoals, streak, memberSince };
-    }, [transactions, goals, user]);
-
-    const handleSave = () => {
-        setIsEditing(false);
-        genZToast.success("Profile updated! ✨");
-    };
-
-    const getInitials = () => {
-        if (!name) return '👤';
-        const words = name.split(' ');
-        if (words.length >= 2) {
-            return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+        if (user) {
+            setFormData({
+                name: user.name || '',
+                email: user.email || '',
+                location: '',
+                bio: ''
+            });
         }
-        return name.substring(0, 2).toUpperCase();
+    }, [user]);
+
+    const handleSave = async () => {
+        try {
+            toast.success('Profile updated successfully!');
+            setIsEditing(false);
+            sound.playSuccess();
+        } catch (error) {
+            toast.error('Failed to update profile');
+        }
     };
 
-    if (loading) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.loadingState}>
-                    <motion.div
-                        className={styles.loaderCard}
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ duration: 0.8, repeat: Infinity }}
-                    >
-                        <span style={{ fontSize: '3rem' }}>👤</span>
-                    </motion.div>
-                    <p>loading your profile<span className={styles.loadingDots}></span></p>
-                </div>
-            </div>
-        );
-    }
+    const handleCancel = () => {
+        setFormData({
+            name: user?.name || '',
+            email: user?.email || '',
+            location: '',
+            bio: ''
+        });
+        setIsEditing(false);
+    };
 
     return (
-        <div className={styles.container}>
+        <div className="p-4 md:p-6 lg:p-8 max-w-4xl mx-auto space-y-6">
+            {/* Header */}
             <motion.div
-                className={styles.header}
+                className="flex items-center justify-between"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
             >
-                <h1>My Profile 👤</h1>
-                <p>This is you. Lookin' good.</p>
-            </motion.div>
-
-            <motion.div
-                className={styles.profileCard}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring" }}
-            >
-                <div className={styles.avatarWrapper}>
-                    <div className={styles.avatar}>
-                        {avatarUrl ? (
-                            <img
-                                src={avatarUrl}
-                                alt="Profile"
-                                className={styles.avatarImage}
-                                onLoad={() => setAvatarLoaded(true)}
-                                onError={() => setAvatarUrl(null)}
-                                style={{ display: avatarLoaded ? 'block' : 'none' }}
-                            />
-                        ) : null}
-                        {(!avatarUrl || !avatarLoaded) && (
-                            <span className={styles.avatarInitials}>{getInitials()}</span>
-                        )}
-                    </div>
-                    <button className={styles.editAvatarBtn}>
-                        <Camera size={18} />
-                    </button>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight font-display flex items-center gap-3">
+                        <div className="p-2.5 rounded-xl bg-primary shadow-lg shadow-primary/20">
+                            <User className="h-6 w-6 text-white" />
+                        </div>
+                        Profile
+                    </h1>
+                    <p className="text-muted-foreground mt-1">Manage your account settings</p>
                 </div>
-
-                <h2 className={styles.username}>
-                    {name}
-                    <span className={styles.verified} title="Verified"><CheckCircle size={24} fill="#10B981" color="#fff" /></span>
-                </h2>
-                <span className={styles.userhandle}>@{name.toLowerCase().replace(/\s/g, '')}</span>
+                {!isEditing ? (
+                    <Button onClick={() => setIsEditing(true)} className="gradient-primary text-white shadow-lg shadow-emerald-500/20">
+                        <Edit2 className="mr-2 h-4 w-4" />
+                        Edit Profile
+                    </Button>
+                ) : (
+                    <div className="flex gap-2">
+                        <Button variant="outline" onClick={handleCancel}>
+                            <X className="mr-2 h-4 w-4" />
+                            Cancel
+                        </Button>
+                        <Button onClick={handleSave} className="gradient-primary text-white">
+                            <Save className="mr-2 h-4 w-4" />
+                            Save
+                        </Button>
+                    </div>
+                )}
             </motion.div>
 
-            <div className={styles.grid}>
-                {/* Edit Form */}
-                <motion.div
-                    className={styles.formSection}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                >
-                    <div className={styles.sectionTitle}>
-                        <Edit2 size={24} />
-                        <span>Public Info</span>
-                    </div>
+            {/* Profile Card */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+            >
+                <Card className="card-hover overflow-hidden">
+                    {/* Cover */}
+                    <div className="h-32 bg-primary" />
 
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Display Name</label>
-                        <input
-                            type="text"
-                            className={styles.input}
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            disabled={!isEditing}
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label className={styles.label}>Email Address</label>
-                        <input
-                            type="email"
-                            className={styles.input}
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled
-                            style={{ opacity: 0.7, cursor: 'not-allowed' }}
-                        />
-                    </div>
-
-                    {isEditing ? (
-                        <button className={styles.saveBtn} onClick={handleSave}>
-                            Save Changes 💾
-                        </button>
-                    ) : (
-                        <button className={styles.saveBtn} onClick={() => setIsEditing(true)}>
-                            Edit Profile ✏️
-                        </button>
-                    )}
-                </motion.div>
-
-                {/* Dynamic Stats */}
-                <motion.div
-                    className={styles.statsSection}
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconBox} style={{ background: '#E0E7FF' }}>
-                            <Calendar size={20} color="#3B82F6" />
-                        </div>
-                        <div className={styles.statInfo}>
-                            <span className={styles.statValue}>Since {stats.memberSince}</span>
-                            <span className={styles.statLabel}>Member</span>
-                        </div>
-                    </div>
-
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconBox} style={{ background: '#D1FAE5' }}>
-                            <TrendingUp size={20} color="#10B981" />
-                        </div>
-                        <div className={styles.statInfo}>
-                            <span className={styles.statValue}>{stats.totalTransactions}</span>
-                            <span className={styles.statLabel}>Transactions</span>
-                        </div>
-                    </div>
-
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconBox} style={{ background: '#FEF3C7' }}>
-                            <Target size={20} color="#F59E0B" />
-                        </div>
-                        <div className={styles.statInfo}>
-                            <span className={styles.statValue}>{stats.activeGoals} active</span>
-                            <span className={styles.statLabel}>Goals</span>
-                        </div>
-                    </div>
-
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconBox} style={{ background: '#FCE7F3' }}>
-                            <Wallet size={20} color="#EC4899" />
-                        </div>
-                        <div className={styles.statInfo}>
-                            <span className={styles.statValue}>{formatCurrency(stats.totalSaved)}</span>
-                            <span className={styles.statLabel}>Goals Saved</span>
-                        </div>
-                    </div>
-
-                    {stats.completedGoals > 0 && (
-                        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #10B981, #34D399)', color: '#fff' }}>
-                            <div className={styles.statIconBox} style={{ background: 'rgba(255,255,255,0.2)' }}>
-                                <Zap size={20} color="#fff" />
+                    <CardContent className="relative pt-0">
+                        {/* Avatar overlapping cover */}
+                        <div className="flex flex-col md:flex-row gap-6 -mt-16">
+                            <div className="flex flex-col items-center gap-4">
+                                <div className="relative">
+                                    <Avatar className="h-32 w-32 border-4 border-background shadow-xl">
+                                        <AvatarImage src={`https://ui-avatars.com/api/?name=${user?.name || 'User'}&size=128&background=10B981&color=fff`} />
+                                        <AvatarFallback className="bg-emerald-500 text-white text-3xl font-bold">{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                                    </Avatar>
+                                    {isEditing && (
+                                        <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 rounded-full shadow-lg">
+                                            <Camera className="h-4 w-4" />
+                                        </Button>
+                                    )}
+                                </div>
+                                <Badge className="bg-primary text-white border-0">
+                                    <Sparkles className="mr-1 h-3 w-3" />
+                                    Premium
+                                </Badge>
                             </div>
-                            <div className={styles.statInfo}>
-                                <span className={styles.statValue} style={{ color: '#fff' }}>{stats.completedGoals} 🎉</span>
-                                <span className={styles.statLabel} style={{ color: 'rgba(255,255,255,0.8)' }}>Goals Crushed</span>
+
+                            {/* Form */}
+                            <div className="flex-1 space-y-4 pt-4 md:pt-8">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Full Name</label>
+                                    {isEditing ? (
+                                        <Input
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            placeholder="John Doe"
+                                            className="border-emerald-500/20 focus:border-emerald-500"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center gap-2 p-3 rounded-lg border bg-muted/30">
+                                            <User className="h-4 w-4 text-emerald-600" />
+                                            <span className="font-medium">{formData.name || 'Not set'}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Email Address</label>
+                                    <div className="flex items-center gap-2 p-3 rounded-lg border bg-muted/30">
+                                        <Mail className="h-4 w-4 text-violet-600" />
+                                        <span>{formData.email}</span>
+                                        <Badge variant="secondary" className="ml-auto text-emerald-600 border-emerald-500/20 bg-emerald-500/10">
+                                            <Shield className="mr-1 h-3 w-3" />
+                                            Verified
+                                        </Badge>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Location</label>
+                                    {isEditing ? (
+                                        <Input
+                                            value={formData.location}
+                                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                            placeholder="New York, USA"
+                                            className="border-emerald-500/20 focus:border-emerald-500"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center gap-2 p-3 rounded-lg border bg-muted/30">
+                                            <MapPin className="h-4 w-4 text-amber-600" />
+                                            <span>{formData.location || 'Not set'}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Bio</label>
+                                    {isEditing ? (
+                                        <textarea
+                                            className="w-full min-h-[80px] rounded-lg border border-emerald-500/20 bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                                            value={formData.bio}
+                                            onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                                            placeholder="Tell us about yourself..."
+                                        />
+                                    ) : (
+                                        <div className="p-3 rounded-lg border bg-muted/30">
+                                            <span className="text-muted-foreground">{formData.bio || 'No bio yet'}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    )}
-                </motion.div>
-            </div>
+                    </CardContent>
+                </Card>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+            >
+                <Card className="card-hover bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent border-emerald-500/20">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Member Since</CardTitle>
+                        <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                            <Calendar className="h-4 w-4 text-emerald-600" />
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold font-display">Jan 2024</div>
+                        <p className="text-xs text-muted-foreground mt-1">11 months ago</p>
+                    </CardContent>
+                </Card>
+                <Card className="card-hover bg-gradient-to-br from-violet-500/10 via-transparent to-transparent border-violet-500/20">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Total Transactions</CardTitle>
+                        <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30">
+                            <Receipt className="h-4 w-4 text-violet-600" />
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold font-display">342</div>
+                        <p className="text-xs text-muted-foreground mt-1">Lifetime tracking</p>
+                    </CardContent>
+                </Card>
+                <Card className="card-hover bg-gradient-to-br from-amber-500/10 via-transparent to-transparent border-amber-500/20">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Connected Cards</CardTitle>
+                        <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+                            <CreditCard className="h-4 w-4 text-amber-600" />
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold font-display">3</div>
+                        <p className="text-xs text-muted-foreground mt-1">Active cards</p>
+                    </CardContent>
+                </Card>
+            </motion.div>
         </div>
     );
 };

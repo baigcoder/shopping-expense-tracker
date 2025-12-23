@@ -1,0 +1,53 @@
+/* Form Validation Component - Gen-Z Style */
+.message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-top: 0.5rem;
+    border: 2px solid;
+}
+
+.error {
+    background: #FEE2E2;
+    color: #DC2626;
+    border-color: #DC2626;
+}
+
+.success {
+    background: #D1FAE5;
+    color: #059669;
+    border-color: #059669;
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.error {
+    animation: shake 0.5s ease;
+}

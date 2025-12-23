@@ -1,51 +1,115 @@
-/* Gen Z Neo-Brutalist Sidebar CSS - VIBE CHECK PASSED ✅ */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
-
-.overlay {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    display: none;
-}
-
+/* Sidebar.module.css - Cashly Emerald Theme */
 .sidebar {
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
     height: 100vh;
-    background: #FFFEF9;
-    border-right: 4px solid #000;
+    background: #FFFFFF;
+    border-right: 1px solid #E2E8F0;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem 1.25rem;
-    /* Increased padding */
-    z-index: 100;
-    /* Removed global overflow hidden to allow shadows to breathe, 
-       transition might need width containment elsewhere */
-    transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 6px 0px 0px rgba(0, 0, 0, 0.15);
-    font-family: 'Space Grotesk', sans-serif;
+    z-index: 50;
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
+    will-change: width;
 }
 
-/* ... Logo Area ... */
 
-/* Navigation Container */
+
+
+.collapsed {
+    width: 90px;
+}
+
+/* Mobile Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 40;
+    backdrop-filter: blur(4px);
+}
+
+/* Logo Section */
+.logo {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.75rem;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.logoIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(221 83% 45%) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px hsla(var(--primary) / 0.3);
+}
+
+.logoText {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: hsl(var(--foreground));
+    letter-spacing: -0.5px;
+}
+
+/* Add Button */
+.addButton {
+    margin: 0 1rem 1.5rem;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(221 83% 45%) 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 14px hsla(var(--primary) / 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.addButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px hsla(var(--primary) / 0.4);
+    background: linear-gradient(135deg, hsl(221 83% 45%) 0%, hsl(221 83% 40%) 100%);
+}
+
+.addButtonCollapsed {
+    margin: 0 19px 1.5rem;
+    width: 52px;
+    padding: 0;
+    border-radius: 14px;
+}
+
+/* Navigation */
 .nav {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    /* Use gap for spacing between items */
-    flex: 1;
+    gap: 0.5rem;
+    padding: 0 1rem;
     overflow-y: auto;
-    overflow-x: visible;
-    /* Allow shadows to show */
+    overflow-x: hidden;
     scrollbar-width: none;
-    /* Ensure padding helps shadows not clip */
-    padding: 0.5rem 4px;
-    margin: 0 -4px;
-    /* Counteract padding to keep alignment */
+    -ms-overflow-style: none;
 }
 
 .nav::-webkit-scrollbar {
@@ -57,187 +121,71 @@
     align-items: center;
     gap: 1rem;
     padding: 0.85rem 1rem;
-    color: #6B7280;
+    border-radius: 12px;
+    color: hsl(var(--muted-foreground));
     text-decoration: none;
-    border-radius: 14px;
-    /* Fuller Roundness */
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 500;
     transition: all 0.2s ease;
-    cursor: pointer;
-    background: transparent;
-    border: 3px solid transparent;
-    /* Ensure border width matches active state */
-    width: 100%;
-    text-align: left;
     white-space: nowrap;
-    position: relative;
-    box-sizing: border-box;
-    text-transform: uppercase;
-    margin-bottom: 0px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    width: 100%;
+    margin-left: 0;
 }
 
 .navItem:hover {
-    background: #fff;
-    color: #000;
-    border-color: #000;
-    box-shadow: 4px 4px 0px #000;
-    transform: translateY(-2px);
-    z-index: 10;
+    background: hsl(var(--accent));
+    color: hsl(var(--foreground));
 }
 
-/* ACTIVE STATE */
-.navItem.active {
-    background: #000;
-    color: #fff;
-    border-color: #000;
-    box-shadow: 4px 4px 0px #8B5CF6;
-    /* Purple active shadow */
-    transform: translateY(-2px);
-    z-index: 10;
+.active {
+    background: hsla(var(--primary) / 0.08);
+    color: hsl(var(--primary));
+    font-weight: 600;
 }
 
-.navItem.active:hover {
-    transform: translateY(-3px);
-    box-shadow: 6px 6px 0px #8B5CF6;
+.active svg {
+    stroke-width: 2.5px;
+    color: hsl(var(--primary));
 }
 
-/* Support Icons spacing in collapsed mode */
-.navItem svg {
-    min-width: 20px;
-}
 
 /* Bottom Section */
 .bottom {
+    padding: 1.5rem 1rem;
+    border-top: 1px solid hsl(var(--border));
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    border-top: 4px solid #000;
-    padding-top: 1.5rem;
-    margin-top: auto;
-    background: #FFFEF9;
-    /* Match sidebar bg */
-    padding-right: 6px;
-    /* Safety padding */
+    gap: 0.5rem;
+    background: #FFFFFF;
 }
 
+
+
+
 .logout {
-    color: #EF4444;
+    color: hsl(0 84% 60%);
 }
 
 .logout:hover {
-    color: #fff;
-    background: #EF4444;
-    border-color: #000;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0px #000;
+    background: rgba(239, 68, 68, 0.1);
+    color: hsl(0 63% 45%);
 }
 
-/* Toggle Button */
-.toggle {
-    position: absolute;
-    right: -18px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 10px;
-    /* Squircle */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    z-index: 110;
-    box-shadow: 3px 3px 0px #000;
-}
-
-.toggle:hover {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 5px 5px 0px #000;
-    background: #FBBF24;
-}
-
-/* Collapsed State Overrides */
-.collapsed {
-    padding: 1.5rem 0.5rem;
-    /* Tighter padding to fit contents */
-    width: 90px !important;
-    /* Slightly wider than 80 to fit borders */
-}
-
-.collapsed .navItem {
-    justify-content: center;
-    padding: 0.9rem;
-    width: 54px;
-    /* Fixed square width */
-    height: 54px;
-    margin: 0 auto;
-}
-
-.collapsed .logo {
-    justify-content: center;
-    padding: 0.5rem;
-    width: 54px;
-    height: 54px;
-    margin: 0 auto 2.5rem;
-}
-
-.collapsed .logoIcon {
-    width: auto;
-    height: auto;
-    border: none;
-    background: none;
-    box-shadow: none;
-}
-
-.collapsed .logoText {
-    display: none;
-}
-
-/* Mobile */
+/* Responsive */
 @media (max-width: 1024px) {
-    .overlay {
-        display: block;
-    }
-
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         width: 280px !important;
-        border-right: 4px solid #000;
-        box-shadow: 100px 0px 0px rgba(0, 0, 0, 0.5);
-        /* Shadow on overlay */
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
     }
 
-    .sidebar:not(.collapsed) {
+    .sidebar.open {
         transform: translateX(0);
     }
 
-    /* When active on mobile, it's always full width */
-    .collapsed {
-        /* Reset collapsed styles on mobile if the state logic persists */
-        padding: 1.5rem 1rem;
-        width: 280px !important;
-    }
-
-    .collapsed .navItem {
-        justify-content: flex-start;
-        padding: 0.9rem 1rem;
-        width: 100%;
-        height: auto;
-    }
-
-    .collapsed .logo {
-        width: 100%;
-        height: auto;
-        padding: 0.8rem;
-    }
-
-    .collapsed .logoText {
+    .overlay {
         display: block;
     }
 

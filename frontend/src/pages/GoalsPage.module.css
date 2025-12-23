@@ -1,717 +1,943 @@
-/* Goals Page - Gen-Z Neo-Brutalist Theme */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
+/* ============================================
+   FINZEN - Goals Page
+   Purple Achievement Theme
+   Unique Design with Circular Progress
+   ============================================ */
 
-.container {
-    min-height: 100vh;
-    padding: 0 2rem 2rem;
-    font-family: 'Outfit', sans-serif;
-    color: #000;
-    position: relative;
-    background-color: #FFFBEB;
-    /* Light Amber Base */
-    background-image:
-        radial-gradient(#F59E0B 1.5px, transparent 1.5px),
-        radial-gradient(#F59E0B 1.5px, transparent 1.5px);
-    /* Amber Dots */
-    background-size: 24px 24px;
-    background-position: 0 0, 12px 12px;
-    background-attachment: fixed;
-}
+/* === MAIN LAYOUT === */
+/* Sidebar and Layout handled by DashboardLayout */
 
-/* Header */
-.header {
+/* === TOP BAR === */
+.topBar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    padding: 2rem 0;
-    margin-bottom: 1rem;
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-purple-lighter);
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
-.headerLeft {
+.brandSection {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 12px;
 }
 
-.header h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: -1.5px;
-    color: #000;
-    line-height: 1;
+.brandLogo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    text-shadow:
-        3px 3px 0 #fff,
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff,
-        6px 6px 0px rgba(0, 0, 0, 0.15);
+    justify-content: center;
+    color: white;
 }
 
-.currencyBadge {
-    background: #FFD93D;
-    /* Match the gold theme */
-    color: #000;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    /* Pill shape */
-    font-size: 1.25rem;
+.brandName {
+    font-size: 1.15rem;
     font-weight: 800;
-    box-shadow: 4px 4px 0px #000;
-    border: 3px solid #000;
-    transform: rotate(3deg);
-    margin-left: 1rem;
-    font-family: 'Outfit', sans-serif;
+    color: var(--color-text);
+}
+
+.brandDivider {
+    color: var(--color-border);
+}
+
+.brandPage {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-purple);
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .addBtn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: #FFD93D;
-    color: #000;
-    border: 3px solid #000;
-    padding: 1rem 2rem;
-    border-radius: 16px;
-    font-size: 1.1rem;
-    font-weight: 800;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
-    box-shadow: 6px 6px 0px #000;
-    transition: all 0.15s ease;
-    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
 }
 
 .addBtn:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0px #000;
-    background: #FFE566;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
 }
 
-.addBtn:active {
-    transform: translate(0, 0);
-    box-shadow: 0px 0px 0px #000;
+.profileAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 2px solid var(--color-purple-lighter);
+    object-fit: cover;
+    transition: border-color 0.2s ease;
 }
 
-/* Goals Grid */
-.goalsGrid {
+.profileAvatar:hover {
+    border-color: var(--color-purple);
+}
+
+/* === CONTENT AREA === */
+.contentArea {
+    padding: 32px;
+    max-width: 1400px;
+}
+
+/* === HERO SECTION === */
+.heroSection {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
 }
 
-/* Goal Card */
-.goalCard {
-    background: #fff;
-    border: 4px solid #000;
+.heroCard {
+    background: white;
     border-radius: 24px;
-    padding: 2rem;
+    padding: 32px;
+    border: 1px solid var(--color-purple-lighter);
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 32px;
     position: relative;
-    box-shadow: 8px 8px 0px #000;
+    overflow: hidden;
+}
+
+.heroCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-purple), var(--color-purple-light));
+}
+
+.progressRingContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circularProgress {
+    display: block;
+}
+
+.progressBg {
+    opacity: 0.3;
+}
+
+.progressCircle {
+    filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.3));
+}
+
+.progressCenter {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.progressValue {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--color-purple);
+    line-height: 1;
+}
+
+.progressLabel {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.heroInfo {
+    flex: 1;
+}
+
+.heroInfo h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 12px;
+}
+
+.heroAmount {
+    margin-bottom: 16px;
+}
+
+.saved {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--color-purple);
+}
+
+.target {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin-left: 8px;
+}
+
+.heroMeta {
+    display: flex;
+    gap: 20px;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.metaItem svg {
+    color: var(--color-purple);
+}
+
+/* === ACHIEVEMENT CARDS === */
+.achievementCards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.achievementCard {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1px solid var(--color-purple-lighter);
+    display: flex;
+    align-items: center;
+    gap: 16px;
     transition: all 0.2s ease;
+}
+
+.achievementCard:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
+}
+
+.achievementIcon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-purple);
+}
+
+.trophyIcon {
+    background: linear-gradient(135deg, var(--color-warning-lighter) 0%, var(--color-warning-light) 100%);
+    color: var(--color-warning-dark);
+}
+
+.trendIcon {
+    background: linear-gradient(135deg, var(--color-success-lighter) 0%, var(--color-success-light) 100%);
+    color: var(--color-success-dark);
+}
+
+.achievementInfo {
     display: flex;
     flex-direction: column;
 }
 
-.goalCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #000;
-}
-
-.goalCard.completed {
-    background: #ecfdf5;
-    border-color: #000;
-}
-
-.completedBadge {
-    position: absolute;
-    top: -15px;
-    right: 20px;
-    background: #10B981;
-    color: #000;
-    padding: 0.5rem 1.25rem;
-    border-radius: 30px;
-    font-size: 0.9rem;
+.achievementValue {
+    font-size: 1.5rem;
     font-weight: 800;
-    border: 3px solid #000;
-    text-transform: uppercase;
-    transform: rotate(2deg);
-    box-shadow: 3px 3px 0px #000;
-    z-index: 10;
-}
-
-.goalIcon {
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    border: 3px solid #000;
-    box-shadow: 5px 5px 0px #FFD93D;
-    margin-bottom: 1.5rem;
-}
-
-.goalName {
-    font-size: 1.75rem;
-    font-weight: 900;
-    margin: 0 0 0.5rem;
-    color: #000;
-    line-height: 1.1;
-}
-
-.goalDescription {
-    font-size: 1rem;
-    color: #666;
-    margin: 0 0 1.5rem;
-    font-weight: 500;
-    line-height: 1.4;
-}
-
-/* Progress Section */
-.goalProgress {
-    background: #f8fafc;
-    border: 3px solid #000;
-    border-radius: 16px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-}
-
-.progressHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 0.75rem;
-}
-
-.currentAmount {
-    font-size: 1.75rem;
-    font-weight: 900;
-    color: #10B981;
+    color: var(--color-text);
     line-height: 1;
 }
 
-.targetAmount {
-    font-size: 1rem;
-    color: #666;
-    font-weight: 700;
+.achievementLabel {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin-top: 4px;
 }
 
-.progressBar {
-    height: 20px;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    border: 3px solid #000;
-}
-
-.progressFill {
-    height: 100%;
-    background: repeating-linear-gradient(45deg,
-            #10B981,
-            #10B981 10px,
-            #34D399 10px,
-            #34D399 20px);
-    border-right: 3px solid #000;
-    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.progressPercent {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    font-weight: 900;
-    color: #000;
-    background: #fff;
-    padding: 0 4px;
-    border-radius: 4px;
-    border: 1px solid #000;
-}
-
-.remainingText {
-    font-size: 0.9rem;
-    color: #000;
-    font-weight: 700;
-    margin-top: 0.75rem;
-    text-align: right;
-}
-
-/* Footer / Actions */
-.goalMeta {
-    margin-top: auto;
+/* === SECTION HEADER === */
+.sectionHeader {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
-.deadline {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    background: #f1f5f9;
-    padding: 0.5rem 0.75rem;
-    border-radius: 10px;
-    border: 2px solid #000;
+.sectionHeader h3 {
+    font-size: 1.25rem;
     font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
 }
 
-.contributeBtn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
-    padding: 0.75rem 1.25rem;
-    border-radius: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #FFD93D;
-    transition: all 0.15s;
+.goalCount {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
 }
 
-.contributeBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #FFD93D;
-    color: #FFD93D;
-}
-
-/* Modals */
-.modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-    padding: 1rem;
-}
-
-.modal,
-.fundModal {
-    background: #fff;
-    border: 4px solid #000;
-    border-radius: 32px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 12px 12px 0px #000;
-    position: relative;
-    /* Framer Motion handles animation */
-}
-
-.closeBtn {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: #FF6B6B;
-    border: 2px solid #000;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    box-shadow: 3px 3px 0px #000;
-    transition: all 0.15s;
-}
-
-.closeBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 5px 5px 0px #000;
-}
-
-/* Fund Modal Styling */
-.fundHeader {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.fundIcon {
-    font-size: 4rem;
-    display: inline-block;
-    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.2));
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.fundHeader h2 {
-    font-size: 2rem;
-    font-weight: 900;
-    margin: 1rem 0 0.25rem;
-    text-transform: uppercase;
-}
-
-.fundHeader p {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-}
-
-.fundProgress {
-    background: #eff6ff;
-    padding: 1.5rem;
-    border: 3px solid #000;
-    border-radius: 20px;
-    margin-bottom: 2rem;
-}
-
-.fundProgressInfo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 800;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-}
-
-.fundProgressBar {
-    height: 24px;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.fundProgressFill {
-    height: 100%;
-    background: #3B82F6;
-    border-right: 3px solid #000;
-}
-
-.fundRemaining {
-    text-align: center;
-    font-weight: 700;
-    color: #3B82F6;
-    margin-top: 1rem;
-    font-size: 0.9rem;
-}
-
-/* Amount Input */
-.amountInput {
-    position: relative;
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.currencyPrefix {
-    position: absolute;
-    left: 2rem;
-    font-size: 2rem;
-    font-weight: 800;
-    color: #000;
-    z-index: 10;
-}
-
-.amountInput input {
-    width: 100%;
-    padding: 1.5rem 1rem 1.5rem 3rem;
-    font-size: 2.5rem;
-    font-weight: 900;
-    text-align: center;
-    border: 4px solid #000;
-    border-radius: 20px;
-    background: #fff;
-    font-family: 'Outfit', sans-serif;
-    box-shadow: 6px 6px 0px #000;
-    outline: none;
-}
-
-.amountInput input:focus {
-    box-shadow: 8px 8px 0px #10B981;
-}
-
-/* Quick Amounts */
-.quickAmounts {
+/* === GOALS GRID === */
+.goalsGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }
 
-.quickAmount {
-    padding: 1rem;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 14px;
-    font-size: 1rem;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #000;
-    transition: all 0.1s;
-    font-family: 'Outfit', sans-serif;
-}
-
-.quickAmount:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0px #000;
-    background: #fdf2f8;
-}
-
-.quickAmount.selected {
-    background: #10B981;
-    color: #000;
-    box-shadow: 2px 2px 0px #000;
-    transform: translate(2px, 2px);
-}
-
-.addFundBtn {
-    width: 100%;
-    padding: 1.25rem;
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
+.goalCard {
+    background: white;
     border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--color-purple-lighter);
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.goalCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(124, 58, 237, 0.12);
+    border-color: var(--color-purple-light);
+}
+
+.completedCard {
+    background: linear-gradient(135deg, var(--color-success-subtle) 0%, var(--color-success-lighter) 100%);
+    border-color: var(--color-success-light);
+}
+
+.goalCardHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.goalEmoji {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+}
+
+.goalRing {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ringPercent {
+    position: absolute;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-purple);
+}
+
+.goalCardBody {
+    margin-bottom: 16px;
+}
+
+.goalCardBody h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 8px;
+}
+
+.goalDesc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 10px;
+    line-height: 1.4;
+}
+
+.goalDeadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.goalDeadline svg {
+    color: var(--color-purple);
+}
+
+.goalCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-purple-lighter);
+}
+
+.amounts {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.savedAmt {
     font-size: 1.25rem;
     font-weight: 800;
-    cursor: pointer;
-    box-shadow: 6px 6px 0px #10B981;
-    transition: all 0.15s;
+    color: var(--color-purple);
+}
+
+.targetAmt {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+.fundBtn {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    text-transform: uppercase;
-}
-
-.addFundBtn:hover:not(:disabled) {
-    background: #10B981;
-    color: #000;
-    transform: translate(-4px, -4px);
-    box-shadow: 10px 10px 0px #000;
-}
-
-.addFundBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-/* New Goal Form Inputs */
-.formGroup {
-    margin-bottom: 1.5rem;
-}
-
-.label {
-    display: block;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-}
-
-.input,
-.textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 3px solid #000;
-    border-radius: 16px;
-    font-size: 1.1rem;
+    gap: 6px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
     font-weight: 600;
-    background: #f9fafb;
-    font-family: 'Outfit', sans-serif;
-    box-shadow: 4px 4px 0px #e5e7eb;
-    box-sizing: border-box;
-}
-
-.input:focus,
-.textarea:focus {
-    outline: none;
-    box-shadow: 6px 6px 0px #000;
-    background: #fff;
-}
-
-.iconPicker {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-}
-
-.iconOption {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-    border: 3px solid #e5e7eb;
-    border-radius: 14px;
-    background: #fff;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+}
+
+.fundBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.completeBadge {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: var(--color-success-lighter);
+    color: var(--color-success-dark);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
 }
 
-.iconOption:hover {
-    transform: scale(1.1);
-    border-color: #000;
-}
-
-.iconOption.selected {
-    border-color: #000;
-    background: #FFD93D;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.modalActions {
+/* === MILESTONES === */
+.milestones {
     display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: 8px;
+    margin-top: 16px;
 }
 
-.cancelBtn {
+.milestone {
     flex: 1;
-    padding: 1rem;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #e5e7eb;
-    font-family: inherit;
-    font-size: 1rem;
+    height: 4px;
+    background: var(--color-purple-lighter);
+    border-radius: 2px;
+    transition: background 0.3s ease;
 }
 
-.cancelBtn:hover {
-    box-shadow: 4px 4px 0px #000;
+.milestone.reached {
+    background: linear-gradient(90deg, var(--color-purple), var(--color-purple-light));
 }
 
-.saveBtn {
-    flex: 1;
-    padding: 1rem;
-    background: #10B981;
-    color: #000;
-    border: 3px solid #000;
-    border-radius: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #000;
-    font-family: inherit;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.saveBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-}
-
-/* Empty State */
+/* === EMPTY STATE === */
 .emptyState {
-    background: #fff;
-    border: 4px dashed #000;
-    border-radius: 32px;
-    padding: 5rem 2rem;
+    grid-column: 1 / -1;
     text-align: center;
+    padding: 80px 40px;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--color-purple-lighter);
 }
 
-/* Loaders */
-/* Loaders */
+.emptyIcon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 28px;
+    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-purple);
+}
+
+.emptyState h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 12px;
+}
+
+.emptyState p {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 24px;
+}
+
+.emptyBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.emptyBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+}
+
+/* === LOADING === */
 .loadingState {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 50vh;
+    min-height: 60vh;
+    gap: 20px;
+    color: var(--color-text-secondary);
 }
 
-.loaderCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 50px;
-    /* Compact Pill */
-    padding: 1rem 2rem;
-    box-shadow: 4px 4px 0px #000;
-    margin-bottom: 1rem;
+.spinner {
+    animation: spin 1s linear infinite;
+    color: var(--color-purple);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* === MODAL === */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    height: auto;
+    z-index: 1000;
+    padding: 20px;
 }
 
-.loadingState p {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 800;
-    text-transform: lowercase;
-    font-size: 1rem;
-    letter-spacing: -0.5px;
-    color: #000;
-    background: #fff;
-    padding: 0.5rem 1rem;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 0 #000;
+.modal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(124, 58, 237, 0.25);
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--color-purple-lighter);
+}
+
+.modalHeader h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.closeBtn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--color-purple-lighter);
     border-radius: 12px;
-    transform: rotate(-2deg);
+    color: var(--color-purple);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-.loadingDots {
-    display: inline-block;
-    width: 0.5rem;
+.closeBtn:hover {
+    background: var(--color-purple-lighter);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
+.modalBody {
+    padding: 28px;
+}
+
+.formGroup {
+    margin-bottom: 24px;
+}
+
+.formGroup label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 10px;
+}
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--color-purple-lighter);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: white;
+    font-family: inherit;
+}
+
+.formGroup textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: var(--color-purple);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.iconGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.iconBtn {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--color-purple-lighter);
+    background: white;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+    border-color: var(--color-purple);
+    background: var(--color-purple-lighter);
+}
+
+.iconBtn.selectedIcon {
+    border-color: var(--color-purple);
+    background: var(--color-purple-lighter);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.modalFooter {
+    display: flex;
+    gap: 14px;
+    padding: 24px 28px;
+    border-top: 1px solid var(--color-purple-lighter);
+    background: #FAFBFC;
+    border-radius: 0 0 24px 24px;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 14px;
+    border: 1.5px solid var(--color-purple-lighter);
+    background: white;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+    background: var(--color-purple-lighter);
+}
+
+.saveBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+.saveBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+.saveBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* === FUND MODAL === */
+.fundModal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    box-shadow: 0 24px 80px rgba(124, 58, 237, 0.25);
+}
+
+.fundHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.fundHeader .closeBtn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+}
+
+.fundGoalIcon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+}
+
+.fundHeader h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
+}
+
+.fundHeader p {
+    font-size: 0.9rem;
+    color: #6B7280;
+    margin: 4px 0 0;
+}
+
+.fundProgress {
+    margin-bottom: 24px;
+}
+
+.fundProgressInfo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #6B7280;
+    margin-bottom: 8px;
+}
+
+.fundProgressBar {
+    height: 10px;
+    background: #F3E8FF;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.fundProgressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #7C3AED, #A78BFA);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.amountInputWrapper {
+    display: flex;
+    align-items: center;
+    background: #F3E8FF;
+    border-radius: 16px;
+    padding: 8px 20px;
+    margin-bottom: 20px;
+}
+
+.currencyPrefix {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #7C3AED;
+    margin-right: 8px;
+}
+
+.amountInputWrapper input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0F172A;
+    outline: none;
+}
+
+.quickAmounts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.quickBtn {
+    padding: 12px;
+    border: 2px solid #E9D5FF;
+    background: white;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quickBtn:hover {
+    border-color: #7C3AED;
+    color: #7C3AED;
+}
+
+.quickBtn.selectedQuick {
+    border-color: #7C3AED;
+    background: #F3E8FF;
+    color: #7C3AED;
+}
+
+.addFundsBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+}
+
+.addFundsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+.addFundsBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+    .heroSection {
+        grid-template-columns: 1fr;
     }
 
-    .header h1 {
-        font-size: 2rem;
+    .achievementCards {
+        flex-direction: row;
+    }
+
+    .achievementCard {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .mainContent {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .topBar {
+        padding: 12px 16px;
+    }
+
+    .addBtn span {
+        display: none;
+    }
+
+    .contentArea {
+        padding: 20px 16px;
+    }
+
+    .heroCard {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .heroMeta {
+        justify-content: center;
+    }
+
+    .achievementCards {
+        flex-direction: column;
     }
 
     .goalsGrid {
         grid-template-columns: 1fr;
-    }
-
-    .quickAmounts {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .amountInput input {
-        font-size: 2rem;
-        padding-left: 1rem;
-    }
-
-    .currencyPrefix {
-        display: none;
-    }
-
-    .modal {
-        padding: 1.5rem;
-    }
-
-    .goalCard {
-        padding: 1.5rem;
     }
 }

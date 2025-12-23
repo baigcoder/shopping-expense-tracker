@@ -12,6 +12,7 @@ export interface Subscription {
     price: number;
     cycle: 'monthly' | 'yearly' | 'weekly';
     renew_date?: string;
+    notification_enabled?: boolean;
     color: string;
     is_active: boolean;
     status: SubscriptionStatus;
@@ -149,6 +150,8 @@ export const subscriptionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'create', data } }));
         return data;
     },
 
@@ -191,6 +194,8 @@ export const subscriptionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'trial-started', data } }));
         return data;
     },
 
@@ -222,6 +227,8 @@ export const subscriptionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'converted', data } }));
         return data;
     },
 
@@ -242,6 +249,8 @@ export const subscriptionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'update', data } }));
         return data;
     },
 
@@ -261,6 +270,8 @@ export const subscriptionService = {
             return false;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'cancel', id } }));
         return true;
     },
 
@@ -276,6 +287,8 @@ export const subscriptionService = {
             return false;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('subscription-changed', { detail: { action: 'delete', id } }));
         return true;
     },
 

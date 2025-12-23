@@ -24,7 +24,8 @@ export const supabaseTransactionService = {
             .from('transactions')
             .select('*')
             .eq('user_id', userId)
-            .order('date', { ascending: false });
+            .order('date', { ascending: false })
+            .limit(100);
 
         if (error) {
             console.error('Error fetching transactions:', error);
@@ -64,6 +65,8 @@ export const supabaseTransactionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('transaction-added', { detail: data }));
         return data;
     },
 
@@ -79,6 +82,8 @@ export const supabaseTransactionService = {
             return [];
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('transaction-added', { detail: { count: data?.length || 0 } }));
         return data || [];
     },
 
@@ -96,6 +101,8 @@ export const supabaseTransactionService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('transaction-updated', { detail: data }));
         return data;
     },
 
@@ -111,6 +118,8 @@ export const supabaseTransactionService = {
             return false;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('transaction-deleted', { detail: { id } }));
         return true;
     },
 };

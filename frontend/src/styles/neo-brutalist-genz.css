@@ -1,0 +1,401 @@
+/* Enhanced Neo-Brutalist + Gen-Z Design System */
+/* Keep: Bold borders, hard shadows, strong typography */
+/* Add: Neon colors, gradients, vibrant shadows, animations */
+
+:root {
+    /* === NEON ACCENT COLORS === */
+    --neon-cyan: #00F5FF;
+    --neon-lime: #39FF14;
+    --neon-pink: #FF006E;
+    --neon-purple: #BF40BF;
+    --neon-orange: #FF6B35;
+    --neon-blue: #0080FF;
+    --neon-yellow: #FBBF24;
+
+    /* === VIBRANT GRADIENTS === */
+    --gradient-purple-pink: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    --gradient-cyan-blue: linear-gradient(135deg, #00F5FF 0%, #0080FF 100%);
+    --gradient-lime-green: linear-gradient(135deg, #39FF14 0%, #10B981 100%);
+    --gradient-orange-yellow: linear-gradient(135deg, #FF6B35 0%, #FBBF24 100%);
+    --gradient-pink-red: linear-gradient(135deg, #EC4899 0%, #EF4444 100%);
+    --gradient-rainbow: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #FBBF24 100%);
+
+    /* === COLORFUL SHADOWS === */
+    --shadow-purple: 6px 6px 0 #8B5CF6;
+    --shadow-pink: 6px 6px 0 #EC4899;
+    --shadow-cyan: 6px 6px 0 #00F5FF;
+    --shadow-lime: 6px 6px 0 #39FF14;
+    --shadow-orange: 6px 6px 0 #FF6B35;
+    --shadow-yellow: 6px 6px 0 #FBBF24;
+    --shadow-black: 6px 6px 0 #000;
+
+    /* === HOVER SHADOWS (ENHANCED) === */
+    --shadow-purple-hover: 8px 8px 0 #8B5CF6;
+    --shadow-pink-hover: 8px 8px 0 #EC4899;
+    --shadow-cyan-hover: 8px 8px 0 #00F5FF;
+    --shadow-lime-hover: 8px 8px 0 #39FF14;
+
+    /* === BORDERS (KEEP BOLD) === */
+    --border-thick: 4px solid #000;
+    --border-medium: 3px solid #000;
+    --border-thin: 2px solid #000;
+
+    /* === ANIMATIONS === */
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* === COLORFUL SHADOW UTILITIES === */
+.shadow-purple {
+    box-shadow: var(--shadow-purple);
+}
+
+.shadow-pink {
+    box-shadow: var(--shadow-pink);
+}
+
+.shadow-cyan {
+    box-shadow: var(--shadow-cyan);
+}
+
+.shadow-lime {
+    box-shadow: var(--shadow-lime);
+}
+
+.shadow-orange {
+    box-shadow: var(--shadow-orange);
+}
+
+.shadow-yellow {
+    box-shadow: var(--shadow-yellow);
+}
+
+/* === GRADIENT BACKGROUNDS === */
+.bg-gradient-purple-pink {
+    background: var(--gradient-purple-pink);
+}
+
+.bg-gradient-cyan-blue {
+    background: var(--gradient-cyan-blue);
+}
+
+.bg-gradient-lime-green {
+    background: var(--gradient-lime-green);
+}
+
+.bg-gradient-orange-yellow {
+    background: var(--gradient-orange-yellow);
+}
+
+/* === GRADIENT TEXT === */
+.text-gradient-purple {
+    background: var(--gradient-purple-pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-rainbow {
+    background: var(--gradient-rainbow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* === NEO-BRUTALIST CARD WITH COLORFUL SHADOW === */
+.neo-card {
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: var(--shadow-black);
+    transition: all 0.2s var(--bounce);
+}
+
+.neo-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 #000;
+}
+
+/* Colorful variants */
+.neo-card-purple {
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: var(--shadow-purple);
+}
+
+.neo-card-purple:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-purple-hover);
+}
+
+.neo-card-pink {
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: var(--shadow-pink);
+}
+
+.neo-card-pink:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-pink-hover);
+}
+
+.neo-card-cyan {
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: var(--shadow-cyan);
+}
+
+.neo-card-cyan:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-cyan-hover);
+}
+
+.neo-card-lime {
+    border: 3px solid #000;
+    background: #FFF;
+    box-shadow: var(--shadow-lime);
+}
+
+.neo-card-lime:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-lime-hover);
+}
+
+/* === NEO-BRUTALIST BUTTON WITH GRADIENT === */
+.neo-button {
+    border: 3px solid #000;
+    background: var(--gradient-orange-yellow);
+    color: #000;
+    font-weight: 800;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.2s var(--smooth);
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+}
+
+.neo-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+}
+
+.neo-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
+}
+
+/* Button variants */
+.neo-button-purple {
+    background: var(--gradient-purple-pink);
+    color: #FFF;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.neo-button-cyan {
+    background: var(--gradient-cyan-blue);
+    color: #FFF;
+    box-shadow: 4px 4px 0 #000;
+}
+
+/* === NEON GLOW EFFECTS === */
+.neon-glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 6px 6px 0 #8B5CF6;
+}
+
+.neon-glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.6), 6px 6px 0 #00F5FF;
+}
+
+.neon-glow-lime {
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.6), 6px 6px 0 #39FF14;
+}
+
+/* === ANIMATED ICONS === */
+.icon-bounce {
+    transition: transform 0.3s var(--bounce);
+}
+
+.icon-bounce:hover {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.icon-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* === GRADIENT PROGRESS BAR === */
+.neo-progress {
+    height: 24px;
+    background: #E5E7EB;
+    border: 3px solid #000;
+    overflow: hidden;
+}
+
+.neo-progress-fill {
+    height: 100%;
+    border-right: 3px solid #000;
+    transition: width 0.5s ease;
+}
+
+.neo-progress-fill-success {
+    background: var(--gradient-lime-green);
+}
+
+.neo-progress-fill-warning {
+    background: var(--gradient-orange-yellow);
+}
+
+.neo-progress-fill-danger {
+    background: var(--gradient-pink-red);
+    animation: pulse-progress 1s infinite;
+}
+
+@keyframes pulse-progress {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* === CATEGORY BADGES === */
+.neo-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 2px solid #000;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.neo-badge-food {
+    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    color: #000;
+}
+
+.neo-badge-transport {
+    background: linear-gradient(135deg, #00F5FF, #0080FF);
+    color: #000;
+}
+
+.neo-badge-shopping {
+    background: linear-gradient(135deg, #EC4899, #F093FB);
+    color: #000;
+}
+
+.neo-badge-entertainment {
+    background: linear-gradient(135deg, #8B5CF6, #BF40BF);
+    color: #FFF;
+}
+
+.neo-badge-bills {
+    background: linear-gradient(135deg, #EF4444, #F87171);
+    color: #FFF;
+}
+
+/* === HOVER LIFT EFFECT === */
+.hover-lift {
+    transition: all 0.2s var(--bounce);
+}
+
+.hover-lift:hover {
+    transform: translate(-2px, -2px);
+}
+
+/* === COLORFUL BORDER ACCENTS === */
+.border-left-purple {
+    border-left: 6px solid #8B5CF6;
+}
+
+.border-left-pink {
+    border-left: 6px solid #EC4899;
+}
+
+.border-left-cyan {
+    border-left: 6px solid #00F5FF;
+}
+
+.border-left-lime {
+    border-left: 6px solid #39FF14;
+}
+
+/* === CELEBRATION ANIMATION === */
+@keyframes celebrate {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    25% {
+        transform: scale(1.05) rotate(-2deg);
+    }
+
+    75% {
+        transform: scale(1.05) rotate(2deg);
+    }
+}
+
+.celebrate {
+    animation: celebrate 0.5s ease;
+}
+
+/* === SLIDE IN ANIMATIONS === */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s var(--smooth);
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s var(--smooth);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    :root {
+        --shadow-purple: 4px 4px 0 #8B5CF6;
+        --shadow-pink: 4px 4px 0 #EC4899;
+        --shadow-cyan: 4px 4px 0 #00F5FF;
+        --shadow-lime: 4px 4px 0 #39FF14;
+    }
+}

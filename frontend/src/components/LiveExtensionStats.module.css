@@ -1,0 +1,286 @@
+/* Live Extension Stats - Gen-Z Neo-Brutalist Style */
+
+.container {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 8px 8px 0 #000;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header h3 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: 2px solid #000;
+}
+
+.status.online {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status.offline {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #F3F4F6;
+    border: 3px solid #000;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0 #000;
+}
+
+.stat:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #000;
+}
+
+.statIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: 3px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.statInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.statInfo strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #000;
+    line-height: 1;
+}
+
+.statInfo span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6B7280;
+    text-transform: uppercase;
+}
+
+.pending {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #FEF3C7;
+    border: 3px solid #F59E0B;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pending span {
+    font-size: 1.5rem;
+}
+
+.pending p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #92400E;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading span {
+    font-weight: 700;
+    color: #6B7280;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.25rem;
+        box-shadow: 6px 6px 0 #000;
+    }
+
+    .header h3 {
+        font-size: 1.1rem;
+    }
+
+    .stat {
+        padding: 1rem;
+    }
+
+    .statIcon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .statIcon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .statInfo strong {
+        font-size: 1.3rem;
+    }
+
+    .statInfo span {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .stat {
+        padding: 0.85rem;
+    }
+
+    .statIcon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .statInfo strong {
+        font-size: 1.2rem;
+    }
+}
+
+/* Live Site Popup */
+.sitePopup {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    border: 3px solid #10B981;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    color: #065F46;
+    animation: pulse 2s infinite;
+}
+
+.sitePopup svg {
+    color: #10B981;
+}
+
+.sitePopup strong {
+    color: #000;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* See More Link */
+.seeMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    box-shadow: 4px 4px 0px #F59E0B;
+}
+
+.seeMore:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #F59E0B;
+    color: #F59E0B;
+}
+
+.seeMore svg:last-child {
+    transition: transform 0.2s;
+}
+
+.seeMore:hover svg:last-child {
+    transform: translateX(4px);
+}

@@ -1,5 +1,5 @@
 /**
- * Build script for Vibe Tracker Extension
+ * Build script for Finzen Extension
  * Generates browser-specific packages for Chrome/Brave and Firefox
  */
 
@@ -21,8 +21,7 @@ const commonFiles = [
     'content.js',
     'content.css',
     'content-website.js',
-    'background.js',
-    'dark-pattern-detector.js'
+    'background.js'
 ];
 
 // Create dist directory
@@ -132,11 +131,11 @@ function buildFirefox() {
 function createZip(sourceDir, browser) {
     console.log(`\n📦 Creating ZIP for ${browser}...`);
     console.log(`   Please manually zip the contents of: ${sourceDir}`);
-    console.log(`   Save as: vibe-tracker-${browser}.zip`);
+    console.log(`   Save as: finzen-${browser}.zip`);
 }
 
 // Main build
-console.log('🚀 Vibe Tracker Extension Builder');
+console.log('🚀 Finzen Extension Builder');
 console.log('================================');
 
 ensureDir(DIST_DIR);

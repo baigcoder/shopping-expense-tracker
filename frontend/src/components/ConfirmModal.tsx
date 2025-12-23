@@ -1,6 +1,7 @@
-/* Custom Confirm Modal - Neo-Brutalist Style */
+/* Custom Confirm Modal - Premium SaaS Industrial Style */
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, X } from 'lucide-react';
+import { AlertTriangle, X, Info, CheckCircle2 } from 'lucide-react';
+
 import styles from './ConfirmModal.module.css';
 
 interface ConfirmModalProps {
@@ -26,13 +27,13 @@ const ConfirmModal = ({
 }: ConfirmModalProps) => {
     const handleConfirm = () => {
         onConfirm();
-        onClose();
     };
 
+
     const typeColors = {
-        danger: { bg: '#FF6B6B', icon: '💀' },
-        warning: { bg: '#FFD93D', icon: '🥺' },
-        info: { bg: '#4D96FF', icon: '🤔' }
+        danger: { bg: '#FEE2E2', color: '#EF4444' },
+        warning: { bg: '#FEF3C7', color: '#F59E0B' },
+        info: { bg: '#DBEAFE', color: '#3B82F6' }
     };
 
     return (
@@ -65,10 +66,17 @@ const ConfirmModal = ({
                             {/* Icon */}
                             <div
                                 className={styles.iconContainer}
-                                style={{ background: typeColors[type].bg }}
+                                style={{
+                                    background: typeColors[type].bg,
+                                    color: typeColors[type].color,
+                                    border: 'none'
+                                }}
                             >
-                                <span className={styles.emoji}>{typeColors[type].icon}</span>
+                                {type === 'danger' && <AlertTriangle size={32} />}
+                                {type === 'warning' && <AlertTriangle size={32} />}
+                                {type === 'info' && <Info size={32} />}
                             </div>
+
 
                             {/* Content */}
                             <h2 className={styles.title}>{title}</h2>

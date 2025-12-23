@@ -1,17 +1,21 @@
-// Background Service Worker - Enhanced Extension Logic
-// Handles auto-detection, sync, notifications, and website communication
+// Background Service Worker - Enhanced Extension Logic v4.0
+// Handles behavior-based detection, sync, notifications, and website communication
 
-// ================================
-// SUPABASE CONFIGURATION
-// ================================
-const SUPABASE_URL = 'https://ebfolvhqjvavrwrfcbhn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViZm9sdmhxanZhdnJ3cmZjYmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM2NjI0NDgsImV4cCI6MjA0OTIzODQ0OH0.RC7d0vMx1F4Z2J2Ovl9m2hZV8HCmZ2f6pBWSN-GJ3O0';
+// Import centralized config
+importScripts('config.js');
 
-const WEBSITE_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://vibe-tracker-expense-genz.vercel.app' // Production URL
-];
+// Use config values (set by config.js on self)
+const SUPABASE_URL = self.CONFIG.SUPABASE_URL;
+const SUPABASE_ANON_KEY = self.CONFIG.SUPABASE_ANON_KEY;
+const WEBSITE_ORIGINS = self.CONFIG.WEBSITE_ORIGINS;
+
+// Current tracking state (for popup display)
+let currentTrackingState = {
+    state: 'browsing',
+    siteName: '',
+    hostname: '',
+    url: ''
+};
 
 // ================================
 // MESSAGE HANDLERS
@@ -22,6 +26,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
         case 'PURCHASE_DETECTED':
             handlePurchaseDetected(message.data);
+            break;
+
+        case 'BEHAVIOR_TRANSACTION_DETECTED':
+            // NEW: Behavior-based detection (v4.0)
+            handleBehaviorTransaction(message.data);
+            break;
+
+        case 'TRACKING_STATE_UPDATE':
+            // Update tracking state for popup display
+            currentTrackingState = message.data;
+            // Forward to popup if open
+            chrome.runtime.sendMessage(message).catch(() => { });
+
+            // INSTANT SAVE: Persist site visit to chrome.storage
+            saveSiteVisit(message.data).then(() => {
+                console.log('✅ Site visit saved:', message.data.siteName);
+            });
+
+            // Notify website tabs so Shopping Activity page updates INSTANTLY
+            notifyWebsiteTabs('SITE_VISIT_TRACKED', {
+                siteName: message.data.siteName,
+                hostname: message.data.hostname,
+                state: message.data.state,
+                url: message.data.url,
+                timestamp: Date.now()
+            });
             break;
 
         case 'TRANSACTION_SYNCED':
@@ -55,25 +85,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             handleSessionSync(message.data, sendResponse);
             return true;
 
-        case 'DARK_PATTERN_DETECTED':
-            // Dark pattern detector found something
-            handleDarkPatternDetected(message.data);
-            break;
-
-        case 'SET_TRIAL_REMINDER':
-            // User wants a reminder before trial ends
-            setTrialReminder(message.data, sendResponse);
+        case 'GET_TRACKING_STATE':
+            // Popup requesting current tracking state
+            sendResponse(currentTrackingState);
             return true;
-
-        case 'GET_PROTECTION_STATS':
-            // Get dark pattern protection statistics
-            getProtectionStats(sendResponse);
-            return true;
-
-        case 'CHECK_AND_LOGOUT_IF_NEEDED':
-            // Website has no session - if we synced from website, logout
-            checkAndLogoutIfNeeded();
-            break;
     }
 
     sendResponse({ received: true });
@@ -195,8 +210,12 @@ async function handleWebsiteLogin(data) {
 
         console.log('✅ Auto-logged in from website');
 
-        // Show sync notification
-        showSyncNotification(data.user?.email || data.email);
+        // Show sync notification ONLY if not suppressed
+        if (!data.skipNotification) {
+            showSyncNotification(data.user?.email || data.email);
+        } else {
+            console.log('🔕 Notification suppressed (auto-sync)');
+        }
 
         // Sync pending transactions
         await syncPendingTransactions();
@@ -232,62 +251,34 @@ async function handleUserLoggedIn(data) {
 }
 
 async function handleUserLoggedOut() {
-    console.log('🚪 User logged out - clearing all session data');
+    console.log('User logged out');
 
-    // Clear ALL user-related data from storage
     await chrome.storage.local.remove([
         'supabaseSession', 'accessToken', 'userId', 'userEmail',
-        'userName', 'syncedFromWebsite', 'lastSync',
-        'pendingSync', 'pendingTransactions', 'pendingSubscriptions'
+        'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
     ]);
 
-    // CRITICAL: Notify popup to refresh and show login view
-    try {
-        chrome.runtime.sendMessage({ type: 'SESSION_UPDATED' });
-        chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
-    } catch (e) {
-        // Popup might not be open, that's fine
-    }
-
-    // Notify website tabs
+    // Notify website tabs first
     notifyWebsiteTabs('EXTENSION_LOGGED_OUT', {});
 
-    // Show logout notification
+    // Also broadcast to popup (in case it's open)
     try {
-        chrome.notifications.create(`logout-${Date.now()}`, {
-            type: 'basic',
-            iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: '👋 Logged Out',
-            message: 'You have been signed out of Vibe Tracker extension.',
-            priority: 2
-        });
-    } catch (error) {
-        console.log('Logout notification error:', error);
-    }
-
-    console.log('✅ All session data cleared');
-}
-
-// Check if extension was synced from website and website is now logged out
-async function checkAndLogoutIfNeeded() {
-    try {
-        const data = await chrome.storage.local.get(['syncedFromWebsite', 'accessToken']);
-
-        // If we synced from website and website has no session, logout extension too
-        if (data.syncedFromWebsite && data.accessToken) {
-            console.log('📋 Website session gone, but extension still has session from website sync');
-            await handleUserLoggedOut();
-        }
+        chrome.runtime.sendMessage({ type: 'WEBSITE_LOGGED_OUT' }).catch(() => { });
     } catch (e) {
-        console.log('Check logout error:', e);
+        // Popup might not be open
     }
 }
 
 // ================================
 // PURCHASE DETECTION HANDLER
 // ================================
-async function handlePurchaseDetected(data) {
-    console.log('🛒 Purchase detected:', data);
+
+
+// ================================
+// BEHAVIOR-BASED TRANSACTION HANDLER (v4.0)
+// ================================
+async function handleBehaviorTransaction(data) {
+    console.log('🎯 Behavior-based transaction detected:', data);
 
     const authData = await chrome.storage.local.get(['accessToken', 'userId', 'userEmail']);
 
@@ -297,7 +288,8 @@ async function handlePurchaseDetected(data) {
         pending.pendingTransactions = pending.pendingTransactions || [];
         pending.pendingTransactions.push({
             ...data,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            source: 'behavior-detection'
         });
         await chrome.storage.local.set({ pendingTransactions: pending.pendingTransactions });
         return { success: false, pending: true };
@@ -307,13 +299,13 @@ async function handlePurchaseDetected(data) {
         // Create transaction in Supabase
         const transactionData = {
             user_id: authData.userId,
-            description: data.name || data.serviceName || 'Purchase',
+            description: data.name || 'Purchase',
             amount: data.price || data.amount || 0,
             type: 'expense',
             category: data.category || 'Shopping',
             date: new Date().toISOString().split('T')[0],
-            source: 'extension',
-            notes: `Auto-tracked from ${data.hostname || 'web'}`
+            source: 'extension-behavior',
+            notes: `Auto-tracked via behavior detection from ${data.hostname || 'web'}. Flow: ${data.behaviorFlow?.map(s => s.to).join(' → ') || 'direct'}`
         };
 
         const response = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
@@ -329,12 +321,29 @@ async function handlePurchaseDetected(data) {
 
         if (response.ok) {
             const created = await response.json();
-            console.log('✅ Transaction saved:', created);
+            console.log('✅ Behavior transaction saved:', created);
 
-            // Show notification
-            showPurchaseNotification(data);
+            // Show enhanced notification
+            showBehaviorNotification(data);
 
-            // Notify website to refresh
+            // ⚡ INSTANT: Broadcast via Supabase Realtime for < 100ms latency
+            broadcastTransaction(authData.userId, {
+                ...created[0] || created,
+                name: data.name,
+                amount: data.price || data.amount,
+                type: data.type
+            });
+
+            // Notify website to refresh immediately (backup)
+            notifyWebsiteTabs('BEHAVIOR_TRANSACTION_ADDED', {
+                transaction: created,
+                name: data.name,
+                amount: data.price || data.amount,
+                type: data.type,
+                behaviorFlow: data.behaviorFlow
+            });
+
+            // Also notify via standard channel for backwards compatibility
             notifyWebsiteTabs('TRANSACTION_ADDED', {
                 transaction: created,
                 name: data.name,
@@ -344,33 +353,66 @@ async function handlePurchaseDetected(data) {
             return { success: true };
         } else {
             const error = await response.text();
-            console.error('Failed to save transaction:', error);
+            console.error('Failed to save behavior transaction:', error);
             return { success: false, error };
         }
     } catch (error) {
-        console.error('Transaction save error:', error);
+        console.error('Behavior transaction save error:', error);
         return { success: false, error: error.message };
     }
 }
 
-function showPurchaseNotification(data) {
-    const notificationId = `purchase-${Date.now()}`;
+function showBehaviorNotification(data) {
+    const notificationId = `behavior-${Date.now()}`;
     const amount = data.price || data.amount || 0;
+    const typeIcon = data.isTrial ? '🎁' : (data.type === 'subscription' ? '💳' : '🛒');
+    const typeLabel = data.isTrial ? 'Trial Started' : (data.type === 'subscription' ? 'Subscription' : 'Purchase');
 
     try {
         chrome.notifications.create(notificationId, {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: '🛒 Purchase Tracked!',
-            message: `${data.name || 'Purchase'} - $${amount.toFixed(2)}`,
+            title: `${typeIcon} ${typeLabel} Detected!`,
+            message: `${data.name || 'Transaction'} ${amount > 0 ? `- $${amount.toFixed(2)}` : ''}\nBehavior-based detection ✓`,
             priority: 2
         });
 
         setTimeout(() => {
             chrome.notifications.clear(notificationId);
-        }, 6000);
+        }, 8000);
     } catch (error) {
-        console.log('Purchase notification error:', error);
+        console.log('Behavior notification error:', error);
+    }
+}
+
+// ================================
+// INSTANT BROADCAST VIA SUPABASE REALTIME
+// ================================
+async function broadcastTransaction(userId, transaction) {
+    try {
+        // Use Supabase Realtime broadcast for instant updates (< 100ms)
+        const response = await fetch(`${SUPABASE_URL}/realtime/v1/api/broadcast`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_ANON_KEY
+            },
+            body: JSON.stringify({
+                messages: [{
+                    topic: `realtime-${userId}`,
+                    event: 'extension-transaction',
+                    payload: transaction
+                }]
+            })
+        });
+
+        if (response.ok) {
+            console.log('⚡ Broadcast sent successfully (< 100ms latency)');
+        } else {
+            console.log('Broadcast failed, falling back to tab messaging');
+        }
+    } catch (error) {
+        console.log('Broadcast error (non-critical):', error.message);
     }
 }
 
@@ -713,7 +755,7 @@ function showNotification(transaction, isSync = false) {
         chrome.notifications.create(notificationId, {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: isSync ? '✓ Vibe Tracker Synced' : '💸 Purchase Tracked!',
+            title: isSync ? '✓ Cashly Synced' : '💳 Purchase Tracked!',
             message: isSync
                 ? transaction.product
                 : `${transaction.store}: Rs ${transaction.amount?.toFixed(0) || '0'} - ${(transaction.product || '').slice(0, 30)}`,
@@ -772,202 +814,22 @@ function getCategoryFromStore(storeName) {
 }
 
 // ================================
-// DARK PATTERN PROTECTION
-// ================================
-async function handleDarkPatternDetected(data) {
-    console.log('🛡️ Dark pattern detected:', data);
-
-    // Store detection for statistics
-    const statsKey = 'vt_dark_pattern_stats';
-    const storage = await chrome.storage.local.get([statsKey]);
-    const stats = storage[statsKey] || {
-        totalDetected: 0,
-        totalBlocked: 0,
-        totalSaved: 0,
-        detections: [],
-        lastUpdated: null
-    };
-
-    stats.totalDetected++;
-    stats.detections.unshift({
-        url: data.hostname,
-        patterns: data.patterns,
-        priceInfo: data.priceInfo,
-        date: new Date().toISOString()
-    });
-
-    // Keep only last 50 detections
-    stats.detections = stats.detections.slice(0, 50);
-    stats.lastUpdated = new Date().toISOString();
-
-    await chrome.storage.local.set({ [statsKey]: stats });
-
-    // Show notification for critical patterns
-    const hasCritical = data.patterns.some(p => p.severity === 'CRITICAL');
-    if (hasCritical) {
-        showDarkPatternNotification(data);
-    }
-}
-
-function showDarkPatternNotification(data) {
-    const notificationId = `dark-pattern-${Date.now()}`;
-
-    try {
-        chrome.notifications.create(notificationId, {
-            type: 'basic',
-            iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: '🛡️ Hidden Charge Detected!',
-            message: `Watch out! ${data.hostname} may have sneaky subscription tactics.`,
-            priority: 2
-        });
-
-        setTimeout(() => {
-            chrome.notifications.clear(notificationId);
-        }, 8000);
-    } catch (error) {
-        console.log('Dark pattern notification error:', error);
-    }
-}
-
-async function setTrialReminder(data, sendResponse) {
-    try {
-        console.log('📝 Setting trial reminder:', data);
-
-        // Save reminder data
-        const remindersKey = 'vt_trial_reminders';
-        const storage = await chrome.storage.local.get([remindersKey]);
-        const reminders = storage[remindersKey] || [];
-
-        reminders.push(data);
-        await chrome.storage.local.set({ [remindersKey]: reminders });
-
-        // Create alarm for reminder
-        const reminderDate = new Date(data.reminderDate);
-        const alarmName = `trial_reminder_${data.id}`;
-
-        chrome.alarms.create(alarmName, {
-            when: reminderDate.getTime()
-        });
-
-        console.log('✅ Reminder set for:', reminderDate);
-
-        // Update stats
-        const statsKey = 'vt_dark_pattern_stats';
-        const statsStorage = await chrome.storage.local.get([statsKey]);
-        const stats = statsStorage[statsKey] || {
-            totalDetected: 0,
-            totalBlocked: 0,
-            totalSaved: 0,
-            detections: [],
-            lastUpdated: null
-        };
-
-        stats.totalBlocked++;
-        if (data.monthlyPrice) {
-            stats.totalSaved += data.monthlyPrice * 12;
-        }
-        stats.lastUpdated = new Date().toISOString();
-
-        await chrome.storage.local.set({ [statsKey]: stats });
-
-        sendResponse({ success: true, reminder: data });
-    } catch (error) {
-        console.error('Set reminder error:', error);
-        sendResponse({ success: false, error: error.message });
-    }
-}
-
-async function getProtectionStats(sendResponse) {
-    try {
-        const statsKey = 'vt_dark_pattern_stats';
-        const remindersKey = 'vt_trial_reminders';
-
-        const storage = await chrome.storage.local.get([statsKey, remindersKey]);
-        const stats = storage[statsKey] || {
-            totalDetected: 0,
-            totalBlocked: 0,
-            totalSaved: 0,
-            detections: [],
-            lastUpdated: null
-        };
-
-        const reminders = storage[remindersKey] || [];
-        const activeReminders = reminders.filter(r => r.status === 'active');
-
-        sendResponse({
-            success: true,
-            stats: {
-                ...stats,
-                activeReminders: activeReminders.length,
-                upcomingTrials: activeReminders
-            }
-        });
-    } catch (error) {
-        sendResponse({ success: false, error: error.message });
-    }
-}
-
-// Handle alarm triggers
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name.startsWith('trial_reminder_')) {
-        const reminderId = alarm.name.replace('trial_reminder_', '');
-
-        // Get reminder details
-        const remindersKey = 'vt_trial_reminders';
-        const storage = await chrome.storage.local.get([remindersKey]);
-        const reminders = storage[remindersKey] || [];
-        const reminder = reminders.find(r => r.id === reminderId);
-
-        if (reminder) {
-            // Show notification
-            chrome.notifications.create(`trial-ending-${Date.now()}`, {
-                type: 'basic',
-                iconUrl: chrome.runtime.getURL('icons/logo.png'),
-                title: '⏰ Trial Ending Soon!',
-                message: `Your ${reminder.service} trial ends in 2 days! Cancel now to avoid ${reminder.currency} ${reminder.monthlyPrice}/month charge.`,
-                priority: 2,
-                requireInteraction: true
-            });
-
-            // Update reminder status
-            reminder.status = 'notified';
-            await chrome.storage.local.set({ [remindersKey]: reminders });
-        }
-    }
-});
-
-// ================================
 // LIFECYCLE EVENTS
 // ================================
 chrome.runtime.onStartup.addListener(() => {
-    console.log('🚀 Vibe Tracker extension started with Dark Pattern Protection');
+    console.log('🚀 Cashly extension started');
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log('📦 Vibe Tracker extension installed');
-
-    // Initialize dark pattern stats
-    chrome.storage.local.get(['vt_dark_pattern_stats'], (result) => {
-        if (!result.vt_dark_pattern_stats) {
-            chrome.storage.local.set({
-                vt_dark_pattern_stats: {
-                    totalDetected: 0,
-                    totalBlocked: 0,
-                    totalSaved: 0,
-                    detections: [],
-                    lastUpdated: new Date().toISOString()
-                }
-            });
-        }
-    });
+    console.log('📦 Cashly extension installed');
 
     // Show welcome notification
     try {
         chrome.notifications.create('welcome', {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icons/logo.png'),
-            title: '💸 Vibe Tracker Installed!',
-            message: 'Now with Dark Pattern Protection! Stay safe from sneaky subscriptions 🛡️',
+            title: '💳 Cashly Installed!',
+            message: 'Sign in to start auto-tracking your purchases.',
             priority: 2
         });
     } catch (error) {
@@ -979,3 +841,123 @@ chrome.runtime.onInstalled.addListener(() => {
 setInterval(() => {
     syncPendingTransactions();
 }, 5 * 60 * 1000);
+
+// ================================
+// SITE VISIT TRACKING (Instant Storage)
+// ================================
+
+// Save a site visit to chrome.storage (persists across sessions)
+async function saveSiteVisit(data) {
+    console.log('📝 saveSiteVisit called with:', data);
+
+    // More robust data extraction
+    const siteName = data?.siteName || 'Unknown Site';
+    const hostname = data?.hostname || (data?.url ? new URL(data.url).hostname : null);
+
+    if (!hostname) {
+        console.warn('⚠️ Cannot save - no hostname:', data);
+        return;
+    }
+
+    try {
+        const result = await chrome.storage.local.get('siteVisits');
+        const siteVisits = result.siteVisits || {};
+        const key = hostname.toLowerCase().replace('www.', '');
+
+        console.log('🔑 Saving with key:', key);
+
+        if (siteVisits[key]) {
+            // Update existing site
+            siteVisits[key].visitCount = (siteVisits[key].visitCount || 1) + 1;
+            siteVisits[key].lastVisited = Date.now();
+            siteVisits[key].lastState = data.state;
+            console.log('📊 Updated visit count:', siteVisits[key].visitCount);
+        } else {
+            // Add new site
+            siteVisits[key] = {
+                siteName: siteName,
+                hostname: hostname,
+                url: data.url || `https://${hostname}`,
+                visitCount: 1,
+                firstVisited: Date.now(),
+                lastVisited: Date.now(),
+                lastState: data.state,
+                category: categorizeSite(hostname, siteName)
+            };
+            console.log('✨ Added new site:', key);
+        }
+
+        await chrome.storage.local.set({ siteVisits });
+        console.log('💾 Site visits saved! Total:', Object.keys(siteVisits).length, 'sites');
+
+        // Broadcast updated count to popup
+        chrome.runtime.sendMessage({
+            type: 'SITE_VISITS_UPDATED',
+            count: Object.keys(siteVisits).length,
+            sites: siteVisits
+        }).catch(() => { });
+
+    } catch (error) {
+        console.error('❌ Failed to save site visit:', error);
+    }
+}
+
+// Get all saved site visits
+async function getSiteVisits() {
+    try {
+        const result = await chrome.storage.local.get('siteVisits');
+        return result.siteVisits || {};
+    } catch (error) {
+        console.error('Failed to get site visits:', error);
+        return {};
+    }
+}
+
+// Categorize site based on hostname/name
+function categorizeSite(hostname, siteName) {
+    const h = (hostname + siteName).toLowerCase();
+
+    // Finance & Banking
+    if (/bank|hbl|ubl|meezan|alfalah|mcb|chase|wellsfargo|citibank|hsbc|barclays|coinbase|binance|crypto|robinhood|fidelity|schwab|mint|ynab/.test(h)) {
+        return 'finance';
+    }
+    // Payment
+    if (/paypal|stripe|jazzcash|easypaisa|paypak|razorpay|paytm|venmo|cashapp|wise|transferwise|moneygram/.test(h)) {
+        return 'payment';
+    }
+    // Streaming & Subscriptions
+    if (/netflix|spotify|youtube|disney|hbo|max|peacock|paramount|appletv|crunchyroll|twitch|audible|kindle|deezer|tidal/.test(h)) {
+        return 'streaming';
+    }
+    // SaaS & Subscriptions
+    if (/chatgpt|openai|canva|figma|notion|adobe|microsoft|slack|zoom|github|atlassian|dropbox/.test(h)) {
+        return 'subscription';
+    }
+    // Food Delivery
+    if (/foodpanda|careem|uber|deliveroo|doordash|grubhub|instacart|zomato|swiggy/.test(h)) {
+        return 'food';
+    }
+    // Travel
+    if (/booking|airbnb|expedia|agoda|kayak|skyscanner|emirates|pia|grab|lyft/.test(h)) {
+        return 'travel';
+    }
+    // Gaming
+    if (/steam|epicgames|playstation|xbox|nintendo|roblox|blizzard|riot/.test(h)) {
+        return 'gaming';
+    }
+    // Shopping (default for e-commerce)
+    if (/daraz|amazon|aliexpress|ebay|walmart|flipkart|shopify|etsy|groovy|outfitters|khaadi|zara|nike|shein|temu/.test(h)) {
+        return 'shopping';
+    }
+    return 'shopping'; // Default to shopping
+}
+
+// Handle GET_SITE_VISITS message from popup/website
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'GET_SITE_VISITS') {
+        getSiteVisits().then(visits => {
+            sendResponse({ success: true, siteVisits: visits });
+        });
+        return true; // Keep channel open for async response
+    }
+});

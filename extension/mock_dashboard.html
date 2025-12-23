@@ -4,26 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Tracker Dashboard</title>
+    <title>Finzen Dashboard</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
         :root {
-            --pop-yellow: #FFD93D;
-            --pop-pink: #FF6B6B;
-            --pop-blue: #4D96FF;
-            --pop-teal: #4ECDC4;
-            --pop-black: #2D2D2D;
-            --pop-white: #FFFFFF;
-            --pop-grey: #F7F7F7;
-            --border-thick: 3px solid var(--pop-black);
-            --shadow-hard: 4px 4px 0px var(--pop-black);
+            /* Primary - Crimson Red */
+            --color-primary: #DC2626;
+            --color-primary-dark: #B91C1C;
+            --color-primary-light: #EF4444;
+            --color-primary-subtle: rgba(220, 38, 38, 0.08);
+
+            /* Backgrounds */
+            --color-bg: #F8FAFC;
+            --color-surface: #FFFFFF;
+            --color-surface-hover: #F8FAFC;
+
+            /* Text */
+            --color-text: #0F172A;
+            --color-text-secondary: #64748B;
+            --color-text-muted: #94A3B8;
+
+            /* Borders */
+            --color-border: #E2E8F0;
+
+            /* Semantic */
+            --color-success: #10B981;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+
+            /* Typography */
+            --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(15, 15, 15, 0.1), 0 2px 4px -1px rgba(15, 15, 15, 0.05);
+            --shadow-card: 0 1px 3px rgba(15, 15, 15, 0.06), 0 1px 2px rgba(15, 15, 15, 0.03);
+
+            --radius-md: 8px;
+            --radius-lg: 12px;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: var(--font-body);
             margin: 0;
             padding: 0;
             width: 380px;
-            /* Standard Popup Width (+ a bit of margin) */
             height: 560px;
             background: transparent;
             display: flex;
@@ -34,20 +62,22 @@
         .mock-popup {
             width: 350px;
             height: 520px;
-            background: var(--pop-white);
-            border: var(--border-thick);
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         /* Header */
         .header {
-            background: var(--pop-yellow);
-            padding: 15px;
-            border-bottom: var(--border-thick);
+            background: var(--color-surface);
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -64,89 +94,87 @@
         }
 
         .brand {
-            font-weight: 900;
+            font-family: var(--font-display);
+            font-weight: 700;
             font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
+            color: var(--color-text);
         }
 
         .status-badge {
             font-size: 0.7rem;
-            font-weight: 800;
+            font-weight: 600;
             padding: 4px 8px;
-            background: var(--pop-black);
-            color: var(--pop-white);
             border-radius: 4px;
             text-transform: uppercase;
         }
 
         .status-badge.synced {
-            background: #D1FAE5;
-            color: #065F46;
-            border: 2px solid #065F46;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--color-success);
         }
 
         /* Main Content */
         .dashboard {
-            padding: 20px;
+            padding: 1rem;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 1rem;
+            background: var(--color-bg);
         }
 
         .stats-card {
-            background: var(--pop-white);
-            border: var(--border-thick);
-            box-shadow: var(--shadow-hard);
-            padding: 15px;
-            border-radius: 8px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-card);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
             text-align: center;
-            background-image: radial-gradient(circle at 10px 10px, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
-            background-size: 20px 20px;
         }
 
         .month-label {
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 600;
             text-transform: uppercase;
-            color: #666;
-            margin-bottom: 5px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
         }
 
         .amount-big {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--pop-black);
-            line-height: 1;
-            margin-bottom: 10px;
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
 
         .tx-count {
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: var(--pop-pink);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            border: 2px solid var(--pop-black);
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--color-primary-subtle);
+            color: var(--color-primary);
+            padding: 4px 10px;
+            border-radius: 20px;
             display: inline-block;
         }
 
         /* Recent Transactions */
         .section-title {
-            font-size: 0.9rem;
-            font-weight: 800;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 0.75rem;
             display: flex;
             justify-content: space-between;
+            color: var(--color-text-secondary);
         }
 
         .tx-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0.75rem;
         }
 
         .tx-item {
@@ -154,28 +182,28 @@
             align-items: center;
             gap: 10px;
             padding: 10px;
-            background: #FAFAFA;
-            border: 2px solid #E5E5E5;
-            border-radius: 8px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
             transition: transform 0.2s;
         }
 
         .tx-item.new {
-            background: #F0FDFA;
-            border-color: var(--pop-teal);
+            background: #FEF2F2;
+            /* Red lighter */
+            border-color: #FECACA;
         }
 
         .tx-icon {
-            font-size: 1.2rem;
-            background: var(--pop-white);
+            font-size: 1rem;
+            background: var(--color-bg-subtle);
             width: 32px;
             height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--pop-black);
-            border-radius: 50%;
-            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
         }
 
         .tx-details {
@@ -185,29 +213,31 @@
 
         .tx-store {
             display: block;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.9rem;
+            color: var(--color-text);
         }
 
         .tx-prod {
             display: block;
             font-size: 0.75rem;
-            color: #666;
+            color: var(--color-text-secondary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .tx-price {
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.9rem;
+            color: var(--color-text);
         }
 
         /* Footer Actions */
         .footer-actions {
-            padding: 15px;
-            border-top: var(--border-thick);
-            background: var(--pop-grey);
+            padding: 1rem;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-surface);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
@@ -215,23 +245,25 @@
         }
 
         .action-btn {
-            padding: 8px;
-            border: 2px solid var(--pop-black);
-            background: var(--pop-white);
-            font-weight: 700;
-            font-size: 0.8rem;
-            border-radius: 6px;
+            padding: 0.6rem;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: var(--radius-md);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
-            box-shadow: 2px 2px 0px var(--pop-black);
+            color: var(--color-text);
+            font-family: var(--font-display);
         }
 
         .clip-btn {
-            background: var(--pop-pink);
+            background: var(--color-primary);
             color: white;
+            border-color: var(--color-primary);
         }
     </style>
 </head>
@@ -240,22 +272,22 @@
     <div class="mock-popup">
         <div class="header">
             <div class="title-row">
-                <div class="logo">⚡</div>
-                <div class="brand">Vibe Tracker</div>
+                <div class="logo">💸</div>
+                <div class="brand">Finzen</div>
             </div>
-            <div class="status-badge synced">Synced 🔗</div>
+            <div class="status-badge synced">Synced</div>
         </div>
 
         <div class="dashboard">
             <div class="stats-card">
                 <div class="month-label">December Spending</div>
                 <div class="amount-big">$342.50</div>
-                <div class="tx-count">12 Vibes Tracked</div>
+                <div class="tx-count">12 Expenses Tracked</div>
             </div>
 
             <div>
                 <div class="section-title">
-                    <span>Recent Vibes</span>
+                    <span>Recent Activity</span>
                     <span style="font-size: 0.7rem;">Last 5</span>
                 </div>
                 <div class="tx-list">

@@ -1,0 +1,229 @@
+/* ========================================
+   MY CARDS - PROFESSIONAL GEN Z REDESIGN
+   ======================================== */
+
+/* Container */
+.cardsSection {
+    padding: 1.75rem;
+    background: #FFFBF5;
+    border-radius: 24px;
+    border: 3px solid #000000;
+    box-shadow: 0 4px 0 #000000;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.cardsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-shrink: 0;
+}
+
+.cardsHeader h3 {
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0;
+    color: #1F2937;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cardsHeader h3 svg {
+    color: #8B5CF6;
+    width: 20px;
+    height: 20px;
+}
+
+/* Purple Add Button */
+.addBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #8B5CF6;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.addBtn:hover {
+    background: #7C3AED;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.addBtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Cards Grid */
+.cardsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Credit Card - Professional Design */
+.cardMini {
+    background: linear-gradient(135deg, #FF6B35 0%, #FFD23F 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 3px solid #000000;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 0 #000000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 140px;
+    width: 100%;
+}
+
+.cardMini:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #000000;
+}
+
+/* Card Top Section */
+.cardMiniTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+/* Golden EMV Chip */
+.cardChip {
+    width: 42px;
+    height: 32px;
+    background: linear-gradient(135deg, #FDE68A 0%, #FCD34D 100%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.cardChip::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cardChip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Card Type Logo (VISA) */
+.cardTypeLogo {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1.5rem;
+    font-style: italic;
+    opacity: 0.95;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Number */
+.cardMiniNumber {
+    font-family: 'Courier New', monospace;
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    margin: 0.5rem 0;
+}
+
+/* Card Details (Name & Expiry) */
+.cardMiniDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.cardMiniDetails span {
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* View All Link */
+.viewAllLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.875rem;
+    background: #F3F4F6;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6B7280;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+}
+
+.viewAllLink:hover {
+    background: #E5E7EB;
+    color: #374151;
+}
+
+/* Empty State */
+.emptyCard {
+    background: #F9FAFB;
+    border: 2px dashed #D1D5DB;
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: #9CA3AF;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 140px;
+    justify-content: center;
+}
+
+.emptyCard:hover {
+    border-color: #8B5CF6;
+    background: #F5F3FF;
+    color: #8B5CF6;
+}

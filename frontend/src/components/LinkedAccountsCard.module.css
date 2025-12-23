@@ -1,0 +1,211 @@
+/* Linked Accounts Card Styles */
+
+.card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.titleRow h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.icon {
+    color: #10B981;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #64748b;
+}
+
+.emptyIcon {
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.emptyState p {
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 0.25rem;
+}
+
+.emptyState span {
+    font-size: 0.85rem;
+}
+
+/* Accounts List */
+.accountsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.accountItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.accountItem:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+.accountMain {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.bankLogo {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    border-radius: 10px;
+}
+
+.accountInfo h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 0.15rem;
+}
+
+.accountInfo span {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.accountBalance {
+    text-align: right;
+}
+
+.balanceAmount {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.balanceLabel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.accountActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.syncBtn,
+.disconnectBtn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.syncBtn {
+    background: #ecfdf5;
+    color: #10B981;
+}
+
+.syncBtn:hover:not(:disabled) {
+    background: #d1fae5;
+}
+
+.disconnectBtn {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.disconnectBtn:hover {
+    background: #fee2e2;
+}
+
+.syncBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    color: #64748b;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .accountItem {
+        flex-wrap: wrap;
+    }
+
+    .accountBalance {
+        flex: 1;
+        text-align: left;
+    }
+
+    .accountActions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+    }
+}

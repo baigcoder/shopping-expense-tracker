@@ -347,7 +347,7 @@ const ExpenseDetailsPage = () => {
                 animate={{ opacity: 1, y: 0 }}
             >
                 <div className={styles.sectionHeader}>
-                    <h3>Vibe Check 📊</h3>
+                    <h3>Spending Check 📊</h3>
                     <span className={styles.timeLabel}>Last 6 Months</span>
                 </div>
                 <div className={styles.barChart}>

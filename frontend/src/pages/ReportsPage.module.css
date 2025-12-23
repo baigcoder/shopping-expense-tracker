@@ -1,17 +1,21 @@
-/* Gen Z Neo-Brutalist Reports Page Theme */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&display=swap');
+/* ============================================
+   FINZEN - Reports Page
+   Gen-Z Fintech Theme - PURPLE THEME
+   ============================================ */
 
 .container {
     min-height: 100vh;
-    padding: 0 2rem 2rem;
-    font-family: 'Outfit', sans-serif;
-    color: #000;
+    padding: 0 1.5rem 1.5rem;
+    font-family: var(--font-body);
+    color: var(--color-text);
     position: relative;
     background-color: #F5F3FF;
-    /* Light Violet Base */
-    background-image: radial-gradient(#8B5CF6 1.5px, transparent 1.5px);
-    /* Violet Dots */
+    /* Light Purple Base */
+    background-image:
+        radial-gradient(var(--color-goals) 1.2px, transparent 1.2px),
+        radial-gradient(var(--color-goals) 1.2px, transparent 1.2px);
     background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
     background-attachment: fixed;
 }
 
@@ -19,44 +23,37 @@
 .header {
     display: flex;
     flex-direction: column;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
     gap: 0.5rem;
 }
 
 .header h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: var(--font-black);
     text-transform: uppercase;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
     margin: 0;
-    color: #000;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    line-height: 1;
-    text-shadow:
-        3px 3px 0 #fff,
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff,
-        6px 6px 0px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-goals) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
 }
 
 .header p {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    font-weight: 800;
-    color: #000;
-    background: #fff;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-surface);
     display: inline-block;
-    padding: 0.4rem 1rem;
-    border: 3px solid #000;
-    border-radius: 50px;
-    margin-top: 0.75rem;
-    box-shadow: 4px 4px 0px #000;
+    padding: 0.35rem 0.85rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-full);
+    margin-top: 0.5rem;
+    box-shadow: 3px 3px 0 var(--color-border);
     align-self: flex-start;
 }
 

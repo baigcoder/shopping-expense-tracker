@@ -1,7 +1,7 @@
 {
     "name": "vibe-tracker-extension",
     "version": "2.0.0",
-    "description": "Vibe Tracker Browser Extension - Auto-track online purchases",
+    "description": "Finzen Browser Extension - Auto-track online purchases",
     "scripts": {
         "build": "node build.js",
         "build:chrome": "node build.js chrome",
@@ -19,6 +19,6 @@
         "firefox",
         "brave"
     ],
-    "author": "Vibe Tracker Team",
+    "author": "Finzen Team",
     "license": "MIT"
 }

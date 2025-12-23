@@ -1,4 +1,5 @@
-/* Extension Alert Styles - Gen Z Style */
+/* Extension Alert Styles - Cashly Light Theme */
+/* White background for visibility on light pages */
 
 .alertContainer {
     position: fixed;
@@ -7,56 +8,95 @@
     transform: translateX(-50%);
     z-index: 1000;
     width: calc(100% - 2rem);
-    max-width: 600px;
+    max-width: 520px;
 }
 
 .alertCard {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 16px;
+    background: #FFFFFF;
+    border: 2px solid #E2E8F0;
+    border-radius: 20px;
     padding: 1rem 1.25rem;
-    box-shadow: 6px 6px 0px #8B5CF6;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
     position: relative;
+    color: #1E293B;
 }
 
-.syncedCard {
-    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-    box-shadow: 6px 6px 0px #10B981;
-}
-
+/* Alert Type Variants - Light Theme */
 .warningCard {
-    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-    box-shadow: 6px 6px 0px #F59E0B;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FFFFFF 100%);
+    border-color: #F59E0B;
+    box-shadow: 0 10px 40px rgba(245, 158, 11, 0.15);
+}
+
+.dangerCard {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 50%, #FFFFFF 100%);
+    border-color: #EF4444;
+    box-shadow: 0 10px 40px rgba(239, 68, 68, 0.15);
+    animation: gentleShake 0.4s ease-in-out;
+}
+
+@keyframes gentleShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-3px);
+    }
+
+    40% {
+        transform: translateX(3px);
+    }
+
+    60% {
+        transform: translateX(-2px);
+    }
+
+    80% {
+        transform: translateX(2px);
+    }
+}
+
+.infoCard {
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #FFFFFF 100%);
+    border-color: #3B82F6;
+    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
 }
 
 .successCard {
-    background: linear-gradient(135deg, #E0E7FF, #C7D2FE);
-    box-shadow: 6px 6px 0px #8B5CF6;
+    background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #FFFFFF 100%);
+    border-color: #10B981;
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.15);
 }
 
-.successCard .iconBounce {
-    background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+.stepsCard {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    background: #FFFFFF;
+    border-color: #3B82F6;
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
+    padding: 1.25rem 1.5rem;
+    max-width: 420px;
 }
 
-
+/* Components */
 .alertEmoji {
-    font-size: 2rem;
+    font-size: 1.75rem;
     flex-shrink: 0;
-}
-
-.iconBounce {
-    width: 40px;
-    height: 40px;
-    background: #10B981;
-    color: #fff;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
 }
 
 .alertContent {
@@ -66,19 +106,18 @@
 
 .alertContent strong {
     display: block;
-    font-size: 1rem;
-    font-weight: 800;
-    color: #000;
-    margin-bottom: 0.15rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin-bottom: 0.2rem;
+    font-family: 'Inter', sans-serif;
 }
 
 .alertContent p {
-    font-size: 0.85rem;
-    color: #64748b;
+    font-size: 0.8rem;
+    color: #64748B;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.4;
 }
 
 .alertActions {
@@ -88,64 +127,298 @@
     flex-shrink: 0;
 }
 
+/* Buttons - Light Theme */
 .installBtn {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    background: #000;
-    color: #fff;
-    border: 2px solid #000;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: #FFFFFF;
+    border: none;
     border-radius: 10px;
     padding: 0.6rem 1rem;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
-    font-family: 'Space Grotesk', sans-serif;
-    transition: all 0.15s;
-    box-shadow: 3px 3px 0px #8B5CF6;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .installBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.syncBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.syncBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.refreshBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #F1F5F9;
+    color: #475569;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 0.5rem 0.85rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.refreshBtn:hover {
+    background: #E2E8F0;
+    border-color: #CBD5E1;
+}
+
+.refreshBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.refreshBtnSmall {
+    background: #EFF6FF;
+    border: none;
+    border-radius: 8px;
+    padding: 0.45rem;
+    cursor: pointer;
+    color: #3B82F6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-left: auto;
+}
+
+.refreshBtnSmall:hover {
+    background: #DBEAFE;
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .laterBtn {
     background: transparent;
     border: none;
-    color: #64748b;
+    color: #94A3B8;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
-    padding: 0.6rem 0.75rem;
-    font-family: 'Space Grotesk', sans-serif;
-    transition: color 0.2s;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.2s ease;
 }
 
 .laterBtn:hover {
-    color: #000;
+    color: #475569;
+}
+
+.backBtn {
+    background: transparent;
+    color: #64748B;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
 }
 
 .closeBtn {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: none;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: #F1F5F9;
     border: none;
     cursor: pointer;
-    color: #94a3b8;
-    padding: 0.25rem;
+    color: #94A3B8;
+    padding: 0.3rem;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
-    color: #000;
+    background: #E2E8F0;
+    color: #475569;
 }
 
-/* Mobile */
+/* Progress Bar for Redirect */
+.progressBar {
+    width: 100%;
+    height: 3px;
+    background: #E2E8F0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.75rem;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981, #059669);
+    animation: progress 2s ease-in-out forwards;
+    border-radius: 3px;
+}
+
+@keyframes progress {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Steps Card */
+.stepsHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.stepsHeader>div {
+    flex: 1;
+}
+
+.stepsHeader strong {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1E293B;
+    display: block;
+}
+
+.stepsHeader p {
+    font-size: 0.75rem;
+    color: #64748B;
+    margin: 0;
+}
+
+.chromeIcon {
+    color: #3B82F6;
+    flex-shrink: 0;
+}
+
+.stepsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: #F8FAFC;
+    border-radius: 10px;
+    border: 1px solid #E2E8F0;
+}
+
+.stepNumber {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.step strong {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1E293B;
+    display: block;
+    line-height: 1.2;
+}
+
+.step p {
+    font-size: 0.7rem;
+    color: #64748B;
+    margin: 0.1rem 0 0;
+    line-height: 1.3;
+}
+
+.stepsActions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.downloadBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    flex: 1;
+    justify-content: center;
+}
+
+.downloadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Mobile Responsive */
 @media (max-width: 600px) {
     .alertContainer {
         top: 70px;
@@ -158,22 +431,53 @@
         padding: 1rem;
     }
 
-    .alertContent {
-        flex: 1 1 100%;
-        order: 1;
+    .stepsCard {
+        padding: 1rem;
     }
 
     .alertEmoji {
-        order: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
     }
 
-    .alertActions {
-        order: 2;
-        width: 100%;
-        justify-content: flex-end;
+    .alertContent {
+        flex: 1 1 calc(100% - 60px);
+    }
+
+    .alertContent strong {
+        font-size: 0.9rem;
     }
 
     .alertContent p {
-        white-space: normal;
+        font-size: 0.75rem;
+    }
+
+    .alertActions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.25rem;
+    }
+
+    .stepsActions {
+        flex-direction: column;
+    }
+
+    .downloadBtn,
+    .backBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .step {
+        padding: 0.5rem;
+    }
+
+    .step strong {
+        font-size: 0.8rem;
+    }
+
+    .step p {
+        font-size: 0.65rem;
     }
 }

@@ -1,4 +1,4 @@
-// Enhanced Extension Popup Script - Full Feature Support
+// Enhanced Extension Popup Script - Full Feature Support v4.0
 document.addEventListener('DOMContentLoaded', async () => {
     // ================================
     // DOM ELEMENTS
@@ -22,20 +22,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const syncStatusEl = document.getElementById('syncStatus');
     const monthlySpentEl = document.getElementById('monthlySpent');
     const transactionCountEl = document.getElementById('transactionCount');
+    const sitesTrackedEl = document.getElementById('sitesTracked');
+    const totalTransactionsEl = document.getElementById('totalTransactions');
     const recentTransactionsEl = document.getElementById('recentTransactions');
     const categoriesListEl = document.getElementById('categoriesList');
     const budgetAlertEl = document.getElementById('budgetAlert');
+
+    // Monitoring elements - NEW!
+    const siteNameEl = document.getElementById('siteName');
+    const siteStatusEl = document.getElementById('siteStatus');
+    const siteFaviconEl = document.getElementById('siteFavicon');
+    const flowIndicatorEl = document.getElementById('flowIndicator');
 
     // Action buttons
     const clipPageBtn = document.getElementById('clipPageBtn');
     const addManualBtn = document.getElementById('addManualBtn');
     const openDashboardBtn = document.getElementById('openDashboard');
-    const viewProtectionBtn = document.getElementById('viewProtection');
+    const viewBudgetsBtn = document.getElementById('viewBudgetsBtn');
     const refreshBtn = document.getElementById('refreshBtn');
-
-    // Shield stats elements
-    const patternsBlockedEl = document.getElementById('patternsBlocked');
-    const moneySavedEl = document.getElementById('moneySaved');
 
     // Settings elements
     const backFromSettings = document.getElementById('backFromSettings');
@@ -43,8 +47,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const notificationsToggle = document.getElementById('notificationsToggle');
     const budgetAlertsToggle = document.getElementById('budgetAlertsToggle');
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const darkPatternToggle = document.getElementById('darkPatternToggle');
-    const trialRemindersToggle = document.getElementById('trialRemindersToggle');
 
     // Manual add elements
     const backFromManual = document.getElementById('backFromManual');
@@ -54,13 +56,138 @@ document.addEventListener('DOMContentLoaded', async () => {
     const manualCategory = document.getElementById('manualCategory');
 
     // ================================
-    // CONFIGURATION
+    // CONFIGURATION (from config.js loaded in HTML)
     // ================================
-    const SUPABASE_URL = 'https://ebfolvhqjvavrwrfcbhn.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViZm9sdmhxanZhdnJ3cmZjYmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM2NjI0NDgsImV4cCI6MjA0OTIzODQ0OH0.RC7d0vMx1F4Z2J2Ovl9m2hZV8HCmZ2f6pBWSN-GJ3O0';
-    const WEBSITE_URL = 'https://vibe-tracker-expense-genz.vercel.app';
+    const SUPABASE_URL = window.CONFIG?.SUPABASE_URL || 'https://ebfolvhqjvavrwrfcbhn.supabase.co';
+    const SUPABASE_ANON_KEY = window.CONFIG?.SUPABASE_ANON_KEY || '';
+    const WEBSITE_URL = window.CONFIG?.WEBSITE_URL || 'http://localhost:5173';
     const DASHBOARD_URL = `${WEBSITE_URL}/dashboard`;
-    const PROTECTION_URL = `${WEBSITE_URL}/protection`;
+    const BUDGETS_URL = `${WEBSITE_URL}/budgets`;
+
+    // State tracking map - Updated for Smart Site Detection v5.0
+    const STATE_DISPLAY = {
+        'idle': { stage: 0, status: '💤 Not a payment site', color: '#94A3B8' },
+        'monitoring': { stage: 0, status: '👁️ Monitoring...', color: '#10B981' },
+        'browsing': { stage: 0, status: '👁️ Monitoring...', color: '#10B981' },
+        'checkout_entered': { stage: 1, status: '🛒 In Checkout', color: '#F59E0B' },
+        'payment_form_active': { stage: 2, status: '💳 Filling Payment', color: '#6366F1' },
+        'payment_submitted': { stage: 2, status: '⏳ Processing...', color: '#2563EB' },
+        'awaiting_confirmation': { stage: 3, status: '🔄 Confirming...', color: '#2563EB' },
+        'transaction_confirmed': { stage: 3, status: '✅ Saved!', color: '#10B981' }
+    };
+
+    // ================================
+    // CURRENT TAB MONITORING - Smart Site Detection v5.0
+    // ================================
+    async function updateCurrentTabInfo() {
+        try {
+            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            if (!tab || !tab.url) {
+                // No active tab - update UI to show this
+                if (siteNameEl) siteNameEl.textContent = 'No active tab';
+                if (siteStatusEl) siteStatusEl.textContent = 'Open a website to start';
+                return;
+            }
+
+            // Check for special URLs that we can't track
+            if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
+                tab.url.startsWith('about:') || tab.url.startsWith('edge://')) {
+                if (siteNameEl) siteNameEl.textContent = 'Browser Page';
+                if (siteStatusEl) siteStatusEl.textContent = '⚙️ System page - not tracked';
+                if (siteFaviconEl) siteFaviconEl.src = '';
+                return;
+            }
+
+            const url = new URL(tab.url);
+            const hostname = url.hostname.replace('www.', '');
+
+            // Default site name from hostname (capitalize first letter)
+            let siteName = hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
+            let siteCategory = 'Browsing';
+            let currentState = 'idle';
+            let isPaymentSite = false;
+            let analysisScore = 0;
+
+            // ALWAYS update favicon from hostname first
+            if (siteFaviconEl) {
+                siteFaviconEl.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+                siteFaviconEl.onerror = () => { siteFaviconEl.src = ''; };
+            }
+
+            // Try to get tracking state from content script
+            try {
+                const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_CURRENT_SITE' });
+                if (response) {
+                    siteName = response.siteName || siteName;
+                    siteCategory = response.category || 'Shopping';
+                    currentState = response.currentState || 'idle';
+                    isPaymentSite = response.isPaymentSite || false;
+                    analysisScore = response.analysisScore || 0;
+
+                    // Update favicon with content script's better version
+                    if (siteFaviconEl && response.favicon) {
+                        siteFaviconEl.src = response.favicon;
+                    }
+
+                    console.log('📦 Content script response:', { siteName, currentState, isPaymentSite, analysisScore });
+                }
+            } catch (e) {
+                // Content script not loaded - show basic monitoring mode
+                console.log('⚠️ Content script not responding, showing basic info for:', hostname);
+                currentState = 'browsing'; // Show as browsing, not idle
+                isPaymentSite = true; // Assume it could be trackable
+            }
+
+            // ALWAYS update site name (even if content script failed)
+            if (siteNameEl) {
+                siteNameEl.textContent = siteName;
+            }
+
+            // Update status with state info
+            const stateInfo = STATE_DISPLAY[currentState] || STATE_DISPLAY['idle'];
+            if (siteStatusEl) {
+                siteStatusEl.textContent = stateInfo.status;
+                siteStatusEl.style.color = stateInfo.color || '';
+
+                // Add category if payment site
+                if (isPaymentSite && siteCategory && currentState !== 'idle') {
+                    siteStatusEl.textContent = `${stateInfo.status} • ${siteCategory}`;
+                }
+
+                // Add tracking-active class for pulsing effect
+                if (isPaymentSite && currentState !== 'idle') {
+                    siteStatusEl.classList.add('tracking-active');
+                } else {
+                    siteStatusEl.classList.remove('tracking-active');
+                }
+            }
+
+            // Update flow indicator
+            updateFlowIndicator(currentState);
+
+        } catch (e) {
+            console.log('Tab info error:', e);
+            if (siteNameEl) siteNameEl.textContent = 'Error';
+            if (siteStatusEl) siteStatusEl.textContent = 'Could not get tab info';
+        }
+    }
+
+    function updateFlowIndicator(currentState) {
+        if (!flowIndicatorEl) return;
+
+        const stages = flowIndicatorEl.querySelectorAll('.stage');
+        const stateInfo = STATE_DISPLAY[currentState] || STATE_DISPLAY['browsing'];
+        const activeStage = stateInfo.stage;
+
+        stages.forEach((stage, index) => {
+            stage.classList.remove('active', 'completed');
+            if (index < activeStage) {
+                stage.classList.add('completed');
+            } else if (index === activeStage) {
+                stage.classList.add('active');
+            }
+        });
+    }
 
     // ================================
     // INITIALIZATION
@@ -71,6 +198,62 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check auth and show appropriate view
     await checkAuthAndShowView();
+
+    // Start monitoring current tab
+    await updateCurrentTabInfo();
+
+    // Listen for tracking state updates from background
+    chrome.runtime.onMessage.addListener((message) => {
+        if (message.type === 'TRACKING_STATE_UPDATE') {
+            updateFlowIndicator(message.data.state);
+            if (siteNameEl) siteNameEl.textContent = message.data.siteName;
+            if (siteStatusEl) {
+                const stateInfo = STATE_DISPLAY[message.data.state] || STATE_DISPLAY['browsing'];
+                siteStatusEl.textContent = stateInfo.status;
+                // Add pulsing effect for active states
+                if (message.data.state !== 'browsing') {
+                    siteStatusEl.classList.add('tracking-active');
+                } else {
+                    siteStatusEl.classList.remove('tracking-active');
+                }
+            }
+        }
+        // Handle new transaction events - update stats immediately
+        if (message.type === 'TRANSACTION_ADDED' || message.type === 'BEHAVIOR_TRANSACTION_ADDED') {
+            loadStats();
+            loadRecentTransactions();
+        }
+        // INSTANT UPDATE: Sites tracked count
+        if (message.type === 'SITE_VISITS_UPDATED') {
+            if (sitesTrackedEl) {
+                sitesTrackedEl.textContent = message.count;
+                // Flash animation to show update
+                sitesTrackedEl.style.transform = 'scale(1.2)';
+                sitesTrackedEl.style.color = '#10B981';
+                setTimeout(() => {
+                    sitesTrackedEl.style.transform = 'scale(1)';
+                    sitesTrackedEl.style.color = '';
+                }, 300);
+            }
+        }
+    });
+
+    // REAL-TIME TAB MONITORING: Update when user switches tabs
+    chrome.tabs.onActivated.addListener(async (activeInfo) => {
+        console.log('Tab activated:', activeInfo.tabId);
+        await updateCurrentTabInfo();
+    });
+
+    // Also listen for URL changes within the same tab (SPA navigation)
+    chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+        if (changeInfo.status === 'complete' || changeInfo.url) {
+            // Only update if this is the active tab
+            const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            if (activeTab && activeTab.id === tabId) {
+                await updateCurrentTabInfo();
+            }
+        }
+    });
 
     // ================================
     // VIEW NAVIGATION
@@ -115,6 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         userId: response.session.user.id,
                         userEmail: response.session.user.email,
                         userName: response.session.user.user_metadata?.name || response.session.user.email.split('@')[0],
+                        userAvatar: response.session.user.user_metadata?.avatar_url || response.session.user.user_metadata?.picture || '',
                         accessToken: response.session.access_token,
                         syncedFromWebsite: true,
                         lastSync: Date.now()
@@ -137,11 +321,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function checkAuthAndShowView() {
         await tryAutoLoginFromWebsite();
 
-        const authData = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'syncedFromWebsite']);
+        const authData = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'syncedFromWebsite', 'userAvatar']);
 
         if (authData.accessToken && authData.userEmail) {
             showView('main');
             userEmailEl.textContent = authData.userEmail;
+
+            // Render avatar
+            const avatarImg = document.getElementById('userAvatarImg');
+            const avatarFallback = document.getElementById('userAvatarFallback');
+            if (authData.userAvatar && avatarImg && avatarFallback) {
+                avatarImg.src = authData.userAvatar;
+                avatarImg.style.display = 'block';
+                avatarFallback.style.display = 'none';
+            }
 
             if (authData.syncedFromWebsite) {
                 syncStatusEl.innerHTML = '<span class="sync-dot"></span> Synced with Website';
@@ -149,13 +342,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 syncStatusEl.innerHTML = '<span class="sync-dot"></span> Live Sync Active';
             }
 
-            // Load all data
+            // Load all data including current tab info
             await Promise.all([
                 loadStats(),
                 loadRecentTransactions(),
                 loadCategories(),
                 checkBudgetAlerts(),
-                loadShieldStats()
+                updateCurrentTabInfo() // Update Active Session display
             ]);
         } else {
             showView('login');
@@ -211,6 +404,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 data: { email, userId: data.user.id }
             });
 
+            // Directly inject localStorage flag into any open website tabs
+            await injectSyncFlagToWebsite(data.user.email);
+
             await checkAuthAndShowView();
 
         } catch (error) {
@@ -222,15 +418,69 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // Function to directly inject localStorage flag into website tabs
+    async function injectSyncFlagToWebsite(email) {
+        try {
+            // Find all website tabs
+            const tabs = await chrome.tabs.query({});
+            const websiteTabs = tabs.filter(tab =>
+                tab.url && (
+                    tab.url.includes('localhost:5173') ||
+                    tab.url.includes('127.0.0.1:5173') ||
+                    tab.url.includes('cashly') ||
+                    tab.url.includes('vercel.app')
+                )
+            );
+
+            for (const tab of websiteTabs) {
+                try {
+                    await chrome.scripting.executeScript({
+                        target: { tabId: tab.id },
+                        func: (userEmail) => {
+                            // Set persistent sync flag
+                            localStorage.setItem('cashly_extension_synced', JSON.stringify({
+                                synced: true,
+                                email: userEmail,
+                                timestamp: Date.now()
+                            }));
+                            // Also set the real-time flags
+                            localStorage.setItem('cashly_extension', JSON.stringify({
+                                installed: true,
+                                version: '5.0.0',
+                                timestamp: Date.now()
+                            }));
+                            localStorage.setItem('cashly_extension_auth', JSON.stringify({
+                                loggedIn: true,
+                                email: userEmail,
+                                timestamp: Date.now()
+                            }));
+                            console.log('✅ Cashly Extension sync flag injected!');
+                            // Dispatch event to notify React
+                            window.dispatchEvent(new CustomEvent('cashly-extension-synced', {
+                                detail: { email: userEmail }
+                            }));
+                        },
+                        args: [email]
+                    });
+                    console.log('✅ Injected sync flag into tab:', tab.id);
+                } catch (e) {
+                    console.log('Could not inject into tab:', tab.id, e.message);
+                }
+            }
+        } catch (error) {
+            console.log('Could not inject sync flags:', error.message);
+        }
+    }
+
     // ================================
     // LOGOUT HANDLER
     // ================================
 
     logoutBtn.addEventListener('click', async () => {
-        if (confirm('Sign out from Vibe Tracker? 👋')) {
+        if (confirm('Sign out from Cashly? 👋')) {
             await chrome.storage.local.remove([
                 'supabaseSession', 'accessToken', 'userId', 'userEmail',
-                'userName', 'syncedFromWebsite', 'lastSync'
+                'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
             ]);
             chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
             showView('login');
@@ -251,11 +501,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         chrome.tabs.create({ url: DASHBOARD_URL });
     });
 
-    if (viewProtectionBtn) {
-        viewProtectionBtn.addEventListener('click', () => {
-            chrome.tabs.create({ url: PROTECTION_URL });
-        });
-    }
+    viewBudgetsBtn.addEventListener('click', () => {
+        chrome.tabs.create({ url: BUDGETS_URL });
+    });
 
     refreshBtn.addEventListener('click', async () => {
         refreshBtn.style.animation = 'spin 0.5s ease';
@@ -263,8 +511,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             loadStats(),
             loadRecentTransactions(),
             loadCategories(),
-            checkBudgetAlerts(),
-            loadShieldStats()
+            checkBudgetAlerts()
         ]);
         setTimeout(() => {
             refreshBtn.style.animation = '';
@@ -362,9 +609,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (autoTrackToggle) autoTrackToggle.checked = settings.autoTrack !== false;
         if (notificationsToggle) notificationsToggle.checked = settings.showNotifications !== false;
         if (budgetAlertsToggle) budgetAlertsToggle.checked = settings.budgetAlerts !== false;
+
+        // Sync with website theme preference
+        let isDarkMode = settings.darkMode || false;
+
+        // Try to get theme from website localStorage via content script
+        try {
+            const [tab] = await chrome.tabs.query({ url: '*://localhost:5173/*' });
+            if (tab) {
+                const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_THEME_PREFERENCE' });
+                if (response && response.theme === 'dark') {
+                    isDarkMode = true;
+                } else if (response && response.theme === 'light') {
+                    isDarkMode = false;
+                }
+            }
+        } catch (e) {
+            // Use stored preference
+        }
+
         if (darkModeToggle) {
-            darkModeToggle.checked = settings.darkMode || false;
-            if (settings.darkMode) document.body.classList.add('dark-mode');
+            darkModeToggle.checked = isDarkMode;
+        }
+
+        // Apply theme
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
         }
     }
 
@@ -388,8 +660,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (darkModeToggle) {
         darkModeToggle.addEventListener('change', () => {
-            chrome.storage.local.set({ darkMode: darkModeToggle.checked });
-            document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            const isDark = darkModeToggle.checked;
+            chrome.storage.local.set({ darkMode: isDark });
+            document.body.classList.toggle('dark-mode', isDark);
+
+            // Also try to sync theme to website
+            chrome.tabs.query({ url: '*://localhost:5173/*' }).then(tabs => {
+                tabs.forEach(tab => {
+                    chrome.tabs.sendMessage(tab.id, {
+                        type: 'SET_THEME_PREFERENCE',
+                        theme: isDark ? 'dark' : 'light'
+                    }).catch(() => { });
+                });
+            });
         });
     }
 
@@ -441,33 +724,71 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function loadStats() {
+        const authData = await chrome.storage.local.get(['accessToken', 'userId']);
+
+        // Handle Site Visits (doesn't require auth)
         try {
-            const authData = await chrome.storage.local.get(['accessToken', 'userId']);
+            const result = await chrome.storage.local.get('siteVisits');
+            const siteVisits = result.siteVisits || {};
+            const sitesCount = Object.keys(siteVisits).length;
+            if (sitesTrackedEl) sitesTrackedEl.textContent = sitesCount;
+        } catch (e) {
+            console.log('Sites tracked error:', e);
+        }
 
-            if (authData.accessToken && authData.userId) {
-                const startOfMonth = new Date();
-                startOfMonth.setDate(1);
-                startOfMonth.setHours(0, 0, 0, 0);
+        // If not logged in, set defaults
+        if (!authData.accessToken || !authData.userId) {
+            if (monthlySpentEl) monthlySpentEl.textContent = '--';
+            if (transactionCountEl) transactionCountEl.textContent = '--';
+            if (totalTransactionsEl) totalTransactionsEl.textContent = '--';
+            return;
+        }
 
-                const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&type=eq.expense&date=gte.${startOfMonth.toISOString().split('T')[0]}&select=amount`,
-                    {
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${authData.accessToken}`
-                        }
+        // Monthly Stats
+        try {
+            const startOfMonth = new Date();
+            startOfMonth.setDate(1);
+            startOfMonth.setHours(0, 0, 0, 0);
+
+            const response = await fetch(
+                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&type=eq.expense&date=gte.${startOfMonth.toISOString().split('T')[0]}&select=amount`,
+                {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${authData.accessToken}`
                     }
-                );
-
-                if (response.ok) {
-                    const transactions = await response.json();
-                    const monthlySpent = transactions.reduce((sum, t) => sum + parseFloat(t.amount), 0);
-                    monthlySpentEl.textContent = `Rs ${monthlySpent.toFixed(0)}`;
-                    transactionCountEl.textContent = transactions.length;
                 }
+            );
+            if (response.ok) {
+                const transactions = await response.json();
+                const monthlySpent = transactions.reduce((sum, t) => sum + parseFloat(t.amount), 0);
+                if (monthlySpentEl) monthlySpentEl.textContent = `Rs ${monthlySpent.toFixed(0)}`;
+                if (transactionCountEl) transactionCountEl.textContent = transactions.length;
             }
-        } catch (error) {
-            console.log('Stats load error:', error);
+        } catch (e) {
+            console.log('Monthly stats error:', e);
+        }
+
+        // All Time Stats
+        try {
+            const totalResponse = await fetch(
+                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&select=id`,
+                {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${authData.accessToken}`
+                    }
+                }
+            );
+            if (totalResponse.ok) {
+                const allTx = await totalResponse.json();
+                if (totalTransactionsEl) totalTransactionsEl.textContent = allTx.length;
+            } else {
+                if (totalTransactionsEl) totalTransactionsEl.textContent = '0';
+            }
+        } catch (e) {
+            console.log('All time stats error:', e);
+            if (totalTransactionsEl) totalTransactionsEl.textContent = '0';
         }
     }
 
@@ -611,29 +932,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ================================
-    // DARK PATTERN SHIELD STATS
-    // ================================
-
-    async function loadShieldStats() {
-        try {
-            const stats = await chrome.storage.local.get(['vt_dark_pattern_stats']);
-            const data = stats.vt_dark_pattern_stats || { totalBlocked: 0, totalSaved: 0 };
-
-            if (patternsBlockedEl) {
-                patternsBlockedEl.textContent = data.totalBlocked || 0;
-            }
-            if (moneySavedEl) {
-                const saved = data.totalSaved || 0;
-                moneySavedEl.textContent = saved >= 1000
-                    ? `Rs ${(saved / 1000).toFixed(1)}K`
-                    : `Rs ${saved.toFixed(0)}`;
-            }
-        } catch (error) {
-            console.log('Shield stats load error:', error);
-        }
-    }
-
-    // ================================
     // RENDER FUNCTIONS
     // ================================
 
@@ -767,9 +1065,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (message.type === 'SESSION_UPDATED') {
             checkAuthAndShowView();
         }
-        // SECURITY: Force logout when website logs out
-        if (message.type === 'USER_LOGGED_OUT') {
-            console.log('🚪 Received logout signal - showing login view');
+        // Handle logout from website
+        if (message.type === 'WEBSITE_LOGGED_OUT' || message.type === 'USER_LOGGED_OUT') {
+            chrome.storage.local.remove([
+                'supabaseSession', 'accessToken', 'userId', 'userEmail',
+                'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
+            ]);
             showView('login');
         }
     });

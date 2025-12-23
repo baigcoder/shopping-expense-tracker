@@ -4,22 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Tracker Login</title>
+    <title>Finzen Login</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
         :root {
-            --pop-yellow: #FFD93D;
-            --pop-pink: #FF6B6B;
-            --pop-blue: #4D96FF;
-            --pop-teal: #4ECDC4;
-            --pop-black: #2D2D2D;
-            --pop-white: #FFFFFF;
-            --pop-grey: #F7F7F7;
-            --border-thick: 3px solid var(--pop-black);
-            --shadow-hard: 4px 4px 0px var(--pop-black);
+            --color-primary: #DC2626;
+            --color-primary-dark: #B91C1C;
+            --color-bg: #F8FAFC;
+            --color-surface: #FFFFFF;
+            --color-text: #0F172A;
+            --color-text-secondary: #64748B;
+            --color-border: #E2E8F0;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-md: 0 4px 6px -1px rgba(15, 15, 15, 0.1);
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             width: 380px;
@@ -33,20 +36,22 @@
         .mock-popup {
             width: 350px;
             height: 520px;
-            background: var(--pop-white);
-            border: var(--border-thick);
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         /* Header */
         .header {
-            background: var(--pop-yellow);
-            padding: 15px;
-            border-bottom: var(--border-thick);
+            background: var(--color-surface);
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -63,10 +68,10 @@
         }
 
         .brand {
-            font-weight: 900;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
             font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
+            color: var(--color-text);
         }
 
         /* Login Mode Styles */
@@ -77,6 +82,7 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
+            background: var(--color-surface);
         }
 
         .login-icon {
@@ -85,33 +91,62 @@
         }
 
         .login-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.5rem;
-            font-weight: 900;
+            font-weight: 700;
             margin-bottom: 10px;
             line-height: 1.2;
+            color: var(--color-text);
         }
 
         .login-subtitle {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--color-text-secondary);
             margin-bottom: 30px;
         }
 
         .btn {
-            background: var(--pop-black);
-            color: var(--pop-yellow);
+            background: var(--color-primary);
+            color: white;
             border: none;
             padding: 12px;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1rem;
-            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            box-shadow: var(--shadow-hard);
-            text-transform: uppercase;
             width: 100%;
             display: block;
             text-decoration: none;
             box-sizing: border-box;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+
+        .input-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .input-box {
+            border: 1px solid var(--color-border);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            color: var(--color-text);
+            width: 100%;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
@@ -120,26 +155,29 @@
     <div class="mock-popup">
         <div class="header">
             <div class="title-row">
-                <div class="logo">⚡</div>
-                <div class="brand">Vibe Tracker</div>
+                <div class="logo">💸</div>
+                <div class="brand">Finzen</div>
             </div>
         </div>
         <div class="login-container">
             <div class="login-icon">🛍️</div>
-            <div class="login-title">Track Habits.<br>Keep the Vibe.</div>
+            <div class="login-title">Track Spending.<br>Stay in Control.</div>
             <div class="login-subtitle">
                 Sync your shopping automatically across 100+ stores.
             </div>
 
-            <div style="text-align: left; margin-bottom: 20px; width: 100%;">
-                <div style="font-weight:700; margin-bottom:5px;">Email</div>
-                <div style="border:2px solid #000; padding:10px; border-radius:6px; color:#999;">alex@example.com</div>
-                <br>
-                <div style="font-weight:700; margin-bottom:5px;">Password</div>
-                <div style="border:2px solid #000; padding:10px; border-radius:6px; color:#999;">••••••••</div>
+            <div style="width: 100%; margin-bottom: 1rem;">
+                <div class="input-group">
+                    <div class="input-label">Email</div>
+                    <div class="input-box">alex@example.com</div>
+                </div>
+                <div class="input-group">
+                    <div class="input-label">Password</div>
+                    <div class="input-box">••••••••</div>
+                </div>
             </div>
 
-            <a href="#" class="btn">Login 🚀</a>
+            <a href="#" class="btn">Sign In</a>
         </div>
     </div>
 </body>

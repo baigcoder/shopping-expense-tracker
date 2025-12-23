@@ -1,176 +1,92 @@
+import StaticPageTemplate from '../components/StaticPageTemplate';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, HelpCircle, ChevronDown, ChevronUp, Search, CreditCard, Shield, Zap, Download } from 'lucide-react';
-import styles from './LegalPage.module.css';
-
-const faqs = [
-    {
-        category: 'Getting Started',
-        icon: <Zap size={20} />,
-        questions: [
-            {
-                q: 'How do I create an account?',
-                a: 'Click "Get Started" on our homepage and sign up with your email or Google account. It takes less than 30 seconds!'
-            },
-            {
-                q: 'Is Vibe Tracker free to use?',
-                a: 'Yes! Vibe Tracker offers a free plan with all essential features. Premium features are available for power users.'
-            },
-            {
-                q: 'What browsers are supported?',
-                a: 'Our web app works on all modern browsers. The extension is available for Chrome, Brave, Firefox, and Edge.'
-            }
-        ]
-    },
-    {
-        category: 'Tracking Expenses',
-        icon: <CreditCard size={20} />,
-        questions: [
-            {
-                q: 'How do I add a transaction?',
-                a: 'Click the "+" button on your dashboard, enter the amount, category, and description. You can also use our browser extension to auto-track purchases.'
-            },
-            {
-                q: 'Can I edit or delete transactions?',
-                a: 'Yes! Click on any transaction to edit or delete it. All changes are saved automatically.'
-            },
-            {
-                q: 'How do budgets work?',
-                a: 'Set monthly budgets for different categories. We\'ll track your spending and alert you when you\'re approaching your limit.'
-            }
-        ]
-    },
-    {
-        category: 'Browser Extension',
-        icon: <Download size={20} />,
-        questions: [
-            {
-                q: 'How do I install the extension?',
-                a: 'Download from our website, extract the zip, go to chrome://extensions, enable Developer Mode, click "Load unpacked" and select the folder.'
-            },
-            {
-                q: 'What sites does the extension track?',
-                a: 'We auto-detect purchases from Amazon, eBay, Walmart, and 100+ other e-commerce sites.'
-            },
-            {
-                q: 'Is my payment data safe?',
-                a: 'Absolutely! We never access or store your payment card details. We only track transaction amounts and merchant names.'
-            }
-        ]
-    },
-    {
-        category: 'Security & Privacy',
-        icon: <Shield size={20} />,
-        questions: [
-            {
-                q: 'Is my financial data secure?',
-                a: 'Yes! We use bank-level encryption and secure infrastructure. Your data is never shared with third parties.'
-            },
-            {
-                q: 'Can I delete my account?',
-                a: 'Yes, go to Settings > Danger Zone > Delete Account. This will permanently delete all your data.'
-            },
-            {
-                q: 'Do you sell my data?',
-                a: 'Never. Your data belongs to you. We don\'t sell, share, or monetize your personal information.'
-            }
-        ]
-    }
-];
 
 const FAQPage = () => {
-    const [openItems, setOpenItems] = useState<string[]>([]);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-    const toggleItem = (id: string) => {
-        setOpenItems(prev =>
-            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-        );
-    };
-
-    const filteredFaqs = faqs.map(category => ({
-        ...category,
-        questions: category.questions.filter(
-            q => q.q.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                q.a.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-    })).filter(category => category.questions.length > 0);
+    const faqs = [
+        {
+            q: "What is SpendSync?",
+            a: "SpendSync is a smart expense tracking application that automatically captures and categorizes your transactions using our browser extension. Get real-time insights, set budgets, and achieve your financial goals."
+        },
+        {
+            q: "How does the browser extension work?",
+            a: "Our extension monitors your online shopping activity and automatically logs transactions. It works with popular e-commerce sites and captures details like merchant, amount, and category. All data is encrypted and stored securely."
+        },
+        {
+            q: "Is my financial data secure?",
+            a: "Yes! We use bank-level encryption (AES-256) for all data. We never store your credit card details or banking credentials. All data is encrypted in transit and at rest using Supabase's secure infrastructure."
+        },
+        {
+            q: "What's the difference between Free and Premium?",
+            a: "Free includes unlimited transaction tracking, basic analytics, and budgets. Premium adds AI insights, advanced analytics, PDF export, goal tracking, subscription management, and priority support."
+        },
+        {
+            q: "Can I export my data?",
+            a: "Yes! You can export your transactions in CSV, JSON, or PDF format anytime. Go to Profile > Data & Privacy > Export Data."
+        },
+        {
+            q: "How do I delete my account?",
+            a: "Go to Settings > Security > Delete Account. This action is permanent and will remove all your data from our servers. You can also contact support for assistance."
+        },
+        {
+            q: "Does SpendSync work on mobile?",
+            a: "The web app is fully responsive and works on mobile browsers. We're currently developing native iOS and Android apps (coming Q2 2025)."
+        },
+        {
+            q: "How accurate is transaction categorization?",
+            a: "Our AI achieves 95%+ accuracy for common categories. You can always manually edit categories, and the system learns from your corrections."
+        },
+        {
+            q: "Can I track cash transactions?",
+            a: "Yes! Use the 'Add Transaction' button to manually log cash expenses. The extension only auto-tracks online purchases."
+        },
+        {
+            q: "What browsers are supported?",
+            a: "Chrome, Edge, Firefox, and Brave. Safari support coming soon."
+        }
+    ];
 
     return (
-        <div className={styles.container}>
-            <motion.div
-                className={styles.content}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <Link to="/" className={styles.backLink}>
-                    <ArrowLeft size={20} />
-                    Back to Home
-                </Link>
-
-                <div className={styles.header}>
-                    <HelpCircle size={48} />
-                    <h1>Frequently Asked Questions</h1>
-                    <p>Find answers to common questions about Vibe Tracker</p>
-                </div>
-
-                <div className={styles.searchBox}>
-                    <Search size={20} />
-                    <input
-                        type="text"
-                        placeholder="Search for answers..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
-
-                {filteredFaqs.map((category, catIdx) => (
-                    <div key={catIdx} className={styles.faqCategory}>
-                        <h2>{category.icon} {category.category}</h2>
-                        <div className={styles.faqList}>
-                            {category.questions.map((item, idx) => {
-                                const itemId = `${catIdx}-${idx}`;
-                                const isOpen = openItems.includes(itemId);
-                                return (
-                                    <div
-                                        key={idx}
-                                        className={`${styles.faqItem} ${isOpen ? styles.open : ''}`}
-                                    >
-                                        <button
-                                            className={styles.faqQuestion}
-                                            onClick={() => toggleItem(itemId)}
-                                        >
-                                            <span>{item.q}</span>
-                                            {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                                        </button>
-                                        {isOpen && (
-                                            <motion.div
-                                                className={styles.faqAnswer}
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: 'auto', opacity: 1 }}
-                                            >
-                                                <p>{item.a}</p>
-                                            </motion.div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+        <StaticPageTemplate
+            title="Frequently Asked Questions"
+            subtitle="Everything you need to know about SpendSync"
+        >
+            <div className="space-y-3">
+                {faqs.map((faq, index) => (
+                    <Card key={index} className="overflow-hidden">
+                        <button
+                            onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                            className="w-full p-4 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
+                        >
+                            <span className="font-semibold">{faq.q}</span>
+                            {openIndex === index ? (
+                                <Minus className="h-5 w-5 text-primary" />
+                            ) : (
+                                <Plus className="h-5 w-5 text-muted-foreground" />
+                            )}
+                        </button>
+                        {openIndex === index && (
+                            <div className="px-4 pb-4 text-muted-foreground">
+                                {faq.a}
+                            </div>
+                        )}
+                    </Card>
                 ))}
+            </div>
 
-                <div className={styles.contactBox}>
-                    <h3>Still have questions?</h3>
-                    <p>Can't find what you're looking for? Reach out to us!</p>
-                    <Link to="/contact" className={styles.contactBtn}>Contact Support</Link>
-                </div>
-
-                <div className={styles.footer}>
-                    <p>© 2024 Vibe Tracker. All rights reserved.</p>
-                </div>
-            </motion.div>
-        </div>
+            <div className="mt-8 p-6 bg-muted rounded-lg">
+                <h3 className="text-lg font-semibold mb-2">Still have questions?</h3>
+                <p className="text-muted-foreground mb-4">
+                    Can't find what you're looking for? Our support team is here to help.
+                </p>
+                <Button>Contact Support</Button>
+            </div>
+        </StaticPageTemplate>
     );
 };
 

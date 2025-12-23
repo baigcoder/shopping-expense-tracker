@@ -4,28 +4,120 @@
 (function () {
     'use strict';
 
-    console.log('💸 Vibe Tracker Extension: Website sync loaded');
+    console.log('💳 Cashly Extension: Website sync loaded');
+
+    // Session-based flag to prevent repeated notifications
+    const SESSION_SYNC_KEY = 'cashly_session_synced';
+    const LAST_SYNC_KEY = 'cashly_last_sync_timestamp';
+    const SYNC_COOLDOWN_MS = 60 * 1000; // 1 minute cooldown between syncs
+
+    // Check if we've already synced in this session
+    const hasAlreadySyncedInSession = () => {
+        return sessionStorage.getItem(SESSION_SYNC_KEY) === 'true';
+    };
+
+    // Check if enough time has passed since last sync (prevents spam)
+    const canSync = () => {
+        if (hasAlreadySyncedInSession()) return false;
+
+        const lastSync = localStorage.getItem(LAST_SYNC_KEY);
+        if (!lastSync) return true;
+
+        return Date.now() - parseInt(lastSync, 10) > SYNC_COOLDOWN_MS;
+    };
+
+    // Mark as synced for this session
+    const markAsSynced = () => {
+        sessionStorage.setItem(SESSION_SYNC_KEY, 'true');
+        localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
+        console.log('✅ Marked as synced for this session');
+    };
 
     // Set a flag so website knows extension is installed
-    const setExtensionFlag = () => {
+    const setExtensionFlag = async () => {
         try {
             const extensionData = {
                 installed: true,
                 version: chrome.runtime.getManifest().version,
                 timestamp: Date.now()
             };
-            localStorage.setItem('vibe_tracker_extension', JSON.stringify(extensionData));
+            localStorage.setItem('cashly_extension', JSON.stringify(extensionData));
 
-            // Also dispatch a custom event
-            window.dispatchEvent(new CustomEvent('vibe-tracker-extension-ready', {
-                detail: extensionData
-            }));
+            // Also set auth status - with retry logic
+            try {
+                const data = await chrome.storage.local.get(['accessToken', 'userEmail']);
+                const loggedIn = !!(data.accessToken && data.userEmail);
+                const authData = {
+                    loggedIn: loggedIn,
+                    email: data.userEmail || null,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('cashly_extension_auth', JSON.stringify(authData));
+
+                // CRITICAL: Also set the synced flag that the website checks for fast loading
+                if (loggedIn && data.userEmail) {
+                    localStorage.setItem('cashly_extension_synced', JSON.stringify({
+                        synced: true,
+                        email: data.userEmail,
+                        timestamp: Date.now()
+                    }));
+                }
+
+                console.log('✅ Extension flags set:', {
+                    installed: true,
+                    loggedIn: authData.loggedIn,
+                    email: authData.email
+                });
+            } catch (e) {
+                console.log('Could not set auth flag:', e);
+                // Set flag as not logged in if error
+                localStorage.setItem('cashly_extension_auth', JSON.stringify({
+                    loggedIn: false,
+                    email: null,
+                    timestamp: Date.now()
+                }));
+            }
+
+            // Also dispatch a custom event (only once per session)
+            if (!hasAlreadySyncedInSession()) {
+                window.dispatchEvent(new CustomEvent('cashly-extension-ready', {
+                    detail: extensionData
+                }));
+            }
         } catch (e) {
             console.log('Could not set extension flag:', e);
         }
     };
 
+    // Initial flag set
     setExtensionFlag();
+
+    // Retry after 1 second to catch any delayed auth data
+    setTimeout(setExtensionFlag, 1000);
+
+    // Retry after 3 seconds as well
+    setTimeout(setExtensionFlag, 3000);
+
+    // Refresh flags every 30 seconds to keep them fresh (reduced from 10s)
+    setInterval(setExtensionFlag, 30000);
+
+    // SYNC SITE VISITS from chrome.storage to localStorage (for website access)
+    const syncSiteVisitsToLocalStorage = async () => {
+        try {
+            const result = await chrome.storage.local.get('siteVisits');
+            if (result.siteVisits && Object.keys(result.siteVisits).length > 0) {
+                localStorage.setItem('cashly_site_visits', JSON.stringify(result.siteVisits));
+                console.log('✅ Synced', Object.keys(result.siteVisits).length, 'site visits to localStorage');
+            }
+        } catch (e) {
+            console.log('Could not sync site visits:', e);
+        }
+    };
+
+    // Sync immediately and periodically
+    syncSiteVisitsToLocalStorage();
+    setTimeout(syncSiteVisitsToLocalStorage, 2000);
+    setInterval(syncSiteVisitsToLocalStorage, 5000);
 
     // Listen for messages from the popup or background script
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -54,17 +146,23 @@
                 break;
 
             case 'EXTENSION_SYNCED':
-                // Extension is now synced - notify the website
-                window.dispatchEvent(new CustomEvent('extension-synced', {
-                    detail: message.data
-                }));
+                // Extension is now synced - notify the website (only if not already synced)
+                if (!hasAlreadySyncedInSession()) {
+                    window.dispatchEvent(new CustomEvent('extension-synced', {
+                        detail: message.data
+                    }));
+                    markAsSynced();
+                }
 
-                // Show toast notification if possible
-                showSyncToast(message.data?.email);
+                // Refresh flags immediately to update auth status
+                setExtensionFlag();
                 sendResponse({ received: true });
                 break;
 
             case 'EXTENSION_LOGGED_OUT':
+                // Clear sync flags on logout
+                sessionStorage.removeItem(SESSION_SYNC_KEY);
+                localStorage.removeItem(LAST_SYNC_KEY);
                 window.dispatchEvent(new CustomEvent('extension-logged-out'));
                 sendResponse({ received: true });
                 break;
@@ -83,6 +181,21 @@
                 }));
                 sendResponse({ received: true });
                 break;
+
+            case 'SITE_VISIT_TRACKED':
+                // Live site visit tracking - dispatch to Shopping Activity page
+                console.log('🛒 Site visit tracked:', message.data?.siteName);
+                window.dispatchEvent(new CustomEvent('cashly-site-detected', {
+                    detail: message.data
+                }));
+                // Also dispatch for stats update
+                window.dispatchEvent(new CustomEvent('site-visit-tracked', {
+                    detail: message.data
+                }));
+                // INSTANT SYNC: Update localStorage immediately for website
+                syncSiteVisitsToLocalStorage();
+                sendResponse({ received: true });
+                break;
         }
 
         return true;
@@ -99,28 +212,28 @@
 
         switch (message.action) {
             case 'SYNC_SESSION':
-                // Website is sharing session with extension
-                try {
-                    await chrome.runtime.sendMessage({
-                        type: 'SYNC_SESSION_FROM_WEBSITE',
-                        data: message.data
-                    });
-                    console.log('Session forwarded to extension background');
-                } catch (e) {
-                    console.log('Could not forward session:', e);
+                // Website is sharing session with extension (only if not already synced)
+                if (canSync()) {
+                    try {
+                        await chrome.runtime.sendMessage({
+                            type: 'SYNC_SESSION_FROM_WEBSITE',
+                            data: message.data
+                        });
+                        markAsSynced();
+                        console.log('Session forwarded to extension background');
+                    } catch (e) {
+                        console.log('Could not forward session:', e);
+                    }
                 }
                 break;
 
             case 'LOGOUT':
                 try {
-                    // Clear extension sync flags
-                    localStorage.removeItem('extension_synced');
-                    localStorage.removeItem('expense_tracker_session');
-
+                    sessionStorage.removeItem(SESSION_SYNC_KEY);
+                    localStorage.removeItem(LAST_SYNC_KEY);
                     await chrome.runtime.sendMessage({
                         type: 'USER_LOGGED_OUT'
                     });
-                    console.log('🚪 Logout forwarded to extension');
                 } catch (e) {
                     console.log('Could not forward logout:', e);
                 }
@@ -153,17 +266,23 @@
             try {
                 const sessionData = JSON.parse(value);
                 if (sessionData && sessionData.access_token && sessionData.user) {
-                    console.log('🔄 Detected website login, syncing with extension...');
+                    // Only sync if not already synced in this session
+                    if (canSync()) {
+                        console.log('🔄 Detected website login, syncing with extension...');
 
-                    // Notify extension of new session
-                    chrome.runtime.sendMessage({
-                        type: 'WEBSITE_LOGIN',
-                        data: {
-                            session: sessionData,
-                            user: sessionData.user,
-                            accessToken: sessionData.access_token
-                        }
-                    }).catch(e => console.log('Could not notify extension:', e));
+                        // Notify extension of new session
+                        chrome.runtime.sendMessage({
+                            type: 'WEBSITE_LOGIN',
+                            data: {
+                                session: sessionData,
+                                user: sessionData.user,
+                                accessToken: sessionData.access_token,
+                                skipNotification: hasAlreadySyncedInSession() // Tell background to skip notification
+                            }
+                        }).then(() => {
+                            markAsSynced();
+                        }).catch(e => console.log('Could not notify extension:', e));
+                    }
                 }
             } catch (e) {
                 // Not valid JSON, ignore
@@ -176,6 +295,8 @@
     localStorage.removeItem = function (key) {
         if (key.startsWith('sb-') && key.endsWith('-auth-token')) {
             console.log('🔄 Detected website logout, notifying extension...');
+            sessionStorage.removeItem(SESSION_SYNC_KEY);
+            localStorage.removeItem(LAST_SYNC_KEY);
             chrome.runtime.sendMessage({
                 type: 'USER_LOGGED_OUT'
             }).catch(e => console.log('Could not notify extension:', e));
@@ -183,54 +304,14 @@
         originalRemoveItem.apply(this, arguments);
     };
 
-    // Show a toast notification when extension syncs
-    function showSyncToast(email) {
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.id = 'extension-sync-toast';
-        toast.innerHTML = `
-            <div style="
-                position: fixed;
-                bottom: 24px;
-                right: 24px;
-                background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-                color: white;
-                padding: 16px 24px;
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-                z-index: 999999;
-                font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                animation: slideIn 0.3s ease-out;
-                border: 2px solid rgba(255,255,255,0.2);
-            ">
-                <span style="font-size: 24px;">🔗</span>
-                <div>
-                    <div style="font-weight: 700; font-size: 14px;">Extension Synced!</div>
-                    <div style="font-size: 12px; opacity: 0.9;">Now auto-tracking your purchases</div>
-                </div>
-            </div>
-            <style>
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-            </style>
-        `;
-
-        document.body.appendChild(toast);
-
-        // Remove after 4 seconds
-        setTimeout(() => {
-            toast.style.animation = 'slideIn 0.3s ease-out reverse';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
-    }
-
-    // Check if website already has a session on load
+    // Check if website already has a session on load (only sync once per session)
     setTimeout(() => {
+        // Skip if already synced in this session
+        if (hasAlreadySyncedInSession()) {
+            console.log('🔕 Already synced in this session, skipping auto-sync');
+            return;
+        }
+
         try {
             const supabaseKey = Object.keys(localStorage).find(key =>
                 key.startsWith('sb-') && key.endsWith('-auth-token')
@@ -239,51 +320,24 @@
             if (supabaseKey) {
                 const sessionData = JSON.parse(localStorage.getItem(supabaseKey));
                 if (sessionData && sessionData.access_token && sessionData.user) {
-                    // Auto-sync on page load if website is logged in
+                    // Auto-sync on page load if website is logged in (silent - no notification)
                     chrome.runtime.sendMessage({
                         type: 'WEBSITE_LOGIN',
                         data: {
                             session: sessionData,
                             user: sessionData.user,
-                            accessToken: sessionData.access_token
+                            accessToken: sessionData.access_token,
+                            skipNotification: true // IMPORTANT: Skip notification on page load
                         }
+                    }).then(() => {
+                        markAsSynced();
                     }).catch(e => console.log('Auto-sync failed:', e));
                 }
-            } else {
-                // No session found - make sure extension is logged out too
-                chrome.runtime.sendMessage({
-                    type: 'USER_LOGGED_OUT'
-                }).catch(e => { });
             }
         } catch (e) {
             // Ignore errors
         }
     }, 1000);
 
-    // SECURITY: Watch for storage changes (handles cross-tab logout)
-    window.addEventListener('storage', (event) => {
-        if (event.key && event.key.startsWith('sb-') && event.key.endsWith('-auth-token')) {
-            if (!event.newValue || event.newValue === 'null') {
-                console.log('🚪 Detected logout via storage event');
-                chrome.runtime.sendMessage({
-                    type: 'USER_LOGGED_OUT'
-                }).catch(e => { });
-            }
-        }
-    });
-
-    // SECURITY: Periodically verify session is still valid
-    setInterval(() => {
-        const supabaseKey = Object.keys(localStorage).find(key =>
-            key.startsWith('sb-') && key.endsWith('-auth-token')
-        );
-
-        if (!supabaseKey) {
-            // No session - ensure extension knows
-            chrome.runtime.sendMessage({
-                type: 'CHECK_AND_LOGOUT_IF_NEEDED'
-            }).catch(e => { });
-        }
-    }, 30000); // Check every 30 seconds
-
 })();
+

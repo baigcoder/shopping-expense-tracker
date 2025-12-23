@@ -1,9 +1,11 @@
 // Upcoming Bills Component - Shows recurring payments due soon
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Bell, DollarSign, Clock, ChevronRight, AlertTriangle } from 'lucide-react';
 import { recurringTransactionService, RecurringTransaction } from '../services/recurringService';
 import { subscriptionService, Subscription } from '../services/subscriptionService';
+import { billService, Bill } from '../services/billService';
+import { notificationTriggers } from '../services/notificationService';
 import { formatCurrency } from '../services/currencyService';
 import { useAuthStore } from '../store/useStore';
 import styles from './UpcomingBills.module.css';
@@ -94,6 +96,64 @@ const UpcomingBills = () => {
                     });
                 } catch (e) {
                     console.error('Error fetching subscriptions:', e);
+                }
+
+                // Fetch bills from billService
+                try {
+                    const bills = await billService.getUpcoming(user.id, 14);
+
+                    bills.forEach(bill => {
+                        // Calculate next due date
+                        const dueDay = parseInt(bill.due_date);
+                        let nextDue = new Date(today.getFullYear(), today.getMonth(), dueDay);
+
+                        if (bill.frequency === 'one-time') {
+                            nextDue = new Date(bill.due_date);
+                        } else if (nextDue < today) {
+                            switch (bill.frequency) {
+                                case 'monthly':
+                                    nextDue.setMonth(nextDue.getMonth() + 1);
+                                    break;
+                                case 'quarterly':
+                                    nextDue.setMonth(nextDue.getMonth() + 3);
+                                    break;
+                                case 'yearly':
+                                    nextDue.setFullYear(nextDue.getFullYear() + 1);
+                                    break;
+                            }
+                        }
+
+                        const daysUntil = Math.ceil((nextDue.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                        const isUrgent = daysUntil <= bill.reminder_days;
+
+                        // Trigger notifications for urgent bills (only once per session)
+                        const notifiedKey = `bill_notified_${bill.id}_${nextDue.toISOString().split('T')[0]}`;
+                        if (isUrgent && daysUntil >= 0 && !sessionStorage.getItem(notifiedKey)) {
+                            notificationTriggers.onBillDueSoon(bill.name, bill.amount, daysUntil);
+                            sessionStorage.setItem(notifiedKey, 'true');
+                        }
+
+                        // Trigger overdue notification
+                        if (daysUntil < 0 && !sessionStorage.getItem(`${notifiedKey}_overdue`)) {
+                            notificationTriggers.onBillOverdue(bill.name, bill.amount, Math.abs(daysUntil));
+                            sessionStorage.setItem(`${notifiedKey}_overdue`, 'true');
+                        }
+
+                        if (!bill.is_paid && daysUntil <= 14) {
+                            items.push({
+                                id: bill.id,
+                                name: bill.name,
+                                amount: bill.amount,
+                                dueDate: nextDue.toISOString().split('T')[0],
+                                daysUntil: Math.max(-7, daysUntil), // Allow showing up to 7 days overdue
+                                type: 'recurring',
+                                isUrgent: isUrgent || daysUntil < 0,
+                                icon: getCategoryIcon(bill.category)
+                            });
+                        }
+                    });
+                } catch (e) {
+                    console.log('Bills service not available:', e);
                 }
 
                 // Sort by days until due

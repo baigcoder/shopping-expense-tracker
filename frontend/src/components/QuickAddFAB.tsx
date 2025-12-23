@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, DollarSign, ShoppingBag, Coffee, Car, Film, Utensils, Loader2 } from 'lucide-react';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
 import { formatCurrency } from '../services/currencyService';
-import { useAuthStore } from '../store/useStore';
+import { useAuthStore, useModalStore } from '../store/useStore';
 import genZToast from '../services/genZToast';
 import styles from './QuickAddFAB.module.css';
 
@@ -12,11 +12,10 @@ interface QuickCategory {
     name: string;
     icon: React.ReactNode;
     emoji: string;
-    featured?: boolean;
 }
 
 const QUICK_CATEGORIES: QuickCategory[] = [
-    { name: 'Food', icon: <Utensils size={20} />, emoji: '🍔', featured: true },
+    { name: 'Food', icon: <Utensils size={20} />, emoji: '🍔' },
     { name: 'Coffee', icon: <Coffee size={20} />, emoji: '☕' },
     { name: 'Shopping', icon: <ShoppingBag size={20} />, emoji: '🛍️' },
     { name: 'Transport', icon: <Car size={20} />, emoji: '🚗' },
@@ -27,7 +26,8 @@ const QUICK_AMOUNTS = [5, 10, 20, 50, 100];
 
 const QuickAddFAB = () => {
     const { user } = useAuthStore();
-    const [isOpen, setIsOpen] = useState(false);
+    const { isQuickAddOpen, openQuickAdd, closeQuickAdd } = useModalStore();
+    // const [isOpen, setIsOpen] = useState(false);
     const [step, setStep] = useState<'category' | 'amount' | 'confirm'>('category');
     const [selectedCategory, setSelectedCategory] = useState<QuickCategory | null>(null);
     const [amount, setAmount] = useState<string>('');
@@ -36,7 +36,7 @@ const QuickAddFAB = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleOpen = () => {
-        setIsOpen(true);
+        openQuickAdd();
         setStep('category');
         setSelectedCategory(null);
         setAmount('');
@@ -44,7 +44,7 @@ const QuickAddFAB = () => {
     };
 
     const handleClose = () => {
-        setIsOpen(false);
+        closeQuickAdd();
     };
 
     const handleCategorySelect = (category: QuickCategory) => {
@@ -109,7 +109,7 @@ const QuickAddFAB = () => {
 
             {/* Modal */}
             <AnimatePresence>
-                {isOpen && (
+                {isQuickAddOpen && (
                     <motion.div
                         className={styles.overlay}
                         initial={{ opacity: 0 }}
@@ -138,31 +138,17 @@ const QuickAddFAB = () => {
 
                             {/* Step: Category */}
                             {step === 'category' && (
-                                <div className={styles.categorySection}>
-                                    {/* Featured Category */}
-                                    {QUICK_CATEGORIES.filter(c => c.featured).map((cat) => (
+                                <div className={styles.categoryGrid}>
+                                    {QUICK_CATEGORIES.map((cat) => (
                                         <button
                                             key={cat.name}
-                                            className={styles.featuredCategoryBtn}
+                                            className={styles.categoryBtn}
                                             onClick={() => handleCategorySelect(cat)}
                                         >
-                                            <span className={styles.featuredEmoji}>{cat.emoji}</span>
-                                            <span className={styles.featuredName}>{cat.name.toUpperCase()}</span>
+                                            <span className={styles.categoryEmoji}>{cat.emoji}</span>
+                                            <span className={styles.categoryName}>{cat.name}</span>
                                         </button>
                                     ))}
-                                    {/* Category Grid */}
-                                    <div className={styles.categoryGrid}>
-                                        {QUICK_CATEGORIES.filter(c => !c.featured).map((cat) => (
-                                            <button
-                                                key={cat.name}
-                                                className={styles.categoryBtn}
-                                                onClick={() => handleCategorySelect(cat)}
-                                            >
-                                                <span className={styles.categoryEmoji}>{cat.emoji}</span>
-                                                <span className={styles.categoryName}>{cat.name.toUpperCase()}</span>
-                                            </button>
-                                        ))}
-                                    </div>
                                 </div>
                             )}
 

@@ -1,155 +1,147 @@
-/* Clean Modern Auth Layout */
+/* AuthLayout.module.css */
 .container {
+    display: flex;
     min-height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--bg-app);
-    /* Matches dashboard light gray */
-    padding: 2rem;
-}
-
-.authCard {
     background: #FFFFFF;
-    width: 100%;
-    max-width: 1000px;
-    min-height: 600px;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-float);
-    display: flex;
-    overflow: hidden;
-    position: relative;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Decorative Background Elements on the Container */
-.container::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.container::after {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    left: -100px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(15, 61, 62, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* Left Side - Visual/Brand */
-.visualSide {
+.formSide {
     flex: 1;
-    background: var(--bg-surface-alt);
-    padding: 4rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-}
-
-.visualSide::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230f3d3e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-.brandHeader {
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
     position: relative;
     z-index: 10;
+    max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+    .formSide {
+        max-width: 40%;
+        /* 40/60 split */
+        min-width: 500px;
+    }
+}
+
+.visualSide {
+    display: none;
+    flex: 1;
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+}
+
+@media (min-width: 1024px) {
+    .visualSide {
+        display: flex;
+    }
+}
+
+.contentWrapper {
+    width: 100%;
+    max-width: 420px;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: var(--brand-primary);
-    font-weight: 700;
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
 }
 
-.heroText h1 {
-    font-size: 2.5rem;
-    line-height: 1.1;
-    color: var(--brand-primary);
-    margin-bottom: 1rem;
-}
-
-.heroText p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    line-height: 1.6;
-}
-
-.cardPreview {
-    position: relative;
-    margin-top: 2rem;
-    z-index: 10;
-}
-
-/* The Credit Card Graphic */
-.mockCard {
-    background: #0F3D3E;
-    border-radius: 20px;
-    padding: 1.5rem;
-    color: white;
-    width: 280px;
-    height: 170px;
-    box-shadow: 0 20px 40px rgba(15, 61, 62, 0.3);
-    position: relative;
-    transform: rotate(-5deg);
-    transition: transform 0.5s ease;
-}
-
-.visualSide:hover .mockCard {
-    transform: rotate(0deg) scale(1.05);
-}
-
-/* Right Side - Form */
-.formSide {
-    flex: 1;
-    padding: 4rem;
+.logoIcon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+    border-radius: 10px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    background: #FFFFFF;
+    color: white;
 }
 
-/* Mobile */
-@media (max-width: 1024px) {
-    .container {
-        padding: 1rem;
-    }
+.logoText {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0F172A;
+    letter-spacing: -0.5px;
+}
 
-    .authCard {
-        flex-direction: column;
-        max-width: 500px;
-    }
+/* Background elements for visual side */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+}
 
-    .visualSide {
-        padding: 2rem;
-        min-height: 200px;
-        display: none;
-        /* Hide visual side on small screens for cleaner login */
-    }
+.blob1 {
+    width: 400px;
+    height: 400px;
+    background: #DC2626;
+    top: -100px;
+    right: -100px;
+}
 
-    .formSide {
-        padding: 2rem;
-    }
+.blob2 {
+    width: 300px;
+    height: 300px;
+    background: #2563EB;
+    /* Blue */
+    bottom: -50px;
+    left: -50px;
+}
+
+.quoteContainer {
+    position: relative;
+    z-index: 10;
+    margin-top: auto;
+    margin-bottom: 4rem;
+    padding-left: 2rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.quote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.author {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.showcaseImage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    perspective: 1000px;
+}
+
+.mockup {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    transform: rotateY(-10deg) rotateX(5deg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
 }

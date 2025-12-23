@@ -35,12 +35,13 @@
 
 .modal {
     background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
-    padding: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    padding: 2.5rem;
     position: relative;
-    box-shadow: 10px 10px 0px #000;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
     text-align: center;
+
     width: 100%;
     max-width: 400px;
 }
@@ -66,15 +67,16 @@
 }
 
 .iconContainer {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    border: 3px solid #000;
+    background: #F0F7FF;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
-    box-shadow: 4px 4px 0px #000;
+    color: #2563EB;
+
 }
 
 .emoji {
@@ -124,32 +126,35 @@
 .confirmBtn {
     flex: 1;
     padding: 0.875rem 1rem;
-    background: #000;
+    background: #2563EB;
     color: #fff;
-    border: 2px solid #000;
+    border: none;
     border-radius: 12px;
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.1s;
-    font-family: 'Space Grotesk', sans-serif;
-    box-shadow: 3px 3px 0px #FFD93D;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .confirmBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px #FFD93D;
+    transform: translateY(-2px);
+    background: #1D4ED8;
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
 }
 
+
 .confirmBtn.danger {
-    background: #FF6B6B;
-    border-color: #FF6B6B;
-    box-shadow: 3px 3px 0px #000;
+    background: #EF4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 .confirmBtn.danger:hover {
-    box-shadow: 5px 5px 0px #000;
+    background: #DC2626;
+    box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
 }
+
 
 /* Mobile */
 @media (max-width: 480px) {

@@ -1,589 +1,365 @@
-// AI Service - Multi-Provider with Auto-Fallback
-// Priority: Groq (fastest) -> OpenAI -> Gemini -> Simulated
-// Enhanced with more accurate spending analysis algorithms
+// AI Service - Cashly AI with Full User Data Context
+import api from './api';
+import { supabaseTransactionService, SupabaseTransaction } from './supabaseTransactionService';
+import { subscriptionService, Subscription } from './subscriptionService';
+import { goalService, Goal } from './goalService';
+import { budgetService, Budget } from './budgetService';
+import { formatCurrency } from './currencyService';
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+// User context cache
+let userContextCache: UserContext | null = null;
+let contextLastUpdated: number = 0;
+const CONTEXT_TTL = 60000; // 1 minute
 
-// API endpoints
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-
-interface SpendingData {
-    totalSpent: number;
-    categories: { name: string; amount: number; percentage: number }[];
-    monthlyAverage: number;
-    topMerchant: string;
+interface UserContext {
+    userId: string;
+    transactions: SupabaseTransaction[];
+    subscriptions: Subscription[];
+    goals: Goal[];
+    budgets: Budget[];
+    stats: {
+        totalSpent: number;
+        monthlySpent: number;
+        weeklySpent: number;
+        topCategory: string;
+        topCategoryAmount: number;
+        avgTransactionAmount: number;
+        transactionCount: number;
+    };
 }
 
-interface Transaction {
-    id?: string;
-    date: string;
-    amount: number;
-    category: string;
-    description?: string;
-    type: 'income' | 'expense';
-}
+// Fetch and process user financial context
+async function getUserContext(userId: string): Promise<UserContext> {
+    const now = Date.now();
 
-// System prompt - NO markdown formatting
-const SYSTEM_PROMPT = `You are a helpful Gen Z financial assistant called "Vibe Buddy" for an expense tracking app called "Vibe Tracker". 
-Your personality is friendly, casual, and uses Gen Z slang occasionally but not excessively.
-
-IMPORTANT FORMATTING RULES:
-- DO NOT use markdown formatting like ** or # or ## 
-- DO NOT use bold or headers
-- Use plain text only
-- Use emojis sparingly to make responses fun
-- Use bullet points with • or - symbols
-- Keep responses concise (under 150 words)
-- Be encouraging and positive
-
-You help users with:
-- Spending analysis and tips
-- Budget recommendations  
-- Savings advice
-- Subscription management
-- Financial goal tracking`;
-
-// Track which provider is currently working
-let lastWorkingProvider: 'groq' | 'openai' | 'gemini' | null = null;
-
-// Groq API call - UPDATED to use current model
-const callGroq = async (message: string, context?: string): Promise<string> => {
-    if (!GROQ_API_KEY) throw new Error('No Groq API key');
-
-    const response = await fetch(GROQ_API_URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${GROQ_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile', // Updated to current model
-            messages: [
-                { role: 'system', content: SYSTEM_PROMPT + (context || '') },
-                { role: 'user', content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 500,
-        })
-    });
-
-    if (!response.ok) {
-        const errText = await response.text();
-        console.error('Groq API Error:', errText);
-        throw new Error(`Groq error: ${response.status}`);
+    // Return cached context if recent
+    if (userContextCache && userContextCache.userId === userId && now - contextLastUpdated < CONTEXT_TTL) {
+        return userContextCache;
     }
 
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content;
-    if (!text) throw new Error('Empty Groq response');
-
-    lastWorkingProvider = 'groq';
-    console.log('✅ AI Response from: Groq');
-    return cleanResponse(text);
-};
-
-// OpenAI API call
-const callOpenAI = async (message: string, context?: string): Promise<string> => {
-    if (!OPENAI_API_KEY) throw new Error('No OpenAI API key');
-
-    const response = await fetch(OPENAI_API_URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: SYSTEM_PROMPT + (context || '') },
-                { role: 'user', content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 500,
-        })
-    });
-
-    if (!response.ok) {
-        const errText = await response.text();
-        console.error('OpenAI API Error:', errText);
-        throw new Error(`OpenAI error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content;
-    if (!text) throw new Error('Empty OpenAI response');
-
-    lastWorkingProvider = 'openai';
-    console.log('✅ AI Response from: OpenAI');
-    return cleanResponse(text);
-};
-
-// Gemini API call - COMPLETELY FIXED with correct v1 endpoint
-const callGemini = async (message: string, context?: string): Promise<string> => {
-    if (!GEMINI_API_KEY) throw new Error('No Gemini API key');
-
-    // Use v1 endpoint (not v1beta) with gemini-1.5-flash model
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contents: [{
-                parts: [{ text: `${SYSTEM_PROMPT}${context || ''}\n\nUser: ${message}` }]
-            }],
-            generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 500,
-            }
-        })
-    });
-
-    if (!response.ok) {
-        const errText = await response.text();
-        console.error('Gemini API Error:', errText);
-        throw new Error(`Gemini error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!text) throw new Error('Empty Gemini response');
-
-    lastWorkingProvider = 'gemini';
-    console.log('✅ AI Response from: Gemini');
-    return cleanResponse(text);
-};
-
-// Clean response - remove any markdown formatting
-const cleanResponse = (text: string): string => {
-    return text
-        .replace(/\*\*/g, '')      // Remove **bold**
-        .replace(/\*/g, '')         // Remove *italic*
-        .replace(/#{1,6}\s/g, '')   // Remove # headers
-        .replace(/`{1,3}/g, '')     // Remove code blocks
-        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
-        .trim();
-};
-
-// Main function with auto-fallback
-export const getAIResponse = async (
-    message: string,
-    context?: SpendingData
-): Promise<string> => {
-    const contextInfo = context
-        ? `\n\nUser's spending context: Total spent this month: $${context.totalSpent}, Top categories: ${context.categories.map(c => `${c.name}: $${c.amount}`).join(', ')}`
-        : '';
-
-    // Define provider order (try last working provider first for speed)
-    const providers = [
-        { name: 'groq', fn: () => callGroq(message, contextInfo) },
-        { name: 'openai', fn: () => callOpenAI(message, contextInfo) },
-        { name: 'gemini', fn: () => callGemini(message, contextInfo) },
-    ];
-
-    // Reorder to try last working provider first
-    if (lastWorkingProvider) {
-        const idx = providers.findIndex(p => p.name === lastWorkingProvider);
-        if (idx > 0) {
-            const [provider] = providers.splice(idx, 1);
-            providers.unshift(provider);
-        }
-    }
-
-    // Try each provider with fallback
-    for (const provider of providers) {
-        try {
-            console.log(`🔄 Trying AI provider: ${provider.name}...`);
-            return await provider.fn();
-        } catch (error) {
-            console.warn(`⚠️ ${provider.name} failed:`, error);
-            continue;
-        }
-    }
-
-    // All providers failed, use simulated response
-    console.log('💭 Using simulated response (all providers failed)');
-    return getSimulatedResponse(message);
-};
-
-// Fallback simulated responses (plain text, no markdown)
-const getSimulatedResponse = (message: string): string => {
-    const lowerMessage = message.toLowerCase();
-
-    if (lowerMessage.includes('save') || lowerMessage.includes('saving')) {
-        return "💰 Here are 3 ways you could save more:\n\n• Meal prep on Sundays - Your food delivery could be cut by 60%\n\n• Bundle subscriptions - Consider rotating streaming services monthly\n\n• Use cashback apps - You could earn around $30/month back";
-    }
-
-    if (lowerMessage.includes('budget') || lowerMessage.includes('spending')) {
-        return "📊 Looking at typical spending patterns:\n\n• Food & Dining: 35% (consider reducing)\n• Shopping: 25% (on target)\n• Entertainment: 15% (good!)\n• Transport: 12% (efficient)\n\nWant me to suggest an optimized budget?";
-    }
-
-    if (lowerMessage.includes('subscription') || lowerMessage.includes('recurring')) {
-        return "🔄 Pro tip for subscriptions: Try the 'subscription audit' method!\n\nCancel everything for a month and only resubscribe to what you truly miss. Most people find they only need 2-3 services, not 6+. This alone could save you $50-100 per month!";
-    }
-
-    if (lowerMessage.includes('goal') || lowerMessage.includes('target')) {
-        return "🎯 Setting financial goals? Try the SMART method:\n\n• Specific - Exactly what you want\n• Measurable - Track your progress\n• Achievable - Be realistic\n• Relevant - Matters to you\n• Time-bound - Set a deadline\n\nWhat's your biggest financial goal right now?";
-    }
-
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-        return "Hey there! 👋 I'm your AI financial buddy! I'm here to help you make smarter money moves.\n\nI can help with:\n• 💰 Savings tips\n• 📊 Spending analysis\n• 🔄 Subscription reviews\n• 🎯 Goal tracking\n\nWhat's on your mind?";
-    }
-
-    return "👋 I'm your AI financial buddy! I can help you with:\n\n• 💰 Savings tips - Ask 'How can I save more?'\n• 📊 Spending analysis - Ask 'Analyze my spending'\n• 🔄 Subscriptions - Ask 'Review my subscriptions'\n• 🎯 Goals - Ask 'How do I reach my goals?'\n\nWhat would you like to know?";
-};
-
-// Helper to parse JSON from AI response
-const parseAIJSON = (text: string): any => {
-    console.log('🤖 AI Raw Response:', text);
     try {
-        // 1. Remove Markdown code blocks
-        let cleanText = text.replace(/```json\n?|```/g, '').trim();
+        const [transactions, subscriptions, goals, budgets] = await Promise.all([
+            supabaseTransactionService.getAll(userId),
+            subscriptionService.getAll(userId).catch(() => []),
+            goalService.getAll(userId).catch(() => []),
+            budgetService.getAll(userId).catch(() => [])
+        ]);
 
-        // 2. Extract the JSON object if there's extra text
-        const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-            cleanText = jsonMatch[0];
-        }
+        // Calculate stats
+        const today = new Date();
+        const thisMonth = transactions.filter(t => {
+            const d = new Date(t.date);
+            return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+        });
 
-        // 3. Basic cleanup (only trim whitespace)
-        cleanText = cleanText.trim();
+        const thisWeek = transactions.filter(t => {
+            const d = new Date(t.date);
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return d >= weekAgo;
+        });
 
-        console.log('🧹 Cleaned JSON Candidate:', cleanText);
+        const expenses = transactions.filter(t => t.type === 'expense');
+        const monthlyExpenses = thisMonth.filter(t => t.type === 'expense');
 
-        try {
-            return JSON.parse(cleanText);
-        } catch (initialError) {
-            console.warn('Standard Parse Failed. Attempting repair...');
-            // Attempt to fix unquoted keys
-            let repaired = cleanText.replace(/([{,]\s*)([a-zA-Z0-9_]+?)\s*:/g, '$1"$2":');
+        // Category breakdown
+        const categoryTotals: Record<string, number> = {};
+        monthlyExpenses.forEach(t => {
+            const cat = t.category || 'Other';
+            categoryTotals[cat] = (categoryTotals[cat] || 0) + Math.abs(t.amount);
+        });
 
-            // FIX: Missing commas between key-value pairs (common AI issue)
-            // Looks for: "value" (newline) "key":
-            repaired = repaired.replace(/("\s*)\n(\s*")/g, '$1,\n$2');
+        const sortedCategories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
+        const topCategory = sortedCategories[0] || ['None', 0];
 
-            console.log('🔧 Repaired JSON:', repaired);
-            return JSON.parse(repaired);
-        }
-    } catch (e) {
-        console.error('❌ Failed to parse AI JSON:', e);
-        return null;
-    }
-};
+        const stats = {
+            totalSpent: expenses.reduce((s, t) => s + Math.abs(t.amount), 0),
+            monthlySpent: monthlyExpenses.reduce((s, t) => s + Math.abs(t.amount), 0),
+            weeklySpent: thisWeek.filter(t => t.type === 'expense').reduce((s, t) => s + Math.abs(t.amount), 0),
+            topCategory: topCategory[0] as string,
+            topCategoryAmount: topCategory[1] as number,
+            avgTransactionAmount: expenses.length > 0 ? expenses.reduce((s, t) => s + Math.abs(t.amount), 0) / expenses.length : 0,
+            transactionCount: transactions.length
+        };
 
-// =====================================================
-// ENHANCED ANALYSIS FUNCTIONS WITH ACCURATE ALGORITHMS
-// =====================================================
+        userContextCache = { userId, transactions, subscriptions, goals, budgets, stats };
+        contextLastUpdated = now;
 
-/**
- * Helper: Get month key from date string (YYYY-MM)
- */
-const getMonthKey = (dateStr: string): string => {
-    const d = new Date(dateStr);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-};
-
-/**
- * Helper: Group transactions by month
- */
-const groupByMonth = (transactions: Transaction[]): Map<string, Transaction[]> => {
-    const grouped = new Map<string, Transaction[]>();
-    transactions.forEach(t => {
-        const key = getMonthKey(t.date);
-        if (!grouped.has(key)) grouped.set(key, []);
-        grouped.get(key)!.push(t);
-    });
-    return grouped;
-};
-
-/**
- * Helper: Calculate monthly totals for expenses
- */
-const calculateMonthlyTotals = (transactions: Transaction[]): Map<string, number> => {
-    const grouped = groupByMonth(transactions.filter(t => t.type === 'expense'));
-    const totals = new Map<string, number>();
-
-    grouped.forEach((txs, month) => {
-        const total = txs.reduce((sum, t) => sum + Math.abs(t.amount), 0);
-        totals.set(month, total);
-    });
-
-    return totals;
-};
-
-/**
- * Helper: Calculate trend using linear regression
- */
-const calculateTrend = (values: number[]): { slope: number; direction: 'up' | 'down' | 'stable' } => {
-    if (values.length < 2) return { slope: 0, direction: 'stable' };
-
-    const n = values.length;
-    const xSum = (n * (n - 1)) / 2; // Sum of 0,1,2,...,n-1
-    const ySum = values.reduce((a, b) => a + b, 0);
-    const xySum = values.reduce((sum, y, x) => sum + x * y, 0);
-    const xxSum = values.reduce((sum, _, x) => sum + x * x, 0);
-
-    const slope = (n * xySum - xSum * ySum) / (n * xxSum - xSum * xSum);
-
-    // Use percentage threshold for stability determination
-    const avgValue = ySum / n;
-    const slopePercent = (slope / avgValue) * 100;
-
-    let direction: 'up' | 'down' | 'stable';
-    if (slopePercent > 5) direction = 'up';
-    else if (slopePercent < -5) direction = 'down';
-    else direction = 'stable';
-
-    return { slope, direction };
-};
-
-/**
- * Helper: Calculate confidence based on data variance
- */
-const calculateConfidence = (values: number[]): number => {
-    if (values.length < 2) return 0.3; // Low confidence with minimal data
-
-    const mean = values.reduce((a, b) => a + b, 0) / values.length;
-    const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length;
-    const stdDev = Math.sqrt(variance);
-    const coefficientOfVariation = stdDev / mean;
-
-    // Higher variance = lower confidence
-    // CV of 0 = 95% confidence, CV of 1+ = 40% confidence
-    const confidence = Math.max(0.4, Math.min(0.95, 1 - coefficientOfVariation * 0.5));
-
-    // Bonus for having more months of data
-    const dataBonus = Math.min(0.1, values.length * 0.02);
-
-    return Math.min(0.95, confidence + dataBonus);
-};
-
-// Analyze spending with real AI + accurate calculations
-export const analyzeSpending = async (transactions: Transaction[]): Promise<{
-    summary: string;
-    insights: string[];
-    warnings: string[];
-    opportunities: string[];
-}> => {
-    if (!transactions.length) {
+        return userContextCache;
+    } catch (error) {
+        console.error('Error fetching user context:', error);
         return {
-            summary: "No transactions found to analyze. Start adding expenses to get AI insights!",
-            insights: [],
-            warnings: [],
-            opportunities: []
+            userId,
+            transactions: [],
+            subscriptions: [],
+            goals: [],
+            budgets: [],
+            stats: {
+                totalSpent: 0,
+                monthlySpent: 0,
+                weeklySpent: 0,
+                topCategory: 'Unknown',
+                topCategoryAmount: 0,
+                avgTransactionAmount: 0,
+                transactionCount: 0
+            }
         };
     }
+}
 
-    // Get current month's transactions only for primary analysis
-    const now = new Date();
-    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    const lastMonthKey = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, '0')}`;
+// Generate smart response based on user's actual data
+function generateSmartResponse(message: string, context: UserContext): string {
+    const lowerMsg = message.toLowerCase();
+    const { stats, subscriptions, goals, budgets, transactions } = context;
 
-    const monthlyTotals = calculateMonthlyTotals(transactions);
-    const currentMonthTotal = monthlyTotals.get(currentMonthKey) || 0;
-    const lastMonthTotal = monthlyTotals.get(lastMonthKey) || 0;
-
-    // Calculate category breakdown for current month
-    const currentMonthTxs = transactions.filter(t => getMonthKey(t.date) === currentMonthKey && t.type === 'expense');
-    const categoryTotals = new Map<string, number>();
-    currentMonthTxs.forEach(t => {
-        const current = categoryTotals.get(t.category) || 0;
-        categoryTotals.set(t.category, current + Math.abs(t.amount));
-    });
-
-    // Sort categories by amount
-    const sortedCategories = Array.from(categoryTotals.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
-
-    // Calculate month-over-month change
-    const monthChange = lastMonthTotal > 0
-        ? ((currentMonthTotal - lastMonthTotal) / lastMonthTotal * 100).toFixed(1)
-        : '0';
-
-    // Build context for AI
-    const contextStr = `
-Current Month Spending: $${currentMonthTotal.toFixed(2)}
-Last Month Spending: $${lastMonthTotal.toFixed(2)}
-Month-over-Month Change: ${monthChange}%
-Top Categories This Month:
-${sortedCategories.map(([cat, amt]) => `  - ${cat}: $${amt.toFixed(2)}`).join('\n')}
-Total Transactions Analyzed: ${transactions.length}
-`;
-
-    const prompt = `Analyze this user's spending data and provide financial insights. Be direct, helpful, and slightly informal/modern in tone.
-
-SPENDING DATA:
-${contextStr}
-
-Return STRICT JSON (valid double quotes, commas between fields):
-{
-    "summary": "A single string containing a punchy 2-sentence summary with 1-2 emojis (no internal objects, just text)",
-    "insights": ["Key insight 1", "Key insight 2", "Key insight 3"],
-    "warnings": ["Warning about high spending areas or concerning patterns"],
-    "opportunities": ["Saving opportunity 1", "Saving opportunity 2"]
-}`;
-
-    const response = await getAIResponse(prompt);
-    const parsed = parseAIJSON(response);
-
-    return parsed || {
-        summary: `You've spent $${currentMonthTotal.toFixed(0)} this month (${monthChange}% vs last month). ${sortedCategories[0] ? `Top category: ${sortedCategories[0][0]}` : ''}`,
-        insights: [`Your spending is ${parseFloat(monthChange) > 0 ? 'up' : 'down'} ${Math.abs(parseFloat(monthChange))}% from last month`],
-        warnings: parseFloat(monthChange) > 20 ? ['Spending increased significantly this month'] : [],
-        opportunities: ['Track daily to stay on budget']
-    };
-};
-
-// Optimize budget with real AI + calculated suggestions
-export const optimizeBudget = async (
-    income: number,
-    currentSpending: { category: string; amount: number }[]
-): Promise<{
-    suggested: { category: string; amount: number; adjustment: number; reason: string }[];
-    totalSavings: number;
-    methods: string[];
-}> => {
-    // Calculate actual income if not provided
-    const effectiveIncome = income > 0 ? income : currentSpending.reduce((sum, c) => sum + c.amount, 0) * 1.2;
-
-    // Apply 50/30/20 rule as baseline
-    const needsCategories = ['Food', 'Groceries', 'Transport', 'Utilities', 'Rent', 'Healthcare'];
-    const wantsCategories = ['Shopping', 'Entertainment', 'Dining', 'Subscriptions', 'Personal'];
-
-    const spendingStr = currentSpending.map(c =>
-        `${c.category}: $${c.amount} (${needsCategories.some(n => c.category.includes(n)) ? 'needs' : 'wants'})`
-    ).join('\n');
-
-    const prompt = `Create an optimized budget based on this spending. Monthly Income: $${effectiveIncome}.
-Current Spending:
-${spendingStr}
-
-Apply the 50/30/20 rule (50% needs, 30% wants, 20% savings) but adjust for this user's priorities.
-Be realistic but look for genuine savings opportunities.
-Return STRICT JSON (valid double quotes, commas between fields):
-{
-    "suggested": [
-        {"category": "Category Name", "amount": 123, "adjustment": -50, "reason": "Short reason why"}
-    ],
-    "totalSavings": 123,
-    "methods": ["Actionable saving method 1", "Actionable saving method 2"]
-}`;
-
-    const response = await getAIResponse(prompt);
-    const parsed = parseAIJSON(response);
-
-    if (parsed) return parsed;
-
-    // Fallback: Calculate basic optimizations
-    const totalSpending = currentSpending.reduce((sum, c) => sum + c.amount, 0);
-    const targetSpending = effectiveIncome * 0.8; // Leave 20% for savings
-    const reductionFactor = targetSpending / totalSpending;
-
-    const suggested = currentSpending.map(c => ({
-        category: c.category,
-        amount: Math.round(c.amount * reductionFactor),
-        adjustment: Math.round(c.amount * reductionFactor - c.amount),
-        reason: reductionFactor < 1 ? 'Proportional reduction to hit savings goal' : 'Maintaining current level'
-    }));
-
-    return {
-        suggested,
-        totalSavings: Math.max(0, totalSpending - targetSpending),
-        methods: ['50/30/20 Rule', 'Zero-based budgeting']
-    };
-};
-
-// Predict future spending with ACCURATE time-series analysis
-export const predictSpending = async (historicalData: Transaction[]): Promise<{
-    nextMonth: number;
-    trend: 'up' | 'down' | 'stable';
-    confidence: number;
-    breakdown: { category: string; predicted: number }[];
-}> => {
-    if (!historicalData.length) return {
-        nextMonth: 0, trend: 'stable', confidence: 0, breakdown: []
-    };
-
-    const expenses = historicalData.filter(t => t.type === 'expense');
-    if (!expenses.length) return {
-        nextMonth: 0, trend: 'stable', confidence: 0, breakdown: []
-    };
-
-    // Calculate monthly totals
-    const monthlyTotals = calculateMonthlyTotals(expenses);
-    const sortedMonths = Array.from(monthlyTotals.keys()).sort();
-    const monthlyValues = sortedMonths.map(m => monthlyTotals.get(m)!);
-
-    // Calculate trend using linear regression
-    const { slope, direction } = calculateTrend(monthlyValues);
-
-    // Calculate confidence based on data variance and quantity
-    const confidence = calculateConfidence(monthlyValues);
-
-    // Predict next month using weighted moving average + trend
-    let predictedTotal: number;
-    if (monthlyValues.length >= 3) {
-        // Weighted average (recent months weighted more)
-        const weights = monthlyValues.map((_, i) => i + 1);
-        const weightSum = weights.reduce((a, b) => a + b, 0);
-        const weightedSum = monthlyValues.reduce((sum, val, i) => sum + val * weights[i], 0);
-        const weightedAvg = weightedSum / weightSum;
-
-        // Add trend adjustment
-        predictedTotal = weightedAvg + slope;
-    } else {
-        // Simple average for limited data
-        predictedTotal = monthlyValues.reduce((a, b) => a + b, 0) / monthlyValues.length;
+    // SAVINGS / TIPS
+    if (lowerMsg.includes('save') || lowerMsg.includes('tip') || lowerMsg.includes('cut')) {
+        if (stats.topCategory && stats.topCategoryAmount > 0) {
+            const percentage = stats.monthlySpent > 0 ? Math.round((stats.topCategoryAmount / stats.monthlySpent) * 100) : 0;
+            return `💡 Real talk: You've spent ${formatCurrency(stats.topCategoryAmount)} on ${stats.topCategory} this month (${percentage}% of spending).\n\n` +
+                `Try cutting that by 20% and you'd save ${formatCurrency(stats.topCategoryAmount * 0.2)}/month! 📉\n\n` +
+                `${getRandomTip()}`;
+        }
+        return `You're doing alright! Your avg transaction is ${formatCurrency(stats.avgTransactionAmount)}. ${getRandomTip()}`;
     }
 
-    // Ensure positive prediction
-    predictedTotal = Math.max(0, predictedTotal);
+    // SUBSCRIPTIONS
+    if (lowerMsg.includes('subscription') || lowerMsg.includes('sub') || lowerMsg.includes('recurring')) {
+        const activeSubs = subscriptions.filter(s => s.is_active);
+        const monthlyTotal = activeSubs.reduce((sum, s) => {
+            if (s.cycle === 'yearly') return sum + s.price / 12;
+            if (s.cycle === 'weekly') return sum + s.price * 4;
+            return sum + s.price;
+        }, 0);
 
-    // Calculate category breakdown prediction
-    const categoryMonthlyTotals = new Map<string, number[]>();
-    const grouped = groupByMonth(expenses);
+        if (activeSubs.length === 0) {
+            return "No active subscriptions tracked yet! 🎉 Add them so I can help you manage your recurring costs.";
+        }
 
-    grouped.forEach((txs, _month) => {
-        const catTotals = new Map<string, number>();
-        txs.forEach(t => {
-            catTotals.set(t.category, (catTotals.get(t.category) || 0) + Math.abs(t.amount));
+        const trials = subscriptions.filter(s => s.is_trial);
+        let response = `📱 You have ${activeSubs.length} active subscriptions costing ~${formatCurrency(monthlyTotal)}/month:\n\n`;
+
+        activeSubs.slice(0, 5).forEach(s => {
+            response += `• ${s.name}: ${formatCurrency(s.price)}/${s.cycle}\n`;
         });
-        catTotals.forEach((amount, category) => {
-            if (!categoryMonthlyTotals.has(category)) categoryMonthlyTotals.set(category, []);
-            categoryMonthlyTotals.get(category)!.push(amount);
+
+        if (trials.length > 0) {
+            response += `\n⚠️ ${trials.length} trial(s) - make sure to cancel before they charge!`;
+        }
+
+        return response;
+    }
+
+    // GOALS
+    if (lowerMsg.includes('goal')) {
+        if (goals.length === 0) {
+            return "No goals set yet! 🎯 Create some savings goals and I'll help you track progress. You got this!";
+        }
+
+        let response = "🎯 Here's your goal progress:\n\n";
+        goals.forEach(goal => {
+            const progress = goal.target > 0 ? Math.round((goal.saved / goal.target) * 100) : 0;
+            const bar = getProgressBar(progress);
+            response += `${goal.name}: ${bar} ${progress}%\n`;
+            response += `${formatCurrency(goal.saved)} / ${formatCurrency(goal.target)}\n\n`;
         });
+
+        const totalSaved = goals.reduce((s, g) => s + g.saved, 0);
+        response += `💰 Total saved: ${formatCurrency(totalSaved)}. Keep grinding!`;
+        return response;
+    }
+
+    // ROAST / REVIEW
+    if (lowerMsg.includes('roast') || lowerMsg.includes('review') || lowerMsg.includes('analyze')) {
+        if (stats.transactionCount < 5) {
+            return "I need more data to roast you properly 🔥 Add more transactions and come back!";
+        }
+
+        const roasts = [
+            `Your spending graph looks like you're fighting gravity... and losing. ${formatCurrency(stats.monthlySpent)} this month? 💀`,
+            `${stats.topCategory} is your financial nemesis. ${formatCurrency(stats.topCategoryAmount)} could've been invested! 📉`,
+            `Average transaction: ${formatCurrency(stats.avgTransactionAmount)}. Death by a thousand cuts, bestie. 💸`,
+            `You've made ${stats.transactionCount} transactions. That's ${stats.transactionCount} opportunities to regret. 🫠`
+        ];
+
+        return roasts[Math.floor(Math.random() * roasts.length)] + `\n\nBut seriously, ${getRandomTip()}`;
+    }
+
+    // BUDGET
+    if (lowerMsg.includes('budget')) {
+        if (budgets.length === 0) {
+            return "No budgets set! 📊 Create category budgets to track your spending limits.";
+        }
+
+        let response = "📊 Budget Status:\n\n";
+        budgets.forEach(b => {
+            const spent = transactions
+                .filter(t => t.category === b.category && t.type === 'expense')
+                .reduce((s, t) => s + Math.abs(t.amount), 0);
+            const percent = b.amount > 0 ? Math.round((spent / b.amount) * 100) : 0;
+            const status = percent >= 100 ? '🔴' : percent >= 80 ? '🟡' : '🟢';
+            response += `${status} ${b.category}: ${formatCurrency(spent)} / ${formatCurrency(b.amount)} (${percent}%)\n`;
+        });
+
+        return response;
+    }
+
+    // SPENDING / STATS
+    if (lowerMsg.includes('spend') || lowerMsg.includes('stat') || lowerMsg.includes('how much')) {
+        return `📈 Your spending breakdown:\n\n` +
+            `• This month: ${formatCurrency(stats.monthlySpent)}\n` +
+            `• This week: ${formatCurrency(stats.weeklySpent)}\n` +
+            `• Top category: ${stats.topCategory} (${formatCurrency(stats.topCategoryAmount)})\n` +
+            `• Avg transaction: ${formatCurrency(stats.avgTransactionAmount)}\n` +
+            `• Total transactions: ${stats.transactionCount}`;
+    }
+
+    // HYPE / MOTIVATION
+    if (lowerMsg.includes('hype') || lowerMsg.includes('motivat')) {
+        const hypes = [
+            "You're literally building generational wealth rn. Every dollar saved is a soldier in your financial army! 💪",
+            "Rich people don't just make money, they MANAGE it. And that's what you're doing. Iconic behavior! ✨",
+            "You tracked your spending. 90% of people don't even do that. Already ahead of the game! 🏆",
+            "Your future self is gonna send a thank you card. Keep stacking! 📈"
+        ];
+        return hypes[Math.floor(Math.random() * hypes.length)];
+    }
+
+    // DEFAULT
+    return `Hey! I'm Cashly AI, your financial bestie 🤖\n\n` +
+        `Try asking me about:\n` +
+        `• "How much did I spend?"\n` +
+        `• "Roast my spending"\n` +
+        `• "Show my subscriptions"\n` +
+        `• "Goal progress"\n` +
+        `• "Budget status"\n` +
+        `• "Tips to save money"`;
+}
+
+function getProgressBar(percent: number): string {
+    const filled = Math.floor(percent / 10);
+    const empty = 10 - filled;
+    return '█'.repeat(Math.min(filled, 10)) + '░'.repeat(Math.max(empty, 0));
+}
+
+function getRandomTip(): string {
+    const tips = [
+        "Try the 50/30/20 rule: 50% needs, 30% wants, 20% savings! 💡",
+        "Unsubscribe from shopping emails. Out of sight, out of cart! 🛒",
+        "Wait 24 hours before any purchase over $50. Impulse control hits different. ⏰",
+        "Cook at home one more day per week = ~$200/month saved! 🍳",
+        "Cancel one subscription you forgot about. We all have one. 👀",
+        "Round up your purchases to savings. Spare change adds up! 🪙"
+    ];
+    return tips[Math.floor(Math.random() * tips.length)];
+}
+
+// Main export - enhanced AI response with multi-model routing
+export const getAIResponse = async (message: string, userId?: string): Promise<string> => {
+    // Get user context first
+    let context: UserContext | null = null;
+    if (userId) {
+        try {
+            context = await getUserContext(userId);
+        } catch (e) {
+            console.log('Could not get user context');
+        }
+    }
+
+    // Try multi-model AI service - uses GPT-4o-mini for chat (faster)
+    if (context) {
+        try {
+            const { callAI } = await import('./multiModelService');
+            const { getCurrencySymbol, getCurrencyInfo } = await import('./currencyService');
+            const currency = getCurrencyInfo();
+
+            // Build detailed subscription list
+            const subsDetails = context.subscriptions.filter(s => s.is_active).slice(0, 5)
+                .map(s => `${s.name}: ${currency.symbol}${s.price}/${s.cycle}`)
+                .join(', ') || 'None tracked';
+
+            // Build goals list
+            const goalsDetails = context.goals.slice(0, 5)
+                .map(g => `${g.name}: ${currency.symbol}${g.saved}/${currency.symbol}${g.target}`)
+                .join(', ') || 'None set';
+
+            // Build budget status
+            const budgetDetails = context.budgets.slice(0, 5)
+                .map(b => {
+                    const spent = context.transactions
+                        .filter(t => t.category === b.category && t.type === 'expense')
+                        .reduce((s, t) => s + Math.abs(t.amount), 0);
+                    return `${b.category}: ${currency.symbol}${spent}/${currency.symbol}${b.amount}`;
+                })
+                .join(', ') || 'None set';
+
+            const systemPrompt = `You are "Cashly AI", a friendly Gen-Z financial assistant. You speak casually, use emojis naturally, and give genuinely helpful financial advice based on the user's REAL data.
+
+KEY RULES:
+- Keep responses concise (2-4 sentences max unless asked for details)
+- Always use ${currency.symbol} (${currency.code}) for currency amounts
+- Reference the user's ACTUAL data below to personalize advice
+- When asked about subscriptions/goals/budgets, LIST THE ACTUAL ITEMS you see below
+- Be encouraging but honest about spending habits
+- DO NOT use markdown formatting like ** or // or -- in your responses
+- Use plain text only, emojis are fine
+
+USER'S REAL FINANCIAL DATA:
+📊 Monthly Spending: ${currency.symbol}${context.stats.monthlySpent.toLocaleString()}
+📈 Weekly Spending: ${currency.symbol}${context.stats.weeklySpent.toLocaleString()}
+🏆 Top Category: ${context.stats.topCategory} (${currency.symbol}${context.stats.topCategoryAmount.toLocaleString()})
+📝 Total Transactions: ${context.stats.transactionCount}
+
+💳 SUBSCRIPTIONS (${context.subscriptions.length}): ${subsDetails}
+🎯 GOALS (${context.goals.length}): ${goalsDetails}
+📋 BUDGETS (${context.budgets.length}): ${budgetDetails}
+
+When the user asks about their subscriptions, goals, or budgets - tell them the EXACT items listed above!`;
+
+            const result = await callAI('chat', systemPrompt, message);
+            console.log(`✅ AI Chat response via ${result.model}`);
+            return result.response;
+        } catch (error) {
+            console.log('Multi-model AI unavailable, using smart fallback:', error);
+        }
+    }
+
+    // Try backend AI endpoint as second option
+    try {
+        const response = await api.post('/ai/chat', { message });
+        return response.data.reply;
+    } catch (error) {
+        console.log('Backend AI unavailable, using local fallback');
+    }
+
+    // Smart local fallback with user context
+    await new Promise(resolve => setTimeout(resolve, 300)); // Brief thinking delay
+
+    if (context) {
+        return generateSmartResponse(message, context);
+    }
+
+    // No user context available - generic response
+    return generateSmartResponse(message, {
+        userId: '',
+        transactions: [],
+        subscriptions: [],
+        goals: [],
+        budgets: [],
+        stats: {
+            totalSpent: 0,
+            monthlySpent: 0,
+            weeklySpent: 0,
+            topCategory: 'Unknown',
+            topCategoryAmount: 0,
+            avgTransactionAmount: 0,
+            transactionCount: 0
+        }
     });
-
-    const breakdown = Array.from(categoryMonthlyTotals.entries())
-        .map(([category, values]) => ({
-            category,
-            predicted: Math.round(values.reduce((a, b) => a + b, 0) / values.length)
-        }))
-        .sort((a, b) => b.predicted - a.predicted)
-        .slice(0, 6);
-
-    return {
-        nextMonth: Math.round(predictedTotal),
-        trend: direction,
-        confidence: Math.round(confidence * 100) / 100,
-        breakdown
-    };
 };
 
-// Get current provider status
-export const getProviderStatus = (): string => {
-    return lastWorkingProvider || 'none';
-};
-
-export default {
-    getAIResponse,
-    analyzeSpending,
-    optimizeBudget,
-    predictSpending,
-    getProviderStatus
+// Clear context cache (call when user logs out or data changes)
+export const clearAIContext = () => {
+    userContextCache = null;
+    contextLastUpdated = 0;
 };

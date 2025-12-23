@@ -1,5 +1,7 @@
-/* Gen Z Auth Page CSS - Unified Vibe 🎱 */
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+/* ============================================
+   FINZEN - Auth Page
+   Premium SaaS Red Theme
+   ============================================ */
 
 .splitContainer {
     position: fixed;
@@ -10,255 +12,259 @@
     display: flex;
     overflow: hidden;
     font-family: 'Space Grotesk', sans-serif;
-    color: #000;
-    background: #FAFAFA;
+    color: #0F172A;
+    background: #FFFFFF;
 }
 
 /* ========== LEFT PANEL - BRANDING ========== */
 .leftPanel {
     flex: 1;
-    background-color: #F5F3FF;
-    background-image: radial-gradient(#8B5CF6 1.5px, transparent 1.5px);
-    background-size: 32px 32px;
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem;
     position: relative;
-    border-right: 5px solid #000;
     overflow: hidden;
     z-index: 10;
+}
+
+/* Subtle radial light */
+.leftPanel::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -30%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.leftPanel::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -20%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .brandContent {
     text-align: center;
     z-index: 10;
-    max-width: 550px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .logoContainer {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 0.5rem;
-    border-radius: 18px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
-    border: 3px solid #000;
-    box-shadow: 5px 5px 0 #000;
-    transform: rotate(-5deg);
-    transition: transform 0.3s;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
 .logoContainer:hover {
-    transform: rotate(0deg) scale(1.05);
+    transform: scale(1.05);
 }
 
 .logo {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 10px;
+    padding: 12px;
+    filter: brightness(0) invert(1);
 }
 
 .brandTitle {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: 3rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
     line-height: 1;
-    color: #000;
+    color: #FFFFFF;
     margin: 0;
+    font-weight: 800;
     letter-spacing: -1px;
-    text-transform: uppercase;
-    text-shadow:
-        4px 4px 0 #fff,
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff;
-    position: relative;
-    z-index: 5;
 }
 
 .brandTagline {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 1.1rem;
-    color: #000;
-    font-weight: 800;
-    line-height: 1.4;
-    background: #fff;
-    border: 3px solid #000;
-    padding: 0.8rem 1.2rem;
-    border-radius: 14px;
-    box-shadow: 5px 5px 0 #000;
-    transform: rotate(2deg);
-    max-width: 90%;
-    text-transform: uppercase;
-    z-index: 4;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    line-height: 1.5;
+    max-width: 85%;
 }
 
-/* Preview Card 3D - Properly Scaled */
+/* Preview Card 3D - Glassmorphism Style */
 .cardPreview {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     perspective: 1000px;
     position: relative;
     z-index: 5;
 }
 
 .previewCard {
-    width: 300px;
-    height: 180px;
-    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    width: 280px;
+    height: 170px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-radius: 16px;
-    border: 4px solid #000;
-    box-shadow: 8px 8px 0 #000;
-    padding: 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
     color: #fff;
     position: relative;
     transform-style: preserve-3d;
-    transform: rotateY(-15deg) rotateX(10deg);
+    transform: rotateY(-10deg) rotateX(5deg);
     transition: all 0.4s ease;
 }
 
 .previewCard:hover {
-    transform: rotateY(0deg) rotateX(0deg) scale(1.05);
-    box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.2);
+    transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 .cardType {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: 1.2rem;
-    text-shadow: 2px 2px 0 #000;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
 }
 
 .cardAmount {
     position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
+    top: 1.5rem;
+    right: 1.5rem;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    background: #000;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 10px;
+    border-radius: 6px;
 }
 
 .cardNumber {
     position: absolute;
-    bottom: 1.2rem;
-    left: 1.2rem;
+    bottom: 1.5rem;
+    left: 1.5rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 0 #000;
+    opacity: 0.9;
 }
 
 /* Stats Styles - Signup Page */
 .statsPreview {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
 }
 
 .statItem {
-    background: #fff;
-    border: 3px solid #000;
-    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.25rem;
     border-radius: 12px;
-    box-shadow: 4px 4px 0 #000;
     text-align: center;
-    min-width: 80px;
+    min-width: 85px;
 }
 
 .statNumber {
     display: block;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 900;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #FFFFFF;
 }
 
 .statLabel {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 500;
     text-transform: uppercase;
-    color: #6B7280;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
 }
 
 
 /* ========== RIGHT PANEL - FORM ========== */
 .rightPanel {
     flex: 1;
-    background: #fff;
+    background: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: 1.5rem;
-    background-image: radial-gradient(#E5E7EB 1.2px, transparent 1.2px);
-    background-size: 20px 20px;
+    padding: 2rem;
 }
 
 .authCard {
-    background: #fff;
+    background: #FFFFFF;
     width: 100%;
-    max-width: 400px;
-    /* Reduced width */
-    border: 4px solid #000;
+    max-width: 420px;
+    border: 1px solid #E5E7EB;
     border-radius: 20px;
-    padding: 2rem 2rem;
-    /* Reduced padding */
+    padding: 2.5rem;
     position: relative;
     z-index: 20;
-    box-shadow: 12px 12px 0 #000;
-    margin-top: 1rem;
-    /* Space for top overlap */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .floatingEmoji {
     position: absolute;
-    top: -35px;
-    right: -15px;
-    font-size: 2rem;
-    background: #FBBF24;
-    width: 60px;
-    height: 60px;
+    top: -16px;
+    right: -8px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    border: 3px solid #000;
+    border: 3px solid #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 4px 4px 0 #000;
-    transform: rotate(15deg);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+    transform: rotate(12deg);
     z-index: 25;
+    color: #FFFFFF;
 }
 
 .title {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: 1.8rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
     text-align: center;
     margin: 0 0 0.5rem;
-    text-transform: uppercase;
-    color: #000;
-    line-height: 1.1;
+    color: #0F172A;
     letter-spacing: -0.5px;
 }
 
 .subtitle {
     text-align: center;
-    color: #4B5563;
-    margin-bottom: 1.5rem;
-    /* Reduced spacing */
-    font-weight: 600;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    color: #64748B;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
 }
 
 /* Form Elements */
@@ -284,7 +290,7 @@
 .inputIcon {
     position: absolute;
     left: 1rem;
-    color: #000;
+    color: #64748B;
     z-index: 2;
     pointer-events: none;
     width: 18px;
@@ -293,82 +299,77 @@
 
 .input {
     width: 100%;
-    padding: 0.8rem 1rem 0.8rem 3rem;
-    /* Tighter padding */
-    border: 3px solid #000;
-    border-radius: 10px;
+    padding: 0.9rem 1rem 0.9rem 3rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 0.95rem;
-    background: #fff;
-    transition: all 0.15s;
-    height: 48px;
-    /* Reduced height */
-    color: #000;
+    background: #FAFAFA;
+    transition: all 0.2s ease;
+    height: 52px;
+    color: #0F172A;
 }
 
 .input:focus {
     outline: none;
-    box-shadow: 5px 5px 0 #000;
-    transform: translate(-2px, -2px);
-    background: #FAFAFA;
+    border-color: #DC2626;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .input::placeholder {
     color: #9CA3AF;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .togglePassword {
     position: absolute;
-    right: 10px;
-    background: #fff;
-    border: 2px solid #000;
+    right: 12px;
+    background: transparent;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
-    color: #000;
+    color: #64748B;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    /* Smaller toggle */
-    transition: all 0.2s;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    transition: all 0.2s ease;
 }
 
 .togglePassword:hover {
-    box-shadow: 2px 2px 0 #000;
-    transform: translate(-1px, -1px);
+    color: #DC2626;
+    background: rgba(220, 38, 38, 0.05);
 }
 
 .submitBtn {
-    background: #000;
-    color: #FBBF24;
-    padding: 1rem;
-    border-radius: 10px;
-    font-weight: 900;
-    border: 3px solid #000;
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-semibold);
+    border: none;
     cursor: pointer;
-    margin-top: 0.5rem;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0);
-    font-family: 'Dela Gothic One', cursive;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    transition: all 0.2s;
+    margin-top: var(--space-3);
+    box-shadow: none;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    transition: var(--transition-normal);
     width: 100%;
 }
 
 .submitBtn:hover:not(:disabled) {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 #FBBF24;
-    background: #111;
+    background: var(--color-primary-dark);
+    box-shadow: var(--shadow-primary);
 }
 
 .submitBtn:disabled {
-    opacity: 0.7;
+    opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
 }
 
 .divider {
@@ -469,36 +470,174 @@
     }
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
 @media (max-width: 1024px) {
-    .brandTitle {
-        font-size: 2.5rem;
-    }
-}
-
-@media (max-width: 900px) {
     .splitContainer {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        overflow-y: auto;
+        grid-template-columns: 1fr;
     }
 
     .leftPanel {
-        flex: 0 0 auto;
-        padding: 4rem 1.5rem 3rem;
-        /* Added top padding */
-        border-right: none;
-        border-bottom: 5px solid #000;
-        min-height: auto;
+        display: none;
     }
 
     .rightPanel {
-        padding: 3rem 1.5rem;
+        padding: 2rem;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .splitContainer {
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .leftPanel {
+        display: none;
+    }
+
+    .rightPanel {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .authCard {
-        box-shadow: 8px 8px 0 #000;
-        padding: 2rem 1.5rem;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+        box-shadow: 6px 6px 0 #000;
+        border-radius: 15px;
+    }
+
+    .brandTitle {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .brandSubtitle {
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .inputGroup {
+        margin-bottom: 0.75rem;
+    }
+
+    .inputWrapper {
+        margin-bottom: 0;
+    }
+
+    .input {
+        padding: 0.85rem 0.85rem 0.85rem 2.75rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
+
+    .inputIcon {
+        left: 0.85rem;
+        width: 18px;
+        height: 18px;
+    }
+
+    .togglePassword {
+        right: 0.85rem;
+        width: 18px;
+        height: 18px;
+    }
+
+    .submitBtn {
+        padding: 0.9rem;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+    }
+
+    .divider {
+        margin: 1rem 0;
+        font-size: 0.75rem;
+    }
+
+    .googleBtn {
+        padding: 0.85rem;
+        font-size: 0.9rem;
+    }
+
+    .footer {
+        margin-top: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .link {
+        font-size: 0.85rem;
+    }
+
+    /* Password strength indicator compact */
+    .inputGroup:has(.input[type="password"]) {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+    .rightPanel {
+        padding: 0.75rem;
+    }
+
+    .authCard {
+        padding: 1.25rem 0.85rem;
+        border-radius: 12px;
+        box-shadow: 5px 5px 0 #000;
+    }
+
+    .brandTitle {
+        font-size: 1.3rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .brandSubtitle {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .inputGroup {
+        margin-bottom: 0.65rem;
+    }
+
+    .input {
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        font-size: 0.85rem;
+    }
+
+    .inputIcon {
+        left: 0.75rem;
+        width: 16px;
+        height: 16px;
+    }
+
+    .togglePassword {
+        right: 0.75rem;
+        width: 16px;
+        height: 16px;
+    }
+
+    .submitBtn {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .googleBtn {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .footer {
+        font-size: 0.8rem;
+        margin-top: 0.85rem;
+    }
+
+    .link {
+        font-size: 0.8rem;
     }
 }

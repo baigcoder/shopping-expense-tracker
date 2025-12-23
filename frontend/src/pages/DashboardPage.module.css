@@ -1,1448 +1,1184 @@
-/* Dashboard - Neo-Brutalist GenZ Edition */
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+/* ============================================
+   FINOVIX DASHBOARD - FINAL VERSION
+   Red & Black Theme with White Sidebar
+   Production-Grade SaaS Design
+   ============================================ */
 
-.dashboard {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.5rem;
-    font-family: 'Outfit', sans-serif;
-    color: #000;
+/* === MAIN LAYOUT === */
+.dashboardContainer {
+    display: flex;
+    min-height: 100vh;
+    background: var(--color-bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Header */
-.header {
+/* === MAIN CONTENT === */
+
+/* === MAIN CONTENT === */
+.mainContent {
+    flex: 1;
+    margin-left: 72px;
+    padding: 0;
+    max-width: calc(100vw - 72px);
+    overflow-x: hidden;
+}
+
+/* === TOP BAR WITH DASHBOARD LABEL === */
+.topBar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    padding: 14px 32px;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    min-height: 60px;
 }
 
-/* Header with Pop Art Typography */
-.header h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 900;
-    margin: 0;
-    color: #000;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    /* Pop Outline Effect */
-    text-shadow:
-        2px 2px 0 #fff,
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff,
-        4px 4px 0 rgba(0, 0, 0, 0.2);
+.brandSection {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
 }
 
-.header p {
-    margin: 0.25rem 0 0;
-    color: #4B5563;
+.brandLogo {
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.brandName {
     font-size: 1.1rem;
     font-weight: 700;
-    font-family: 'Space Grotesk', sans-serif;
+    color: var(--color-text-emphasis);
+}
+
+.brandDivider {
+    color: var(--color-border);
+    font-weight: 300;
+}
+
+.brandPage {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+/* === CONTENT AREA === */
+.contentArea {
+    padding: 24px 32px;
+}
+
+/* === TOP HEADER === */
+.topHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.welcomeSection h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-emphasis);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.welcomeSection p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
 }
 
 .headerActions {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 12px;
 }
 
-.headerBtn {
+.searchBar {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 3px solid #000;
-    border-radius: 12px;
-    background: #fff;
-    font-weight: 800;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 4px 4px 0 #000;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
+    gap: 8px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-width: 200px;
 }
 
-.headerBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #000;
-    background: #FFEDD5;
-    /* Light Orange */
-}
-
-.headerBtnPrimary {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border: 3px solid #000;
-    border-radius: 12px;
-    background: #FBBF24;
-    /* Vibe Yellow */
-    color: #000;
-    font-weight: 900;
-    font-size: 0.9rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 4px 4px 0 #000;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
-}
-
-.headerBtnPrimary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #000;
-    background: #FCD34D;
-}
-
-/* Grid Layout (Compacted 3-Col) */
-.grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr 0.8fr;
-    gap: 1.5rem;
-    align-items: start;
-    /* Fix height stretching */
-}
-
-.leftCol,
-.middleCol,
-.rightCol {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* Hero Card - Gen Z Layered Card Style 💰 */
-/* Hero Card - Gen Z Vibe Check 💰 */
-.heroCard {
-    background: #FBBF24;
-    border: 4px solid #000;
-    border-radius: 28px;
-    padding: 2.5rem 2rem;
-    color: #000;
-    position: relative;
-    overflow: visible;
-    /* changing to visible so shadow isn't clipped if needed, but usually hidden is safer for content. Let's stick to default or hidden if radius applies */
-    overflow: hidden;
-    /* Hard shadow for pop */
-    box-shadow: 8px 8px 0 #000;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.heroCard:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 10px 10px 0 #000;
-}
-
-/* Decorative stripe accent - Notebook Spiral Look */
-.heroCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 12px;
-    right: 12px;
-    height: 16px;
-    background: repeating-linear-gradient(90deg,
-            #000 0px,
-            #000 12px,
-            transparent 12px,
-            transparent 24px);
-    border-bottom: 4px solid #000;
-    border-radius: 0 0 4px 4px;
-    z-index: 10;
-}
-
-/* Removed the ::after fake card to match the cleaner vector look */
-
-.heroTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-top: 1rem;
-    position: relative;
-    z-index: 2;
-}
-
-.heroLabel {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.9;
-}
-
-.heroBadge {
-    background: #000;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 100px;
+.searchBar input {
+    border: none;
+    outline: none;
     font-size: 0.85rem;
-    font-weight: 900;
-    cursor: pointer;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+    color: var(--color-text-emphasis);
+    width: 100%;
+    background: transparent;
+}
+
+.searchBar input::placeholder {
+    color: #9CA3AF;
+}
+
+.searchBar svg {
+    color: #9CA3AF;
+    width: 16px;
+    height: 16px;
+}
+
+.filterBtn {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-family: 'Outfit', sans-serif;
-    transform: rotate(-2deg);
-    transition: all 0.2s;
-    animation: floatBadge 3s ease-in-out infinite;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-emphasis);
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-@keyframes floatBadge {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(-2deg);
-    }
-
-    50% {
-        transform: translateY(-4px) rotate(-2deg);
-    }
+.filterBtn:hover {
+    border-color: var(--color-primary);
 }
 
-.heroBadge:hover {
-    transform: rotate(0deg) scale(1.05);
-    background: #1F2937;
-}
-
-.heroAmount {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 4.5rem;
-    font-weight: 800;
-    margin: 0.5rem 0 2rem;
-    line-height: 1;
-    letter-spacing: -3px;
-    position: relative;
-    z-index: 2;
-}
-
-.heroStats {
-    display: flex;
-    gap: 3rem;
-    position: relative;
-    z-index: 2;
-}
-
-.statItem {
+.createReportBtn {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 6px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.statIconUp {
-    color: #000;
-    background: #34D399;
-    padding: 6px;
+.createReportBtn:hover {
+    background: var(--color-primary-dark);
+}
+
+.profileSection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notificationBtn {
+    width: 36px;
+    height: 36px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: all 0.2s ease;
+}
+
+.notificationBtn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.profileAvatar {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
+    border: 2px solid var(--color-primary);
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* === STATS ROW - 5 CARDS WITH LIGHT BLACK BORDER === */
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.statCard {
+    background: var(--color-surface);
+    border-radius: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.statCard:hover {
+    border-color: #DC2626;
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.1);
+    transform: translateY(-2px);
+}
+
+.statHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.statIcon {
     width: 32px;
     height: 32px;
-    border: 2px solid #000;
-    box-shadow: 2px 2px 0 #000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.statIconDown {
-    color: #000;
-    background: #F87171;
-    padding: 6px;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    border: 2px solid #000;
-    box-shadow: 2px 2px 0 #000;
+.statIcon.red {
+    background: rgba(220, 38, 38, 0.1);
+    color: #DC2626;
 }
 
-.statItem span {
+.statIcon.green {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.statIcon.orange {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+}
+
+.statIcon.purple {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8B5CF6;
+}
+
+.statIcon.blue {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3B82F6;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.statValue {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text-emphasis);
+    margin: 0;
+}
+
+.statTrend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 800;
-    display: block;
-    line-height: 1.2;
-    margin-bottom: 2px;
-    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    margin-top: 6px;
 }
 
-.statItem strong {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
+.statTrend.up {
+    color: var(--color-success);
 }
 
-/* Chart Card - Clean Gen Z White Theme 📉 */
-.chartCard {
-    background: #fff;
-    border: 4px solid #000;
-    border-radius: 24px;
-    padding: 1.5rem;
-    box-shadow: 10px 10px 0 #3B82F6;
+.statTrend.down {
+    color: var(--color-danger);
+}
+
+/* === MIDDLE ROW WITH BORDERS === */
+.middleRow {
+    display: grid;
+    grid-template-columns: 1.8fr 1.1fr 0.9fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* Financial Performance Card - PREMIUM */
+.performanceCard {
+    background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
+    border-radius: 20px;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
     position: relative;
     overflow: hidden;
-    color: #000;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle grid pattern */
-.chartCard::before {
+/* Gradient top accent bar - always visible */
+.performanceCard::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-size: 25px 25px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    opacity: 1;
+}
+
+/* Subtle corner glow */
+.performanceCard::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
-/* Corner fold effect */
-.chartCard::after {
-    content: '';
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    width: 40px;
-    height: 40px;
-    background: #3B82F6;
-    transform: rotate(45deg);
+.performanceCard:hover {
+    box-shadow: 0 12px 40px rgba(220, 38, 38, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    border-color: var(--color-primary-subtle);
 }
 
-.chartHeader {
+.cardHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 2;
+    align-items: center;
+    padding: 20px 24px 0;
+    margin-bottom: 8px;
 }
 
-.chartHeader h3 {
-    margin: 0;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #000;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.25rem;
-}
-
-.chartSubtitle {
-    font-size: 0.8rem;
+.cardTitle {
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #6B7280;
-    font-family: 'Space Grotesk', sans-serif;
+    color: var(--color-text-emphasis);
+    margin: 0;
+    letter-spacing: -0.3px;
 }
 
-/* LIVE Badge - Gen Z Pill Style */
-.liveBadge {
+.cardActions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: #000;
-    color: #10B981;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 0 #10B981;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    gap: 16px;
 }
 
-.liveDot {
+.chartLegend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.legendDot {
     width: 8px;
     height: 8px;
-    background: #10B981;
     border-radius: 50%;
-    animation: pulse 1.5s ease-in-out infinite;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
 
     0%,
     100% {
-        transform: scale(1);
         opacity: 1;
+        transform: scale(1);
     }
 
     50% {
-        transform: scale(1.4);
-        opacity: 0.6;
+        opacity: 0.7;
+        transform: scale(0.9);
     }
 }
 
-.chartContainer {
-    height: 160px;
-    position: relative;
-    z-index: 2;
-    margin: 0 -0.5rem;
-    padding-top: 0.5rem;
+.legendDot.income {
+    background: var(--color-primary);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
 }
 
-/* Spending DNA + Quick Stats Row */
-.dnaStatsRow {
-    display: grid;
-    grid-template-columns: 1.4fr 0.6fr;
-    gap: 1.25rem;
-    align-items: start;
-    margin-top: 1rem;
+.legendDot.expense {
+    background: var(--color-warning);
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+    animation-delay: 0.5s;
 }
 
-.dnaStatsRow .chartCard {
-    margin-top: 0 !important;
-}
-
-.quickStatsVert {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Quick Stats - Vibrant Cards ⚡ */
-.quickStats {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Quick Stats Cards - Sticker 3D Style 🏷️ */
-.quickStatCard {
-    border-radius: 28px;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden;
-    min-height: 180px;
-}
-
-.quickStatCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 16px 16px 0 #000;
-}
-
-/* Streak Card - Deep Amber Sticker */
-.streakCard {
-    background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
-    border: 4px solid #78350F;
-    /* Dark Amber/Brown Border */
-    box-shadow: 12px 12px 0 #000;
-}
-
-.streakCard:hover {
-    border-color: #000;
-    /* Pop to black on hover */
-}
-
-.streakCard strong {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 0.9;
-    color: #000;
-    margin-bottom: 0.5rem;
-}
-
-.streakCard span {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #451a03;
-    /* Deep brown text */
-    opacity: 0.9;
-    letter-spacing: 1px;
-}
-
-/* Budget Card - Clean White Sticker */
-.budgetCard {
-    background: #fff;
-    border: 4px solid #000;
-    box-shadow: 12px 12px 0 #000;
-}
-
-.budgetCard strong {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 0.9;
-    color: #000;
-    margin-bottom: 0.5rem;
-}
-
-.budgetCard span {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #4B5563;
-    opacity: 1;
-    letter-spacing: 1px;
-}
-
-/* Icons */
-.cardIcon {
-    transition: all 0.3s;
-}
-
-.streakCard .cardIcon {
-    position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
-    opacity: 0.1;
-    color: #000;
-    transform: scale(2);
-    pointer-events: none;
-}
-
-.budgetCard .cardIcon {
-    opacity: 1;
-    color: #A855F7;
-    /* Purple */
-    position: static;
-    margin-bottom: auto;
-    /* Push to top if flex container allows */
-    margin-bottom: 0.5rem;
-    width: fit-content;
-    transform: rotate(0deg);
-}
-
-.budgetCard:hover .cardIcon {
-    transform: rotate(15deg) scale(1.1);
-}
-
-/* Cards Section - Clean White Theme */
-.cardsSection {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 24px;
-    padding: 1.5rem;
-    color: #000;
-    box-shadow: 8px 8px 0 #8B5CF6;
-    position: relative;
-    overflow: hidden;
-}
-
-.sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 2;
-}
-
-.sectionHeader h3 {
-    margin: 0;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    text-transform: uppercase;
+.viewMoreBtn {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    color: #000;
-    text-shadow: none;
-}
-
-.addBtn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    border: 3px solid #000;
-    background: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 3px 3px 0 #000;
-}
-
-.addBtn:hover {
-    background: #FBBF24;
-    color: #000;
-    border-color: #000;
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 4px 4px 0 #000;
-}
-
-.cardsGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-    position: relative;
-    z-index: 2;
-}
-
-.cardMini {
-    height: 100px;
-    border-radius: 16px;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    color: #fff;
+    gap: 4px;
+    background: none;
+    border: none;
     font-size: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    background-blend-mode: overlay;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* Card Chip Simulation */
-.cardMini::before {
+.viewMoreBtn:hover {
+    color: var(--color-primary);
+}
+
+.viewMoreBtn:hover svg {
+    transform: translateX(3px) translateY(-3px);
+}
+
+.viewMoreBtn svg {
+    transition: transform 0.2s ease;
+}
+
+.moreBtn {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.moreBtn:hover {
+    background: rgba(220, 38, 38, 0.08);
+    color: #DC2626;
+}
+
+.chartContainer {
+    height: 220px;
+    width: 100%;
+    padding: 0 24px 24px;
+}
+
+/* My Cards Section */
+.cardsSection {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.creditCard {
+    background: var(--gradient-primary);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    /* Professional credit card aspect ratio - 85.6mm × 53.98mm (1.586:1) */
+    aspect-ratio: 1.586 / 1;
+    min-height: 180px;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.creditCard::before {
     content: '';
     position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 30px;
-    height: 20px;
-    background: linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 100%);
-    border-radius: 4px;
-    opacity: 0.3;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.creditCard::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: 20%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.cardBalance {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
+}
+
+.cardBalance span {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.cardBalance h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 4px 0 0;
+    letter-spacing: -0.5px;
+    color: var(--color-text-inverse);
+}
+
+.visaLogo {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-style: italic;
+    color: white;
+    z-index: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
+}
+
+.cardDetails {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     z-index: 1;
 }
 
-/* Shine effect */
-.cardMini::after {
-    content: '';
+.cardHolder {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.95;
+    letter-spacing: 0.5px;
+}
+
+.cardNumber {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    opacity: 0.95;
+}
+
+.cardActionBtns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.cardActionBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 6px;
+    background: var(--color-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--color-surface-hover);
+}
+
+.cardActionBtn:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: var(--color-primary);
+}
+
+.cardActionBtn svg {
+    color: var(--color-primary);
+    width: 18px;
+    height: 18px;
+}
+
+.cardActionBtn span {
+    font-size: 0.7rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* Card Scroll Container (Carousel) */
+.cardScrollContainer {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 4px 4px 24px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.cardScrollContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* Aurora Card Style */
+.auroraCard {
+    flex: 0 0 300px;
+    aspect-ratio: 1.586 / 1;
+    border-radius: 20px;
+    position: relative;
+    padding: 24px;
+    /* Soft Mesh Gradient (Aurora) */
+    background:
+        radial-gradient(circle at 0% 0%, rgba(167, 139, 250, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(192, 132, 252, 0.4) 0%, transparent 50%),
+        linear-gradient(135deg, #eef2ff 0%, #fff 100%);
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    scroll-snap-align: start;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: hidden;
+    color: #1e1b4b;
+    /* Dark Navy Text */
+}
+
+.auroraCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.3);
+}
+
+.auroraCard h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 8px 0 0;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -1px;
+}
+
+.auroraCard .cardHolder {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.auroraCard .cardNumber {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.cardStack .creditCard {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(125deg, rgba(255, 255, 255, 0.4) 0%, transparent 40%);
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.cardMini:hover {
-    transform: translateY(-5px) scale(1.03);
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    z-index: 5;
-}
-
-.cardMiniTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 2;
-}
-
-.cardMiniNumber {
-    font-family: 'Space Grotesk', monospace;
-    font-size: 1.1rem;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 2;
-}
-
-.emptyCard {
-    grid-column: span 2;
-    height: 100px;
-    border: 2px dashed #000;
-    background: #F9FAFB;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: #6B7280;
-    font-size: 0.9rem;
-    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
 }
 
-.emptyCard:hover {
-    border-color: #8B5CF6;
-    color: #8B5CF6;
-    background: #F3E8FF;
-    transform: translateY(-2px);
-    box-shadow: 4px 4px 0 #000;
+.cardStack .creditCard:hover {
+    transform: translateY(-5px) scale(1) !important;
 }
 
-.viewAllLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
-    color: #6B7280;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.viewAllLink:hover {
-    color: #8B5CF6;
-    transform: translateX(4px);
-}
-
-/* Transactions Card - Gen Z Notebook/List Vibe 📝 */
-.transactionsCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 24px;
-    padding: 1.5rem;
-    flex: 1;
-    box-shadow: 8px 8px 0 #F59E0B;
-    /* Orange - matches Transactions page */
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-height: 500px;
-    /* Constrain height */
-}
-
-/* Specific Header Override for Light Card */
-.transactionsCard .sectionHeader h3 {
-    color: #000;
-    text-shadow: none;
-    font-size: 1.4rem;
-    background: #FBBF24;
-    /* Highlight effect */
-    padding: 0 8px;
-    transform: rotate(-1deg);
-    display: inline-block;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 0 #000;
-}
-
-.seeAllLink {
-    background: #000;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    text-decoration: none;
-    font-weight: 700;
-    font-family: 'Space Grotesk', monospace;
-    transition: all 0.2s;
-    border: 2px solid #000;
-    text-transform: uppercase;
-}
-
-.seeAllLink:hover {
-    background: #FBBF24;
-    color: #000;
-    transform: scale(1.05) rotate(2deg);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
-}
-
-.txList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    flex: 1;
-}
-
-/* Custom Scrollbar for the list */
-.txList::-webkit-scrollbar {
-    width: 6px;
-}
-
-.txList::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.txList::-webkit-scrollbar-thumb {
-    background: #000;
-    border-radius: 3px;
-}
-
-.txList::-webkit-scrollbar-thumb:hover {
-    background: #333;
-}
-
-.txItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.85rem;
-    border-radius: 12px;
-    background: #fff;
-    border: 2px solid #000;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 2px 2px 0 #000;
-}
-
-.txItem:hover {
-    background: #FFEDD5;
-    /* Light Orange */
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #000;
-}
-
-.txIcon {
-    width: 42px;
-    height: 42px;
-    background: #f3f4f6;
-    border-radius: 50%;
-    /* Round for receipt items */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    border: 2px solid #000;
-    color: #000;
-}
-
-.txInfo {
-    flex: 1;
-}
-
-.txInfo strong {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: #000;
-    font-family: 'Space Grotesk', monospace;
-    /* Mono for receipt vibe */
-    letter-spacing: -0.5px;
-}
-
-.txInfo span {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #6B7280;
-    text-transform: uppercase;
-}
-
-.txAmount {
-    font-family: 'Space Grotesk', monospace;
-    font-weight: 800;
-    font-size: 1rem;
-}
-
-.txAmount.income {
-    color: #059669;
-}
-
-.txAmount.expense {
-    color: #000;
-}
-
-.emptyState {
-    text-align: center;
-    padding: 2rem;
-    border: 2px dashed #E5E7EB;
-    border-radius: 12px;
-}
-
-.emptyState span {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.emptyState p {
-    margin: 0;
-    font-weight: 700;
-    color: #9CA3AF;
-}
-
-/* Modal - Keeping it Clean but Bold */
-.modalOverlay {
+/* Card Modal */
+.cardModal {
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2005;
-    /* Above Chatbot */
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
 }
 
-.modalContent {
-    background: #fff;
-    border-radius: 24px;
-    padding: 2rem;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.cardModalContent {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
     width: 90%;
     max-width: 400px;
-    border: 4px solid #000;
-    box-shadow: 12px 12px 0 #FBBF24;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
 }
 
-.modalCard {
-    height: 220px;
-    border-radius: 18px;
-    padding: 2rem;
-    color: #fff;
-    position: relative;
-    margin-bottom: 2rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.modalCardChip {
-    width: 45px;
-    height: 32px;
-    background: linear-gradient(135deg, #FFD700, #B8860B);
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.modalCardType {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    font-weight: 900;
-    font-style: italic;
-    font-size: 1.2rem;
-    font-family: 'Outfit', sans-serif;
-}
-
-.modalCardNum {
-    margin-top: 2rem;
-    font-size: 1.5rem;
-    font-family: 'Space Grotesk', monospace;
-    letter-spacing: 3px;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.modalCardBottom {
-    display: flex;
-    gap: 3rem;
-    margin-top: 1.5rem;
-    font-size: 0.8rem;
-}
-
-.modalCardBottom span {
-    display: block;
-    opacity: 0.8;
-    margin-bottom: 4px;
-    font-weight: 700;
-}
-
-.modalCardBottom strong {
-    font-size: 1rem;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: 1px;
-}
-
-.modalActions {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.cvvBtn,
-.closeBtn {
-    padding: 1rem;
-    border-radius: 12px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
-    border: 3px solid #000;
-}
-
-.cvvBtn {
-    background: #fff;
-    color: #000;
-    box-shadow: 4px 4px 0 #E5E7EB;
-}
-
-.cvvBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #000;
-}
-
-.closeBtn {
-    background: #000;
-    color: #fff;
-}
-
-.closeBtn:hover {
-    background: #333;
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #999;
-}
-
-.deleteCardBtn {
-    background: #FEE2E2;
-    color: #DC2626;
-    padding: 0.75rem;
-    border-radius: 12px;
-    border: 2px solid #DC2626;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.deleteCardBtn:hover {
-    background: #DC2626;
-    color: #fff;
-    transform: scale(1.05);
-}
-
-/* PIN Prompt for CVV Reveal */
-.pinPrompt {
-    background: #FEF3C7;
-    border: 3px solid #000;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 4px 4px 0 #F59E0B;
-}
-
-.pinHeader {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-weight: 800;
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.pinInput {
-    width: 100%;
-    padding: 1rem;
-    border: 3px solid #000;
-    border-radius: 12px;
-    font-size: 1.5rem;
-    font-family: 'Space Grotesk', monospace;
-    text-align: center;
-    letter-spacing: 8px;
-    font-weight: 700;
-    box-shadow: 4px 4px 0 #000;
-    margin-bottom: 0.75rem;
-}
-
-.pinInput:focus {
-    outline: none;
-    box-shadow: 6px 6px 0 #000;
-    transform: translate(-2px, -2px);
-}
-
-.pinError {
-    color: #DC2626;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem;
-    background: #FEE2E2;
-    border-radius: 8px;
-    border: 2px solid #DC2626;
-}
-
-.pinActions {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.pinCancelBtn,
-.pinVerifyBtn {
-    flex: 1;
-    padding: 0.75rem;
-    border-radius: 10px;
-    font-weight: 800;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
-    border: 3px solid #000;
-}
-
-.pinCancelBtn {
-    background: #fff;
-    color: #000;
-}
-
-.pinCancelBtn:hover {
-    background: #F3F4F6;
-}
-
-.pinVerifyBtn {
-    background: #10B981;
-    color: #fff;
-    box-shadow: 3px 3px 0 #000;
-}
-
-.pinVerifyBtn:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 #000;
-}
-
-.pinVerifyBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Goals Card - Gen Z Progress Style 🎯 */
-.goalsCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 6px 6px 0 #F59E0B;
-    /* Amber - matches Goals page */
-    color: #000;
-}
-
-.goalsCard .sectionHeader h3 {
-    color: #000;
-    text-shadow: none;
-}
-
-.goalsList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.goalItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: #F9FAFB;
-    border: 2px solid #000;
-    border-radius: 14px;
-    transition: all 0.2s;
-}
-
-.goalItem:hover {
-    transform: translateX(4px);
-    box-shadow: 4px 4px 0 #000;
-}
-
-.goalIcon {
-    width: 48px;
-    height: 48px;
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-.goalInfo {
-    flex: 1;
-}
-
-.goalTop {
+.cardModalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 20px;
 }
 
-.goalTop strong {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-}
-
-.goalTop span {
-    font-weight: 800;
-    font-size: 0.85rem;
-    color: #8B5CF6;
-}
-
-.goalProgress {
-    height: 8px;
-    background: #E5E7EB;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 6px;
-}
-
-.goalProgressFill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.8s ease-out;
-}
-
-.goalAmount {
-    font-size: 0.75rem;
-    color: #6B7280;
-    font-weight: 600;
-}
-
-/* Budget Alerts Card - Warning Style ⚠️ */
-.alertsCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 6px 6px 0 #7C3AED;
-    /* Purple - matches Budgets page */
-    color: #000;
-}
-
-.alertSuccess {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem;
-    background: #ECFDF5;
-    border: 2px solid #10B981;
-    border-radius: 14px;
-}
-
-.alertSuccess p {
-    margin: 0;
+.cardModalHeader h3 {
+    font-size: 1.25rem;
     font-weight: 700;
+    color: var(--color-text-emphasis);
+    margin: 0;
 }
 
-.alertsList {
+.cardModalHeader button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    padding: 0;
+    line-height: 1;
+}
+
+.cardModalContent .creditCard {
+    margin-bottom: 20px;
+}
+
+.cardModalInfo {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-}
-
-.alertItem {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
+    gap: 12px;
+    padding: 16px;
+    background: var(--color-bg);
     border-radius: 12px;
-    border: 2px solid #000;
-    transition: all 0.2s;
+    margin-bottom: 20px;
 }
 
-.alertItem.warning {
-    background: #FFFBEB;
-    border-color: #F59E0B;
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
 }
 
-.alertItem.exceeded {
-    background: #FEF2F2;
-    border-color: #EF4444;
+.infoRow:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
-.alertItem.safe {
-    background: #F3F4F6;
+.infoRow:first-child {
+    padding-top: 0;
 }
 
-.alertIcon {
-    font-size: 1.25rem;
+.infoRow p {
+    margin: 4px 0 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--color-text-emphasis);
 }
 
-.alertInfo {
-    flex: 1;
-}
-
-.alertInfo strong {
+.infoRow strong {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 800;
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.alertInfo span {
     font-size: 0.75rem;
-    color: #6B7280;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.5px;
     font-weight: 600;
 }
 
-.alertBadge {
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-weight: 900;
-    font-size: 0.85rem;
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.alertBadge.warning {
-    background: #F59E0B;
-    color: #000;
-}
-
-.alertBadge.exceeded {
-    background: #EF4444;
-    color: #fff;
-}
-
-.alertBadge.safe {
-    background: #10B981;
-    color: #fff;
-}
-
-/* Subscriptions Preview Card 📅 */
-.subsCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 6px 6px 0 #E11D48;
-    /* Rose/Red - matches Subscriptions page */
-    color: #000;
-}
-
-.subsStats {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.subsStat {
-    flex: 1;
-    text-align: center;
-    padding: 1rem;
-    background: #F9FAFB;
-    border: 2px solid #000;
-    border-radius: 12px;
-}
-
-.subsStat strong {
-    display: block;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: #000;
-}
-
-.subsStat span {
-    font-size: 0.75rem;
-    color: #6B7280;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.trialAlert {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    background: #FEF3C7;
-    border: 2px solid #F59E0B;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #92400E;
-}
-
-/* Loading State */
-.chartLoading {
+.copyBtn {
+    background: white;
+    border: 1px solid var(--color-border);
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100px;
-    color: #9CA3AF;
-    font-weight: 600;
-    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-    .grid {
+.copyBtn:hover {
+    background: var(--color-bg);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.cardModalBtn {
+    width: 100%;
+    padding: 14px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cardModalBtn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Right Column */
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Daily Limit Card */
+.dailyLimitCard {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.limitDonut {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.donutChart {
+    width: 70px;
+    height: 70px;
+}
+
+.limitInfo h3 {
+    font-size: 0.7rem;
+    color: var(--color-text-secondary);
+    margin: 0 0 2px;
+    font-weight: 500;
+}
+
+.limitInfo p {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-emphasis);
+    margin: 0;
+}
+
+/* Recent Payments Card */
+.recentPaymentsCard {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    flex: 1;
+}
+
+.paymentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.paymentItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.paymentInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.paymentAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.paymentDetails h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-emphasis);
+    margin: 0;
+}
+
+.paymentDetails span {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+}
+
+.paymentAmount.income {
+    color: #10B981;
+    /* Green for income */
+}
+
+.paymentAmount {
+    font-weight: 700;
+    font-size: 0.85rem;
+    /* Keeping existing font-size */
+    color: #DC2626;
+    /* Default Red for expense */
+    white-space: nowrap;
+}
+
+/* === BOTTOM ROW WITH BORDERS === */
+.bottomRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+/* Expense Breakdown Card */
+.expenseBreakdownCard {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.breakdownContent {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 14px;
+}
+
+.breakdownDonut {
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+
+.breakdownTotal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.breakdownTotal span {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-emphasis);
+}
+
+.breakdownLegend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.breakdownItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.breakdownItemInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breakdownColor {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.breakdownLabel {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.breakdownValue {
+    font-weight: 600;
+    color: var(--color-text-emphasis);
+    font-size: 0.8rem;
+}
+
+/* Annual Overview Card */
+.annualOverviewCard {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.barChartContainer {
+    height: 180px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* Sales Overview Card */
+.salesOverviewCard {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.salesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.salesTotal {
+    display: flex;
+    flex-direction: column;
+}
+
+.salesAmount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-emphasis);
+}
+
+.salesTrend {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.7rem;
+    color: var(--color-success);
+    font-weight: 500;
+}
+
+.salesLegend {
+    display: flex;
+    gap: 10px;
+}
+
+.lineChartContainer {
+    height: 140px;
+    width: 100%;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1400px) {
+    .statsRow {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .middleRow {
+        grid-template-columns: 1.5fr 1fr;
+    }
+
+    .rightColumn {
+        display: none;
+    }
+
+    .bottomRow {
         grid-template-columns: 1fr 1fr;
     }
-
-    .rightCol {
-        grid-column: span 2;
-    }
 }
 
-@media (max-width: 768px) {
-    .header {
+@media (max-width: 1024px) {
+    .sidebar {
+        display: none;
+    }
+
+    .mainContent {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    .contentArea {
+        padding: 16px;
+    }
+
+    .statsRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .middleRow {
+        grid-template-columns: 1fr;
+    }
+
+    .bottomRow {
+        grid-template-columns: 1fr;
+    }
+
+    .topHeader {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+        gap: 12px;
     }
 
     .headerActions {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
+        flex-wrap: wrap;
     }
 
-    .headerBtn,
-    .headerBtnPrimary {
-        justify-content: center;
-        width: 100%;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .rightCol {
-        grid-column: auto;
-    }
-
-    .heroAmount {
-        font-size: 3rem;
-    }
-
-    .cardsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .cardMini {
-        height: 80px;
-    }
-
-    .emptyCard {
-        grid-column: auto;
+    .searchBar {
+        min-width: auto;
+        flex: 1;
     }
 }
 
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
+@media (max-width: 640px) {
+    .contentArea {
+        padding: 12px;
     }
 
-    50% {
-        background-position: 100% 50%;
+    .statsRow {
+        grid-template-columns: 1fr;
     }
 
-    100% {
-        background-position: 0% 50%;
+    .welcomeSection h1 {
+        font-size: 1.25rem;
+    }
+
+    .statValue {
+        font-size: 1.15rem;
+    }
+
+    .creditCard {
+        padding: 16px;
+        min-height: 120px;
+    }
+
+    .cardActionBtns {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

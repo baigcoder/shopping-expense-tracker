@@ -1,46 +1,83 @@
-/* Accounts Page Styles */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+/* ============================================
+   FINZEN - ACCOUNTS PAGE
+   Clean SaaS Design
+   ============================================ */
 
 .container {
+    width: 100%;
+    background: #F8FAFC;
     min-height: 100vh;
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 25%, #fde68a 50%, #fef3c7 100%);
-    font-family: 'Space Grotesk', sans-serif;
-    color: #000;
-    padding: 0 2rem 2rem;
+    padding: 24px 32px;
 }
 
+/* === HEADER === */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 0;
-    border-bottom: 3px solid #000;
-    margin-bottom: 2rem;
+    margin-bottom: 32px;
 }
 
 .titleSection h1 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -2px;
+    color: #0F172A;
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
 }
 
 .titleSection p {
-    color: #64748b;
-    font-weight: 500;
+    font-size: 0.95rem;
+    color: #64748B;
+    margin: 0;
 }
 
 .headerActions {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 12px;
 }
 
 .refreshBtn {
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 12px;
-    padding: 0.75rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: #64748B;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refreshBtn:hover {
+    border-color: #CBD5E1;
+    color: #475569;
+    background: #F8FAFC;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #0F172A;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.addBtn:hover {
+    background: #1E293B;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
 }
 
 .spinning {
@@ -57,145 +94,135 @@
     }
 }
 
-.addBtn {
-    background: #000;
-    color: #fff;
-    border: 2px solid #000;
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    box-shadow: 4px 4px 0px #FBBF24;
-    transition: all 0.15s;
-    font-family: inherit;
-}
-
-.addBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #FBBF24;
-}
-
-/* Net Worth Card */
+/* === NET WORTH CARD === */
 .netWorthCard {
-    background: #000;
-    color: #fff;
-    border: 3px solid #000;
-    border-radius: 24px;
-    padding: 2rem;
-    margin-bottom: 2rem;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 8px 8px 0px #FBBF24;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .netWorthMain {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 20px;
+}
+
+.netWorthIconWrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: #F0F9FF;
+    color: #0284C7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .netWorthLabel {
     display: block;
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
 }
 
 .netWorthValue {
     display: block;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 800;
-}
-
-.netWorthValue.negative {
-    color: #EF4444;
-}
-
-.netWorthBreakdown {
-    display: flex;
-    gap: 2rem;
-}
-
-.breakdownItem {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-}
-
-.breakdownItem span {
-    display: block;
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-.breakdownItem strong {
-    display: block;
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
-.positive {
-    color: #10B981;
+    color: #0F172A;
+    line-height: 1;
 }
 
 .negative {
     color: #EF4444;
 }
 
-/* Accounts Grid */
+.netWorthBreakdown {
+    display: flex;
+    gap: 24px;
+}
+
+.breakdownItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #F8FAFC;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #F1F5F9;
+}
+
+.breakdownItem span {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748B;
+    margin-bottom: 2px;
+}
+
+.breakdownItem strong {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.positive {
+    color: #10B981;
+}
+
+/* === ACCOUNTS GRID === */
 .accountsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
 }
 
 .loading,
 .empty {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 3rem;
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
+    padding: 40px;
+    color: #64748B;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
 }
 
 .empty svg {
-    color: #d1d5db;
-    margin-bottom: 1rem;
+    color: #CBD5E1;
+    margin-bottom: 16px;
 }
 
-.empty h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.empty p {
-    color: #64748b;
-    margin-bottom: 1.5rem;
-}
-
-/* Account Card */
 .accountCard {
-    background: #fff;
-    border: 3px solid #000;
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.accountCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+    border-color: #CBD5E1;
 }
 
 .cardHeader {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .cardIcon {
@@ -205,6 +232,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .cardInfo {
@@ -212,70 +240,83 @@
 }
 
 .cardInfo h3 {
+    font-size: 1.05rem;
     font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 2px;
+    color: #0F172A;
+    margin: 0 0 4px;
 }
 
 .cardInfo p {
     font-size: 0.85rem;
-    color: #64748b;
+    color: #64748B;
 }
 
 .cardActions {
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.accountCard:hover .cardActions {
+    opacity: 1;
 }
 
 .cardActions button {
-    background: #f0f0f0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #F1F5F9;
+    color: #64748B;
     border: none;
-    padding: 0.5rem;
-    border-radius: 8px;
     cursor: pointer;
-    color: #64748b;
-    transition: all 0.15s;
+    transition: all 0.2s;
 }
 
 .cardActions button:hover {
-    background: #000;
-    color: #fff;
+    background: #0F172A;
+    color: white;
 }
 
 .deleteBtn:hover {
     background: #EF4444 !important;
+    color: white !important;
 }
 
 .cardBalance {
+    background: #F8FAFC;
+    border: 1px solid #F1F5F9;
+    border-radius: 12px;
+    padding: 16px;
     text-align: center;
-    padding: 1.5rem;
-    background: #fafafa;
-    border: 2px solid #e5e7eb;
-    border-radius: 14px;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all 0.2s;
 }
 
 .cardBalance:hover {
-    border-color: #000;
+    background: #F1F5F9;
+    border-color: #E2E8F0;
 }
 
 .balanceLabel {
     display: block;
-    font-size: 0.8rem;
-    color: #64748b;
-    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
 }
 
 .balanceValue {
     display: block;
-    font-size: 1.75rem;
-    font-weight: 800;
-}
-
-.balanceValue.negative {
-    color: #EF4444;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0F172A;
 }
 
 .cardFooter {
@@ -283,181 +324,198 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.8rem;
+    padding-top: 12px;
+    border-top: 1px solid #F1F5F9;
 }
 
 .accountType {
-    background: #f0f0f0;
-    padding: 0.25rem 0.75rem;
+    background: #F1F5F9;
+    padding: 4px 10px;
     border-radius: 20px;
     font-weight: 600;
+    color: #475569;
+    font-size: 0.75rem;
 }
 
 .lastUpdated {
-    color: #94a3b8;
+    color: #94A3B8;
 }
 
-/* Modal */
+/* === MODAL === */
 .modalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 1rem;
+    padding: 20px;
 }
 
 .modal {
-    background: #fff;
-    border: 3px solid #000;
+    background: white;
     border-radius: 20px;
     width: 100%;
     max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 10px 10px 0px #000;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem;
-    border-bottom: 2px solid #e5e7eb;
+    padding: 24px;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .modalHeader h2 {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0;
 }
 
 .modalHeader button {
-    background: none;
+    background: transparent;
     border: none;
+    color: #94A3B8;
     cursor: pointer;
-    color: #64748b;
+}
+
+.modalHeader button:hover {
+    color: #0F172A;
 }
 
 .form {
-    padding: 1.25rem;
+    padding: 24px;
 }
 
 .formGroup {
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
 }
 
 .formGroup label {
     display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
 }
 
 .formGroup input,
 .formGroup select {
     width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e5e7eb;
+    padding: 12px;
+    border: 1px solid #CBD5E1;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    color: #0F172A;
+    transition: all 0.2s;
+    background: #F8FAFC;
     font-family: inherit;
 }
 
 .formGroup input:focus,
 .formGroup select:focus {
     outline: none;
-    border-color: #000;
+    border-color: #4F46E5;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .formRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 16px;
 }
 
 .colorPicker {
     display: flex;
-    gap: 0.5rem;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 .colorOption {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #E2E8F0;
     cursor: pointer;
     transition: all 0.15s;
 }
 
+.colorOption:hover {
+    transform: scale(1.1);
+}
+
 .colorOption.selected {
-    border-color: #000;
+    box-shadow: 0 0 0 2px #0F172A;
     transform: scale(1.1);
 }
 
 .formActions {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 12px;
+    margin-top: 24px;
 }
 
 .cancelBtn {
     flex: 1;
-    padding: 0.85rem;
-    background: #fff;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
+    padding: 12px;
+    background: white;
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
     font-weight: 600;
+    color: #475569;
     cursor: pointer;
-    font-family: inherit;
+}
+
+.cancelBtn:hover {
+    background: #F1F5F9;
 }
 
 .submitBtn {
     flex: 1;
-    padding: 0.85rem;
-    background: #000;
-    color: #fff;
-    border: 2px solid #000;
-    border-radius: 12px;
+    padding: 12px;
+    background: #0F172A;
+    color: white;
+    border: none;
+    border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
-    font-family: inherit;
-    box-shadow: 4px 4px 0px #FBBF24;
 }
 
 .submitBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #FBBF24;
+    background: #1E293B;
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 0 1rem 2rem;
-    }
-
     .header {
         flex-direction: column;
-        gap: 1rem;
         align-items: flex-start;
+        gap: 16px;
     }
 
     .netWorthCard {
         flex-direction: column;
-        gap: 1.5rem;
-        text-align: center;
+        align-items: flex-start;
+        gap: 20px;
     }
 
     .netWorthBreakdown {
         width: 100%;
-        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
     }
 
-    .accountsGrid {
-        grid-template-columns: 1fr;
+    .breakdownItem {
+        width: 100%;
     }
 
-    .formRow {
-        grid-template-columns: 1fr;
+    .cardActions {
+        opacity: 1;
     }
 }

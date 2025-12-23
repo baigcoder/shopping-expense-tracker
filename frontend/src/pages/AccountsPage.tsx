@@ -158,21 +158,23 @@ const AccountsPage = () => {
                 </div>
                 <div className={styles.headerActions}>
                     <button className={styles.refreshBtn} onClick={handleRefresh} disabled={isRefreshing}>
-                        <RefreshCw size={20} className={isRefreshing ? styles.spinning : ''} />
+                        <RefreshCw size={18} className={isRefreshing ? styles.spinning : ''} />
                     </button>
                     <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-                        <Plus size={20} />
+                        <Plus size={18} />
                         Add Account
                     </button>
                 </div>
             </div>
 
             {/* Net Worth Summary */}
-            <div className={styles.netWorthCard}>
+            <motion.div className={styles.netWorthCard} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <div className={styles.netWorthMain}>
-                    <Wallet size={32} />
+                    <div className={styles.netWorthIconWrap}>
+                        <Wallet size={28} />
+                    </div>
                     <div>
-                        <span className={styles.netWorthLabel}>Net Worth</span>
+                        <span className={styles.netWorthLabel}>Total Net Worth</span>
                         <span className={`${styles.netWorthValue} ${totals.netWorth < 0 ? styles.negative : ''}`}>
                             ${totals.netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </span>
@@ -180,37 +182,44 @@ const AccountsPage = () => {
                 </div>
                 <div className={styles.netWorthBreakdown}>
                     <div className={styles.breakdownItem}>
-                        <TrendingUp size={20} className={styles.positive} />
+                        <div style={{ background: '#DCFCE7', padding: 8, borderRadius: 8 }}>
+                            <TrendingUp size={16} className={styles.positive} />
+                        </div>
                         <div>
                             <span>Assets</span>
                             <strong>${totals.assets.toLocaleString()}</strong>
                         </div>
                     </div>
                     <div className={styles.breakdownItem}>
-                        <TrendingDown size={20} className={styles.negative} />
+                        <div style={{ background: '#FEE2E2', padding: 8, borderRadius: 8 }}>
+                            <TrendingDown size={16} className={styles.negative} />
+                        </div>
                         <div>
                             <span>Liabilities</span>
                             <strong>${totals.liabilities.toLocaleString()}</strong>
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Accounts Grid */}
             <div className={styles.accountsGrid}>
                 {loading ? (
-                    <div className={styles.loading}>Loading accounts...</div>
+                    <div className={styles.loading}>
+                        <RefreshCw size={24} className={styles.spinning} />
+                        <p style={{ marginTop: 10 }}>Loading accounts...</p>
+                    </div>
                 ) : accounts.length === 0 ? (
                     <div className={styles.empty}>
                         <Landmark size={48} />
-                        <h3>No Accounts Yet</h3>
-                        <p>Add your bank accounts to track your finances</p>
-                        <button className={styles.addBtn} onClick={() => setShowModal(true)}>
-                            <Plus size={20} /> Add First Account
+                        <h3>No accounts found</h3>
+                        <p>Add your first bank account to track finances</p>
+                        <button className={styles.addBtn} onClick={() => setShowModal(true)} style={{ margin: '0 auto' }}>
+                            <Plus size={18} /> Add Account
                         </button>
                     </div>
                 ) : (
-                    accounts.map((account) => {
+                    accounts.map((account, index) => {
                         const typeConfig = ACCOUNT_TYPES[account.account_type as keyof typeof ACCOUNT_TYPES];
                         const Icon = typeConfig?.icon || Building2;
                         const isNegative = account.balance < 0;
@@ -219,13 +228,12 @@ const AccountsPage = () => {
                             <motion.div
                                 key={account.id}
                                 className={styles.accountCard}
-                                style={{ borderColor: account.color }}
-                                whileHover={{ y: -5 }}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
                             >
                                 <div className={styles.cardHeader}>
-                                    <div className={styles.cardIcon} style={{ background: account.color + '20', color: account.color }}>
+                                    <div className={styles.cardIcon} style={{ background: account.color + '15', color: account.color }}>
                                         <Icon size={24} />
                                     </div>
                                     <div className={styles.cardInfo}>
@@ -233,15 +241,15 @@ const AccountsPage = () => {
                                         <p>{account.bank_name}</p>
                                     </div>
                                     <div className={styles.cardActions}>
-                                        <button onClick={() => openEdit(account)}><Edit2 size={16} /></button>
-                                        <button onClick={() => handleDelete(account.id)} className={styles.deleteBtn}><Trash2 size={16} /></button>
+                                        <button onClick={() => openEdit(account)}><Edit2 size={14} /></button>
+                                        <button onClick={() => handleDelete(account.id)} className={styles.deleteBtn}><Trash2 size={14} /></button>
                                     </div>
                                 </div>
 
                                 <div className={styles.cardBalance} onClick={() => handleUpdateBalance(account.id)}>
-                                    <span className={styles.balanceLabel}>Balance</span>
+                                    <span className={styles.balanceLabel}>Current Balance</span>
                                     <span className={`${styles.balanceValue} ${isNegative ? styles.negative : ''}`}>
-                                        {account.currency} {account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                        {account.currency === 'USD' ? '$' : account.currency} {Math.abs(account.balance).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                     </span>
                                 </div>
 
@@ -269,14 +277,14 @@ const AccountsPage = () => {
                     >
                         <motion.div
                             className={styles.modal}
-                            initial={{ scale: 0.9, y: 50 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.9, y: 50 }}
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className={styles.modalHeader}>
                                 <h2>{editingAccount ? 'Edit Account' : 'Add Bank Account'}</h2>
-                                <button onClick={closeModal}><X size={24} /></button>
+                                <button onClick={closeModal}><X size={20} /></button>
                             </div>
 
                             <form onSubmit={handleSubmit} className={styles.form}>

@@ -39,6 +39,8 @@ export const budgetService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('budget-changed', { detail: { action: 'create', data } }));
         return data;
     },
 
@@ -56,6 +58,8 @@ export const budgetService = {
             return null;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('budget-changed', { detail: { action: 'update', data } }));
         return data;
     },
 
@@ -71,6 +75,8 @@ export const budgetService = {
             return false;
         }
 
+        // Notify listeners that data changed
+        window.dispatchEvent(new CustomEvent('budget-changed', { detail: { action: 'delete', id } }));
         return true;
     }
 };

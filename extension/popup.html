@@ -4,326 +4,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Tracker 💸</title>
+    <title>Cashly</title>
     <link rel="stylesheet" href="popup.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@700;900&family=JetBrains+Mono:wght@500;700&display=swap"
-        rel="stylesheet">
+    <link rel="icon" type="image/png" href="icons/logo.png">
 </head>
 
 <body>
-    <div class="popup-container">
-        <!-- Login View - Enhanced -->
-        <div id="loginView" class="view" style="display: none;">
-            <div class="login-header">
-                <div class="brand-logo large">
-                    <img src="icons/logo.png" alt="Vibe Tracker" class="logo-img">
-                    <div class="logo-text">VIBE TRACKER</div>
-                </div>
-                <p class="tagline">Track spending. Block dark patterns. Stay on budget bestie! 💰</p>
-            </div>
+    <div class="toast-container" id="toastContainer"></div>
 
-            <div class="feature-pills">
-                <span class="feature-pill">🛡️ Dark Pattern Shield</span>
-                <span class="feature-pill">📊 Real-time Sync</span>
-                <span class="feature-pill">🔔 Smart Alerts</span>
-            </div>
-
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
-                    <label>📧 Email</label>
-                    <input type="email" id="emailInput" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>🔒 Password</label>
-                    <input type="password" id="passwordInput" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
-                    <span class="btn-text">Sign In</span>
-                    <span class="btn-arrow">→</span>
-                </button>
-                <div class="login-divider">
-                    <span>or</span>
-                </div>
-                <a href="https://vibe-tracker-expense-genz.vercel.app/login" target="_blank"
-                    class="btn btn-secondary btn-full">
-                    🌐 Login via Website
-                </a>
-                <p class="login-footer">
-                    New here? <a href="https://vibe-tracker-expense-genz.vercel.app/signup" target="_blank">Create
-                        account</a>
-                </p>
-            </form>
-
-            <div id="loginError" class="error-msg" style="display: none;"></div>
+    <!-- Login View -->
+    <div id="loginView" class="container auth-view" style="display: none;">
+        <div class="auth-header">
+            <div class="auth-logo">💳</div>
+            <h1>Cashly</h1>
+            <p>Sign in to sync your financial data</p>
         </div>
 
-        <!-- Main View - Enhanced -->
-        <div id="mainView" class="view" style="display: none;">
-            <!-- Header -->
-            <header class="header">
-                <div class="logo-area">
-                    <div class="brand-logo">
-                        <img src="icons/logo.png" alt="Vibe Tracker" class="logo-img small">
-                        <div class="logo-text">VIBE TRACKER</div>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <button class="icon-btn settings-btn" id="settingsBtn" title="Settings">⚙️</button>
-                    <button class="icon-btn logout-btn" id="logoutBtn" title="Logout">🚪</button>
-                </div>
-            </header>
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label>EMAIL</label>
+                <input type="email" id="emailInput" class="form-input" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>PASSWORD</label>
+                <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
+            <p class="auth-footer">
+                New here? <a href="http://localhost:5173/signup" target="_blank">Create account</a>
+            </p>
+        </form>
+        <div id="loginError" class="error-msg" style="display: none;"></div>
+    </div>
 
+    <!-- Main View -->
+    <div id="mainView" class="view" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <div class="header-logo">💳</div>
+                <div class="brand-text">
+                    <h1>Cashly</h1>
+                    <span class="badge">v5.0</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+                <button class="icon-btn" id="logoutBtn" title="Logout">🚪</button>
+            </div>
+        </header>
+
+        <div class="container main-container">
             <!-- User Card -->
-            <div class="user-card" id="userCard">
-                <div class="user-info">
-                    <div class="user-avatar">👤</div>
-                    <div>
-                        <span class="user-email" id="userEmail">user@email.com</span>
-                        <span class="sync-status" id="syncStatus">
-                            <span class="sync-dot"></span> Live Sync Active
-                        </span>
-                    </div>
+            <div class="profile-card" id="userCard">
+                <div class="avatar" id="userAvatar">
+                    <img id="userAvatarImg" src="" alt="" style="display:none;">
+                    <span id="userAvatarFallback">👤</span>
+                </div>
+                <div class="user-details">
+                    <h3 id="userEmail">user@email.com</h3>
+                    <span class="sync-status" id="syncStatus">
+                        <span class="dot"></span> Live Sync Active
+                    </span>
                 </div>
             </div>
 
-            <!-- Dark Pattern Shield Status -->
-            <div class="shield-status" id="shieldStatus">
-                <div class="shield-icon">🛡️</div>
-                <div class="shield-info">
-                    <span class="shield-title">Dark Pattern Shield</span>
-                    <span class="shield-status-badge">
-                        <span class="shield-dot"></span> Active
-                    </span>
-                </div>
-                <div class="shield-stats">
-                    <div class="shield-stat">
-                        <span class="stat-num" id="patternsBlocked">0</span>
-                        <span class="stat-text">Blocked</span>
+            <!-- Active Session -->
+            <div class="card session-card" id="monitoringSection">
+                <div class="card-label">Active Session</div>
+                <div class="active-site" id="currentSite">
+                    <div class="favicon-wrapper">
+                        <img class="site-icon" id="siteFavicon" src="" alt="" />
                     </div>
-                    <div class="shield-stat">
-                        <span class="stat-num" id="moneySaved">Rs 0</span>
-                        <span class="stat-text">Saved</span>
+                    <div class="site-info">
+                        <span id="siteName" class="site-name">No active tab</span>
+                        <span id="siteStatus" class="site-status">Waiting...</span>
                     </div>
                 </div>
             </div>
 
             <!-- Stats Grid -->
             <div class="stats-grid">
-                <div class="stat-card primary">
-                    <div class="stat-icon">💸</div>
+                <!-- 1. Monthly (Main) -->
+                <div class="stat-box spent">
+                    <div class="stat-icon-wrapper">💸</div>
                     <div class="stat-content">
-                        <span class="stat-value" id="monthlySpent">Rs 0</span>
-                        <span class="stat-label">This Month</span>
+                        <span class="stat-val" id="monthlySpent">$0.00</span>
+                        <span class="stat-lbl">This Month</span>
                     </div>
                 </div>
-                <div class="stat-card secondary">
-                    <div class="stat-icon">🛒</div>
-                    <div class="stat-content">
-                        <span class="stat-value" id="transactionCount">0</span>
-                        <span class="stat-label">Purchases</span>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Budget Alert (if over budget) -->
-            <div class="budget-alert" id="budgetAlert" style="display: none;">
-                <span class="alert-icon">⚠️</span>
-                <div class="alert-content">
-                    <strong>Budget Alert!</strong>
-                    <span id="budgetAlertText">You're close to your limit</span>
+                <!-- 2. Purchases (Month) -->
+                <div class="stat-box count">
+                    <div class="stat-icon-wrapper">🛒</div>
+                    <div class="stat-content">
+                        <span class="stat-val" id="transactionCount">0</span>
+                        <span class="stat-lbl">Purchases</span>
+                    </div>
+                </div>
+
+                <!-- 3. All Time -->
+                <div class="stat-box total">
+                    <div class="stat-icon-wrapper">📈</div>
+                    <div class="stat-content">
+                        <span class="stat-val" id="totalTransactions">...</span>
+                        <span class="stat-lbl">All Time</span>
+                    </div>
+                </div>
+
+                <!-- 4. Sites Tracked -->
+                <div class="stat-box sites sites-card">
+                    <div class="stat-icon-wrapper">🌐</div>
+                    <div class="stat-content">
+                        <span class="stat-val" id="sitesTracked">0</span>
+                        <span class="stat-lbl">Sites</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Quick Actions -->
-            <div class="section">
-                <h2>Quick Actions</h2>
-                <div class="actions-grid">
-                    <button class="action-card" id="clipPageBtn">
-                        <span class="action-icon">📌</span>
-                        <span>Clip Page</span>
+            <div class="actions-section">
+                <div class="section-label">Quick Actions</div>
+                <div class="action-grid">
+                    <button class="action-btn" id="clipPageBtn">
+                        <span class="act-icon">📌</span>
+                        <span class="act-text">Clip Page</span>
                     </button>
-                    <button class="action-card" id="addManualBtn">
-                        <span class="action-icon">➕</span>
-                        <span>Add Expense</span>
+                    <button class="action-btn" id="addManualBtn">
+                        <span class="act-icon">➕</span>
+                        <span class="act-text">Add Exp</span>
                     </button>
-                    <button class="action-card" id="openDashboard">
-                        <span class="action-icon">📊</span>
-                        <span>Dashboard</span>
+                    <button class="action-btn" id="openDashboard">
+                        <span class="act-icon">📊</span>
+                        <span class="act-text">Dashboard</span>
                     </button>
-                    <button class="action-card" id="viewProtection">
-                        <span class="action-icon">🛡️</span>
-                        <span>Protection</span>
+                    <button class="action-btn" id="viewBudgetsBtn">
+                        <span class="act-icon">🎯</span>
+                        <span class="act-text">Budgets</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Categories Summary -->
-            <div class="section">
-                <h2>Top Categories</h2>
-                <div class="categories-list" id="categoriesList">
-                    <div class="category-item">
-                        <span class="cat-icon">🛍️</span>
-                        <div class="cat-info">
-                            <span class="cat-name">Shopping</span>
-                            <div class="cat-bar">
-                                <div class="cat-fill" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <span class="cat-amount">Rs 0</span>
-                    </div>
+            <!-- Top Categories -->
+            <div class="categories-section">
+                <div class="section-label">Top Categories</div>
+                <div id="categoriesList" class="categories-list">
+                    <!-- Populated by JS -->
                 </div>
             </div>
 
-            <!-- Recent Transactions -->
-            <div class="section">
-                <div class="section-header">
-                    <h2>Recent Activity <span class="live-dot"></span></h2>
-                    <button class="refresh-btn" id="refreshBtn" title="Refresh">🔄</button>
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <div class="section-label activity-header">
+                    <span>Recent Activity</span>
+                    <button id="refreshBtn" class="text-btn">🔄</button>
                 </div>
-                <div class="transaction-list" id="recentTransactions">
-                    <div class="empty-state">
-                        <span>🦗</span>
-                        <p>No transactions yet</p>
-                    </div>
+                <div id="recentTransactions" class="activity-list">
+                    <div class="empty-state">No transactions yet</div>
                 </div>
             </div>
 
-            <!-- Supported Stores -->
-            <div class="section stores-section">
-                <h2>Auto-Track Sites ✨</h2>
-                <div class="stores-grid">
-                    <span class="store-badge">Amazon</span>
-                    <span class="store-badge">eBay</span>
-                    <span class="store-badge">Daraz</span>
-                    <span class="store-badge">Netflix</span>
-                    <span class="store-badge">+100 more</span>
-                </div>
-            </div>
-
-            <!-- Version Footer -->
-            <div class="version-footer">
-                v2.5.0 • Dark Pattern Shield Enabled 🛡️
+            <div class="footer-note">
+                Supported Merchants: Amazon, eBay, Walmart +50 more
             </div>
         </div>
+    </div>
 
-        <!-- Settings Panel -->
-        <div id="settingsView" class="view" style="display: none;">
-            <header class="header">
-                <button class="back-btn" id="backFromSettings">← Back</button>
-                <h1>Settings</h1>
-            </header>
-
-            <div class="settings-content">
-                <div class="setting-group-title">Protection</div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">🛡️ Dark Pattern Shield</span>
-                        <span class="setting-desc">Block sneaky subscriptions & hidden charges</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="darkPatternToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">⏰ Trial Reminders</span>
-                        <span class="setting-desc">Get notified before trials convert to paid</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="trialRemindersToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-group-title">Tracking</div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Auto-Track Purchases</span>
-                        <span class="setting-desc">Automatically detect and log purchases</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="autoTrackToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Show Notifications</span>
-                        <span class="setting-desc">Alert when purchase detected</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="notificationsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Budget Alerts</span>
-                        <span class="setting-desc">Warn when approaching budget limit</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="budgetAlertsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-group-title">Appearance</div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Dark Mode</span>
-                        <span class="setting-desc">Switch to dark theme</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Manual Transaction -->
-        <div id="addManualView" class="view" style="display: none;">
-            <header class="header">
-                <button class="back-btn" id="backFromManual">← Back</button>
-                <h1>Add Expense</h1>
-            </header>
-
+    <!-- Manual Add View -->
+    <div id="addManualView" class="view" style="display: none;">
+        <header class="header">
+            <button id="backFromManual" class="back-btn">← Back</button>
+            <h1>Add Expense</h1>
+            <div class="header-spacer"></div>
+        </header>
+        <div class="container">
             <form id="manualForm" class="manual-form">
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="text" id="manualDesc" placeholder="e.g., Coffee at Starbucks" required>
+                    <input type="text" id="manualDesc" class="form-input" placeholder="e.g. Coffee" required>
                 </div>
                 <div class="form-group">
-                    <label>Amount (Rs)</label>
-                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required>
+                    <label>Amount ($)</label>
+                    <input type="number" id="manualAmount" class="form-input" step="0.01" placeholder="0.00" required>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
-                    <select id="manualCategory">
+                    <select id="manualCategory" class="form-input select-input">
                         <option value="Shopping">🛍️ Shopping</option>
                         <option value="Food & Dining">🍔 Food & Dining</option>
                         <option value="Transport">🚗 Transport</option>
                         <option value="Entertainment">🎬 Entertainment</option>
                         <option value="Bills">📱 Bills</option>
                         <option value="Health">💊 Health</option>
-                        <option value="Subscriptions">📺 Subscriptions</option>
                         <option value="Other">📦 Other</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    Save Expense ✓
-                </button>
+                <button type="submit" class="btn-primary">Save Expense</button>
             </form>
         </div>
     </div>
+
+    <!-- Settings View -->
+    <div id="settingsView" class="view" style="display: none;">
+        <header class="header">
+            <button id="backFromSettings" class="back-btn">← Back</button>
+            <h1>Settings</h1>
+            <div class="header-spacer"></div>
+        </header>
+        <div class="container">
+            <div class="settings-content">
+                <div class="settings-placeholder">
+                    Settings panel content coming soon...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
     <script src="popup.js"></script>
 </body>
 

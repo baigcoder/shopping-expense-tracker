@@ -244,6 +244,27 @@ export const notificationTriggers = {
             message: amount ? `${name} - $${amount.toFixed(2)}` : name,
             data: { name, type, amount }
         });
+    },
+
+    // Bill due soon reminder
+    onBillDueSoon: (billName: string, amount: number, daysUntil: number) => {
+        const urgency = daysUntil <= 1 ? 'warning' : 'subscription';
+        useNotificationStore.getState().addNotification({
+            type: urgency as NotificationType,
+            title: daysUntil === 0 ? '💸 Bill Due Today!' : daysUntil === 1 ? '⏰ Bill Due Tomorrow!' : '📅 Bill Coming Up',
+            message: `${billName} • $${amount.toFixed(2)} due ${daysUntil === 0 ? 'today' : daysUntil === 1 ? 'tomorrow' : `in ${daysUntil} days`}`,
+            data: { billName, amount, daysUntil }
+        });
+    },
+
+    // Bill overdue alert
+    onBillOverdue: (billName: string, amount: number, daysOverdue: number) => {
+        useNotificationStore.getState().addNotification({
+            type: 'budget_alert',
+            title: '❌ Bill Overdue!',
+            message: `${billName} • $${amount.toFixed(2)} was due ${daysOverdue} day${daysOverdue > 1 ? 's' : ''} ago`,
+            data: { billName, amount, daysOverdue }
+        });
     }
 };
 

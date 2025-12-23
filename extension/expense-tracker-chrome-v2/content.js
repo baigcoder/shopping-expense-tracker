@@ -7,6 +7,26 @@
     console.log('💰 Expense Tracker: Auto-tracking v2 loaded');
 
     // ================================
+    // EXCLUDED DOMAINS (Don't track own app!)
+    // ================================
+    const EXCLUDED_DOMAINS = [
+        'localhost',
+        '127.0.0.1',
+        'vibe-tracker',
+        'vibetracker',
+        'shopping-expense-tracker',
+        'vercel.app',
+        'netlify.app'
+    ];
+
+    // Check if current domain should be excluded
+    const currentHostname = window.location.hostname.toLowerCase();
+    if (EXCLUDED_DOMAINS.some(domain => currentHostname.includes(domain))) {
+        console.log('💰 Expense Tracker: Skipping own app domain:', currentHostname);
+        return;
+    }
+
+    // ================================
     // STRICT CONFIRMATION DETECTION
     // ================================
 

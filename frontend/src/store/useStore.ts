@@ -36,27 +36,56 @@ export const useAuthStore = create<AuthState>()(
 // UI State Store
 interface UIState {
     sidebarOpen: boolean;
+    sidebarHovered: boolean; // New transient state
     theme: 'dark' | 'light';
     currency: string;
-    toggleSidebar: () => void;
+    isChatOpen: boolean;
+    soundEnabled: boolean;
+    reducedMotion: boolean;
+    toggleSound: () => void;
+    toggleReducedMotion: () => void;
+    toggleSidebar: (force?: boolean) => void;
     setSidebarOpen: (open: boolean) => void;
+    setSidebarHovered: (hovered: boolean) => void; // New setter
     setTheme: (theme: 'dark' | 'light') => void;
     setCurrency: (currency: string) => void;
+    toggleChat: () => void;
+    setChatOpen: (open: boolean) => void;
 }
 
 export const useUIStore = create<UIState>()(
     persist(
         (set) => ({
             sidebarOpen: true,
+            sidebarHovered: false,
             theme: 'dark',
             currency: 'USD',
-            toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+            isChatOpen: false,
+            // Enhanced toggle to accept force value or toggle
+            toggleSidebar: (force) => set((state) => ({
+                sidebarOpen: typeof force === 'boolean' ? force : !state.sidebarOpen
+            })),
             setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+            setSidebarHovered: (sidebarHovered) => set({ sidebarHovered }),
             setTheme: (theme) => set({ theme }),
             setCurrency: (currency) => set({ currency }),
+            toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
+            setChatOpen: (isChatOpen) => set({ isChatOpen }),
+            soundEnabled: true,
+            reducedMotion: false,
+            toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
+            toggleReducedMotion: () => set((state) => ({ reducedMotion: !state.reducedMotion })),
         }),
         {
             name: 'ui-storage',
+            partialize: (state) => ({
+                sidebarOpen: state.sidebarOpen,
+                theme: state.theme,
+                currency: state.currency,
+                soundEnabled: state.soundEnabled,
+                reducedMotion: state.reducedMotion
+                // Don't persist chat open state or sidebarHovered
+            }),
         }
     )
 );
@@ -65,23 +94,29 @@ export const useUIStore = create<UIState>()(
 interface ModalState {
     isAddTransactionOpen: boolean;
     isAddCardOpen: boolean;
+    isQuickAddOpen: boolean;
     editingTransaction: string | null;
     openAddTransaction: () => void;
     openEditTransaction: (id: string) => void;
     closeTransactionModal: () => void;
     openAddCard: () => void;
     closeAddCard: () => void;
+    openQuickAdd: () => void;
+    closeQuickAdd: () => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
     isAddTransactionOpen: false,
     isAddCardOpen: false,
+    isQuickAddOpen: false,
     editingTransaction: null,
     openAddTransaction: () => set({ isAddTransactionOpen: true, editingTransaction: null }),
     openEditTransaction: (id) => set({ isAddTransactionOpen: true, editingTransaction: id }),
     closeTransactionModal: () => set({ isAddTransactionOpen: false, editingTransaction: null }),
     openAddCard: () => set({ isAddCardOpen: true }),
     closeAddCard: () => set({ isAddCardOpen: false }),
+    openQuickAdd: () => set({ isQuickAddOpen: true }),
+    closeQuickAdd: () => set({ isQuickAddOpen: false }),
 }));
 
 // Card Types
@@ -109,7 +144,7 @@ interface CardState {
     cards: Card[];
     isLoading: boolean;
     currentUserId: string | null;
-    initializeCards: (userId: string) => void;
+    initializeCards: (userId: string) => Promise<void>;
     setCards: (cards: Card[]) => void;
     addCard: (card: Omit<Card, 'id'>) => void;
     removeCard: (id: string) => void;
@@ -159,11 +194,51 @@ export const useCardStore = create<CardState>()((set, get) => ({
     isLoading: false,
     currentUserId: null,
 
-    // Initialize cards for a specific user
-    initializeCards: (userId: string) => {
+    // Initialize cards for a specific user - FETCH FROM SUPABASE FIRST
+    initializeCards: async (userId: string) => {
+        set({ isLoading: true });
+
+        try {
+            // FIRST: Try to fetch from Supabase
+            const { supabase } = await import('../config/supabase');
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (!error && data && data.length > 0) {
+                // Map Supabase data to Card format
+                const cards: Card[] = data.map(card => ({
+                    id: card.id,
+                    user_id: card.user_id,
+                    number: card.number,
+                    holder: card.holder,
+                    expiry: card.expiry,
+                    cvv: card.cvv,
+                    pin: card.pin,
+                    type: card.card_type || card.type || 'unknown',
+                    theme: card.theme
+                }));
+
+                console.log('✅ Loaded', cards.length, 'cards from Supabase');
+                set({ cards, currentUserId: userId, isLoading: false });
+
+                // Also cache to localStorage
+                const allCards = getAllCardsFromStorage();
+                allCards[userId] = cards;
+                saveAllCardsToStorage(allCards);
+                return;
+            }
+        } catch (e) {
+            console.error('Error fetching cards from Supabase:', e);
+        }
+
+        // FALLBACK: Load from localStorage
         const allCards = getAllCardsFromStorage();
         const userCards = allCards[userId] || [];
-        set({ cards: userCards, currentUserId: userId });
+        console.log('📦 Loaded', userCards.length, 'cards from localStorage');
+        set({ cards: userCards, currentUserId: userId, isLoading: false });
     },
 
     setCards: (cards) => {

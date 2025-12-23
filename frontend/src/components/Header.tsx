@@ -1,43 +1,42 @@
 import { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bell, Settings, Menu, X } from 'lucide-react';
-import { useAuthStore } from '../store/useStore';
+import { Bell, Settings, Menu, X, MessageSquare, Plus } from 'lucide-react';
+import { useAuthStore, useUIStore, useModalStore } from '../store/useStore';
+import { useNotificationStore } from '../services/notificationService';
 import NotificationsPanel from './NotificationsPanel';
 import styles from './Header.module.css';
 
-// Custom Logo Component - Vibe Tracker
+// Custom Logo Component - Finzen
+// Custom Logo Component - Finzen
 const BrandLogo = () => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
         <div style={{
-            background: '#FBBF24',
-            border: '3px solid #000',
-            borderRadius: '8px',
-            padding: '4px',
-            boxShadow: '3px 3px 0px #000',
+            background: 'linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)', // Premium Indigo gradient
+            borderRadius: '12px',
+            padding: '6px',
+            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
         }}>
             <img
-                src="/logo.png"
-                alt="Vibe Tracker"
+                src="/logo.svg"
+                alt="Finzen"
                 style={{ width: '24px', height: '24px', objectFit: 'contain' }}
             />
         </div>
         <span style={{
-            fontWeight: 900,
-            fontSize: '1.4rem',
-            color: '#000',
-            fontFamily: "'Outfit', sans-serif",
-            textTransform: 'uppercase',
-            letterSpacing: '-1px',
-            textShadow: '2px 2px 0px #CBD5E1',
-            fontStyle: 'italic'
+            fontWeight: 800,
+            fontSize: '1.5rem',
+            color: '#0F172A',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            letterSpacing: '-0.5px',
         }}>
-            Vibe Tracker
+            Finzen
         </span>
     </div>
 );
+
 
 
 
@@ -47,6 +46,7 @@ const navItems = [
     { path: '/transactions', label: 'Transactions' },
     { path: '/analytics', label: 'Analytics' },
     { path: '/budgets', label: 'Budgets' },
+    { path: '/bills', label: 'Bills' },
     { path: '/goals', label: 'Goals' },
     { path: '/subscriptions', label: 'Subs' },
     { path: '/insights', label: 'Insights' },
@@ -54,8 +54,11 @@ const navItems = [
 ];
 
 const Header = () => {
-    const { user } = useAuthStore();
     const navigate = useNavigate();
+    const { user } = useAuthStore();
+    const { toggleChat } = useUIStore();
+    const { openQuickAdd } = useModalStore();
+    const unreadCount = useNotificationStore(state => state.notifications.filter(n => !n.read).length);
     const [showNotifications, setShowNotifications] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -81,7 +84,7 @@ const Header = () => {
 
             <div className={styles.actionsSection}>
                 <button
-                    className={styles.iconButton}
+                    className={`${styles.iconButton} ${styles.settingsBtn}`}
                     aria-label="Settings"
                     onClick={() => navigate('/settings')}
                 >
@@ -95,7 +98,11 @@ const Header = () => {
                         onClick={() => setShowNotifications(!showNotifications)}
                     >
                         <Bell size={22} strokeWidth={2.5} />
-                        <span className={styles.notificationBadge}>3</span>
+                        {unreadCount > 0 && (
+                            <span className={styles.notificationBadge}>
+                                {unreadCount > 99 ? '99+' : unreadCount}
+                            </span>
+                        )}
                     </button>
 
                     <NotificationsPanel
@@ -136,6 +143,41 @@ const Header = () => {
                             {item.label}
                         </NavLink>
                     ))}
+                    <div style={{ borderTop: '2px dashed #CBD5E1', margin: '1rem 1.5rem 0.5rem' }}></div>
+                    <button
+                        className={styles.mobileNavLink}
+                        onClick={() => {
+                            setMobileMenuOpen(false);
+                            toggleChat();
+                        }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            <MessageSquare size={18} />
+                            AI Chat
+                        </div>
+                    </button>
+                    <button
+                        className={styles.mobileNavLink}
+                        onClick={() => {
+                            setMobileMenuOpen(false);
+                            openQuickAdd();
+                        }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            <Plus size={18} />
+                            Add Expense
+                        </div>
+                    </button>
+                    <NavLink
+                        to="/settings"
+                        className={styles.mobileNavLink}
+                        onClick={() => setMobileMenuOpen(false)}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            <Settings size={18} />
+                            Settings
+                        </div>
+                    </NavLink>
                 </div>
             )}
         </header>

@@ -1,0 +1,457 @@
+/* ============================================
+   FINZEN - RETRO SUNSET DESIGN SYSTEM 🌅
+   Gen-Z Fintech - Orange/Yellow/Green Theme
+   NO Purple/Blue/Pink Gradients!
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+    /* ============================================
+     PRIMARY COLORS 🎨
+     ============================================ */
+
+    /* Orange - Main Brand Color */
+    --color-primary: #FF6B35;
+    --color-primary-dark: #E85A2B;
+    --color-primary-light: #FF8C61;
+    --color-primary-lighter: #FFB094;
+
+    /* Golden Orange - Secondary */
+    --color-secondary: #F7931E;
+    --color-secondary-dark: #D47A14;
+    --color-secondary-light: #FFA849;
+
+    /* Sunny Yellow - Accent */
+    --color-accent: #FFD23F;
+    --color-accent-dark: #E5B923;
+    --color-accent-light: #FFE380;
+    --color-accent-lighter: #FFF0B8;
+
+    /* Success Green */
+    --color-success: #2DD881;
+    --color-success-dark: #22B56A;
+    --color-success-light: #5FE49E;
+    --color-success-lighter: #A8F0CB;
+
+    /* Danger Red */
+    --color-danger: #EF4444;
+    --color-danger-dark: #DC2626;
+    --color-danger-light: #F87171;
+
+    /* Warning Gold */
+    --color-warning: #FBBF24;
+    --color-warning-dark: #F59E0B;
+    --color-warning-light: #FCD34D;
+
+    /* Info Teal (NOT blue!) */
+    --color-info: #14B8A6;
+    --color-info-dark: #0D9488;
+    --color-info-light: #2DD4BF;
+
+    /* ============================================
+     NEUTRAL COLORS
+     ============================================ */
+
+    --color-text: #1A1A1A;
+    --color-text-light: #4B5563;
+    --color-text-muted: #6B7280;
+    --color-text-disabled: #9CA3AF;
+
+    --color-bg: #FAFAFA;
+    --color-bg-dark: #F3F4F6;
+    --color-surface: #FFFFFF;
+    --color-border: #000000;
+    --color-border-light: #E5E7EB;
+
+    /* Dashboard specific */
+    --color-dashboard: #10B981;
+    --color-dashboard-light: #34D399;
+
+    /* ============================================
+     GRADIENTS 🌈
+     ============================================ */
+
+    /* Primary Gradients */
+    --gradient-hero: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFD23F 100%);
+    --gradient-sunset: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+    --gradient-sunrise: linear-gradient(135deg, #FFD23F 0%, #FF6B35 100%);
+    --gradient-warm: linear-gradient(135deg, #F7931E 0%, #FFD23F 100%);
+
+    /* Specialty Gradients */
+    --gradient-card: linear-gradient(135deg, #FFD23F 0%, #FFA500 100%);
+    --gradient-success: linear-gradient(135deg, #2DD881 0%, #A8E063 100%);
+    --gradient-danger: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
+
+    /* Chart Gradients */
+    --gradient-chart-orange: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+    --gradient-chart-yellow: linear-gradient(135deg, #FFD23F 0%, #FFA500 100%);
+    --gradient-chart-green: linear-gradient(135deg, #2DD881 0%, #10B981 100%);
+
+    /* Subtle Background Gradients */
+    --gradient-bg-warm: linear-gradient(135deg, #FFF5E6 0%, #FFE8CC 100%);
+    --gradient-bg-yellow: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    --gradient-bg-green: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+    --gradient-bg-teal: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%);
+
+    /* ============================================
+     CHART COLORS 📊
+     ============================================ */
+
+    --chart-color-1: #FF6B35;
+    /* Orange */
+    --chart-color-2: #F7931E;
+    /* Golden */
+    --chart-color-3: #FFD23F;
+    /* Yellow */
+    --chart-color-4: #2DD881;
+    /* Green */
+    --chart-color-5: #EF4444;
+    /* Red */
+    --chart-color-6: #14B8A6;
+    /* Teal */
+    --chart-color-7: #FF8C61;
+    /* Light Orange */
+    --chart-color-8: #FFA849;
+    /* Light Golden */
+
+    /* ============================================
+     NEO-BRUTALIST DESIGN 💪
+     ============================================ */
+
+    /* Border Widths */
+    --border-thin: 2px;
+    --border-medium: 3px;
+    --border-thick: 4px;
+    --border-extra-thick: 5px;
+
+    /* Hard Shadows (Neo-Brutalist) */
+    --shadow-brutal-xs: 2px 2px 0 #000;
+    --shadow-brutal-sm: 4px 4px 0 #000;
+    --shadow-brutal-md: 8px 8px 0 #000;
+    --shadow-brutal-lg: 12px 12px 0 #000;
+    --shadow-brutal-xl: 16px 16px 0 #000;
+    --shadow-brutal-2xl: 20px 20px 0 #000;
+
+    /* Colored Shadows */
+    --shadow-orange: 8px 8px 0 #FF6B35;
+    --shadow-orange-sm: 4px 4px 0 #FF6B35;
+    --shadow-orange-lg: 12px 12px 0 #FF6B35;
+
+    --shadow-yellow: 8px 8px 0 #FFD23F;
+    --shadow-yellow-sm: 4px 4px 0 #FFD23F;
+    --shadow-yellow-lg: 12px 12px 0 #FFD23F;
+
+    --shadow-green: 8px 8px 0 #2DD881;
+    --shadow-green-sm: 4px 4px 0 #2DD881;
+    --shadow-green-lg: 12px 12px 0 #2DD881;
+
+    --shadow-teal: 8px 8px 0 #14B8A6;
+    --shadow-red: 8px 8px 0 #EF4444;
+
+    /* Soft Shadows (for subtle elements) */
+    --shadow-soft-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-soft-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-soft-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+    /* ============================================
+     BORDER RADIUS
+     ============================================ */
+
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-3xl: 32px;
+    --radius-full: 9999px;
+
+    --border-radius-sm: var(--radius-sm);
+    --border-radius-md: var(--radius-md);
+    --border-radius-lg: var(--radius-lg);
+
+    /* ============================================
+     TYPOGRAPHY 📝
+     ============================================ */
+
+    /* Font Families */
+    --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+
+    /* Font Sizes */
+    --text-xs: 0.75rem;
+    /* 12px */
+    --text-sm: 0.875rem;
+    /* 14px */
+    --text-base: 1rem;
+    /* 16px */
+    --text-lg: 1.125rem;
+    /* 18px */
+    --text-xl: 1.25rem;
+    /* 20px */
+    --text-2xl: 1.5rem;
+    /* 24px */
+    --text-3xl: 2rem;
+    /* 32px */
+    --text-4xl: 2.5rem;
+    /* 40px */
+    --text-5xl: 3rem;
+    /* 48px */
+    --text-6xl: 3.75rem;
+    /* 60px */
+
+    /* Font Weights */
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    --font-black: 900;
+
+    /* Line Heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.75;
+
+    /* Letter Spacing */
+    --tracking-tight: -0.05em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.05em;
+
+    /* ============================================
+     SPACING SYSTEM
+     ============================================ */
+
+    --space-0: 0;
+    --space-1: 0.25rem;
+    /* 4px */
+    --space-2: 0.5rem;
+    /* 8px */
+    --space-3: 0.75rem;
+    /* 12px */
+    --space-4: 1rem;
+    /* 16px */
+    --space-5: 1.25rem;
+    /* 20px */
+    --space-6: 1.5rem;
+    /* 24px */
+    --space-7: 1.75rem;
+    /* 28px */
+    --space-8: 2rem;
+    /* 32px */
+    --space-9: 2.25rem;
+    /* 36px */
+    --space-10: 2.5rem;
+    /* 40px */
+    --space-12: 3rem;
+    /* 48px */
+    --space-16: 4rem;
+    /* 64px */
+    --space-20: 5rem;
+    /* 80px */
+    --space-24: 6rem;
+    /* 96px */
+
+    /* ============================================
+     Z-INDEX LAYERS
+     ============================================ */
+
+    --z-base: 0;
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-fixed: 30;
+    --z-modal-backdrop: 40;
+    --z-modal: 50;
+    --z-popover: 60;
+    --z-tooltip: 70;
+    --z-notification: 80;
+    --z-max: 9999;
+
+    /* ============================================
+     TRANSITIONS & ANIMATIONS ⚡
+     ============================================ */
+
+    /* Timing Functions */
+    --ease-linear: linear;
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Durations */
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+    --duration-slower: 500ms;
+
+    /* Standard Transitions */
+    --transition-all: all 0.2s var(--ease-bounce);
+    --transition-colors: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    --transition-transform: transform 0.2s var(--ease-bounce);
+    --transition-opacity: opacity 0.2s ease-in-out;
+
+    /* ============================================
+     BREAKPOINTS 📱
+     ============================================ */
+
+    --breakpoint-xs: 375px;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Text Gradients */
+.text-gradient-sunset {
+    background: var(--gradient-sunset);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-hero {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Neo-Brutalist Utilities */
+.brutal-border {
+    border: var(--border-thick) solid var(--color-border);
+}
+
+.brutal-shadow {
+    box-shadow: var(--shadow-brutal-md);
+}
+
+.brutal-shadow-lg {
+    box-shadow: var(--shadow-brutal-lg);
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: var(--transition-transform);
+}
+
+.hover-lift:hover {
+    transform: translate(-3px, -3px);
+}
+
+/* Button Base Styles */
+.btn-brutal {
+    border: var(--border-thick) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-brutal-md);
+    transition: var(--transition-all);
+    font-family: var(--font-display);
+    font-weight: var(--font-black);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-brutal:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-brutal-lg);
+}
+
+.btn-brutal:active {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation Utilities */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+    animation: shimmer 2s linear infinite;
+}

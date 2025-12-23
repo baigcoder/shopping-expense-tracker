@@ -1,0 +1,36 @@
+/* Features.module.css */
+.featuresSection {
+    padding: 6rem 2rem;
+    background: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.grid {
+    display: grid;
+    gap: 2rem;
+    /* Default for mobile (1 col) */
+    grid-template-columns: 1fr;
+    perspective: 1000px;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        /* Exact 2x3 grid as requested */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+}

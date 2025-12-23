@@ -1,18 +1,17 @@
 {
     "manifest_version": 3,
-    "name": "Vibe Tracker 💸",
-    "version": "2.7.1",
-    "description": "🛡️ Dark Pattern Shield + Auto-track purchases! Protect yourself from sneaky subscriptions, get trial reminders, and stay on budget. The ultimate Gen-Z expense tracker! 💰",
-    "short_name": "VibeTracker",
-    "author": "Vibe Tracker Team",
-    "homepage_url": "https://vibe-tracker-expense-genz.vercel.app",
+    "name": "Cashly - Smart Expense Tracker",
+    "version": "5.0.0",
+    "description": "Automatically track expenses as you shop online. Your money, autopilot.",
+    "short_name": "Cashly",
+    "author": "BaigCoder",
+    "homepage_url": "https://spendsync-expense.vercel.app",
     "permissions": [
         "storage",
         "activeTab",
         "notifications",
         "tabs",
-        "scripting",
-        "alarms"
+        "scripting"
     ],
     "host_permissions": [
         "https://*.amazon.com/*",
@@ -42,7 +41,7 @@
     },
     "action": {
         "default_popup": "popup.html",
-        "default_title": "Vibe Tracker - Track Your Spending 💸",
+        "default_title": "Cashly - Smart Expense Tracker 💸",
         "default_icon": {
             "16": "icons/icon16.png",
             "32": "icons/icon32.png",
@@ -80,24 +79,10 @@
                 "https://*.gumroad.com/*",
                 "https://*.stripe.com/*",
                 "https://*.paypal.com/*",
-                "https://*.netflix.com/*",
-                "https://*.spotify.com/*",
-                "https://*.hulu.com/*",
-                "https://*.disney.com/*",
-                "https://*.disneyplus.com/*",
-                "https://*.apple.com/*",
-                "https://*.youtube.com/*",
-                "https://*.audible.com/*",
-                "https://*.adobe.com/*",
-                "https://*.canva.com/*",
-                "https://*.notion.so/*",
-                "https://*.figma.com/*",
-                "https://*.grammarly.com/*",
                 "<all_urls>"
             ],
             "js": [
-                "content.js",
-                "dark-pattern-detector.js"
+                "content.js"
             ],
             "css": [
                 "content.css"
@@ -114,6 +99,7 @@
     "web_accessible_resources": [
         {
             "resources": [
+                "config.js",
                 "content.css",
                 "icons/icon16.png",
                 "icons/icon32.png",

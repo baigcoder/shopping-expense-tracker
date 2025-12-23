@@ -1,0 +1,73 @@
+/* Plaid Link Button Styles */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+/* Size variants */
+.sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.md {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+}
+
+.lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+}
+
+/* Style variants */
+.primary {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.primary:hover:not(.disabled) {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    transform: translateY(-1px);
+}
+
+.outline {
+    background: transparent;
+    color: #10B981;
+    border: 2px solid #10B981;
+}
+
+.outline:hover:not(.disabled) {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* Disabled state */
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Spinner animation */
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

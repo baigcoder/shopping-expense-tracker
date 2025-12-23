@@ -9,12 +9,14 @@ if (!supabaseUrl || !supabaseServiceKey) {
 }
 
 // Service role client for server-side operations (bypasses RLS)
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
         autoRefreshToken: false,
         persistSession: false,
     },
 });
+
+export const supabaseAdmin = supabase;
 
 // Verify Supabase JWT token
 export const verifyToken = async (token: string) => {

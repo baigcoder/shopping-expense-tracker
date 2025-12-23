@@ -1,9 +1,9 @@
 // PDF Bank Statement Analyzer Service
 // Supports BOTH text-based and image-based (scanned) PDFs
-// Uses PDF.js for text extraction and AI Vision for image OCR
+// Uses PDF.js for text extraction and DeepSeek-R1 AI for document analysis
 
 import * as pdfjsLib from 'pdfjs-dist';
-import { getAIResponse, getProviderStatus } from './aiService';
+import { callAI } from './multiModelService';
 import { formatCurrency, getCurrencyCode } from './currencyService';
 import { supabase } from '../config/supabase';
 
@@ -236,8 +236,12 @@ RESPOND IN THIS EXACT JSON FORMAT ONLY:
     "insights": ["Insight 1", "Insight 2"]
 }`;
 
-        const response = await getAIResponse(prompt);
-        console.log('AI Response length:', response.length);
+        const systemPrompt = `You are a financial document analyzer. Extract transactions from bank statements and tax documents.
+Return ONLY valid JSON with the exact structure requested. No markdown, no explanations.`;
+
+        const result = await callAI('pdf', systemPrompt, prompt);
+        const response = result.response;
+        console.log('AI Response (DeepSeek-R1) length:', response.length);
 
         let parsed;
         try {

@@ -178,50 +178,9 @@
         originalRemoveItem.apply(this, arguments);
     };
 
-    // Show a toast notification when extension syncs
+    // Toast removed to prevent duplication
     function showSyncToast(email) {
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.id = 'extension-sync-toast';
-        toast.innerHTML = `
-            <div style="
-                position: fixed;
-                bottom: 24px;
-                right: 24px;
-                background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-                color: white;
-                padding: 16px 24px;
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-                z-index: 999999;
-                font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                animation: slideIn 0.3s ease-out;
-                border: 2px solid rgba(255,255,255,0.2);
-            ">
-                <span style="font-size: 24px;">🔗</span>
-                <div>
-                    <div style="font-weight: 700; font-size: 14px;">Extension Synced!</div>
-                    <div style="font-size: 12px; opacity: 0.9;">Now auto-tracking your purchases</div>
-                </div>
-            </div>
-            <style>
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-            </style>
-        `;
-
-        document.body.appendChild(toast);
-
-        // Remove after 4 seconds
-        setTimeout(() => {
-            toast.style.animation = 'slideIn 0.3s ease-out reverse';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
+        // No-op
     }
 
     // Check if website already has a session on load

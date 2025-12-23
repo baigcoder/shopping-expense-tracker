@@ -1,0 +1,233 @@
+/* Skeleton Loaders - Gen-Z Neo-Brutalist Style */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.skeletonBase {
+    background: linear-gradient(90deg,
+            #F3F4F6 0%,
+            #E5E7EB 50%,
+            #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+}
+
+/* Card Skeleton */
+.skeletonCard {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 #000;
+}
+
+.skeletonHeader {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 24px;
+    width: 60%;
+    margin-bottom: 1rem;
+}
+
+.skeletonText {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 16px;
+    margin-bottom: 0.75rem;
+}
+
+.skeletonText:last-of-type {
+    width: 80%;
+}
+
+.skeletonFooter {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 20px;
+    width: 40%;
+    margin-top: 1rem;
+}
+
+/* Transaction Skeleton */
+.skeletonTransaction {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 #000;
+    margin-bottom: 0.75rem;
+}
+
+.skeletonIcon {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    /* border-radius from skeletonBase is overridden */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.skeletonInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.skeletonTitle {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 18px;
+    width: 60%;
+}
+
+.skeletonSubtitle {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 14px;
+    width: 40%;
+}
+
+.skeletonAmount {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    /* border-radius from skeletonBase is overridden */
+    height: 24px;
+    width: 80px;
+    border-radius: 8px;
+}
+
+/* Chart Skeleton */
+.skeletonChart {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 #000;
+}
+
+.skeletonChartHeader {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: 8px;
+    height: 24px;
+    width: 50%;
+    margin-bottom: 2rem;
+}
+
+.skeletonChartBars {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    height: 200px;
+}
+
+.skeletonBar {
+    background: linear-gradient(90deg, #F3F4F6 0%, #E5E7EB 50%, #F3F4F6 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    /* border-radius from skeletonBase is overridden */
+    flex: 1;
+    border-radius: 8px 8px 0 0;
+}
+
+/* List Skeleton */
+.skeletonList {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Pulse Loader */
+.pulseLoader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+}
+
+.pulse {
+    width: 64px;
+    height: 64px;
+    border: 4px solid #000;
+    border-radius: 50%;
+    position: relative;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.pulse::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 4px solid #FBBF24;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite reverse;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.pulseLoader span {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #6B7280;
+    text-transform: uppercase;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .skeletonCard {
+        padding: 1.25rem;
+        box-shadow: 4px 4px 0 #000;
+    }
+
+    .skeletonTransaction {
+        padding: 0.85rem;
+    }
+
+    .skeletonIcon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .skeletonChartBars {
+        height: 150px;
+    }
+}

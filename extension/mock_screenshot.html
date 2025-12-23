@@ -4,24 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Tracker Screenshots</title>
+    <title>Finzen Screenshots</title>
     <style>
-        /* Extracting core styles from popup.css */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Extracting core styles matching popup.css and aurora-design-system */
         :root {
-            --pop-yellow: #FFD93D;
-            --pop-pink: #FF6B6B;
-            --pop-blue: #4D96FF;
-            --pop-teal: #4ECDC4;
-            --pop-black: #2D2D2D;
-            --pop-white: #FFFFFF;
-            --pop-grey: #F7F7F7;
-            --border-thick: 3px solid var(--pop-black);
-            --shadow-hard: 4px 4px 0px var(--pop-black);
+            --color-primary: #DC2626;
+            --color-primary-dark: #B91C1C;
+            --color-primary-subtle: rgba(220, 38, 38, 0.08);
+
+            --color-bg: #F8FAFC;
+            --color-surface: #FFFFFF;
+            --color-text: #0F172A;
+            --color-text-secondary: #64748B;
+            --color-border: #E2E8F0;
+
+            --color-success: #10B981;
+
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-md: 0 4px 6px -1px rgba(15, 15, 15, 0.1);
+            --shadow-card: 0 1px 3px rgba(15, 15, 15, 0.06);
+
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f0f0f0;
+            font-family: var(--font-body);
+            background-color: #E5E5E5;
             display: flex;
             flex-direction: row;
             gap: 40px;
@@ -39,29 +51,31 @@
         }
 
         .label {
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1.2rem;
             color: #444;
+            font-family: var(--font-display);
         }
 
         /* The Extension Popup Container */
         .mock-popup {
             width: 320px;
             height: 500px;
-            /* Fixed height for consistency */
-            background: var(--pop-white);
-            border: var(--border-thick);
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
         }
 
         /* Header */
         .header {
-            background: var(--pop-yellow);
-            padding: 15px;
-            border-bottom: var(--border-thick);
+            background: var(--color-surface);
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -78,91 +92,87 @@
         }
 
         .brand {
-            font-weight: 900;
+            font-family: var(--font-display);
+            font-weight: 700;
             font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
+            color: var(--color-text);
         }
 
         .status-badge {
             font-size: 0.7rem;
-            font-weight: 800;
+            font-weight: 600;
             padding: 4px 8px;
-            background: var(--pop-black);
-            color: var(--pop-white);
             border-radius: 4px;
             text-transform: uppercase;
         }
 
         .status-badge.synced {
-            background: #D1FAE5;
-            color: #065F46;
-            border: 2px solid #065F46;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--color-success);
         }
 
         /* Main Content */
         .dashboard {
-            padding: 20px;
+            padding: 1rem;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 1rem;
         }
 
         /* Stats Card */
         .stats-card {
-            background: var(--pop-white);
-            border: var(--border-thick);
-            box-shadow: var(--shadow-hard);
-            padding: 15px;
-            border-radius: 8px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-card);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
             text-align: center;
-            background-image:
-                radial-gradient(circle at 10px 10px, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
-            background-size: 20px 20px;
         }
 
         .month-label {
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 600;
             text-transform: uppercase;
-            color: #666;
-            margin-bottom: 5px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
         }
 
         .amount-big {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--pop-black);
-            line-height: 1;
-            margin-bottom: 10px;
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
 
         .tx-count {
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: var(--pop-pink);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            border: 2px solid var(--pop-black);
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--color-primary-subtle);
+            color: var(--color-primary);
+            padding: 4px 10px;
+            border-radius: 20px;
             display: inline-block;
         }
 
         /* Recent Transactions */
         .section-title {
-            font-size: 0.9rem;
-            font-weight: 800;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 0.75rem;
             display: flex;
             justify-content: space-between;
+            color: var(--color-text-secondary);
         }
 
         .tx-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0.75rem;
         }
 
         .tx-item {
@@ -170,29 +180,26 @@
             align-items: center;
             gap: 10px;
             padding: 10px;
-            background: #FAFAFA;
-            border: 2px solid #E5E5E5;
-            border-radius: 8px;
-            transition: transform 0.2s;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
         }
 
         .tx-item.new {
-            background: #F0FDFA;
-            border-color: var(--pop-teal);
-            animation: slideIn 0.3s ease-out;
+            background: #FEF2F2;
+            border-color: #FECACA;
         }
 
         .tx-icon {
-            font-size: 1.2rem;
-            background: var(--pop-white);
+            font-size: 1rem;
+            background: #F1F5F9;
             width: 32px;
             height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--pop-black);
-            border-radius: 50%;
-            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
         }
 
         .tx-details {
@@ -202,22 +209,24 @@
 
         .tx-store {
             display: block;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.9rem;
+            color: var(--color-text);
         }
 
         .tx-prod {
             display: block;
             font-size: 0.75rem;
-            color: #666;
+            color: var(--color-text-secondary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .tx-price {
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.9rem;
+            color: var(--color-text);
         }
 
         /* Login Mode Styles */
@@ -228,49 +237,73 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
+            background: var(--color-surface);
         }
 
         .login-icon {
             font-size: 3rem;
             margin-bottom: 20px;
-            animation: bounce 2s infinite;
         }
 
         .login-title {
+            font-family: var(--font-display);
             font-size: 1.5rem;
-            font-weight: 900;
+            font-weight: 700;
             margin-bottom: 10px;
             line-height: 1.2;
+            color: var(--color-text);
         }
 
         .login-subtitle {
             font-size: 0.9rem;
-            color: #666;
+            color: var(--color-text-secondary);
             margin-bottom: 30px;
         }
 
         .btn {
-            background: var(--pop-black);
-            color: var(--pop-yellow);
+            background: var(--color-primary);
+            color: white;
             border: none;
             padding: 12px;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1rem;
-            border-radius: 8px;
+            font-family: var(--font-display);
+            border-radius: var(--radius-md);
             cursor: pointer;
-            box-shadow: var(--shadow-hard);
-            text-transform: uppercase;
             width: 100%;
             display: block;
             text-decoration: none;
             box-sizing: border-box;
         }
 
+        .input-group {
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+
+        .input-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .input-box {
+            border: 1px solid var(--color-border);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            color: var(--color-text);
+            width: 100%;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+        }
+
         /* Footer Actions */
         .footer-actions {
-            padding: 15px;
-            border-top: var(--border-thick);
-            background: var(--pop-grey);
+            padding: 1rem;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-surface);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
@@ -278,23 +311,25 @@
         }
 
         .action-btn {
-            padding: 8px;
-            border: 2px solid var(--pop-black);
-            background: var(--pop-white);
-            font-weight: 700;
-            font-size: 0.8rem;
-            border-radius: 6px;
+            padding: 0.6rem;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: var(--radius-md);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
-            box-shadow: 2px 2px 0px var(--pop-black);
+            color: var(--color-text);
+            font-family: var(--font-display);
         }
 
         .clip-btn {
-            background: var(--pop-pink);
+            background: var(--color-primary);
             color: white;
+            border-color: var(--color-primary);
         }
     </style>
 </head>
@@ -307,22 +342,22 @@
         <div class="mock-popup" id="dashboard-view">
             <div class="header">
                 <div class="title-row">
-                    <div class="logo">⚡</div>
-                    <div class="brand">Vibe Tracker</div>
+                    <div class="logo">💸</div>
+                    <div class="brand">Finzen</div>
                 </div>
-                <div class="status-badge synced">Synced 🔗</div>
+                <div class="status-badge synced">Synced</div>
             </div>
 
             <div class="dashboard">
                 <div class="stats-card">
                     <div class="month-label">December Spending</div>
                     <div class="amount-big">$342.50</div>
-                    <div class="tx-count">12 Vibes Tracked</div>
+                    <div class="tx-count">12 Expenses Tracked</div>
                 </div>
 
                 <div>
                     <div class="section-title">
-                        <span>Recent Vibes</span>
+                        <span>Recent Activity</span>
                         <span style="font-size: 0.7rem;">Last 5</span>
                     </div>
                     <div class="tx-list">
@@ -367,27 +402,29 @@
         <div class="mock-popup" id="login-view">
             <div class="header">
                 <div class="title-row">
-                    <div class="logo">⚡</div>
-                    <div class="brand">Vibe Tracker</div>
+                    <div class="logo">💸</div>
+                    <div class="brand">Finzen</div>
                 </div>
             </div>
             <div class="login-container">
                 <div class="login-icon">🛍️</div>
-                <div class="login-title">Track Habits.<br>Keep the Vibe.</div>
+                <div class="login-title">Track Spending.<br>Stay in Control.</div>
                 <div class="login-subtitle">
                     Sync your shopping automatically across 100+ stores.
                 </div>
 
-                <div style="text-align: left; margin-bottom: 20px; width: 100%;">
-                    <div style="font-weight:700; margin-bottom:5px;">Email</div>
-                    <div style="border:2px solid #000; padding:10px; border-radius:6px; color:#999;">alex@example.com
+                <div style="width: 100%; margin-bottom: 1rem;">
+                    <div class="input-group">
+                        <div class="input-label">Email</div>
+                        <div class="input-box">alex@example.com</div>
                     </div>
-                    <br>
-                    <div style="font-weight:700; margin-bottom:5px;">Password</div>
-                    <div style="border:2px solid #000; padding:10px; border-radius:6px; color:#999;">••••••••</div>
+                    <div class="input-group">
+                        <div class="input-label">Password</div>
+                        <div class="input-box">••••••••</div>
+                    </div>
                 </div>
 
-                <a href="#" class="btn">Login 🚀</a>
+                <a href="#" class="btn">Sign In</a>
             </div>
         </div>
     </div>
@@ -396,12 +433,14 @@
     <div class="screenshot-container">
         <div class="label">3. Auto-Tracking Notification</div>
         <div id="notification-view"
-            style="width: 350px; padding: 15px; background: #fff; border-left: 5px solid #FFD93D; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; display: flex; gap: 15px; align-items: center; font-family: 'Segoe UI', system-ui;">
-            <div style="font-size: 2rem;">💸</div>
+            style="width: 350px; padding: 12px 16px; background: #1F1F1F; border: 1px solid #374151; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); border-radius: 12px; display: flex; gap: 12px; align-items: center; color: white; font-family: 'Inter', sans-serif;">
+            <div
+                style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%); border-radius: 8px; font-size: 16px;">
+                💸</div>
             <div>
-                <div style="font-weight: 700; font-size: 1rem; margin-bottom: 2px;">Purchase Tracked!</div>
-                <div style="color: #555; font-size: 0.9rem;">Amazon: $298.00 - Sony WH-1000XM5...</div>
-                <div style="color: #888; font-size: 0.75rem; margin-top: 5px;">Vibe Tracker via Firefox</div>
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 2px;">Purchase Tracked!</div>
+                <div style="color: #D1D5DB; font-size: 12px;">Amazon: $298.00 - Sony WH-1000XM5...</div>
+                <div style="color: #9CA3AF; font-size: 11px; margin-top: 4px;">Finzen via Firefox</div>
             </div>
         </div>
     </div>

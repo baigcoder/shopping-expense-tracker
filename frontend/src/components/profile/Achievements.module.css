@@ -1,0 +1,75 @@
+/* Achievements.module.css */
+.container {
+    background: #FFF;
+    border: 4px solid #000;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 8px 8px 0 #000;
+    height: 100%;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin: 0 0 1.5rem 0;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.iconBox {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.badge:hover .iconBox {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.badgeName {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #0F172A;
+}
+
+.badgeDesc {
+    font-size: 0.7rem;
+    color: #64748B;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.locked {
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
+
+.locked .iconBox {
+    border: 3px dashed #CBD5E1;
+}
+
+.locked .badgeName {
+    color: #94A3B8;
+}

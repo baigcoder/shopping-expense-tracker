@@ -1,0 +1,154 @@
+/* HowItWorks.module.css */
+.section {
+    padding: 8rem 2rem;
+    background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    color: #0F172A;
+    margin-bottom: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748B;
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto 5rem auto;
+    line-height: 1.6;
+}
+
+.stepsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 1024px) {
+    .stepsGrid {
+        flex-direction: row;
+        gap: 2rem;
+        align-items: stretch;
+    }
+}
+
+.stepContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+@media (min-width: 1024px) {
+    .stepContainer {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.stepCard {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
+    z-index: 2;
+}
+
+.stepCard:hover {
+    border-color: #DC2626;
+    box-shadow: 0 20px 25px -5px rgba(220, 38, 38, 0.1), 0 10px 10px -5px rgba(220, 38, 38, 0.04);
+}
+
+.stepNumber {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #F8FAFC;
+    z-index: 0;
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.iconWrapper {
+    width: 64px;
+    height: 64px;
+    background: #F8FAFC;
+    /* Neutral slate-50 instead of red */
+    color: #64748B;
+    /* Neutral slate-500 */
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.stepCard:hover .iconWrapper {
+    background: #FEF2F2;
+    color: #DC2626;
+    transform: scale(1.1);
+}
+
+.stepTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.stepDesc {
+    color: #64748B;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stepArrow {
+    display: none;
+    color: #CBD5E1;
+    margin: 0 1rem;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+    .stepArrow {
+        display: block;
+    }
+}

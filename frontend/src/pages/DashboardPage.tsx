@@ -1,1064 +1,665 @@
-// Dashboard - Fully Dynamic GenZ Real-time Dashboard
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Cashly Dashboard - Premium Modern SaaS Finance Dashboard
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
-    Plus, Wallet, TrendingUp, ArrowUpRight, ArrowDownRight,
-    CreditCard, Eye, EyeOff, Lock, ChevronRight, Target, Calendar, Zap,
-    AlertTriangle, CheckCircle, Clock, Flame, Trophy, Bell, Trash2
+    TrendingUp, TrendingDown, Wallet, Activity, PiggyBank,
+    CreditCard, ArrowUpRight, Sparkles, Plus, Eye, EyeOff,
+    Target, Bell, ArrowRight, Receipt, BarChart3, Zap,
+    ChevronRight, Calendar, DollarSign, ShoppingCart
 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import MoneyTwinPulse from '../components/dashboard/MoneyTwinPulse';
+import ExtensionStatsCard from '../components/ExtensionStatsCard';
+import { toast } from 'react-toastify';
+import {
+    AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
+    CartesianGrid, PieChart, Pie, Cell, BarChart, Bar
+} from 'recharts';
+import LoadingScreen from '../components/LoadingScreen';
 import { useAuthStore, useCardStore, useModalStore } from '../store/useStore';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
-import { budgetService, Budget } from '../services/budgetService';
-import { goalService, Goal } from '../services/goalService';
-import { subscriptionService, Subscription } from '../services/subscriptionService';
-import { streakService, StreakData } from '../services/streakService';
-import { useNotificationStore, notificationTriggers } from '../services/notificationService';
+import { budgetService } from '../services/budgetService';
+import { streakService } from '../services/streakService';
+import { cardService, getBrandGradient, CardData } from '../services/cardService';
+import { useRealtimeTransactions } from '../hooks/useRealtimeTransactions';
 import { formatCurrency } from '../services/currencyService';
-import { cardService, getThemeById } from '../services/cardService';
-import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis, PieChart, Pie, Cell, Legend, BarChart, Bar } from 'recharts';
-import UpcomingBills from '../components/UpcomingBills';
-import DarkPatternShield from '../components/DarkPatternShield';
-import QuickAddTransaction from '../components/QuickAddTransaction';
-import styles from './DashboardPage.module.css';
+import { cn } from '@/lib/utils';
+import { soundManager } from '@/lib/sounds';
 
-// Format helper
-const formatCompact = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return formatCurrency(num);
+// Cashly theme colors for charts - Premium Indigo Theme
+const CHART_COLORS = {
+    primary: '#2563EB',   // Indigo for primary/income
+    secondary: '#64748B', // Slate for expenses/secondary
+    accent: '#8B5CF6',    // Violet
+    info: '#3B82F6',      // Blue
+    pink: '#F43F5E',
+    teal: '#0D9488'
 };
 
-// --- COMPONENTS ---
+const CATEGORY_COLORS = ['#2563EB', '#64748B', '#8B5CF6', '#3B82F6', '#0D9488', '#F43F5E'];
 
-// Hero Balance Card
-const HeroCard = ({ balance, income, expense, loading }: {
-    balance: number;
-    income: number;
-    expense: number;
-    loading: boolean;
-}) => {
-    const savingsRate = income > 0 ? Math.round(((income - expense) / income) * 100) : 0;
-    const badge = savingsRate >= 20 ? '💰 RICH' : savingsRate >= 10 ? '💪 SAVING' : '😅 SPENDING';
 
-    return (
-        <motion.div
-            className={styles.heroCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-        >
-            <div className={styles.heroTop}>
-                <span className={styles.heroLabel}>Total Balance</span>
-                <motion.span
-                    className={styles.heroBadge}
-                    whileHover={{ scale: 1.1 }}
-                >
-                    {badge}
-                </motion.span>
-            </div>
-            <h1 className={styles.heroAmount}>
-                {loading ? '---' : formatCurrency(balance)}
-            </h1>
-            <div className={styles.heroStats}>
-                <div className={styles.statItem}>
-                    <ArrowUpRight size={16} className={styles.statIconUp} />
-                    <div>
-                        <span>Income</span>
-                        <strong>{loading ? '...' : formatCompact(income)}</strong>
-                    </div>
-                </div>
-                <div className={styles.statItem}>
-                    <ArrowDownRight size={16} className={styles.statIconDown} />
-                    <div>
-                        <span>Expenses</span>
-                        <strong>{loading ? '...' : formatCompact(expense)}</strong>
-                    </div>
-                </div>
-            </div>
-        </motion.div>
-    );
-};
-
-// Spending Chart Card
-const SpendingChart = ({ data, loading }: { data: { day: string; amount: number }[]; loading: boolean }) => (
-    <motion.div
-        className={styles.chartCard}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-    >
-        <div className={styles.chartHeader}>
-            <div>
-                <h3>Weekly Vibe Check</h3>
-                <span className={styles.chartSubtitle}>Last 7 days spending</span>
-            </div>
-            <div className={styles.liveBadge}>
-                <span className={styles.liveDot}></span>
-                LIVE
-            </div>
-        </div>
-        <div className={styles.chartContainer}>
-            {loading ? (
-                <div className={styles.chartLoading}>Loading chart...</div>
-            ) : (
-                <ResponsiveContainer width="100%" height={160}>
-                    <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-                        <defs>
-                            <linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.5} />
-                                <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
-                            </linearGradient>
-                            <linearGradient id="strokeGradient" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stopColor="#8B5CF6" />
-                                <stop offset="50%" stopColor="#EC4899" />
-                                <stop offset="100%" stopColor="#FBBF24" />
-                            </linearGradient>
-                        </defs>
-                        <XAxis
-                            dataKey="day"
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{ fontSize: 12, fill: '#6B7280', fontWeight: 600 }}
-                            dy={10}
-                        />
-                        <Tooltip
-                            contentStyle={{
-                                background: '#000',
-                                border: '2px solid #333',
-                                borderRadius: '12px',
-                                color: '#fff',
-                                fontSize: '12px',
-                                boxShadow: '4px 4px 0 #8B5CF6'
-                            }}
-                            itemStyle={{ color: '#FBBF24', fontWeight: 800 }}
-                            formatter={(value: number) => [`Rs ${value.toFixed(0)}`, 'SPENT']}
-                            cursor={{ stroke: '#6B7280', strokeWidth: 1, strokeDasharray: '4 4' }}
-                        />
-                        <Area
-                            type="monotone"
-                            dataKey="amount"
-                            stroke="url(#strokeGradient)"
-                            strokeWidth={4}
-                            fill="url(#neonGradient)"
-                            animationDuration={2000}
-                            animationEasing="ease-out"
-                        />
-                    </AreaChart>
-                </ResponsiveContainer>
-            )}
-        </div>
-    </motion.div>
-);
-
-// Quick Stats Row - Now Dynamic
-// Quick Stats Row - Now Dynamic & Animated
-const QuickStats = ({ streak, budgetUsed, loading }: { streak: number; budgetUsed: number; loading: boolean }) => (
-    <div className={styles.quickStats}>
-        {/* Streak Card - Yellow/Orange */}
-        <motion.div
-            className={`${styles.quickStatCard} ${styles.streakCard}`}
-            whileHover={{ y: -4 }}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-        >
-            <div className={styles.cardIcon}>
-                <Flame size={40} />
-            </div>
-            <div>
-                <motion.strong
-                    key={`streak-${streak}`} // Triggers animation on change
-                    initial={{ scale: 1.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                >
-                    {loading ? '...' : streak}
-                </motion.strong>
-                <span>Day Streak</span>
-            </div>
-        </motion.div>
-
-        {/* Budget Card - White */}
-        <motion.div
-            className={`${styles.quickStatCard} ${styles.budgetCard}`}
-            whileHover={{ y: -4 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-        >
-            <div className={styles.cardIcon}>
-                <TrendingUp size={24} />
-            </div>
-            <div>
-                <motion.strong
-                    key={`budget-${budgetUsed}`} // Triggers animation on change
-                    initial={{ scale: 1.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
-                >
-                    {loading ? '...' : `${budgetUsed}%`}
-                </motion.strong>
-                <span>Budget Used</span>
-            </div>
-        </motion.div>
-    </div>
-);
-
-// Category Pie Chart Component
-// Category Pie Chart Component
-const CategoryChart = ({ transactions, loading }: { transactions: SupabaseTransaction[]; loading: boolean }) => {
-    const data = useMemo(() => {
-        const categories: Record<string, number> = {};
-        if (!transactions || transactions.length === 0) return [];
-
-        transactions.forEach(t => {
-            const catName = t.category || 'Other';
-            categories[catName] = (categories[catName] || 0) + Math.abs(Number(t.amount));
-        });
-        return Object.entries(categories)
-            .map(([name, value]) => ({ name, value }))
-            .sort((a, b) => b.value - a.value)
-            .slice(0, 5); // Top 5
-    }, [transactions]);
-
-    // Gen Z Neon Palette 🎨
-    const COLORS = ['#A3E635', '#F472B6', '#22D3EE', '#FBBF24', '#C084FC'];
-
-    const totalSpending = useMemo(() => {
-        return data.reduce((acc, curr) => acc + curr.value, 0);
-    }, [data]);
-
-    if (loading) {
-        return (
-            <motion.div className={styles.chartCard} style={{ marginTop: '1.25rem' }}>
-                <div className={styles.chartLoading}>Loading categories...</div>
-            </motion.div>
-        );
+// Animation variants
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
     }
-
-    if (data.length === 0) return null;
-
-    return (
-        <motion.div
-            className={styles.chartCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            style={{ marginTop: '1.25rem' }}
-        >
-            <div className={styles.chartHeader}>
-                <div>
-                    <h3>Spending DNA 🧬</h3>
-                    <span className={styles.chartSubtitle}>Top Categories</span>
-                </div>
-            </div>
-
-            <div className={styles.chartContainer} style={{ height: '220px', position: 'relative' }}>
-                {/* Center Total Label */}
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    textAlign: 'center',
-                    pointerEvents: 'none',
-                    zIndex: 0
-                }}>
-                    <div style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>TOTAL</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 900, color: '#000', fontFamily: 'Space Grotesk' }}>
-                        Rs {totalSpending < 1000 ? totalSpending : `${(totalSpending / 1000).toFixed(1)}k`}
-                    </div>
-                </div>
-
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={data}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={95}
-                            paddingAngle={4}
-                            dataKey="value"
-                            stroke="#000"
-                            strokeWidth={3}
-                        >
-                            {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            contentStyle={{
-                                background: '#fff',
-                                border: '3px solid #000',
-                                borderRadius: '8px',
-                                color: '#000',
-                                boxShadow: '4px 4px 0 #000',
-                                fontWeight: 800,
-                                fontFamily: 'Outfit',
-                                padding: '8px 12px'
-                            }}
-                            itemStyle={{ color: '#000', fontSize: '0.9rem' }}
-                            formatter={(value: number) => `Rs ${value.toFixed(0)}`}
-                        />
-                        <Legend
-                            verticalAlign="bottom"
-                            align="center"
-                            iconType="circle"
-                            iconSize={8}
-                            wrapperStyle={{
-                                paddingTop: '10px',
-                                fontSize: '10px',
-                                fontWeight: 700,
-                                color: '#000',
-                                fontFamily: 'JetBrains Mono',
-                                textTransform: 'uppercase'
-                            }}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
-            </div>
-        </motion.div>
-    );
 };
 
-// Goals Progress Card - NEW
-const GoalsProgress = ({ goals, loading }: { goals: Goal[]; loading: boolean }) => {
-    if (loading) {
-        return (
-            <motion.div className={styles.goalsCard}>
-                <div className={styles.chartLoading}>Loading goals...</div>
-            </motion.div>
-        );
-    }
-
-    if (goals.length === 0) {
-        return (
-            <motion.div
-                className={styles.goalsCard}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <div className={styles.sectionHeader}>
-                    <h3><Target size={18} /> Goals</h3>
-                    <Link to="/goals" className={styles.seeAllLink}>Add Goal</Link>
-                </div>
-                <div className={styles.emptyState}>
-                    <span>🎯</span>
-                    <p>No goals yet. Start saving!</p>
-                </div>
-            </motion.div>
-        );
-    }
-
-    return (
-        <motion.div
-            className={styles.goalsCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-        >
-            <div className={styles.sectionHeader}>
-                <h3><Target size={18} /> Goals</h3>
-                <Link to="/goals" className={styles.seeAllLink}>See All</Link>
-            </div>
-            <div className={styles.goalsList}>
-                {goals.slice(0, 3).map(goal => {
-                    const progress = goal.target > 0 ? Math.round((goal.saved / goal.target) * 100) : 0;
-                    return (
-                        <div key={goal.id} className={styles.goalItem}>
-                            <div className={styles.goalIcon}>{goal.icon}</div>
-                            <div className={styles.goalInfo}>
-                                <div className={styles.goalTop}>
-                                    <strong>{goal.name}</strong>
-                                    <span>{progress}%</span>
-                                </div>
-                                <div className={styles.goalProgress}>
-                                    <motion.div
-                                        className={styles.goalProgressFill}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${progress}%` }}
-                                        style={{ background: progress >= 100 ? '#10B981' : '#8B5CF6' }}
-                                    />
-                                </div>
-                                <span className={styles.goalAmount}>
-                                    {formatCurrency(goal.saved)} / {formatCurrency(goal.target)}
-                                </span>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </motion.div>
-    );
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
 };
 
-// Budget Alerts Card - NEW
-const BudgetAlerts = ({ budgets, transactions, loading }: {
-    budgets: Budget[];
-    transactions: SupabaseTransaction[];
-    loading: boolean
-}) => {
-    const alerts = useMemo(() => {
-        if (!budgets.length || !transactions.length) return [];
-
-        const currentMonth = new Date().getMonth();
-        const currentYear = new Date().getFullYear();
-
-        // Get this month's transactions
-        const monthTransactions = transactions.filter(t => {
-            const txDate = new Date(t.date);
-            return txDate.getMonth() === currentMonth && txDate.getFullYear() === currentYear;
-        });
-
-        // Calculate spending per category
-        const categorySpending: Record<string, number> = {};
-        monthTransactions.forEach(t => {
-            const cat = t.category || 'Other';
-            categorySpending[cat] = (categorySpending[cat] || 0) + Math.abs(t.amount);
-        });
-
-        // Check against budgets
-        return budgets.map(budget => {
-            const spent = categorySpending[budget.category] || 0;
-            const percent = budget.amount > 0 ? Math.round((spent / budget.amount) * 100) : 0;
-            return {
-                category: budget.category,
-                spent,
-                limit: budget.amount,
-                percent,
-                status: percent >= 100 ? 'exceeded' : percent >= 80 ? 'warning' : 'safe'
-            };
-        }).filter(a => a.percent >= 50).sort((a, b) => b.percent - a.percent);
-    }, [budgets, transactions]);
-
-    if (loading) {
-        return (
-            <motion.div className={styles.alertsCard}>
-                <div className={styles.chartLoading}>Checking budgets...</div>
-            </motion.div>
-        );
-    }
-
-    return (
-        <motion.div
-            className={styles.alertsCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-        >
-            <div className={styles.sectionHeader}>
-                <h3><AlertTriangle size={18} /> Budget Pulse</h3>
-                <Link to="/budgets" className={styles.seeAllLink}>Manage</Link>
-            </div>
-            {alerts.length === 0 ? (
-                <div className={styles.alertSuccess}>
-                    <CheckCircle size={24} color="#10B981" />
-                    <p>All budgets looking healthy! 💪</p>
-                </div>
-            ) : (
-                <div className={styles.alertsList}>
-                    {alerts.slice(0, 3).map((alert, i) => (
-                        <motion.div
-                            key={alert.category}
-                            className={`${styles.alertItem} ${styles[alert.status]}`}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                        >
-                            <div className={styles.alertIcon}>
-                                {alert.status === 'exceeded' ? '🚨' : '⚠️'}
-                            </div>
-                            <div className={styles.alertInfo}>
-                                <strong>{alert.category}</strong>
-                                <span>{formatCurrency(alert.spent)} / {formatCurrency(alert.limit)}</span>
-                            </div>
-                            <div className={`${styles.alertBadge} ${styles[alert.status]}`}>
-                                {alert.percent}%
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            )}
-        </motion.div>
-    );
-};
-
-// Subscriptions Preview Card - NEW
-const SubscriptionsPreview = ({ subscriptions, loading }: { subscriptions: Subscription[]; loading: boolean }) => {
-    const activeCount = subscriptions.filter(s => s.is_active).length;
-    const monthlyTotal = subscriptions
-        .filter(s => s.is_active)
-        .reduce((sum, s) => {
-            if (s.cycle === 'yearly') return sum + s.price / 12;
-            if (s.cycle === 'weekly') return sum + s.price * 4;
-            return sum + s.price;
-        }, 0);
-
-    const expiringSoon = subscriptions.filter(s => {
-        if (!s.trial_end_date) return false;
-        const daysRemaining = Math.ceil((new Date(s.trial_end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-        return daysRemaining > 0 && daysRemaining <= 7;
-    });
-
-    if (loading) {
-        return (
-            <motion.div className={styles.subsCard}>
-                <div className={styles.chartLoading}>Loading subscriptions...</div>
-            </motion.div>
-        );
-    }
-
-    return (
-        <motion.div
-            className={styles.subsCard}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-        >
-            <div className={styles.sectionHeader}>
-                <h3><Calendar size={18} /> Subscriptions</h3>
-                <Link to="/subscriptions" className={styles.seeAllLink}>Manage</Link>
-            </div>
-            <div className={styles.subsStats}>
-                <div className={styles.subsStat}>
-                    <strong>{activeCount}</strong>
-                    <span>Active</span>
-                </div>
-                <div className={styles.subsStat}>
-                    <strong>{formatCurrency(monthlyTotal)}</strong>
-                    <span>/month</span>
-                </div>
-            </div>
-            {expiringSoon.length > 0 && (
-                <div className={styles.trialAlert}>
-                    <Clock size={16} />
-                    <span>{expiringSoon.length} trial{expiringSoon.length > 1 ? 's' : ''} expiring soon!</span>
-                </div>
-            )}
-        </motion.div>
-    );
-};
-
-// Credit Card Mini
-interface CardMiniProps {
-    card: {
-        id: string;
-        theme?: string;
-        number?: string;
-    };
-    onClick: () => void;
-}
-
-const CardMini = ({ card, onClick }: CardMiniProps) => {
-    const theme = getThemeById(card.theme || 'default');
-    const last4 = card.number?.slice(-4) || '****';
-
-    return (
-        <motion.div
-            className={styles.cardMini}
-            style={{ background: theme.gradient }}
-            onClick={onClick}
-            whileHover={{ y: -4, scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-        >
-            <div className={styles.cardMiniTop}>
-                <span>{theme.name?.split(' ')[0] || 'Card'}</span>
-                <CreditCard size={16} />
-            </div>
-            <div className={styles.cardMiniNumber}>•••• {last4}</div>
-        </motion.div>
-    );
-};
-
-// Cards Section
-interface CardsSectionProps {
-    cards: any[];
-    onAddCard: () => void;
-    onSelectCard: (card: any) => void;
-}
-
-const CardsSection = ({ cards, onAddCard, onSelectCard }: CardsSectionProps) => (
-    <motion.div
-        className={styles.cardsSection}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-    >
-        <div className={styles.sectionHeader}>
-            <h3><Wallet size={18} /> My Cards</h3>
-            <button onClick={onAddCard} className={styles.addBtn}>
-                <Plus size={16} />
-            </button>
-        </div>
-        <div className={styles.cardsGrid}>
-            {cards.length === 0 ? (
-                <div className={styles.emptyCard} onClick={onAddCard}>
-                    <Plus size={24} />
-                    <span>Add Card</span>
-                </div>
-            ) : (
-                cards.slice(0, 3).map((card) => (
-                    <CardMini
-                        key={card.id}
-                        card={card}
-                        onClick={() => onSelectCard(card)}
-                    />
-                ))
-            )}
-        </div>
-        {cards.length > 0 && (
-            <Link to="/cards" className={styles.viewAllLink}>
-                {cards.length > 3 ? `View all ${cards.length} cards` : 'Manage Cards'} <ChevronRight size={14} />
-            </Link>
-        )}
-    </motion.div>
-);
-
-// Transaction Item
-const TransactionItem = ({ tx }: { tx: SupabaseTransaction }) => {
-    const category = tx.category?.toLowerCase() || '';
-    const emoji = category.includes('food') ? '🍔' :
-        category.includes('coffee') ? '☕' :
-            category.includes('shopping') ? '🛍️' :
-                category.includes('transport') ? '🚗' :
-                    category.includes('entertainment') ? '🎮' : '💳';
-
-    return (
-        <motion.div
-            className={styles.txItem}
-            whileHover={{ x: 4 }}
-        >
-            <div className={styles.txIcon}>{emoji}</div>
-            <div className={styles.txInfo}>
-                <strong>{tx.description || 'Transaction'}</strong>
-                <span>{new Date(tx.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-            </div>
-            <div className={`${styles.txAmount} ${tx.type === 'income' ? styles.income : styles.expense}`}>
-                {tx.type === 'income' ? '+' : '-'}{formatCurrency(Math.abs(tx.amount))}
-            </div>
-        </motion.div>
-    );
-};
-
-// Recent Transactions
-const RecentTransactions = ({ transactions, loading }: { transactions: SupabaseTransaction[]; loading: boolean }) => (
-    <motion.div
-        className={styles.transactionsCard}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-    >
-        <div className={styles.sectionHeader}>
-            <h3>Recent Activity</h3>
-            <Link to="/transactions" className={styles.seeAllLink}>See all</Link>
-        </div>
-        <div className={styles.txList}>
-            {loading ? (
-                <div className={styles.chartLoading}>Loading transactions...</div>
-            ) : transactions.length === 0 ? (
-                <div className={styles.emptyState}>
-                    <span>✨</span>
-                    <p>No transactions yet</p>
-                </div>
-            ) : (
-                transactions.slice(0, 7).map(tx => (
-                    <TransactionItem key={tx.id} tx={tx} />
-                ))
-            )}
-        </div>
-    </motion.div>
-);
-
-// Card Detail Modal with PIN Verification & Delete
-interface CardModalProps {
-    card: any;
-    onClose: () => void;
-    onDelete?: (id: string) => void;
-}
-
-const CardModal = ({ card, onClose, onDelete }: CardModalProps) => {
-    const theme = getThemeById(card?.theme || 'default');
-    const [showCvv, setShowCvv] = useState(false);
-    const [showPinPrompt, setShowPinPrompt] = useState(false);
-    const [pinInput, setPinInput] = useState('');
-    const [pinError, setPinError] = useState('');
-
-    if (!card) return null;
-
-    const handleRevealCvv = () => {
-        if (showCvv) {
-            // Already showing, hide it
-            setShowCvv(false);
-            return;
-        }
-        // Show PIN prompt
-        setShowPinPrompt(true);
-        setPinInput('');
-        setPinError('');
-    };
-
-    const verifyPin = () => {
-        if (!pinInput.trim()) {
-            setPinError('Please enter your PIN');
-            return;
-        }
-
-        // Compare with card's stored PIN
-        if (pinInput === card.pin) {
-            setShowCvv(true);
-            setShowPinPrompt(false);
-            setPinInput('');
-            setPinError('');
-
-            // Auto-hide CVV after 30 seconds for security
-            setTimeout(() => {
-                setShowCvv(false);
-            }, 30000);
-        } else {
-            setPinError('Incorrect PIN. Try again.');
-            setPinInput('');
-        }
-    };
-
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            verifyPin();
-        }
-    };
-
-    return (
-        <motion.div
-            className={styles.modalOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-        >
-            <motion.div
-                className={styles.modalContent}
-                initial={{ scale: 0.9, y: 50 }}
-                animate={{ scale: 1, y: 0 }}
-                onClick={e => e.stopPropagation()}
-            >
-                <div className={styles.modalCard} style={{ background: theme.gradient }}>
-                    <div className={styles.modalCardChip}></div>
-                    <div className={styles.modalCardType}>{(card.type || 'VISA').toUpperCase()}</div>
-                    <div className={styles.modalCardNum}>
-                        •••• •••• •••• {card.number?.slice(-4) || '****'}
-                    </div>
-                    <div className={styles.modalCardBottom}>
-                        <div>
-                            <span>HOLDER</span>
-                            <strong>{(card.holder || 'CARD HOLDER').toUpperCase()}</strong>
-                        </div>
-                        <div>
-                            <span>EXPIRES</span>
-                            <strong>{card.expiry || 'MM/YY'}</strong>
-                        </div>
-                    </div>
-                </div>
-
-                {/* PIN Prompt Modal */}
-                {showPinPrompt && (
-                    <motion.div
-                        className={styles.pinPrompt}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                    >
-                        <div className={styles.pinHeader}>
-                            <Lock size={20} />
-                            <span>Enter Card PIN to Reveal CVV</span>
-                        </div>
-                        <input
-                            type="password"
-                            className={styles.pinInput}
-                            placeholder="••••"
-                            value={pinInput}
-                            onChange={(e) => setPinInput(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                            onKeyPress={handleKeyPress}
-                            maxLength={6}
-                            autoFocus
-                        />
-                        {pinError && <div className={styles.pinError}>{pinError}</div>}
-                        <div className={styles.pinActions}>
-                            <button
-                                className={styles.pinCancelBtn}
-                                onClick={() => {
-                                    setShowPinPrompt(false);
-                                    setPinInput('');
-                                    setPinError('');
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className={styles.pinVerifyBtn}
-                                onClick={verifyPin}
-                                disabled={pinInput.length < 4}
-                            >
-                                Verify
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-
-                <div className={styles.modalActions}>
-                    <button
-                        className={styles.cvvBtn}
-                        onClick={handleRevealCvv}
-                    >
-                        {showCvv ? <EyeOff size={18} /> : <Eye size={18} />}
-                        {showCvv ? `CVV: ${card.cvv || '***'}` : 'Show CVV'}
-                    </button>
-                    {onDelete && (
-                        <button
-                            className={styles.deleteCardBtn}
-                            onClick={() => {
-                                if (window.confirm('Delete this card permanently?')) {
-                                    onDelete(card.id);
-                                    onClose();
-                                }
-                            }}
-                        >
-                            <Trash2 size={16} />
-                        </button>
-                    )}
-                    <button className={styles.closeBtn} onClick={onClose}>
-                        Close
-                    </button>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
-};
-
-// === MAIN DASHBOARD ===
 const DashboardPage = () => {
     const { user } = useAuthStore();
-    const { removeCard } = useCardStore();
+    const { initializeCards } = useCardStore();
     const { openAddCard } = useModalStore();
-    const { addNotification } = useNotificationStore();
+    useRealtimeTransactions();
 
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
-    const [budgets, setBudgets] = useState<Budget[]>([]);
-    const [goals, setGoals] = useState<Goal[]>([]);
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-    const [streakData, setStreakData] = useState<StreakData | null>(null);
-    const [userCards, setUserCards] = useState<any[]>([]); // Cards from Supabase
     const [loading, setLoading] = useState(true);
-    const [selectedCard, setSelectedCard] = useState<any>(null);
-    const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
-    const [metrics, setMetrics] = useState({ balance: 0, income: 0, expense: 0 });
-    const [chartData, setChartData] = useState<{ day: string; amount: number }[]>([]);
+    const [showBalance, setShowBalance] = useState(true);
+    const [stats, setStats] = useState({
+        totalBalance: 0,
+        monthlyIncome: 0,
+        monthlyExpense: 0,
+        transactionsToday: 0,
+        streakDays: 0,
+        totalSaving: 0,
+        balanceTrend: 0,
+        expenseTrend: 0,
+    });
+    const [chartData, setChartData] = useState<{ day: string; income: number; expense: number }[]>([]);
+    const [categoryData, setCategoryData] = useState<{ name: string; value: number; color: string }[]>([]);
+    const [budgetProgress, setBudgetProgress] = useState({ used: 0, total: 0, percentage: 0 });
+    const [userCards, setUserCards] = useState<CardData[]>([]);
+    const [recentTransactions, setRecentTransactions] = useState<SupabaseTransaction[]>([]);
 
-    // Load all data including cards from Supabase
-    const loadDashboardData = useCallback(async () => {
-        if (!user?.id) return;
-
-        try {
-            setLoading(true);
-
-            // Parallel fetch all data including cards from Supabase
-            const [txData, budgetData, goalData, subData, streak, cardsData] = await Promise.all([
-                supabaseTransactionService.getAll(user.id),
-                budgetService.getAll(user.id),
-                goalService.getAll(user.id),
-                subscriptionService.getAll(user.id),
-                streakService.getStreakData(user.id),
-                cardService.getAll(user.id) // Fetch cards from Supabase
-            ]);
-
-            setTransactions(txData);
-            setBudgets(budgetData);
-            setGoals(goalData);
-            setSubscriptions(subData);
-            setStreakData(streak);
-            setUserCards(cardsData); // Set cards from Supabase
-
-            // Calculate metrics
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
-
-            const monthTx = txData.filter(t => {
-                const d = new Date(t.date);
-                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-            });
-
-            const totalIncome = monthTx
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-
-            const totalExpense = monthTx
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-
-            setMetrics({
-                balance: totalIncome - totalExpense,
-                income: totalIncome,
-                expense: totalExpense
-            });
-
-            // Generate weekly chart data
-            const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-            const today = new Date();
-            const weekData = [];
-
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date(today);
-                date.setDate(today.getDate() - i);
-                const dateStr = date.toISOString().split('T')[0];
-                const dayName = days[date.getDay()];
-
-                const dayTotal = txData
-                    .filter(t => t.date === dateStr && t.type === 'expense')
-                    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-
-                weekData.push({ day: dayName, amount: dayTotal });
-            }
-            setChartData(weekData);
-
-            // Check for budget alerts
-            budgetData.forEach(budget => {
-                const categorySpent = monthTx
-                    .filter(t => t.category === budget.category && t.type === 'expense')
-                    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-
-                const percent = budget.amount > 0 ? Math.round((categorySpent / budget.amount) * 100) : 0;
-
-                if (percent >= 90 && percent < 100) {
-                    notificationTriggers.onBudgetAlert(budget.category, percent);
-                } else if (percent >= 100) {
-                    notificationTriggers.onBudgetAlert(budget.category, percent);
-                }
-            });
-
-        } catch (error) {
-            console.error('Dashboard load error:', error);
-        } finally {
-            setLoading(false);
-        }
-    }, [user?.id]);
-
-    // Handle card deletion from Supabase
-    const handleDeleteCard = async (cardId: string) => {
-        const success = await cardService.delete(cardId);
-        if (success) {
-            setUserCards(prev => prev.filter(c => c.id !== cardId));
-            removeCard(cardId); // Also remove from local store if present
-            // Toast is optional, we already have confirmation dialog
-        }
-    };
-
+    // Fetch data
     useEffect(() => {
-        loadDashboardData();
+        const fetchData = async () => {
+            if (!user?.id) return;
 
-        // Listen for real-time transaction updates
-        const handleNewTransaction = () => {
-            loadDashboardData();
+            try {
+                const [allTxs, streakData, budgets, fetchedCards] = await Promise.all([
+                    supabaseTransactionService.getAll(user.id),
+                    streakService.getStreakData(user.id),
+                    budgetService.getAll(user.id),
+                    cardService.getAll(user.id)
+                ]);
+
+                setTransactions(allTxs);
+                setUserCards(fetchedCards);
+                setRecentTransactions(allTxs.slice(0, 5));
+
+                // Calculate stats
+                const now = new Date();
+                const currentMonth = now.getMonth();
+                const currentMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === currentMonth);
+
+                const totalIncome = allTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+                const totalExpense = allTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+                const monthlyIncome = currentMonthTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+                const monthlyExpense = currentMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+
+                const todayDate = new Date().toISOString().split('T')[0];
+                const todayTxs = allTxs.filter(tx => tx.date.startsWith(todayDate));
+
+                // Last month comparison
+                const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+                const lastMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === lastMonth);
+                const lastMonthExpense = lastMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+                const expenseTrend = lastMonthExpense > 0 ? ((monthlyExpense - lastMonthExpense) / lastMonthExpense) * 100 : 0;
+
+                setStats({
+                    totalBalance: totalIncome - totalExpense,
+                    monthlyIncome,
+                    monthlyExpense,
+                    transactionsToday: todayTxs.length,
+                    streakDays: streakData.currentStreak,
+                    totalSaving: Math.max(0, totalIncome - totalExpense),
+                    balanceTrend: totalIncome > 0 ? Math.round((totalIncome - totalExpense) / totalIncome * 100) : 0,
+                    expenseTrend: Math.round(expenseTrend * 10) / 10,
+                });
+
+                // Chart data - last 14 days
+                const last14Days = Array.from({ length: 14 }, (_, i) => {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (13 - i));
+                    return date.toISOString().split('T')[0];
+                });
+
+                const chartDataCalc = last14Days.map(date => {
+                    const dayTxs = allTxs.filter(tx => tx.date.startsWith(date));
+                    return {
+                        day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+                        income: dayTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0),
+                        expense: Math.abs(dayTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + tx.amount, 0))
+                    };
+                });
+                setChartData(chartDataCalc);
+
+                // Category data
+                const categoryMap = new Map<string, number>();
+                allTxs.filter(tx => tx.type === 'expense').forEach(tx => {
+                    const current = categoryMap.get(tx.category) || 0;
+                    categoryMap.set(tx.category, current + Math.abs(tx.amount));
+                });
+
+                const categoryArr = Array.from(categoryMap.entries())
+                    .map(([name, value], idx) => ({ name, value, color: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }))
+                    .sort((a, b) => b.value - a.value)
+                    .slice(0, 5);
+                setCategoryData(categoryArr);
+
+                // Budget progress
+                const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
+                setBudgetProgress({
+                    used: monthlyExpense,
+                    total: totalBudget,
+                    percentage: totalBudget > 0 ? Math.min(100, Math.round((monthlyExpense / totalBudget) * 100)) : 0
+                });
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Dashboard data fetch error:', error);
+                setLoading(false);
+            }
         };
 
-        // Listen for new card added
-        const handleNewCard = () => {
-            loadDashboardData();
-        };
+        fetchData();
+        if (user?.id) {
+            initializeCards(user.id);
+        }
+    }, [user?.id, initializeCards]);
 
-        window.addEventListener('new-transaction', handleNewTransaction);
-        window.addEventListener('new-card', handleNewCard);
-        return () => {
-            window.removeEventListener('new-transaction', handleNewTransaction);
-            window.removeEventListener('new-card', handleNewCard);
+    const getCategoryIcon = (category: string) => {
+        const icons: Record<string, string> = {
+            'Shopping': '🛍️',
+            'Food & Dining': '🍔',
+            'Transport': '🚗',
+            'Entertainment': '🎬',
+            'Bills': '📱',
+            'Health': '💊',
+            'Travel': '✈️',
+            'Other': '📦'
         };
-    }, [loadDashboardData]);
-
-    const greeting = () => {
-        const hour = new Date().getHours();
-        if (hour < 12) return 'Good morning';
-        if (hour < 18) return 'Good afternoon';
-        return 'Good evening';
+        return icons[category] || '📦';
     };
 
-    const budgetUsedPercent = useMemo(() => {
-        if (!budgets.length) return 0;
-        const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
-        return totalBudget > 0 ? Math.round((metrics.expense / totalBudget) * 100) : 0;
-    }, [budgets, metrics.expense]);
+    if (loading) {
+        return <LoadingScreen />;
+    }
 
     return (
-        <div className={styles.dashboard}>
-            {/* Header */}
-            <header className={styles.header}>
-                <div>
-                    <h1>{greeting()}, {user?.name?.split(' ')[0] || 'there'}! 👋</h1>
-                    <p>Here's your financial overview</p>
-                </div>
-                <div className={styles.headerActions}>
-                    <button onClick={openAddCard} className={styles.headerBtn}>
-                        <Wallet size={18} /> Add Card
-                    </button>
-                    <button
-                        onClick={() => setIsQuickAddOpen(true)}
-                        className={styles.headerBtnPrimary}
-                    >
-                        <Plus size={18} /> New Transaction
-                    </button>
-                </div>
-            </header>
+        <div className="min-h-screen bg-background">
+            <motion.div
+                className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                {/* Header */}
+                <motion.div variants={itemVariants} className="flex flex-col gap-1">
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-display">
+                        Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name?.split(' ')[0] || 'there'} 👋
+                    </h1>
+                    <p className="text-muted-foreground">
+                        Here's your financial overview for {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                </motion.div>
 
-            {/* Main Grid */}
-            <div className={styles.grid}>
-                {/* Left Column */}
-                <div className={styles.leftCol}>
-                    <HeroCard
-                        balance={metrics.balance}
-                        income={metrics.income}
-                        expense={metrics.expense}
-                        loading={loading}
-                    />
-                    <SpendingChart data={chartData} loading={loading} />
+                {/* Stats Cards - Bento Grid */}
+                <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {/* Total Balance / Total Spend */}
+                    <Card className="col-span-2 md:col-span-1 card-hover bg-primary border-none shadow-lg shadow-primary/20">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-semibold text-white/90 flex items-center justify-between">
+                                {stats.totalBalance >= 0 ? 'Total Balance' : 'Total Spend'}
+                                <button
+                                    onClick={() => { setShowBalance(!showBalance); soundManager.play('click'); }}
+                                    className="p-1 hover:bg-white/20 rounded text-white/80 transition-colors"
+                                >
+                                    {showBalance ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                                </button>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                                {showBalance ? formatCurrency(Math.abs(stats.totalBalance)) : '••••••'}
+                            </div>
+                            <div className="text-xs flex items-center gap-1 mt-2 text-white/80">
+                                <TrendingUp className="h-3 w-3" />
+                                <span>{Math.abs(stats.balanceTrend)}% savings rate</span>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                    {/* Spending DNA + Quick Stats Row */}
-                    <div className={styles.dnaStatsRow}>
-                        <CategoryChart transactions={transactions.filter(t => t.type === 'expense')} loading={loading} />
-                        <div className={styles.quickStatsVert}>
-                            <QuickStats streak={streakData?.currentStreak || 0} budgetUsed={budgetUsedPercent} loading={loading} />
-                        </div>
+
+                    {/* Monthly Income */}
+                    <Card className="card-hover border-slate-200/60 shadow-sm">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                <div className="p-1.5 rounded-lg bg-blue-50">
+                                    <TrendingUp className="h-3.5 w-3.5 text-blue-600" />
+                                </div>
+                                Income
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xl font-bold text-slate-900">{formatCurrency(stats.monthlyIncome)}</div>
+                            <p className="text-xs text-muted-foreground mt-1">This month</p>
+                        </CardContent>
+                    </Card>
+
+
+                    {/* Monthly Expenses */}
+                    <Card className="card-hover border-slate-200/60 shadow-sm">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                <div className="p-1.5 rounded-lg bg-slate-100">
+                                    <TrendingDown className="h-3.5 w-3.5 text-slate-600" />
+                                </div>
+                                Expenses
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xl font-bold text-slate-900">{formatCurrency(stats.monthlyExpense)}</div>
+                            <div className={cn("text-xs flex items-center gap-1 mt-1",
+                                stats.expenseTrend <= 0 ? "text-blue-600" : "text-amber-600")}>
+                                {stats.expenseTrend <= 0 ? <TrendingDown className="h-3 w-3" /> : <TrendingUp className="h-3 w-3" />}
+                                <span>{Math.abs(stats.expenseTrend)}% vs last month</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+
+                    {/* Streak */}
+                    <Card className="card-hover bg-indigo-50/30 border-slate-200/60 shadow-sm">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                <div className="p-1.5 rounded-lg bg-indigo-50">
+                                    <Zap className="h-3.5 w-3.5 text-indigo-600" />
+                                </div>
+                                Streak
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xl font-bold text-indigo-600">{stats.streakDays} days 🔥</div>
+                            <p className="text-xs text-muted-foreground mt-1">Keep tracking!</p>
+                        </CardContent>
+                    </Card>
+
+                </motion.div>
+
+                {/* Main Content Grid */}
+                <div className="grid lg:grid-cols-3 gap-6">
+                    {/* Left Column - Charts */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* Spending Trend Chart */}
+                        <motion.div variants={itemVariants}>
+                            <Card className="card-hover">
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <CardTitle className="font-display">Spending Trend</CardTitle>
+                                            <CardDescription>Income vs Expenses over last 14 days</CardDescription>
+                                        </div>
+                                        <Link to="/analytics">
+                                            <Button variant="ghost" size="sm">
+                                                View All <ArrowRight className="h-4 w-4 ml-1" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="h-[280px]">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                                <defs>
+                                                    <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor={CHART_COLORS.primary} stopOpacity={0.3} />
+                                                        <stop offset="95%" stopColor={CHART_COLORS.primary} stopOpacity={0} />
+                                                    </linearGradient>
+                                                    <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor={CHART_COLORS.secondary} stopOpacity={0.3} />
+                                                        <stop offset="95%" stopColor={CHART_COLORS.secondary} stopOpacity={0} />
+                                                    </linearGradient>
+                                                </defs>
+                                                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                                                <XAxis
+                                                    dataKey="day"
+                                                    stroke="hsl(var(--muted-foreground))"
+                                                    fontSize={12}
+                                                    tickLine={false}
+                                                    axisLine={false}
+                                                />
+                                                <YAxis
+                                                    stroke="hsl(var(--muted-foreground))"
+                                                    fontSize={12}
+                                                    tickLine={false}
+                                                    axisLine={false}
+                                                    tickFormatter={(value) => `$${value}`}
+                                                />
+                                                <Tooltip
+                                                    contentStyle={{
+                                                        backgroundColor: 'hsl(var(--card))',
+                                                        borderColor: 'hsl(var(--border))',
+                                                        borderRadius: '12px',
+                                                        boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)'
+                                                    }}
+                                                    formatter={(value: number) => [formatCurrency(value), '']}
+                                                />
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="income"
+                                                    stroke={CHART_COLORS.primary}
+                                                    strokeWidth={2}
+                                                    fill="url(#incomeGradient)"
+                                                    name="Income"
+                                                />
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="expense"
+                                                    stroke={CHART_COLORS.secondary}
+                                                    strokeWidth={2}
+                                                    fill="url(#expenseGradient)"
+                                                    name="Expense"
+                                                />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    <div className="flex items-center justify-center gap-6 mt-4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-blue-500" />
+                                            <span className="text-sm text-muted-foreground font-medium">Income</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-slate-400" />
+                                            <span className="text-sm text-muted-foreground font-medium">Expenses</span>
+                                        </div>
+                                    </div>
+
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+
+                        {/* Category Breakdown & Budget */}
+                        <motion.div variants={itemVariants} className="grid md:grid-cols-2 gap-6">
+                            {/* Category Breakdown */}
+                            <Card className="card-hover">
+                                <CardHeader>
+                                    <CardTitle className="font-display">Top Categories</CardTitle>
+                                    <CardDescription>Where your money goes</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    {categoryData.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {categoryData.map((cat, i) => (
+                                                <div key={i} className="flex items-center gap-3">
+                                                    <div className="text-xl">{getCategoryIcon(cat.name)}</div>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center justify-between mb-1">
+                                                            <span className="text-sm font-medium">{cat.name}</span>
+                                                            <span className="text-sm text-muted-foreground">{formatCurrency(cat.value)}</span>
+                                                        </div>
+                                                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full rounded-full transition-all duration-500"
+                                                                style={{
+                                                                    width: `${Math.min(100, (cat.value / (categoryData[0]?.value || 1)) * 100)}%`,
+                                                                    backgroundColor: cat.color
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                            <p>No expenses yet</p>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+
+                            {/* Budget Progress */}
+                            <Card className="card-hover">
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <CardTitle className="font-display">Budget</CardTitle>
+                                            <CardDescription>Monthly spending limit</CardDescription>
+                                        </div>
+                                        <Link to="/budgets">
+                                            <Button variant="ghost" size="sm">
+                                                <Target className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {budgetProgress.total > 0 ? (
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-center">
+                                                <div className="relative w-32 h-32">
+                                                    <svg className="w-full h-full transform -rotate-90">
+                                                        <circle
+                                                            cx="64"
+                                                            cy="64"
+                                                            r="56"
+                                                            stroke="hsl(var(--muted))"
+                                                            strokeWidth="10"
+                                                            fill="none"
+                                                        />
+                                                        <circle
+                                                            cx="64"
+                                                            cy="64"
+                                                            r="56"
+                                                            stroke={budgetProgress.percentage > 90 ? '#EF4444' : budgetProgress.percentage > 70 ? '#F59E0B' : '#2563EB'}
+                                                            strokeWidth="10"
+                                                            fill="none"
+                                                            strokeLinecap="round"
+                                                            strokeDasharray={`${budgetProgress.percentage * 3.52} 352`}
+                                                            className="transition-all duration-1000"
+                                                        />
+                                                    </svg>
+
+                                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                                        <span className="text-2xl font-bold">{budgetProgress.percentage}%</span>
+                                                        <span className="text-xs text-muted-foreground">used</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="text-center space-y-1">
+                                                <p className="text-lg font-semibold">{formatCurrency(budgetProgress.used)} <span className="text-muted-foreground font-normal">of</span> {formatCurrency(budgetProgress.total)}</p>
+                                                <p className="text-sm text-muted-foreground">{formatCurrency(budgetProgress.total - budgetProgress.used)} remaining</p>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8">
+                                            <Target className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
+                                            <p className="text-muted-foreground mb-3">No budget set</p>
+                                            <Link to="/budgets">
+                                                <Button size="sm" variant="outline">Create Budget</Button>
+                                            </Link>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </div>
+
+                    {/* Right Column - Cards & Transactions */}
+                    <div className="space-y-6">
+                        {/* Extension Tracking Stats */}
+                        <motion.div variants={itemVariants}>
+                            <ExtensionStatsCard />
+                        </motion.div>
+
+                        {/* Card Wallet */}
+                        <motion.div variants={itemVariants}>
+                            <Card className="card-hover overflow-hidden">
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle className="font-display">My Cards</CardTitle>
+                                        <Button variant="ghost" size="sm" onClick={openAddCard}>
+                                            <Plus className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    {userCards.length > 0 ? (
+                                        userCards.slice(0, 2).map((card, i) => (
+                                            <motion.div
+                                                key={card.id}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: i * 0.1 }}
+                                                className={cn(
+                                                    "p-4 rounded-xl text-white relative overflow-hidden",
+                                                    i === 0 ? "bg-primary" : "bg-slate-800"
+                                                )}
+                                                style={card.theme ? { background: getBrandGradient(card.theme) } : {}}
+                                            >
+
+                                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
+                                                <div className="relative">
+                                                    <div className="flex justify-between items-start mb-6">
+                                                        <CreditCard className="h-8 w-8 opacity-80" />
+                                                        <span className="text-xs opacity-80 uppercase">{card.card_type || 'VISA'}</span>
+                                                    </div>
+                                                    <div className="font-mono text-lg tracking-wider mb-2">
+                                                        •••• •••• •••• {card.number?.slice(-4) || '****'}
+                                                    </div>
+                                                    <div className="text-xs opacity-80">{card.holder || 'Card Holder'}</div>
+                                                </div>
+                                            </motion.div>
+                                        ))
+                                    ) : (
+                                        <div className="text-center py-6">
+                                            <CreditCard className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
+                                            <p className="text-muted-foreground mb-3">No cards added</p>
+                                            <Button size="sm" variant="outline" onClick={openAddCard}>Add Card</Button>
+                                        </div>
+                                    )}
+                                    {userCards.length > 2 && (
+                                        <Link to="/cards" className="block">
+                                            <Button variant="ghost" className="w-full text-muted-foreground">
+                                                View all {userCards.length} cards <ChevronRight className="h-4 w-4 ml-1" />
+                                            </Button>
+                                        </Link>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+
+                        {/* Recent Transactions */}
+                        <motion.div variants={itemVariants}>
+                            <Card className="card-hover">
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle className="font-display">Recent Activity</CardTitle>
+                                        <Link to="/transactions">
+                                            <Button variant="ghost" size="sm">
+                                                View All <ArrowRight className="h-4 w-4 ml-1" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {recentTransactions.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {recentTransactions.map((tx, i) => (
+                                                <motion.div
+                                                    key={tx.id}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: i * 0.05 }}
+                                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                                                >
+                                                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg">
+                                                        {getCategoryIcon(tx.category)}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-medium truncate">{tx.description || 'Transaction'}</p>
+                                                        <p className="text-xs text-muted-foreground">{tx.category}</p>
+                                                    </div>
+                                                    <div className={cn("font-bold", tx.type === 'expense' ? 'text-slate-600' : 'text-blue-600')}>
+                                                        {tx.type === 'expense' ? '-' : '+'}{formatCurrency(Math.abs(tx.amount))}
+                                                    </div>
+
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <Receipt className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                            <p>No transactions yet</p>
+                                            <Link to="/transactions" className="mt-2 inline-block">
+                                                <Button size="sm" variant="link">Add your first transaction</Button>
+                                            </Link>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+
+                        {/* Quick Actions */}
+                        <motion.div variants={itemVariants}>
+                            <Card className="card-hover bg-slate-50/50 border-slate-200/60">
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="font-display flex items-center gap-2">
+                                        <Sparkles className="h-5 w-5 text-primary" />
+                                        Quick Actions
+                                    </CardTitle>
+                                </CardHeader>
+
+                                <CardContent>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <Link to="/budgets">
+                                            <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
+                                                <Target className="h-5 w-5" />
+                                                <span className="text-xs">Budgets</span>
+                                            </Button>
+                                        </Link>
+                                        <Link to="/goals">
+                                            <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
+                                                <PiggyBank className="h-5 w-5" />
+                                                <span className="text-xs">Goals</span>
+                                            </Button>
+                                        </Link>
+                                        <Link to="/analytics">
+                                            <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
+                                                <BarChart3 className="h-5 w-5" />
+                                                <span className="text-xs">Analytics</span>
+                                            </Button>
+                                        </Link>
+                                        <Link to="/subscriptions">
+                                            <Button variant="outline" className="w-full h-auto py-3 flex-col gap-1">
+                                                <Calendar className="h-5 w-5" />
+                                                <span className="text-xs">Subscriptions</span>
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
                     </div>
                 </div>
 
-                {/* Middle Column */}
-                <div className={styles.middleCol}>
-                    <CardsSection
-                        cards={userCards}
-                        onAddCard={openAddCard}
-                        onSelectCard={setSelectedCard}
-                    />
-                    <RecentTransactions transactions={transactions} loading={loading} />
-                    <GoalsProgress goals={goals} loading={loading} />
-                </div>
-
-                {/* Right Column */}
-                <div className={styles.rightCol}>
-                    <DarkPatternShield compact />
-                    <UpcomingBills />
-                    <BudgetAlerts budgets={budgets} transactions={transactions} loading={loading} />
-                    <SubscriptionsPreview subscriptions={subscriptions} loading={loading} />
-                </div>
-            </div>
-
-            {/* Card Modal */}
-            <AnimatePresence>
-                {selectedCard && (
-                    <CardModal
-                        card={selectedCard}
-                        onClose={() => setSelectedCard(null)}
-                        onDelete={handleDeleteCard}
-                    />
-                )}
-            </AnimatePresence>
-
-            {/* Quick Add Transaction Modal */}
-            <QuickAddTransaction
-                isOpen={isQuickAddOpen}
-                onClose={() => setIsQuickAddOpen(false)}
-            />
+                {/* AI Insights Section */}
+                <motion.div variants={itemVariants} className="mt-6">
+                    <MoneyTwinPulse userId={user?.id || ''} />
+                </motion.div>
+            </motion.div>
         </div>
     );
 };

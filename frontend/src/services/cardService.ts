@@ -63,6 +63,23 @@ export const cardService = {
         return true;
     },
 
+    // Get single card by ID
+    getById: async (id: string, userId: string): Promise<CardData | null> => {
+        const { data, error } = await supabase
+            .from('cards')
+            .select('*')
+            .eq('id', id)
+            .eq('user_id', userId)
+            .single();
+
+        if (error) {
+            console.error('Error fetching card:', error);
+            return null;
+        }
+
+        return data;
+    },
+
     // Update a card
     update: async (id: string, updates: Partial<CardData>): Promise<CardData | null> => {
         const { data, error } = await supabase
@@ -81,57 +98,72 @@ export const cardService = {
     }
 };
 
-// 5 Gen Z Card Design Themes with Quotes
+// 8 Gen Z Card Design Themes with Quotes
+// 5 Best Looking Card Templates (Premium SaaS)
 export const CARD_THEMES = [
     {
-        id: 'money-moves',
-        name: 'Money Moves 💸',
-        gradient: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #34D399 100%)',
-        pattern: 'cash',
-        accent: '#064E3B',
-        mascot: '💸',
-        quote: 'MONEY MOVES'
+        id: 'slate-executive',
+        name: 'Slate Executive',
+        gradient: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', // Dark Slate
+        buttonColor: '#1e293b',
+        textColor: '#ffffff'
     },
     {
-        id: 'rich-flex',
-        name: 'Rich Flex 💅',
-        gradient: 'linear-gradient(135deg, #DB2777 0%, #EC4899 50%, #F472B6 100%)',
-        pattern: 'sparkles',
-        accent: '#831843',
-        mascot: '💅',
-        quote: 'RICH FLEX'
+        id: 'deep-navy',
+        name: 'Deep Navy',
+        gradient: 'linear-gradient(135deg, #172554 0%, #1e3a8a 100%)', // Midnight Blue
+        buttonColor: '#172554',
+        textColor: '#ffffff'
     },
     {
-        id: 'no-cap',
-        name: 'No Cap 🧢',
-        gradient: 'linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%)',
-        pattern: 'waves',
-        accent: '#1E3A8A',
-        mascot: '🧢',
-        quote: 'NO CAP'
+        id: 'pure-obsidian',
+        name: 'Pure Obsidian',
+        gradient: 'linear-gradient(135deg, #000000 0%, #1c1917 100%)', // Solid Black
+        buttonColor: '#000000',
+        textColor: '#ffffff'
     },
     {
-        id: 'main-character',
-        name: 'Main Character 🌟',
-        gradient: 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)',
-        pattern: 'stars',
-        accent: '#78350F',
-        mascot: '🌟',
-        quote: 'MAIN CHARACTER'
+        id: 'sunset-horizon',
+        name: 'Sunset Horizon',
+        gradient: 'linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%)', // Vibrant
+        buttonColor: '#7c3aed',
+        textColor: '#ffffff'
     },
     {
-        id: 'midnight-vibe',
-        name: 'Midnight Vibe 🌑',
-        gradient: 'linear-gradient(135deg, #111827 0%, #1F2937 50%, #374151 100%)',
-        pattern: 'dots',
-        accent: '#F3F4F6',
-        mascot: '🌑',
-        quote: 'MIDNIGHT VIBE'
+        id: 'oceanic-depth',
+        name: 'Oceanic Depth',
+        gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)', // Cyan-Blue
+        buttonColor: '#0284c7',
+        textColor: '#ffffff'
     }
 ];
 
 export const getThemeById = (id: string) => {
-    return CARD_THEMES.find(t => t.id === id) || CARD_THEMES[0]; // Default to money-moves
+    return CARD_THEMES.find(t => t.id === id) || CARD_THEMES[0];
+};
+
+// Shared Brand Gradients (Premium SaaS Theme)
+export const getBrandGradient = (brand: string): string => {
+    const normalizedBrand = brand?.toLowerCase() || 'generic';
+    switch (normalizedBrand) {
+        case 'visa':
+            return 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'; // Slate 800 -> 900
+        case 'mastercard':
+            return 'linear-gradient(135deg, #334155 0%, #1e293b 100%)'; // Slate 700 -> 800
+        case 'amex':
+            return 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'; // Sky 600 -> 700
+        case 'discover':
+            return 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'; // Orange 500 -> 600
+        case 'paypal':
+            return 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'; // Blue 600 -> 700
+        case 'jcb':
+            return 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)'; // Teal 600 -> 700
+        case 'unionpay':
+            return 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%)'; // Cyan 600 -> 700
+        default:
+            return 'linear-gradient(135deg, #475569 0%, #334155 100%)'; // Slate 600 -> 700
+    }
 };
 
 export default cardService;
+
