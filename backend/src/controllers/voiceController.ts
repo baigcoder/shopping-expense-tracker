@@ -129,3 +129,62 @@ export const getElevenLabsSignedUrl = async (req: Request, res: Response): Promi
         res.status(500).json({ error: 'Failed to generate signed URL' });
     }
 };
+
+// Text-to-Speech proxy - calls ElevenLabs from backend (keeps API key secure)
+export const textToSpeech = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { text, voiceId } = req.body;
+
+        if (!text) {
+            res.status(400).json({ error: 'Text is required' });
+            return;
+        }
+
+        const apiKey = process.env.ELEVENLABS_API_KEY;
+        if (!apiKey) {
+            res.status(500).json({ error: 'ElevenLabs API key not configured' });
+            return;
+        }
+
+        // Default voice ID if not provided
+        const voice = voiceId || '21m00Tcm4TlvDq8ikWAM'; // Rachel
+
+        console.log(`🎤 TTS request: "${text.substring(0, 50)}..." with voice ${voice}`);
+
+        const response = await fetch(
+            `https://api.elevenlabs.io/v1/text-to-speech/${voice}?optimize_streaming_latency=4&output_format=mp3_44100_64`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'xi-api-key': apiKey,
+                },
+                body: JSON.stringify({
+                    text,
+                    model_id: 'eleven_flash_v2_5',
+                    voice_settings: {
+                        stability: 0.5,
+                        similarity_boost: 0.75
+                    }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('ElevenLabs error:', response.status, errorText);
+            res.status(response.status).json({ error: 'TTS failed', details: errorText });
+            return;
+        }
+
+        // Stream the audio response
+        const audioBuffer = await response.arrayBuffer();
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Content-Length', audioBuffer.byteLength);
+        res.send(Buffer.from(audioBuffer));
+
+    } catch (error: any) {
+        console.error('Text-to-speech error:', error);
+        res.status(500).json({ error: 'Failed to generate speech' });
+    }
+};

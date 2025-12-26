@@ -38,6 +38,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     const recognitionRef = useRef<any>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const transcriptRef = useRef<HTMLDivElement>(null);
+    const callEndedRef = useRef(false); // Track if call ended to prevent recognition restart
 
     // Auto-scroll transcript when new messages appear
     useEffect(() => {
@@ -46,24 +47,26 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         }
     }, [transcript, interimText]);
 
-    // Speak using ElevenLabs
+    // Speak using backend TTS proxy (keeps API key secure on server)
     const speakWithElevenLabs = useCallback(async (text: string) => {
         const voiceId = VOICE_IDS[voiceName] || VOICE_IDS['Rachel'];
 
         try {
             setIsAISpeaking(true);
 
-            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?optimize_streaming_latency=4&output_format=mp3_44100_64`, {
+            // Get auth token
+            const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
+            const parsed = token ? JSON.parse(token) : null;
+            const accessToken = parsed?.access_token;
+
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const response = await fetch(`${apiUrl}/voice/tts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'xi-api-key': ELEVENLABS_API_KEY,
+                    'Authorization': `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify({
-                    text,
-                    model_id: 'eleven_flash_v2_5',
-                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-                })
+                body: JSON.stringify({ text, voiceId })
             });
 
             if (!response.ok) throw new Error('TTS failed');
@@ -78,7 +81,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             };
             audioRef.current.play();
         } catch (error) {
-            console.error('ElevenLabs error:', error);
+            console.error('TTS error:', error);
             setIsAISpeaking(false);
         }
     }, [voiceName]);
@@ -185,6 +188,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     // Reset state when modal opens
     useEffect(() => {
         if (isOpen) {
+            callEndedRef.current = false; // Reset so recognition can work
             setCallStatus('connecting');
             setTranscript([]);
             setIsAISpeaking(false);
@@ -253,19 +257,25 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
 
             recognition.onerror = (event: any) => {
                 console.error('Speech recognition error:', event.error);
-                if (event.error !== 'no-speech' && event.error !== 'aborted') {
-                    // Restart on errors other than no-speech
+                if (event.error !== 'no-speech' && event.error !== 'aborted' && !callEndedRef.current) {
+                    // Restart on errors other than no-speech (and only if call not ended)
                     setTimeout(() => {
-                        try { recognition.start(); } catch (e) { }
+                        if (!callEndedRef.current) {
+                            try { recognition.start(); } catch (e) { }
+                        }
                     }, 500);
                 }
             };
 
             recognition.onend = () => {
-                // Auto-restart - check current state via DOM
-                setTimeout(() => {
-                    try { recognition.start(); } catch (e) { }
-                }, 200);
+                // Auto-restart only if call not ended
+                if (!callEndedRef.current) {
+                    setTimeout(() => {
+                        if (!callEndedRef.current) {
+                            try { recognition.start(); } catch (e) { }
+                        }
+                    }, 200);
+                }
             };
 
             recognitionRef.current = recognition;
@@ -292,11 +302,15 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
 
     const handleEndCall = () => {
         // Stop everything immediately
+        callEndedRef.current = true; // Prevent recognition from restarting
         setCallStatus('ended');
 
         // Stop speech recognition
         if (recognitionRef.current) {
-            try { recognitionRef.current.stop(); } catch (e) { }
+            try {
+                recognitionRef.current.abort(); // Use abort for immediate stop
+                recognitionRef.current.stop();
+            } catch (e) { }
             recognitionRef.current = null;
         }
 
