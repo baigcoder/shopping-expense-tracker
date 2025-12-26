@@ -102,10 +102,12 @@ export const genZToast = {
 
         const opts = {
             ...defaultOptions,
-            autoClose: 4000, // 4 seconds
+            autoClose: 4000, // 4 seconds - will auto-close
             toastId: 'extension-synced-notification',
             hideProgressBar: false,
             closeButton: true,
+            pauseOnHover: false, // Don't pause timer on hover
+            pauseOnFocusLoss: false, // Don't pause when window loses focus
             ...options
         };
 
