@@ -1,23 +1,19 @@
 // Voice Routes - ElevenLabs voice AI integration
 import { Router } from 'express';
 import { getVoicePreferences, saveVoicePreferences, getElevenLabsSignedUrl, textToSpeech } from '../controllers/voiceController.js';
-import { authMiddleware } from '../middleware/auth.js';
+import { authMiddleware, optionalAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-// All routes require authentication
-router.use(authMiddleware);
+// Preferences routes require authentication
+router.get('/preferences', authMiddleware, getVoicePreferences);
+router.post('/preferences', authMiddleware, saveVoicePreferences);
 
-// Get user's voice preferences
-router.get('/preferences', getVoicePreferences);
+// ElevenLabs config requires auth
+router.get('/elevenlabs-config', authMiddleware, getElevenLabsSignedUrl);
 
-// Save voice preferences (setup or update)
-router.post('/preferences', saveVoicePreferences);
-
-// Get ElevenLabs configuration for client
-router.get('/elevenlabs-config', getElevenLabsSignedUrl);
-
-// Text-to-speech proxy (keeps API key on server)
-router.post('/tts', textToSpeech);
+// TTS endpoint - use optional auth so it works even during setup
+// The TTS itself just needs the API key, not user data
+router.post('/tts', optionalAuth, textToSpeech);
 
 export default router;
