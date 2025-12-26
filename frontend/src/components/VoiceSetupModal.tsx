@@ -90,8 +90,8 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
             const parsed = token ? JSON.parse(token) : null;
             const supabaseUserId = parsed?.user?.id;
 
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/voice/preferences`, {
+            const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
+            const response = await fetch(`${apiUrl}/api/voice/preferences`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
