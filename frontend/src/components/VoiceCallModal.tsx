@@ -47,26 +47,25 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         }
     }, [transcript, interimText]);
 
-    // Speak using backend TTS proxy (keeps API key secure on server)
+    // Speak using ElevenLabs directly from browser (avoids server IP flagging)
     const speakWithElevenLabs = useCallback(async (text: string) => {
         const voiceId = VOICE_IDS[voiceName] || VOICE_IDS['Rachel'];
+        const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
 
         try {
             setIsAISpeaking(true);
 
-            // Get auth token
-            const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
-            const parsed = token ? JSON.parse(token) : null;
-            const accessToken = parsed?.access_token;
-
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/voice/tts`, {
+            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?optimize_streaming_latency=4&output_format=mp3_44100_64`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'xi-api-key': apiKey,
                 },
-                body: JSON.stringify({ text, voiceId })
+                body: JSON.stringify({
+                    text,
+                    model_id: 'eleven_flash_v2_5',
+                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+                })
             });
 
             if (!response.ok) throw new Error('TTS failed');

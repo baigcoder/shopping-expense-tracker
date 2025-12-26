@@ -43,24 +43,21 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
         setIsPreviewing(true);
 
         try {
-            // Get auth token
-            const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
-            const parsed = token ? JSON.parse(token) : null;
-            const accessToken = parsed?.access_token;
+            const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
 
             // Shorter preview text for faster response
             const shortPreview = "Hi! I'm your AI financial assistant. Ready to help you manage your money!";
 
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const response = await fetch(`${apiUrl}/voice/tts`, {
+            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${selectedVoice.id}?optimize_streaming_latency=4&output_format=mp3_44100_64`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'xi-api-key': apiKey,
                 },
                 body: JSON.stringify({
                     text: shortPreview,
-                    voiceId: selectedVoice.id
+                    model_id: 'eleven_flash_v2_5',
+                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
                 })
             });
 
