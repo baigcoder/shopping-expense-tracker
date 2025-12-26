@@ -19,8 +19,12 @@ export default defineConfig({
             },
         },
     },
-    // Performance optimizations
+    // Production optimizations for Vercel
     build: {
+        // Target modern browsers for smaller bundles
+        target: 'es2020',
+        // CSS code splitting
+        cssCodeSplit: true,
         // Split chunks for better caching
         rollupOptions: {
             output: {
@@ -35,15 +39,23 @@ export default defineConfig({
                     'vendor-charts': ['recharts'],
                     // Utilities
                     'vendor-utils': ['date-fns', 'zustand'],
+                    // PDF/OCR (lazy loaded)
+                    'vendor-pdf': ['pdfjs-dist'],
                 },
+                // Optimize chunk filenames for caching
+                chunkFileNames: 'assets/[name]-[hash].js',
+                entryFileNames: 'assets/[name]-[hash].js',
+                assetFileNames: 'assets/[name]-[hash].[ext]',
             },
         },
-        // Enable minification with esbuild (built-in, faster)
+        // Use esbuild for fast minification
         minify: 'esbuild',
-        // Generate source maps for debugging (disable in production if needed)
+        // Disable source maps in production for smaller bundle
         sourcemap: false,
         // Reduce chunk size warnings threshold
         chunkSizeWarningLimit: 1000,
+        // Enable CSS minification
+        cssMinify: true,
     },
     // Optimize dependencies
     optimizeDeps: {
@@ -56,7 +68,15 @@ export default defineConfig({
             'zustand',
             'date-fns',
         ],
+        // Exclude heavy libraries from pre-bundling
+        exclude: ['pdfjs-dist'],
     },
     // Enable caching
     cacheDir: 'node_modules/.vite',
+    // Ignore unnecessary files
+    esbuild: {
+        drop: ['console', 'debugger'], // Remove console.logs in production
+        legalComments: 'none', // Remove license comments
+    },
 });
+

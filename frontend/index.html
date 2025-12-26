@@ -7,47 +7,105 @@
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
 
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
   <meta name="theme-color" content="#000000" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Finzen" />
+  <meta name="apple-mobile-web-app-title" content="Cashly" />
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Security Headers (handled by server, but good for documentation) -->
+  <!-- DNS Prefetch for faster external connections -->
+  <link rel="dns-prefetch" href="https://ynmvjnsdygimhjxcjvzp.supabase.co" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+  <!-- Preconnect for critical third-party origins -->
+  <link rel="preconnect" href="https://ynmvjnsdygimhjxcjvzp.supabase.co" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Security Headers -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
 
   <!-- SEO -->
   <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="Finzen - Track Money Without Thinking" />
+  <meta name="description"
+    content="Cashly - Smart money management with AI. Track expenses, set budgets, and get personalized financial insights." />
+  <meta property="og:title" content="Cashly - Your Money, Autopilot 💚" />
   <meta property="og:description"
-    content="Track your online shopping expenses automatically with AI-powered insights." />
+    content="Smart money management with AI-powered insights. Track expenses automatically and take control of your finances." />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <title>Cashly - Your Money, Autopilot 💚</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Font with display swap for faster text rendering -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Critical CSS inline for faster first paint -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0a0a0a;
+    }
+
+    #root {
+      min-height: 100vh;
+    }
+
+    .loading-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(139, 92, 246, 0.3);
+      border-top-color: #8b5cf6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div class="loading-screen">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
   <script type="module" src="/src/main.tsx"></script>
 
-  <!-- Service Worker Registration -->
+  <!-- Service Worker Registration (deferred) -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => console.log('✅ Service Worker registered:', reg.scope))
-          .catch(err => console.log('Service Worker registration failed:', err));
+        setTimeout(() => {
+          navigator.serviceWorker.register('/sw.js')
+            .catch(() => { });
+        }, 3000); // Delay SW registration to not block initial load
       });
     }
   </script>
