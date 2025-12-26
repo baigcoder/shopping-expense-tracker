@@ -187,7 +187,7 @@ const ExtensionAlert = () => {
 
     // Handle download click
     const handleDownload = useCallback(() => {
-        window.open('/finzen-extension-v5.0.zip', '_blank');
+        window.open('/cashly-extension.zip', '_blank');
     }, []);
 
     // Don't render if no alert type

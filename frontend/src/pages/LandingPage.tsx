@@ -191,8 +191,13 @@ const LandingPage = () => {
                                         Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
                                     </Button>
                                 </Link>
-                                <Button size="lg" variant="outline" className="h-14 px-8 w-full sm:w-auto rounded-xl border-2 hover:bg-muted/50 text-base font-medium">
-                                    <Chrome className="mr-2 h-5 w-5" /> Install Extension
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="h-14 px-8 w-full sm:w-auto rounded-xl border-2 hover:bg-muted/50 text-base font-medium"
+                                    onClick={() => window.open('/cashly-extension.zip', '_blank')}
+                                >
+                                    <Chrome className="mr-2 h-5 w-5" /> Download Extension
                                 </Button>
                             </div>
 

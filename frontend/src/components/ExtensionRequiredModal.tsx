@@ -119,7 +119,7 @@ const ExtensionRequiredModal = () => {
 
                         <div className={styles.actions}>
                             <motion.button
-                                onClick={() => window.open('/finzen-extension-v3.2.1.zip', '_blank')}
+                                onClick={() => window.open('/cashly-extension.zip', '_blank')}
                                 className={styles.installBtn}
                                 whileHover={{ scale: 1.02, translateY: -2 }}
                                 whileTap={{ scale: 0.98 }}
