@@ -14,7 +14,7 @@ interface VoiceCallModalProps {
     onEditPreferences?: () => void;
 }
 
-const ELEVENLABS_API_KEY = 'sk_3ae9dbc346577d9a2272ce718a0e052468eac0f3fcaef7db';
+const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
 
 const VOICE_IDS: { [key: string]: string } = {
     'Rachel': '21m00Tcm4TlvDq8ikWAM',

@@ -43,7 +43,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
         setIsPreviewing(true);
 
         try {
-            const ELEVENLABS_API_KEY = 'sk_3ae9dbc346577d9a2272ce718a0e052468eac0f3fcaef7db';
+            const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
 
             // Shorter preview text for faster response
             const shortPreview = "Hi! I'm your AI financial assistant. Ready to help you manage your money!";
