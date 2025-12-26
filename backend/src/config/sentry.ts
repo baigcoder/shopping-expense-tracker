@@ -5,7 +5,7 @@ import { Express, Request, Response, NextFunction } from 'express';
 
 const SENTRY_DSN = process.env.SENTRY_DSN;
 
-export const initSentry = () => {
+export const initSentry = (app: Express) => {
     // Only initialize if DSN is provided
     if (!SENTRY_DSN) {
         console.log('Sentry DSN not configured, skipping initialization');
@@ -22,12 +22,6 @@ export const initSentry = () => {
         // Only enable in production
         enabled: process.env.NODE_ENV === 'production',
 
-        // Integrations
-        integrations: [
-            Sentry.httpIntegration(),
-            Sentry.expressIntegration(),
-        ],
-
         // Filter out health check endpoints
         beforeSend(event) {
             // Don't send health check errors
@@ -38,31 +32,40 @@ export const initSentry = () => {
         },
     });
 
+    // Setup Express error handler
+    Sentry.setupExpressErrorHandler(app);
+
     console.log('🔍 Sentry initialized for backend error monitoring');
 };
 
+// Noop middleware for when Sentry is not configured
+const noopMiddleware = (_req: Request, _res: Response, next: NextFunction) => next();
+
 // Setup Sentry request handler (call early in middleware chain)
 export const sentryRequestHandler = () => {
-    if (!SENTRY_DSN) {
-        return (req: Request, res: Response, next: NextFunction) => next();
-    }
-    return Sentry.Handlers.requestHandler();
+    if (!SENTRY_DSN) return noopMiddleware;
+    // In Sentry v8, use express integration instead
+    return noopMiddleware;
 };
 
 // Setup Sentry tracing handler
 export const sentryTracingHandler = () => {
-    if (!SENTRY_DSN) {
-        return (req: Request, res: Response, next: NextFunction) => next();
-    }
-    return Sentry.Handlers.tracingHandler();
+    if (!SENTRY_DSN) return noopMiddleware;
+    return noopMiddleware;
 };
 
 // Setup Sentry error handler (call after all routes)
 export const sentryErrorHandler = () => {
     if (!SENTRY_DSN) {
-        return (err: Error, req: Request, res: Response, next: NextFunction) => next(err);
+        return (err: Error, _req: Request, res: Response, next: NextFunction) => {
+            console.error('Error:', err.message);
+            next(err);
+        };
     }
-    return Sentry.Handlers.errorHandler();
+    return (err: Error, _req: Request, res: Response, next: NextFunction) => {
+        Sentry.captureException(err);
+        next(err);
+    };
 };
 
 // Export Sentry for manual error reporting
@@ -70,9 +73,13 @@ export { Sentry };
 
 // Helper to capture errors with extra context
 export const captureError = (error: Error, context?: Record<string, unknown>) => {
-    Sentry.captureException(error, {
-        extra: context,
-    });
+    if (SENTRY_DSN) {
+        Sentry.captureException(error, {
+            extra: context,
+        });
+    } else {
+        console.error('Error:', error.message, context);
+    }
 };
 
 // Helper to set user context
