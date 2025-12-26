@@ -14,7 +14,7 @@ const CACHE_CONFIG = {
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
-        const path = url.pathname;
+        let path = url.pathname;
 
         // Handle CORS preflight
         if (request.method === 'OPTIONS') {
@@ -24,7 +24,12 @@ export default {
             });
         }
 
-        // Build backend URL
+        // Add /api prefix if not already present (frontend calls /ai/chat, backend expects /api/ai/chat)
+        if (!path.startsWith('/api')) {
+            path = '/api' + path;
+        }
+
+        // Build backend URL with /api prefix
         const backendUrl = BACKEND_URL + path + url.search;
 
         // Check cache for GET requests
