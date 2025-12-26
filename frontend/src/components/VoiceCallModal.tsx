@@ -118,7 +118,8 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             if (isActionCommand) {
                 // Try voice-action endpoint for commands
                 console.log('🎯 Detected action command, calling voice-action...');
-                const actionResponse = await fetch('http://localhost:5000/api/ai/voice-action', {
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                const actionResponse = await fetch(`${apiUrl}/ai/voice-action`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -146,7 +147,8 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             // If no action response, use regular chat
             if (!aiText) {
                 console.log('🤖 Calling AI chat...');
-                const response = await fetch('http://localhost:5000/api/ai/chat', {
+                const chatApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                const response = await fetch(`${chatApiUrl}/ai/chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
