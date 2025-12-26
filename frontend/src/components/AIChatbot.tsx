@@ -106,13 +106,14 @@ const AIChatbot = () => {
         const fetchVoicePrefs = async () => {
             if (!user?.id) return;
             try {
+                // Get Supabase user ID for x-user-id header (same pattern as AI endpoints)
                 const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
                 const parsed = token ? JSON.parse(token) : null;
-                const accessToken = parsed?.access_token;
+                const supabaseUserId = parsed?.user?.id;
 
                 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
                 const response = await fetch(`${apiUrl}/voice/preferences`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                    headers: { 'x-user-id': supabaseUserId || user.id }
                 });
 
                 if (response.ok) {

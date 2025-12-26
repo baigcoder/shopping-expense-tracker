@@ -85,17 +85,17 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
     const handleConfirm = async () => {
         setIsLoading(true);
         try {
-            // Save to backend
+            // Get Supabase user ID for x-user-id header (same pattern as AI endpoints)
             const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
             const parsed = token ? JSON.parse(token) : null;
-            const accessToken = parsed?.access_token;
+            const supabaseUserId = parsed?.user?.id;
 
             const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
             const response = await fetch(`${apiUrl}/voice/preferences`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
+                    'x-user-id': supabaseUserId || ''
                 },
                 body: JSON.stringify({
                     voiceId: selectedVoice.id,

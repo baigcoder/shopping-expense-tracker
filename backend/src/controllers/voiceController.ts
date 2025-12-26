@@ -2,17 +2,16 @@
 import { Request, Response } from 'express';
 import { supabase } from '../config/supabase.js';
 
-// Get user's voice preferences
+// Get user's voice preferences (uses x-user-id header like AI endpoints)
 export const getVoicePreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = (req as any).user;
-        if (!user) {
-            res.status(401).json({ error: 'Unauthorized' });
+        // Accept x-user-id header OR auth middleware user
+        const userId = req.headers['x-user-id'] as string || (req as any).user?.supabaseId || (req as any).user?.id;
+
+        if (!userId) {
+            res.status(401).json({ error: 'Unauthorized - no user ID' });
             return;
         }
-
-        // Use supabaseId for consistency with other tables
-        const userId = user.supabaseId || user.id;
 
         const { data, error } = await supabase
             .from('voice_preferences')
@@ -39,9 +38,11 @@ export const getVoicePreferences = async (req: Request, res: Response): Promise<
 // Save voice preferences (initial setup or update)
 export const saveVoicePreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        const user = (req as any).user;
-        if (!user) {
-            res.status(401).json({ error: 'Unauthorized' });
+        // Accept x-user-id header OR auth middleware user
+        const userId = req.headers['x-user-id'] as string || (req as any).user?.supabaseId || (req as any).user?.id;
+
+        if (!userId) {
+            res.status(401).json({ error: 'Unauthorized - no user ID' });
             return;
         }
 
@@ -51,9 +52,6 @@ export const saveVoicePreferences = async (req: Request, res: Response): Promise
             res.status(400).json({ error: 'voiceId and voiceName are required' });
             return;
         }
-
-        // Use supabaseId for consistency with other tables
-        const userId = user.supabaseId || user.id;
 
         // Upsert the voice preferences
         const { data, error } = await supabase
