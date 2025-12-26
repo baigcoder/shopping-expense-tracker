@@ -69,7 +69,7 @@ export async function getReminders(): Promise<BillReminder[]> {
     if (!user) return [];
 
     const { data, error } = await supabase
-        .from('bill_reminders')
+        .from('bills')
         .select('*')
         .eq('user_id', user.id)
         .order('due_date', { ascending: true });
@@ -113,7 +113,7 @@ export async function createReminder(input: CreateReminderInput): Promise<BillRe
     if (!user) return null;
 
     const { data, error } = await supabase
-        .from('bill_reminders')
+        .from('bills')
         .insert({
             user_id: user.id,
             name: input.name,
@@ -142,7 +142,7 @@ export async function createReminder(input: CreateReminderInput): Promise<BillRe
 // Update a reminder
 export async function updateReminder(id: string, updates: Partial<CreateReminderInput & { is_paid: boolean }>): Promise<BillReminder | null> {
     const { data, error } = await supabase
-        .from('bill_reminders')
+        .from('bills')
         .update({
             ...updates,
             updated_at: new Date().toISOString()
@@ -189,7 +189,7 @@ export async function markAsPaid(id: string): Promise<BillReminder | null> {
 // Delete a reminder
 export async function deleteReminder(id: string): Promise<boolean> {
     const { error } = await supabase
-        .from('bill_reminders')
+        .from('bills')
         .delete()
         .eq('id', id);
 

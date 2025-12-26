@@ -182,7 +182,7 @@ class AIDataCacheService {
             let reminders: any[] = [];
             try {
                 const remindersResult = await supabase
-                    .from('bill_reminders')
+                    .from('bills')
                     .select('*')
                     .eq('user_id', userId)
                     .gte('due_date', now.toISOString())
