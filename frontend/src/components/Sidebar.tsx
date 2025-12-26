@@ -38,8 +38,8 @@ const navItems = [
 ];
 
 const smoothTransition = {
-    duration: 0.3,
-    ease: [0.25, 0.1, 0.25, 1]
+    duration: 0.35,
+    ease: [0.32, 0.72, 0, 1] // Custom cubic-bezier for premium feel
 };
 
 const Sidebar = () => {
@@ -171,7 +171,7 @@ const Sidebar = () => {
                 )}
                 initial={false}
                 animate={{ width: isExpanded ? 240 : 80 }}
-                transition={{ type: "spring", stiffness: 350, damping: 35, mass: 1 }}
+                transition={{ type: "spring", stiffness: 280, damping: 32, mass: 0.9 }}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
