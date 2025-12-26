@@ -90,7 +90,7 @@ export const genZToast = {
         return toast.warning(`📊⚠️ Budget alert: ${category} is over limit!`, opts);
     },
 
-    // Extension synced toast 🔗
+    // Extension synced toast 🔗 - Redesigned with website theme
     extensionSynced: (options?: GenZToastOptions) => {
         // Prevent showing toast if already shown this session
         const TOAST_SESSION_KEY = 'cashly_extension_sync_toast_shown';
@@ -102,7 +102,7 @@ export const genZToast = {
 
         const opts = {
             ...defaultOptions,
-            autoClose: 5000,
+            autoClose: 4000, // 4 seconds
             toastId: 'extension-synced-notification',
             hideProgressBar: false,
             closeButton: true,
@@ -114,21 +114,42 @@ export const genZToast = {
         }
 
         const content = (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '24px', lineHeight: 1 }}>🔗</span>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '4px 0'
+            }}>
+                {/* Animated checkmark icon */}
+                <div style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #14B8A6 0%, #0D9488 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 12px rgba(20, 184, 166, 0.3)',
+                    flexShrink: 0
+                }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <div style={{
                         fontWeight: 700,
                         fontSize: '1rem',
-                        color: '#FFFFFF',
-                        lineHeight: '1.2'
+                        color: '#0F172A',
+                        lineHeight: '1.3',
+                        fontFamily: "'Space Grotesk', system-ui, sans-serif"
                     }}>
-                        Extension Synced!
+                        Extension Synced! ✨
                     </div>
                     <div style={{
-                        fontSize: '0.85rem',
-                        color: '#CBD5E1',
-                        fontWeight: 400,
+                        fontSize: '0.875rem',
+                        color: '#64748B',
+                        fontWeight: 500,
                         lineHeight: '1.4'
                     }}>
                         Now auto-tracking your purchases
@@ -137,9 +158,17 @@ export const genZToast = {
             </div>
         );
 
-        return toast.success(content, {
+        return toast(content, {
             ...opts,
-            className: 'cashly-toast-extension',
+            className: 'cashly-toast-extension-synced',
+            style: {
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
+                border: '1px solid rgba(20, 184, 166, 0.2)',
+                borderLeft: '4px solid #14B8A6',
+                borderRadius: '16px',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1), 0 2px 10px rgba(20, 184, 166, 0.1)',
+                padding: '16px',
+            }
         });
     },
 
