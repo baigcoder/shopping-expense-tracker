@@ -1,4 +1,5 @@
-// Spending Chart Component
+// Spending Chart Component - Optimized with React.memo
+import { memo, useMemo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { MonthlySpending } from '../types';
 import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
@@ -7,14 +8,14 @@ interface SpendingChartProps {
     data: MonthlySpending[];
 }
 
-const SpendingChart = ({ data }: SpendingChartProps) => {
-    // Format month labels
-    const formattedData = data.map(item => ({
+const SpendingChart = memo(({ data }: SpendingChartProps) => {
+    // Memoize data transformation to prevent recalculation on re-renders
+    const formattedData = useMemo(() => data.map(item => ({
         ...item,
         monthLabel: new Date(item.month + '-01').toLocaleDateString('en-US', {
             month: 'short'
         })
-    }));
+    })), [data]);
 
     const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) => {
         if (active && payload && payload.length) {
@@ -73,6 +74,9 @@ const SpendingChart = ({ data }: SpendingChartProps) => {
             </AreaChart>
         </ResponsiveContainer>
     );
-};
+});
+
+SpendingChart.displayName = 'SpendingChart';
 
 export default SpendingChart;
+

@@ -45,6 +45,8 @@ export const cardService = {
             return null;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('card-added', { detail: data }));
         return data;
     },
 
@@ -60,6 +62,8 @@ export const cardService = {
             return false;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('card-deleted', { detail: { id } }));
         return true;
     },
 
@@ -94,6 +98,8 @@ export const cardService = {
             return null;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('card-updated', { detail: data }));
         return data;
     }
 };

@@ -5,7 +5,7 @@ import ExtensionRequiredModal from './ExtensionRequiredModal';
 import LoadingScreen from './LoadingScreen';
 
 // Check localStorage sync flag directly (fast synchronous check)
-const EXTENSION_SYNCED_KEY = 'finzen_extension_synced';
+const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
 
 const isPreviouslySynced = (): boolean => {
     try {
@@ -15,9 +15,17 @@ const isPreviouslySynced = (): boolean => {
             return data.synced === true && !!data.email;
         }
     } catch (e) {
-        console.error('Error checking sync status:', e);
+        // Ignore
     }
     return false;
+};
+
+const clearSyncFlag = () => {
+    try {
+        localStorage.removeItem(EXTENSION_SYNCED_KEY);
+    } catch (e) {
+        // Ignore
+    }
 };
 
 interface ExtensionGateProps {
@@ -27,16 +35,14 @@ interface ExtensionGateProps {
 const ExtensionGate = ({ children }: ExtensionGateProps) => {
     const { extensionStatus, checking } = useExtensionSync();
     const [showModal, setShowModal] = useState(false);
-    const [initialCheckComplete, setInitialCheckComplete] = useState(false);
+    const [verificationComplete, setVerificationComplete] = useState(false);
 
-    // FAST PATH: Check persistent sync flag immediately on mount
-    // This is synchronous and runs before any async checks
+    // Initial sync flag (for faster first paint)
     const [wasPreviouslySynced] = useState(() => isPreviouslySynced());
 
     // Listen for extension sync event - hide modal immediately when synced
     useEffect(() => {
         const handleExtensionSynced = () => {
-            console.log('ExtensionGate: Extension synced, hiding modal');
             setShowModal(false);
         };
 
@@ -44,50 +50,70 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
         return () => window.removeEventListener('extension-synced', handleExtensionSynced);
     }, []);
 
-    // Wait a bit after initial check to give extension time to sync
-    // BUT skip this entirely if we were previously synced
+    // Listen for extension removal event - show modal immediately
     useEffect(() => {
-        // Skip all waiting if previously synced
-        if (wasPreviouslySynced) {
-            setInitialCheckComplete(true);
+        const handleExtensionRemoved = () => {
+            clearSyncFlag();
+            setShowModal(true);
+        };
+
+        window.addEventListener('extension-removed', handleExtensionRemoved);
+        return () => window.removeEventListener('extension-removed', handleExtensionRemoved);
+    }, []);
+
+    // Main verification logic - runs after async check completes
+    useEffect(() => {
+        if (checking) return; // Still checking, wait
+
+        // If extension is detected and logged in, we're good
+        if (extensionStatus.installed && extensionStatus.loggedIn) {
+            setShowModal(false);
+            setVerificationComplete(true);
             return;
         }
 
-        if (!checking && !initialCheckComplete) {
-            // Give extension 2 seconds to sync before deciding to show modal
-            const timer = setTimeout(() => {
-                setInitialCheckComplete(true);
-                // Only show modal if extension is still not detected
-                if (!extensionStatus.installed || !extensionStatus.loggedIn) {
-                    console.log('ExtensionGate: Extension not detected after 2s, showing modal');
-                    setShowModal(true);
-                }
-            }, 2000);
-
-            return () => clearTimeout(timer);
+        // Extension NOT detected after check completed
+        // If we thought we were previously synced, the extension must have been removed
+        if (wasPreviouslySynced) {
+            clearSyncFlag(); // Clear stale sync flag
         }
-    }, [checking, initialCheckComplete, extensionStatus.installed, extensionStatus.loggedIn, wasPreviouslySynced]);
 
-    // Hide modal when extension becomes detected
+        // Give a short grace period for extension to initialize, then show modal
+        const timer = setTimeout(() => {
+            setVerificationComplete(true);
+            if (!extensionStatus.installed || !extensionStatus.loggedIn) {
+                setShowModal(true);
+            }
+        }, 1500); // 1.5 second grace period
+
+        return () => clearTimeout(timer);
+    }, [checking, extensionStatus.installed, extensionStatus.loggedIn, wasPreviouslySynced]);
+
+    // Hide modal immediately when extension becomes detected
     useEffect(() => {
         if (extensionStatus.installed && extensionStatus.loggedIn) {
             setShowModal(false);
+
+            // Auto-redirect to dashboard if on login/signup
+            const currentPath = window.location.pathname;
+            if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
+                window.location.href = '/dashboard';
+            }
         }
     }, [extensionStatus.installed, extensionStatus.loggedIn]);
 
-    // FAST PATH: If previously synced, render children immediately (no loading, no modal, no waiting)
-    // This is the key optimization - trust the localStorage flag and skip ALL async checks
-    if (wasPreviouslySynced) {
+    // FAST PATH: If previously synced AND extension is currently detected, skip loading
+    if (wasPreviouslySynced && extensionStatus.installed && extensionStatus.loggedIn) {
         return <>{children}</>;
     }
 
-    // Show loading while initial checking (only for new users who never synced)
-    if (checking || !initialCheckComplete) {
+    // Show loading while checking (but only briefly)
+    if (checking || !verificationComplete) {
         return <LoadingScreen />;
     }
 
-    // Show modal only if extension not detected after waiting
-    if (showModal && (!extensionStatus.installed || !extensionStatus.loggedIn)) {
+    // Show modal if extension not detected after verification
+    if (showModal) {
         return <ExtensionRequiredModal />;
     }
 

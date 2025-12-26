@@ -43,6 +43,8 @@ export const goalService = {
             return null;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('goal-added', { detail: data }));
         return data;
     },
 
@@ -60,6 +62,8 @@ export const goalService = {
             return null;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('goal-updated', { detail: data }));
         return data;
     },
 
@@ -94,6 +98,8 @@ export const goalService = {
             return false;
         }
 
+        // Dispatch event for immediate UI update
+        window.dispatchEvent(new CustomEvent('goal-deleted', { detail: { id } }));
         return true;
     }
 };

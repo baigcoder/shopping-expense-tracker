@@ -1,943 +1,537 @@
 /* ============================================
-   FINZEN - Goals Page
-   Purple Achievement Theme
-   Unique Design with Circular Progress
+   MIDNIGHT CORAL - SAVINGS GOALS (PREMIUM LIGHT)
+   Glassmorphism, 3px Borders & Dynamic Progress
    ============================================ */
 
-/* === MAIN LAYOUT === */
-/* Sidebar and Layout handled by DashboardLayout */
-
-/* === TOP BAR === */
-.topBar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 32px;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--color-purple-lighter);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-
-.brandSection {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.brandLogo {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.brandName {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--color-text);
-}
-
-.brandDivider {
-    color: var(--color-border);
-}
-
-.brandPage {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-purple);
-}
-
-.headerActions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.addBtn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
-}
-
-.addBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
-}
-
-.profileAvatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 2px solid var(--color-purple-lighter);
-    object-fit: cover;
-    transition: border-color 0.2s ease;
-}
-
-.profileAvatar:hover {
-    border-color: var(--color-purple);
-}
-
-/* === CONTENT AREA === */
-.contentArea {
-    padding: 32px;
-    max-width: 1400px;
-}
-
-/* === HERO SECTION === */
-.heroSection {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 32px;
-}
-
-.heroCard {
-    background: white;
-    border-radius: 24px;
-    padding: 32px;
-    border: 1px solid var(--color-purple-lighter);
-    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 32px;
+.mainContent {
+    min-height: 100vh;
+    background: #f8fafc;
+    /* Premium Off-White */
+    padding: 2rem;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    color: #0f172a;
 }
 
-.heroCard::before {
+/* Subtle Mesh Gradient Background */
+.mainContent::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--color-purple), var(--color-purple-light));
+    bottom: 0;
+    background:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.02) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.02) 0px, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-.progressRingContainer {
-    position: relative;
+/* === GLASS HEADER === */
+.header {
+    position: sticky;
+    top: 1rem;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 3px solid rgba(226, 232, 240, 0.8);
+    border-radius: 2rem;
+    padding: 1.25rem 2rem;
+    margin-bottom: 2.5rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.circularProgress {
-    display: block;
-}
-
-.progressBg {
-    opacity: 0.3;
-}
-
-.progressCircle {
-    filter: drop-shadow(0 4px 12px rgba(124, 58, 237, 0.3));
-}
-
-.progressCenter {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.progressValue {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--color-purple);
-    line-height: 1;
-}
-
-.progressLabel {
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    margin-top: 4px;
-}
-
-.heroInfo {
-    flex: 1;
-}
-
-.heroInfo h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text);
-    margin: 0 0 12px;
-}
-
-.heroAmount {
-    margin-bottom: 16px;
-}
-
-.saved {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--color-purple);
-}
-
-.target {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    margin-left: 8px;
-}
-
-.heroMeta {
-    display: flex;
-    gap: 20px;
-}
-
-.metaItem {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-}
-
-.metaItem svg {
-    color: var(--color-purple);
-}
-
-/* === ACHIEVEMENT CARDS === */
-.achievementCards {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.achievementCard {
-    background: white;
-    border-radius: 16px;
-    padding: 20px 24px;
-    border: 1px solid var(--color-purple-lighter);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: all 0.2s ease;
-}
-
-.achievementCard:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
-}
-
-.achievementIcon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-purple);
-}
-
-.trophyIcon {
-    background: linear-gradient(135deg, var(--color-warning-lighter) 0%, var(--color-warning-light) 100%);
-    color: var(--color-warning-dark);
-}
-
-.trendIcon {
-    background: linear-gradient(135deg, var(--color-success-lighter) 0%, var(--color-success-light) 100%);
-    color: var(--color-success-dark);
-}
-
-.achievementInfo {
-    display: flex;
-    flex-direction: column;
-}
-
-.achievementValue {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--color-text);
-    line-height: 1;
-}
-
-.achievementLabel {
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    margin-top: 4px;
-}
-
-/* === SECTION HEADER === */
-.sectionHeader {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    align-items: center;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 10px 15px -3px rgba(0, 0, 0, 0.03),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-.sectionHeader h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text);
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.headerIcon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.headerInfo h1 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.04em;
     margin: 0;
+    line-height: 1.1;
 }
 
-.goalCount {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
+.headerInfo p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0.25rem 0 0;
+}
+
+/* === STATS GRID === */
+.overviewGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.premiumStatCard {
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 2.25rem;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.premiumStatCard:hover {
+    transform: translateY(-8px);
+    border-color: #cbd5e1;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.statHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.statIconContainer {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+.statValue {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.125rem;
+}
+
+.statSubtext {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
 }
 
 /* === GOALS GRID === */
 .goalsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.75rem;
 }
 
-.goalCard {
+.premiumGoalCard {
     background: white;
-    border-radius: 20px;
-    padding: 24px;
-    border: 1px solid var(--color-purple-lighter);
-    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.05);
-    transition: all 0.3s ease;
+    border: 3px solid #e2e8f0;
+    border-radius: 2.5rem;
+    padding: 1.75rem;
     position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
-.goalCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(124, 58, 237, 0.12);
-    border-color: var(--color-purple-light);
+.premiumGoalCard:hover {
+    transform: translateY(-10px);
+    border-color: #cbd5e1;
+    box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
 .completedCard {
-    background: linear-gradient(135deg, var(--color-success-subtle) 0%, var(--color-success-lighter) 100%);
-    border-color: var(--color-success-light);
+    border-color: #10b981;
+    background: linear-gradient(135deg, white, #f0fdf4);
 }
 
 .goalCardHeader {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 16px;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
 }
 
-.goalEmoji {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
-    border-radius: 16px;
+.goalAvatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.75rem;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.6);
 }
 
-.goalRing {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ringPercent {
-    position: absolute;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--color-purple);
-}
-
-.goalCardBody {
-    margin-bottom: 16px;
-}
-
-.goalCardBody h4 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text);
-    margin: 0 0 8px;
-}
-
-.goalDesc {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    margin: 0 0 10px;
-    line-height: 1.4;
-}
-
-.goalDeadline {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-}
-
-.goalDeadline svg {
-    color: var(--color-purple);
-}
-
-.goalCardFooter {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-purple-lighter);
-}
-
-.amounts {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-}
-
-.savedAmt {
+.goalInfo h3 {
     font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--color-purple);
-}
-
-.targetAmt {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-}
-
-.fundBtn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.fundBtn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
-}
-
-.completeBadge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    background: var(--color-success-lighter);
-    color: var(--color-success-dark);
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-/* === MILESTONES === */
-.milestones {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-}
-
-.milestone {
-    flex: 1;
-    height: 4px;
-    background: var(--color-purple-lighter);
-    border-radius: 2px;
-    transition: background 0.3s ease;
-}
-
-.milestone.reached {
-    background: linear-gradient(90deg, var(--color-purple), var(--color-purple-light));
-}
-
-/* === EMPTY STATE === */
-.emptyState {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 80px 40px;
-    background: white;
-    border-radius: 24px;
-    border: 1px solid var(--color-purple-lighter);
-}
-
-.emptyIcon {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 28px;
-    background: linear-gradient(135deg, var(--color-purple-subtle) 0%, var(--color-purple-lighter) 100%);
-    border-radius: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-purple);
-}
-
-.emptyState h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-text);
-    margin: 0 0 12px;
-}
-
-.emptyState p {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    margin: 0 0 24px;
-}
-
-.emptyBtn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.emptyBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
-}
-
-/* === LOADING === */
-.loadingState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    gap: 20px;
-    color: var(--color-text-secondary);
-}
-
-.spinner {
-    animation: spin 1s linear infinite;
-    color: var(--color-purple);
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* === MODAL === */
-.modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-}
-
-.modal {
-    background: white;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 520px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 80px rgba(124, 58, 237, 0.25);
-}
-
-.modalHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 28px;
-    border-bottom: 1px solid var(--color-purple-lighter);
-}
-
-.modalHeader h2 {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--color-text);
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
     margin: 0;
 }
 
-.closeBtn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: var(--color-purple-lighter);
-    border-radius: 12px;
-    color: var(--color-purple);
-    cursor: pointer;
+.goalMeta {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-top: 0.25rem;
 }
 
-.closeBtn:hover {
-    background: var(--color-purple-lighter);
-}
-
-.modalBody {
-    padding: 28px;
-}
-
-.formGroup {
-    margin-bottom: 24px;
-}
-
-.formGroup label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: 10px;
-}
-
-.formGroup input,
-.formGroup textarea {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1.5px solid var(--color-purple-lighter);
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    background: white;
-    font-family: inherit;
-}
-
-.formGroup textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-.formGroup input:focus,
-.formGroup textarea:focus {
-    outline: none;
-    border-color: var(--color-purple);
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
-}
-
-.formRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.iconGrid {
+.actionButtons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.premiumGoalCard:hover .actionButtons {
+    opacity: 1;
 }
 
 .iconBtn {
-    width: 50px;
-    height: 50px;
-    border: 2px solid var(--color-purple-lighter);
-    background: white;
-    border-radius: 12px;
-    font-size: 1.5rem;
-    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
     transition: all 0.2s ease;
 }
 
 .iconBtn:hover {
-    border-color: var(--color-purple);
-    background: var(--color-purple-lighter);
-}
-
-.iconBtn.selectedIcon {
-    border-color: var(--color-purple);
-    background: var(--color-purple-lighter);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
-}
-
-.modalFooter {
-    display: flex;
-    gap: 14px;
-    padding: 24px 28px;
-    border-top: 1px solid var(--color-purple-lighter);
-    background: #FAFBFC;
-    border-radius: 0 0 24px 24px;
-}
-
-.cancelBtn {
-    flex: 1;
-    padding: 14px;
-    border: 1.5px solid var(--color-purple-lighter);
     background: white;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    color: #0f172a;
+    border-color: #3b82f6;
+    transform: scale(1.05);
 }
 
-.cancelBtn:hover {
-    background: var(--color-purple-lighter);
+.deleteBtn:hover {
+    color: #ef4444;
+    border-color: #fecaca;
+    background: #fef2f2;
 }
 
-.saveBtn {
-    flex: 1;
+/* Circular Progress Redesign */
+.progressContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    gap: 1.5rem;
+    margin: 1.5rem 0;
 }
 
-.saveBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
-}
-
-.saveBtn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-/* === FUND MODAL === */
-.fundModal {
-    background: white;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 420px;
-    padding: 28px;
-    box-shadow: 0 24px 80px rgba(124, 58, 237, 0.25);
-}
-
-.fundHeader {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
+.progressCircleWrapper {
     position: relative;
+    width: 5rem;
+    height: 5rem;
 }
 
-.fundHeader .closeBtn {
+.circularSvg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.circleBg {
+    fill: none;
+    stroke: #f1f5f9;
+    stroke-width: 6;
+}
+
+.circleFill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.percentageLabel {
     position: absolute;
-    top: -8px;
-    right: -8px;
-}
-
-.fundGoalIcon {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
-    border-radius: 16px;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: #0f172a;
 }
 
-.fundHeader h3 {
-    font-size: 1.25rem;
+.progressDetails {
+    flex: 1;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.detailLabel {
+    font-size: 0.75rem;
     font-weight: 700;
-    color: #0F172A;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.detailValue {
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: #0f172a;
+}
+
+.completionBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0fdf4;
+    color: #166534;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    border: 1px solid #bbf7d0;
+}
+
+/* === EMPTY STATE === */
+.emptyStateContainer {
+    grid-column: 1 / -1;
+    padding: 4rem 2rem;
+}
+
+.emptyStateCard {
+    background: white;
+    border: 3px dashed #e2e8f0;
+    border-radius: 3rem;
+    padding: 4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.emptyStateCard:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.emptyIconWrapper {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 2rem;
+    background: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.3);
+    margin-bottom: 0.5rem;
+}
+
+.emptyStateCard h2 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #0f172a;
     margin: 0;
 }
 
-.fundHeader p {
-    font-size: 0.9rem;
-    color: #6B7280;
-    margin: 4px 0 0;
+.emptyStateCard p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
+    max-width: 400px;
+    margin: 0;
 }
 
-.fundProgress {
-    margin-bottom: 24px;
-}
-
-.fundProgressInfo {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #6B7280;
-    margin-bottom: 8px;
-}
-
-.fundProgressBar {
-    height: 10px;
-    background: #F3E8FF;
-    border-radius: 5px;
+/* === MODALS === */
+.glassDialog {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(24px);
+    border: 3px solid #e2e8f0;
+    border-radius: 3rem;
+    padding: 0;
     overflow: hidden;
 }
 
-.fundProgressFill {
-    height: 100%;
-    background: linear-gradient(90deg, #7C3AED, #A78BFA);
-    border-radius: 5px;
-    transition: width 0.5s ease;
-}
-
-.amountInputWrapper {
+.modalHeader {
+    padding: 2.5rem 2.5rem 1.5rem;
+    background: rgba(248, 250, 252, 0.5);
     display: flex;
     align-items: center;
-    background: #F3E8FF;
-    border-radius: 16px;
-    padding: 8px 20px;
-    margin-bottom: 20px;
+    gap: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
 }
 
-.currencyPrefix {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #7C3AED;
-    margin-right: 8px;
-}
-
-.amountInputWrapper input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    font-size: 2rem;
-    font-weight: 800;
-    color: #0F172A;
-    outline: none;
-}
-
-.quickAmounts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
-}
-
-.quickBtn {
-    padding: 12px;
-    border: 2px solid #E9D5FF;
-    background: white;
-    border-radius: 12px;
-    font-weight: 600;
-    color: #6B7280;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.quickBtn:hover {
-    border-color: #7C3AED;
-    color: #7C3AED;
-}
-
-.quickBtn.selectedQuick {
-    border-color: #7C3AED;
-    background: #F3E8FF;
-    color: #7C3AED;
-}
-
-.addFundsBtn {
+.modalIcon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.25rem;
+    background: #2563eb;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
     color: white;
-    border: none;
-    border-radius: 14px;
+    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+}
+
+.modalTitle h2 {
+    font-size: 1.375rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+}
+
+.modalTitle p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0.25rem 0 0;
+}
+
+.modalBody {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.selectionArea {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.selectionLabel {
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.gridSelection {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+}
+
+.selectBtn {
+    aspect-ratio: 1;
+    border-radius: 1rem;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.selectBtn:hover {
+    border-color: #3b82f6;
+    background: white;
+    transform: scale(1.1);
+}
+
+.selected {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.premiumInput {
+    height: 3.5rem;
+    border-radius: 1.25rem;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    padding: 0 1.25rem;
     font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    transition: all 0.2s ease;
 }
 
-.addFundsBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+.premiumInput:focus {
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05);
 }
 
-.addFundsBtn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* === RESPONSIVE === */
+/* Responsive */
 @media (max-width: 1200px) {
-    .heroSection {
-        grid-template-columns: 1fr;
-    }
-
-    .achievementCards {
-        flex-direction: row;
-    }
-
-    .achievementCard {
-        flex: 1;
+    .overviewGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        display: none;
+    .header {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .headerTitle {
+        flex-direction: column;
+    }
+
+    .overviewGrid {
+        grid-template-columns: 1fr;
     }
 
     .mainContent {
-        margin-left: 0;
-        max-width: 100%;
+        padding: 1rem;
     }
 
-    .topBar {
-        padding: 12px 16px;
-    }
-
-    .addBtn span {
-        display: none;
-    }
-
-    .contentArea {
-        padding: 20px 16px;
-    }
-
-    .heroCard {
+    .modalHeader {
         flex-direction: column;
         text-align: center;
-        gap: 20px;
-    }
-
-    .heroMeta {
-        justify-content: center;
-    }
-
-    .achievementCards {
-        flex-direction: column;
-    }
-
-    .goalsGrid {
-        grid-template-columns: 1fr;
     }
 }

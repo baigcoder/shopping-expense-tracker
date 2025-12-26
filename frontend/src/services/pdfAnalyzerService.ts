@@ -1,14 +1,85 @@
 // PDF Bank Statement Analyzer Service
 // Supports BOTH text-based and image-based (scanned) PDFs
-// Uses PDF.js for text extraction and DeepSeek-R1 AI for document analysis
+// Uses Python pdfplumber service for extraction + Backend AI for analysis
 
 import * as pdfjsLib from 'pdfjs-dist';
-import { callAI } from './multiModelService';
+import api from './api';
 import { formatCurrency, getCurrencyCode } from './currencyService';
 import { supabase } from '../config/supabase';
 
+// Python PDF service URL (pdfplumber)
+const PDF_SERVICE_URL = 'http://localhost:8000';
+
+// Call backend AI for PDF analysis
+const callAI = async (_type: string, systemPrompt: string, userPrompt: string) => {
+    try {
+        // Get user ID from Zustand auth-storage for auth
+        const storedAuth = localStorage.getItem('auth-storage');
+        const userId = storedAuth ? JSON.parse(storedAuth)?.state?.user?.id : null;
+
+        const response = await api.post('/ai/chat', {
+            message: `${systemPrompt}\n\n${userPrompt}`,
+            context: 'pdf_analysis'
+        }, {
+            headers: userId ? { 'x-user-id': userId } : {}
+        });
+        return { response: response.data.response };
+    } catch (error) {
+        console.error('Backend AI call failed:', error);
+        throw error;
+    }
+};
+
+
+// Extract PDF using Python pdfplumber service (PRIMARY METHOD)
+export const extractWithPythonService = async (file: File): Promise<{
+    success: boolean;
+    text: string;
+    pageCount: number;
+    bankName: string;
+    transactions: any[];
+    pageTexts: { page: number; text: string }[];
+}> => {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch(`${PDF_SERVICE_URL}/extract`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`PDF service error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ Python PDF extraction successful:', data.page_count, 'pages');
+
+        return {
+            success: data.success,
+            text: data.extracted_text || '',
+            pageCount: data.page_count || 1,
+            bankName: data.bank_name || 'Unknown',
+            transactions: data.transactions || [],
+            pageTexts: data.page_texts || [],
+        };
+    } catch (error) {
+        console.error('Python PDF service failed:', error);
+        return {
+            success: false,
+            text: '',
+            pageCount: 0,
+            bankName: 'Unknown',
+            transactions: [],
+            pageTexts: [],
+        };
+    }
+};
+
 // Set up PDF.js worker - use local file
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
 
 export interface ExtractedTransaction {
     id: string;
@@ -240,6 +311,12 @@ RESPOND IN THIS EXACT JSON FORMAT ONLY:
 Return ONLY valid JSON with the exact structure requested. No markdown, no explanations.`;
 
         const result = await callAI('pdf', systemPrompt, prompt);
+
+        if (!result || !result.response) {
+            console.error('AI analysis returned no response');
+            throw new Error('AI analysis failed - no response');
+        }
+
         const response = result.response;
         console.log('AI Response (DeepSeek-R1) length:', response.length);
 
@@ -439,31 +516,55 @@ export const processBankStatementPDF = async (
     userId?: string
 ): Promise<PDFAnalysisResult & { saved?: boolean; savedCount?: number }> => {
     try {
-        console.log('Step 1: Extracting from PDF...');
+        console.log('Step 1: Trying Python pdfplumber service first...');
+
+        // Try Python pdfplumber service first (faster, better for machine-generated PDFs)
+        const pythonResult = await extractWithPythonService(file);
 
         let extractResult: { text: string; method: 'text' | 'vision' };
+        let preExtractedTransactions: ExtractedTransaction[] = [];
 
-        try {
-            extractResult = await extractTextFromPDF(file);
-        } catch (extractError: any) {
-            console.error('Extraction failed:', extractError);
-            return {
-                success: false,
-                transactions: [],
-                summary: {
-                    totalIncome: 0,
-                    totalExpenses: 0,
-                    netChange: 0,
-                    transactionCount: 0,
-                    dateRange: { start: '', end: '' },
-                    topCategories: [],
-                },
-                aiInsights: [],
-                error: extractError.message,
-            };
+        if (pythonResult.success && pythonResult.text.length > 100) {
+            console.log('✅ Python extraction successful:', pythonResult.pageCount, 'pages');
+            extractResult = { text: pythonResult.text, method: 'text' };
+
+            // Use transactions from Python service if available
+            if (pythonResult.transactions && pythonResult.transactions.length > 0) {
+                preExtractedTransactions = pythonResult.transactions.map((tx: any, i: number) => ({
+                    id: tx.id || `python-${Date.now()}-${i}`,
+                    date: tx.date || new Date().toISOString().split('T')[0],
+                    description: tx.description || 'Transaction',
+                    amount: tx.amount || 0,
+                    type: tx.type || 'expense',
+                    category: 'Other',
+                    confidence: tx.confidence || 0.7,
+                } as ExtractedTransaction));
+            }
+        } else {
+            console.log('Python service failed or low content, falling back to PDF.js...');
+            try {
+                extractResult = await extractTextFromPDF(file);
+            } catch (extractError: any) {
+                console.error('All extraction methods failed:', extractError);
+                return {
+                    success: false,
+                    transactions: [],
+                    summary: {
+                        totalIncome: 0,
+                        totalExpenses: 0,
+                        netChange: 0,
+                        transactionCount: 0,
+                        dateRange: { start: '', end: '' },
+                        topCategories: [],
+                    },
+                    aiInsights: [],
+                    error: extractError.message,
+                };
+            }
         }
 
         console.log(`Extraction method: ${extractResult.method}, text length: ${extractResult.text.length}`);
+
 
         if (!extractResult.text || extractResult.text.trim().length < 20) {
             return {
@@ -483,8 +584,53 @@ export const processBankStatementPDF = async (
         }
 
         console.log('Step 2: Analyzing with AI...');
-        const result = await analyzeStatementWithAI(extractResult.text);
-        result.method = extractResult.method;
+
+        let result: PDFAnalysisResult;
+        try {
+            result = await analyzeStatementWithAI(extractResult.text);
+            result.method = extractResult.method;
+        } catch (aiError: any) {
+            console.warn('AI analysis failed, using Python-extracted transactions as fallback:', aiError.message);
+
+            // Use Python-extracted transactions if available
+            if (preExtractedTransactions.length > 0) {
+                console.log('✅ Using', preExtractedTransactions.length, 'Python-extracted transactions');
+                const totalIncome = preExtractedTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+                const totalExpenses = preExtractedTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+
+                result = {
+                    success: true,
+                    transactions: preExtractedTransactions,
+                    summary: {
+                        totalIncome,
+                        totalExpenses,
+                        netChange: totalIncome - totalExpenses,
+                        transactionCount: preExtractedTransactions.length,
+                        dateRange: { start: '', end: '' },
+                        topCategories: [],
+                    },
+                    bankName: pythonResult.bankName || 'Unknown',
+                    aiInsights: ['Extracted using Python pdfplumber (AI analysis unavailable)'],
+                    method: 'text',
+                };
+            } else {
+                // No Python transactions either
+                return {
+                    success: false,
+                    transactions: [],
+                    summary: {
+                        totalIncome: 0,
+                        totalExpenses: 0,
+                        netChange: 0,
+                        transactionCount: 0,
+                        dateRange: { start: '', end: '' },
+                        topCategories: [],
+                    },
+                    aiInsights: [],
+                    error: 'AI analysis failed and no transactions could be extracted from PDF.',
+                };
+            }
+        }
 
         if (userId && result.success && result.transactions.length > 0) {
             console.log('Step 3: Saving to database...');

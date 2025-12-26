@@ -1,8 +1,9 @@
-// CSV Import Component - Upload bank statements
+// CSV/PDF Import Component - Upload bank statements
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, FileText, CheckCircle, AlertCircle, X, Download, ArrowRight, Sparkles, FileUp, Database, Calendar, Tag } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertCircle, X, Download, ArrowRight, Sparkles, FileUp, Database, Calendar, Tag, FileType } from 'lucide-react';
 import { parseCSV, validateTransactions, getImportSummary, ParsedTransaction } from '../services/csvImportService';
+import { processBankStatementPDF } from '../services/pdfAnalyzerService';
 import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -51,8 +52,11 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
     };
 
     const processFile = async (file: File) => {
-        if (!file.name.endsWith('.csv')) {
-            toast.error('Please upload a CSV file');
+        const isCSV = file.name.toLowerCase().endsWith('.csv');
+        const isPDF = file.name.toLowerCase().endsWith('.pdf');
+
+        if (!isCSV && !isPDF) {
+            toast.error('Please upload a CSV or PDF file');
             return;
         }
 
@@ -60,22 +64,48 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
         setFileName(file.name);
 
         try {
-            const content = await file.text();
-            const parsed = parseCSV(content);
-            const { valid, invalid } = validateTransactions(parsed);
+            if (isPDF) {
+                // Process PDF with AI analyzer
+                toast.loading('Analyzing PDF statement...', { id: 'pdf-analyze' });
+                const result = await processBankStatementPDF(file);
+                toast.dismiss('pdf-analyze');
 
-            setTransactions(valid);
-            setErrors(invalid);
-            setStep('preview');
+                if (result.success && result.transactions.length > 0) {
+                    const parsed: ParsedTransaction[] = result.transactions.map((tx, i) => ({
+                        id: tx.id || `pdf-${Date.now()}-${i}`,
+                        date: tx.date,
+                        description: tx.description,
+                        amount: tx.amount,
+                        type: tx.type,
+                        category: tx.category || 'Other',
+                    }));
 
-            if (invalid.length > 0) {
-                toast.warning(`${invalid.length} rows had issues and were skipped`, {
-                    description: "Check the CSV format carefully"
-                });
+                    setTransactions(parsed);
+                    setErrors([]);
+                    setStep('preview');
+                    toast.success(`Found ${parsed.length} transactions in PDF`);
+                } else {
+                    toast.error(result.error || 'No transactions found in PDF');
+                }
+            } else {
+                // Process CSV
+                const content = await file.text();
+                const parsed = parseCSV(content);
+                const { valid, invalid } = validateTransactions(parsed);
+
+                setTransactions(valid);
+                setErrors(invalid);
+                setStep('preview');
+
+                if (invalid.length > 0) {
+                    toast.warning(`${invalid.length} rows had issues and were skipped`, {
+                        description: "Check the CSV format carefully"
+                    });
+                }
             }
         } catch (error) {
-            toast.error('Failed to parse CSV file');
-            console.error('CSV parse error:', error);
+            toast.error('Failed to process file');
+            console.error('File parse error:', error);
         } finally {
             setIsProcessing(false);
         }
@@ -151,7 +181,7 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                                 <input
                                     ref={fileInputRef}
                                     type="file"
-                                    accept=".csv"
+                                    accept=".csv,.pdf"
                                     onChange={handleFileSelect}
                                     className="hidden"
                                 />

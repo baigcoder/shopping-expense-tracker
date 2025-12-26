@@ -4,11 +4,14 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     MessageSquare, X, Send, Bot, User, Sparkles, Loader2,
-    Zap, Minimize2, Maximize2, RefreshCw, Brain
+    Zap, Minimize2, Maximize2, RefreshCw, Brain, Phone
 } from 'lucide-react';
 import { getAIResponse, clearAIContext } from '../services/aiService';
 import { useAuthStore, useUIStore } from '../store/useStore';
+import { useAIRealtime } from '../hooks/useAIRealtime';
 import { cn } from '@/lib/utils';
+import VoiceSetupModal from './VoiceSetupModal';
+import VoiceCallModal from './VoiceCallModal';
 
 interface Message {
     id: string;
@@ -43,6 +46,11 @@ const AIChatbot = () => {
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    // Voice AI states
+    const [showVoiceSetup, setShowVoiceSetup] = useState(false);
+    const [showVoiceCall, setShowVoiceCall] = useState(false);
+    const [voicePrefs, setVoicePrefs] = useState<{ isSetup: boolean; voiceName: string } | null>(null);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -51,33 +59,87 @@ const AIChatbot = () => {
         scrollToBottom();
     }, [messages]);
 
-    // Clear context when user changes
+    // Initialize AI data cache with realtime sync when user logs in
     useEffect(() => {
         if (user?.id) {
             clearAIContext();
+
+            // Setup cache with realtime updates
+            import('../services/aiDataCacheService').then(({ aiDataCache }) => {
+                // Preload cache in background
+                aiDataCache.getCachedData(user.id).then(() => {
+                    console.log('✅ AI Cache preloaded');
+                });
+
+                // Setup realtime sync
+                aiDataCache.setupRealtime(user.id);
+            });
         }
-    }, [user?.id]);
-
-    // Listen for data changes to refresh AI context
-    useEffect(() => {
-        const handleDataChange = () => {
-            clearAIContext();
-        };
-
-        window.addEventListener('transaction-added', handleDataChange);
-        window.addEventListener('transaction-updated', handleDataChange);
-        window.addEventListener('transaction-deleted', handleDataChange);
-        window.addEventListener('budget-changed', handleDataChange);
-        window.addEventListener('subscription-changed', handleDataChange);
 
         return () => {
-            window.removeEventListener('transaction-added', handleDataChange);
-            window.removeEventListener('transaction-updated', handleDataChange);
-            window.removeEventListener('transaction-deleted', handleDataChange);
-            window.removeEventListener('budget-changed', handleDataChange);
-            window.removeEventListener('subscription-changed', handleDataChange);
+            // Cleanup on unmount
+            import('../services/aiDataCacheService').then(({ aiDataCache }) => {
+                aiDataCache.cleanup();
+            });
         };
-    }, []);
+    }, [user?.id]);
+
+    // AI Realtime - Auto-invalidate context when any data changes
+    useAIRealtime({
+        onContextInvalidated: () => {
+            console.log('🧠 AI context auto-refreshed via realtime');
+        },
+        onAnomalyDetected: (anomaly) => {
+            // Add AI message about the anomaly
+            const anomalyMessage: Message = {
+                id: Date.now().toString(),
+                role: 'assistant',
+                content: `${anomaly.message}`,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, anomalyMessage]);
+        }
+    });
+
+    // Fetch voice preferences on mount
+    useEffect(() => {
+        const fetchVoicePrefs = async () => {
+            if (!user?.id) return;
+            try {
+                const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
+                const parsed = token ? JSON.parse(token) : null;
+                const accessToken = parsed?.access_token;
+
+                const response = await fetch('http://localhost:5000/api/voice/preferences', {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setVoicePrefs({ isSetup: data.isSetup, voiceName: data.voiceName });
+                }
+            } catch (err) {
+                console.log('Voice prefs not loaded');
+            }
+        };
+        fetchVoicePrefs();
+    }, [user?.id]);
+
+    // Handle voice button click
+    const handleVoiceClick = () => {
+        if (voicePrefs?.isSetup) {
+            setShowVoiceCall(true);
+        } else {
+            setShowVoiceSetup(true);
+        }
+    };
+
+    // Handle voice setup complete
+    const handleVoiceSetupComplete = (voiceId: string, voiceName: string) => {
+        setVoicePrefs({ isSetup: true, voiceName });
+        setShowVoiceSetup(false);
+        setShowVoiceCall(true);
+    };
 
     const handleSend = async (messageText?: string) => {
         const text = messageText || input.trim();
@@ -220,6 +282,19 @@ const AIChatbot = () => {
                                 </div>
                             </div>
                             <div className="flex items-center gap-1">
+                                {/* Voice Call Button */}
+                                <motion.button
+                                    onClick={handleVoiceClick}
+                                    className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-violet-500/20 transition-colors relative"
+                                    title="Talk to AI Accountant"
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
+                                    <Phone size={16} />
+                                    {!voicePrefs?.isSetup && (
+                                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-violet-500 rounded-full animate-pulse" />
+                                    )}
+                                </motion.button>
                                 <button
                                     onClick={() => setIsMinimized(!isMinimized)}
                                     className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
@@ -363,24 +438,26 @@ const AIChatbot = () => {
                                                 "disabled:opacity-50"
                                             )}
                                         />
-                                        <button
+                                        <motion.button
                                             onClick={() => handleSend()}
                                             disabled={!input.trim() || isLoading}
                                             className={cn(
                                                 "w-12 h-12 rounded-xl flex items-center justify-center",
                                                 "bg-white text-primary",
-                                                "text-white shadow-lg shadow-primary/30",
-                                                "hover:shadow-xl hover:-translate-y-0.5 transition-all",
-
+                                                "shadow-lg shadow-black/20",
+                                                "hover:shadow-xl hover:-translate-y-1 transition-all duration-300",
+                                                "hover:bg-blue-50 active:scale-95",
                                                 "disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-y-0"
                                             )}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
                                         >
                                             {isLoading ? (
-                                                <Loader2 size={20} className="animate-spin" />
+                                                <Loader2 size={24} className="animate-spin text-primary" />
                                             ) : (
-                                                <Send size={20} />
+                                                <Send size={22} className="text-primary fill-primary" />
                                             )}
-                                        </button>
+                                        </motion.button>
                                     </div>
                                 </div>
                             </>
@@ -388,6 +465,25 @@ const AIChatbot = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Voice Modals */}
+            <VoiceSetupModal
+                isOpen={showVoiceSetup}
+                onClose={() => setShowVoiceSetup(false)}
+                onSetupComplete={handleVoiceSetupComplete}
+            />
+            <VoiceCallModal
+                isOpen={showVoiceCall}
+                onClose={() => setShowVoiceCall(false)}
+                voiceName={voicePrefs?.voiceName || 'Rachel'}
+                userId={user?.id || ''}
+                userName={user?.name?.split(' ')[0] || 'there'}
+                onEditPreferences={() => {
+                    setShowVoiceCall(false);
+                    setVoicePrefs({ isSetup: false, voiceName: voicePrefs?.voiceName || 'Rachel' });
+                    setShowVoiceSetup(true);
+                }}
+            />
         </>
     );
 };

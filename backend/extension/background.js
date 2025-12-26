@@ -1,13 +1,199 @@
-// Background Service Worker - Enhanced Extension Logic v4.0
+// Background Service Worker - Enhanced Extension Logic v6.0
 // Handles behavior-based detection, sync, notifications, and website communication
+// v6.0: Added debug flag, subscription duplicate check, error boundaries
 
 // Import centralized config
 importScripts('config.js');
+
+// ================================
+// DEBUG FLAG - Set to false in production
+// ================================
+const DEBUG = false;
+const log = (...args) => DEBUG && console.log('💸 BG:', ...args);
+const warn = (...args) => DEBUG && console.warn('💸 BG:', ...args);
 
 // Use config values (set by config.js on self)
 const SUPABASE_URL = self.CONFIG.SUPABASE_URL;
 const SUPABASE_ANON_KEY = self.CONFIG.SUPABASE_ANON_KEY;
 const WEBSITE_ORIGINS = self.CONFIG.WEBSITE_ORIGINS;
+
+// ================================
+// RATE LIMITER CLASS
+// ================================
+class RateLimiter {
+    constructor(maxRequests = 60, windowMs = 60000) {
+        this.maxRequests = maxRequests;
+        this.windowMs = windowMs;
+        this.requests = [];
+    }
+
+    canMakeRequest() {
+        const now = Date.now();
+        // Remove requests outside the window
+        this.requests = this.requests.filter(time => now - time < this.windowMs);
+        return this.requests.length < this.maxRequests;
+    }
+
+    recordRequest() {
+        this.requests.push(Date.now());
+    }
+
+    async throttledFetch(url, options = {}) {
+        if (!this.canMakeRequest()) {
+            console.warn('⚠️ Rate limit exceeded, request throttled');
+            throw new Error('Rate limit exceeded. Please wait before making more requests.');
+        }
+        this.recordRequest();
+        return fetch(url, options);
+    }
+
+    getRemainingRequests() {
+        const now = Date.now();
+        this.requests = this.requests.filter(time => now - time < this.windowMs);
+        return Math.max(0, this.maxRequests - this.requests.length);
+    }
+}
+
+// Initialize rate limiters with config values
+const apiRateLimiter = new RateLimiter(
+    self.CONFIG.RATE_LIMIT?.MAX_REQUESTS_PER_MINUTE || 60,
+    60000
+);
+const transactionRateLimiter = new RateLimiter(
+    self.CONFIG.RATE_LIMIT?.MAX_TRANSACTIONS_PER_MINUTE || 10,
+    60000
+);
+
+// ================================
+// OFFLINE QUEUE CLASS - Reliable sync with retry
+// ================================
+class OfflineQueue {
+    constructor() {
+        this.isOnline = true;
+        this.retryTimeouts = new Map();
+        this.maxRetries = 5;
+        this.baseDelay = 1000; // 1 second
+    }
+
+    // Check network status
+    async checkOnline() {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+                method: 'HEAD',
+                headers: { 'apikey': SUPABASE_ANON_KEY }
+            });
+            this.isOnline = response.ok;
+        } catch {
+            this.isOnline = false;
+        }
+        return this.isOnline;
+    }
+
+    // Add transaction to queue
+    async queue(transaction) {
+        const storage = await chrome.storage.local.get(['offlineQueue']);
+        const queue = storage.offlineQueue || [];
+
+        queue.push({
+            ...transaction,
+            queuedAt: Date.now(),
+            retries: 0
+        });
+
+        await chrome.storage.local.set({ offlineQueue: queue });
+        console.log('📦 Transaction queued for sync:', transaction.description);
+
+        // Try to sync immediately if online
+        this.processQueue();
+    }
+
+    // Process queued transactions with exponential backoff
+    async processQueue() {
+        if (!this.isOnline) {
+            await this.checkOnline();
+            if (!this.isOnline) {
+                console.log('📴 Offline - will retry when connection restored');
+                return;
+            }
+        }
+
+        const storage = await chrome.storage.local.get(['offlineQueue', 'accessToken', 'userId']);
+        const queue = storage.offlineQueue || [];
+
+        if (queue.length === 0 || !storage.accessToken) return;
+
+        console.log(`🔄 Processing ${queue.length} queued transactions...`);
+
+        const remaining = [];
+
+        for (const item of queue) {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${storage.accessToken}`,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        user_id: storage.userId,
+                        ...item
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('✅ Queued transaction synced:', item.description);
+                } else if (response.status >= 500) {
+                    // Server error - retry with backoff
+                    item.retries = (item.retries || 0) + 1;
+                    if (item.retries < this.maxRetries) {
+                        remaining.push(item);
+                    } else {
+                        console.error('❌ Max retries reached, discarding:', item.description);
+                    }
+                }
+                // 4xx errors are not retried (bad data)
+            } catch (error) {
+                // Network error - retry
+                item.retries = (item.retries || 0) + 1;
+                if (item.retries < this.maxRetries) {
+                    remaining.push(item);
+                }
+                this.isOnline = false;
+            }
+
+            // Small delay between requests
+            await new Promise(r => setTimeout(r, 200));
+        }
+
+        await chrome.storage.local.set({ offlineQueue: remaining });
+
+        // Schedule retry if items remain
+        if (remaining.length > 0) {
+            const delay = this.baseDelay * Math.pow(2, remaining[0].retries || 0);
+            console.log(`⏰ Retrying ${remaining.length} items in ${delay}ms`);
+            setTimeout(() => this.processQueue(), delay);
+        }
+    }
+}
+
+// Initialize offline queue
+const offlineQueue = new OfflineQueue();
+
+// Process queue when coming online
+setInterval(() => offlineQueue.checkOnline().then(online => {
+    if (online) offlineQueue.processQueue();
+}), 30000); // Check every 30 seconds
+
+// Last sync timestamp for cooldown
+let lastSyncTimestamp = 0;
+const SYNC_COOLDOWN_MS = self.CONFIG.RATE_LIMIT?.SYNC_COOLDOWN_MS || 5000;
+
+// Helper function for rate-limited API calls
+async function rateLimitedFetch(url, options = {}) {
+    return apiRateLimiter.throttledFetch(url, options);
+}
 
 // Current tracking state (for popup display)
 let currentTrackingState = {
@@ -420,12 +606,12 @@ async function broadcastTransaction(userId, transaction) {
 // SUBSCRIPTION DETECTION HANDLER
 // ================================
 async function handleSubscriptionDetected(data) {
-    console.log('🔔 Subscription detected:', data);
+    log('Subscription detected:', data);
 
     const authData = await chrome.storage.local.get(['accessToken', 'userId', 'userEmail']);
 
     if (!authData.accessToken || !authData.userId) {
-        console.log('Not logged in, storing for later sync');
+        log('Not logged in, storing for later sync');
         // Store pending subscription
         const pending = await chrome.storage.local.get(['pendingSubscriptions']) || { pendingSubscriptions: [] };
         pending.pendingSubscriptions = pending.pendingSubscriptions || [];
@@ -438,6 +624,26 @@ async function handleSubscriptionDetected(data) {
     }
 
     try {
+        // Check for duplicate subscription BEFORE saving
+        const subscriptionName = data.name || data.serviceName || 'Unknown';
+        const existingCheck = await fetch(
+            `${SUPABASE_URL}/rest/v1/subscriptions?user_id=eq.${authData.userId}&name=eq.${encodeURIComponent(subscriptionName)}&select=id,name`,
+            {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${authData.accessToken}`
+                }
+            }
+        );
+
+        if (existingCheck.ok) {
+            const existing = await existingCheck.json();
+            if (existing && existing.length > 0) {
+                log('Duplicate subscription found, skipping:', subscriptionName);
+                return; // Skip duplicate
+            }
+        }
+
         // Calculate trial end date
         const today = new Date();
         let trialEndDate = null;
@@ -744,6 +950,52 @@ async function syncPendingTransactions() {
         console.error('Pending sync error:', error);
     }
 }
+
+// ================================
+// OFFLINE RETRY QUEUE WITH EXPONENTIAL BACKOFF
+// ================================
+const retryQueue = {
+    attempts: {},
+    maxAttempts: 5,
+    baseDelay: 5000, // 5 seconds
+
+    getDelay(itemId) {
+        const attempts = this.attempts[itemId] || 0;
+        return Math.min(this.baseDelay * Math.pow(2, attempts), 300000); // Max 5 min
+    },
+
+    recordAttempt(itemId, success) {
+        if (success) {
+            delete this.attempts[itemId];
+        } else {
+            this.attempts[itemId] = (this.attempts[itemId] || 0) + 1;
+        }
+    },
+
+    shouldRetry(itemId) {
+        return (this.attempts[itemId] || 0) < this.maxAttempts;
+    },
+
+    async scheduleRetry(itemId, callback) {
+        if (!this.shouldRetry(itemId)) {
+            log('Max retry attempts reached for:', itemId);
+            return false;
+        }
+
+        const delay = this.getDelay(itemId);
+        log(`Scheduling retry for ${itemId} in ${delay}ms`);
+
+        setTimeout(async () => {
+            const success = await callback();
+            this.recordAttempt(itemId, success);
+            if (!success && this.shouldRetry(itemId)) {
+                this.scheduleRetry(itemId, callback);
+            }
+        }, delay);
+
+        return true;
+    }
+};
 
 // ================================
 // NOTIFICATIONS

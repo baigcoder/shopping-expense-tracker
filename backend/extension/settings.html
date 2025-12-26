@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashly - Settings</title>
+    <link rel="stylesheet" href="popup.css">
+    <style>
+        body {
+            min-height: 400px;
+        }
+
+        .settings-section {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-section h3 {
+            color: #0F172A;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .setting-desc {
+            color: #94A3B8;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #CBD5E1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #2563EB;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(22px);
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .version-info {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <button id="backBtn" class="back-btn">← Back</button>
+        <h1 style="color: #FFFFFF; font-size: 1.1rem;">Settings</h1>
+        <div style="width: 60px;"></div>
+    </header>
+
+    <div class="container" style="padding: 20px;">
+        <!-- Tracking Settings -->
+        <div class="settings-section">
+            <h3>🎯 Tracking</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Auto-Track Purchases</div>
+                    <div class="setting-desc">Automatically detect and save transactions</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoTrackToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Smart Detection</div>
+                    <div class="setting-desc">Use AI to detect payment pages</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="smartDetectionToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Notifications Settings -->
+        <div class="settings-section">
+            <h3>🔔 Notifications</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Push Notifications</div>
+                    <div class="setting-desc">Get notified about new transactions</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="notificationsToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Budget Alerts</div>
+                    <div class="setting-desc">Alert when approaching budget limits</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="budgetAlertsToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Account Section -->
+        <div class="settings-section">
+            <h3>👤 Account</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Logged in as</div>
+                    <div class="setting-desc" id="userEmail">Loading...</div>
+                </div>
+            </div>
+            <button id="logoutBtn" class="logout-btn">Sign Out</button>
+        </div>
+
+        <div class="version-info">
+            Cashly Extension v5.0.0<br>
+            Made with ❤️ for smart shoppers
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="settings.js"></script>
+</body>
+
+</html>

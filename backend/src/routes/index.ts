@@ -7,6 +7,9 @@ import categoryRoutes from './category.routes.js';
 import otpRoutes from './otp.routes.js';
 import cardRoutes from './card.routes.js';
 import plaidRoutes from './plaid.routes.js';
+import aiRoutes from './ai.js';
+import resetRoutes from './reset.routes.js';
+import voiceRoutes from './voice.routes.js';
 
 const router = Router();
 
@@ -27,6 +30,10 @@ router.use('/analytics', analyticsRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/cards', cardRoutes);
 router.use('/plaid', plaidRoutes);
+router.use('/ai', aiRoutes);
+router.use('/reset', resetRoutes);
+router.use('/voice', voiceRoutes);
 
 export default router;
+
 

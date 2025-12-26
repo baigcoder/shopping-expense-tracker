@@ -1,189 +1,356 @@
 /* ============================================
-   FINZEN - CARDS PAGE
-   Clean SaaS Design
+   MIDNIGHT CORAL - CARDS PAGE (PREMIUM LIGHT)
+   High-Fidelity Glassmorphism & Mesh Gradients
    ============================================ */
 
-.container {
-    width: 100%;
-    background: #F8FAFC;
+.mainContent {
     min-height: 100vh;
-    padding: 24px 32px;
-}
-
-/* === HEADER === */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-}
-
-.titleSection h1 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #0F172A;
-    margin: 0 0 4px;
-    letter-spacing: -0.5px;
-}
-
-.titleSection p {
-    font-size: 0.95rem;
-    color: #64748B;
-    margin: 0;
-}
-
-.addBtn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: #0F172A;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-}
-
-.addBtn:hover {
-    background: #1E293B;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
-}
-
-/* === STATS GRID === */
-.statsRow {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 40px;
-}
-
-.stat {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    padding: 16px 20px;
-    border-radius: 12px;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.statIcon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: #F1F5F9;
-    color: #64748B;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.statContent {
-    display: flex;
-    flex-direction: column;
-}
-
-.statValue {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0F172A;
-    line-height: 1.2;
-}
-
-.statLabel {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #64748B;
-    text-transform: uppercase;
-}
-
-/* === CARD COLLECTION === */
-.collectionSection {
-    margin-bottom: 40px;
-}
-
-.sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.sectionHeader h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #0F172A;
-    margin: 0;
-}
-
-.sectionHeader p {
-    font-size: 0.9rem;
-    color: #64748B;
-    margin: 0;
-}
-
-.cardsGrid {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    padding: 4px 4px 24px 4px;
-    /* Scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: #CBD5E1 transparent;
-}
-
-.cardsGrid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.cardsGrid::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.cardsGrid::-webkit-scrollbar-thumb {
-    background-color: #CBD5E1;
-    border-radius: 20px;
-}
-
-/* Card Visual */
-.cardWrapper {
-    flex-shrink: 0;
-}
-
-.card {
-    width: 320px;
-    height: 200px;
-    border-radius: 20px;
+    background: #f8fafc;
+    /* Premium Off-White */
+    padding: 2rem;
     position: relative;
-    padding: 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow-x: hidden;
+    color: #0f172a;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.2);
-}
-
-.cardShine {
-    position: absolute;
+/* Subtle Mesh Gradient Background */
+.mainContent::before {
+    content: '';
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(125deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 50%);
+    background:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.02) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.02) 0px, transparent 50%);
     pointer-events: none;
+    z-index: 0;
+}
+
+/* === GLASS HEADER === */
+.header {
+    position: sticky;
+    top: 1rem;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 3px solid rgba(226, 232, 240, 0.8);
+    border-radius: 2rem;
+    padding: 1.25rem 2rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 10px 15px -3px rgba(0, 0, 0, 0.03),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.headerIcon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.headerInfo h1 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.04em;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.headerInfo p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0.25rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.secureBadge {
+    font-size: 10px;
+    font-weight: 900;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 99px;
+    border: 1px solid #dbeafe;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* === STATS GRID === */
+.overviewGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.premiumStatCard {
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 2.25rem;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.premiumStatCard:hover {
+    transform: translateY(-8px);
+    border-color: #cbd5e1;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.cardDecoration {
+    position: absolute;
+    top: -2rem;
+    right: -2rem;
+    width: 8rem;
+    height: 8rem;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.statHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.statIconContainer {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.premiumStatCard:hover .statIconContainer {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.statLabel {
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.statValueContainer {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.statValue {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.04em;
+}
+
+.statSubtext {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.statProgress {
+    height: 0.5rem;
+    background: #f1f5f9;
+    border-radius: 99px;
+    margin-top: 1.25rem;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s ease-out;
+}
+
+/* === WALLET SECTION === */
+.walletSection {
+    margin-bottom: 3.5rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+}
+
+.sectionTitle {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionTitle h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.sectionTitle p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0.25rem 0 0;
+}
+
+.sectionLine {
+    flex: 1;
+    height: 2px;
+    background: #f1f5f9;
+    margin: 0 2rem;
+}
+
+.encryptedTag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 11px;
+    font-weight: 900;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* === CARDS GRID === */
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+}
+
+/* Premium Digital Card */
+.premiumCard {
+    aspect-ratio: 1.586/1;
+    border-radius: 2.25rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.03),
+        0 20px 25px -5px rgba(0, 0, 0, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background-size: 200% 200% !important;
+}
+
+.premiumCard:hover {
+    transform: translateY(-0.75rem) scale(1.02);
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 30px 35px -10px rgba(0, 0, 0, 0.1);
+    background-position: 100% 100% !important;
+}
+
+/* 3px Reflective Border */
+.cardBorder {
+    position: absolute;
+    inset: 0;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 2.25rem;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.premiumCard:hover .cardBorder {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.cardGlass {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.05) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cardShine {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg,
+            transparent 0%,
+            transparent 45%,
+            rgba(255, 255, 255, 0.15) 50%,
+            transparent 55%,
+            transparent 100%);
+    transform: rotate(25deg);
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.premiumCard:hover .cardShine {
+    transform: rotate(25deg) translate(50%, 50%);
+}
+
+.cardContent {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
 }
 
 .cardTop {
@@ -192,395 +359,310 @@
     align-items: flex-start;
 }
 
-.chip {
-    width: 40px;
-    height: 30px;
-    background: linear-gradient(135deg, #e2e2e2 0%, #a0a0a0 100%);
-    border-radius: 6px;
+.cardLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.labelSmall {
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+}
+
+.labelMain {
+    font-size: 1.125rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.brandContainer {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.cardChip {
+    width: 3.5rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
     position: relative;
     overflow: hidden;
-    opacity: 0.9;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
-.brandLogo {
-    height: 24px;
-    width: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
+.chipGrid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    opacity: 0.3;
 }
 
-.cardNumber {
-    font-family: 'Courier New', monospace;
-    font-size: 1.4rem;
-    letter-spacing: 2px;
-    margin: 1rem 0;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.chipGrid div {
+    border: 0.5px solid rgba(0, 0, 0, 0.4);
 }
 
-.cardBottom {
+.cardNumbers {
+    font-family: 'Inter', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.cardInfo {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
+.infoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 .infoLabel {
-    font-size: 0.6rem;
+    font-size: 9px;
+    font-weight: 900;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2px;
-    font-weight: 600;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
 }
 
-.infoValue {
-    font-size: 0.9rem;
-    font-weight: 600;
+.infoText {
+    font-size: 0.875rem;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
-.addCardPlaceholder {
-    width: 320px;
-    height: 200px;
-    flex-shrink: 0;
-    border: 2px dashed #E2E8F0;
-    border-radius: 20px;
+/* Add Card Tile */
+.addCardTile {
+    aspect-ratio: 1.586/1;
+    border-radius: 2.25rem;
+    border: 4px dashed #e2e8f0;
+    background: rgba(248, 250, 252, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 1.25rem;
     cursor: pointer;
-    background: #F8FAFC;
-    color: #64748B;
-    font-weight: 600;
-    transition: all 0.2s;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
 }
 
-.addCardPlaceholder:hover {
-    border-color: #94A3B8;
-    background: #F1F5F9;
-    color: #0F172A;
+.addCardTile:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    transform: translateY(-0.5rem);
 }
 
-/* === TRANSACTIONS TABLE === */
-.recentActivity {
+.addCardIcon {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1.5rem;
     background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 16px;
-    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
-.tableContainer {
-    width: 100%;
-    overflow-x: auto;
+.addCardTile:hover .addCardIcon {
+    color: #3b82f6;
+    transform: scale(1.1);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
 }
 
-.transactionTable {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.transactionTable th {
-    text-align: left;
-    padding: 12px 16px;
-    color: #64748B;
-    font-weight: 600;
-    font-size: 0.8rem;
+.addCardText {
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: #94a3b8;
     text-transform: uppercase;
-    border-bottom: 1px solid #E2E8F0;
+    letter-spacing: 0.15em;
+    transition: color 0.3s ease;
 }
 
-.transactionTable td {
-    padding: 16px;
-    border-bottom: 1px solid #F1F5F9;
-    color: #0F172A;
-    font-size: 0.95rem;
-    vertical-align: middle;
+.addCardTile:hover .addCardText {
+    color: #3b82f6;
 }
 
-.transactionTable tr:last-child td {
-    border-bottom: none;
-}
-
-.merchantCell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 600;
-}
-
-.merchantIcon {
-    width: 36px;
-    height: 36px;
-    background: #F1F5F9;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #475569;
-}
-
-.status {
-    display: inline-flex;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.status.completed {
-    background: #DCFCE7;
-    color: #166534;
-}
-
-.status.pending {
-    background: #FEF3C7;
-    color: #92400E;
-}
-
-.status.failed {
-    background: #FEE2E2;
-    color: #991B1B;
-}
-
-.actionBtn {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    color: #94A3B8;
-    border-radius: 6px;
-    transition: all 0.2s;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.actionBtn:hover {
-    background: #F1F5F9;
-    color: #0F172A;
-}
-
-/* === MODAL & PIN === */
-.modalOverlay,
-.pinOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.pinModal {
+/* === CONNECTED BANKS === */
+.banksSection {
     background: white;
-    border-radius: 20px;
-    padding: 32px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    border: 3px solid #e2e8f0;
+    border-radius: 2.5rem;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
-.pinHeader h3 {
-    margin: 16px 0 8px;
-    font-size: 1.25rem;
-    color: #0F172A;
+.banksHeader {
+    padding: 2rem;
+    border-bottom: 2px solid #f1f5f9;
+    background: linear-gradient(to right, #f8fafc, white);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
 }
 
-.pinHeader p {
-    color: #64748B;
-    margin: 0 0 24px;
-}
-
-.pinIcon {
-    width: 64px;
-    height: 64px;
-    background: #F1F5F9;
-    border-radius: 50%;
+.banksIconContainer {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.25rem;
+    background: #ecfdf5;
+    color: #10b981;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-    color: #0F172A;
+}
+
+.banksInfo h3 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.banksInfo p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0.25rem 0 0;
+}
+
+.banksContent {
+    padding: 2rem;
+}
+
+/* === MODALS === */
+.glassDialog {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(24px);
+    border: 3px solid #e2e8f0;
+    border-radius: 3rem;
+    padding: 0;
+    overflow: hidden;
+}
+
+.modalHeader {
+    padding: 2.5rem 2.5rem 1.5rem;
+    background: rgba(248, 250, 252, 0.5);
+    text-align: center;
+    position: relative;
+}
+
+.modalIcon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1.75rem;
+    background: #2563eb;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+    transform: rotate(-3deg);
+}
+
+.modalContent {
+    padding: 0 2.5rem 2.5rem;
+}
+
+/* PIN Inputs */
+.pinContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
 }
 
 .pinInput {
-    width: 100%;
-    padding: 16px;
-    font-size: 1.5rem;
+    width: 4rem;
+    height: 5rem;
+    border-radius: 1.25rem;
+    border: 3px solid #f1f5f9;
+    background: #f8fafc;
+    font-size: 2rem;
+    font-weight: 900;
     text-align: center;
-    letter-spacing: 8px;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-    margin-bottom: 24px;
-    outline: none;
-    font-family: monospace;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pinInput:focus {
-    border-color: #0F172A;
-    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
-}
-
-.pinActions {
-    display: flex;
-    gap: 12px;
-}
-
-.pinActions button {
-    flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-}
-
-.cancelBtn {
-    background: #F1F5F9;
-    color: #64748B;
-}
-
-.verifyBtn {
-    background: #0F172A;
-    color: white;
-}
-
-/* === CARD DETAILS MODAL === */
-.cardDetailsModal {
+    border-color: #3b82f6;
     background: white;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+}
+
+/* Vault Management */
+.vaultCard {
+    aspect-ratio: 1.586/1;
+    border-radius: 2.5rem;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
     position: relative;
-    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
 }
 
-.modalCloseBtn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: white;
-    border: none;
+.vaultDetails {
+    display: grid;
+    gap: 1rem;
+}
+
+.detailRow {
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    color: #64748B;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.modalCardPreview {
-    margin: 24px;
-    margin-bottom: 0;
-}
-
-.cardDetailsList {
-    padding: 24px;
-}
-
-.detailItem {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #F1F5F9;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+    background: #f8fafc;
+    border: 2px solid #f1f5f9;
+    transition: all 0.3s ease;
 }
 
-.detailLabel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #64748B;
-    font-weight: 500;
+.detailRow:hover {
+    background: white;
+    border-color: #3b82f6;
+    transform: translateX(0.25rem);
 }
 
-.detailValue {
-    font-weight: 600;
-    color: #0F172A;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.copyBtn {
-    padding: 4px;
-    background: transparent;
-    border: none;
-    color: #94A3B8;
-    cursor: pointer;
-}
-
-.copyBtn:hover {
-    color: #0F172A;
-}
-
-.modalActions {
-    padding: 24px;
-    border-top: 1px solid #F1F5F9;
-    display: flex;
-    gap: 12px;
-}
-
-.revealCvvBtn {
-    background: #FFF1F2;
-    color: #E11D48;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.deleteCardBtn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px;
-    background: #FEF2F2;
-    color: #EF4444;
-    border-radius: 10px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-}
-
-.deleteCardBtn:hover {
-    background: #FEE2E2;
+/* Responsive */
+@media (max-width: 1024px) {
+    .overviewGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
+        gap: 1.5rem;
+        padding: 1.5rem;
     }
 
-    .statsRow {
-        flex-direction: column;
+    .overviewGrid {
+        grid-template-columns: 1fr;
     }
 
     .cardsGrid {
-        padding-bottom: 20px;
+        grid-template-columns: 1fr;
+    }
+
+    .mainContent {
+        padding: 1rem;
     }
 }

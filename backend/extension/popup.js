@@ -1,5 +1,7 @@
 // Enhanced Extension Popup Script - Full Feature Support v4.0
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Popup script initialized');
+
     // ================================
     // DOM ELEMENTS
     // ================================
@@ -18,6 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Main view elements
     const logoutBtn = document.getElementById('logoutBtn');
     const settingsBtn = document.getElementById('settingsBtn');
+    console.log('Button elements found:', { logoutBtn: !!logoutBtn, settingsBtn: !!settingsBtn });
+
     const userEmailEl = document.getElementById('userEmail');
     const syncStatusEl = document.getElementById('syncStatus');
     const monthlySpentEl = document.getElementById('monthlySpent');
@@ -321,9 +325,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function checkAuthAndShowView() {
         await tryAutoLoginFromWebsite();
 
-        const authData = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'syncedFromWebsite', 'userAvatar']);
+        const authData = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'syncedFromWebsite', 'userAvatar', 'supabaseSession']);
 
         if (authData.accessToken && authData.userEmail) {
+            // CHECK TOKEN EXPIRY & REFRESH IF NEEDED
+            const session = authData.supabaseSession;
+            if (session?.expires_at) {
+                const expiresAt = session.expires_at * 1000; // Convert to ms
+                const now = Date.now();
+                const fiveMinutes = 5 * 60 * 1000;
+
+                // Refresh if token expires in less than 5 minutes
+                if (expiresAt - now < fiveMinutes) {
+                    console.log('🔄 Token expiring soon, refreshing...');
+                    const refreshed = await refreshToken(session.refresh_token);
+                    if (!refreshed) {
+                        console.log('⚠️ Token refresh failed, showing login');
+                        showView('login');
+                        return;
+                    }
+                }
+            }
+
             showView('main');
             userEmailEl.textContent = authData.userEmail;
 
@@ -352,6 +375,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             ]);
         } else {
             showView('login');
+        }
+    }
+
+    // ================================
+    // TOKEN REFRESH
+    // ================================
+    async function refreshToken(refreshToken) {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ refresh_token: refreshToken })
+            });
+
+            if (!response.ok) return false;
+
+            const data = await response.json();
+
+            await chrome.storage.local.set({
+                supabaseSession: data,
+                accessToken: data.access_token,
+                lastSync: Date.now()
+            });
+
+            console.log('✅ Token refreshed successfully');
+            return true;
+        } catch (error) {
+            console.error('Token refresh error:', error);
+            return false;
         }
     }
 
@@ -476,23 +531,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     // LOGOUT HANDLER
     // ================================
 
-    logoutBtn.addEventListener('click', async () => {
-        if (confirm('Sign out from Cashly? 👋')) {
-            await chrome.storage.local.remove([
-                'supabaseSession', 'accessToken', 'userId', 'userEmail',
-                'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
-            ]);
-            chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
-            showView('login');
-        }
-    });
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            console.log('Logout button clicked');
+            if (confirm('Sign out from Cashly? 👋')) {
+                await chrome.storage.local.remove([
+                    'supabaseSession', 'accessToken', 'userId', 'userEmail',
+                    'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
+                ]);
+                chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
+                // Reload the popup to show login view
+                window.location.reload();
+            }
+        });
+    } else {
+        console.error('logoutBtn not found');
+    }
 
     // ================================
     // NAVIGATION BUTTONS
     // ================================
 
-    settingsBtn.addEventListener('click', () => showView('settings'));
-    backFromSettings.addEventListener('click', () => showView('main'));
+    // Settings button - opens separate settings page
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            console.log('Settings button clicked - opening settings.html');
+            chrome.tabs.create({ url: chrome.runtime.getURL('settings.html') });
+        });
+    } else {
+        console.error('settingsBtn not found');
+    }
 
     addManualBtn.addEventListener('click', () => showView('manual'));
     backFromManual.addEventListener('click', () => showView('main'));
@@ -523,8 +591,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ================================
 
     clipPageBtn.addEventListener('click', async () => {
-        const iconSpan = clipPageBtn.querySelector('.action-icon');
-        const originalIcon = iconSpan ? iconSpan.textContent : '📌';
+        const iconSpan = clipPageBtn.querySelector('.act-icon');
+        const originalIcon = iconSpan ? iconSpan.innerHTML : '';
 
         if (iconSpan) iconSpan.textContent = '⏳';
         clipPageBtn.disabled = true;

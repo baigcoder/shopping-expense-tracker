@@ -1,0 +1,14 @@
+{
+    "*.{js,jsx,ts,tsx}": [
+        "eslint --fix --max-warnings=0"
+    ],
+    "*.{json,md,css,scss}": [
+        "prettier --write"
+    ],
+    "frontend/src/**/*.{ts,tsx}": [
+        "eslint --fix --max-warnings=0"
+    ],
+    "backend/src/**/*.ts": [
+        "eslint --fix --max-warnings=0"
+    ]
+}

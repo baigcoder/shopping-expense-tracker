@@ -5,6 +5,7 @@ import { subscriptionService, Subscription } from './subscriptionService';
 import { budgetService, Budget } from './budgetService';
 import { goalService, Goal } from './goalService';
 import { formatCurrency } from './currencyService';
+import api from './api';
 
 // ==================== INTERFACES ====================
 
@@ -67,7 +68,37 @@ export interface RiskAlert {
 class MoneyTwinService {
     private cache: MoneyTwinState | null = null;
     private cacheExpiry: number = 0;
-    private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+    private readonly CACHE_TTL = 60 * 1000; // 1 minute for fresher data
+
+    // Try fetching AI-generated insights from backend (Groq-powered)
+    private async fetchBackendAI(userId: string): Promise<{
+        insights: any[] | null;
+        forecast: any[] | null;
+        risks: any[] | null;
+    }> {
+        try {
+            const [insightsRes, forecastRes, risksRes] = await Promise.all([
+                api.get('/ai/insights', { headers: { 'x-user-id': userId } }).catch(() => null),
+                api.get('/ai/forecast', { headers: { 'x-user-id': userId } }).catch(() => null),
+                api.get('/ai/risks', { headers: { 'x-user-id': userId } }).catch(() => null)
+            ]);
+
+            console.log('🤖 Backend AI fetched:', {
+                insights: insightsRes?.data?.insights?.length || 0,
+                forecast: forecastRes?.data?.forecast?.length || 0,
+                risks: risksRes?.data?.risks?.length || 0
+            });
+
+            return {
+                insights: insightsRes?.data?.insights || null,
+                forecast: forecastRes?.data?.forecast || null,
+                risks: risksRes?.data?.risks || null
+            };
+        } catch (error) {
+            console.log('Backend AI unavailable, using local analysis');
+            return { insights: null, forecast: null, risks: null };
+        }
+    }
 
     // Main entry point - get the user's Money Twin analysis
     async getMoneyTwin(userId: string, forceRefresh = false): Promise<MoneyTwinState> {
@@ -77,20 +108,38 @@ class MoneyTwinService {
             return this.cache;
         }
 
-        // Fetch all user data
-        const [transactions, subscriptions, budgets, goals] = await Promise.all([
+        // Fetch all user data AND backend AI in parallel
+        const [transactions, subscriptions, budgets, goals, backendAI] = await Promise.all([
             supabaseTransactionService.getAll(userId),
             subscriptionService.getAll(userId).catch(() => []),
             budgetService.getAll(userId).catch(() => []),
-            goalService.getAll(userId).catch(() => [])
+            goalService.getAll(userId).catch(() => []),
+            this.fetchBackendAI(userId) // Try backend Groq AI
         ]);
 
-        // Analyze patterns
+        // Analyze patterns locally
         const patterns = this.analyzeSpendingPatterns(transactions);
         const velocity = this.calculateSpendingVelocity(transactions);
         const forecasts = this.generateForecasts(transactions, patterns, subscriptions);
         const healthScore = this.calculateHealthScore(velocity, patterns, budgets, goals);
-        const riskAlerts = this.detectRisks(transactions, velocity, budgets, forecasts);
+        let riskAlerts = this.detectRisks(transactions, velocity, budgets, forecasts);
+
+        // Merge backend AI risks if available (they have better suggestions)
+        if (backendAI.risks && backendAI.risks.length > 0) {
+            const aiRisks: RiskAlert[] = backendAI.risks.map((r: any, i: number) => ({
+                id: `ai-risk-${i}`,
+                type: 'unusual_spending' as const,
+                severity: r.confidence > 0.8 ? 'danger' : 'warning' as const,
+                title: r.title || 'AI Risk Alert',
+                message: r.message || 'Potential financial risk detected',
+                daysUntil: null,
+                probability: Math.round((r.confidence || 0.7) * 100),
+                preventionTip: r.message || 'Review your spending patterns',
+                createdAt: r.generatedAt || new Date().toISOString()
+            }));
+            // Prepend AI risks to local risks
+            riskAlerts = [...aiRisks, ...riskAlerts];
+        }
 
         const state: MoneyTwinState = {
             userId,
@@ -112,7 +161,7 @@ class MoneyTwinService {
 
     analyzeSpendingPatterns(transactions: SupabaseTransaction[]): SpendingPattern[] {
         const expenses = transactions.filter(t => t.type === 'expense');
-        if (expenses.length < 5) return []; // Need minimum data
+        if (expenses.length < 2) return []; // Reduced for faster initial patterns
 
         // Group by category
         const categoryGroups: Record<string, SupabaseTransaction[]> = {};
@@ -444,6 +493,23 @@ class MoneyTwinService {
             });
         }
 
+        // Fallback: If no forecasts generated, create sample projections
+        if (forecasts.length === 0) {
+            for (let i = 1; i <= 2; i++) {
+                const forecastDate = new Date(now.getFullYear(), now.getMonth() + i, 1);
+                const monthName = forecastDate.toLocaleString('default', { month: 'short', year: 'numeric' });
+                forecasts.push({
+                    month: monthName,
+                    predictedExpenses: 0,
+                    predictedIncome: 0,
+                    predictedSavings: 0,
+                    riskLevel: 'low',
+                    warnings: ['Add transactions to enable AI forecasting'],
+                    breakdown: {}
+                });
+            }
+        }
+
         return forecasts;
     }
 
@@ -582,6 +648,21 @@ class MoneyTwinService {
                 daysUntil: 30,
                 probability: 70,
                 preventionTip: 'Start adjusting spending now to avoid the predicted shortfall.',
+                createdAt: now.toISOString()
+            });
+        }
+
+        // If no risks detected, add a sample "info" tip
+        if (alerts.length === 0) {
+            alerts.push({
+                id: `tip-${now.getTime()}`,
+                type: 'goal_miss',
+                severity: 'info',
+                title: '✨ Financial Health Tip',
+                message: 'Your spending patterns look stable. Consider setting up a new savings goal to boost your financial health.',
+                daysUntil: null,
+                probability: 100,
+                preventionTip: 'Create a savings goal in the Goals section to start building wealth.',
                 createdAt: now.toISOString()
             });
         }

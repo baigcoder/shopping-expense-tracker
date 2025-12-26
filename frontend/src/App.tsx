@@ -1,42 +1,11 @@
 // Main App with Routing
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './store/useStore';
 import { supabase } from './config/supabase';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import DashboardPage from './pages/DashboardPage';
-import TransactionsPage from './pages/TransactionsPage';
-import AnalyticsPage from './pages/AnalyticsPage';
-import CardsPage from './pages/CardsPage';
-import ExpenseDetailsPage from './pages/ExpenseDetailsPage';
-import ProfilePage from './pages/ProfilePage';
-import SettingsPage from './pages/SettingsPage';
-// New Feature Pages
-import BudgetsPage from './pages/BudgetsPage';
-import BillsPage from './pages/BillsPage';
-import SubscriptionsPage from './pages/SubscriptionsPage';
-import GoalsPage from './pages/GoalsPage';
-import InsightsPage from './pages/InsightsPage';
-import ReportsPage from './pages/ReportsPage';
-import RecurringPage from './pages/RecurringPage';
-import AccountsPage from './pages/AccountsPage';
-import MoneyTwinPage from './pages/MoneyTwinPage';
-import BillRemindersPage from './pages/BillRemindersPage';
-import AITestPage from './pages/AITestPage';
-import ShoppingActivityPage from './pages/ShoppingActivityPage';
-import LandingPage from './pages/LandingPage';
-import FeaturesPage from './pages/FeaturesPage';
-import VerifyEmailPage from './pages/VerifyEmailPage';
-// Legal & Support Pages
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import TermsOfServicePage from './pages/TermsOfServicePage';
-import FAQPage from './pages/FAQPage';
-import ContactPage from './pages/ContactPage';
 import LoadingScreen from './components/LoadingScreen';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -45,6 +14,49 @@ import ExtensionGate from './components/ExtensionGate';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/toast.css'; // Custom toast styles
+
+// ================================
+// LAZY LOADED PAGES (Code Splitting)
+// ================================
+
+// Auth Pages
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const VerifyEmailPage = lazy(() => import('./pages/VerifyEmailPage'));
+
+// Main Dashboard Pages
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const TransactionsPage = lazy(() => import('./pages/TransactionsPage'));
+const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage'));
+const CardsPage = lazy(() => import('./pages/CardsPage'));
+const ExpenseDetailsPage = lazy(() => import('./pages/ExpenseDetailsPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+
+// Feature Pages
+const BudgetsPage = lazy(() => import('./pages/BudgetsPage'));
+const BillsPage = lazy(() => import('./pages/BillsPage'));
+const SubscriptionsPage = lazy(() => import('./pages/SubscriptionsPage'));
+const GoalsPage = lazy(() => import('./pages/GoalsPage'));
+const InsightsPage = lazy(() => import('./pages/InsightsPage'));
+const ReportsPage = lazy(() => import('./pages/ReportsPage'));
+const RecurringPage = lazy(() => import('./pages/RecurringPage'));
+const AccountsPage = lazy(() => import('./pages/AccountsPage'));
+const MoneyTwinPage = lazy(() => import('./pages/MoneyTwinPage'));
+const BillRemindersPage = lazy(() => import('./pages/BillRemindersPage'));
+const AITestPage = lazy(() => import('./pages/AITestPage'));
+const ShoppingActivityPage = lazy(() => import('./pages/ShoppingActivityPage'));
+
+// Public Pages
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
+
+// Legal & Support Pages
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
+const FAQPage = lazy(() => import('./pages/FAQPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 
 
@@ -180,61 +192,63 @@ function App() {
             <BrowserRouter>
                 <OfflineIndicator />
                 <ToastContainer position="top-right" theme="colored" autoClose={4000} />
-                <Routes>
-                    {/* Auth Routes */}
-                    <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />} />
-                    <Route path="/signup" element={!isAuthenticated ? <SignupPage /> : <Navigate to="/dashboard" />} />
-                    <Route path="/verify-email" element={<VerifyEmailPage />} />
-                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Suspense fallback={<LoadingScreen />}>
+                    <Routes>
+                        {/* Auth Routes */}
+                        <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />} />
+                        <Route path="/signup" element={!isAuthenticated ? <SignupPage /> : <Navigate to="/dashboard" />} />
+                        <Route path="/verify-email" element={<VerifyEmailPage />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-                    <Route path="/auth/callback" element={<AuthCallback />} />
+                        <Route path="/auth/callback" element={<AuthCallback />} />
 
-                    {/* Protected Dashboard Routes - Extension Required */}
-                    <Route
-                        element={
-                            isAuthenticated ? (
-                                <ExtensionGate>
-                                    <DashboardLayout />
-                                </ExtensionGate>
-                            ) : (
-                                <Navigate to="/login" />
-                            )
-                        }
-                    >
-                        <Route path="/dashboard" element={<DashboardPage />} />
-                        <Route path="/transactions" element={<TransactionsPage />} />
-                        <Route path="/analytics" element={<AnalyticsPage />} />
-                        <Route path="/cards" element={<CardsPage />} />
-                        <Route path="/expenses" element={<ExpenseDetailsPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/settings" element={<SettingsPage />} />
-                        {/* New Feature Routes */}
-                        <Route path="/budgets" element={<BudgetsPage />} />
-                        <Route path="/bills" element={<BillsPage />} />
-                        <Route path="/subscriptions" element={<SubscriptionsPage />} />
-                        <Route path="/goals" element={<GoalsPage />} />
-                        <Route path="/insights" element={<InsightsPage />} />
-                        <Route path="/reports" element={<ReportsPage />} />
-                        <Route path="/recurring" element={<RecurringPage />} />
-                        <Route path="/accounts" element={<AccountsPage />} />
-                        <Route path="/money-twin" element={<MoneyTwinPage />} />
-                        <Route path="/ai-test" element={<AITestPage />} />
-                        <Route path="/shopping-activity" element={<ShoppingActivityPage />} />
-                        <Route path="/reminders" element={<BillRemindersPage />} />
-                    </Route>
+                        {/* Protected Dashboard Routes - Extension Required */}
+                        <Route
+                            element={
+                                isAuthenticated ? (
+                                    <ExtensionGate>
+                                        <DashboardLayout />
+                                    </ExtensionGate>
+                                ) : (
+                                    <Navigate to="/login" />
+                                )
+                            }
+                        >
+                            <Route path="/dashboard" element={<DashboardPage />} />
+                            <Route path="/transactions" element={<TransactionsPage />} />
+                            <Route path="/analytics" element={<AnalyticsPage />} />
+                            <Route path="/cards" element={<CardsPage />} />
+                            <Route path="/expenses" element={<ExpenseDetailsPage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/settings" element={<SettingsPage />} />
+                            {/* New Feature Routes */}
+                            <Route path="/budgets" element={<BudgetsPage />} />
+                            <Route path="/bills" element={<BillsPage />} />
+                            <Route path="/subscriptions" element={<SubscriptionsPage />} />
+                            <Route path="/goals" element={<GoalsPage />} />
+                            <Route path="/insights" element={<InsightsPage />} />
+                            <Route path="/reports" element={<ReportsPage />} />
+                            <Route path="/recurring" element={<RecurringPage />} />
+                            <Route path="/accounts" element={<AccountsPage />} />
+                            <Route path="/money-twin" element={<MoneyTwinPage />} />
+                            <Route path="/ai-test" element={<AITestPage />} />
+                            <Route path="/shopping-activity" element={<ShoppingActivityPage />} />
+                            <Route path="/reminders" element={<BillRemindersPage />} />
+                        </Route>
 
-                    {/* Landing Page for non-authenticated users */}
-                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
+                        {/* Landing Page for non-authenticated users */}
+                        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
-                    {/* Public Legal & Support Pages */}
-                    <Route path="/privacy" element={<PrivacyPolicyPage />} />
-                    <Route path="/terms" element={<TermsOfServicePage />} />
-                    <Route path="/faq" element={<FAQPage />} />
-                    <Route path="/contact" element={<ContactPage />} />
-                    <Route path="/features" element={<FeaturesPage />} />
+                        {/* Public Legal & Support Pages */}
+                        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                        <Route path="/terms" element={<TermsOfServicePage />} />
+                        <Route path="/faq" element={<FAQPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/features" element={<FeaturesPage />} />
 
-                    <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                </Suspense>
 
             </BrowserRouter>
         </ErrorBoundary>

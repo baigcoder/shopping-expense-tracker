@@ -1,23 +1,22 @@
-// InsightsPage - Cashly AI Financial Insights (Enhanced)
-// Uses smart local analytics with AI fallback
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+// InsightsPage - Cashly AI Financial Insights (Premium Redesign)
+// Midnight Coral Theme - Light Mode
+import { useState, useEffect, useMemo } from 'react';
 import {
     Brain, Lightbulb, TrendingUp, AlertTriangle, Sparkles, Target,
     ArrowRight, Zap, RefreshCw, PieChart, Scissors, Coffee,
     UtensilsCrossed, CreditCard, PiggyBank, Trophy, Calendar,
-    ChevronRight, Plus, Shield, Activity
+    ChevronRight, Plus, Shield, Activity, Wallet, Star
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useStore';
 import { generateSmartInsights, SmartInsight, InsightsStats, CategorySpending, getLocalFallbackTip } from '../services/smartInsightsService';
 import { getCachedAiTip, fetchAiTipInBackground } from '../services/aiTipCacheService';
+import { useDataRealtime } from '../hooks/useDataRealtime';
 import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import styles from './InsightsPage.module.css';
 
 const InsightsPage = () => {
     const { user } = useAuthStore();
@@ -41,26 +40,12 @@ const InsightsPage = () => {
         return icons[iconName] || Lightbulb;
     };
 
-    // Color mapping
-    const getColorClasses = (color: string) => {
-        const colors: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
-            emerald: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100', gradient: 'from-blue-500/5' },
-            amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100', gradient: 'from-amber-500/5' },
-            violet: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100', gradient: 'from-indigo-500/5' },
-            pink: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100', gradient: 'from-rose-500/5' },
-            red: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-100', gradient: 'from-red-500/5' },
-            blue: { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-100', gradient: 'from-slate-500/5' },
-        };
-        return colors[color] || colors.emerald;
-    };
-
-
     // Fetch insights
     const fetchInsights = async (showRefresh = false) => {
         if (!user?.id) return;
 
         if (showRefresh) setRefreshing(true);
-        else setLoading(true);
+        else if (!refreshing) setLoading(true);
 
         try {
             const result = await generateSmartInsights(user.id);
@@ -68,7 +53,6 @@ const InsightsPage = () => {
             setStats(result.stats);
             setCategorySpending(result.categorySpending);
 
-            // Get cached AI tip or fallback
             const cachedTip = getCachedAiTip();
             if (cachedTip) {
                 setAiTip(cachedTip);
@@ -83,10 +67,8 @@ const InsightsPage = () => {
         }
     };
 
-    // Try fetch AI tip
     const tryFetchAiTip = async () => {
         if (!user?.id || categorySpending.length === 0) return;
-
         setAiLoading(true);
         try {
             const topCat = categorySpending[0];
@@ -96,419 +78,412 @@ const InsightsPage = () => {
                 categoryAmount: topCat.amount
             });
         } catch (error) {
-            console.log('AI tip fetch failed, using local fallback');
+            console.log('AI tip fetch failed');
         }
         setAiLoading(false);
     };
 
+    useDataRealtime({
+        onInsightsRefresh: () => fetchInsights(true),
+    });
+
     useEffect(() => {
         fetchInsights();
-
-        // Listen for AI tip ready event
-        const handleAiTipReady = (e: CustomEvent) => {
-            setAiTip(e.detail.tip);
-        };
-
-        // Listen for data changes (transactions/budgets/subscriptions)
-        const handleDataChanged = () => {
-            console.log('📢 Data changed, refreshing insights...');
-            fetchInsights(true);
-        };
+        const handleAiTipReady = (e: CustomEvent) => setAiTip(e.detail.tip);
+        const handleDataChanged = () => fetchInsights(true);
 
         window.addEventListener('ai-tip-ready', handleAiTipReady as EventListener);
         window.addEventListener('insights-data-changed', handleDataChanged);
-        window.addEventListener('transaction-added', handleDataChanged);
-        window.addEventListener('transaction-updated', handleDataChanged);
-        window.addEventListener('transaction-deleted', handleDataChanged);
-        window.addEventListener('budget-changed', handleDataChanged);
-        window.addEventListener('subscription-changed', handleDataChanged);
 
         return () => {
             window.removeEventListener('ai-tip-ready', handleAiTipReady as EventListener);
             window.removeEventListener('insights-data-changed', handleDataChanged);
-            window.removeEventListener('transaction-added', handleDataChanged);
-            window.removeEventListener('transaction-updated', handleDataChanged);
-            window.removeEventListener('transaction-deleted', handleDataChanged);
-            window.removeEventListener('budget-changed', handleDataChanged);
-            window.removeEventListener('subscription-changed', handleDataChanged);
         };
     }, [user?.id]);
 
-    // Health score color
-    const getHealthColor = (score: number) => {
-        if (score >= 80) return 'text-blue-600';
-        if (score >= 60) return 'text-indigo-600';
-        if (score >= 40) return 'text-amber-600';
-        return 'text-red-600';
-    };
-
-
-    const getHealthBg = (score: number) => {
-        if (score >= 80) return 'bg-blue-500';
-        if (score >= 60) return 'bg-indigo-500';
-        if (score >= 40) return 'bg-amber-500';
-        return 'bg-red-500';
-    };
-
-
     const containerVariants = {
         hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
     };
 
-    const itemVariants = {
+    const fadeInUp = {
         hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 100 }
+        }
     };
 
-    if (loading) {
+    const iconAnim = {
+        animate: {
+            y: [0, -4, 0],
+            scale: [1, 1.05, 1],
+            transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+        }
+    };
+
+    if (loading && insights.length === 0) {
         return (
-            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto flex items-center justify-center min-h-[60vh]">
-                <motion.div
-                    className="flex flex-col items-center gap-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                >
+            <div className={styles.mainContent}>
+                <div className="flex items-center justify-center min-vh-100 flex-col gap-6">
                     <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        animate={{
+                            rotate: 360,
+                            scale: [1, 1.15, 1],
+                            filter: ["blur(0px)", "blur(2px)", "blur(0px)"]
+                        }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        className={styles.titleIcon}
                     >
-                        <Brain className="h-12 w-12 text-emerald-500" />
+                        <Brain size={32} />
                     </motion.div>
-                    <p className="text-muted-foreground">Analyzing your finances...</p>
-                </motion.div>
+                    <h2 className="text-xl font-black text-slate-800 tracking-tight">Synthesizing Intelligence</h2>
+                    <p className="text-slate-500 font-bold animate-pulse">
+                        Aligning patterns with your financial DNA...
+                    </p>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
-            {/* Header */}
-            <motion.div
-                className="flex flex-col md:flex-row md:items-center justify-between gap-4"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight font-display flex items-center gap-3">
-                        <div className="p-2.5 rounded-xl bg-primary shadow-lg shadow-primary/20">
-                            <Brain className="h-6 w-6 text-white" />
-                        </div>
-                        Smart Insights
-                    </h1>
-
-                    <p className="text-muted-foreground mt-1">
-                        Personalized analysis based on your actual spending data
-                    </p>
-                </div>
-                <Button
-                    variant="outline"
-                    onClick={() => fetchInsights(true)}
-                    disabled={refreshing}
+        <div className={styles.mainContent}>
+            <div className={styles.contentArea}>
+                {/* Glass Header */}
+                <motion.header
+                    className={styles.header}
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
                 >
-                    <RefreshCw className={cn("mr-2 h-4 w-4", refreshing && "animate-spin")} />
-                    Refresh
-                </Button>
-            </motion.div>
-
-            {/* Stats Grid */}
-            <motion.div
-                className="grid grid-cols-2 md:grid-cols-4 gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-            >
-                {/* Health Score */}
-                <Card className="card-hover border-slate-200/60 shadow-sm overflow-hidden">
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-slate-500 font-medium">Health Score</span>
-                            <Activity className="h-4 w-4 text-primary" />
-                        </div>
-
-                        <div className={cn("text-3xl font-bold font-display", getHealthColor(stats.healthScore))}>
-                            {stats.healthScore}/100
-                        </div>
-                        <Progress
-                            value={stats.healthScore}
-                            className="h-2 mt-2"
-                        />
-                    </CardContent>
-                </Card>
-
-                {/* Potential Savings */}
-                <Card className="card-hover border-slate-200/60 shadow-sm overflow-hidden">
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-slate-500 font-medium">Potential Savings</span>
-                            <PiggyBank className="h-4 w-4 text-blue-600" />
-                        </div>
-
-                        <div className="text-3xl font-bold font-display text-blue-600">
-                            {formatCurrency(stats.potentialSavings)}
-                        </div>
-
-                        <p className="text-xs text-muted-foreground mt-1">per month</p>
-                    </CardContent>
-                </Card>
-
-                {/* Active Tips */}
-                <Card className="card-hover border-slate-200/60 shadow-sm overflow-hidden">
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-slate-500 font-medium">Active Tips</span>
-                            <Lightbulb className="h-4 w-4 text-indigo-600" />
-                        </div>
-
-                        <div className="text-3xl font-bold font-display text-indigo-600">
-                            {stats.activeTips}
-                        </div>
-
-                        <p className="text-xs text-muted-foreground mt-1">recommendations</p>
-                    </CardContent>
-                </Card>
-
-                {/* Alerts */}
-                <Card className={cn(
-                    "card-hover border-slate-200/60 shadow-sm overflow-hidden",
-                    stats.alerts > 0
-                        ? "bg-red-50/50"
-                        : "bg-white"
-                )}>
-                    <CardContent className="pt-6">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-slate-500 font-medium">Alerts</span>
-                            {stats.alerts > 0
-                                ? <AlertTriangle className="h-4 w-4 text-red-600" />
-                                : <Shield className="h-4 w-4 text-blue-600" />
-                            }
-                        </div>
-
-                        <div className={cn(
-                            "text-3xl font-bold font-display",
-                            stats.alerts > 0 ? "text-red-600" : "text-blue-600"
-                        )}>
-                            {stats.alerts > 0 ? stats.alerts : 'None'}
-                        </div>
-
-                        <p className="text-xs text-muted-foreground mt-1">
-                            {stats.alerts > 0 ? 'need attention' : 'all clear!'}
-                        </p>
-                    </CardContent>
-                </Card>
-            </motion.div>
-
-            {/* AI Summary Card */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-            >
-                <Card className="card-hover bg-primary/5 border-primary/20">
-                    <CardContent className="flex items-start gap-4 py-5">
-                        <div className="p-3 rounded-xl bg-primary flex-shrink-0">
-                            <Sparkles className="h-6 w-6 text-white" />
-                        </div>
-
-                        <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-slate-900">SpendSync AI Analysis</h3>
-
-                                {aiLoading && (
-                                    <RefreshCw className="h-3 w-3 animate-spin text-muted-foreground" />
-                                )}
-                            </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                {aiTip || 'Analyzing your spending patterns...'}
+                    <div className={styles.headerLeft}>
+                        <motion.div
+                            className={styles.titleIcon}
+                            whileHover={{ scale: 1.1, rotate: 10 }}
+                        >
+                            <Brain size={28} />
+                        </motion.div>
+                        <div>
+                            <h1 className={styles.title}>
+                                Smart Insights
+                                <span className={styles.liveBadge}>
+                                    <Sparkles size={12} className="animate-pulse" />
+                                    AI-POWERED
+                                </span>
+                            </h1>
+                            <p className="text-slate-500 mt-1 font-bold">
+                                Financial intelligence tailored to your behavior
                             </p>
                         </div>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={tryFetchAiTip}
-                            disabled={aiLoading}
-                            className="flex-shrink-0"
-                        >
-                            <Zap className="h-4 w-4" />
-                        </Button>
-                    </CardContent>
-                </Card>
-            </motion.div>
-
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Insights List */}
-                <div className="lg:col-span-2 space-y-4">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold flex items-center gap-2">
-                            <Lightbulb className="h-5 w-5 text-emerald-500" />
-                            Your Insights
-                        </h2>
-                        <Badge variant="secondary">{insights.length} insights</Badge>
                     </div>
 
-                    <AnimatePresence>
-                        <motion.div
-                            className="space-y-3"
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
+                    <div className="flex items-center gap-4">
+                        <motion.button
+                            whileHover={{ scale: 1.05, rotate: 15 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.refreshCircle}
+                            onClick={() => fetchInsights(true)}
+                            disabled={refreshing}
                         >
-                            {insights.length === 0 ? (
-                                <Card className="card-hover">
-                                    <CardContent className="flex flex-col items-center justify-center py-12">
-                                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-500 flex items-center justify-center mb-4 shadow-lg">
-                                            <Target className="h-8 w-8 text-white" />
+                            <RefreshCw size={22} className={refreshing ? styles.spinning : ''} />
+                        </motion.button>
+                    </div>
+                </motion.header>
+
+                {/* Main Stats Row */}
+                <motion.div
+                    className={styles.statsRow}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {/* Health Score */}
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <motion.div
+                            {...iconAnim}
+                            className={styles.statIconBox}
+                            style={{ background: '#f5f3ff', color: '#7c3aed' }}
+                        >
+                            <Activity size={24} />
+                        </motion.div>
+                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? '#10b981' : '#7c3aed' }}>
+                            {stats.healthScore}<span className="text-xl opacity-50">/100</span>
+                        </h3>
+                        <p className={styles.statLabel}>Financial Health</p>
+                        <div className={styles.statProgress}>
+                            <motion.div
+                                className={styles.progressFill}
+                                style={{
+                                    width: `${stats.healthScore}%`,
+                                    background: `linear-gradient(90deg, #7c3aed, ${stats.healthScore >= 70 ? '#10b981' : '#d946ef'})`
+                                }}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${stats.healthScore}%` }}
+                                transition={{ duration: 1.5, ease: "circOut" }}
+                            />
+                        </div>
+                    </motion.div>
+
+                    {/* Potential Savings */}
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <motion.div
+                            {...iconAnim}
+                            className={styles.statIconBox}
+                            style={{ background: '#f0fdf4', color: '#10b981' }}
+                        >
+                            <PiggyBank size={24} />
+                        </motion.div>
+                        <h3 className={styles.statValue} style={{ color: '#10b981' }}>
+                            {formatCurrency(stats.potentialSavings)}
+                        </h3>
+                        <p className={styles.statLabel}>Monthly Surplus</p>
+                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Target Achievable</p>
+                    </motion.div>
+
+                    {/* Active Tips */}
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <motion.div
+                            {...iconAnim}
+                            className={styles.statIconBox}
+                            style={{ background: '#eff6ff', color: '#2563eb' }}
+                        >
+                            <Lightbulb size={24} />
+                        </motion.div>
+                        <h3 className={styles.statValue} style={{ color: '#2563eb' }}>
+                            {stats.activeTips}
+                        </h3>
+                        <p className={styles.statLabel}>Active Tips</p>
+                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Smart Suggestions</p>
+                    </motion.div>
+
+                    {/* Alerts */}
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <motion.div
+                            {...iconAnim}
+                            className={styles.statIconBox}
+                            style={{
+                                background: stats.alerts > 0 ? '#fff1f2' : '#f8fafc',
+                                color: stats.alerts > 0 ? '#e11d48' : '#64748b'
+                            }}
+                        >
+                            {stats.alerts > 0 ? <AlertTriangle size={24} /> : <Shield size={24} />}
+                        </motion.div>
+                        <h3 className={styles.statValue} style={{ color: stats.alerts > 0 ? '#e11d48' : '#0f172a' }}>
+                            {stats.alerts > 0 ? stats.alerts : 'Stable'}
+                        </h3>
+                        <p className={styles.statLabel}>Risk Management</p>
+                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">
+                            {stats.alerts > 0 ? 'Action Required' : 'Network Secure'}
+                        </p>
+                    </motion.div>
+                </motion.div>
+
+                {/* AI Summary Card */}
+                <motion.div
+                    className={styles.aiSummaryCard}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                >
+                    <div className={styles.aiMagicCircle}>
+                        <Sparkles size={32} />
+                    </div>
+                    <div className={styles.aiContent}>
+                        <div className={styles.aiBadgeLabel}>
+                            <Star size={14} className="fill-indigo-500 text-indigo-500" />
+                            SpendSync AI Intelligence
+                        </div>
+                        <p className={styles.aiMessage}>
+                            {aiTip || 'Synthesizing your spending rhythms for elite financial optimization...'}
+                        </p>
+                    </div>
+                    <div className={styles.aiActions}>
+                        <motion.button
+                            whileHover={{ scale: 1.1, rotate: 180 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={styles.refreshCircle}
+                            onClick={tryFetchAiTip}
+                            disabled={aiLoading}
+                            style={{ border: '2px solid #f5d0fe', background: 'transparent' }}
+                        >
+                            <RefreshCw size={20} className={aiLoading ? styles.spinning : ''} />
+                        </motion.button>
+                    </div>
+                </motion.div>
+
+                {/* Main Content Grid */}
+                <div className={styles.mainGrid}>
+                    {/* Insights List */}
+                    <motion.div
+                        className={styles.insightsListSection}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className={styles.sectionTitle}>
+                                <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
+                                    <Target size={22} />
+                                </div>
+                                Actionable Insights
+                            </h2>
+                            <Badge variant="outline" className="h-8 px-4 border-2 border-indigo-100 bg-indigo-50/50 text-indigo-600 font-black tracking-widest uppercase text-[10px]">
+                                {insights.length} RECOMMENDATIONS
+                            </Badge>
+                        </div>
+
+                        <div className={styles.insightsList}>
+                            <AnimatePresence mode="popLayout">
+                                {insights.length === 0 ? (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="text-center py-20 bg-white rounded-[2.5rem] border-3 border-dashed border-slate-200"
+                                    >
+                                        <div className="mx-auto w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-300 mb-6 shadow-inner">
+                                            <Trophy size={40} />
                                         </div>
-                                        <h3 className="font-semibold mb-2">No Insights Yet</h3>
-                                        <p className="text-sm text-muted-foreground text-center max-w-sm">
-                                            Add more transactions to unlock personalized insights and savings recommendations
+                                        <h3 className="text-xl font-black text-slate-800">Elite Standing!</h3>
+                                        <p className="text-slate-500 font-bold max-w-xs mx-auto mt-2">
+                                            You've mastered current trends. Keep tracking to maintain your peak health score.
                                         </p>
-                                        <Button
-                                            className="mt-4 gradient-primary text-white"
-                                            onClick={() => navigate('/transactions')}
-                                        >
-                                            <Plus className="mr-2 h-4 w-4" />
-                                            Add Transactions
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            ) : (
-                                insights.map((insight, i) => {
-                                    const Icon = getIcon(insight.icon);
-                                    const colors = getColorClasses(insight.color);
-                                    return (
-                                        <motion.div key={insight.id} variants={itemVariants}>
-                                            <Card className={cn(
-                                                "card-hover bg-gradient-to-br via-transparent to-transparent",
-                                                colors.gradient,
-                                                colors.border
-                                            )}>
-                                                <CardContent className="flex items-start gap-4 py-4">
-                                                    <div className={cn("p-3 rounded-xl flex-shrink-0", colors.bg)}>
-                                                        <Icon className={cn("h-5 w-5", colors.text)} />
-                                                    </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <h3 className="font-semibold truncate">{insight.title}</h3>
-                                                            {insight.severity === 'high' && (
-                                                                <Badge variant="destructive" className="text-xs">Urgent</Badge>
-                                                            )}
-                                                        </div>
-                                                        <p className="text-sm text-muted-foreground line-clamp-2">
-                                                            {insight.message}
-                                                        </p>
-                                                        {insight.value !== undefined && insight.value > 0 && (
-                                                            <p className={cn("text-sm font-semibold mt-1", colors.text)}>
-                                                                {formatCurrency(insight.value)}
-                                                            </p>
+                                    </motion.div>
+                                ) : (
+                                    insights.map((insight) => {
+                                        const Icon = getIcon(insight.icon);
+                                        return (
+                                            <motion.div
+                                                layout
+                                                key={insight.id}
+                                                className={styles.insightGlassCard}
+                                                variants={fadeInUp}
+                                                onClick={() => insight.actionPath && navigate(insight.actionPath)}
+                                            >
+                                                <div
+                                                    className={styles.insightIconBox}
+                                                    style={{
+                                                        background: insight.color === 'red' ? '#fff1f2' : '#f0fdf4',
+                                                        color: insight.color === 'red' ? '#e11d48' : '#10b981'
+                                                    }}
+                                                >
+                                                    <Icon size={24} />
+                                                </div>
+                                                <div className={styles.insightContent}>
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <h3 className={styles.insightTitle}>{insight.title}</h3>
+                                                        {insight.severity === 'high' && (
+                                                            <span className="px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest border border-rose-200">
+                                                                Urgent
+                                                            </span>
                                                         )}
                                                     </div>
-                                                    {insight.action && insight.actionPath && (
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => navigate(insight.actionPath!)}
-                                                            className="flex-shrink-0"
-                                                        >
-                                                            <ChevronRight className="h-4 w-4" />
-                                                        </Button>
+                                                    <p className={styles.insightText}>{insight.message}</p>
+                                                    {insight.value !== undefined && insight.value > 0 && (
+                                                        <div className="flex items-center gap-2 mt-3 p-2 px-3 bg-indigo-50 rounded-xl border border-indigo-100 w-fit">
+                                                            <Zap size={14} className="text-indigo-600 fill-indigo-600" />
+                                                            <span className="text-xs font-black text-indigo-700 uppercase tracking-tight">
+                                                                Projected Impact: {formatCurrency(insight.value)}
+                                                            </span>
+                                                        </div>
                                                     )}
-                                                </CardContent>
-                                            </Card>
-                                        </motion.div>
-                                    );
-                                })
-                            )}
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
+                                                </div>
+                                                <div className={styles.insightAction}>
+                                                    <ChevronRight size={22} strokeWidth={3} />
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </motion.div>
 
-                {/* Category Breakdown Sidebar */}
-                <div className="space-y-4">
-                    <h2 className="text-xl font-semibold flex items-center gap-2">
-                        <PieChart className="h-5 w-5 text-violet-500" />
-                        Category Breakdown
-                    </h2>
+                    {/* Sidebar */}
+                    <motion.div
+                        className={styles.sidebar}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <h2 className={cn(styles.sectionTitle, "mb-6")}>
+                            <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
+                                <PieChart size={22} />
+                            </div>
+                            Breakdown
+                        </h2>
 
-                    <Card className="card-hover">
-                        <CardContent className="pt-6 space-y-4">
+                        <motion.div variants={fadeInUp} className={styles.sidebarCard}>
                             {categorySpending.length === 0 ? (
-                                <p className="text-sm text-muted-foreground text-center py-4">
-                                    No spending data this month
-                                </p>
+                                <p className="text-center text-slate-400 py-10 font-bold uppercase tracking-widest text-xs">No footprint detected</p>
                             ) : (
                                 categorySpending.slice(0, 5).map((cat, i) => (
-                                    <div key={cat.category} className="space-y-2">
-                                        <div className="flex items-center justify-between text-sm">
-                                            <span className="font-medium truncate">{cat.category}</span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-muted-foreground">{cat.percentage}%</span>
-                                                {cat.trend === 'up' && (
-                                                    <TrendingUp className="h-3 w-3 text-red-500" />
-                                                )}
-                                                {cat.trend === 'down' && (
-                                                    <TrendingUp className="h-3 w-3 text-emerald-500 rotate-180" />
-                                                )}
+                                    <div key={cat.category} className={styles.categoryProgressBar}>
+                                        <div className={styles.categoryInfo}>
+                                            <span className="truncate">{cat.category}</span>
+                                            <div className="flex items-center gap-3">
+                                                <span className={styles.percentageBadge}>{cat.percentage}%</span>
+                                                {cat.trend === 'up' && <TrendingUp size={16} className="text-rose-500" />}
+                                                {cat.trend === 'down' && <TrendingUp size={16} className="text-emerald-500 rotate-180" />}
                                             </div>
                                         </div>
-                                        <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                        <div className={styles.progressTrack}>
                                             <motion.div
-                                                className={cn(
-                                                    "h-full rounded-full",
-                                                    i === 0 ? "bg-primary" :
-                                                        i === 1 ? "bg-indigo-500" :
-                                                            i === 2 ? "bg-slate-400" :
-                                                                i === 3 ? "bg-blue-400" :
-                                                                    "bg-amber-400"
-                                                )}
-
+                                                className={styles.progressThumb}
+                                                style={{
+                                                    background: `linear-gradient(90deg, #7c3aed, #4f46e5)`,
+                                                    width: `${cat.percentage}%`
+                                                }}
                                                 initial={{ width: 0 }}
                                                 animate={{ width: `${cat.percentage}%` }}
-                                                transition={{ delay: i * 0.1, duration: 0.5 }}
+                                                transition={{ delay: i * 0.1, duration: 1, ease: "circOut" }}
                                             />
                                         </div>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-[11px] text-slate-400 font-black uppercase mt-2 text-right">
                                             {formatCurrency(cat.amount)}
                                         </p>
                                     </div>
                                 ))
                             )}
-                        </CardContent>
-                    </Card>
+                        </motion.div>
 
-                    {/* Quick Actions */}
-                    <Card className="card-hover">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm">Quick Actions</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
+                        {/* Quick Actions */}
+                        <motion.div variants={fadeInUp} className={styles.sidebarCard}>
+                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Strategy Hub</h3>
+                            <motion.button
+                                whileHover={{ x: 5 }}
+                                className={styles.actionBtn}
                                 onClick={() => navigate('/budgets')}
                             >
-                                <Target className="mr-2 h-4 w-4 text-emerald-600" />
-                                Set a Budget
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
+                                <div className={cn(styles.actionBtnIcon, "bg-emerald-50 text-emerald-600")}>
+                                    <Target size={20} strokeWidth={2.5} />
+                                </div>
+                                Optimize Budget
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ x: 5 }}
+                                className={styles.actionBtn}
                                 onClick={() => navigate('/goals')}
                             >
-                                <PiggyBank className="mr-2 h-4 w-4 text-violet-600" />
-                                Create a Goal
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="w-full justify-start"
+                                <div className={cn(styles.actionBtnIcon, "bg-purple-50 text-purple-600")}>
+                                    <PiggyBank size={20} strokeWidth={2.5} />
+                                </div>
+                                Acceleration Goal
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ x: 5 }}
+                                className={styles.actionBtn}
                                 onClick={() => navigate('/subscriptions')}
                             >
-                                <CreditCard className="mr-2 h-4 w-4 text-amber-600" />
-                                Review Subscriptions
-                            </Button>
-                        </CardContent>
-                    </Card>
+                                <div className={cn(styles.actionBtnIcon, "bg-amber-50 text-amber-600")}>
+                                    <CreditCard size={20} strokeWidth={2.5} />
+                                </div>
+                                Streamline Subs
+                            </motion.button>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </div>
         </div>

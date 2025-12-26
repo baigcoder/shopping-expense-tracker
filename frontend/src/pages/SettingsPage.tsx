@@ -1,6 +1,12 @@
+// SettingsPage - Cashly Premium Redesign
+// Midnight Coral Theme - Light Mode
 import { useState, useEffect } from 'react';
-import { Bell, Volume2, ShieldAlert, LogOut, User, Smartphone, Settings, ChevronRight, Save, Mail, Eye, Key, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import {
+    Bell, Volume2, ShieldAlert, LogOut, User, Smartphone,
+    Settings, ChevronRight, Save, Mail, Eye, Key, Trash2,
+    Shield, CheckCircle2, Crown, Zap, Sparkles, PieChart
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -9,6 +15,26 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { supabase } from '../config/supabase';
 import { useSound } from '@/hooks/useSound';
+import { cn } from '@/lib/utils';
+import styles from './SettingsPage.module.css';
+
+// Animation Variants
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
+};
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', damping: 25, stiffness: 100 }
+    }
+};
 
 const SettingsPage = () => {
     const { user, logout } = useAuthStore();
@@ -33,9 +59,9 @@ const SettingsPage = () => {
         sound.setEnabled(enabled);
         if (enabled) {
             sound.playClick();
-            toast.success('Sound effects enabled');
+            toast.success('Auditory feedback enabled');
         } else {
-            toast.info('Sound effects disabled');
+            toast.info('Auditory feedback disabled');
         }
     };
 
@@ -48,18 +74,18 @@ const SettingsPage = () => {
         try {
             const { error } = await supabase.auth.updateUser({ data: { name } });
             if (error) throw error;
-            toast.success('Profile updated successfully');
+            toast.success('Identity profile updated');
             sound.playSuccess();
         } catch (error) {
             console.error('Profile update error:', error);
-            toast.error('Failed to update profile');
+            toast.error('Failed to update identity');
         }
     };
 
     const handleLogout = async () => {
         try {
             await logout();
-            toast.success('Logged out successfully');
+            toast.info('Session terminated: Securely logged out.');
             navigate('/login');
         } catch (error) {
             console.error('Logout error:', error);
@@ -67,25 +93,25 @@ const SettingsPage = () => {
         }
     };
 
-    // Section header component
-    const SectionHeader = ({ icon: Icon, title, subtitle, gradient }: {
+    // Premium Section Header
+    const SectionHeader = ({ icon: Icon, title, subtitle, colorClass }: {
         icon: any;
         title: string;
         subtitle: string;
-        gradient: string;
+        colorClass: string;
     }) => (
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
-            <div className={`p-2 rounded-xl ${gradient} text-white shadow-md`}>
-                <Icon className="h-4 w-4" />
+        <div className={styles.sectionHeader}>
+            <div className={cn(styles.sectionIconBox, colorClass)}>
+                <Icon size={18} strokeWidth={2.5} />
             </div>
             <div>
-                <h3 className="font-semibold text-slate-800">{title}</h3>
-                <p className="text-xs text-slate-500">{subtitle}</p>
+                <h3 className={styles.sectionTitle}>{title}</h3>
+                <p className={styles.sectionSubtitle}>{subtitle}</p>
             </div>
         </div>
     );
 
-    // Toggle row component
+    // Premium Toggle Row
     const ToggleRow = ({ icon: Icon, label, description, checked, onChange }: {
         icon: any;
         label: string;
@@ -93,21 +119,25 @@ const SettingsPage = () => {
         checked: boolean;
         onChange: (v: boolean) => void;
     }) => (
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-50 last:border-b-0 hover:bg-slate-50/50 transition-colors">
-            <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-slate-100 text-slate-500">
-                    <Icon className="h-4 w-4" />
+        <div className={styles.row}>
+            <div className={styles.rowLeft}>
+                <div className={styles.rowIcon}>
+                    <Icon size={18} />
                 </div>
                 <div>
-                    <p className="text-sm font-medium text-slate-700">{label}</p>
-                    <p className="text-xs text-slate-400">{description}</p>
+                    <p className={styles.rowLabel}>{label}</p>
+                    <p className={styles.rowDesc}>{description}</p>
                 </div>
             </div>
-            <Switch checked={checked} onCheckedChange={onChange} />
+            <Switch
+                checked={checked}
+                onCheckedChange={(v) => { onChange(v); sound.playClick(); }}
+                className="data-[state=checked]:bg-teal-500 scale-110"
+            />
         </div>
     );
 
-    // Action row component
+    // Premium Action Row
     const ActionRow = ({ icon: Icon, label, description, onClick, danger = false }: {
         icon: any;
         label: string;
@@ -115,201 +145,191 @@ const SettingsPage = () => {
         onClick: () => void;
         danger?: boolean;
     }) => (
-        <button
-            onClick={onClick}
-            className={`w-full flex items-center justify-between px-5 py-3.5 border-b border-slate-50 last:border-b-0 transition-colors group ${danger ? "hover:bg-red-50/50" : "hover:bg-slate-50/50"
-                }`}
+        <motion.button
+            whileHover={{ x: 10 }}
+            onClick={() => { onClick(); sound.playClick(); }}
+            className={cn(styles.actionBtn, danger && styles.danger)}
         >
-            <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${danger ? "bg-red-50 text-red-500" : "bg-slate-100 text-slate-500"}`}>
-                    <Icon className="h-4 w-4" />
+            <div className={styles.rowLeft}>
+                <div className={cn(styles.rowIcon, danger && "bg-rose-50 text-rose-500 border-rose-100")}>
+                    <Icon size={18} />
                 </div>
                 <div className="text-left">
-                    <p className={`text-sm font-medium ${danger ? "text-red-600" : "text-slate-700"}`}>{label}</p>
-                    <p className="text-xs text-slate-400">{description}</p>
+                    <p className={cn(styles.rowLabel, danger && "text-rose-600")}>{label}</p>
+                    <p className={styles.rowDesc}>{description}</p>
                 </div>
             </div>
-            <ChevronRight className={`h-4 w-4 transition-transform group-hover:translate-x-0.5 ${danger ? "text-red-300" : "text-slate-300"}`} />
-        </button>
+            <ChevronRight className={styles.chevron} size={18} strokeWidth={3} />
+        </motion.button>
     );
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-3xl">
-            {/* Header */}
+        <div className={styles.mainContent}>
             <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
+                className={styles.contentArea}
+                variants={staggerContainer}
+                initial="hidden"
+                animate="show"
             >
-                <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 shadow-lg shadow-teal-500/20">
-                        <Settings className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-slate-800">Settings</h1>
-                        <p className="text-sm text-slate-500">Manage your account and preferences</p>
-                    </div>
-                </div>
-            </motion.div>
-
-            <div className="space-y-4">
-                {/* Profile Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                {/* Premium Header */}
+                <motion.header
+                    className={styles.header}
+                    initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.05 }}
-                    className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
                 >
-                    <SectionHeader
-                        icon={User}
-                        title="Profile"
-                        subtitle="Your personal information"
-                        gradient="bg-gradient-to-br from-teal-500 to-teal-600"
-                    />
-                    <div className="p-5 space-y-4">
-                        <div>
-                            <label className="text-xs font-medium text-slate-500 mb-1.5 block">Full Name</label>
-                            <Input
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="John Doe"
-                                className="h-11 bg-slate-50 border-slate-200 focus:border-teal-400 focus:ring-teal-400/20"
-                            />
+                    <div className={styles.headerLeft}>
+                        <div className={styles.titleIcon}>
+                            <Settings size={28} />
                         </div>
                         <div>
-                            <label className="text-xs font-medium text-slate-500 mb-1.5 block">Email</label>
-                            <Input
-                                value={email}
-                                disabled
-                                className="h-11 bg-slate-100 border-slate-200 text-slate-500"
-                            />
+                            <h1 className={styles.title}>System Control</h1>
+                            <p className={styles.subtitle}>Ecosystem Calibration</p>
                         </div>
-                        <Button
-                            onClick={handleUpdateProfile}
-                            className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-md shadow-teal-500/20"
-                        >
-                            <Save className="h-4 w-4 mr-2" />
-                            Save Changes
-                        </Button>
                     </div>
-                </motion.div>
+                    <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border-2 border-slate-100">
+                        <Shield size={16} className="text-teal-500" />
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">End-to-End Encrypted</span>
+                    </div>
+                </motion.header>
 
-                {/* Sound Effects Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-                >
-                    <SectionHeader
-                        icon={Volume2}
-                        title="Sound Effects"
-                        subtitle="Control sounds and volume"
-                        gradient="bg-gradient-to-br from-orange-400 to-orange-500"
-                    />
-                    <div>
-                        <ToggleRow
-                            icon={Volume2}
-                            label="Enable Sounds"
-                            description="Play sounds for interactions"
-                            checked={soundEnabled}
-                            onChange={handleSoundToggle}
+                <div className="space-y-8">
+                    {/* Identity Section */}
+                    <motion.div variants={fadeInUp} className={styles.section}>
+                        <SectionHeader
+                            icon={User}
+                            title="Identity Profile"
+                            subtitle="Personal Credentials"
+                            colorClass="bg-teal-500"
                         />
-                        {soundEnabled && (
-                            <div className="px-5 py-4 bg-slate-50/50">
-                                <div className="flex items-center justify-between mb-3">
-                                    <span className="text-sm font-medium text-slate-600">Volume</span>
-                                    <span className="text-xs font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">{Math.round(soundVolume)}%</span>
-                                </div>
+                        <div className={styles.formContainer}>
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>Full Legal Name</label>
                                 <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value={soundVolume}
-                                    onChange={(e) => handleVolumeChange(Number(e.target.value))}
-                                    className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer accent-teal-500"
+                                    className={styles.premiumInput}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Enter full name"
                                 />
-                                <div className="flex gap-2 mt-4">
-                                    <Button size="sm" variant="outline" className="h-8 text-xs border-slate-200" onClick={() => sound.playClick()}>Test Click</Button>
-                                    <Button size="sm" variant="outline" className="h-8 text-xs border-slate-200" onClick={() => sound.playSuccess()}>Test Success</Button>
-                                </div>
                             </div>
-                        )}
-                    </div>
-                </motion.div>
+                            <div className={styles.formField}>
+                                <label className={styles.fieldLabel}>Registered Email</label>
+                                <input
+                                    className={styles.premiumInput}
+                                    value={email}
+                                    disabled
+                                />
+                            </div>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleUpdateProfile}
+                                className={styles.primaryBtn}
+                            >
+                                <Save size={18} />
+                                Synchronize Identity
+                            </motion.button>
+                        </div>
+                    </motion.div>
 
-                {/* Notifications Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.15 }}
-                    className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-                >
-                    <SectionHeader
-                        icon={Bell}
-                        title="Notifications"
-                        subtitle="How you receive updates"
-                        gradient="bg-gradient-to-br from-blue-500 to-blue-600"
-                    />
-                    <div>
-                        <ToggleRow icon={Mail} label="Email Notifications" description="Receive updates via email" checked={emailNotifications} onChange={setEmailNotifications} />
-                        <ToggleRow icon={Bell} label="Push Notifications" description="Browser alerts" checked={pushNotifications} onChange={setPushNotifications} />
-                        <ToggleRow icon={Eye} label="Weekly Report" description="Spending summary" checked={weeklyReport} onChange={setWeeklyReport} />
-                    </div>
-                </motion.div>
+                    {/* Auditory Feedback Section */}
+                    <motion.div variants={fadeInUp} className={styles.section}>
+                        <SectionHeader
+                            icon={Volume2}
+                            title="Auditory Experience"
+                            subtitle="Haptic & Sound Design"
+                            colorClass="bg-orange-500"
+                        />
+                        <div>
+                            <ToggleRow
+                                icon={Sparkles}
+                                label="Interface Sounds"
+                                description="Enable premium auditory interactions"
+                                checked={soundEnabled}
+                                onChange={handleSoundToggle}
+                            />
+                            <AnimatePresence>
+                                {soundEnabled && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        className={styles.sliderBox}
+                                    >
+                                        <div className={styles.sliderHeader}>
+                                            <span className={styles.rowLabel}>Intensity Level</span>
+                                            <span className={styles.sliderValue}>{Math.round(soundVolume)}%</span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value={soundVolume}
+                                            onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                                            className={styles.premiumSlider}
+                                        />
+                                        <div className={styles.testBtnGroup}>
+                                            <button className={styles.outlineBtn} onClick={() => sound.playClick()}>Simulate Interaction</button>
+                                            <button className={styles.outlineBtn} onClick={() => sound.playSuccess()}>Validate Sync</button>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </motion.div>
 
-                {/* Security Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
-                >
-                    <SectionHeader
-                        icon={ShieldAlert}
-                        title="Security"
-                        subtitle="Account security options"
-                        gradient="bg-gradient-to-br from-emerald-500 to-emerald-600"
-                    />
-                    <div>
-                        <ActionRow icon={Key} label="Change Password" description="Update your password" onClick={() => toast.info('Password change coming soon')} />
-                        <ActionRow icon={Smartphone} label="Manage Sessions" description="View active sessions" onClick={() => toast.info('Session management coming soon')} />
-                    </div>
-                </motion.div>
+                    {/* Signals Section */}
+                    <motion.div variants={fadeInUp} className={styles.section}>
+                        <SectionHeader
+                            icon={Bell}
+                            title="Signal Protocol"
+                            subtitle="Update Channels"
+                            colorClass="bg-blue-500"
+                        />
+                        <div>
+                            <ToggleRow icon={Mail} label="Email Dispatch" description="Weekly ecosystem summaries" checked={emailNotifications} onChange={setEmailNotifications} />
+                            <ToggleRow icon={Zap} label="Push Signals" description="Real-time browser telemetry" checked={pushNotifications} onChange={setPushNotifications} />
+                            <ToggleRow icon={PieChart} label="Analytics Pulse" description="Bi-weekly spending clusters" checked={weeklyReport} onChange={setWeeklyReport} />
+                        </div>
+                    </motion.div>
 
-                {/* Danger Zone */}
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 }}
-                    className="bg-white rounded-2xl border border-red-100 shadow-sm overflow-hidden"
-                >
-                    <div className="flex items-center gap-3 px-5 py-4 border-b border-red-50 bg-red-50/30">
-                        <div className="p-2 rounded-xl bg-gradient-to-br from-red-500 to-red-600 text-white shadow-md">
-                            <ShieldAlert className="h-4 w-4" />
+                    {/* Security Protocol Section */}
+                    <motion.div variants={fadeInUp} className={styles.section}>
+                        <SectionHeader
+                            icon={ShieldAlert}
+                            title="Sentinel Protocol"
+                            subtitle="Vault Security"
+                            colorClass="bg-emerald-500"
+                        />
+                        <div>
+                            <ActionRow icon={Key} label="Rotate Passphrase" description="Update secure account key" onClick={() => toast.info('Feature locked: Scheduled for next update.')} />
+                            <ActionRow icon={Smartphone} label="Network Sessions" description="Monitor active access points" onClick={() => toast.info('Feature locked: Scheduled for next update.')} />
+                        </div>
+                    </motion.div>
+
+                    {/* Termination Zone */}
+                    <motion.div variants={fadeInUp} className={cn(styles.section, styles.dangerSection)}>
+                        <div className={cn(styles.sectionHeader, styles.dangerHeader)}>
+                            <div className="p-3 rounded-xl bg-rose-500 text-white shadow-lg">
+                                <Zap size={18} strokeWidth={2.5} />
+                            </div>
+                            <div>
+                                <h3 className={cn(styles.sectionTitle, styles.dangerTitle)}>Danger Protocol</h3>
+                                <p className={styles.sectionSubtitle}>Irreversible Operations</p>
+                            </div>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-red-600">Danger Zone</h3>
-                            <p className="text-xs text-red-400">Irreversible actions</p>
+                            <ActionRow icon={LogOut} label="Terminate Session" description="Securely exit ecosystem" onClick={handleLogout} danger />
+                            <ActionRow icon={Trash2} label="Purge Data Archive" description="Wipe all cloud credentials" onClick={() => toast.error('Purge restricted: Contact Core Admin.')} danger />
                         </div>
-                    </div>
-                    <div>
-                        <ActionRow icon={LogOut} label="Sign Out" description="Log out of your account" onClick={handleLogout} danger />
-                        <ActionRow icon={Trash2} label="Delete Account" description="Permanently delete your data" onClick={() => toast.error('Contact support to delete your account')} danger />
-                    </div>
-                </motion.div>
-            </div>
+                    </motion.div>
+                </div>
 
-            {/* Footer */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="py-6"
-            >
-                <p className="text-xs text-slate-400">
-                    Cashly v2.0 • Made with ❤️
-                </p>
+                {/* Footer Metadata */}
+                <motion.div variants={fadeInUp} className={styles.footer}>
+                    <p className={styles.footerText}>
+                        CASHLY CORE V2.0 <span className="mx-2 opacity-30">•</span> HIGH-FIDELITY BUILD
+                    </p>
+                </motion.div>
             </motion.div>
         </div>
     );

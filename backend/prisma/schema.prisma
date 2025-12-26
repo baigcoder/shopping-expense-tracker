@@ -22,6 +22,8 @@ model User {
   transactions  Transaction[]
   budgets       Budget[]
   categories    Category[]
+
+  @@index([createdAt])
 }
 
 model Transaction {
@@ -42,9 +44,16 @@ model Transaction {
   updatedAt     DateTime      @updatedAt
   notes         String?
   
+  // Individual indexes for filtering
   @@index([userId])
   @@index([purchaseDate])
   @@index([categoryId])
+  @@index([storeName])
+  
+  // Composite indexes for common query patterns
+  @@index([userId, purchaseDate(sort: Desc)])
+  @@index([userId, categoryId])
+  @@index([userId, createdAt(sort: Desc)])
 }
 
 model Category {
@@ -59,6 +68,7 @@ model Category {
   transactions  Transaction[]
   
   @@unique([userId, name])
+  @@index([userId])
 }
 
 model Budget {
@@ -74,6 +84,8 @@ model Budget {
   updatedAt     DateTime      @updatedAt
   
   @@unique([userId, period, categoryId])
+  @@index([userId])
+  @@index([userId, period])
 }
 
 // OTP verification for email confirmation
@@ -91,5 +103,7 @@ model EmailOTP {
   
   @@index([email])
   @@index([expiresAt])
+  @@index([email, verified])
 }
+
 

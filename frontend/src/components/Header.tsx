@@ -3,7 +3,9 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Bell, Settings, Menu, X, MessageSquare, Plus } from 'lucide-react';
 import { useAuthStore, useUIStore, useModalStore } from '../store/useStore';
 import { useNotificationStore } from '../services/notificationService';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import NotificationsPanel from './NotificationsPanel';
+import SyncStatus from './SyncStatus';
 import styles from './Header.module.css';
 
 // Custom Logo Component - Finzen
@@ -62,6 +64,10 @@ const Header = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // Realtime sync status
+    const { connectionStatus, reconnect } = useRealtimeSync();
+
+
     return (
         <header className={styles.header}>
             <div className={styles.logoSection}>
@@ -83,6 +89,12 @@ const Header = () => {
             </nav>
 
             <div className={styles.actionsSection}>
+                {/* Realtime Sync Status Indicator */}
+                <SyncStatus
+                    status={connectionStatus}
+                    onReconnect={reconnect}
+                />
+
                 <button
                     className={`${styles.iconButton} ${styles.settingsBtn}`}
                     aria-label="Settings"

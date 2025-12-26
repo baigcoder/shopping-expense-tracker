@@ -1,7 +1,9 @@
 // Extension Sync Hook - Manages extension communication and auto-login
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { genZToast } from '../services/genZToast';
+import { supabase } from '../config/supabase';
+import { useAuthStore } from '../store/useStore';
 
 interface ExtensionStatus {
     installed: boolean;
@@ -14,13 +16,48 @@ interface ExtensionStatus {
 // Persistent key for extension sync status (doesn't expire unless explicitly cleared)
 const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
 
+// Broadcast extension sync status to all tabs via Supabase Realtime
+// Uses proper channel subscription to avoid REST fallback deprecation warning
+const broadcastSyncStatus = async (userId: string, eventType: 'synced' | 'removed', data: any) => {
+    try {
+        const channelName = `realtime-${userId}`;
+        const channel = supabase.channel(channelName, {
+            config: { broadcast: { self: false } }
+        });
+
+        // Subscribe first, then send
+        channel.subscribe(async (status) => {
+            if (status === 'SUBSCRIBED') {
+                await channel.send({
+                    type: 'broadcast',
+                    event: eventType === 'synced' ? 'extension-synced' : 'extension-removed',
+                    payload: { ...data, timestamp: Date.now() }
+                });
+
+
+                // Unsubscribe after sending to avoid leaks
+                setTimeout(() => channel.unsubscribe(), 1000);
+            }
+        });
+    } catch (e) {
+
+    }
+};
+
 export const useExtensionSync = () => {
+    const { user } = useAuthStore();
     const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>({
         installed: false,
         loggedIn: false
     });
     const [checking, setChecking] = useState(true);
     const [syncing, setSyncing] = useState(false);
+
+    // Consolidated extension tracking state (use ref for synchronous access)
+    const extensionState = useRef({
+        wasInstalled: false,
+        hasAlertedRemoval: false
+    });
 
     // Check if extension is installed and synced
     const checkExtension = useCallback(async () => {
@@ -36,20 +73,80 @@ export const useExtensionSync = () => {
                 try {
                     const data = JSON.parse(extensionData);
                     // Extension must have updated within last 30 seconds to be considered active
+                    // Increased from 15s to reduce false positives
                     extensionIsActive = Date.now() - data.timestamp < 30000;
                 } catch (e) {
                     extensionIsActive = false;
                 }
             }
 
-            // If extension is NOT active, clear any cached sync data
+            // DOUBLE-CHECK: If extension seems inactive, verify localStorage sync flag
+            // The extension writes sync data that persists even if heartbeat is delayed
             if (!extensionIsActive) {
-                console.log('⚠️ Extension not active - clearing sync flag');
+                const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
+                if (syncedData) {
+                    try {
+                        const parsed = JSON.parse(syncedData);
+                        // If synced within last 5 minutes, extension is likely still working
+                        if (parsed.synced && parsed.timestamp && Date.now() - parsed.timestamp < 5 * 60 * 1000) {
+
+                            extensionIsActive = true;
+                        }
+                    } catch (e) {
+                        // Ignore parse errors
+                    }
+                }
+            }
+
+            // CRITICAL: Detect extension REMOVAL immediately (only alert once)
+            if (!extensionIsActive && extensionState.current.wasInstalled && !extensionState.current.hasAlertedRemoval) {
+
+
+                // Mark as alerted to prevent duplicates
+                extensionState.current.hasAlertedRemoval = true;
+
+                // Clear all sync data
                 localStorage.removeItem(EXTENSION_SYNCED_KEY);
-                localStorage.removeItem('extension-alert-dismissed'); // Show alert again
+                localStorage.removeItem('extension-alert-dismissed');
+                localStorage.removeItem('cashly_extension');
+                localStorage.removeItem('cashly_extension_auth');
+
+                setExtensionStatus({ installed: false, loggedIn: false });
+                extensionState.current.wasInstalled = false;
+                setChecking(false);
+
+                // Dispatch removal event for immediate UI reaction
+                window.dispatchEvent(new CustomEvent('extension-removed', {
+                    detail: { timestamp: Date.now() }
+                }));
+
+                // Broadcast to other tabs via Supabase Realtime
+                if (user?.id) {
+                    broadcastSyncStatus(user.id, 'removed', { timestamp: Date.now() });
+                }
+
+                // Show toast only once per session
+                if (!sessionStorage.getItem('extension-removal-toast-shown')) {
+                    sessionStorage.setItem('extension-removal-toast-shown', 'true');
+                    genZToast.error('Extension disconnected! Please reinstall for auto-tracking.');
+                }
+
+                return false;
+            }
+
+            // If extension is NOT active
+            if (!extensionIsActive) {
+
                 setExtensionStatus({ installed: false, loggedIn: false });
                 setChecking(false);
                 return false;
+            }
+
+            // Mark that extension is now installed
+            if (!extensionState.current.wasInstalled) {
+                extensionState.current.wasInstalled = true;
+                // Reset alert flag so we can alert again if removed in future
+                extensionState.current.hasAlertedRemoval = false;
             }
 
             // PRIORITY 2: Extension is active, check auth status
@@ -59,7 +156,7 @@ export const useExtensionSync = () => {
                     const loggedIn = authData.loggedIn === true;
                     const userEmail = authData.email;
 
-                    console.log('✅ Extension active:', { loggedIn, userEmail });
+
 
                     setExtensionStatus({
                         installed: true,
@@ -75,6 +172,16 @@ export const useExtensionSync = () => {
                             email: userEmail,
                             timestamp: Date.now()
                         }));
+
+                        // Dispatch sync event for immediate dashboard access
+                        window.dispatchEvent(new CustomEvent('extension-synced', {
+                            detail: { email: userEmail, timestamp: Date.now() }
+                        }));
+
+                        // Broadcast to other tabs via Supabase Realtime
+                        if (user?.id) {
+                            broadcastSyncStatus(user.id, 'synced', { email: userEmail });
+                        }
                     }
 
                     setChecking(false);
@@ -85,7 +192,7 @@ export const useExtensionSync = () => {
             }
 
             // Extension is active but not logged in
-            console.log('📦 Extension installed but not synced');
+
             setExtensionStatus({ installed: true, loggedIn: false });
             setChecking(false);
             return false;
@@ -96,12 +203,12 @@ export const useExtensionSync = () => {
             setChecking(false);
             return false;
         }
-    }, []);
+    }, [user?.id]); // extensionState is a ref, no need in deps
 
     // Sync session with extension
     const syncSession = useCallback(async (session: any, user: any) => {
         if (!extensionStatus.installed) {
-            console.log('Extension not installed, skipping sync');
+
             return false;
         }
 
@@ -151,7 +258,7 @@ export const useExtensionSync = () => {
     // Listen for extension events
     useEffect(() => {
         const handleExtensionReady = (event: CustomEvent) => {
-            console.log('Extension ready:', event.detail);
+
             setExtensionStatus({
                 installed: true,
                 loggedIn: false,
@@ -161,7 +268,7 @@ export const useExtensionSync = () => {
         };
 
         const handleExtensionSynced = (event: CustomEvent) => {
-            console.log('🎉 Extension synced:', event.detail);
+
 
             // Save persistent sync flag (no expiration)
             const syncData = {
@@ -170,7 +277,6 @@ export const useExtensionSync = () => {
                 timestamp: Date.now()
             };
             localStorage.setItem(EXTENSION_SYNCED_KEY, JSON.stringify(syncData));
-            console.log('💾 Saved persistent sync flag (permanent)');
 
             setExtensionStatus(prev => ({
                 ...prev,
@@ -193,7 +299,7 @@ export const useExtensionSync = () => {
                 const { type, data } = event.data;
 
                 if (type === 'BEHAVIOR_TRANSACTION_ADDED' || type === 'TRANSACTION_ADDED') {
-                    console.log('🎯 Behavior transaction received from extension:', data);
+
 
                     // Dispatch event for components to refresh
                     window.dispatchEvent(new CustomEvent('new-transaction', { detail: data }));
@@ -209,7 +315,7 @@ export const useExtensionSync = () => {
         };
 
         const handleExtensionLoggedOut = () => {
-            console.log('Extension logged out - clearing persistent flag');
+
             // ONLY clear persistent flag on explicit logout
             localStorage.removeItem(EXTENSION_SYNCED_KEY);
             setExtensionStatus(prev => ({
@@ -227,10 +333,9 @@ export const useExtensionSync = () => {
         // Initial check
         checkExtension();
 
-        // Periodic check every 30 seconds (less aggressive)
-        // This is mainly to catch initial extension installation
-        // Check every 10 seconds to quickly detect extension removal
-        const interval = setInterval(checkExtension, 10000);
+        // Periodic check every 3 seconds for fast detection
+        // This quickly catches extension install/uninstall events
+        const interval = setInterval(checkExtension, 3000);
 
         return () => {
             window.removeEventListener('cashly-extension-ready', handleExtensionReady as EventListener);

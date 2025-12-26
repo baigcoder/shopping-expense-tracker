@@ -1,6 +1,7 @@
 // Transaction Service - API calls for transactions
 import api from './api';
 import { Transaction, ApiResponse, PaginatedResponse, TransactionFormData } from '../types';
+import { transactionFormSchema } from '../validation/schemas';
 
 interface TransactionFilters {
     page?: number;
@@ -9,6 +10,13 @@ interface TransactionFilters {
     search?: string;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
+}
+
+export class ValidationError extends Error {
+    constructor(public errors: Record<string, string>) {
+        super(Object.values(errors).join(', '));
+        this.name = 'ValidationError';
+    }
 }
 
 export const transactionService = {
@@ -41,8 +49,22 @@ export const transactionService = {
         return response.data;
     },
 
-    // Create transaction
+    // Create transaction with validation
     create: async (data: TransactionFormData) => {
+        // Validate input data
+        const validationResult = transactionFormSchema.safeParse(data);
+
+        if (!validationResult.success) {
+            const errors: Record<string, string> = {};
+            validationResult.error.issues.forEach((issue) => {
+                const path = issue.path.join('.');
+                if (!errors[path]) {
+                    errors[path] = issue.message;
+                }
+            });
+            throw new ValidationError(errors);
+        }
+
         const payload = {
             amount: parseFloat(data.amount),
             storeName: data.storeName,

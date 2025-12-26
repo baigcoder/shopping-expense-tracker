@@ -1,9 +1,91 @@
-// Cashly - Smart Universal Transaction Detector v5.0
+// Cashly - Smart Universal Transaction Detector v6.0
 // Analyzes sites for payment features before activating monitoring
 // Only tracks sites with actual transaction/payment capabilities
+// v6.0: Added deduplication, debounce, caching, blacklist, debug flag
 
 (function () {
     'use strict';
+
+    // ================================
+    // DEBUG FLAG - Set to false in production
+    // ================================
+    const DEBUG = false;
+    const log = (...args) => DEBUG && console.log('💸', ...args);
+    const warn = (...args) => DEBUG && console.warn('💸', ...args);
+
+    // ================================
+    // UTILITY FUNCTIONS
+    // ================================
+
+    // Debounce function to limit execution rate
+    function debounce(func, wait = 300) {
+        let timeout;
+        return function executedFunction(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    // Generate transaction hash for deduplication
+    function generateTransactionHash(data) {
+        const str = `${data.hostname || ''}-${data.name || ''}-${data.amount || data.price || 0}-${new Date().toDateString()}`;
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return 'txn_' + Math.abs(hash).toString(36);
+    }
+
+    // Check if transaction was already saved (deduplication)
+    async function isTransactionDuplicate(hash) {
+        try {
+            const result = await chrome.storage.local.get(['savedTransactionHashes']);
+            const hashes = result.savedTransactionHashes || [];
+            return hashes.includes(hash);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // Mark transaction as saved
+    async function markTransactionSaved(hash) {
+        try {
+            const result = await chrome.storage.local.get(['savedTransactionHashes']);
+            const hashes = result.savedTransactionHashes || [];
+            hashes.push(hash);
+            // Keep only last 100 hashes to prevent unbounded growth
+            const trimmedHashes = hashes.slice(-100);
+            await chrome.storage.local.set({ savedTransactionHashes: trimmedHashes });
+        } catch (e) {
+            warn('Failed to save transaction hash:', e);
+        }
+    }
+
+    // Site analysis cache (per domain)
+    const analysisCache = {};
+    function getCachedAnalysis(domain) {
+        const cached = analysisCache[domain];
+        if (cached && Date.now() - cached.timestamp < 300000) { // 5 min cache
+            log('Using cached analysis for', domain);
+            return cached.result;
+        }
+        return null;
+    }
+    function setCachedAnalysis(domain, result) {
+        analysisCache[domain] = { result, timestamp: Date.now() };
+    }
+
+    // ================================
+    // CONFIGURATION
+    // ================================
+    const CONFIG = {
+        CONFIRMATION_TIMEOUT_MS: 60000,  // Extended from 30s to 60s
+        STATE_HISTORY_LIMIT: 20,         // Limit state history
+        DEBOUNCE_MS: 300,                // Debounce for mutation observer
+        ANALYSIS_CACHE_MS: 300000        // 5 minutes
+    };
 
     // ================================
     // EXCLUDED DOMAINS (own app)
@@ -13,16 +95,37 @@
         'shopping-expense-tracker', 'vercel.app', 'netlify.app', 'cashly'
     ];
 
+    // ================================
+    // USER BLACKLIST (sites to never track)
+    // ================================
+    let userBlacklist = [];
+    async function loadBlacklist() {
+        try {
+            const result = await chrome.storage.sync.get(['cashlyBlacklist']);
+            userBlacklist = result.cashlyBlacklist || [];
+        } catch (e) {
+            userBlacklist = [];
+        }
+    }
+    loadBlacklist();
+
+    function isBlacklisted(domain) {
+        return userBlacklist.some(d => domain.includes(d));
+    }
+
     const hostname = window.location.hostname.toLowerCase();
+
+    // Check excluded domains and blacklist
     if (EXCLUDED_DOMAINS.some(d => hostname.includes(d))) {
-        console.log('💸 Cashly: Skipping own app');
+        log('Skipping own app');
         return;
     }
 
     if (window.__cashlyTracker) return;
     window.__cashlyTracker = true;
 
-    console.log('💸 Cashly v5.0: Smart Universal Detection');
+    log('Cashly v6.0: Smart Universal Detection');
+
 
     // ================================
     // SMART SITE ANALYZER
@@ -394,8 +497,12 @@
             const newIndex = stateOrder.indexOf(newState);
 
             if (newIndex > currentIndex || newState === STATES.MONITORING) {
-                console.log(`💸 State: ${this.currentState} → ${newState}`, data);
+                log(`State: ${this.currentState} → ${newState}`, data);
                 this.stateHistory.push({ from: this.currentState, to: newState, at: Date.now() });
+                // Limit state history to prevent memory growth
+                if (this.stateHistory.length > CONFIG.STATE_HISTORY_LIMIT) {
+                    this.stateHistory = this.stateHistory.slice(-CONFIG.STATE_HISTORY_LIMIT);
+                }
                 this.currentState = newState;
                 Object.assign(this.transactionData, data);
 
@@ -424,8 +531,8 @@
             } catch (e) { /* Extension context may be invalidated */ }
         }
 
-        extractAndSave() {
-            console.log('💸 🎉 TRANSACTION CONFIRMED! Extracting data...');
+        async extractAndSave() {
+            log('🎉 TRANSACTION CONFIRMED! Extracting data...');
 
             const prices = this.extractPrices();
             const pageText = (document.body?.innerText || '').toLowerCase();
@@ -434,6 +541,7 @@
             const isTrial = trialDays > 0 || this.transactionData.isTrial;
             const isSubscription = this.transactionData.isSubscription || this.detectSubscription(pageText);
             const billingCycle = this.transactionData.billingCycle || this.detectBillingCycle(pageText);
+            const planTier = this.detectPlanTier(pageText);  // NEW
 
             const transaction = {
                 name: this.siteInfo.name,
@@ -448,6 +556,7 @@
                 category: this.siteInfo.category,
                 billingCycle,
                 isSubscription,
+                planTier,  // NEW: Plan tier (starter, pro, enterprise)
                 sourceUrl: window.location.href,
                 favicon: this.siteInfo.favicon,
                 detectedAt: new Date().toISOString(),
@@ -455,7 +564,18 @@
                 autoAddTransaction: true
             };
 
-            console.log('💸 Transaction extracted:', transaction);
+            log('Transaction extracted:', transaction);
+
+            // Check for duplicate transaction
+            const txHash = generateTransactionHash(transaction);
+            const isDuplicate = await isTransactionDuplicate(txHash);
+            if (isDuplicate) {
+                log('Duplicate transaction detected, skipping:', txHash);
+                return;
+            }
+
+            // Mark as saved
+            await markTransactionSaved(txHash);
 
             // Show notification
             this.showNotification(transaction);
@@ -546,6 +666,51 @@
             if (/weekly|per week|\/week/i.test(pageText)) return 'weekly';
             if (/quarterly|every 3 months/i.test(pageText)) return 'quarterly';
             return 'monthly';
+        }
+
+        // NEW: Detect plan tier (Basic, Pro, Enterprise, etc.)
+        detectPlanTier(pageText) {
+            const tierPatterns = [
+                { tier: 'enterprise', pattern: /enterprise|business|team|organization/i },
+                { tier: 'pro', pattern: /\bpro\b|professional|plus|premium/i },
+                { tier: 'starter', pattern: /starter|basic|free|lite/i },
+                { tier: 'standard', pattern: /standard|regular|personal/i }
+            ];
+
+            for (const { tier, pattern } of tierPatterns) {
+                if (pattern.test(pageText)) {
+                    log('Plan tier detected:', tier);
+                    return tier;
+                }
+            }
+            return 'standard';
+        }
+
+        // NEW: Detect cancellation flow
+        detectCancellation() {
+            const url = window.location.href.toLowerCase();
+            const pageText = (document.body?.innerText || '').toLowerCase();
+
+            const cancelPatterns = [
+                /\/cancel/i, /\/unsubscribe/i, /\/downgrade/i,
+                /cancel.*(subscription|plan|membership)/i,
+                /subscription.*cancel/i
+            ];
+
+            const cancelKeywords = [
+                'cancel subscription', 'cancel my plan', 'unsubscribe',
+                'end membership', 'stop subscription', 'downgrade',
+                'cancel renewal', 'don\'t renew'
+            ];
+
+            const urlMatch = cancelPatterns.some(p => p.test(url));
+            const textMatch = cancelKeywords.some(kw => pageText.includes(kw));
+
+            if (urlMatch || textMatch) {
+                log('Cancellation flow detected');
+                return true;
+            }
+            return false;
         }
 
         showNotification(data) {
@@ -642,11 +807,25 @@
     let siteAnalysisResult = null; // Store analysis result for popup queries
 
     function initialize() {
-        siteAnalysisResult = analyzer.analyze();
+        // Check blacklist first
+        if (isBlacklisted(hostname)) {
+            log('Site is blacklisted, skipping');
+            return;
+        }
+
+        // Try cached analysis first
+        const cachedResult = getCachedAnalysis(hostname);
+        if (cachedResult) {
+            siteAnalysisResult = cachedResult;
+        } else {
+            siteAnalysisResult = analyzer.analyze();
+            setCachedAnalysis(hostname, siteAnalysisResult);
+        }
+
         tracker.siteInfo.category = siteAnalysisResult.category;
 
         if (siteAnalysisResult.isPaymentSite) {
-            console.log('💳 Payment site detected! Starting monitoring...', {
+            log('Payment site detected! Starting monitoring...', {
                 score: siteAnalysisResult.score,
                 signals: siteAnalysisResult.signals
             });
@@ -655,7 +834,7 @@
             // Start behavioral detection
             startBehaviorDetection();
         } else {
-            console.log('💤 Not a payment site, staying idle', {
+            log('Not a payment site, staying idle', {
                 score: siteAnalysisResult.score,
                 signals: siteAnalysisResult.signals
             });
@@ -675,10 +854,11 @@
         // Listen for payment button clicks
         document.addEventListener('click', handleClick, true);
 
-        // Watch for DOM changes (SPA support)
-        const observer = new MutationObserver(() => {
-            checkPaymentForms();
-        });
+        // Debounced payment form checker for performance
+        const debouncedCheckPaymentForms = debounce(checkPaymentForms, CONFIG.DEBOUNCE_MS);
+
+        // Watch for DOM changes (SPA support) - DEBOUNCED for performance
+        const observer = new MutationObserver(debouncedCheckPaymentForms);
         observer.observe(document.body, { childList: true, subtree: true });
 
         // Intercept history changes (SPA navigation)
@@ -723,7 +903,7 @@
         const isPayButton = PAYMENT_BUTTON_PATTERNS.some(p => p.test(text));
 
         if (isPayButton) {
-            console.log('💸 Payment button clicked:', text);
+            log('Payment button clicked:', text);
 
             tracker.transition(STATES.PAYMENT_SUBMITTED, {
                 submittedAt: Date.now(),
@@ -741,7 +921,7 @@
         if (confirmationWatcherActive) return;
         confirmationWatcherActive = true;
 
-        console.log('💸 Started confirmation watcher');
+        log('Started confirmation watcher');
 
         const checkConfirmation = () => {
             const url = window.location.href.toLowerCase();
@@ -759,7 +939,7 @@
         setTimeout(() => {
             observer.disconnect();
             confirmationWatcherActive = false;
-        }, 30000);
+        }, CONFIG.CONFIRMATION_TIMEOUT_MS);  // Extended to 60s
     }
 
     function checkSuccessElements() {

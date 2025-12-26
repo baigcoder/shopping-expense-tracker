@@ -1,5 +1,5 @@
 // Real-time Sync Hook - Fast, accurate real-time updates using Supabase Realtime
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
@@ -16,6 +16,8 @@ interface RealtimeConfig {
     onSubscriptionInsert?: EventHandler;
     onGoalUpdate?: EventHandler;
     onBudgetUpdate?: EventHandler;
+    onAIInsight?: EventHandler;
+    onPaymentReminder?: EventHandler;
     onAnyChange?: () => void;
 }
 
@@ -34,12 +36,13 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
     const { user } = useAuthStore();
     const channelRef = useRef<RealtimeChannel | null>(null);
     const isSubscribed = useRef(false);
-    const connectionStatus = useRef<'connecting' | 'connected' | 'disconnected'>('connecting');
+    // Use state for connectionStatus so components re-render on status change
+    const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
 
     const setupSubscription = useCallback(() => {
         if (!user?.id || isSubscribed.current) return;
 
-        console.log('🔄 Setting up Supabase Realtime subscription for user:', user.id);
+
 
         // Create a unique channel for this user with optimized settings
         const channel = supabase.channel(`realtime-${user.id}`, {
@@ -53,7 +56,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
         // BROADCAST CHANNEL - For instant extension updates
         // ================================
         channel.on('broadcast', { event: 'extension-transaction' }, (payload) => {
-            console.log('⚡ INSTANT: Extension transaction broadcast received:', payload);
+
 
             const tx = payload.payload;
             const amount = tx.amount || 0;
@@ -78,6 +81,51 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
         });
 
         // ================================
+        // EXTENSION SYNC BROADCAST - For instant cross-tab sync
+        // ================================
+        channel.on('broadcast', { event: 'extension-synced' }, (payload) => {
+
+
+            // Dispatch event for ExtensionGate and other components
+            window.dispatchEvent(new CustomEvent('extension-synced', {
+                detail: payload.payload
+            }));
+
+            // Show success toast
+            genZToast.extensionSynced({ toastId: 'realtime-sync' });
+        });
+
+        channel.on('broadcast', { event: 'extension-removed' }, (payload) => {
+
+
+            // VERIFY: Only show toast if extension is actually removed (check localStorage)
+            const syncedData = localStorage.getItem('cashly_extension_synced');
+            if (syncedData) {
+                try {
+                    const parsed = JSON.parse(syncedData);
+                    // If still synced in localStorage, this is a false alarm
+                    if (parsed.synced) {
+
+                        return;
+                    }
+                } catch (e) {
+                    // Continue with removal if parse fails
+                }
+            }
+
+            // Dispatch event for ExtensionGate
+            window.dispatchEvent(new CustomEvent('extension-removed', {
+                detail: payload.payload
+            }));
+
+            // Show error toast (only once per session)
+            if (!sessionStorage.getItem('extension-removal-toast-shown')) {
+                sessionStorage.setItem('extension-removal-toast-shown', 'true');
+                genZToast.error('Extension disconnected! Please reinstall.');
+            }
+        });
+
+        // ================================
         // POSTGRES CHANGES - For database sync
         // ================================
         channel.on(
@@ -89,7 +137,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('💰 New transaction from Postgres:', payload.new);
+
 
                 const tx = payload.new as any;
                 const amount = tx.amount || 0;
@@ -123,7 +171,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('📝 Transaction updated:', payload.new);
+
                 config.onTransactionUpdate?.(payload);
                 config.onAnyChange?.();
             }
@@ -138,7 +186,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('🗑️ Transaction deleted:', payload.old);
+
                 config.onTransactionDelete?.(payload);
                 config.onAnyChange?.();
             }
@@ -154,7 +202,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('📱 New subscription detected:', payload.new);
+
 
                 const sub = payload.new as any;
                 genZToast.success(`New subscription: ${sub.name || 'Service'} added! 💳`);
@@ -174,7 +222,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('🎯 Goal changed:', payload);
+
                 config.onGoalUpdate?.(payload);
                 config.onAnyChange?.();
             }
@@ -190,33 +238,106 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-                console.log('💵 Budget changed:', payload);
+
+
+                // Check if budget limit is approaching (80%+)
+                const budget = payload.new as any;
+                if (budget && budget.spent && budget.limit) {
+                    const percentage = (budget.spent / budget.limit) * 100;
+                    if (percentage >= 80 && percentage < 100) {
+                        genZToast.warning(`⚠️ Budget "${budget.category}" at ${percentage.toFixed(0)}%! Slow down spending.`);
+                    } else if (percentage >= 100) {
+                        genZToast.error(`🚨 Budget "${budget.category}" exceeded! ${percentage.toFixed(0)}% spent.`);
+                    }
+                }
+
                 config.onBudgetUpdate?.(payload);
                 config.onAnyChange?.();
             }
         );
 
+        // ================================
+        // AI INSIGHTS - Instant notifications
+        // ================================
+        channel.on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'ai_insights',
+                filter: `user_id=eq.${user.id}`
+            },
+            (payload) => {
+
+
+                const insight = payload.new as any;
+                genZToast.success(`🤖 AI Insight: ${insight.title || 'New analysis ready!'}`);
+
+                // Dispatch event for components
+                window.dispatchEvent(new CustomEvent('ai-insight-ready', {
+                    detail: { insight, source: 'postgres' }
+                }));
+
+                config.onAnyChange?.();
+            }
+        );
+
+        // ================================
+        // PAYMENT REMINDERS - Due date alerts
+        // ================================
+        channel.on('broadcast', { event: 'payment-reminder' }, (payload) => {
+
+
+            const reminder = payload.payload;
+            const daysLeft = reminder.daysUntilDue || 0;
+            const subName = reminder.subscriptionName || 'Subscription';
+
+            if (daysLeft === 0) {
+                genZToast.error(`💳 ${subName} payment due TODAY!`);
+            } else if (daysLeft === 1) {
+                genZToast.warning(`💳 ${subName} payment due tomorrow!`);
+            } else if (daysLeft <= 3) {
+                genZToast.info(`💳 ${subName} payment due in ${daysLeft} days`);
+            }
+
+            // Dispatch event for NotificationsPanel
+            window.dispatchEvent(new CustomEvent('payment-reminder', {
+                detail: reminder
+            }));
+        });
+
+        // ================================
+        // MULTI-DEVICE SYNC - Cross-device updates
+        // ================================
+        channel.on('broadcast', { event: 'data-sync' }, (payload) => {
+
+
+            // Refresh all data when another device makes changes
+            config.onAnyChange?.();
+
+            genZToast.info('📱 Synced from another device!', { toastId: 'device-sync' });
+        });
+
         // Subscribe to channel with enhanced status handling
         channel.subscribe((status, err) => {
-            console.log('🔄 Realtime subscription status:', status, err);
+
 
             if (status === 'SUBSCRIBED') {
                 isSubscribed.current = true;
-                connectionStatus.current = 'connected';
-                console.log('✅ Real-time sync ACTIVE! (< 100ms latency)');
+                setConnectionStatus('connected');
             } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-                connectionStatus.current = 'disconnected';
+                setConnectionStatus('disconnected');
                 console.error('❌ Real-time connection error, will retry...');
                 // Auto-retry after 3 seconds
                 setTimeout(() => {
                     if (!isSubscribed.current) {
-                        console.log('🔄 Attempting to reconnect...');
+
                         cleanup();
                         setupSubscription();
                     }
                 }, 3000);
             } else if (status === 'CLOSED') {
-                connectionStatus.current = 'disconnected';
+                setConnectionStatus('disconnected');
                 isSubscribed.current = false;
             }
         });
@@ -227,11 +348,11 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
     // Cleanup function
     const cleanup = useCallback(() => {
         if (channelRef.current) {
-            console.log('🔌 Disconnecting real-time channel');
+
             supabase.removeChannel(channelRef.current);
             channelRef.current = null;
             isSubscribed.current = false;
-            connectionStatus.current = 'disconnected';
+            setConnectionStatus('disconnected');
         }
     }, []);
 
@@ -244,8 +365,9 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
     // Return status and controls
     return {
         isConnected: isSubscribed.current,
-        connectionStatus: connectionStatus.current,
+        connectionStatus,  // Now using state directly
         reconnect: () => {
+            setConnectionStatus('connecting');
             cleanup();
             setTimeout(setupSubscription, 100);
         }

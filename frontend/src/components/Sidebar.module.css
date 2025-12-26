@@ -106,10 +106,8 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 0 1rem;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 
 .nav::-webkit-scrollbar {

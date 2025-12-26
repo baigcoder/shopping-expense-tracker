@@ -1,9 +1,32 @@
 // AI Tip Cache Service - Pre-fetches AI insights in background
 // Enhanced with local fallback, graceful error handling, and reactive updates
 // Uses user's detected currency (PKR, INR, USD, etc.)
+// REALTIME: Cache is invalidated via useAIRealtime on any data change
 
-import { safeCallAI } from './multiModelService';
+import api from './api';
 import { getCurrencySymbol, getCurrencyInfo, formatCurrency } from './currencyService';
+
+// Safe AI call that never throws - uses backend AI
+const safeCallAI = async (_type: string, systemPrompt: string, userPrompt: string, userId?: string): Promise<{ response: string } | null> => {
+    try {
+        // Get user ID from Zustand auth-storage if not provided
+        const storedAuth = localStorage.getItem('auth-storage');
+        const currentUserId = userId || (storedAuth ? JSON.parse(storedAuth)?.state?.user?.id : null);
+
+        const response = await api.post('/ai/chat', {
+            message: `${systemPrompt}\n\n${userPrompt}`,
+            context: 'insights'
+        }, {
+            headers: currentUserId ? { 'x-user-id': currentUserId } : {}
+        });
+        return { response: response.data.response };
+    } catch (error) {
+        console.error('Backend AI call failed:', error);
+        return null;
+    }
+};
+
+
 
 interface CachedAiTip {
     tip: string;
@@ -15,8 +38,9 @@ interface CachedAiTip {
 // In-memory cache for AI tips
 let cachedTip: CachedAiTip | null = null;
 let isFetching = false;
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
-const LOCAL_TTL = 5 * 60 * 1000; // 5 minutes for local fallback (shorter)
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes (reduced for faster realtime updates)
+const LOCAL_TTL = 3 * 60 * 1000; // 3 minutes for local fallback (shorter)
+
 
 // Simple hash function for data comparison
 const hashData = (data: { monthlyTotal: number; topCategory: string; categoryAmount: number }): string => {
@@ -125,8 +149,8 @@ export const fetchAiTipInBackground = async (
         const systemPrompt = `You are Cashly, a Gen-Z financial advisor. Give ONE specific, actionable tip based on the user's spending. Be casual but helpful. Keep it to 2 sentences max. Use ${currency.symbol} for currency amounts. Add a relevant emoji at the start.`;
         const userPrompt = `My monthly spending: ${currency.symbol}${spendingData.monthlyTotal.toLocaleString()}. Top category: ${spendingData.topCategory} (${currency.symbol}${spendingData.categoryAmount.toLocaleString()}). Give me one personalized tip.`;
 
-        // Use safe call that never throws
-        const result = await safeCallAI('insights', systemPrompt, userPrompt);
+        // Use safe call that never throws - pass userId for auth
+        const result = await safeCallAI('insights', systemPrompt, userPrompt, userId);
 
         if (result) {
             cachedTip = {

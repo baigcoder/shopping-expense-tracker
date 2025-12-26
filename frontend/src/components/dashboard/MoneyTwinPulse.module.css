@@ -1,0 +1,273 @@
+/* MoneyTwinPulse - Ultra-Premium AI Forge Styling (BEST EVER) */
+
+.aiMagicContainer {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(40px) saturate(200%);
+    border: 3px solid rgba(226, 232, 240, 0.7);
+    border-radius: 2.5rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.04),
+        0 4px 6px -2px rgba(0, 0, 0, 0.02),
+        inset 0 0 40px rgba(255, 255, 255, 0.8);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    isolation: isolate;
+}
+
+.aiMagicContainer:hover {
+    transform: translateY(-8px) scale(1.01);
+    border-color: rgba(37, 99, 235, 0.2);
+    box-shadow:
+        0 40px 80px -20px rgba(37, 99, 235, 0.12),
+        0 20px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
+/* Advanced Holographic Cosmic Glow */
+.aiMagicContainer::before {
+    content: '';
+    position: absolute;
+    inset: -100px;
+    background:
+        radial-gradient(circle at 70% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 30% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.06) 0%, transparent 50%);
+    z-index: -1;
+    filter: blur(60px);
+    animation: holographic-drift 20s infinite alternate ease-in-out;
+}
+
+@keyframes holographic-drift {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    33% {
+        transform: translate(50px, -30px) rotate(10deg) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-30px, 50px) rotate(-10deg) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+}
+
+/* Neural Scan Line */
+.aiMagicContainer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 0%,
+            rgba(37, 99, 235, 0.03) 50%,
+            transparent 100%);
+    height: 200%;
+    z-index: 10;
+    pointer-events: none;
+    animation: neural-scan 10s linear infinite;
+}
+
+@keyframes neural-scan {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
+.header {
+    background: transparent;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid rgba(241, 245, 249, 0.8);
+    position: relative;
+    z-index: 20;
+}
+
+.aiBrainIcon {
+    width: 2.75rem;
+    height: 2.75rem;
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow:
+        0 8px 16px -4px rgba(37, 99, 235, 0.3),
+        inset 0 0 12px rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    position: relative;
+}
+
+.aiBrainIcon::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0.4;
+    border-radius: inherit;
+    z-index: -1;
+}
+
+.healthBadge {
+    padding: 0.5rem 1.25rem;
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: white;
+    font-weight: 950;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: rgba(251, 251, 252, 0.4);
+    border-bottom: 2px solid rgba(241, 245, 249, 0.8);
+    position: relative;
+    z-index: 20;
+}
+
+.statCell {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-right: 2px solid rgba(241, 245, 249, 0.8);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.statCell::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.statCell:hover::before {
+    width: 200%;
+    height: 200%;
+}
+
+.statCell:last-child {
+    border-right: none;
+}
+
+.statLabel {
+    font-size: 0.7rem;
+    font-weight: 950;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.12rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.statVal {
+    font-size: 1.25rem;
+    font-weight: 950;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+}
+
+.chartArea {
+    padding: 1.5rem 2rem;
+    background: transparent;
+    position: relative;
+    z-index: 20;
+}
+
+.legend {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 950;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.footer {
+    padding: 1rem 2rem;
+    background: rgba(251, 251, 252, 0.5);
+    border-top: 2px solid rgba(241, 245, 249, 0.8);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+}
+
+.seeMoreLink {
+    font-size: 0.75rem;
+    font-weight: 950;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(37, 99, 235, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+}
+
+.seeMoreLink:hover {
+    gap: 0.6rem;
+    background: rgba(37, 99, 235, 0.1);
+    transform: translateX(4px);
+}
+
+.riskBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    border: 2px solid transparent;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s;
+}
+
+.riskBadge:hover {
+    transform: scale(1.05);
+}

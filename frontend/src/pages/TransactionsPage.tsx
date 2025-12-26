@@ -1,33 +1,69 @@
-import { useState, useEffect, useCallback } from 'react';
+// TransactionsPage - Cashly Treasury Log (Premium Redesign)
+// Midnight Coral Theme - Light Mode
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import {
-    Search, Plus, Trash2, Edit2, ArrowRight, ArrowLeft,
-    Upload, Download, FileUp, Brain, RefreshCw, Filter,
-    TrendingUp, TrendingDown, MoreHorizontal, FileText, Receipt
+    Search, Trash2, Edit2, ArrowRight, ArrowLeft,
+    Download, FileUp, Brain, RefreshCw, RotateCcw,
+    TrendingUp, TrendingDown, FileText, Receipt, Wallet, Activity,
+    ChevronRight, Zap, Target, CreditCard, PieChart, Star
 } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTransactions, useDeleteTransaction } from '../hooks/useTransactions';
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { supabase } from '../config/supabase';
 import { useTransactionRealtime } from '../hooks/useRealtimeSync';
-import { ParsedTransaction } from '../services/csvImportService';
 import { toast } from 'sonner';
 import LoadingScreen from '../components/LoadingScreen';
 import TransactionDialog from '../components/TransactionDialog';
 import CSVImport from '../components/CSVImport';
 import ExportModal from '../components/ExportModal';
 import PDFAnalyzer from '../components/PDFAnalyzer';
+import ResetConfirmModal from '../components/ResetConfirmModal';
+import DocumentImportModal from '../components/DocumentImportModal';
 import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
+import { Badge } from '@/components/ui/badge';
+import styles from './TransactionsPage.module.css';
+
+// Animation Variants
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', damping: 25, stiffness: 100 }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: { type: 'spring', damping: 20, stiffness: 100 }
+    }
+};
+
+const iconAnim = {
+    animate: {
+        y: [0, -6, 0],
+        rotate: [0, 5, 0],
+        transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+    }
+};
 
 const TransactionsPage = () => {
     const { user } = useAuthStore();
@@ -36,6 +72,7 @@ const TransactionsPage = () => {
     // State
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('all');
     const [supabaseTransactions, setSupabaseTransactions] = useState<SupabaseTransaction[]>([]);
     const [isLoadingSupabase, setIsLoadingSupabase] = useState(false);
@@ -46,6 +83,8 @@ const TransactionsPage = () => {
     const [showImport, setShowImport] = useState(false);
     const [showPDFAnalyzer, setShowPDFAnalyzer] = useState(false);
     const [showExport, setShowExport] = useState(false);
+    const [showResetModal, setShowResetModal] = useState(false);
+    const [showAIImport, setShowAIImport] = useState(false);
 
     // Get Supabase User
     useEffect(() => {
@@ -68,7 +107,7 @@ const TransactionsPage = () => {
     const deleteMutation = useDeleteTransaction();
 
     // Fetch transactions
-    const fetchSupabaseTransactions = async () => {
+    const fetchSupabaseTransactions = useCallback(async () => {
         if (!supabaseUserId) return;
         setIsLoadingSupabase(true);
         try {
@@ -79,15 +118,19 @@ const TransactionsPage = () => {
         } finally {
             setIsLoadingSupabase(false);
         }
-    };
+    }, [supabaseUserId]);
 
     useEffect(() => {
         fetchSupabaseTransactions();
-        const pollInterval = setInterval(fetchSupabaseTransactions, 15000);
-        return () => clearInterval(pollInterval);
-    }, [supabaseUserId]);
+    }, [fetchSupabaseTransactions]);
 
-    // Realtime Sync
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [search]);
+
     const refreshTransactions = async () => {
         await fetchSupabaseTransactions();
         toast.success('Ledger Refreshed', { description: 'Latest transaction data synchronized.' });
@@ -95,15 +138,25 @@ const TransactionsPage = () => {
     };
 
     useTransactionRealtime({
-        onInsert: () => fetchSupabaseTransactions(),
-        onUpdate: () => fetchSupabaseTransactions(),
-        onDelete: () => fetchSupabaseTransactions()
+        onInsert: (tx: any) => {
+            setSupabaseTransactions(prev => {
+                if (prev.some(t => t.id === tx.id)) return prev;
+                return [tx, ...prev];
+            });
+            sound.playSuccess();
+        },
+        onUpdate: (tx: any) => {
+            setSupabaseTransactions(prev =>
+                prev.map(t => t.id === tx.id ? { ...t, ...tx } : t)
+            );
+        },
+        onDelete: (id: string) => {
+            setSupabaseTransactions(prev => prev.filter(t => t.id !== id));
+        }
     });
 
-    // CRUD Operations
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this transaction?')) return;
-
         try {
             await supabaseTransactionService.delete(id);
             setSupabaseTransactions(prev => prev.filter(t => t.id !== id));
@@ -112,7 +165,7 @@ const TransactionsPage = () => {
             sound.playClick();
         } catch (error) {
             console.error('Delete failed:', error);
-            toast.error('Operation Failed', { description: 'Could not remove the selected record.' });
+            toast.error('Operation Failed');
         }
     };
 
@@ -134,359 +187,305 @@ const TransactionsPage = () => {
             sound.playSuccess();
         } catch (error) {
             console.error('Update failed:', error);
-            toast.error('Modification failed', { description: 'The changes could not be committed to the vault.' });
+            toast.error('Modification failed');
         }
     };
 
-    // Combine Data
+    // Combine & Filter Data
     const apiTransactions = (data as any)?.transactions || [];
     const apiIds = new Set(apiTransactions.map((t: any) => t.id));
     const uniqueSupabaseTransactions = supabaseTransactions.filter(t => !apiIds.has(t.id));
 
-    // Filter locally for seamless UX
-    const allTransactions = [...uniqueSupabaseTransactions, ...apiTransactions]
-        .filter(t => categoryFilter === 'all' || (t.category?.name === categoryFilter || t.category === categoryFilter))
-        .filter(t => !search || t.description.toLowerCase().includes(search.toLowerCase()))
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const allTransactions = useMemo(() => {
+        return [...uniqueSupabaseTransactions, ...apiTransactions]
+            .filter(t => categoryFilter === 'all' || (t.category?.name === categoryFilter || t.category === categoryFilter))
+            .filter(t => !debouncedSearch || t.description.toLowerCase().includes(debouncedSearch.toLowerCase()))
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }, [uniqueSupabaseTransactions, apiTransactions, categoryFilter, debouncedSearch]);
 
-    // Stats
+    // Derived Stats
     const totalIncome = allTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
     const totalExpense = allTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+    const balance = totalIncome - totalExpense;
 
     if (isLoading || (isLoadingSupabase && supabaseTransactions.length === 0)) {
         return <LoadingScreen />;
     }
 
     return (
-        <div className="p-4 md:p-8 lg:p-12 max-w-7xl mx-auto space-y-10 bg-[#FAFBFF] min-h-screen">
-            {/* Header Redesign */}
+        <div className={styles.mainContent}>
             <motion.div
-                className="flex flex-col md:flex-row md:items-end justify-between gap-6"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
+                className={styles.contentArea}
+                variants={staggerContainer}
+                initial="hidden"
+                animate="show"
             >
-                <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-xl shadow-blue-100 ring-4 ring-blue-50">
-                            <Receipt className="h-7 w-7 text-white" />
-                        </div>
+                {/* Premium Glass Header */}
+                <motion.header
+                    className={styles.header}
+                    initial={{ opacity: 0, y: -40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ type: 'spring', damping: 20 }}
+                >
+                    <div className={styles.headerLeft}>
+                        <motion.div
+                            className={styles.titleIcon}
+                            whileHover={{ scale: 1.1, rotate: 10 }}
+                        >
+                            <Receipt size={28} />
+                        </motion.div>
                         <div>
-                            <div className="flex items-center gap-2 mb-1">
-                                <h1 className="text-4xl font-black text-slate-800 tracking-tighter font-display">Treasury Log</h1>
-                                <Badge className="bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100 transition-colors px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Real-time Sync</Badge>
-                            </div>
-                            <p className="text-slate-500 font-bold text-lg flex items-center gap-2">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                </span>
-                                Monitoring your financial ecosystem
-                            </p>
+                            <h1 className={styles.title}>
+                                Treasury Log
+                                <div className={styles.liveBadge}>
+                                    <div className={styles.pulseDot}></div>
+                                    REAL-TIME SYNC
+                                </div>
+                            </h1>
+                            <p className={styles.listSubtitle}>Monitoring your financial ecosystem</p>
                         </div>
                     </div>
+
+                    <div className={styles.headerActions}>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.labelBtn}
+                            onClick={refreshTransactions}
+                        >
+                            <RefreshCw size={20} className={isLoadingSupabase ? styles.spinning : ''} />
+                            <span>Refresh</span>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-200"
+                            onClick={() => setShowAIImport(true)}
+                            title="AI Document Import"
+                        >
+                            <Brain size={18} />
+                            <span>AI Import</span>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.exportBtn}
+                            onClick={() => setShowExport(true)}
+                        >
+                            <Download size={20} />
+                            <span>Export</span>
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl font-bold text-sm transition-all border-2 border-rose-100"
+                            onClick={() => setShowResetModal(true)}
+                            title="Reset All Transactions"
+                        >
+                            <RotateCcw size={18} />
+                            <span>Reset</span>
+                        </motion.button>
+                    </div>
+                </motion.header>
+
+                {/* Intensified Stats Grid */}
+                <div className={styles.statsRow}>
+                    <motion.div className={cn(styles.premiumStatCard, styles.income)} variants={fadeInUp}>
+                        <div className={styles.statMesh} />
+                        <motion.div {...iconAnim} className={styles.statIconBox}>
+                            <TrendingUp size={28} />
+                        </motion.div>
+                        <h3 className={styles.statValue}>{formatCurrency(totalIncome)}</h3>
+                        <p className={styles.statLabel}>Accumulated Inflow</p>
+                    </motion.div>
+
+                    <motion.div className={cn(styles.premiumStatCard, styles.expenses)} variants={fadeInUp}>
+                        <div className={styles.statMesh} />
+                        <motion.div {...iconAnim} className={styles.statIconBox}>
+                            <TrendingDown size={28} />
+                        </motion.div>
+                        <h3 className={styles.statValue}>-{formatCurrency(totalExpense)}</h3>
+                        <p className={styles.statLabel}>Total Consumption</p>
+                    </motion.div>
+
+                    <motion.div className={cn(styles.premiumStatCard, styles.balance)} variants={fadeInUp}>
+                        <div className={styles.statMesh} />
+                        <motion.div {...iconAnim} className={styles.statIconBox}>
+                            <Wallet size={28} />
+                        </motion.div>
+                        <h3 className={styles.statValue} style={{ color: balance >= 0 ? '#10b981' : '#e11d48' }}>
+                            {formatCurrency(balance)}
+                        </h3>
+                        <p className={styles.statLabel}>Treasury Balance</p>
+                    </motion.div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                    <Button
-                        variant="outline"
-                        onClick={refreshTransactions}
-                        className="h-12 px-6 rounded-2xl border-2 border-slate-100 bg-white hover:bg-slate-50 font-black text-xs uppercase tracking-widest text-slate-600 shadow-sm"
-                    >
-                        <RefreshCw className={cn("mr-2 h-4 w-4", isLoadingSupabase && "animate-spin")} />
-                        Refresh
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => setShowPDFAnalyzer(true)}
-                        className="h-12 px-6 rounded-2xl border-2 border-slate-100 bg-white hover:bg-slate-50 font-black text-xs uppercase tracking-widest text-slate-600 shadow-sm"
-                    >
-                        <Brain className="mr-2 h-4 w-4 text-indigo-500" />
-                        AI PDF
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => setShowImport(true)}
-                        className="h-12 px-6 rounded-2xl border-2 border-slate-100 bg-white hover:bg-slate-50 font-black text-xs uppercase tracking-widest text-slate-600 shadow-sm"
-                    >
-                        <FileUp className="mr-2 h-4 w-4 text-blue-500" />
-                        Import
-                    </Button>
-                    <Button
-                        variant="outline"
-                        onClick={() => setShowExport(true)}
-                        className="h-12 px-6 rounded-2xl border-2 border-slate-100 bg-white hover:bg-slate-50 font-black text-xs uppercase tracking-widest text-slate-600 shadow-sm"
-                    >
-                        <Download className="mr-2 h-4 w-4 text-slate-500" />
-                        Export
-                    </Button>
-                </div>
-            </motion.div>
-
-            {/* Stats Summary Redesign */}
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-            >
-                {/* Total Income Card */}
-                <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-blue-100 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                            <TrendingUp className="h-6 w-6" />
-                        </div>
-                        <Badge className="bg-blue-50 text-blue-600 border-none px-3 font-black">+{allTransactions.filter(t => t.type === 'income').length}</Badge>
+                {/* Filters Row */}
+                <motion.div className={styles.filtersRow} variants={fadeInUp}>
+                    <div className={styles.searchContainer}>
+                        <input
+                            type="text"
+                            className={styles.searchInput}
+                            placeholder="Search by description or merchant..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <Search className={styles.searchIcon} size={22} />
                     </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Inflow</p>
-                        <h3 className="text-3xl font-black text-slate-800 tracking-tighter">{formatCurrency(totalIncome)}</h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '65%' }}
-                                className="h-full bg-blue-500 rounded-full"
-                            />
-                        </div>
-                    </div>
+                    <select
+                        className={styles.categorySelect}
+                        value={categoryFilter}
+                        onChange={(e) => { setCategoryFilter(e.target.value); sound.playClick(); }}
+                    >
+                        <option value="all">Global Explorer</option>
+                        {['Food', 'Shopping', 'Transport', 'Entertainment', 'Utilities', 'Health', 'Travel', 'Education'].map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
                 </motion.div>
 
-                {/* Total Expenses Card */}
-                <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-slate-100 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-slate-200 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-slate-100 text-slate-600 group-hover:bg-slate-800 group-hover:text-white transition-all duration-300">
-                            <TrendingDown className="h-6 w-6" />
+                {/* Activity List */}
+                <div className={styles.transactionList}>
+                    <div className={styles.listHeader}>
+                        <div>
+                            <h3 className={styles.listTitle}>Activity History</h3>
+                            <p className={styles.listSubtitle}>Detailed Financial Ledger</p>
                         </div>
-                        <Badge className="bg-slate-100 text-slate-600 border-none px-3 font-black">-{allTransactions.filter(t => t.type === 'expense').length}</Badge>
-                    </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Consumption</p>
-                        <h3 className="text-3xl font-black text-slate-800 tracking-tighter">-{formatCurrency(totalExpense)}</h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '45%' }}
-                                className="h-full bg-slate-800 rounded-full"
-                            />
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Net Balance Card */}
-                <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-indigo-100 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                            <FileText className="h-6 w-6" />
-                        </div>
-                        <Badge className={cn("border-none px-3 font-black", totalIncome - totalExpense >= 0 ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600")}>
-                            {totalIncome - totalExpense >= 0 ? 'Surplus' : 'Deficit'}
+                        <Badge variant="outline" className="h-9 px-5 border-2 border-slate-200 bg-slate-50/50 text-slate-600 font-black tracking-widest uppercase text-[11px] rounded-xl">
+                            {allTransactions.length} TOTAL RECORDS
                         </Badge>
                     </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Treasury Balance</p>
-                        <h3 className={cn(
-                            "text-3xl font-black tracking-tighter",
-                            totalIncome - totalExpense >= 0 ? "text-blue-600" : "text-amber-600"
-                        )}>
-                            {formatCurrency(totalIncome - totalExpense)}
-                        </h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '82%' }}
-                                className="h-full bg-indigo-500 rounded-full"
-                            />
-                        </div>
-                    </div>
-                </motion.div>
-            </motion.div>
 
-            {/* Filters Redesign */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex flex-col md:flex-row gap-4 p-4 bg-white border-2 border-slate-50 rounded-[2rem] shadow-xl shadow-slate-100/50"
-            >
-                <div className="relative flex-1 group">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
-                    <Input
-                        placeholder="Search by description or merchant..."
-                        className="h-14 pl-12 pr-4 rounded-2xl border-2 border-slate-50 bg-slate-50/50 focus:bg-white focus:border-blue-100 focus:ring-4 focus:ring-blue-50 transition-all font-bold text-slate-700 placeholder:text-slate-400 placeholder:font-bold"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                </div>
-                <div className="w-full md:w-[240px]">
-                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                        <SelectTrigger className="h-14 rounded-2xl border-2 border-slate-50 bg-slate-50/50 focus:bg-white focus:border-blue-100 focus:ring-4 focus:ring-blue-50 transition-all font-black text-slate-700">
-                            <div className="flex items-center gap-2">
-                                <Filter className="h-4 w-4 text-slate-400" />
-                                <SelectValue placeholder="All Categories" />
-                            </div>
-                        </SelectTrigger>
-                        <SelectContent className="rounded-2xl border-2 border-slate-50 shadow-2xl p-2">
-                            <SelectItem value="all" className="rounded-xl font-black text-slate-600 focus:bg-blue-50 focus:text-blue-700">All Categories</SelectItem>
-                            {['Food', 'Shopping', 'Transport', 'Entertainment', 'Utilities', 'Health'].map(cat => (
-                                <SelectItem key={cat} value={cat} className="rounded-xl font-black text-slate-600 focus:bg-blue-50 focus:text-blue-700">
-                                    {cat}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </motion.div>
-
-            {/* Transactions Table Redesign */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="bg-white border-2 border-slate-50 rounded-[2.5rem] shadow-xl shadow-slate-100/50 overflow-hidden"
-            >
-                <div className="p-8 border-b border-slate-50 flex items-center justify-between">
-                    <div>
-                        <h3 className="text-xl font-black text-slate-800 tracking-tight">Activity History</h3>
-                        <p className="text-slate-400 text-xs font-black uppercase tracking-widest mt-1">Detailed Ledger</p>
-                    </div>
-                    <Badge variant="outline" className="border-slate-200 text-slate-400 font-black uppercase tracking-widest px-4 py-1.5 rounded-2xl">
-                        {allTransactions.length} Total
-                    </Badge>
-                </div>
-
-                <div className="overflow-x-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="hover:bg-transparent border-none">
-                                <TableHead className="py-6 px-8 text-[11px] font-black uppercase tracking-widest text-slate-400">Description</TableHead>
-                                <TableHead className="py-6 px-8 text-[11px] font-black uppercase tracking-widest text-slate-400">Classification</TableHead>
-                                <TableHead className="py-6 px-8 text-[11px] font-black uppercase tracking-widest text-slate-400">Timestamp</TableHead>
-                                <TableHead className="py-6 px-8 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Magnitude</TableHead>
-                                <TableHead className="w-[80px] pr-8"></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
+                    <div className="flex flex-col gap-1">
+                        <AnimatePresence mode="popLayout">
                             {allTransactions.length > 0 ? (
-                                allTransactions.slice((page - 1) * 10, page * 10).map((transaction: any) => (
-                                    <TableRow key={transaction.id} className="group hover:bg-slate-50/50 transition-colors border-slate-50/50">
-                                        <TableCell className="py-6 px-8">
-                                            <div className="flex flex-col">
-                                                <span className="text-sm font-black text-slate-800">{transaction.description}</span>
-                                                {transaction.source && (
-                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mt-0.5">{transaction.source}</span>
-                                                )}
+                                allTransactions.slice((page - 1) * 10, page * 10).map((transaction: any, index: number) => (
+                                    <motion.div
+                                        key={transaction.id || `tx-${index}-${transaction.date}`}
+                                        className={styles.transactionCard}
+                                        variants={itemVariants}
+                                        initial="hidden"
+                                        animate="show"
+                                        exit={{ opacity: 0, scale: 0.95, x: 20 }}
+                                        layout
+                                    >
+                                        <div className={cn(styles.txIcon, styles[`cat-${(transaction.category?.name || transaction.category || '').toLowerCase()}`])}>
+                                            {transaction.type === 'expense' ? <TrendingDown size={24} /> : <TrendingUp size={24} />}
+                                        </div>
+                                        <div className={styles.txContent}>
+                                            <h4 className={styles.txTitle}>{transaction.description}</h4>
+                                            <div className={styles.txMeta}>
+                                                <span className={cn(styles.txCategoryBadge, styles[`cat-${(transaction.category?.name || transaction.category || '').toLowerCase()}`])}>
+                                                    {transaction.category?.name || transaction.category || 'Legacy'}
+                                                </span>
+                                                <span className={styles.txDate}>
+                                                    {format(new Date(transaction.date), 'MMM dd, yyyy • HH:mm')}
+                                                </span>
                                             </div>
-                                        </TableCell>
-                                        <TableCell className="py-6 px-8">
-                                            <Badge className="bg-slate-100 text-slate-600 border-none font-black text-[10px] uppercase tracking-tighter hover:bg-blue-600 hover:text-white transition-colors">
-                                                {transaction.category?.name || transaction.category || 'Other'}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="py-6 px-8">
-                                            <div className="flex flex-col">
-                                                <span className="text-sm font-bold text-slate-600">{format(new Date(transaction.date), 'MMM dd, yyyy')}</span>
-                                                <span className="text-[10px] font-medium text-slate-400">{format(new Date(transaction.date), 'HH:mm')}</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className={cn(
-                                            "py-6 px-8 text-right font-black tracking-tighter text-lg",
-                                            transaction.type === 'expense' ? "text-slate-800" : "text-blue-600"
-                                        )}>
-                                            {transaction.type === 'expense' ? '-' : '+'}{formatCurrency(Math.abs(transaction.amount))}
-                                        </TableCell>
-
-                                        <TableCell className="py-6 pr-8">
-                                            <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="h-10 w-10 rounded-xl hover:bg-white hover:shadow-lg transition-all text-slate-400 hover:text-blue-600"
-                                                    onClick={() => setSelectedTransaction(transaction)}
-                                                >
-                                                    <Edit2 className="h-4 w-4" />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="h-10 w-10 rounded-xl hover:bg-white hover:shadow-lg transition-all text-slate-400 hover:text-red-600"
-                                                    onClick={() => handleDelete(transaction.id)}
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
+                                        </div>
+                                        <div className={cn(styles.txAmount, styles[transaction.type])}>
+                                            <motion.span
+                                                initial={{ scale: 0.9 }}
+                                                animate={{ scale: 1 }}
+                                            >
+                                                {transaction.type === 'expense' ? '-' : '+'}{formatCurrency(Math.abs(transaction.amount))}
+                                            </motion.span>
+                                        </div>
+                                        <div className={styles.txActions}>
+                                            <motion.button
+                                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                                whileTap={{ scale: 0.9 }}
+                                                className={styles.actionIconBtn}
+                                                onClick={() => setSelectedTransaction(transaction)}
+                                            >
+                                                <Edit2 size={18} strokeWidth={2.5} />
+                                            </motion.button>
+                                            <motion.button
+                                                whileHover={{ scale: 1.1, rotate: -5 }}
+                                                whileTap={{ scale: 0.9 }}
+                                                className={styles.actionIconBtn}
+                                                onClick={() => handleDelete(transaction.id)}
+                                            >
+                                                <Trash2 size={18} strokeWidth={2.5} />
+                                            </motion.button>
+                                        </div>
+                                    </motion.div>
                                 ))
                             ) : (
-                                <TableRow>
-                                    <TableCell colSpan={5} className="py-20 text-center">
-                                        <div className="flex flex-col items-center justify-center opacity-20">
-                                            <Receipt className="h-16 w-16 mb-4" />
-                                            <p className="font-black text-lg uppercase tracking-widest">No transactions logged</p>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className={styles.emptyState}
+                                >
+                                    <div className={styles.emptyIcon}>
+                                        <FileText size={48} strokeWidth={1.5} />
+                                    </div>
+                                    <h3 className={styles.listTitle}>No records detected</h3>
+                                    <p className={styles.listSubtitle}>Expand your search or import new financial data.</p>
+                                </motion.div>
                             )}
-                        </TableBody>
-                    </Table>
+                        </AnimatePresence>
+                    </div>
+
+                    {allTransactions.length > 10 && (
+                        <motion.div className={styles.pagination} variants={fadeInUp}>
+                            <motion.button
+                                whileHover={{ scale: 1.05, x: -5 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={styles.pageBtn}
+                                onClick={() => { setPage(p => Math.max(1, p - 1)); sound.playClick(); }}
+                                disabled={page === 1}
+                            >
+                                <ArrowLeft size={18} strokeWidth={3} /> Previous
+                            </motion.button>
+                            <span className={styles.currentPage}>
+                                {page} <span className="opacity-50 mx-1">/</span> {Math.ceil(allTransactions.length / 10)}
+                            </span>
+                            <motion.button
+                                whileHover={{ scale: 1.05, x: 5 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={styles.pageBtn}
+                                onClick={() => { setPage(p => p + 1); sound.playClick(); }}
+                                disabled={page >= Math.ceil(allTransactions.length / 10)}
+                            >
+                                Next <ArrowRight size={18} strokeWidth={3} />
+                            </motion.button>
+                        </motion.div>
+                    )}
                 </div>
 
-                {allTransactions.length > 10 && (
-                    <div className="flex items-center justify-between px-8 py-6 bg-slate-50/30 border-t border-slate-50">
-                        <div className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                            Page {page} of {Math.ceil(allTransactions.length / 10)}
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setPage(p => Math.max(1, p - 1))}
-                                disabled={page === 1}
-                                className="h-10 px-4 rounded-xl border-2 border-slate-100 bg-white hover:bg-slate-50 disabled:opacity-30 font-black text-[10px] uppercase tracking-widest"
-                            >
-                                <ArrowLeft className="h-3.5 w-3.5 mr-2" />
-                                Prev
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setPage(p => p + 1)}
-                                disabled={page >= Math.ceil(allTransactions.length / 10)}
-                                className="h-10 px-4 rounded-xl border-2 border-slate-100 bg-white hover:bg-slate-50 disabled:opacity-30 font-black text-[10px] uppercase tracking-widest"
-                            >
-                                Next
-                                <ArrowRight className="h-3.5 w-3.5 ml-2" />
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </motion.div>
-
-            {/* Modals */}
-            <AnimatePresence>
-                {showImport && <CSVImport onImport={refreshTransactions} onClose={() => setShowImport(false)} />}
-                {showPDFAnalyzer && <PDFAnalyzer onComplete={refreshTransactions} onClose={() => setShowPDFAnalyzer(false)} />}
-                {showExport && <ExportModal onClose={() => setShowExport(false)} transactions={allTransactions} />}
-                {selectedTransaction && (
-                    <TransactionDialog
-                        transaction={selectedTransaction}
-                        onSave={handleUpdate}
-                        onDelete={handleDelete}
-                        onClose={() => setSelectedTransaction(null)}
+                {/* Premium Modals */}
+                <AnimatePresence>
+                    {showImport && <CSVImport onImport={refreshTransactions} onClose={() => setShowImport(false)} />}
+                    {showPDFAnalyzer && <PDFAnalyzer onComplete={refreshTransactions} onClose={() => setShowPDFAnalyzer(false)} />}
+                    {showExport && <ExportModal onClose={() => setShowExport(false)} transactions={allTransactions} />}
+                    {selectedTransaction && (
+                        <TransactionDialog
+                            transaction={selectedTransaction}
+                            onSave={handleUpdate}
+                            onDelete={handleDelete}
+                            onClose={() => setSelectedTransaction(null)}
+                        />
+                    )}
+                    <ResetConfirmModal
+                        isOpen={showResetModal}
+                        onClose={() => setShowResetModal(false)}
+                        category="transactions"
+                        categoryLabel="Transactions"
+                        onResetComplete={() => {
+                            // Force full page reload to clear all cache
+                            window.location.reload();
+                        }}
                     />
-                )}
-            </AnimatePresence>
+                    <DocumentImportModal
+                        isOpen={showAIImport}
+                        onClose={() => setShowAIImport(false)}
+                        onImportComplete={() => {
+                            fetchSupabaseTransactions();
+                        }}
+                    />
+                </AnimatePresence>
+            </motion.div>
         </div>
     );
 };

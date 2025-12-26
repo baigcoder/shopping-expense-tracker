@@ -1,20 +1,24 @@
-// Bill Reminders Page - Manage upcoming bills and payment reminders
+// Bill Reminders Page - Cashly Premium Bill Management
+// Midnight Coral Theme - Light Mode
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import {
     Bell, Plus, Calendar, DollarSign, Clock, Check, X,
     AlertTriangle, Trash2, Edit2, Download, RefreshCw,
-    Mail, MessageSquare, CalendarCheck, ChevronRight
+    Mail, Sparkles, Timer, CreditCard, ChevronRight
 } from 'lucide-react';
 import { reminderService, BillReminder, CreateReminderInput } from '@/services/reminderService';
 import { recurringPredictionService, UpcomingBill } from '@/services/recurringPredictionService';
 import { currencyService } from '@/services/currencyService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import styles from './BillRemindersPage.module.css';
 
 const BillRemindersPage = () => {
     const [reminders, setReminders] = useState<BillReminder[]>([]);
@@ -24,12 +28,7 @@ const BillRemindersPage = () => {
     const [editingReminder, setEditingReminder] = useState<BillReminder | null>(null);
     const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
-    // Load data
-    useEffect(() => {
-        loadData();
-        checkNotificationPermission();
-    }, []);
-
+    // Initial Data Fetch
     const loadData = async () => {
         setLoading(true);
         try {
@@ -40,45 +39,17 @@ const BillRemindersPage = () => {
             setReminders(remindersData);
             setPredictions(predictionsData);
         } catch (error) {
-            console.error('Failed to load data:', error);
+            toast.error('Sync failed');
         } finally {
             setLoading(false);
         }
     };
 
-    const checkNotificationPermission = async () => {
-        if ('Notification' in window) {
-            setNotificationsEnabled(Notification.permission === 'granted');
-        }
-    };
-
-    const enableNotifications = async () => {
-        const granted = await reminderService.requestNotificationPermission();
-        setNotificationsEnabled(granted);
-        if (granted) {
-            toast.success('Notifications enabled! 🔔');
-            reminderService.startNotificationScheduler();
-        }
-    };
-
-    const handleMarkAsPaid = async (reminder: BillReminder) => {
-        await reminderService.markAsPaid(reminder.id);
-        toast.success(`${reminder.name} marked as paid! ✅`);
+    useEffect(() => {
         loadData();
-    };
+    }, []);
 
-    const handleDelete = async (id: string) => {
-        await reminderService.deleteReminder(id);
-        toast.success('Reminder deleted');
-        loadData();
-    };
-
-    const handleDownloadCalendar = (reminder: BillReminder) => {
-        reminderService.downloadCalendarEvent(reminder);
-        toast.success('Calendar event downloaded 📅');
-    };
-
-    // Stats
+    // Stats Calculations
     const unpaidReminders = reminders.filter(r => !r.is_paid);
     const overdueReminders = reminders.filter(r => !r.is_paid && new Date(r.due_date) < new Date());
     const totalDue = unpaidReminders.reduce((sum, r) => sum + r.amount, 0);
@@ -89,598 +60,430 @@ const BillRemindersPage = () => {
         return Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     };
 
-    const getStatusBadge = (daysUntil: number) => {
-        if (daysUntil < 0) return <Badge variant="destructive">Overdue</Badge>;
-        if (daysUntil === 0) return <Badge className="bg-amber-500">Due Today</Badge>;
-        if (daysUntil <= 3) return <Badge className="bg-orange-500">Due Soon</Badge>;
-        return <Badge variant="secondary">{daysUntil} days</Badge>;
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
     };
 
-    return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-8 bg-[#F8FAFC]">
-            {/* Header */}
-            <motion.div
-                className="flex flex-col md:flex-row md:items-center justify-between gap-6"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <div>
-                    <div className="flex items-center gap-3">
-                        <div className="p-2.5 rounded-xl bg-[#3B82F6] shadow-lg shadow-blue-500/20">
-                            <Bell className="h-6 w-6 text-white" />
-                        </div>
-                        <h1 className="text-3xl font-bold tracking-tight font-display text-slate-800">
-                            Bill Reminders
-                        </h1>
-                    </div>
-                    <p className="text-slate-500 mt-2 ml-14">
-                        Never miss a payment with smart reminders
-                    </p>
-                </div>
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
 
-                <div className="flex gap-3">
-                    {!notificationsEnabled && (
-                        <Button
-                            variant="outline"
-                            onClick={enableNotifications}
-                            className="bg-white border-slate-200 hover:bg-slate-50 text-slate-600 font-medium rounded-xl"
-                        >
-                            <Bell className="mr-2 h-4 w-4" />
-                            Enable Notifications
-                        </Button>
-                    )}
-                    <Button
-                        className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium px-6 rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
-                        onClick={() => setShowAddModal(true)}
+    if (loading) {
+        return (
+            <div className={styles.mainContent}>
+                <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+                    <motion.div
+                        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className={styles.titleIcon}
                     >
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add Reminder
-                    </Button>
+                        <Bell size={32} />
+                    </motion.div>
+                    <p className="font-bold text-slate-400 uppercase tracking-widest text-xs">Syncing Pipeline...</p>
                 </div>
-            </motion.div>
+            </div>
+        );
+    }
 
-            {/* Stats Cards */}
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-            >
-                {/* Unpaid Bills */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between">
+    return (
+        <div className={styles.mainContent}>
+            <div className={styles.contentArea}>
+                {/* Header */}
+                <motion.header
+                    className={styles.header}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <div className={styles.headerLeft}>
+                        <div className={styles.titleIcon}>
+                            <Bell size={28} />
+                        </div>
                         <div>
-                            <p className="text-sm font-medium text-slate-500">Unpaid Bills</p>
-                            <div className="flex items-baseline gap-2 mt-2">
-                                <p className="text-3xl font-bold text-slate-800">{unpaidReminders.length}</p>
-                                <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Pending</p>
-                            </div>
-                        </div>
-                        <div className="p-4 rounded-2xl bg-blue-50 group-hover:bg-blue-100 transition-colors">
-                            <Clock className="h-6 w-6 text-[#3B82F6]" />
-                        </div>
-                    </div>
-                    <div className="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-[#3B82F6]"
-                            initial={{ width: 0 }}
-                            animate={{ width: unpaidReminders.length > 0 ? "40%" : "0%" }}
-                            transition={{ duration: 1, delay: 0.5 }}
-                        />
-                    </div>
-                </div>
-
-                {/* Overdue */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-sm font-medium text-slate-500">Overdue</p>
-                            <div className="flex items-baseline gap-2 mt-2">
-                                <p className="text-3xl font-bold text-red-600">{overdueReminders.length}</p>
-                                <p className="text-xs text-red-400 font-medium uppercase tracking-wider">Critical</p>
-                            </div>
-                        </div>
-                        <div className="p-4 rounded-2xl bg-red-50 group-hover:bg-red-100 transition-colors">
-                            <AlertTriangle className="h-6 w-6 text-red-600" />
-                        </div>
-                    </div>
-                    <div className="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-red-500"
-                            initial={{ width: 0 }}
-                            animate={{ width: overdueReminders.length > 0 ? "70%" : "0%" }}
-                            transition={{ duration: 1, delay: 0.6 }}
-                        />
-                    </div>
-                </div>
-
-                {/* Total Due */}
-                <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all group">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-sm font-medium text-slate-500">Total Due</p>
-                            <div className="flex items-baseline gap-2 mt-2">
-                                <p className="text-3xl font-bold text-[#10B981]">
-                                    {currencyService.formatCurrency(totalDue)}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="p-4 rounded-2xl bg-emerald-50 group-hover:bg-emerald-100 transition-colors">
-                            <DollarSign className="h-6 w-6 text-[#10B981]" />
-                        </div>
-                    </div>
-                    <div className="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-emerald-500"
-                            initial={{ width: 0 }}
-                            animate={{ width: totalDue > 0 ? "60%" : "0%" }}
-                            transition={{ duration: 1, delay: 0.7 }}
-                        />
-                    </div>
-                </div>
-            </motion.div>
-
-            {/* Reminders List */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-            >
-                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div className="p-6 border-b border-slate-50 flex items-center justify-between bg-white">
-                        <div>
-                            <h2 className="text-xl font-bold text-slate-800">Your Reminders</h2>
-                            <p className="text-sm text-slate-500">Manage your bill payment reminders</p>
+                            <h1 className={styles.title}>
+                                Bill Reminders
+                                <div className={styles.liveBadge}>SMART FLOW</div>
+                            </h1>
+                            <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">
+                                Tracking {unpaidReminders.length} upcoming obligations
+                            </p>
                         </div>
                     </div>
 
-                    <div className="p-6">
-                        {loading ? (
-                            <div className="flex flex-col items-center justify-center py-20 gap-4">
-                                <div className="p-4 rounded-full bg-blue-50">
-                                    <RefreshCw className="h-8 w-8 animate-spin text-[#3B82F6]" />
-                                </div>
-                                <p className="text-slate-500 font-medium">Loading your reminders...</p>
-                            </div>
-                        ) : unpaidReminders.length === 0 ? (
-                            <div className="text-center py-16 px-4">
-                                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <Bell className="h-10 w-10 text-slate-300" />
-                                </div>
-                                <h3 className="text-lg font-bold text-slate-800 mb-2">No active reminders</h3>
-                                <p className="text-slate-500 max-w-xs mx-auto mb-8">
-                                    You don't have any pending bill reminders. Add one to stay on top of your payments!
-                                </p>
-                                <Button
-                                    variant="outline"
-                                    className="bg-white border-slate-200 hover:bg-slate-50 text-slate-600 font-medium rounded-xl px-8"
-                                    onClick={() => setShowAddModal(true)}
-                                >
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add Your First Reminder
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {unpaidReminders.map((reminder, i) => {
-                                    const daysUntil = getDaysUntil(reminder.due_date);
-                                    return (
-                                        <motion.div
-                                            key={reminder.id}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: i * 0.05 }}
-                                            className={cn(
-                                                "flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border transition-all duration-200 group",
-                                                daysUntil < 0 ? "bg-red-50/30 border-red-100 hover:border-red-200" :
-                                                    daysUntil <= 3 ? "bg-amber-50/30 border-amber-100 hover:border-amber-200" :
-                                                        "bg-white border-slate-100 hover:border-blue-100 hover:bg-blue-50/10 hover:shadow-sm"
-                                            )}
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <div className={cn(
-                                                    "p-3 rounded-xl shadow-sm",
-                                                    daysUntil < 0 ? "bg-red-100 text-red-600" :
-                                                        daysUntil <= 3 ? "bg-amber-100 text-amber-600" :
-                                                            "bg-blue-50 text-[#3B82F6]"
-                                                )}>
-                                                    <Calendar className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <p className="font-bold text-slate-800">{reminder.name}</p>
-                                                        {getStatusBadge(daysUntil)}
-                                                    </div>
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        <Clock className="h-3.5 w-3.5 text-slate-400" />
-                                                        <span className="text-sm font-medium text-slate-500">
-                                                            Due: {new Date(reminder.due_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                                        </span>
-                                                        {reminder.frequency !== 'once' && (
-                                                            <Badge variant="outline" className="text-[10px] uppercase tracking-wider ml-1 bg-white border-slate-200 text-slate-500 font-bold">
-                                                                {reminder.frequency}
-                                                            </Badge>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-between sm:justify-end gap-6 mt-4 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-0 border-slate-100">
-                                                <div className="text-right">
-                                                    <p className="font-title font-bold text-xl text-slate-800">
-                                                        {currencyService.formatCurrency(reminder.amount)}
-                                                    </p>
-                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">amount due</p>
-                                                </div>
-                                                <div className="flex gap-2">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        className="h-9 w-9 p-0 rounded-xl hover:bg-blue-100 hover:text-[#3B82F6] text-slate-400"
-                                                        onClick={() => handleDownloadCalendar(reminder)}
-                                                        title="Add to Calendar"
-                                                    >
-                                                        <Download className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        className="h-9 w-9 p-0 rounded-xl hover:bg-emerald-100 hover:text-emerald-600 text-slate-400"
-                                                        onClick={() => handleMarkAsPaid(reminder)}
-                                                        title="Mark as Paid"
-                                                    >
-                                                        <Check className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        className="h-9 w-9 p-0 rounded-xl hover:bg-red-100 hover:text-red-600 text-slate-400"
-                                                        onClick={() => handleDelete(reminder.id)}
-                                                        title="Delete"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
-                            </div>
-                        )}
+                    <div className="flex gap-4">
+                        <button
+                            className={cn(styles.actionBtn, "h-14 px-6 rounded-2xl border-2")}
+                            onClick={loadData}
+                            style={{ width: 'auto' }}
+                        >
+                            <RefreshCw size={18} className="mr-2" />
+                            <span className="text-xs font-black uppercase tracking-widest">Refresh</span>
+                        </button>
+                        <button
+                            className="h-14 px-8 rounded-2xl bg-[#3B82F6] text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-105 transition-all flex items-center gap-2"
+                            onClick={() => setShowAddModal(true)}
+                        >
+                            <Plus size={18} />
+                            Create Reminder
+                        </button>
                     </div>
-                </div>
-            </motion.div>
+                </motion.header>
 
-            {/* Predicted Bills */}
-            {predictions.length > 0 && (
+                {/* Status Overviews */}
                 <motion.div
+                    className={styles.statsRow}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <motion.div className={styles.premiumStatCard} variants={itemVariants}>
+                        <div className={styles.statIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
+                            <Clock size={24} />
+                        </div>
+                        <p className={styles.statLabel}>Pending Bills</p>
+                        <h3 className={styles.statValue}>{unpaidReminders.length}</h3>
+                        <div className={styles.statProgress}>
+                            <motion.div
+                                className={styles.progressFill}
+                                style={{ background: '#3b82f6' }}
+                                initial={{ width: 0 }}
+                                animate={{ width: unpaidReminders.length > 0 ? '45%' : '0%' }}
+                            />
+                        </div>
+                    </motion.div>
+
+                    <motion.div className={styles.premiumStatCard} variants={itemVariants}>
+                        <div className={styles.statIconBox} style={{ background: '#fef2f2', color: '#ef4444' }}>
+                            <AlertTriangle size={24} />
+                        </div>
+                        <p className={styles.statLabel}>Overdue Matrix</p>
+                        <h3 className={styles.statValue}>{overdueReminders.length}</h3>
+                        <div className={styles.statProgress}>
+                            <motion.div
+                                className={styles.progressFill}
+                                style={{ background: '#ef4444' }}
+                                initial={{ width: 0 }}
+                                animate={{ width: overdueReminders.length > 0 ? '80%' : '0%' }}
+                            />
+                        </div>
+                    </motion.div>
+
+                    <motion.div className={styles.premiumStatCard} variants={itemVariants}>
+                        <div className={styles.statIconBox} style={{ background: '#ecfdf5', color: '#10b981' }}>
+                            <DollarSign size={24} />
+                        </div>
+                        <p className={styles.statLabel}>Total Liability</p>
+                        <h3 className={styles.statValue}>{currencyService.formatCurrency(totalDue)}</h3>
+                        <div className={styles.statProgress}>
+                            <motion.div
+                                className={styles.progressFill}
+                                style={{ background: '#10b981' }}
+                                initial={{ width: 0 }}
+                                animate={{ width: totalDue > 0 ? '60%' : '0%' }}
+                            />
+                        </div>
+                    </motion.div>
+                </motion.div>
+
+                {/* Integrated Reminders Pipeline */}
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                        <Timer className="text-blue-500" />
+                        Reminders Pipeline
+                    </h2>
+                </div>
+
+                <motion.div
+                    className={styles.pipelineSection}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
                 >
-                    <div className="bg-white rounded-3xl border border-blue-100 shadow-sm overflow-hidden bg-gradient-to-br from-white to-blue-50/30">
-                        <div className="p-6 border-b border-blue-50 flex items-center justify-between">
+                    {unpaidReminders.length === 0 ? (
+                        <div className={styles.emptyState}>
+                            <div className={styles.emptyIcon}>
+                                <Bell size={32} />
+                            </div>
+                            <h3 className={styles.emptyTitle}>Clear Horizon</h3>
+                            <p className={styles.emptyText}>
+                                No pending bill obligations found in your current matrix.
+                            </p>
+                            <Button
+                                className="h-12 px-8 rounded-xl bg-[#3B82F6] font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-100 hover:scale-105 transition-all"
+                                onClick={() => setShowAddModal(true)}
+                            >
+                                Schedule Reminder
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className={styles.reminderGrid}>
+                            {unpaidReminders.map((reminder, idx) => (
+                                <ReminderTile
+                                    key={reminder.id}
+                                    reminder={reminder}
+                                    idx={idx}
+                                    onPay={() => {
+                                        reminderService.markAsPaid(reminder.id);
+                                        toast.success('Paid!');
+                                        loadData();
+                                    }}
+                                    onDelete={() => {
+                                        reminderService.deleteReminder(reminder.id);
+                                        toast.success('Removed');
+                                        loadData();
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </motion.div>
+
+                {/* Smart Predictions Section */}
+                {predictions.length > 0 && (
+                    <motion.div
+                        className={styles.predictionWrapper}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <div className={styles.sectionHeader}>
                             <div>
-                                <div className="flex items-center gap-2">
-                                    <div className="p-1 px-2 rounded-lg bg-blue-100 text-[#3B82F6] text-[10px] font-bold uppercase tracking-widest">
-                                        Smart Prediction
-                                    </div>
-                                    <h2 className="text-xl font-bold text-slate-800">AI Predicted Bills</h2>
-                                </div>
-                                <p className="text-sm text-slate-500 mt-1">
-                                    Based on your transaction history, these bills may be coming up
+                                <h2 className={styles.sectionTitle}>
+                                    <Sparkles className="text-blue-600" />
+                                    AI Predicted Flow
+                                </h2>
+                                <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mt-1 ml-10">
+                                    Anticipating upcoming recurring charges
                                 </p>
                             </div>
                         </div>
-                        <div className="p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {predictions.slice(0, 4).map((bill, i) => (
-                                    <div
-                                        key={bill.id}
-                                        className="flex items-center justify-between p-4 rounded-2xl bg-white border border-slate-100 hover:border-blue-200 transition-all group"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className="relative">
-                                                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-xs font-bold text-[#3B82F6]">
-                                                    {bill.confidence}%
-                                                </div>
-                                                <svg className="absolute inset-0 w-10 h-10 -rotate-90">
-                                                    <circle
-                                                        cx="20" cy="20" r="18"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2.5"
-                                                        fill="transparent"
-                                                        className="text-blue-100"
-                                                    />
-                                                    <circle
-                                                        cx="20" cy="20" r="18"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2.5"
-                                                        fill="transparent"
-                                                        strokeDasharray={113}
-                                                        strokeDashoffset={113 - (113 * bill.confidence) / 100}
-                                                        className="text-[#3B82F6]"
-                                                    />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p className="font-bold text-slate-800">{bill.name}</p>
-                                                <p className="text-xs font-medium text-slate-400">
-                                                    Expected: {new Date(bill.dueDate).toLocaleDateString()}
-                                                </p>
-                                            </div>
+
+                        <div className={styles.predictionGrid}>
+                            {predictions.slice(0, 4).map(bill => (
+                                <div key={bill.id} className={styles.predictCard}>
+                                    <div className="flex items-center gap-4">
+                                        <div className={styles.predictRate}>
+                                            {bill.confidence}%
                                         </div>
-                                        <div className="text-right">
-                                            <p className="font-bold text-slate-800">
-                                                ~{currencyService.formatCurrency(bill.amount)}
-                                            </p>
-                                            <Badge variant="outline" className="text-[9px] uppercase tracking-tighter bg-slate-50 border-slate-200 text-slate-500">
-                                                {bill.source === 'subscription' ? 'Subscription' : 'Predicted'}
-                                            </Badge>
+                                        <div>
+                                            <p className="font-black text-slate-800 text-sm leading-tight">{bill.name}</p>
+                                            <p className="text-[10px] font-bold text-slate-400 uppercase mt-0.5">EST. {new Date(bill.dueDate).toLocaleDateString()}</p>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
+                                    <div className="text-right">
+                                        <p className="font-black text-slate-900 leading-none mb-1">~{currencyService.formatCurrency(bill.amount)}</p>
+                                        <span className="text-[9px] font-black text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                                            {bill.source}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                </motion.div>
-            )}
+                    </motion.div>
+                )}
+            </div>
 
-            {/* Add/Edit Modal */}
+            {/* Modular Modal */}
             <AddReminderModal
                 isOpen={showAddModal}
-                onClose={() => {
-                    setShowAddModal(false);
-                    setEditingReminder(null);
-                }}
-                onSave={async (data) => {
-                    if (editingReminder) {
-                        await reminderService.updateReminder(editingReminder.id, data);
-                    } else {
-                        await reminderService.createReminder(data);
-                    }
-                    loadData();
-                    setShowAddModal(false);
-                    toast.success(editingReminder ? 'Reminder updated!' : 'Reminder created! 🔔');
-                }}
-                initialData={editingReminder}
+                onClose={() => setShowAddModal(false)}
+                onSave={loadData}
             />
         </div>
     );
 };
 
-// Add Reminder Modal
-interface AddReminderModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onSave: (data: CreateReminderInput) => void;
-    initialData?: BillReminder | null;
-}
+const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
+    const today = new Date();
+    const dueDate = new Date(reminder.due_date);
+    const daysUntil = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
 
-const AddReminderModal = ({ isOpen, onClose, onSave, initialData }: AddReminderModalProps) => {
+    const isOverdue = daysUntil < 0;
+    const isDueSoon = daysUntil >= 0 && daysUntil <= 3;
+
+    return (
+        <motion.div
+            className={styles.reminderTile}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.05 }}
+            whileHover={{ x: 10 }}
+        >
+            <div className={styles.tileLeft}>
+                <div
+                    className={styles.tileIcon}
+                    style={{
+                        background: isOverdue ? '#fef2f2' : isDueSoon ? '#fffbeb' : '#eff6ff',
+                        color: isOverdue ? '#ef4444' : isDueSoon ? '#f59e0b' : '#3b82f6'
+                    }}
+                >
+                    <Calendar size={24} />
+                </div>
+                <div>
+                    <div className="flex items-center gap-3">
+                        <h3 className={styles.billName}>{reminder.name}</h3>
+                        <div
+                            className={styles.statusBadge}
+                            style={{
+                                background: isOverdue ? '#ef4444' : isDueSoon ? '#f59e0b' : '#3b82f6',
+                                color: 'white'
+                            }}
+                        >
+                            {isOverdue ? 'Overdue' : isDueSoon ? 'Due Soon' : `${daysUntil} Days`}
+                        </div>
+                    </div>
+                    <div className={styles.billMeta}>
+                        <Clock size={14} />
+                        <span>DUE {dueDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        {reminder.frequency !== 'once' && (
+                            <span className="bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md text-[9px] uppercase font-black">
+                                {reminder.frequency}
+                            </span>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles.tileRight}>
+                <div className={styles.amountBox}>
+                    <span className={styles.amountVal}>{currencyService.formatCurrency(reminder.amount)}</span>
+                    <span className={styles.amountLabel}>Liability</span>
+                </div>
+                <div className={styles.tileActions}>
+                    <button className={cn(styles.actionBtn, styles.payBtn)} onClick={onPay}>
+                        <Check size={18} />
+                    </button>
+                    <button className={cn(styles.actionBtn, styles.deleteBtn)} onClick={onDelete}>
+                        <Trash2 size={18} />
+                    </button>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [dueDate, setDueDate] = useState('');
-    const [frequency, setFrequency] = useState<BillReminder['frequency']>('monthly');
-    const [category, setCategory] = useState('Bills');
-    const [notifyDays, setNotifyDays] = useState('3');
+    const [frequency, setFrequency] = useState('monthly');
     const [emailEnabled, setEmailEnabled] = useState(false);
     const [saving, setSaving] = useState(false);
 
-    useEffect(() => {
-        if (initialData) {
-            setName(initialData.name);
-            setAmount(String(initialData.amount));
-            setDueDate(initialData.due_date);
-            setFrequency(initialData.frequency);
-            setCategory(initialData.category);
-            setNotifyDays(String(initialData.notification_days_before));
-            setEmailEnabled(initialData.email_enabled);
-        } else {
-            // Default to tomorrow
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            setDueDate(tomorrow.toISOString().split('T')[0]);
-        }
-    }, [initialData, isOpen]);
-
     const handleSubmit = async () => {
         if (!name || !amount || !dueDate) return;
-
         setSaving(true);
         try {
-            await onSave({
+            await reminderService.createReminder({
                 name,
                 amount: parseFloat(amount),
                 due_date: dueDate,
-                frequency,
-                category,
-                notification_days_before: parseInt(notifyDays),
+                frequency: frequency as any,
+                category: 'Bills',
+                notification_days_before: 3,
                 email_enabled: emailEnabled,
                 notification_enabled: true
             });
+            onSave();
+            onClose();
+            toast.success('Matrix Configured');
         } finally {
             setSaving(false);
         }
     };
 
-    if (!isOpen) return null;
-
     return (
-        <AnimatePresence>
-            <motion.div
-                className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={onClose}
-            >
-                <motion.div
-                    className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden border border-slate-100"
-                    initial={{ scale: 0.95, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    {/* Modal Header */}
-                    <div className="relative p-8 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl" />
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400/20 rounded-full -ml-12 -mb-12 blur-xl" />
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-none rounded-[40px] shadow-2xl">
+                <div className="bg-blue-600 p-10 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 text-blue-500 opacity-20">
+                        <Bell size={120} />
+                    </div>
+                    <div className="relative z-10">
+                        <DialogHeader>
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="p-3 bg-white/20 backdrop-blur-md text-white rounded-2xl">
+                                    <Plus size={24} />
+                                </div>
+                                <DialogTitle className="text-2xl font-black text-white tracking-tight">Schedule Goal</DialogTitle>
+                            </div>
+                            <DialogDescription className="font-bold text-blue-100">Initialize a new liability reminder</DialogDescription>
+                        </DialogHeader>
+                    </div>
+                </div>
 
-                        <div className="relative flex items-center gap-4">
-                            <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl">
-                                <Bell className="h-6 w-6 text-white" />
+                <div className="p-10 space-y-8 bg-white">
+                    <div className="grid gap-6">
+                        <div className="space-y-2">
+                            <Label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Service Identifier</Label>
+                            <Input
+                                placeholder="Electric, Internet, Rent..."
+                                className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white text-lg font-bold"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Quantum (Rs)</Label>
+                                <Input
+                                    type="number"
+                                    className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 font-bold"
+                                    value={amount}
+                                    onChange={e => setAmount(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Target Date</Label>
+                                <Input
+                                    type="date"
+                                    className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 font-bold"
+                                    value={dueDate}
+                                    onChange={e => setDueDate(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Frequency Cycle</Label>
+                            <Select value={frequency} onValueChange={setFrequency}>
+                                <SelectTrigger className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 font-bold">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="once">One-time</SelectItem>
+                                    <SelectItem value="monthly">Monthly</SelectItem>
+                                    <SelectItem value="yearly">Yearly</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-5 bg-slate-50 rounded-[28px] border-2 border-slate-100">
+                        <div className="flex items-center gap-4">
+                            <div className={cn("p-2 rounded-xl", emailEnabled ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-400")}>
+                                <Mail size={20} />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-white tracking-tight">
-                                    {initialData ? 'Edit Reminder' : 'Add Bill Reminder'}
-                                </h1>
-                                <p className="text-blue-100 text-sm font-medium">
-                                    {initialData ? 'Update your bill payment details' : 'Set up a new payment notification'}
-                                </p>
+                                <p className="text-sm font-black text-slate-700">Email Sync</p>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Receive inbox alerts</p>
                             </div>
                         </div>
-
-                        <button
-                            onClick={onClose}
-                            className="absolute top-6 right-6 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-                        >
-                            <X className="h-5 w-5" />
-                        </button>
+                        <Switch checked={emailEnabled} onCheckedChange={setEmailEnabled} />
                     </div>
 
-                    <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                        <div className="space-y-4">
-                            <div>
-                                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Bill Name</label>
-                                <div className="relative mt-1.5 min-w-[300px]">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                        <Bell className="h-4 w-4" />
-                                    </div>
-                                    <Input
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        placeholder="e.g., Netflix, Electric Bill"
-                                        className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-xl focus:ring-[#3B82F6] focus:border-[#3B82F6] transition-all"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Amount</label>
-                                    <div className="relative">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
-                                            Rs
-                                        </div>
-                                        <Input
-                                            type="number"
-                                            value={amount}
-                                            onChange={(e) => setAmount(e.target.value)}
-                                            placeholder="0.00"
-                                            className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-xl focus:ring-[#3B82F6] focus:border-[#3B82F6]"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Due Date</label>
-                                    <div className="relative">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                            <Calendar className="h-4 w-4" />
-                                        </div>
-                                        <Input
-                                            type="date"
-                                            value={dueDate}
-                                            onChange={(e) => setDueDate(e.target.value)}
-                                            className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-xl focus:ring-[#3B82F6] focus:border-[#3B82F6]"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Frequency</label>
-                                    <select
-                                        value={frequency}
-                                        onChange={(e) => setFrequency(e.target.value as BillReminder['frequency'])}
-                                        className="w-full h-12 pl-4 pr-10 border border-slate-100 rounded-xl bg-slate-50 text-slate-700 focus:ring-[#3B82F6] focus:border-[#3B82F6] appearance-none transition-all"
-                                    >
-                                        <option value="once">One-time</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="biweekly">Bi-weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                        <option value="quarterly">Quarterly</option>
-                                        <option value="yearly">Yearly</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Remind me</label>
-                                    <select
-                                        value={notifyDays}
-                                        onChange={(e) => setNotifyDays(e.target.value)}
-                                        className="w-full h-12 pl-4 pr-10 border border-slate-100 rounded-xl bg-slate-50 text-slate-700 focus:ring-[#3B82F6] focus:border-[#3B82F6] appearance-none transition-all"
-                                    >
-                                        <option value="1">1 day before</option>
-                                        <option value="3">3 days before</option>
-                                        <option value="7">1 week before</option>
-                                        <option value="14">2 weeks before</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center justify-between group transition-all hover:bg-blue-50">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2.5 bg-white rounded-xl shadow-sm group-hover:shadow-md transition-all">
-                                    <Mail className="h-5 w-5 text-[#3B82F6]" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-bold text-slate-800">Email Notifications</p>
-                                    <p className="text-[10px] font-medium text-slate-500">Get reminders in your inbox</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={() => setEmailEnabled(!emailEnabled)}
-                                className={cn(
-                                    "w-12 h-6 rounded-full transition-all duration-300 relative",
-                                    emailEnabled ? "bg-[#3B82F6]" : "bg-slate-200"
-                                )}
-                            >
-                                <div className={cn(
-                                    "absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300",
-                                    emailEnabled ? "left-7" : "left-1"
-                                )} />
-                            </button>
-                        </div>
+                    <div className="flex gap-4 pt-4">
+                        <Button variant="outline" className="flex-1 h-14 rounded-2xl font-black text-xs uppercase" onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button className="flex-[2] h-14 rounded-2xl bg-blue-600 font-black text-xs uppercase shadow-xl" onClick={handleSubmit}>
+                            Deploy Tracker
+                        </Button>
                     </div>
-
-                    <div className="p-8 pt-4 bg-slate-50/50 border-t border-slate-100">
-                        <div className="flex gap-4">
-                            <Button
-                                variant="outline"
-                                className="flex-1 h-12 rounded-xl bg-white border-slate-200 text-slate-600 font-bold hover:bg-slate-50"
-                                onClick={onClose}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="flex-[2] h-12 rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold shadow-lg shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
-                                onClick={handleSubmit}
-                                disabled={!name || !amount || !dueDate || saving}
-                            >
-                                {saving ? (
-                                    <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                                ) : (
-                                    <Bell className="mr-2 h-5 w-5" />
-                                )}
-                                {initialData ? 'Save Changes' : 'Create Reminder'}
-                            </Button>
-                        </div>
-                    </div>
-                </motion.div>
-            </motion.div>
-        </AnimatePresence>
+                </div>
+            </DialogContent>
+        </Dialog>
     );
 };
 

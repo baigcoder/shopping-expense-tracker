@@ -24,10 +24,11 @@
 /* When sidebar is present */
 .appContainer.withSidebar {
     padding-left: 90px;
+    transition: padding-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .appContainer.withSidebar.sidebarExpanded {
-    padding-left: 280px;
+    padding-left: 240px;
 }
 
 /* Tablet */

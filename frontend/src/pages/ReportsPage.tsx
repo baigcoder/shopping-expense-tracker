@@ -1,85 +1,68 @@
-// ReportsPage - Enhanced Financial Reports with Export/Import
+// ReportsPage - Cashly Premium Financial Reports
+// Midnight Coral Theme - Light Mode
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { FileText, Download, TrendingUp, DollarSign, Calendar, PieChart, BarChart3, Receipt, Upload, FileSpreadsheet, File, ArrowDown, Filter, CalendarDays, RefreshCw, X, AlertCircle, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import {
+    Receipt, TrendingUp, ArrowDown, DollarSign, Calendar,
+    Download, Upload, FileText, FileSpreadsheet, File,
+    PieChart, BarChart3, RefreshCw, Check, AlertCircle,
+    X, ArrowRight, Zap, Target, Shield
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
 import { supabaseTransactionService } from '@/services/supabaseTransactionService';
 import { exportService, ExportTransaction } from '@/services/exportService';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '../store/useStore';
 import { toast } from 'sonner';
-import { AreaChart, Area, PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import { AreaChart, Area, PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
-
-interface Transaction {
-    id: string;
-    date: string;
-    description: string;
-    amount: number;
-    type: 'income' | 'expense';
-    category: string;
-    source?: string;
-}
+import styles from './ReportsPage.module.css';
 
 const ReportsPage = () => {
-    const { user } = useAuth();
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const { user } = useAuthStore();
+    const [transactions, setTransactions] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [exporting, setExporting] = useState<string | null>(null);
     const [showImportModal, setShowImportModal] = useState(false);
     const [dateRange, setDateRange] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
-    const reportRef = useRef<HTMLDivElement>(null);
 
     // Fetch transactions
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const data = await supabaseTransactionService.getAll(user?.id || '');
-                setTransactions(data);
-            } catch (error) {
-                console.error('Failed to fetch transactions:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    // Filter transactions by date range
-    const getFilteredTransactions = () => {
-        const now = new Date();
-        let startDate: Date;
-
-        switch (dateRange) {
-            case 'week':
-                startDate = new Date(now.setDate(now.getDate() - 7));
-                break;
-            case 'month':
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                break;
-            case 'quarter':
-                startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1);
-                break;
-            case 'year':
-                startDate = new Date(now.getFullYear(), 0, 1);
-                break;
-            default:
-                return transactions;
+    const fetchData = async () => {
+        if (!user?.id) return;
+        setLoading(true);
+        try {
+            const data = await supabaseTransactionService.getAll(user.id);
+            setTransactions(data);
+        } catch (error) {
+            console.error('Failed to fetch transactions:', error);
+            toast.error('Failed to sync data');
+        } finally {
+            setLoading(false);
         }
-
-        return transactions.filter(t => new Date(t.date) >= startDate);
     };
 
-    const filteredTransactions = getFilteredTransactions();
+    useEffect(() => {
+        fetchData();
+    }, [user?.id]);
 
-    // Calculate stats
+    // Filter logic
+    const filteredTransactions = transactions.filter(t => {
+        if (dateRange === 'all') return true;
+        const date = new Date(t.date);
+        const now = new Date();
+        const start = new Date();
+        if (dateRange === 'week') start.setDate(now.getDate() - 7);
+        else if (dateRange === 'month') start.setMonth(now.getMonth() - 1);
+        else if (dateRange === 'quarter') start.setMonth(now.getMonth() - 3);
+        else if (dateRange === 'year') start.setFullYear(now.getFullYear() - 1);
+        return date >= start;
+    });
+
+    // Stats calculations
     const totalIncome = filteredTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
     const totalExpenses = filteredTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const netSavings = totalIncome - totalExpenses;
 
-    // Category breakdown
+    // Chart Data Preparation
     const categoryData = filteredTransactions
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => {
@@ -88,33 +71,46 @@ const ReportsPage = () => {
             return acc;
         }, {} as Record<string, number>);
 
-    const pieData = Object.entries(categoryData).map(([name, value]) => ({ name, value }));
-    const COLORS = ['#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#3B82F6', '#EC4899', '#6366F1', '#14B8A6'];
+    const pieData = (Object.entries(categoryData) as [string, number][])
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([name, value]) => ({ name, value }));
 
-    // Monthly trend data
-    const monthlyData = transactions.reduce((acc, t) => {
+    const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#f43f5e', '#f59e0b', '#10b981'];
+
+    const monthlyTrend = transactions.reduce((acc, t) => {
         const month = new Date(t.date).toLocaleString('default', { month: 'short' });
         if (!acc[month]) acc[month] = { month, income: 0, expenses: 0 };
         if (t.type === 'income') acc[month].income += t.amount;
         else acc[month].expenses += t.amount;
         return acc;
-    }, {} as Record<string, { month: string; income: number; expenses: number }>);
+    }, {} as Record<string, any>);
 
-    const trendData = Object.values(monthlyData).slice(-6);
+    const chartData = Object.values(monthlyTrend).slice(-6);
 
-    // Export handlers
-    const handleExportCSV = async () => {
-        setExporting('csv');
+    // Export Handlers
+    const handleExport = async (type: 'csv' | 'excel' | 'pdf') => {
+        setExporting(type);
         try {
-            const exportData = filteredTransactions.map(t => ({
+            const dataToExport = filteredTransactions.map(t => ({
                 date: t.date,
                 description: t.description,
                 amount: t.amount,
                 type: t.type,
                 category: t.category
             }));
-            exportService.exportToCSV(exportData, { includeSummary: true });
-            toast.success('CSV exported! 📄');
+
+            if (type === 'csv') exportService.exportToCSV(dataToExport);
+            else if (type === 'excel') exportService.exportToExcel(dataToExport);
+            else if (type === 'pdf') {
+                exportService.exportTransactionsToPDF(dataToExport, {
+                    dateRange: {
+                        start: filteredTransactions[filteredTransactions.length - 1]?.date || '',
+                        end: filteredTransactions[0]?.date || ''
+                    }
+                });
+            }
+            toast.success(`${type.toUpperCase()} exported successfully!`);
         } catch (error) {
             toast.error('Export failed');
         } finally {
@@ -122,322 +118,209 @@ const ReportsPage = () => {
         }
     };
 
-    const handleExportExcel = async () => {
-        setExporting('excel');
-        try {
-            const exportData = filteredTransactions.map(t => ({
-                date: t.date,
-                description: t.description,
-                amount: t.amount,
-                type: t.type,
-                category: t.category
-            }));
-            exportService.exportToExcel(exportData, { includeSummary: true });
-            toast.success('Excel exported! 📊');
-        } catch (error) {
-            toast.error('Export failed');
-        } finally {
-            setExporting(null);
-        }
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
     };
 
-    const handleExportPDF = async () => {
-        setExporting('pdf');
-        try {
-            const exportData = filteredTransactions.map(t => ({
-                date: t.date,
-                description: t.description,
-                amount: t.amount,
-                type: t.type,
-                category: t.category
-            }));
-            exportService.exportTransactionsToPDF(exportData, {
-                dateRange: dateRange !== 'all' ? {
-                    start: getFilteredTransactions()[0]?.date || '',
-                    end: new Date().toISOString().split('T')[0]
-                } : undefined
-            });
-            toast.success('PDF generated! 📑');
-        } catch (error) {
-            toast.error('PDF generation failed');
-        } finally {
-            setExporting(null);
-        }
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
     };
 
-    // Report cards configuration
-    const reports = [
-        {
-            title: 'Export to CSV',
-            description: 'Simple spreadsheet format compatible with any application.',
-            icon: FileText,
-            color: 'emerald',
-            action: handleExportCSV,
-            badge: null
-        },
-        {
-            title: 'Export to Excel',
-            description: 'Full Excel workbook with summary sheet and category breakdown.',
-            icon: FileSpreadsheet,
-            color: 'violet',
-            badge: 'Popular',
-            action: handleExportExcel
-        },
-        {
-            title: 'Export to PDF',
-            description: 'Professional PDF report with formatting and branding.',
-            icon: File,
-            color: 'amber',
-            badge: 'Print Ready',
-            action: handleExportPDF
-        },
-        {
-            title: 'Import Transactions',
-            description: 'Import from CSV or Excel files from your bank or other apps.',
-            icon: Upload,
-            color: 'blue',
-            badge: 'New',
-            action: () => setShowImportModal(true)
-        }
-    ];
-
-    const getColorClasses = (color: string) => {
-        switch (color) {
-            case 'emerald': return { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-600', gradient: 'from-emerald-500/10 border-emerald-500/20' };
-            case 'violet': return { bg: 'bg-violet-100 dark:bg-violet-900/30', text: 'text-violet-600', gradient: 'from-violet-500/10 border-violet-500/20' };
-            case 'amber': return { bg: 'bg-amber-100 dark:bg-amber-900/30', text: 'text-amber-600', gradient: 'from-amber-500/10 border-amber-500/20' };
-            case 'pink': return { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-600', gradient: 'from-pink-500/10 border-pink-500/20' };
-            case 'blue': return { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600', gradient: 'from-blue-500/10 border-blue-500/20' };
-            default: return { bg: 'bg-muted', text: 'text-muted-foreground', gradient: '' };
-        }
-    };
+    if (loading) {
+        return (
+            <div className={styles.mainContent}>
+                <div className="flex items-center justify-center min-h-[60vh] flex-col gap-6">
+                    <motion.div
+                        animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className={styles.titleIcon}
+                    >
+                        <Receipt size={32} />
+                    </motion.div>
+                    <p className="text-muted-foreground font-medium animate-pulse">
+                        Generating your financial manifest...
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="p-4 md:p-8 lg:p-12 max-w-7xl mx-auto space-y-10 bg-[#FAFBFF] min-h-screen">
-            {/* Header Redesign */}
-            <motion.div
-                className="flex flex-col md:flex-row md:items-end justify-between gap-6"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                        <div className="p-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-700 shadow-xl shadow-blue-100 ring-4 ring-blue-50">
-                            <Receipt className="h-7 w-7 text-white" />
+        <div className={styles.mainContent}>
+            <div className={styles.contentArea}>
+                {/* Header */}
+                <motion.header
+                    className={styles.header}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <div className={styles.headerLeft}>
+                        <div className={styles.titleIcon}>
+                            <Receipt size={24} />
                         </div>
                         <div>
-                            <div className="flex items-center gap-2 mb-1">
-                                <h1 className="text-4xl font-black text-slate-800 tracking-tighter font-display">Financial Insights</h1>
-                                <Badge className="bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100 transition-colors px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Analytics</Badge>
-                            </div>
-                            <p className="text-slate-500 font-bold text-lg">Detailed analysis of your financial ecosystem</p>
+                            <h1 className={styles.title}>
+                                Financial Reports
+                                <div className={styles.liveBadge}>ANALYTICS</div>
+                            </h1>
+                            <p className="text-muted-foreground mt-1 font-medium text-sm">
+                                Comprehensive audit of your capital movement
+                            </p>
                         </div>
                     </div>
-                </div>
 
-                {/* Date Range Selector Redesign */}
-                <div className="flex items-center gap-3 p-1.5 bg-white border-2 border-slate-100 rounded-[1.5rem] shadow-sm">
-                    {(['week', 'month', 'quarter', 'year', 'all'] as const).map((range) => (
-                        <button
-                            key={range}
-                            onClick={() => setDateRange(range)}
-                            className={cn(
-                                "px-5 py-2.5 text-xs font-black uppercase tracking-[0.1em] rounded-2xl transition-all",
-                                dateRange === range
-                                    ? "bg-slate-900 text-white shadow-lg shadow-slate-200"
-                                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-                            )}
-                        >
-                            {range === 'all' ? 'All' : range}
-                        </button>
-                    ))}
-                </div>
-            </motion.div>
+                    <div className={styles.dateControls}>
+                        {(['week', 'month', 'quarter', 'year', 'all'] as const).map(range => (
+                            <button
+                                key={range}
+                                onClick={() => setDateRange(range)}
+                                className={cn(styles.rangeBtn, dateRange === range && styles.activeRange)}
+                            >
+                                {range}
+                            </button>
+                        ))}
+                    </div>
+                </motion.header>
 
-            {/* Stats Summary Redesign */}
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-            >
-                {/* Total Income Card */}
+                {/* Stats Summary */}
                 <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
+                    className={styles.statsRow}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
                 >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-100 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
-                            <TrendingUp className="h-6 w-6" />
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <div className={styles.statIconBox} style={{ background: '#f0fdf4', color: '#10b981' }}>
+                            <TrendingUp size={22} />
                         </div>
-                        <Badge className="bg-emerald-50 text-emerald-600 border-none px-3 font-black">+12.5%</Badge>
-                    </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Cash Inflow</p>
-                        <h3 className="text-3xl font-black text-slate-800 tracking-tighter">${totalIncome.toLocaleString()}</h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '65%' }}
-                                className="h-full bg-emerald-500 rounded-full"
-                            />
+                        <p className={styles.statLabel}>Total Inflow</p>
+                        <h3 className={styles.statValue}>{formatCurrency(totalIncome)}</h3>
+                        <div className={styles.statBadge} style={{ background: '#f0fdf4', color: '#10b981' }}>
+                            <Zap size={12} fill="currentColor" />
+                            +12.4% vs prev
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
 
-                {/* Total Expenses Card */}
-                <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-red-100 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-red-50 text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
-                            <ArrowDown className="h-6 w-6" />
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <div className={styles.statIconBox} style={{ background: '#fef2f2', color: '#ef4444' }}>
+                            <ArrowDown size={22} />
                         </div>
-                        <Badge className="bg-red-50 text-red-600 border-none px-3 font-black">-4.2%</Badge>
-                    </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Monthly Outflow</p>
-                        <h3 className="text-3xl font-black text-slate-800 tracking-tighter">${totalExpenses.toLocaleString()}</h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '45%' }}
-                                className="h-full bg-red-500 rounded-full"
-                            />
+                        <p className={styles.statLabel}>Total Outflow</p>
+                        <h3 className={styles.statValue}>{formatCurrency(totalExpenses)}</h3>
+                        <div className={styles.statBadge} style={{ background: '#fef2f2', color: '#ef4444' }}>
+                            <Zap size={12} fill="currentColor" />
+                            -3.2% vs prev
                         </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
 
-                {/* Net Savings Card */}
-                <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group relative overflow-hidden bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50"
-                >
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-violet-100 transition-colors" />
-                    <div className="relative flex items-center justify-between mb-6">
-                        <div className="p-4 rounded-2xl bg-violet-50 text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
-                            <DollarSign className="h-6 w-6" />
+                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
+                        <div className={styles.statIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
+                            <DollarSign size={22} />
                         </div>
-                        <Badge className="bg-violet-50 text-violet-600 border-none px-3 font-black">Stable</Badge>
-                    </div>
-                    <div className="relative">
-                        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Net Reserve</p>
-                        <h3 className={cn(
-                            "text-3xl font-black tracking-tighter",
-                            netSavings >= 0 ? "text-slate-800" : "text-red-600"
-                        )}>
-                            ${netSavings.toLocaleString()}
+                        <p className={styles.statLabel}>Net Reserve</p>
+                        <h3 className={styles.statValue} style={{ color: netSavings >= 0 ? '#0f172a' : '#ef4444' }}>
+                            {formatCurrency(netSavings)}
                         </h3>
-                        <div className="mt-4 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: '82%' }}
-                                className="h-full bg-violet-500 rounded-full"
-                            />
+                        <div className={styles.statBadge} style={{ background: '#eff6ff', color: '#3b82f6' }}>
+                            <Shield size={12} fill="currentColor" />
+                            Stable Liquidity
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
-            </motion.div>
 
-            {/* Charts Row Redesign */}
-            <motion.div
-                className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                ref={reportRef}
-                id="report-content"
-            >
-                {/* Trend Chart */}
-                <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-400" />
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                                <BarChart3 className="h-5 w-5 text-emerald-600" />
-                                Growth Dynamics
-                            </h3>
-                            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Income vs Expenses • 6 Months</p>
+                {/* Charts Grid */}
+                <div className={styles.chartsGrid}>
+                    <motion.div
+                        className={styles.chartCard}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <div className={styles.chartHeader}>
+                            <div>
+                                <h3 className={styles.chartTitle}>
+                                    <BarChart3 size={20} className="text-indigo-500" />
+                                    Growth Dynamics
+                                </h3>
+                                <p className={styles.chartDesc}>Income vs Expenses • 6 Months Trend</p>
+                            </div>
+                            <div className={styles.chartLegend}>
+                                <div className={styles.legendItem}>
+                                    <div className={styles.legendDot} style={{ background: '#10b981' }} />
+                                    Inflow
+                                </div>
+                                <div className={styles.legendItem}>
+                                    <div className={styles.legendDot} style={{ background: '#ef4444' }} />
+                                    Outflow
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl">
-                            <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                            <span className="text-[10px] font-black text-slate-500">IN</span>
-                            <div className="w-3 h-3 rounded-full bg-red-400 ml-2" />
-                            <span className="text-[10px] font-black text-slate-500">OUT</span>
+
+                        <div className="h-80 w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
+                                    <defs>
+                                        <linearGradient id="colorInc" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                        <linearGradient id="colorExp" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15} />
+                                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                    <XAxis
+                                        dataKey="month"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
+                                        dy={10}
+                                    />
+                                    <YAxis
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
+                                    />
+                                    <Tooltip
+                                        cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
+                                        contentStyle={{ background: '#fff', border: 'none', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                    />
+                                    <Area type="monotone" dataKey="income" stroke="#10b981" fill="url(#colorInc)" strokeWidth={4} />
+                                    <Area type="monotone" dataKey="expenses" stroke="#ef4444" fill="url(#colorExp)" strokeWidth={4} />
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="h-80 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.15} />
-                                        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-                                    </linearGradient>
-                                    <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#EF4444" stopOpacity={0.15} />
-                                        <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                                <XAxis
-                                    dataKey="month"
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
-                                    dy={10}
-                                />
-                                <YAxis
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
-                                />
-                                <Tooltip
-                                    cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
-                                    contentStyle={{
-                                        background: '#fff',
-                                        border: 'none',
-                                        borderRadius: '16px',
-                                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                                        padding: '12px'
-                                    }}
-                                    itemStyle={{ fontSize: '12px', fontWeight: '900' }}
-                                />
-                                <Area type="monotone" dataKey="income" stroke="#10B981" fill="url(#incomeGrad)" strokeWidth={4} name="Income" />
-                                <Area type="monotone" dataKey="expenses" stroke="#EF4444" fill="url(#expenseGrad)" strokeWidth={4} name="Expenses" />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                {/* Pie Chart */}
-                <div className="bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-100/50 border-2 border-slate-50 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-400 to-indigo-400" />
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                                <PieChart className="h-5 w-5 text-violet-600" />
-                                Asset Distribution
-                            </h3>
-                            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Spending by Category</p>
+                    <motion.div
+                        className={styles.chartCard}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        <div className={styles.chartHeader}>
+                            <div>
+                                <h3 className={styles.chartTitle}>
+                                    <PieChart size={20} className="text-pink-500" />
+                                    Distribution
+                                </h3>
+                                <p className={styles.chartDesc}>Top spending sectors</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="h-80 w-full">
-                        {pieData.length > 0 ? (
+                        <div className="h-80 w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <RechartsPie>
                                     <Pie
                                         data={pieData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={100}
-                                        paddingAngle={4}
+                                        innerRadius={60}
+                                        outerRadius={90}
+                                        paddingAngle={5}
                                         dataKey="value"
                                         strokeWidth={0}
                                     >
@@ -446,176 +329,110 @@ const ReportsPage = () => {
                                         ))}
                                     </Pie>
                                     <Tooltip
-                                        contentStyle={{
-                                            background: '#fff',
-                                            border: 'none',
-                                            borderRadius: '16px',
-                                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                                            padding: '12px'
-                                        }}
-                                        itemStyle={{ fontSize: '12px', fontWeight: '900' }}
+                                        contentStyle={{ background: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                                     />
                                 </RechartsPie>
                             </ResponsiveContainer>
-                        ) : (
-                            <div className="h-full flex flex-col items-center justify-center text-slate-300">
-                                <div className="p-4 rounded-full bg-slate-50 mb-4 text-slate-200">
-                                    <PieChart className="h-10 w-10" />
-                                </div>
-                                <p className="font-black text-sm uppercase tracking-widest">No activity for this period</p>
+                            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4">
+                                {pieData.map((d, i) => (
+                                    <div key={d.name} className="flex items-center gap-1.5 font-bold text-[10px] text-slate-500 uppercase">
+                                        <div className="w-2 h-2 rounded-full" style={{ background: COLORS[i % COLORS.length] }} />
+                                        {d.name}
+                                    </div>
+                                ))}
                             </div>
-                        )}
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Data Management */}
+                <div className={styles.dataSection}>
+                    <div className={styles.sectionHeader}>
+                        <h2 className={styles.sectionTitle}>
+                            <Target size={22} className="text-indigo-600" />
+                            Data Management
+                        </h2>
+                        <div className={styles.liveBadge} style={{ background: '#f1f5f9', color: '#64748b' }}>
+                            ENCRYPTED FLOW
+                        </div>
                     </div>
+
+                    <motion.div
+                        className={styles.reportsGrid}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('csv')}>
+                            <div className={styles.reportIconBox} style={{ background: '#f0fdf4', color: '#10b981' }}>
+                                <FileText size={24} />
+                            </div>
+                            <h3 className={styles.reportName}>Export to CSV</h3>
+                            <p className={styles.reportInfo}>Lightweight sheet for external auditing and processing.</p>
+                            <button className={styles.downloadButton}>
+                                {exporting === 'csv' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
+                                {exporting === 'csv' ? 'Syncing...' : 'Collect Data'}
+                            </button>
+                        </motion.div>
+
+                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('excel')}>
+                            <div className={styles.reportIconBox} style={{ background: '#f5f3ff', color: '#7c3aed' }}>
+                                <FileSpreadsheet size={24} />
+                            </div>
+                            <h3 className={styles.reportName}>Export to Excel</h3>
+                            <p className={styles.reportInfo}>Full workbook with intelligence summary and breakouts.</p>
+                            <button className={styles.downloadButton}>
+                                {exporting === 'excel' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
+                                {exporting === 'excel' ? 'Syncing...' : 'Collect Data'}
+                            </button>
+                        </motion.div>
+
+                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('pdf')}>
+                            <div className={styles.reportIconBox} style={{ background: '#fff7ed', color: '#f97316' }}>
+                                <File size={24} />
+                            </div>
+                            <h3 className={styles.reportName}>Export to PDF</h3>
+                            <p className={styles.reportInfo}>Polished certificate ready for professional presentation.</p>
+                            <button className={styles.downloadButton}>
+                                {exporting === 'pdf' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
+                                {exporting === 'pdf' ? 'Syncing...' : 'Collect Data'}
+                            </button>
+                        </motion.div>
+
+                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => setShowImportModal(true)}>
+                            <div className={styles.reportIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
+                                <Upload size={24} />
+                            </div>
+                            <h3 className={styles.reportName}>Import Matrix</h3>
+                            <p className={styles.reportInfo}>Injest external statements to update your financial DNA.</p>
+                            <button className={styles.downloadButton}>
+                                <Zap size={16} />
+                                Start Flow
+                            </button>
+                        </motion.div>
+                    </motion.div>
                 </div>
-            </motion.div>
-
-            {/* Export/Import Options Redesign */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="space-y-6"
-            >
-                <div className="flex items-center justify-between px-2">
-                    <h2 className="text-2xl font-black text-slate-800 tracking-tight">Data Management</h2>
-                    <div className="h-px flex-1 bg-slate-100 mx-8 hidden md:block" />
-                    <Badge variant="outline" className="border-slate-200 text-slate-400 font-black uppercase tracking-widest px-4 py-1.5 rounded-2xl">Encrypted Flow</Badge>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {reports.map((report, i) => {
-                        const Icon = report.icon;
-                        const colors = getColorClasses(report.color);
-                        const isExporting = exporting === report.title.toLowerCase().split(' ')[2];
-
-                        return (
-                            <motion.div
-                                key={i}
-                                whileHover={{ y: -8 }}
-                                onClick={report.action}
-                                className="group cursor-pointer"
-                            >
-                                <div className="bg-white rounded-[2rem] p-7 shadow-xl shadow-slate-100/50 border-2 border-slate-50 h-full flex flex-col justify-between transition-all group-hover:border-blue-100 group-hover:shadow-blue-100/20">
-                                    <div>
-                                        <div className="flex items-center justify-between mb-6">
-                                            <div className={cn("p-4 rounded-2xl transition-all duration-300", colors.bg, colors.text, "group-hover:bg-blue-600 group-hover:text-white")}>
-                                                <Icon className="h-6 w-6" />
-                                            </div>
-                                            {report.badge && (
-                                                <Badge className="bg-slate-50 text-slate-500 border-none font-black text-[10px] uppercase tracking-tighter">
-                                                    {report.badge}
-                                                </Badge>
-                                            )}
-                                        </div>
-                                        <h3 className="text-lg font-black text-slate-800 mb-2">{report.title}</h3>
-                                        <p className="text-slate-400 text-sm font-medium leading-relaxed">{report.description}</p>
-                                    </div>
-
-                                    <div className="mt-8">
-                                        <Button
-                                            className={cn(
-                                                "w-full h-12 rounded-2xl font-black text-xs uppercase tracking-widest transition-all",
-                                                isExporting ? "bg-slate-900" : "bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 hover:border-slate-200"
-                                            )}
-                                            disabled={isExporting || loading}
-                                        >
-                                            {isExporting ? (
-                                                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                                            ) : (
-                                                <Download className="mr-2 h-4 w-4" />
-                                            )}
-                                            {isExporting ? 'Processing' : report.title.includes('Import') ? 'Upload' : 'Download'}
-                                        </Button>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            </motion.div>
-
-            {/* Transaction Count */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="text-center text-sm text-muted-foreground"
-            >
-                {filteredTransactions.length} transactions in selected period • {transactions.length} total transactions
-            </motion.div>
+            </div>
 
             {/* Import Modal */}
             <ImportModal
                 isOpen={showImportModal}
                 onClose={() => setShowImportModal(false)}
-                onImport={async (imported) => {
-                    // Add imported transactions to database
-                    for (const t of imported) {
-                        try {
-                            await supabaseTransactionService.create({
-                                user_id: user?.id || '',
-                                description: t.description,
-                                amount: t.amount,
-                                type: t.type,
-                                category: t.category,
-                                date: t.date,
-                                source: 'import'
-                            });
-                        } catch (error) {
-                            console.error('Failed to import:', t.description);
-                        }
-                    }
-                    // Refresh transactions
-                    const data = await supabaseTransactionService.getAll(user?.id || '');
-                    setTransactions(data);
-                    toast.success(`Imported ${imported.length} transactions! 🎉`);
-                }}
+                onImport={() => fetchData()}
             />
         </div>
     );
 };
 
-// Import Modal Component
-interface ImportModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onImport: (transactions: ExportTransaction[]) => void;
-}
-
-const ImportModal = ({ isOpen, onClose, onImport }: ImportModalProps) => {
+// Simplified Import Modal for Redesign
+const ImportModal = ({ isOpen, onClose, onImport }: any) => {
+    const { user } = useAuthStore();
     const [file, setFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState<ExportTransaction[]>([]);
-    const [errors, setErrors] = useState<string[]>([]);
     const [importing, setImporting] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0];
-        if (!selectedFile) return;
-
-        setFile(selectedFile);
-        setErrors([]);
-
-        try {
-            const isExcel = selectedFile.name.endsWith('.xlsx') || selectedFile.name.endsWith('.xls');
-            const result = isExcel
-                ? await exportService.importFromExcel(selectedFile)
-                : await exportService.importFromCSV(selectedFile);
-
-            setPreview(result.transactions.slice(0, 10));
-            setErrors([...result.errors, ...result.warnings]);
-
-            if (result.transactions.length === 0) {
-                setErrors(['No valid transactions found in file']);
-            }
-        } catch (error) {
-            setErrors(['Failed to parse file. Please check the format.']);
-        }
-    };
-
     const handleImport = async () => {
-        if (!file) return;
-
+        if (!file || !user?.id) return;
         setImporting(true);
         try {
             const isExcel = file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
@@ -623,12 +440,18 @@ const ImportModal = ({ isOpen, onClose, onImport }: ImportModalProps) => {
                 ? await exportService.importFromExcel(file)
                 : await exportService.importFromCSV(file);
 
-            onImport(result.transactions);
+            for (const t of result.transactions) {
+                await supabaseTransactionService.create({
+                    user_id: user.id,
+                    ...t,
+                    source: 'import'
+                });
+            }
+            toast.success(`Matrix updated with ${result.transactions.length} entries!`);
+            onImport();
             onClose();
-            setFile(null);
-            setPreview([]);
         } catch (error) {
-            setErrors(['Import failed. Please try again.']);
+            toast.error('Manifest ingestion failed');
         } finally {
             setImporting(false);
         }
@@ -638,169 +461,62 @@ const ImportModal = ({ isOpen, onClose, onImport }: ImportModalProps) => {
 
     return (
         <AnimatePresence>
-            {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-                        onClick={onClose}
-                    />
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <motion.div
+                    className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={onClose}
+                />
+                <motion.div
+                    className="relative w-full max-w-lg bg-white rounded-[40px] shadow-2xl overflow-hidden p-10"
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                >
+                    <div className="text-center mb-8">
+                        <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <Upload size={32} />
+                        </div>
+                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">Data Ingestion</h2>
+                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">External Statements</p>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 50, scale: 0.95 }}
-                        className="relative w-full max-w-xl bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
-                        onClick={e => e.stopPropagation()}
+                    <div
+                        className="border-4 border-dashed border-slate-100 rounded-[32px] p-10 text-center cursor-pointer hover:border-blue-200 transition-colors"
+                        onClick={() => fileInputRef.current?.click()}
                     >
-                        {/* Header */}
-                        <div className="relative p-8 md:p-10 border-b border-slate-50 overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-16 -mt-16" />
-                            <div className="relative flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3.5 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-100">
-                                        <Upload className="h-6 w-6" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">Import Data</h2>
-                                        <p className="text-slate-400 font-bold text-sm uppercase tracking-widest mt-1">External Statements</p>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={onClose}
-                                    className="p-2 rounded-full hover:bg-slate-50 text-slate-300 transition-colors"
-                                >
-                                    <X className="h-6 w-6" />
-                                </button>
-                            </div>
-                        </div>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".csv, .xlsx, .xls"
+                            className="hidden"
+                            onChange={(e) => setFile(e.target.files?.[0] || null)}
+                        />
+                        <FileSpreadsheet size={40} className="mx-auto text-slate-200 mb-4" />
+                        <p className="text-sm font-bold text-slate-500">
+                            {file ? file.name : "Select CSV/Excel Matrix"}
+                        </p>
+                    </div>
 
-                        <div className="flex-1 p-8 md:p-10 overflow-y-auto space-y-8">
-                            {/* Drop Zone Redesign */}
-                            <div
-                                className={cn(
-                                    "relative group border-4 border-dashed rounded-[2rem] p-10 text-center transition-all duration-300",
-                                    file ? "border-blue-100 bg-blue-50/20" : "border-slate-50 bg-slate-50/50 hover:border-blue-100 hover:bg-white"
-                                )}
-                                onClick={() => fileInputRef.current?.click()}
-                            >
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept=".csv,.xlsx,.xls"
-                                    onChange={handleFileSelect}
-                                    className="hidden"
-                                />
-                                <div className={cn(
-                                    "w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all",
-                                    file ? "bg-blue-600 text-white shadow-lg" : "bg-white text-slate-300 group-hover:text-blue-600 shadow-sm"
-                                )}>
-                                    <FileSpreadsheet className="h-8 w-8" />
-                                </div>
-                                <h4 className="text-lg font-black text-slate-800 mb-2">
-                                    {file ? file.name : 'Select statement file'}
-                                </h4>
-                                <p className="text-slate-400 font-medium text-sm">
-                                    {file ? `${(file.size / 1024).toFixed(1)} KB` : 'Drag and drop or click to browse CSV/Excel'}
-                                </p>
-                            </div>
-
-                            {/* Errors/Warnings Redesign */}
-                            <AnimatePresence>
-                                {errors.length > 0 && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="bg-amber-50 border-2 border-amber-100 rounded-2xl p-6"
-                                    >
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <AlertCircle className="h-5 w-5 text-amber-600" />
-                                            <p className="font-black text-amber-800 text-sm uppercase tracking-widest">Pre-flight Warnings</p>
-                                        </div>
-                                        <ul className="space-y-2">
-                                            {errors.slice(0, 3).map((err, i) => (
-                                                <li key={i} className="text-amber-700 text-xs font-bold pl-8 relative">
-                                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-amber-400" />
-                                                    {err}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-
-                            {/* Preview Redesign */}
-                            <AnimatePresence>
-                                {preview.length > 0 && (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        className="space-y-4"
-                                    >
-                                        <div className="flex items-center justify-between px-2">
-                                            <p className="font-black text-slate-400 text-[10px] uppercase tracking-[0.2em]">Transaction Preview</p>
-                                            <Badge className="bg-slate-900 text-white border-none rounded-full px-3">{preview.length} Rows</Badge>
-                                        </div>
-                                        <div className="bg-white border-2 border-slate-50 rounded-[2rem] overflow-hidden">
-                                            <table className="w-full text-xs">
-                                                <thead>
-                                                    <tr className="bg-slate-50 text-slate-400 border-b border-slate-50">
-                                                        <th className="text-left py-4 px-6 font-black uppercase tracking-widest">Date</th>
-                                                        <th className="text-left py-4 px-6 font-black uppercase tracking-widest">Description</th>
-                                                        <th className="text-right py-4 px-6 font-black uppercase tracking-widest">Value</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-slate-50">
-                                                    {preview.map((t, i) => (
-                                                        <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                                                            <td className="py-4 px-6 font-bold text-slate-500">{t.date}</td>
-                                                            <td className="py-4 px-6 font-black text-slate-800 truncate max-w-[150px]">{t.description}</td>
-                                                            <td className={cn(
-                                                                "py-4 px-6 text-right font-black",
-                                                                t.type === 'expense' ? 'text-red-500' : 'text-emerald-500'
-                                                            )}>
-                                                                {t.type === 'expense' ? '-' : '+'}${t.amount.toLocaleString()}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-
-                        {/* Footer Section */}
-                        <div className="p-8 md:p-10 bg-slate-50/50 border-t border-slate-50 flex gap-4">
-                            <Button
-                                variant="outline"
-                                onClick={onClose}
-                                className="h-14 rounded-2xl flex-1 border-2 border-slate-100 hover:bg-slate-50 font-black text-slate-500 uppercase tracking-widest text-xs"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleImport}
-                                disabled={!file || preview.length === 0 || importing}
-                                className="h-14 rounded-2xl flex-[2] bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-blue-100 flex items-center justify-center gap-3 disabled:opacity-50"
-                            >
-                                {importing ? (
-                                    <RefreshCw className="h-5 w-5 animate-spin" />
-                                ) : (
-                                    <>
-                                        Import Assets
-                                        <Check className="h-5 w-5" />
-                                    </>
-                                )}
-                            </Button>
-                        </div>
-                    </motion.div>
-                </div>
-            )}
+                    <div className="grid grid-cols-2 gap-4 mt-8">
+                        <button
+                            className="p-4 rounded-2xl bg-slate-50 text-slate-500 font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-colors"
+                            onClick={onClose}
+                        >
+                            Abort
+                        </button>
+                        <button
+                            className="p-4 rounded-2xl bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-100 flex items-center justify-center gap-2"
+                            onClick={handleImport}
+                            disabled={!file || importing}
+                        >
+                            {importing ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
+                            {importing ? "Syncing" : "Initiate Inflow"}
+                        </button>
+                    </div>
+                </motion.div>
+            </div>
         </AnimatePresence>
     );
 };

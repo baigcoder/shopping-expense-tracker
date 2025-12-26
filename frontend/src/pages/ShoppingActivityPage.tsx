@@ -1,8 +1,7 @@
-// Shopping Activity Page - Shows user's shopping/payment site visits
-// Modern SaaS design with real-time extension sync
-
+// Shopping Activity Page - Premium Modern SaaS Redesign
+// Midnight Coral Theme - 3px Borders & Glassmorphism
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ShoppingCart, CreditCard, Clock, Store,
     Globe, Activity, RefreshCw, Zap, ExternalLink,
@@ -11,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
+import { cn } from '@/lib/utils';
 import styles from './ShoppingActivityPage.module.css';
 
 interface SiteVisit {
@@ -22,12 +22,10 @@ interface SiteVisit {
     visit_count: number;
     last_visited: string;
     first_visited: string;
-    favicon?: string; // We'll keep this but prefer Lucide icons
+    favicon?: string;
     iconType?: 'lucide' | 'emoji';
 }
 
-// Known shopping/payment sites for categorization
-// Updated to map to specific Lucide icons where possible
 const SITE_CATEGORIES: Record<string, { category: 'shopping' | 'payment' | 'finance'; iconComponent: any }> = {
     'amazon': { category: 'shopping', iconComponent: ShoppingBag },
     'daraz': { category: 'shopping', iconComponent: ShoppingBag },
@@ -49,6 +47,24 @@ const SITE_CATEGORIES: Record<string, { category: 'shopping' | 'payment' | 'fina
     'mcb': { category: 'finance', iconComponent: Landmark },
 };
 
+// Animation variants
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { type: 'spring', stiffness: 100, damping: 20 }
+    }
+};
+
 const ShoppingActivityPage = () => {
     const { user } = useAuthStore();
     const [siteVisits, setSiteVisits] = useState<SiteVisit[]>([]);
@@ -56,7 +72,6 @@ const ShoppingActivityPage = () => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [activeFilter, setActiveFilter] = useState<'all' | 'shopping' | 'payment' | 'finance'>('all');
 
-    // Helper to get site icon
     const getSiteCategory = (siteName: string) => {
         const lower = siteName.toLowerCase();
         for (const [key, value] of Object.entries(SITE_CATEGORIES)) {
@@ -65,13 +80,11 @@ const ShoppingActivityPage = () => {
         return { category: 'other', Icon: Globe };
     };
 
-    // Fetch site visits
     const fetchSiteVisits = useCallback(async () => {
         if (!user?.id) return;
         setIsRefreshing(true);
 
         try {
-            // FIRST: Try to get site visits from extension cache (localStorage)
             const extensionCache = localStorage.getItem('finzen_site_visits');
             if (extensionCache) {
                 try {
@@ -97,7 +110,6 @@ const ShoppingActivityPage = () => {
                 }
             }
 
-            // SECOND: Try to get site visits from Supabase
             const { data, error } = await supabase
                 .from('site_visits')
                 .select('*')
@@ -107,7 +119,6 @@ const ShoppingActivityPage = () => {
             if (!error && data && data.length > 0) {
                 setSiteVisits(data);
             } else {
-                // THIRD: Use transactions as proxy
                 const { data: txData } = await supabase
                     .from('transactions')
                     .select('store, description, created_at')
@@ -117,7 +128,7 @@ const ShoppingActivityPage = () => {
                 if (txData) {
                     const siteMap = new Map<string, SiteVisit>();
                     txData.forEach((tx, i) => {
-                        const siteName = tx.store || extractSiteName(tx.description);
+                        const siteName = tx.store || (tx.description?.split(' ')[0]) || 'Unknown';
                         if (siteName && !siteMap.has(siteName.toLowerCase())) {
                             const { category } = getSiteCategory(siteName);
                             siteMap.set(siteName.toLowerCase(), {
@@ -146,35 +157,17 @@ const ShoppingActivityPage = () => {
         }
     }, [user?.id]);
 
-    const extractSiteName = (description: string): string | null => {
-        if (!description) return null;
-        const keywords = ['amazon', 'daraz', 'paypal', 'stripe', 'jazzcash', 'easypaisa'];
-        for (const kw of keywords) {
-            if (description.toLowerCase().includes(kw)) return kw.charAt(0).toUpperCase() + kw.slice(1);
-        }
-        return description.split(' ')[0];
-    };
-
     useEffect(() => {
         fetchSiteVisits();
     }, [fetchSiteVisits]);
 
-    // Listen for real-time updates from extension
     useEffect(() => {
-        const handleExtensionUpdate = () => {
-            console.log('🛒 Extension sent site update - refetching');
-            fetchSiteVisits();
-        };
-
+        const handleExtensionUpdate = () => fetchSiteVisits();
         const handleLiveSiteVisit = (event: CustomEvent) => {
             const data = event.detail;
             if (!data?.siteName) return;
-
             setSiteVisits(prev => {
-                const existingIdx = prev.findIndex(
-                    s => s.hostname.toLowerCase() === data.hostname?.toLowerCase()
-                );
-
+                const existingIdx = prev.findIndex(s => s.hostname.toLowerCase() === data.hostname?.toLowerCase());
                 if (existingIdx >= 0) {
                     const updated = [...prev];
                     updated[existingIdx] = {
@@ -185,7 +178,7 @@ const ShoppingActivityPage = () => {
                     return updated;
                 } else {
                     const { category } = getSiteCategory(data.siteName);
-                    const newSite: SiteVisit = {
+                    return [{
                         id: `live-${Date.now()}`,
                         site_name: data.siteName,
                         hostname: data.hostname || `${data.siteName.toLowerCase()}.com`,
@@ -194,16 +187,13 @@ const ShoppingActivityPage = () => {
                         visit_count: 1,
                         last_visited: new Date().toISOString(),
                         first_visited: new Date().toISOString()
-                    };
-                    return [newSite, ...prev];
+                    }, ...prev];
                 }
             });
         };
-
         window.addEventListener('site-visit-tracked', handleLiveSiteVisit as EventListener);
         window.addEventListener('shopping-site-detected', handleLiveSiteVisit as EventListener);
         window.addEventListener('transactions-synced', handleExtensionUpdate);
-
         return () => {
             window.removeEventListener('site-visit-tracked', handleLiveSiteVisit as EventListener);
             window.removeEventListener('shopping-site-detected', handleLiveSiteVisit as EventListener);
@@ -211,10 +201,7 @@ const ShoppingActivityPage = () => {
         };
     }, [fetchSiteVisits]);
 
-    const filteredSites = siteVisits.filter(site =>
-        activeFilter === 'all' || site.category === activeFilter
-    );
-
+    const filteredSites = siteVisits.filter(site => activeFilter === 'all' || site.category === activeFilter);
     const stats = {
         totalSites: siteVisits.length,
         shoppingSites: siteVisits.filter(s => s.category === 'shopping').length,
@@ -223,15 +210,12 @@ const ShoppingActivityPage = () => {
     };
 
     const timeAgo = (dateStr: string): string => {
-        const date = new Date(dateStr);
-        const now = new Date();
-        const diff = now.getTime() - date.getTime();
+        const diff = new Date().getTime() - new Date(dateStr).getTime();
         const mins = Math.floor(diff / 60000);
         if (mins < 60) return `${mins}m ago`;
         const hours = Math.floor(mins / 60);
         if (hours < 24) return `${hours}h ago`;
-        const days = Math.floor(hours / 24);
-        return `${days}d ago`;
+        return `${Math.floor(hours / 24)}d ago`;
     };
 
     if (loading) {
@@ -239,7 +223,7 @@ const ShoppingActivityPage = () => {
             <div className={styles.container}>
                 <div className={styles.loadingState}>
                     <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
-                        <RefreshCw size={32} className="text-slate-400" />
+                        <RefreshCw size={40} className="text-blue-600/30" strokeWidth={3} />
                     </motion.div>
                 </div>
             </div>
@@ -248,130 +232,124 @@ const ShoppingActivityPage = () => {
 
     return (
         <div className={styles.container}>
-            {/* Header */}
-            <motion.div className={styles.header} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-                <div className={styles.headerLeft}>
-                    <h1>
-                        Shopping Activity
-                        <span className={styles.liveBadge}>
-                            <Activity size={12} />
-                            LIVE
-                        </span>
-                    </h1>
-                    <p>Track your shopping & payment site visits automatically</p>
-                </div>
-                <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
-                    <RefreshCw size={16} className={isRefreshing ? styles.spinner : ''} />
-                    Sync Now
-                </button>
-            </motion.div>
-
-            {/* Stats Cards */}
-            <div className={styles.statsGrid}>
-                <div className={`${styles.statCard} ${styles.shopping}`}>
-                    <div className={styles.statIcon}><ShoppingCart size={20} /></div>
-                    <div>
-                        <div className={styles.statValue}>{stats.shoppingSites}</div>
-                        <div className={styles.statLabel}>Shopping Sites</div>
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                {/* Header */}
+                <motion.header className={styles.header} variants={itemVariants}>
+                    <div className={styles.headerLeft}>
+                        <h1>
+                            SyncStream Activity
+                            <span className={styles.liveBadge}>
+                                <Activity size={12} className="animate-pulse" />
+                                LIVE PULSE
+                            </span>
+                        </h1>
+                        <p>Real-time Extension Telemetry • Automated Analysis</p>
                     </div>
-                </div>
-                <div className={`${styles.statCard} ${styles.payment}`}>
-                    <div className={styles.statIcon}><CreditCard size={20} /></div>
-                    <div>
-                        <div className={styles.statValue}>{stats.paymentSites}</div>
-                        <div className={styles.statLabel}>Payment Sites</div>
-                    </div>
-                </div>
-                <div className={`${styles.statCard} ${styles.visits}`}>
-                    <div className={styles.statIcon}><Clock size={20} /></div>
-                    <div>
-                        <div className={styles.statValue}>{stats.totalVisits}</div>
-                        <div className={styles.statLabel}>Total Visits</div>
-                    </div>
-                </div>
-                <div className={`${styles.statCard} ${styles.total}`}>
-                    <div className={styles.statIcon}><Globe size={20} /></div>
-                    <div>
-                        <div className={styles.statValue}>{stats.totalSites}</div>
-                        <div className={styles.statLabel}>Sites Tracked</div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Filter Tabs */}
-            <div className={styles.filterTabs}>
-                {(['all', 'shopping', 'payment', 'finance'] as const).map(filter => (
-                    <button
-                        key={filter}
-                        className={`${styles.filterTab} ${activeFilter === filter ? styles.active : ''}`}
-                        onClick={() => setActiveFilter(filter)}
-                    >
-                        {filter === 'all' && <Zap size={14} />}
-                        {filter === 'shopping' && <ShoppingCart size={14} />}
-                        {filter === 'payment' && <CreditCard size={14} />}
-                        {filter === 'finance' && <Landmark size={14} />}
-                        {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                    <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
+                        <RefreshCw size={16} className={cn(isRefreshing && styles.spinner)} />
+                        {isRefreshing ? 'SYNCING...' : 'SYNC PIPELINE'}
                     </button>
-                ))}
-            </div>
+                </motion.header>
 
-            {/* Site List */}
-            <div className={styles.siteGrid}>
-                {filteredSites.length === 0 ? (
-                    <div className={styles.emptyState}>
-                        <ShoppingBag size={48} strokeWidth={1.5} />
-                        <h3>No Activity Detected</h3>
-                        <p>Visit shopping or payment sites with the extension active to see them appear here instantly.</p>
-                    </div>
-                ) : (
-                    filteredSites.map((site, index) => {
-                        const { Icon } = getSiteCategory(site.site_name);
-                        return (
-                            <motion.div
-                                key={site.id}
-                                className={`${styles.siteCard} ${styles[site.category]}`}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                            >
-                                <div className={styles.siteHeader}>
-                                    <div className={styles.siteIcon}>
-                                        <Icon size={24} strokeWidth={1.5} />
-                                    </div>
-                                    <div className={styles.siteInfo}>
-                                        <h3>{site.site_name}</h3>
-                                        <span className={styles.siteHostname}>{site.hostname}</span>
-                                    </div>
-                                    <a
-                                        href={site.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.visitLink}
-                                    >
-                                        <ExternalLink size={16} />
-                                    </a>
-                                </div>
-                                <div className={styles.siteStats}>
-                                    <div className={styles.siteStat}>
-                                        <Clock size={14} />
-                                        <span>{timeAgo(site.last_visited)}</span>
-                                    </div>
-                                    <div className={styles.siteStat}>
-                                        <Activity size={14} />
-                                        <span>{site.visit_count} visits</span>
-                                    </div>
-                                </div>
-                                <span className={`${styles.categoryBadge} ${styles[site.category]}`}>
-                                    {site.category}
-                                </span>
+                {/* Stats Grid */}
+                <div className={styles.statsGrid}>
+                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.shopping)}>
+                        <div className={styles.statIcon}><ShoppingCart size={20} /></div>
+                        <div>
+                            <div className={styles.statValue}>{stats.shoppingSites}</div>
+                            <div className={styles.statLabel}>Retail Clusters</div>
+                        </div>
+                    </motion.div>
+                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.payment)}>
+                        <div className={styles.statIcon}><CreditCard size={20} /></div>
+                        <div>
+                            <div className={styles.statValue}>{stats.paymentSites}</div>
+                            <div className={styles.statLabel}>Payment Hubs</div>
+                        </div>
+                    </motion.div>
+                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.visits)}>
+                        <div className={styles.statIcon}><Clock size={20} /></div>
+                        <div>
+                            <div className={styles.statValue}>{stats.totalVisits}</div>
+                            <div className={styles.statLabel}>Aggregate Hits</div>
+                        </div>
+                    </motion.div>
+                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.total)}>
+                        <div className={styles.statIcon}><Globe size={20} /></div>
+                        <div>
+                            <div className={styles.statValue}>{stats.totalSites}</div>
+                            <div className={styles.statLabel}>Sites Rooted</div>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Filter Tabs */}
+                <motion.div className={styles.filterTabs} variants={itemVariants}>
+                    {(['all', 'shopping', 'payment', 'finance'] as const).map(filter => (
+                        <button
+                            key={filter}
+                            className={cn(styles.filterTab, activeFilter === filter && styles.active)}
+                            onClick={() => setActiveFilter(filter)}
+                        >
+                            {filter === 'all' && <Zap size={14} />}
+                            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                        </button>
+                    ))}
+                </motion.div>
+
+                {/* Site List */}
+                <div className={styles.siteGrid}>
+                    <AnimatePresence mode="popLayout">
+                        {filteredSites.length === 0 ? (
+                            <motion.div key="empty" className={styles.emptyState} variants={itemVariants}>
+                                <ShoppingBag size={64} strokeWidth={1} className="text-slate-200" />
+                                <h3>Telemetry Quiet</h3>
+                                <p>No shopping or payment activity detected in current interval.</p>
                             </motion.div>
-                        );
-                    })
-                )}
-            </div>
+                        ) : (
+                            filteredSites.map((site, index) => {
+                                const { Icon } = getSiteCategory(site.site_name);
+                                return (
+                                    <motion.div
+                                        key={site.id}
+                                        className={cn(styles.siteCard, styles[site.category])}
+                                        variants={itemVariants}
+                                        layout
+                                    >
+                                        <div className={styles.siteHeader}>
+                                            <div className={styles.siteIcon}>
+                                                <Icon size={28} strokeWidth={1.5} />
+                                            </div>
+                                            <div className={styles.siteInfo}>
+                                                <h3>{site.site_name}</h3>
+                                                <span className={styles.siteHostname}>{site.hostname}</span>
+                                            </div>
+                                            <a href={site.url} target="_blank" rel="noopener noreferrer" className={styles.visitLink}>
+                                                <ExternalLink size={18} />
+                                            </a>
+                                        </div>
+                                        <div className={styles.siteStats}>
+                                            <div className={styles.siteStat}>
+                                                <Clock size={14} />
+                                                <span>{timeAgo(site.last_visited)}</span>
+                                            </div>
+                                            <div className={styles.siteStat}>
+                                                <Activity size={14} />
+                                                <span>{site.visit_count} HITS</span>
+                                            </div>
+                                        </div>
+                                        <span className={styles.categoryBadge}>
+                                            {site.category}
+                                        </span>
+                                    </motion.div>
+                                );
+                            })
+                        )}
+                    </AnimatePresence>
+                </div>
+            </motion.div>
         </div>
     );
 };
 
 export default ShoppingActivityPage;
-

@@ -9,6 +9,7 @@ import { notificationTriggers } from '../services/notificationService';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import PremiumCard from './PremiumCard';
 import { cn } from '@/lib/utils';
 
 
@@ -92,13 +93,12 @@ const AddCardModal = () => {
         try {
             const cardData = {
                 user_id: user?.id || '',
-                type: cardBrand,
                 number: cardNumber,
                 holder: cardHolder,
                 expiry: expiry,
                 cvv: cvv,
                 pin: pin,
-                theme: selectedTheme, // Save the theme ID
+                theme: selectedTheme,
                 card_type: cardBrand
             };
 
@@ -159,32 +159,21 @@ const AddCardModal = () => {
                                     </div>
                                 </div>
 
-                                <motion.div
-                                    layoutId="cardPreview"
-                                    className="aspect-[1.586/1] rounded-[2.5rem] p-8 flex flex-col justify-between text-white relative overflow-hidden shadow-2xl shadow-blue-200/50"
-                                    style={{ background: currentTheme.gradient }}
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent" />
-                                    <div className="relative flex items-start justify-between">
-                                        <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-amber-200 via-amber-300 to-amber-200 shadow-inner" />
-                                        <div className="font-black tracking-tighter text-xl drop-shadow-md">{getBrandName(cardBrand)}</div>
-                                    </div>
-                                    <div className="relative">
-                                        <div className="text-xl md:text-2xl font-mono tracking-[0.2em] font-black mb-6 drop-shadow-lg">
-                                            {cardNumber || '•••• •••• •••• ••••'}
-                                        </div>
-                                        <div className="flex justify-between items-end">
-                                            <div className="space-y-1">
-                                                <div className="text-[10px] font-black opacity-60 uppercase tracking-widest">Card Holder</div>
-                                                <div className="text-sm font-black tracking-wide uppercase truncate max-w-[150px]">{cardHolder || 'YOUR NAME'}</div>
-                                            </div>
-                                            <div className="space-y-1 text-right">
-                                                <div className="text-[10px] font-black opacity-60 uppercase tracking-widest">Expires</div>
-                                                <div className="text-sm font-black tracking-wide">{expiry || 'MM/YY'}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                <PremiumCard
+                                    card={{
+                                        id: 'preview',
+                                        user_id: user?.id || '',
+                                        number: cardNumber,
+                                        holder: cardHolder,
+                                        expiry: expiry,
+                                        cvv: cvv,
+                                        pin: pin,
+                                        type: cardBrand,
+                                        theme: selectedTheme
+                                    }}
+                                    showFullNumber={true}
+                                    className="shadow-2xl shadow-blue-200/50"
+                                />
 
                                 <div className="mt-12 space-y-4">
                                     <div className="flex justify-between items-center px-1">
@@ -315,7 +304,7 @@ const AddCardModal = () => {
                                         <Loader2 className="h-6 w-6 animate-spin" />
                                     ) : (
                                         <>
-                                            Issue Digital Card
+                                            Add Card
                                             <Wallet className="h-5 w-5" />
                                         </>
                                     )}

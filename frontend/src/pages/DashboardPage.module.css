@@ -1,1184 +1,505 @@
 /* ============================================
-   FINOVIX DASHBOARD - FINAL VERSION
-   Red & Black Theme with White Sidebar
-   Production-Grade SaaS Design
+   MIDNIGHT CORAL - DASHBOARD (PREMIUM)
+   3px Borders, Bento Grid & AI Glow
    ============================================ */
 
-/* === MAIN LAYOUT === */
-.dashboardContainer {
-    display: flex;
+.dashboardWrapper {
     min-height: 100vh;
-    background: var(--color-bg);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* === MAIN CONTENT === */
-
-/* === MAIN CONTENT === */
-.mainContent {
-    flex: 1;
-    margin-left: 72px;
-    padding: 0;
-    max-width: calc(100vw - 72px);
+    padding: 2.5rem;
+    background: #fcfdfe;
+    color: #1e293b;
+    position: relative;
     overflow-x: hidden;
 }
 
-/* === TOP BAR WITH DASHBOARD LABEL === */
-.topBar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 32px;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    min-height: 60px;
+/* Aurora Depth Glows */
+.dashboardWrapper::after {
+    content: '';
+    position: fixed;
+    top: 20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    animation: auroraFloat 20s infinite alternate ease-in-out;
 }
 
-.brandSection {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+@keyframes auroraFloat {
+    from {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    to {
+        transform: translate(10%, 5%) rotate(5deg);
+    }
 }
 
-.brandLogo {
-    width: 32px;
-    height: 32px;
-    background: var(--gradient-primary);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
+/* Base Mesh Background */
+.dashboardWrapper::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(20, 184, 166, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.02) 0px, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-.brandName {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
 }
 
-.brandDivider {
-    color: var(--color-border);
-    font-weight: 300;
-}
-
-.brandPage {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-}
-
-/* === CONTENT AREA === */
-.contentArea {
-    padding: 24px 32px;
-}
-
-/* === TOP HEADER === */
-.topHeader {
+/* === GLASS HEADER === */
+.header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 2.5rem;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 3px solid rgba(226, 232, 240, 0.8);
+    border-radius: 2.25rem;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 10px 15px -3px rgba(0, 0, 0, 0.03),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-.welcomeSection h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--color-text-emphasis);
+.welcomeText h1 {
+    font-size: 1.75rem;
+    font-weight: 950;
+    color: #0f172a;
+    letter-spacing: -0.04em;
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-.welcomeSection p {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-top: 4px;
+.welcomeText p {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.4rem;
 }
 
-.headerActions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.searchBar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    padding: 8px 14px;
-    min-width: 200px;
-}
-
-.searchBar input {
-    border: none;
-    outline: none;
-    font-size: 0.85rem;
-    color: var(--color-text-emphasis);
-    width: 100%;
-    background: transparent;
-}
-
-.searchBar input::placeholder {
-    color: #9CA3AF;
-}
-
-.searchBar svg {
-    color: #9CA3AF;
-    width: 16px;
-    height: 16px;
-}
-
-.filterBtn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    padding: 8px 14px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-text-emphasis);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.filterBtn:hover {
-    border-color: var(--color-primary);
-}
-
-.createReportBtn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--color-primary);
-    border: none;
-    border-radius: 10px;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.createReportBtn:hover {
-    background: var(--color-primary-dark);
-}
-
-.profileSection {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.notificationBtn {
-    width: 36px;
-    height: 36px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    transition: all 0.2s ease;
-}
-
-.notificationBtn:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-}
-
-.profileAvatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--color-primary);
-    object-fit: cover;
-    cursor: pointer;
-}
-
-/* === STATS ROW - 5 CARDS WITH LIGHT BLACK BORDER === */
-.statsRow {
+/* === STATS GRID (BENTO) === */
+.statsGrid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .statCard {
-    background: var(--color-surface);
-    border-radius: 14px;
-    padding: 16px 18px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    transition: all 0.2s ease;
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 2rem;
+    padding: 1.5rem 1.75rem;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.statCard:hover {
-    border-color: #DC2626;
-    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.1);
-    transform: translateY(-2px);
+.statCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: 0.5s;
+    pointer-events: none;
 }
 
-.statHeader {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
+.statCard:hover::before {
+    left: 100%;
+    transition: 0.8s;
 }
 
-.statIcon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+.statCardPrimary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 20px 40px -15px rgba(37, 99, 235, 0.35),
+        inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.statCardPrimary h3,
+.statCardPrimary .value {
+    color: white;
+}
+
+.statCardPrimary .iconBox {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.iconBox {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 1rem;
+    background: #f1f5f9;
+    color: #64748b;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.statIcon.red {
-    background: rgba(220, 38, 38, 0.1);
-    color: #DC2626;
+/* Colorful Live Icons */
+.iconBoxBlue {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.25);
 }
 
-.statIcon.green {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10B981;
+.iconBoxRose {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(225, 29, 72, 0.25);
 }
 
-.statIcon.orange {
-    background: rgba(245, 158, 11, 0.1);
-    color: #F59E0B;
+.iconBoxIndigo {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.25);
 }
 
-.statIcon.purple {
-    background: rgba(139, 92, 246, 0.1);
-    color: #8B5CF6;
+.iconBoxGlass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.statIcon.blue {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3B82F6;
+.statCard:hover .iconBox {
+    transform: scale(1.1) rotate(5deg);
+    filter: brightness(1.1);
 }
 
-.statLabel {
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
+.statTitle {
+    font-size: 0.75rem;
+    font-weight: 950;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
 }
 
-.statValue {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
-    margin: 0;
+.value {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
 }
 
 .statTrend {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.4rem;
     font-size: 0.75rem;
-    font-weight: 500;
-    margin-top: 6px;
+    font-weight: 800;
+    margin-top: 0.5rem;
 }
 
-.statTrend.up {
-    color: var(--color-success);
+.trendUp {
+    color: #10b981;
 }
 
-.statTrend.down {
-    color: var(--color-danger);
+.trendDown {
+    color: #f43f5e;
 }
 
-/* === MIDDLE ROW WITH BORDERS === */
-.middleRow {
+/* === MAIN GRID === */
+.mainLayout {
     display: grid;
-    grid-template-columns: 1.8fr 1.1fr 0.9fr;
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
 }
 
-/* Financial Performance Card - PREMIUM */
-.performanceCard {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
-    border-radius: 20px;
-    padding: 0;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+.mainLayout>div {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.whiteCard {
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 2.25rem;
+    padding: 2.25rem;
+    margin-bottom: 0;
+    /* Managed by parent gap */
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:
+        0 4px 10px -2px rgba(0, 0, 0, 0.02),
+        0 20px 40px -10px rgba(0, 0, 0, 0.01);
     position: relative;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Gradient top accent bar - always visible */
-.performanceCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-    opacity: 1;
-}
-
-/* Subtle corner glow */
-.performanceCard::after {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(220, 38, 38, 0.06) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.performanceCard:hover {
-    box-shadow: 0 12px 40px rgba(220, 38, 38, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-4px);
-    border-color: var(--color-primary-subtle);
+.whiteCard:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-6px) scale(1.005);
+    box-shadow:
+        0 30px 60px -20px rgba(0, 0, 0, 0.08),
+        0 10px 20px -10px rgba(0, 0, 0, 0.04);
 }
 
 .cardHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px 0;
-    margin-bottom: 8px;
+    margin-bottom: 2rem;
 }
 
-.cardTitle {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
-    margin: 0;
-    letter-spacing: -0.3px;
-}
-
-.cardActions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.chartLegend {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.legendItem {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-}
-
-.legendDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.7;
-        transform: scale(0.9);
-    }
-}
-
-.legendDot.income {
-    background: var(--color-primary);
-    box-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
-}
-
-.legendDot.expense {
-    background: var(--color-warning);
-    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
-    animation-delay: 0.5s;
-}
-
-.viewMoreBtn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: none;
-    border: none;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.viewMoreBtn:hover {
-    color: var(--color-primary);
-}
-
-.viewMoreBtn:hover svg {
-    transform: translateX(3px) translateY(-3px);
-}
-
-.viewMoreBtn svg {
-    transition: transform 0.2s ease;
-}
-
-.moreBtn {
-    background: none;
-    border: none;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.moreBtn:hover {
-    background: rgba(220, 38, 38, 0.08);
-    color: #DC2626;
-}
-
-.chartContainer {
-    height: 220px;
-    width: 100%;
-    padding: 0 24px 24px;
-}
-
-/* My Cards Section */
-.cardsSection {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.creditCard {
-    background: var(--gradient-primary);
-    border-radius: 16px;
-    padding: 24px;
-    color: white;
-    margin-bottom: 18px;
-    position: relative;
-    overflow: hidden;
-    /* Professional credit card aspect ratio - 85.6mm × 53.98mm (1.586:1) */
-    aspect-ratio: 1.586 / 1;
-    min-height: 180px;
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-}
-
-.creditCard::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-.creditCard::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: 20%;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-}
-
-.cardBalance {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 8px;
-}
-
-.cardBalance span {
-    font-size: 0.8rem;
-    opacity: 0.85;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}
-
-.cardBalance h3 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin: 4px 0 0;
-    letter-spacing: -0.5px;
-    color: var(--color-text-inverse);
-}
-
-.visaLogo {
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    font-size: 1.4rem;
-    font-weight: 800;
-    font-style: italic;
-    color: white;
-    z-index: 1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    letter-spacing: 2px;
-}
-
-.cardDetails {
-    position: absolute;
-    bottom: 20px;
-    left: 24px;
-    right: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    z-index: 1;
-}
-
-.cardHolder {
-    font-size: 0.9rem;
-    font-weight: 500;
-    opacity: 0.95;
-    letter-spacing: 0.5px;
-}
-
-.cardNumber {
-    font-family: 'Courier New', Consolas, monospace;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    opacity: 0.95;
-}
-
-.cardActionBtns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-top: 8px;
-}
-
-.cardActionBtn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    padding: 10px 6px;
-    background: var(--color-bg);
-    border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--color-surface-hover);
-}
-
-.cardActionBtn:hover {
-    background: rgba(220, 38, 38, 0.08);
-    border-color: var(--color-primary);
-}
-
-.cardActionBtn svg {
-    color: var(--color-primary);
-    width: 18px;
-    height: 18px;
-}
-
-.cardActionBtn span {
-    font-size: 0.7rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-}
-
-/* Card Scroll Container (Carousel) */
-.cardScrollContainer {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding: 4px 4px 24px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.cardScrollContainer::-webkit-scrollbar {
-    display: none;
-}
-
-/* Aurora Card Style */
-.auroraCard {
-    flex: 0 0 300px;
-    aspect-ratio: 1.586 / 1;
-    border-radius: 20px;
-    position: relative;
-    padding: 24px;
-    /* Soft Mesh Gradient (Aurora) */
-    background:
-        radial-gradient(circle at 0% 0%, rgba(167, 139, 250, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(192, 132, 252, 0.4) 0%, transparent 50%),
-        linear-gradient(135deg, #eef2ff 0%, #fff 100%);
-    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    scroll-snap-align: start;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    overflow: hidden;
-    color: #1e1b4b;
-    /* Dark Navy Text */
-}
-
-.auroraCard:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.3);
-}
-
-.auroraCard h3 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin: 8px 0 0;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: -1px;
-}
-
-.auroraCard .cardHolder {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.7;
-    margin-bottom: 4px;
-    font-weight: 600;
-}
-
-.auroraCard .cardNumber {
-    font-family: 'Space Mono', monospace;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.cardStack .creditCard {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.cardStack .creditCard:hover {
-    transform: translateY(-5px) scale(1) !important;
-}
-
-/* Card Modal */
-.cardModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.cardModalContent {
-    background: white;
-    border-radius: 20px;
-    padding: 24px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.cardModalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.cardModalHeader h3 {
+.sectionTitle {
     font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
-    margin: 0;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
 }
 
-.cardModalHeader button {
-    background: none;
-    border: none;
+/* === CATEGORY PIPELINE === */
+.pipelineItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 3px solid #f1f5f9;
+    border-radius: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.pipelineItem:hover {
+    transform: translateX(10px);
+    border-color: #e2e8f0;
+    background: white;
+}
+
+.catIcon {
     font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    padding: 0;
-    line-height: 1;
-}
-
-.cardModalContent .creditCard {
-    margin-bottom: 20px;
-}
-
-.cardModalInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    background: var(--color-bg);
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-
-.infoRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-}
-
-.infoRow:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.infoRow:first-child {
-    padding-top: 0;
-}
-
-.infoRow p {
-    margin: 4px 0 0;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.95rem;
-    color: var(--color-text-emphasis);
-}
-
-.infoRow strong {
-    display: block;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
-    letter-spacing: 0.5px;
-    font-weight: 600;
-}
-
-.copyBtn {
-    background: white;
-    border: 1px solid var(--color-border);
-    width: 32px;
-    height: 32px;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    color: var(--color-text-secondary);
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.copyBtn:hover {
-    background: var(--color-bg);
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-}
-
-.cardModalBtn {
-    width: 100%;
-    padding: 14px;
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.cardModalBtn:hover {
-    background: var(--color-primary-dark);
-    transform: translateY(-2px);
-}
-
-/* Right Column */
-.rightColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* Daily Limit Card */
-.dailyLimitCard {
     background: white;
-    border-radius: 14px;
-    padding: 16px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
 }
 
-.limitDonut {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 10px;
-}
-
-.donutChart {
-    width: 70px;
-    height: 70px;
-}
-
-.limitInfo h3 {
-    font-size: 0.7rem;
-    color: var(--color-text-secondary);
-    margin: 0 0 2px;
-    font-weight: 500;
-}
-
-.limitInfo p {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
-    margin: 0;
-}
-
-/* Recent Payments Card */
-.recentPaymentsCard {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    flex: 1;
-}
-
-.paymentsList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.paymentItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.paymentInfo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.paymentAvatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-}
-
-.paymentDetails h4 {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--color-text-emphasis);
-    margin: 0;
-}
-
-.paymentDetails span {
-    font-size: 0.65rem;
-    color: var(--color-text-muted);
-}
-
-.paymentAmount.income {
-    color: #10B981;
-    /* Green for income */
-}
-
-.paymentAmount {
-    font-weight: 700;
-    font-size: 0.85rem;
-    /* Keeping existing font-size */
-    color: #DC2626;
-    /* Default Red for expense */
-    white-space: nowrap;
-}
-
-/* === BOTTOM ROW WITH BORDERS === */
-.bottomRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-}
-
-/* Expense Breakdown Card */
-.expenseBreakdownCard {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.breakdownContent {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    margin-top: 14px;
-}
-
-.breakdownDonut {
-    width: 120px;
-    height: 120px;
-    position: relative;
-}
-
-.breakdownTotal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-.breakdownTotal span {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
-}
-
-.breakdownLegend {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.breakdownItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.breakdownItemInfo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.breakdownColor {
-    width: 10px;
+.progressTrack {
     height: 10px;
-    border-radius: 3px;
-}
-
-.breakdownLabel {
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-}
-
-.breakdownValue {
-    font-weight: 600;
-    color: var(--color-text-emphasis);
-    font-size: 0.8rem;
-}
-
-/* Annual Overview Card */
-.annualOverviewCard {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.barChartContainer {
-    height: 180px;
+    background: #e2e8f0;
+    border-radius: 1rem;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 0.5rem;
+    overflow: hidden;
 }
 
-/* Sales Overview Card */
-.salesOverviewCard {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+.progressBar {
+    height: 100%;
+    border-radius: 1rem;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.salesHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
+/* === QUICK ACTIONS GRID === */
+.quickActionGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
-.salesTotal {
+.actionBtn {
+    background: #f8fafc;
+    border: 3px solid #f1f5f9;
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
 }
 
-.salesAmount {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text-emphasis);
+.actionBtn:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+    transform: scale(1.05);
 }
 
-.salesTrend {
+.actionIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 3px;
-    font-size: 0.7rem;
-    color: var(--color-success);
-    font-weight: 500;
+    justify-content: center;
 }
 
-.salesLegend {
+.actionLabel {
+    font-size: 0.75rem;
+    font-weight: 950;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* === TRANSACTION ROW === */
+.txRow {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 2px solid #f8fafc;
+    transition: all 0.2s;
 }
 
-.lineChartContainer {
-    height: 140px;
-    width: 100%;
+.txRow:last-child {
+    border-bottom: none;
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 1400px) {
-    .statsRow {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .middleRow {
-        grid-template-columns: 1.5fr 1fr;
-    }
-
-    .rightColumn {
-        display: none;
-    }
-
-    .bottomRow {
-        grid-template-columns: 1fr 1fr;
-    }
+.txRow:hover {
+    background: #fcfdfe;
+    transform: scale(1.02);
 }
 
+.txIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #f1f5f9;
+    border-radius: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.txDetails {
+    flex: 1;
+}
+
+.txDesc {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+.txCat {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 750;
+}
+
+.txAmount {
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+/* Responsive */
+/* Health Score Gauge */
+.healthGauge {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.healthValue {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Merchant Item */
+.merchantItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 3px solid #f1f5f9;
+    border-radius: 1.25rem;
+    transition: all 0.3s;
+}
+
+.merchantItem:hover {
+    transform: translateX(8px);
+    border-color: #2563eb;
+    background: white;
+}
+
+.merchantIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+    font-size: 1.25rem;
+}
+
+.merchantCount {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 1rem;
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
-    .sidebar {
-        display: none;
-    }
-
-    .mainContent {
-        margin-left: 0;
-        max-width: 100%;
-    }
-
-    .contentArea {
-        padding: 16px;
-    }
-
-    .statsRow {
+    .statsGrid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .middleRow {
+    .mainLayout {
         grid-template-columns: 1fr;
-    }
-
-    .bottomRow {
-        grid-template-columns: 1fr;
-    }
-
-    .topHeader {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .headerActions {
-        flex-wrap: wrap;
-    }
-
-    .searchBar {
-        min-width: auto;
-        flex: 1;
     }
 }
 
 @media (max-width: 640px) {
-    .contentArea {
-        padding: 12px;
+    .dashboardWrapper {
+        padding: 1.25rem;
     }
 
-    .statsRow {
-        grid-template-columns: 1fr;
-    }
-
-    .welcomeSection h1 {
-        font-size: 1.25rem;
-    }
-
-    .statValue {
-        font-size: 1.15rem;
-    }
-
-    .creditCard {
-        padding: 16px;
-        min-height: 120px;
-    }
-
-    .cardActionBtns {
-        grid-template-columns: repeat(2, 1fr);
+    .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
     }
 }

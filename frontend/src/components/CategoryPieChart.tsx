@@ -1,4 +1,5 @@
-// Category Pie Chart Component
+// Category Pie Chart Component - Optimized with React.memo
+import { memo, useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { CategorySpending } from '../types';
 
@@ -6,8 +7,19 @@ interface CategoryPieChartProps {
     data: CategorySpending[];
 }
 
-const CategoryPieChart = ({ data }: CategoryPieChartProps) => {
-    if (!data || data.length === 0) {
+const CategoryPieChart = memo(({ data }: CategoryPieChartProps) => {
+    // Memoize chart data transformation
+    const chartData = useMemo(() => {
+        if (!data || data.length === 0) return [];
+        return data.slice(0, 5).map(item => ({
+            name: item.categoryName,
+            value: item.total,
+            color: item.categoryColor,
+            icon: item.categoryIcon
+        }));
+    }, [data]);
+
+    if (chartData.length === 0) {
         return (
             <div style={{
                 display: 'flex',
@@ -20,13 +32,6 @@ const CategoryPieChart = ({ data }: CategoryPieChartProps) => {
             </div>
         );
     }
-
-    const chartData = data.slice(0, 5).map(item => ({
-        name: item.categoryName,
-        value: item.total,
-        color: item.categoryColor,
-        icon: item.categoryIcon
-    }));
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: {
         cx: number;
@@ -117,6 +122,9 @@ const CategoryPieChart = ({ data }: CategoryPieChartProps) => {
             </PieChart>
         </ResponsiveContainer>
     );
-};
+});
+
+CategoryPieChart.displayName = 'CategoryPieChart';
 
 export default CategoryPieChart;
+
