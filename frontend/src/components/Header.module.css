@@ -156,6 +156,32 @@
     object-fit: cover;
 }
 
+/* Mobile Add Button - Premium FAB style */
+.mobileAddBtn {
+    display: none;
+    /* Hidden on desktop */
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.mobileAddBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
+}
+
+.mobileAddBtn:active {
+    transform: translateY(0);
+}
+
 /* Mobile Menu Button */
 .mobileMenuBtn {
     display: none;
@@ -225,6 +251,10 @@
 
     .mobileMenuBtn {
         display: block;
+    }
+
+    .mobileAddBtn {
+        display: flex;
     }
 
     .settingsBtn {

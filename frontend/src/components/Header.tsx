@@ -95,6 +95,15 @@ const Header = () => {
                     onReconnect={reconnect}
                 />
 
+                {/* Mobile Quick Add Button */}
+                <button
+                    className={styles.mobileAddBtn}
+                    onClick={openQuickAdd}
+                    aria-label="Add Transaction"
+                >
+                    <Plus size={20} strokeWidth={2.5} />
+                </button>
+
                 <button
                     className={`${styles.iconButton} ${styles.settingsBtn}`}
                     aria-label="Settings"
