@@ -322,12 +322,27 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
 
     // Speech recognition setup - only once
     useEffect(() => {
-        if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
-            const SpeechRecognition = (window as any).webkitSpeechRecognition;
+        if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
             const recognition = new SpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
+            recognition.maxAlternatives = 1;
+
+            // Accumulator for building complete sentences on mobile
+            let accumulatedText = '';
+            let silenceTimer: NodeJS.Timeout | null = null;
+            const SILENCE_DELAY = 1500; // Wait 1.5s of silence before sending
+
+            const sendAccumulatedText = () => {
+                if (accumulatedText.trim() && !callEndedRef.current) {
+                    console.log('🎤 Final accumulated speech:', accumulatedText.trim());
+                    handleUserSpeechRef.current(accumulatedText.trim());
+                    accumulatedText = '';
+                    setInterimText('');
+                }
+            };
 
             recognition.onresult = (event: any) => {
                 let interim = '';
@@ -342,41 +357,57 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                     }
                 }
 
-                setInterimText(interim);
-
+                // Accumulate final text (mobile often sends one word at a time)
                 if (final.trim()) {
-                    console.log('🎤 Final speech:', final.trim());
-                    handleUserSpeechRef.current(final.trim());
-                    setInterimText('');
+                    accumulatedText += ' ' + final;
+                    accumulatedText = accumulatedText.trim();
+                    console.log('🎤 Accumulated so far:', accumulatedText);
+
+                    // Clear any existing silence timer
+                    if (silenceTimer) clearTimeout(silenceTimer);
+
+                    // Set a timer to send after silence (user stopped speaking)
+                    silenceTimer = setTimeout(sendAccumulatedText, SILENCE_DELAY);
                 }
+
+                // Show interim + accumulated as preview
+                const previewText = accumulatedText + (interim ? ' ' + interim : '');
+                setInterimText(previewText.trim());
             };
 
             recognition.onerror = (event: any) => {
                 console.error('Speech recognition error:', event.error);
-                if (event.error !== 'no-speech' && event.error !== 'aborted' && !callEndedRef.current) {
-                    // Restart on errors other than no-speech (and only if call not ended)
+                // On mobile, 'no-speech' is common - just restart quickly
+                if (event.error !== 'aborted' && !callEndedRef.current) {
                     setTimeout(() => {
                         if (!callEndedRef.current) {
                             try { recognition.start(); } catch (e) { }
                         }
-                    }, 500);
+                    }, 100); // Fast restart for mobile
                 }
             };
 
             recognition.onend = () => {
-                // Auto-restart only if call not ended
+                // Send any accumulated text before restarting
+                if (silenceTimer) {
+                    clearTimeout(silenceTimer);
+                    sendAccumulatedText();
+                }
+
+                // Auto-restart immediately for continuous listening (mobile stops often)
                 if (!callEndedRef.current) {
                     setTimeout(() => {
                         if (!callEndedRef.current) {
                             try { recognition.start(); } catch (e) { }
                         }
-                    }, 200);
+                    }, 50); // Very fast restart for mobile
                 }
             };
 
             recognitionRef.current = recognition;
 
             return () => {
+                if (silenceTimer) clearTimeout(silenceTimer);
                 try { recognition.stop(); } catch (e) { }
             };
         }
