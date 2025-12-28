@@ -1,0 +1,3 @@
+# Runtime configuration for Railway
+# Specifies Python version for Nixpacks auto-detection
+3.11
