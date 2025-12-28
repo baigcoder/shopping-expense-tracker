@@ -13,7 +13,7 @@ interface VoiceSetupModalProps {
 }
 
 // Python AI Server TTS URL
-const AI_SERVER_URL = 'http://localhost:8000';
+const AI_SERVER_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
 
 // Voice options - 2 Female + 2 Male (using edge-tts)
 const VOICE_OPTIONS = [

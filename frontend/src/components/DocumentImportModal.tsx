@@ -39,7 +39,7 @@ interface DocumentImportModalProps {
     onImportComplete?: () => void;
 }
 
-const AI_SERVER_URL = 'http://localhost:8000';
+const AI_SERVER_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
 
 const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
     isOpen,

@@ -7,8 +7,8 @@ import api from './api';
 import { formatCurrency, getCurrencyCode } from './currencyService';
 import { supabase } from '../config/supabase';
 
-// Python PDF service URL (pdfplumber)
-const PDF_SERVICE_URL = 'http://localhost:8000';
+// Python PDF service URL (Railway in prod, localhost in dev)
+const PDF_SERVICE_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
 
 // Call backend AI for PDF analysis
 const callAI = async (_type: string, systemPrompt: string, userPrompt: string) => {

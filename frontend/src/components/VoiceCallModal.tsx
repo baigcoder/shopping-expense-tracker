@@ -16,7 +16,7 @@ interface VoiceCallModalProps {
 }
 
 // Python AI Server TTS URL
-const AI_SERVER_URL = 'http://localhost:8000';
+const AI_SERVER_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
 
 // Voice ID mapping (lowercase to ensure consistency)
 const VOICE_IDS: { [key: string]: { id: string; gender: string } } = {
