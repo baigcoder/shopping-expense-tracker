@@ -1,7 +1,8 @@
 // Real-time Transactions Hook - Listens for extension updates
 import { useState, useEffect, useCallback } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import { formatCurrency } from '../services/currencyService';
 
 interface Transaction {
     id: string;
@@ -45,15 +46,7 @@ export const useRealtimeTransactions = (initialTransactions: Transaction[] = [])
 
         // Show toast notification
         toast.success(
-            `💸 ${transaction.description} - ${formatCurrency(transaction.amount)} tracked!`,
-            {
-                position: 'top-right',
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            }
+            `💸 ${transaction.description} - ${formatCurrency(transaction.amount)} tracked!`
         );
 
         // Trigger celebration
@@ -64,10 +57,7 @@ export const useRealtimeTransactions = (initialTransactions: Transaction[] = [])
     const handleTransactionsSynced = useCallback((event: CustomEvent) => {
         const { count } = event.detail;
 
-        toast.info(`✅ ${count} transaction(s) synced from extension!`, {
-            position: 'top-right',
-            autoClose: 3000
-        });
+        toast.info(`✅ ${count} transaction(s) synced from extension!`);
     }, []);
 
     // Listen for real-time events
@@ -90,11 +80,3 @@ export const useRealtimeTransactions = (initialTransactions: Transaction[] = [])
         todayCount
     };
 };
-
-// Helper function
-function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    }).format(Math.abs(amount));
-}

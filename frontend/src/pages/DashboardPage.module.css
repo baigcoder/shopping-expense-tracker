@@ -4,7 +4,7 @@
    ============================================ */
 
 .dashboardWrapper {
-    min-height: 100vh;
+    min-height: auto;
     padding: 2.5rem;
     background: #fcfdfe;
     color: #1e293b;
@@ -494,12 +494,142 @@
 
 @media (max-width: 640px) {
     .dashboardWrapper {
-        padding: 1.25rem;
+        padding: 1rem;
+        padding-bottom: 6rem;
+        /* Space for mobile bottom nav */
+    }
+
+    .container {
+        padding: 0;
     }
 
     .header {
         flex-direction: column;
         text-align: center;
-        gap: 1.5rem;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        border-radius: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .welcomeText h1 {
+        font-size: 1.35rem;
+    }
+
+    .welcomeText p {
+        font-size: 0.75rem;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .statCard {
+        padding: 1rem 1.25rem;
+        border-radius: 1.5rem;
+        border-width: 2px;
+    }
+
+    .iconBox {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .iconBox svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .statTitle {
+        font-size: 0.65rem;
+    }
+
+    .statValue {
+        font-size: 1.35rem;
+    }
+
+    .whiteCard {
+        padding: 1.25rem;
+        border-radius: 1.5rem;
+        border-width: 2px;
+    }
+
+    .sectionTitle {
+        font-size: 1rem;
+    }
+
+    .chartContainer {
+        height: 180px;
+    }
+
+    .quickActions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .actionBtn {
+        padding: 0.875rem;
+    }
+
+    .actionLabel {
+        font-size: 0.7rem;
+    }
+
+    .transactionItem {
+        padding: 0.75rem;
+        border-radius: 1rem;
+    }
+
+    .merchantItem {
+        padding: 0.75rem;
+        border-radius: 1rem;
+    }
+
+    .merchantIcon {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+    .dashboardWrapper {
+        padding: 0.75rem;
+    }
+
+    .header {
+        padding: 1rem;
+    }
+
+    .welcomeText h1 {
+        font-size: 1.2rem;
+    }
+
+    .statsGrid {
+        gap: 0.625rem;
+    }
+
+    .statCard {
+        padding: 0.875rem 1rem;
+    }
+
+    .statValue {
+        font-size: 1.2rem;
+    }
+
+    .whiteCard {
+        padding: 1rem;
+    }
+}
+
+/* Safe area for devices with notches */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .dashboardWrapper {
+        padding-bottom: calc(6rem + env(safe-area-inset-bottom));
     }
 }

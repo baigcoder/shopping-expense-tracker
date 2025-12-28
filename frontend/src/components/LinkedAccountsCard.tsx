@@ -7,7 +7,7 @@ import {
     Loader2, Building2
 } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import PlaidLinkButton from './PlaidLinkButton';
 import { Button } from '@/components/ui/button';
 

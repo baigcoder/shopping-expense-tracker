@@ -1,17 +1,15 @@
-// Export Modal Component
-// Beautiful popup for exporting transactions in different formats
-
+// Export Modal Component - Premium Light Mode Redesign
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     X, Download, FileSpreadsheet, FileJson, FileText,
-    Calendar, CheckCircle, Sparkles, Database, FileDown, ShieldCheck
+    CheckCircle, Database, FileDown, ShieldCheck
 } from 'lucide-react';
 import { exportTransactions } from '../services/exportService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import styles from './ExportModal.module.css';
 
 interface Transaction {
     id: string;
@@ -35,7 +33,6 @@ const EXPORT_FORMATS = [
         name: 'CSV Spreadsheet',
         icon: FileSpreadsheet,
         description: 'Universal compatibility for Excel, Sheets, and analysis tools.',
-        color: '#3B82F6', // Indigo
         gradient: 'from-blue-500 to-indigo-600'
     },
     {
@@ -43,7 +40,6 @@ const EXPORT_FORMATS = [
         name: 'JSON Archive',
         icon: FileJson,
         description: 'Pure structured data optimized for developers and migrations.',
-        color: '#8B5CF6', // Violet
         gradient: 'from-violet-500 to-purple-600'
     },
     {
@@ -51,7 +47,6 @@ const EXPORT_FORMATS = [
         name: 'PDF Statement',
         icon: FileText,
         description: 'Formatted, printable report perfect for physical record keeping.',
-        color: '#EC4899', // Pink/Rose
         gradient: 'from-rose-500 to-pink-600'
     },
 ];
@@ -70,8 +65,7 @@ const ExportModal = ({ transactions, onClose }: ExportModalProps) => {
         setIsExporting(true);
 
         try {
-            // Small delay for visual feedback
-            await new Promise(r => setTimeout(r, 800));
+            await new Promise(r => setTimeout(r, 1200)); // Deliberate delay for premium feel
 
             exportTransactions(transactions, {
                 format: selectedFormat,
@@ -79,9 +73,8 @@ const ExportModal = ({ transactions, onClose }: ExportModalProps) => {
             });
 
             setExported(true);
-            toast.success(`Exported ${transactions.length} transactions! 📁`);
+            toast.success(`Exported ${transactions.length} transactions!`);
 
-            // Auto close after success
             setTimeout(() => onClose(), 2500);
         } catch (error) {
             toast.error('Export failed. Please try again.');
@@ -92,157 +85,142 @@ const ExportModal = ({ transactions, onClose }: ExportModalProps) => {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+            className={styles.overlay}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
         >
             <motion.div
-                className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl shadow-slate-900/20 overflow-hidden relative border-2 border-slate-50"
+                className={styles.modalContainer}
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="relative p-8 pb-12 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800" />
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -mr-32 -mt-32" />
-
-                    <div className="relative flex items-center justify-between text-white">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl ring-1 ring-white/20 border border-white/10">
-                                <FileDown className="h-6 w-6" />
-                            </div>
-                            <div>
-                                <h2 className="text-2xl font-black tracking-tight font-display">Data Translocation</h2>
-                                <p className="text-slate-400 text-xs font-black uppercase tracking-widest mt-0.5">Secure Ledger Export</p>
-                            </div>
+                <div className={cn(styles.header, styles.exportHeader)}>
+                    <div className={styles.headerGlass} />
+                    <div className={styles.headerContent}>
+                        <div className={styles.brandIcon}>
+                            <FileDown size={30} strokeWidth={2.5} />
                         </div>
-                        <button
-                            className="p-2 hover:bg-white/10 rounded-xl transition-colors ring-1 ring-transparent hover:ring-white/20 border border-transparent hover:border-white/10"
-                            onClick={onClose}
-                        >
-                            <X size={20} />
-                        </button>
+                        <div className={styles.headerInfo}>
+                            <h2>Data Translocation</h2>
+                            <p>SECURE LEDGER EXPORT</p>
+                        </div>
                     </div>
+                    <button className={styles.closeBtn} onClick={onClose}>
+                        <X size={20} />
+                    </button>
                 </div>
 
-                <div className="p-8 -mt-6 bg-white rounded-t-[2.5rem] relative min-h-[400px]">
+                <div className={styles.content}>
                     <AnimatePresence mode="wait">
                         {exported ? (
                             <motion.div
                                 key="success"
-                                className="flex flex-col items-center justify-center py-12 text-center"
+                                className={styles.successState}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                             >
                                 <motion.div
                                     initial={{ scale: 0, rotate: -15 }}
                                     animate={{ scale: 1, rotate: 0 }}
-                                    transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                                    className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-[2.5rem] flex items-center justify-center shadow-xl shadow-emerald-50 mb-8"
+                                    transition={{ type: "spring", stiffness: 200 }}
+                                    className={styles.successIcon}
                                 >
                                     <CheckCircle size={48} />
                                 </motion.div>
-                                <h3 className="text-3xl font-black text-slate-800 tracking-tight mb-2">Transmission Successful!</h3>
-                                <p className="text-slate-500 font-medium">Your {selectedFormat.toUpperCase()} archive has been synthesized and downloaded.</p>
+                                <h3 className={styles.successTitle}>Transmission Successful!</h3>
+                                <p className={styles.successDesc}>
+                                    Your {selectedFormat.toUpperCase()} archive has been synthesized and downloaded.
+                                </p>
                             </motion.div>
                         ) : (
                             <motion.div
                                 key="form"
-                                className="space-y-8"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                             >
-                                <div className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Select Protocol</h4>
-                                        <Badge className="bg-slate-100 text-slate-500 border-none font-black text-[10px] uppercase">
-                                            {transactions.length} Records Detected
-                                        </Badge>
-                                    </div>
-
-                                    <div className="grid gap-4">
-                                        {EXPORT_FORMATS.map(f => {
-                                            const Icon = f.icon;
-                                            const isActive = selectedFormat === f.id;
-                                            return (
-                                                <button
-                                                    key={f.id}
-                                                    onClick={() => setSelectedFormat(f.id)}
-                                                    className={cn(
-                                                        "group relative flex items-center gap-5 p-5 rounded-[2rem] border-2 transition-all text-left",
-                                                        isActive
-                                                            ? "bg-white border-slate-900 shadow-xl shadow-slate-100"
-                                                            : "bg-slate-50/50 border-slate-50 hover:bg-white hover:border-slate-100 hover:shadow-lg hover:shadow-slate-50"
-                                                    )}
-                                                >
-                                                    <div className={cn(
-                                                        "p-4 rounded-2xl text-white transition-transform group-hover:scale-110 shadow-lg",
-                                                        `bg-gradient-to-br ${f.gradient}`
-                                                    )}>
-                                                        <Icon size={24} />
-                                                    </div>
-                                                    <div className="flex-1 space-y-1">
-                                                        <span className={cn("block font-black text-base transition-colors", isActive ? "text-slate-900" : "text-slate-500")}>
-                                                            {f.name}
-                                                        </span>
-                                                        <span className="block text-xs text-slate-400 font-medium leading-relaxed">
-                                                            {f.description}
-                                                        </span>
-                                                    </div>
-                                                    {isActive && (
-                                                        <motion.div
-                                                            layoutId="active-format"
-                                                            className="absolute inset-y-0 right-8 flex items-center"
-                                                            initial={{ opacity: 0, x: 10 }}
-                                                            animate={{ opacity: 1, x: 0 }}
-                                                        >
-                                                            <div className="w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center p-1">
-                                                                <CheckCircle size={14} />
-                                                            </div>
-                                                        </motion.div>
-                                                    )}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                                <div className={styles.sectionHeader}>
+                                    <h4 className={styles.sectionTitle}>Select Protocol</h4>
+                                    <Badge className="bg-slate-100 text-slate-500 border-none font-black text-[10px]">
+                                        {transactions.length} RECORDS DETECTED
+                                    </Badge>
                                 </div>
 
-                                <div className="p-4 bg-blue-50/50 rounded-2xl flex items-center gap-3 border-2 border-blue-50">
-                                    <div className="p-2 bg-white rounded-xl text-blue-500 shadow-sm">
+                                <div className={styles.protocolGrid}>
+                                    {EXPORT_FORMATS.map(f => {
+                                        const Icon = f.icon;
+                                        const isActive = selectedFormat === f.id;
+                                        return (
+                                            <button
+                                                key={f.id}
+                                                onClick={() => setSelectedFormat(f.id)}
+                                                className={cn(
+                                                    styles.protocolCard,
+                                                    isActive && styles.protocolCardActive
+                                                )}
+                                            >
+                                                <div className={cn(
+                                                    styles.iconWrapper,
+                                                    `bg-gradient-to-br ${f.gradient}`
+                                                )}>
+                                                    <Icon size={24} />
+                                                </div>
+                                                <div className={styles.cardInfo}>
+                                                    <span className={styles.cardName}>{f.name}</span>
+                                                    <span className={styles.cardDescription}>{f.description}</span>
+                                                </div>
+                                                {isActive && (
+                                                    <motion.div
+                                                        layoutId="active-check"
+                                                        className={styles.checkmark}
+                                                        initial={{ opacity: 0, scale: 0.5 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                    >
+                                                        <CheckCircle size={14} />
+                                                    </motion.div>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className={styles.statusBar}>
+                                    <div className={styles.statusIcon}>
                                         <ShieldCheck size={16} />
                                     </div>
-                                    <span className="text-[10px] font-black text-blue-600/70 uppercase tracking-widest">
+                                    <span className={styles.statusText}>
                                         Data is encrypted and sanitized prior to transmission.
                                     </span>
                                 </div>
 
-                                <Button
-                                    className="w-full h-16 rounded-[1.5rem] bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-widest shadow-2xl shadow-slate-200 transition-all active:scale-95"
-                                    onClick={handleExport}
-                                    disabled={isExporting}
-                                >
-                                    {isExporting ? (
-                                        <>
-                                            <motion.div
-                                                animate={{ rotate: 360 }}
-                                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                                className="mr-3"
-                                            >
-                                                <Database size={20} />
-                                            </motion.div>
-                                            Synthesizing Data...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Download size={20} className="mr-3" />
-                                            Execute {selectedFormat.toUpperCase()} Export
-                                        </>
-                                    )}
-                                </Button>
+                                <div className={styles.footer}>
+                                    <button
+                                        className={styles.exportBtn}
+                                        onClick={handleExport}
+                                        disabled={isExporting}
+                                    >
+                                        {isExporting ? (
+                                            <>
+                                                <motion.div
+                                                    animate={{ rotate: 360 }}
+                                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                                >
+                                                    <Database size={20} />
+                                                </motion.div>
+                                                Synthesizing Data...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Download size={20} />
+                                                Execute {selectedFormat.toUpperCase()} Export
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>

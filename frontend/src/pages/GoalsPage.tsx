@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
-import LoadingScreen from '../components/LoadingScreen';
+import { GoalsSkeleton } from '../components/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import styles from './GoalsPage.module.css';
 
@@ -199,7 +199,13 @@ const GoalsPage = () => {
         ? Math.round(goals.reduce((sum, g) => sum + calculateProgress(g.current_amount, g.target_amount), 0) / goals.length)
         : 0;
 
-    if (loading && goals.length === 0) return <LoadingScreen />;
+    if (loading && goals.length === 0) {
+        return (
+            <div className={styles.mainContent}>
+                <GoalsSkeleton />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.mainContent}>

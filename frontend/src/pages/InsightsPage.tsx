@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import styles from './InsightsPage.module.css';
+import { InsightsSkeleton } from '../components/LoadingSkeleton';
 
 const InsightsPage = () => {
     const { user } = useAuthStore();
@@ -129,26 +130,11 @@ const InsightsPage = () => {
     if (loading && insights.length === 0) {
         return (
             <div className={styles.mainContent}>
-                <div className="flex items-center justify-center min-vh-100 flex-col gap-6">
-                    <motion.div
-                        animate={{
-                            rotate: 360,
-                            scale: [1, 1.15, 1],
-                            filter: ["blur(0px)", "blur(2px)", "blur(0px)"]
-                        }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        className={styles.titleIcon}
-                    >
-                        <Brain size={32} />
-                    </motion.div>
-                    <h2 className="text-xl font-black text-slate-800 tracking-tight">Synthesizing Intelligence</h2>
-                    <p className="text-slate-500 font-bold animate-pulse">
-                        Aligning patterns with your financial DNA...
-                    </p>
-                </div>
+                <InsightsSkeleton />
             </div>
         );
     }
+
 
     return (
         <div className={styles.mainContent}>
@@ -175,7 +161,7 @@ const InsightsPage = () => {
                                 </span>
                             </h1>
                             <p className="text-slate-500 mt-1 font-bold">
-                                Financial intelligence tailored to your behavior
+                                AI tips based on how you spend
                             </p>
                         </div>
                     </div>
@@ -212,7 +198,7 @@ const InsightsPage = () => {
                         <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? '#10b981' : '#7c3aed' }}>
                             {stats.healthScore}<span className="text-xl opacity-50">/100</span>
                         </h3>
-                        <p className={styles.statLabel}>Financial Health</p>
+                        <p className={styles.statLabel}>Money Health</p>
                         <div className={styles.statProgress}>
                             <motion.div
                                 className={styles.progressFill}
@@ -239,8 +225,8 @@ const InsightsPage = () => {
                         <h3 className={styles.statValue} style={{ color: '#10b981' }}>
                             {formatCurrency(stats.potentialSavings)}
                         </h3>
-                        <p className={styles.statLabel}>Monthly Surplus</p>
-                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Target Achievable</p>
+                        <p className={styles.statLabel}>You Could Save</p>
+                        <p className="text-[10px] font-semibold text-slate-400 mt-2">Every Month</p>
                     </motion.div>
 
                     {/* Active Tips */}
@@ -255,8 +241,8 @@ const InsightsPage = () => {
                         <h3 className={styles.statValue} style={{ color: '#2563eb' }}>
                             {stats.activeTips}
                         </h3>
-                        <p className={styles.statLabel}>Active Tips</p>
-                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">Smart Suggestions</p>
+                        <p className={styles.statLabel}>Tips For You</p>
+                        <p className="text-[10px] font-semibold text-slate-400 mt-2">Ways to Save</p>
                     </motion.div>
 
                     {/* Alerts */}
@@ -274,9 +260,9 @@ const InsightsPage = () => {
                         <h3 className={styles.statValue} style={{ color: stats.alerts > 0 ? '#e11d48' : '#0f172a' }}>
                             {stats.alerts > 0 ? stats.alerts : 'Stable'}
                         </h3>
-                        <p className={styles.statLabel}>Risk Management</p>
-                        <p className="text-[10px] font-black text-slate-400 mt-2 tracking-widest uppercase">
-                            {stats.alerts > 0 ? 'Action Required' : 'Network Secure'}
+                        <p className={styles.statLabel}>Warnings</p>
+                        <p className="text-[10px] font-semibold text-slate-400 mt-2">
+                            {stats.alerts > 0 ? 'Needs Attention' : 'All Good!'}
                         </p>
                     </motion.div>
                 </motion.div>
@@ -294,10 +280,10 @@ const InsightsPage = () => {
                     <div className={styles.aiContent}>
                         <div className={styles.aiBadgeLabel}>
                             <Star size={14} className="fill-indigo-500 text-indigo-500" />
-                            SpendSync AI Intelligence
+                            AI Money Advice
                         </div>
                         <p className={styles.aiMessage}>
-                            {aiTip || 'Synthesizing your spending rhythms for elite financial optimization...'}
+                            {aiTip || 'Looking at your spending to give you tips...'}
                         </p>
                     </div>
                     <div className={styles.aiActions}>
@@ -328,10 +314,10 @@ const InsightsPage = () => {
                                 <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
                                     <Target size={22} />
                                 </div>
-                                Actionable Insights
+                                Things To Do
                             </h2>
-                            <Badge variant="outline" className="h-8 px-4 border-2 border-indigo-100 bg-indigo-50/50 text-indigo-600 font-black tracking-widest uppercase text-[10px]">
-                                {insights.length} RECOMMENDATIONS
+                            <Badge variant="outline" className="h-8 px-4 border-2 border-indigo-100 bg-indigo-50/50 text-indigo-600 font-bold text-[10px]">
+                                {insights.length} TIPS
                             </Badge>
                         </div>
 
@@ -346,9 +332,9 @@ const InsightsPage = () => {
                                         <div className="mx-auto w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-300 mb-6 shadow-inner">
                                             <Trophy size={40} />
                                         </div>
-                                        <h3 className="text-xl font-black text-slate-800">Elite Standing!</h3>
+                                        <h3 className="text-xl font-black text-slate-800">You're Doing Great!</h3>
                                         <p className="text-slate-500 font-bold max-w-xs mx-auto mt-2">
-                                            You've mastered current trends. Keep tracking to maintain your peak health score.
+                                            No problems found. Keep tracking your spending!
                                         </p>
                                     </motion.div>
                                 ) : (
@@ -384,8 +370,8 @@ const InsightsPage = () => {
                                                     {insight.value !== undefined && insight.value > 0 && (
                                                         <div className="flex items-center gap-2 mt-3 p-2 px-3 bg-indigo-50 rounded-xl border border-indigo-100 w-fit">
                                                             <Zap size={14} className="text-indigo-600 fill-indigo-600" />
-                                                            <span className="text-xs font-black text-indigo-700 uppercase tracking-tight">
-                                                                Projected Impact: {formatCurrency(insight.value)}
+                                                            <span className="text-xs font-bold text-indigo-700">
+                                                                You could save: {formatCurrency(insight.value)}
                                                             </span>
                                                         </div>
                                                     )}
@@ -412,12 +398,12 @@ const InsightsPage = () => {
                             <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
                                 <PieChart size={22} />
                             </div>
-                            Breakdown
+                            Spending Breakdown
                         </h2>
 
                         <motion.div variants={fadeInUp} className={styles.sidebarCard}>
                             {categorySpending.length === 0 ? (
-                                <p className="text-center text-slate-400 py-10 font-bold uppercase tracking-widest text-xs">No footprint detected</p>
+                                <p className="text-center text-slate-400 py-10 font-bold text-sm">No spending data yet</p>
                             ) : (
                                 categorySpending.slice(0, 5).map((cat, i) => (
                                     <div key={cat.category} className={styles.categoryProgressBar}>
@@ -451,7 +437,7 @@ const InsightsPage = () => {
 
                         {/* Quick Actions */}
                         <motion.div variants={fadeInUp} className={styles.sidebarCard}>
-                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Strategy Hub</h3>
+                            <h3 className="text-sm font-bold text-slate-600 mb-6">Quick Links</h3>
                             <motion.button
                                 whileHover={{ x: 5 }}
                                 className={styles.actionBtn}
@@ -460,7 +446,7 @@ const InsightsPage = () => {
                                 <div className={cn(styles.actionBtnIcon, "bg-emerald-50 text-emerald-600")}>
                                     <Target size={20} strokeWidth={2.5} />
                                 </div>
-                                Optimize Budget
+                                Set a Budget
                             </motion.button>
                             <motion.button
                                 whileHover={{ x: 5 }}
@@ -470,7 +456,7 @@ const InsightsPage = () => {
                                 <div className={cn(styles.actionBtnIcon, "bg-purple-50 text-purple-600")}>
                                     <PiggyBank size={20} strokeWidth={2.5} />
                                 </div>
-                                Acceleration Goal
+                                Save for a Goal
                             </motion.button>
                             <motion.button
                                 whileHover={{ x: 5 }}
@@ -480,7 +466,7 @@ const InsightsPage = () => {
                                 <div className={cn(styles.actionBtnIcon, "bg-amber-50 text-amber-600")}>
                                     <CreditCard size={20} strokeWidth={2.5} />
                                 </div>
-                                Streamline Subs
+                                Manage Subscriptions
                             </motion.button>
                         </motion.div>
                     </motion.div>

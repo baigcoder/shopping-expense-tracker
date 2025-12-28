@@ -2,10 +2,10 @@
 import axios from 'axios';
 import { supabase } from '../config/supabase';
 
-// Ensure API URL always ends with /api (handle both with and without trailing slash)
-const rawApiUrl = import.meta.env.VITE_API_URL || '';
+// Ensure API URL ends with /api (only add if not already present)
+const rawApiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 const API_URL = rawApiUrl
-    ? `${rawApiUrl.replace(/\/+$/, '')}/api`
+    ? (rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`)
     : '/api';
 
 const api = axios.create({

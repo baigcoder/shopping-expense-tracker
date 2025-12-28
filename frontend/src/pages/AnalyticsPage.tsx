@@ -12,7 +12,7 @@ import { supabaseTransactionService, SupabaseTransaction } from '../services/sup
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
 import { useDataRealtime } from '../hooks/useDataRealtime';
-import LoadingScreen from '../components/LoadingScreen';
+import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
 import styles from './AnalyticsPage.module.css';
@@ -209,8 +209,13 @@ const AnalyticsPage = () => {
             .slice(0, 8);
     }, [filteredTx]);
 
-    if (loading) return <LoadingScreen />;
-
+    if (loading) {
+        return (
+            <div className={styles.mainContent}>
+                <AnalyticsSkeleton />
+            </div>
+        );
+    }
     return (
         <div className={styles.mainContent}>
             <motion.div

@@ -4,11 +4,40 @@
 class NotificationSoundService {
     private audioContext: AudioContext | null = null;
     private isEnabled: boolean = true;
+    private hasUserInteracted: boolean = false;
 
-    private getAudioContext(): AudioContext {
+    constructor() {
+        // Listen for user interaction to enable audio
+        const enableAudio = () => {
+            this.hasUserInteracted = true;
+            if (this.audioContext && this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
+        };
+
+        // Only add listeners in browser environment
+        if (typeof window !== 'undefined') {
+            window.addEventListener('click', enableAudio, { once: true });
+            window.addEventListener('keydown', enableAudio, { once: true });
+            window.addEventListener('touchstart', enableAudio, { once: true });
+        }
+    }
+
+    private getAudioContext(): AudioContext | null {
+        // Don't create context until user has interacted
+        if (!this.hasUserInteracted) {
+            return null;
+        }
+
         if (!this.audioContext) {
             this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
         }
+
+        // Resume if suspended
+        if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+        }
+
         return this.audioContext;
     }
 
@@ -22,6 +51,8 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return; // No audio context yet (user hasn't interacted)
+
             const oscillator = ctx.createOscillator();
             const gainNode = ctx.createGain();
 
@@ -38,7 +69,7 @@ class NotificationSoundService {
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.15);
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available - silently ignore
         }
     }
 
@@ -47,6 +78,8 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return;
+
             const oscillator = ctx.createOscillator();
             const gainNode = ctx.createGain();
 
@@ -63,7 +96,7 @@ class NotificationSoundService {
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.2);
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available
         }
     }
 
@@ -72,6 +105,7 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return;
 
             // Two-tone alert
             for (let i = 0; i < 2; i++) {
@@ -91,7 +125,7 @@ class NotificationSoundService {
                 oscillator.stop(ctx.currentTime + i * 0.15 + 0.12);
             }
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available
         }
     }
 
@@ -100,6 +134,8 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return;
+
             const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
 
             notes.forEach((freq, i) => {
@@ -119,7 +155,7 @@ class NotificationSoundService {
                 oscillator.stop(ctx.currentTime + i * 0.08 + 0.15);
             });
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available
         }
     }
 
@@ -128,6 +164,7 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return;
 
             // Coin drop sound
             const oscillator = ctx.createOscillator();
@@ -149,6 +186,7 @@ class NotificationSoundService {
             // Second bounce
             setTimeout(() => {
                 try {
+                    if (!ctx) return;
                     const osc2 = ctx.createOscillator();
                     const gain2 = ctx.createGain();
                     osc2.connect(gain2);
@@ -163,7 +201,7 @@ class NotificationSoundService {
                 } catch (e) { }
             }, 100);
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available
         }
     }
 
@@ -172,6 +210,8 @@ class NotificationSoundService {
         if (!this.isEnabled) return;
         try {
             const ctx = this.getAudioContext();
+            if (!ctx) return;
+
             const notes = [261.63, 329.63, 392, 523.25, 659.25, 783.99]; // C4-G5 arpeggio
 
             notes.forEach((freq, i) => {
@@ -191,7 +231,7 @@ class NotificationSoundService {
                 oscillator.stop(ctx.currentTime + i * 0.07 + 0.1);
             });
         } catch (e) {
-            console.log('Sound not available');
+            // Sound not available
         }
     }
 }

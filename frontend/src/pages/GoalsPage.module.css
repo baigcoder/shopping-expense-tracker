@@ -4,7 +4,7 @@
    ============================================ */
 
 .mainContent {
-    min-height: 100vh;
+    min-height: auto;
     background: #f8fafc;
     /* Premium Off-White */
     padding: 2rem;

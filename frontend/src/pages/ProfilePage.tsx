@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuthStore } from '../store/useStore';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { useSound } from '@/hooks/useSound';
 import { motion } from 'framer-motion';
 

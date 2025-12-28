@@ -7,17 +7,11 @@ import api from './api';
 import { getCurrencySymbol, getCurrencyInfo, formatCurrency } from './currencyService';
 
 // Safe AI call that never throws - uses backend AI
-const safeCallAI = async (_type: string, systemPrompt: string, userPrompt: string, userId?: string): Promise<{ response: string } | null> => {
+const safeCallAI = async (_type: string, systemPrompt: string, userPrompt: string, _userId?: string): Promise<{ response: string } | null> => {
     try {
-        // Get user ID from Zustand auth-storage if not provided
-        const storedAuth = localStorage.getItem('auth-storage');
-        const currentUserId = userId || (storedAuth ? JSON.parse(storedAuth)?.state?.user?.id : null);
-
         const response = await api.post('/ai/chat', {
             message: `${systemPrompt}\n\n${userPrompt}`,
             context: 'insights'
-        }, {
-            headers: currentUserId ? { 'x-user-id': currentUserId } : {}
         });
         return { response: response.data.response };
     } catch (error) {

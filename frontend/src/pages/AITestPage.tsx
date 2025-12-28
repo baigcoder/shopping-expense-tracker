@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Brain, Send, Sparkles, MessageSquare, Loader2, Zap } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { getAIResponse } from '../services/aiService';
 import { useAuthStore } from '../store/useStore';
 import { motion } from 'framer-motion';

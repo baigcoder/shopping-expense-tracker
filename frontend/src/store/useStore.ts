@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User } from '../types';
+import { cardService } from '../services/cardService';
 
 interface AuthState {
     user: User | null;
@@ -122,17 +123,28 @@ export const useModalStore = create<ModalState>((set) => ({
 // Card Types
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'paypal' | 'unionpay' | 'jcb' | 'diners' | 'unknown';
 
-// Card interface
+// Card interface - SECURITY: CVV stored encrypted, protected by user password
 export interface Card {
     id: string;
-    user_id: string; // Required - associate with user
-    number: string;
+    user_id: string;
+    last4: string;   // Only last 4 digits stored (PCI-DSS compliant)
     holder: string;
     expiry: string;
-    cvv: string;
-    pin: string;
     type: CardBrand;
     theme: string;
+    // Real-world features
+    nickname?: string;        // Custom name like "Groceries Card"
+    spending_limit?: number;  // Monthly spending limit
+    is_frozen?: boolean;      // Temporarily disable card
+    is_default?: boolean;     // Primary card for payments
+    color?: string;           // Custom card color
+    last_used_at?: string;    // Last transaction date
+    total_spent?: number;     // Monthly spending total (computed)
+    // CVV Protection - password to view/verify CVV
+    cvv_password?: string;    // User-set password to protect CVV viewing
+    cvv_encrypted?: string;   // Encrypted CVV (only decrypted with correct password)
+    // Deprecated fields - kept for backwards compatibility
+    number?: string; // @deprecated - use last4 instead
 }
 
 // All cards storage (stores all users' cards)
@@ -146,9 +158,9 @@ interface CardState {
     currentUserId: string | null;
     initializeCards: (userId: string) => Promise<void>;
     setCards: (cards: Card[]) => void;
-    addCard: (card: Omit<Card, 'id'>) => void;
+    addCard: (card: Omit<Card, 'id'> & { id?: string }) => void;
     removeCard: (id: string) => void;
-    updateCard: (id: string, updates: Partial<Card>) => void;
+    updateCard: (id: string, updates: Partial<Card>) => Promise<void>;
     clearCards: () => void;
 }
 
@@ -208,18 +220,24 @@ export const useCardStore = create<CardState>()((set, get) => ({
                 .order('created_at', { ascending: false });
 
             if (!error && data && data.length > 0) {
-                // Map Supabase data to Card format
-                const cards: Card[] = data.map(card => ({
-                    id: card.id,
-                    user_id: card.user_id,
-                    number: card.number,
-                    holder: card.holder,
-                    expiry: card.expiry,
-                    cvv: card.cvv,
-                    pin: card.pin,
-                    type: card.card_type || card.type || 'unknown',
-                    theme: card.theme
-                }));
+                // Map Supabase data to Card format - SECURITY: Extract only last4 digits
+                const cards: Card[] = data.map(card => {
+                    // Extract last 4 digits from stored number (for backwards compatibility)
+                    const cardNumber = card.number || '';
+                    const last4 = card.last4 || cardNumber.slice(-4) || '****';
+
+                    return {
+                        id: card.id,
+                        user_id: card.user_id,
+                        last4: last4,
+                        holder: card.holder,
+                        expiry: card.expiry,
+                        type: card.card_type || card.type || 'unknown',
+                        theme: card.theme,
+                        // Keep number for backwards compatibility (will be deprecated)
+                        number: cardNumber ? `**** **** **** ${last4}` : undefined
+                    };
+                });
 
                 console.log('✅ Loaded', cards.length, 'cards from Supabase');
                 set({ cards, currentUserId: userId, isLoading: false });
@@ -275,12 +293,19 @@ export const useCardStore = create<CardState>()((set, get) => ({
         saveAllCardsToStorage(allCards);
     },
 
-    removeCard: (id) => {
+    removeCard: async (id) => {
         const { currentUserId, cards } = get();
         const updatedCards = cards.filter((c) => c.id !== id);
         set({ cards: updatedCards });
 
-        // Persist to storage
+        // Delete from Supabase backend
+        try {
+            await cardService.delete(id);
+        } catch (error) {
+            console.error('Failed to delete card from backend:', error);
+        }
+
+        // Persist to local storage
         if (currentUserId) {
             const allCards = getAllCardsFromStorage();
             allCards[currentUserId] = updatedCards;
@@ -288,16 +313,25 @@ export const useCardStore = create<CardState>()((set, get) => ({
         }
     },
 
-    updateCard: (id, updates) => {
+    updateCard: async (id, updates) => {
         const { currentUserId, cards } = get();
         const updatedCards = cards.map((c) => c.id === id ? { ...c, ...updates } : c);
         set({ cards: updatedCards });
 
-        // Persist to storage
+        // Persist to localStorage
         if (currentUserId) {
             const allCards = getAllCardsFromStorage();
             allCards[currentUserId] = updatedCards;
             saveAllCardsToStorage(allCards);
+        }
+
+        // Sync to Supabase
+        try {
+            const { cardService } = await import('../services/cardService');
+            await cardService.update(id, updates);
+            console.log('✅ Card updated in Supabase');
+        } catch (e) {
+            console.error('Error syncing card update to Supabase:', e);
         }
     },
 

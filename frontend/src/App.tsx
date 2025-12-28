@@ -1,18 +1,17 @@
 // Main App with Routing
+import React, { useEffect, lazy, Suspense, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './store/useStore';
 import { supabase } from './config/supabase';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-import LoadingScreen from './components/LoadingScreen';
+import { DashboardSkeleton, Spinner } from './components/LoadingSkeleton';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
 // Extension Integration
 import ExtensionGate from './components/ExtensionGate';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'sonner';
 import './styles/toast.css'; // Custom toast styles
 
 // ================================
@@ -135,7 +134,11 @@ const AuthCallback = () => {
         handleAuthCallback();
     }, [navigate, setUser, setLoading, location]);
 
-    return <LoadingScreen />;
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+            <Spinner size={40} color="#2563eb" />
+        </div>
+    );
 };
 
 // Background AI Insights Fetcher
@@ -145,6 +148,24 @@ import { supabaseTransactionService } from './services/supabaseTransactionServic
 function App() {
     const { isAuthenticated, isLoading } = useAuth();
     const { user } = useAuthStore();
+
+    // Track if Zustand has hydrated from localStorage
+    const [hasHydrated, setHasHydrated] = React.useState(false);
+
+    // Wait for Zustand to hydrate persisted state
+    React.useEffect(() => {
+        // Zustand's persist middleware fires this after hydration
+        const unsubscribe = useAuthStore.persist.onFinishHydration(() => {
+            setHasHydrated(true);
+        });
+
+        // If already hydrated (e.g., on hot reload), mark as hydrated
+        if (useAuthStore.persist.hasHydrated()) {
+            setHasHydrated(true);
+        }
+
+        return unsubscribe;
+    }, []);
 
     // Auto-fetch AI insights when user is authenticated
     useEffect(() => {
@@ -183,16 +204,40 @@ function App() {
         return () => clearTimeout(timeout);
     }, [isAuthenticated, user?.id]);
 
-    if (isLoading) {
-        return <LoadingScreen />;
+    // Wait for BOTH hydration AND session check to complete
+    if (!hasHydrated || isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <Spinner size={40} color="#2563eb" />
+            </div>
+        );
     }
 
     return (
         <ErrorBoundary>
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <OfflineIndicator />
-                <ToastContainer position="top-right" theme="colored" autoClose={4000} />
-                <Suspense fallback={<LoadingScreen />}>
+                <Toaster
+                    position="top-right"
+                    richColors
+                    duration={4000}
+                    closeButton
+                    toastOptions={{
+                        style: {
+                            background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
+                            border: 'none',
+                            borderRadius: '16px',
+                            color: 'white',
+                            fontWeight: 600,
+                            boxShadow: '0 10px 40px rgba(37, 99, 235, 0.3)'
+                        }
+                    }}
+                />
+                <Suspense fallback={
+                    <div className="flex-1 overflow-auto">
+                        <DashboardSkeleton />
+                    </div>
+                }>
                     <Routes>
                         {/* Auth Routes */}
                         <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />} />

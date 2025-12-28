@@ -13,6 +13,7 @@ import { supabaseTransactionService, SupabaseTransaction } from '../services/sup
 import { budgetService, Budget } from '../services/budgetService';
 import { useAuthStore } from '../store/useStore';
 import styles from './ExpenseDetailsPage.module.css';
+import { ExpenseDetailsSkeleton } from '../components/LoadingSkeleton';
 
 // Category icons and colors
 const CATEGORY_CONFIG: Record<string, { icon: any; color: string }> = {
@@ -235,16 +236,7 @@ const ExpenseDetailsPage = () => {
     if (loading) {
         return (
             <div className={styles.container}>
-                <div className={styles.loadingState}>
-                    <motion.div
-                        className={styles.loaderCard}
-                        animate={{ y: [0, -10, 0] }}
-                        transition={{ duration: 0.8, repeat: Infinity }}
-                    >
-                        <span style={{ fontSize: '3rem' }}>💸</span>
-                    </motion.div>
-                    <p>loading your money moves<span className={styles.loadingDots}></span></p>
-                </div>
+                <ExpenseDetailsSkeleton />
             </div>
         );
     }

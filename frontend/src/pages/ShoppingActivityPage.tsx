@@ -12,6 +12,7 @@ import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
 import { cn } from '@/lib/utils';
 import styles from './ShoppingActivityPage.module.css';
+import { ActivitySkeleton } from '../components/LoadingSkeleton';
 
 interface SiteVisit {
     id: string;
@@ -221,11 +222,7 @@ const ShoppingActivityPage = () => {
     if (loading) {
         return (
             <div className={styles.container}>
-                <div className={styles.loadingState}>
-                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}>
-                        <RefreshCw size={40} className="text-blue-600/30" strokeWidth={3} />
-                    </motion.div>
-                </div>
+                <ActivitySkeleton />
             </div>
         );
     }

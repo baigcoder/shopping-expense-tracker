@@ -5,10 +5,11 @@ import {
     RefreshCw, Trash2, Edit2, Building2, Landmark, CreditCard,
     PiggyBank, Briefcase, Banknote
 } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { useAuthStore } from '../store/useStore';
 import bankAccountService, { BankAccount } from '../services/bankAccountService';
 import styles from './AccountsPage.module.css';
+import { AccountsSkeleton } from '../components/LoadingSkeleton';
 
 const ACCOUNT_TYPES = {
     checking: { label: 'Checking', icon: Building2, color: '#3B82F6' },
@@ -148,6 +149,8 @@ const AccountsPage = () => {
         });
     };
 
+    if (loading) return <AccountsSkeleton />;
+
     return (
         <div className={styles.container}>
             {/* Header */}
@@ -204,12 +207,7 @@ const AccountsPage = () => {
 
             {/* Accounts Grid */}
             <div className={styles.accountsGrid}>
-                {loading ? (
-                    <div className={styles.loading}>
-                        <RefreshCw size={24} className={styles.spinning} />
-                        <p style={{ marginTop: 10 }}>Loading accounts...</p>
-                    </div>
-                ) : accounts.length === 0 ? (
+                {accounts.length === 0 ? (
                     <div className={styles.empty}>
                         <Landmark size={48} />
                         <h3>No accounts found</h3>

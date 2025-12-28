@@ -204,6 +204,29 @@ function generateSmartResponse(message: string, context: UserContext): string {
         return response;
     }
 
+    // TRANSACTIONS
+    if (lowerMsg.includes('transaction') || lowerMsg.includes('history') || lowerMsg.includes('recent')) {
+        if (transactions.length === 0) {
+            return "📝 No transactions recorded yet. Start tracking your spending and I'll help you analyze it! 💪";
+        }
+
+        const recentTx = transactions.slice(0, 8);
+        let response = `📝 Here are your recent transactions (${transactions.length} total):\n\n`;
+
+        recentTx.forEach(t => {
+            const type = t.type === 'expense' ? '💸' : '💰';
+            const amount = t.type === 'expense' ? `-${formatCurrency(Math.abs(t.amount))}` : `+${formatCurrency(Math.abs(t.amount))}`;
+            response += `${type} ${t.description || t.category}: ${amount}\n`;
+        });
+
+        response += `\n📊 This month: ${formatCurrency(stats.monthlySpent)} spent`;
+        if (stats.topCategory !== 'None') {
+            response += ` | Top: ${stats.topCategory}`;
+        }
+
+        return response;
+    }
+
     // SPENDING / STATS
     if (lowerMsg.includes('spend') || lowerMsg.includes('stat') || lowerMsg.includes('how much')) {
         return `📈 Your spending breakdown:\n\n` +
@@ -291,8 +314,6 @@ export const getAIResponse = async (message: string, userId?: string): Promise<s
             const response = await api.post('/ai/chat/fast', {
                 message,
                 context: contextString
-            }, {
-                headers: { 'x-user-id': userId }
             });
             console.log(`⚡ Fast AI response in ${response.data.responseTime}ms`);
             return response.data.reply;
@@ -302,9 +323,7 @@ export const getAIResponse = async (message: string, userId?: string): Promise<s
 
         // Fallback to regular endpoint
         try {
-            const response = await api.post('/ai/chat', { message }, {
-                headers: { 'x-user-id': userId }
-            });
+            const response = await api.post('/ai/chat', { message });
             console.log('✅ AI Chat via backend Groq');
             return response.data.reply;
         } catch (backendError) {
@@ -437,9 +456,7 @@ export async function getBackendInsights(userId: string): Promise<{
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/insights', {
-            headers: { 'x-user-id': userId }
-        });
+        const response = await api.get('/ai/insights');
         return response.data;
     } catch (error) {
         console.error('Backend AI insights error:', error);
@@ -455,9 +472,7 @@ export async function getBackendForecast(userId: string): Promise<{
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/forecast', {
-            headers: { 'x-user-id': userId }
-        });
+        const response = await api.get('/ai/forecast');
         return response.data;
     } catch (error) {
         console.error('Backend AI forecast error:', error);
@@ -473,9 +488,7 @@ export async function getBackendRisks(userId: string): Promise<{
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/risks', {
-            headers: { 'x-user-id': userId }
-        });
+        const response = await api.get('/ai/risks');
         return response.data;
     } catch (error) {
         console.error('Backend AI risks error:', error);
@@ -492,9 +505,7 @@ export async function refreshBackendAI(userId: string): Promise<{
     risks: BackendAIInsight[];
 }> {
     try {
-        const response = await api.post('/ai/refresh', {}, {
-            headers: { 'x-user-id': userId }
-        });
+        const response = await api.post('/ai/refresh', {});
         return response.data;
     } catch (error) {
         console.error('Backend AI refresh error:', error);

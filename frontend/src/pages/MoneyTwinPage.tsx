@@ -18,6 +18,7 @@ import { useDataRealtime } from '../hooks/useDataRealtime';
 import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
 import styles from './MoneyTwinPage.module.css';
+import { MoneyTwinSkeleton } from '../components/LoadingSkeleton';
 
 // Animation variants
 const containerVariants = {
@@ -166,12 +167,7 @@ const MoneyTwinPage = () => {
     if (loading) {
         return (
             <div className={styles.container}>
-                <div className={styles.loading}>
-                    <motion.div animate={{ rotate: 360, scale: [1, 1.1, 1] }} transition={{ rotate: { duration: 3, repeat: Infinity, ease: "linear" }, scale: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}>
-                        <Brain size={64} className="text-blue-600/30" strokeWidth={1.5} />
-                    </motion.div>
-                    <p>QUANTUM SYNC IN PROGRESS...</p>
-                </div>
+                <MoneyTwinSkeleton />
             </div>
         );
     }

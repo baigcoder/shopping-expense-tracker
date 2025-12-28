@@ -97,7 +97,7 @@ const Sidebar = () => {
             if (isMouseInsideRef.current) {
                 setSidebarHovered(true);
             }
-        }, 300); // 300ms delay for premium feel
+        }, 150); // Reduced from 300ms to 150ms for faster response
     }, [setSidebarHovered]);
 
     const handleMouseLeave = useCallback(() => {
@@ -110,8 +110,9 @@ const Sidebar = () => {
 
         collapseTimeoutRef.current = setTimeout(() => {
             setSidebarHovered(false);
-        }, 200);
+        }, 100); // Reduced from 200ms to 100ms for snappier collapse
     }, [setSidebarHovered]);
+
 
     // Cleanup
     useEffect(() => {
@@ -162,7 +163,7 @@ const Sidebar = () => {
             {/* Sidebar */}
             <motion.aside
                 className={cn(
-                    "fixed top-0 left-0 h-screen z-50",
+                    "fixed inset-y-0 left-0 z-50",
                     "bg-white border-r border-slate-200/60",
                     "flex flex-col",
                     "shadow-[10px_0_40px_rgba(0,0,0,0.04)]",
@@ -171,11 +172,21 @@ const Sidebar = () => {
                 )}
                 initial={false}
                 animate={{ width: isExpanded ? 240 : 80 }}
-                transition={{ type: "spring", stiffness: 280, damping: 32, mass: 0.9 }}
+                transition={{ type: "spring", stiffness: 400, damping: 35, mass: 0.8 }}
+                style={{
+                    cursor: isExpanded ? 'default' : 'pointer',
+                    transform: 'translate3d(0, 0, 0)',
+                    WebkitTransform: 'translate3d(0, 0, 0)',
+                    willChange: 'width',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    perspective: 1000
+                }}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
+
                 {/* Logo Section */}
                 <div className="h-18 flex items-center px-4 border-b border-slate-100">
                     <div className="flex items-center gap-3">
@@ -210,7 +221,15 @@ const Sidebar = () => {
 
 
                 {/* Navigation Links */}
-                <nav className="flex-1 px-3 space-y-1 overflow-hidden pt-2">
+                <nav
+                    className="flex-1 px-3 space-y-1 pt-2"
+                    style={{
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        overscrollBehavior: 'contain'
+                    }}
+                    onWheel={(e) => e.stopPropagation()}
+                >
                     {navItems.map((item, index) => (
                         <NavLink
                             key={item.path}

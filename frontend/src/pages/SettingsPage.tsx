@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useAuthStore } from '../store/useStore';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { supabase } from '../config/supabase';
 import { useSound } from '@/hooks/useSound';
 import { cn } from '@/lib/utils';

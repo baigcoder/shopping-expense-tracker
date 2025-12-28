@@ -6,7 +6,7 @@
 .container {
     width: 100%;
     background: #F8FAFC;
-    min-height: 100vh;
+    min-height: auto;
     padding: 24px 32px;
 }
 

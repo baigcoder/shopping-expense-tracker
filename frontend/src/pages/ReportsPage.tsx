@@ -16,6 +16,7 @@ import { AreaChart, Area, PieChart as RechartsPie, Pie, Cell, ResponsiveContaine
 import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import styles from './ReportsPage.module.css';
+import { ReportsSkeleton } from '../components/LoadingSkeleton';
 
 const ReportsPage = () => {
     const { user } = useAuthStore();
@@ -131,18 +132,7 @@ const ReportsPage = () => {
     if (loading) {
         return (
             <div className={styles.mainContent}>
-                <div className="flex items-center justify-center min-h-[60vh] flex-col gap-6">
-                    <motion.div
-                        animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        className={styles.titleIcon}
-                    >
-                        <Receipt size={32} />
-                    </motion.div>
-                    <p className="text-muted-foreground font-medium animate-pulse">
-                        Generating your financial manifest...
-                    </p>
-                </div>
+                <ReportsSkeleton />
             </div>
         );
     }

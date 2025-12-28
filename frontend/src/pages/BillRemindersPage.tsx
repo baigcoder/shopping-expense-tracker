@@ -19,6 +19,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import styles from './BillRemindersPage.module.css';
+import { BillRemindersSkeleton } from '../components/LoadingSkeleton';
 
 const BillRemindersPage = () => {
     const [reminders, setReminders] = useState<BillReminder[]>([]);
@@ -73,16 +74,7 @@ const BillRemindersPage = () => {
     if (loading) {
         return (
             <div className={styles.mainContent}>
-                <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
-                    <motion.div
-                        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className={styles.titleIcon}
-                    >
-                        <Bell size={32} />
-                    </motion.div>
-                    <p className="font-bold text-slate-400 uppercase tracking-widest text-xs">Syncing Pipeline...</p>
-                </div>
+                <BillRemindersSkeleton />
             </div>
         );
     }

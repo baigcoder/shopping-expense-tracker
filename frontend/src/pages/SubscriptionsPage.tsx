@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import styles from './SubscriptionsPage.module.css';
+import { SubscriptionsSkeleton } from '../components/LoadingSkeleton';
 
 const CATEGORIES = [
     'Entertainment', 'Music', 'Software', 'Gaming', 'Fitness',
@@ -162,16 +163,7 @@ const SubscriptionsPage = () => {
     if (loading) {
         return (
             <div className={styles.mainContent}>
-                <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
-                    <motion.div
-                        animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className={styles.titleIcon}
-                    >
-                        <Repeat size={32} />
-                    </motion.div>
-                    <p className="font-bold text-slate-400 uppercase tracking-widest text-xs">Syncing Subscriptions...</p>
-                </div>
+                <SubscriptionsSkeleton />
             </div>
         );
     }

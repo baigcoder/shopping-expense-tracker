@@ -2,17 +2,19 @@
 import { supabase } from '../config/supabase';
 import { CardBrand } from '../store/useStore';
 
+// SECURITY: CVV and PIN are NEVER stored (PCI-DSS compliant)
+// Only last 4 digits of card number are stored for display purposes
 export interface CardData {
     id: string;
     user_id: string;
-    number: string;
+    last4: string;      // Only last 4 digits (PCI-DSS compliant)
     holder: string;
     expiry: string;
-    cvv: string;
-    pin: string;
     card_type: CardBrand;
     theme: string;
     created_at: string;
+    // Deprecated - kept for backwards compatibility during migration
+    number?: string;    // @deprecated - should only contain masked value
 }
 
 export const cardService = {

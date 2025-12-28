@@ -11,6 +11,62 @@
     // ================================
     const DEBUG = false;
     const log = (...args) => DEBUG && console.log('💸', ...args);
+
+    /**
+     * 🎹 AUDIO & HAPTIC FEEDBACK
+     * Provides immediate positive reinforcement for detections
+     */
+    function playFeedback(type = 'success') {
+        try {
+            // 1. Haptic (Vibration)
+            if ('vibrate' in navigator) {
+                if (type === 'success') {
+                    navigator.vibrate([10, 30, 10]); // Multi-pulse for success
+                } else if (type === 'alert') {
+                    navigator.vibrate([50, 50, 50]); // Stronger for alerts
+                }
+            }
+
+            // 2. Audio (Synthesized "Ping")
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            if (type === 'success') {
+                // Happy high-pitched double "ping"
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            } else if (type === 'alert') {
+                // Warning low-pitched "boop"
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(220, ctx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+            }
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.5);
+
+            // Cleanup
+            setTimeout(() => {
+                ctx.close().catch(() => { });
+            }, 1000);
+        } catch (error) {
+            // Fail silently if AudioContext blocked
+        }
+    }
     const warn = (...args) => DEBUG && console.warn('💸', ...args);
 
     // ================================
@@ -446,7 +502,9 @@
         CHECKOUT_ENTERED: 'checkout_entered',
         PAYMENT_FORM_ACTIVE: 'payment_form_active',
         PAYMENT_SUBMITTED: 'payment_submitted',
-        TRANSACTION_CONFIRMED: 'transaction_confirmed'
+        TRANSACTION_CONFIRMED: 'transaction_confirmed',
+        CANCELLATION_FLOW: 'cancellation_flow',
+        CANCELLATION_CONFIRMED: 'cancellation_confirmed'
     };
 
     // ================================
@@ -487,8 +545,14 @@
         }
 
         getFavicon() {
-            const link = document.querySelector('link[rel*="icon"]');
-            return link?.href || `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+            // First choice: Clearbit Logo API for crisp, high-quality brand logos
+            try {
+                return `https://logo.clearbit.com/${hostname}`;
+            } catch (e) {
+                // Second choice: Standard favicon
+                const link = document.querySelector('link[rel*="icon"]');
+                return link?.href || `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+            }
         }
 
         transition(newState, data = {}) {
@@ -505,6 +569,15 @@
                 }
                 this.currentState = newState;
                 Object.assign(this.transactionData, data);
+
+                // Perform effects based on new state
+                if (this.currentState === STATES.PAYMENT_SUBMITTED) {
+                    log('🎯 State effect: PAYMENT_SUBMITTED');
+                    playFeedback('success');
+                } else if (this.currentState === STATES.CANCELLATION_CONFIRMED) {
+                    log('🎯 State effect: CANCELLATION_CONFIRMED');
+                    playFeedback('alert');
+                }
 
                 this.notifyBackground();
 
@@ -612,29 +685,113 @@
         }
 
         extractPrices() {
-            const text = document.body?.innerText || '';
-            const patterns = [
-                /\$\s*([\d,]+\.?\d*)/g,      // USD
-                /USD\s*([\d,]+\.?\d*)/gi,
-                /€\s*([\d,]+\.?\d*)/g,        // EUR
-                /£\s*([\d,]+\.?\d*)/g,        // GBP
-                /Rs\.?\s*([\d,]+\.?\d*)/gi,   // PKR/INR
-                /PKR\s*([\d,]+\.?\d*)/gi,
-                /INR\s*([\d,]+\.?\d*)/gi,
-                /₹\s*([\d,]+\.?\d*)/g         // INR symbol
+            const prices = [];
+
+            // PRIORITY 1: Order total selectors (most accurate)
+            const prioritySelectors = [
+                '[class*="order-total"] [class*="price"]',
+                '[class*="order-total"]',
+                '[class*="grand-total"]',
+                '[class*="final-price"]',
+                '[class*="total-amount"]',
+                '[class*="checkout-total"]',
+                '[class*="summary-total"]',
+                '[class*="cart-total"]',
+                '[data-testid*="total"]',
+                '[id*="order-total"]',
+                '[id*="grand-total"]',
+                '.order-summary-total',
+                '.payment-total',
+                '.amount-due',
+                // Pakistani site specific
+                '[class*="payable"]',
+                '[class*="grand_total"]',
+                '.total-payable',
+                '.checkout-summary .price',
+                // Daraz specific
+                '.checkout-summary .total',
+                '[class*="order-summary"] [class*="total"]'
             ];
 
-            const prices = [];
-            for (const pattern of patterns) {
-                pattern.lastIndex = 0;
-                let match;
-                while ((match = pattern.exec(text)) !== null) {
-                    const price = parseFloat(match[1].replace(/,/g, ''));
-                    if (price > 0 && price < 100000) prices.push(price);
+            for (const selector of prioritySelectors) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    const text = el.innerText || el.textContent || '';
+                    const price = this.extractPriceFromText(text);
+                    if (price > 0) {
+                        log('Priority price found:', price, 'from', selector);
+                        return [price]; // Return immediately - most reliable
+                    }
                 }
             }
 
-            return [...new Set(prices)].sort((a, b) => b - a);
+            // PRIORITY 2: Look for prices near "Total", "Grand Total", "Amount Due"
+            const allElements = document.querySelectorAll('*');
+            for (const el of allElements) {
+                const text = (el.innerText || '').toLowerCase();
+                if (/total|amount due|payable|grand total/i.test(text) && text.length < 100) {
+                    const price = this.extractPriceFromText(el.innerText);
+                    if (price > 0 && price < 1000000) {
+                        log('Context price found:', price, 'near "total"');
+                        prices.push({ price, confidence: 0.8 });
+                    }
+                }
+            }
+
+            // PRIORITY 3: General price patterns from page text
+            const pageText = document.body?.innerText || '';
+            const patterns = [
+                /Rs\.?\s*([\d,]+(?:\.\d{1,2})?)/gi,    // PKR (prioritize local)
+                /PKR\s*([\d,]+(?:\.\d{1,2})?)/gi,
+                /\$\s*([\d,]+(?:\.\d{1,2})?)/g,       // USD
+                /USD\s*([\d,]+(?:\.\d{1,2})?)/gi,
+                /€\s*([\d,]+(?:\.\d{1,2})?)/g,        // EUR
+                /£\s*([\d,]+(?:\.\d{1,2})?)/g,        // GBP
+                /₹\s*([\d,]+(?:\.\d{1,2})?)/g,        // INR
+                /INR\s*([\d,]+(?:\.\d{1,2})?)/gi
+            ];
+
+            for (const pattern of patterns) {
+                pattern.lastIndex = 0;
+                let match;
+                while ((match = pattern.exec(pageText)) !== null) {
+                    const price = parseFloat(match[1].replace(/,/g, ''));
+                    if (price > 0 && price < 1000000) {
+                        prices.push({ price, confidence: 0.5 });
+                    }
+                }
+            }
+
+            // Sort by confidence, then by price (prefer higher confidence, then higher price for totals)
+            const sortedPrices = prices
+                .sort((a, b) => b.confidence - a.confidence || b.price - a.price)
+                .map(p => p.price);
+
+            return [...new Set(sortedPrices)];
+        }
+
+        // Helper to extract price from a text string
+        extractPriceFromText(text) {
+            const patterns = [
+                /Rs\.?\s*([\d,]+(?:\.\d{1,2})?)/i,
+                /PKR\s*([\d,]+(?:\.\d{1,2})?)/i,
+                /\$\s*([\d,]+(?:\.\d{1,2})?)/,
+                /€\s*([\d,]+(?:\.\d{1,2})?)/,
+                /£\s*([\d,]+(?:\.\d{1,2})?)/,
+                /₹\s*([\d,]+(?:\.\d{1,2})?)/,
+                /([\d,]+(?:\.\d{1,2})?)\s*(?:Rs|PKR|USD|\$|€|£|₹)/i,
+                // Fallback: just large numbers
+                /\b([\d,]{3,}(?:\.\d{1,2})?)\b/
+            ];
+
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) {
+                    const price = parseFloat(match[1].replace(/,/g, ''));
+                    if (price > 0 && price < 1000000) return price;
+                }
+            }
+            return 0;
         }
 
         extractTrialDays(pageText) {
@@ -850,6 +1007,7 @@
         // Check checkout URL
         checkCheckoutURL();
         checkPaymentForms();
+        checkCancellation();
 
         // Listen for payment button clicks
         document.addEventListener('click', handleClick, true);
@@ -868,6 +1026,7 @@
             setTimeout(() => {
                 checkCheckoutURL();
                 checkPaymentForms();
+                checkCancellation();
             }, 300);
         };
     }
@@ -876,6 +1035,14 @@
         const url = window.location.href.toLowerCase();
         if (CHECKOUT_URL_PATTERNS.some(p => p.test(url))) {
             tracker.transition(STATES.CHECKOUT_ENTERED, { enteredCheckoutAt: Date.now() });
+        }
+    }
+
+    function checkCancellation() {
+        if (tracker.currentState === STATES.CANCELLATION_CONFIRMED) return;
+
+        if (tracker.detectCancellation()) {
+            tracker.transition(STATES.CANCELLATION_FLOW, { cancellationDetectedAt: Date.now() });
         }
     }
 
@@ -912,6 +1079,30 @@
             });
 
             startConfirmationWatcher();
+        }
+
+        // NEW: Check for cancellation confirmation buttons
+        if (tracker.currentState === STATES.CANCELLATION_FLOW) {
+            const cancelConfirmPatterns = [
+                /confirm\s*cancel/i, /end\s*subscription/i, /stop\s*auto-renew/i,
+                /cancel\s*anyway/i, /yes,\s*cancel/i, /finish\s*cancellation/i
+            ];
+
+            if (cancelConfirmPatterns.some(p => p.test(text))) {
+                log('Cancellation confirmation button clicked:', text);
+                tracker.transition(STATES.CANCELLATION_CONFIRMED, { cancellationConfirmedAt: Date.now() });
+
+                // Notify background immediately
+                chrome.runtime.sendMessage({
+                    type: 'CANCELLATION_DETECTED',
+                    data: {
+                        name: tracker.siteInfo.name,
+                        hostname: tracker.siteInfo.hostname,
+                        url: window.location.href,
+                        timestamp: Date.now()
+                    }
+                });
+            }
         }
     }
 

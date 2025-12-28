@@ -5,7 +5,7 @@
 
 .mainContent {
     width: 100%;
-    min-height: 100vh;
+    min-height: auto;
     padding: 2.5rem;
     background: #f8fafc;
     color: #1e293b;

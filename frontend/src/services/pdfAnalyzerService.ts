@@ -44,25 +44,29 @@ export const extractWithPythonService = async (file: File): Promise<{
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch(`${PDF_SERVICE_URL}/extract`, {
+        // Use the correct endpoint /parse-document
+        const response = await fetch(`${PDF_SERVICE_URL}/parse-document`, {
             method: 'POST',
             body: formData,
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('PDF service error:', response.status, errorText);
             throw new Error(`PDF service error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('✅ Python PDF extraction successful:', data.page_count, 'pages');
+        console.log('✅ Python PDF extraction successful:', data.page_count, 'pages,', data.transactions?.length || 0, 'transactions');
 
+        // Map the response from parse-document endpoint
         return {
-            success: data.success,
-            text: data.extracted_text || '',
+            success: true,
+            text: data.raw_text || '',
             pageCount: data.page_count || 1,
-            bankName: data.bank_name || 'Unknown',
+            bankName: data.detected_period?.bank || 'Unknown',
             transactions: data.transactions || [],
-            pageTexts: data.page_texts || [],
+            pageTexts: [],
         };
     } catch (error) {
         console.error('Python PDF service failed:', error);
@@ -76,6 +80,7 @@ export const extractWithPythonService = async (file: File): Promise<{
         };
     }
 };
+
 
 // Set up PDF.js worker - use local file
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';

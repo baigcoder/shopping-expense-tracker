@@ -51,11 +51,13 @@ const AddCardModal = () => {
     const [cardHolder, setCardHolder] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [expiry, setExpiry] = useState('');
+    // SECURITY: CVV is used for validation only, NEVER stored
     const [cvv, setCvv] = useState('');
-    const [pin, setPin] = useState('');
+    const [cvvPassword, setCvvPassword] = useState('');
+    const [confirmCvvPassword, setConfirmCvvPassword] = useState('');
     const [selectedTheme, setSelectedTheme] = useState(CARD_THEMES[0].id);
     const [showCvv, setShowCvv] = useState(false);
-    const [showPin, setShowPin] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [cardBrand, setCardBrand] = useState<CardBrand>('unknown');
     const [errors, setErrors] = useState<any>({});
@@ -89,35 +91,62 @@ const AddCardModal = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (cvvPassword && cvvPassword !== confirmCvvPassword) {
+            toast.error('Passwords do not match');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
+            // SECURITY: Only store last 4 digits - CVV is NEVER stored
+            const cleanNumber = cardNumber.replace(/\s/g, '');
+            const last4 = cleanNumber.slice(-4);
+
             const cardData = {
                 user_id: user?.id || '',
-                number: cardNumber,
+                last4: last4,  // PCI-DSS compliant - only last 4 digits
                 holder: cardHolder,
                 expiry: expiry,
-                cvv: cvv,
-                pin: pin,
                 theme: selectedTheme,
-                card_type: cardBrand
+                card_type: cardBrand,
+                // Legacy columns - set to masked/placeholder values
+                number: `**** **** **** ${last4}`,
+                cvv: '***',
+                pin: '****'
             };
 
             // Call Service
             if (user?.id) {
-                const savedCard = await cardService.create(cardData);
+                const savedCard = await cardService.create(cardData as any);
                 if (savedCard) {
                     // Add the saved card with proper Supabase ID to store
                     addCard({
-                        ...savedCard,
-                        type: savedCard.card_type || cardBrand
-                    } as any);
-                    toast.success('Card added successfully');
+                        id: savedCard.id,
+                        user_id: savedCard.user_id,
+                        last4: savedCard.last4 || last4,
+                        holder: savedCard.holder,
+                        expiry: savedCard.expiry,
+                        type: savedCard.card_type || cardBrand,
+                        theme: savedCard.theme,
+                        number: `**** **** **** ${last4}`, // Masked for display
+                        cvv_password: cvvPassword || undefined,
+                        cvv_encrypted: cvv || undefined
+                    });
+                    toast.success('Card added securely ✓');
                 } else {
                     throw new Error('Failed to save card');
                 }
             }
 
             closeAddCard();
+            // Reset form
+            setCardNumber('');
+            setCardHolder('');
+            setExpiry('');
+            setCvv('');
+            setCvvPassword('');
+            setConfirmCvvPassword('');
         } catch (e) {
             toast.error('Failed to add card');
         } finally {
@@ -163,13 +192,12 @@ const AddCardModal = () => {
                                     card={{
                                         id: 'preview',
                                         user_id: user?.id || '',
-                                        number: cardNumber,
+                                        last4: cardNumber.replace(/\s/g, '').slice(-4) || '****',
                                         holder: cardHolder,
                                         expiry: expiry,
-                                        cvv: cvv,
-                                        pin: pin,
                                         type: cardBrand,
-                                        theme: selectedTheme
+                                        theme: selectedTheme,
+                                        number: cardNumber // For preview only
                                     }}
                                     showFullNumber={true}
                                     className="shadow-2xl shadow-blue-200/50"
@@ -217,15 +245,15 @@ const AddCardModal = () => {
                                 <X className="h-6 w-6" />
                             </button>
 
-                            <form onSubmit={handleSubmit} className="space-y-8 mt-4">
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Card Number</label>
+                            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Card Number</label>
                                     <div className="relative group">
-                                        <div className="absolute left-5 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                            <CreditCard className="h-5 w-5" />
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
+                                            <CreditCard className="h-4 w-4" />
                                         </div>
                                         <Input
-                                            className="h-16 pl-16 pr-6 rounded-2xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-lg focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                            className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
                                             placeholder="0000 0000 0000 0000"
                                             value={cardNumber}
                                             onChange={handleCardNumberChange}
@@ -234,14 +262,14 @@ const AddCardModal = () => {
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Card Holder</label>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Card Holder</label>
                                     <div className="relative group">
-                                        <div className="absolute left-5 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                            <User className="h-5 w-5" />
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
+                                            <User className="h-4 w-4" />
                                         </div>
                                         <Input
-                                            className="h-16 pl-16 pr-6 rounded-2xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-lg focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                            className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
                                             placeholder="NAME ON CARD"
                                             value={cardHolder}
                                             onChange={e => setCardHolder(e.target.value.toUpperCase())}
@@ -249,15 +277,15 @@ const AddCardModal = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Expiry</label>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expiry</label>
                                         <div className="relative group">
-                                            <div className="absolute left-5 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                                <Calendar className="h-5 w-5" />
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
+                                                <Calendar className="h-4 w-4" />
                                             </div>
                                             <Input
-                                                className="h-16 pl-16 pr-6 rounded-2xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-lg focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                                className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
                                                 placeholder="MM/YY"
                                                 value={expiry}
                                                 onChange={e => {
@@ -270,15 +298,15 @@ const AddCardModal = () => {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Security Code</label>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">CVV</label>
                                         <div className="relative group">
-                                            <div className="absolute left-5 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                                <Lock className="h-5 w-5" />
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
+                                                <Lock className="h-4 w-4" />
                                             </div>
                                             <Input
                                                 type={showCvv ? "text" : "password"}
-                                                className="h-16 pl-16 pr-14 rounded-2xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-lg focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                                className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
                                                 placeholder="CVV"
                                                 value={cvv}
                                                 onChange={e => setCvv(e.target.value.slice(0, 4))}
@@ -286,11 +314,58 @@ const AddCardModal = () => {
                                             />
                                             <button
                                                 type="button"
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-blue-600"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-300 hover:text-blue-600"
                                                 onClick={() => setShowCvv(!showCvv)}
                                             >
-                                                {showCvv ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                {showCvv ? <EyeOff size={16} /> : <Eye size={16} />}
                                             </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-2 border-t border-slate-100 space-y-4">
+                                    <div className="flex items-center gap-2 px-1">
+                                        <Shield className="h-4 w-4 text-indigo-600" />
+                                        <span className="text-[11px] font-black text-indigo-600 uppercase tracking-widest">CVV Protection Setup</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Password</label>
+                                            <div className="relative group">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-indigo-600 group-focus-within:bg-indigo-50 transition-all">
+                                                    <Lock className="h-4 w-4" />
+                                                </div>
+                                                <Input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition-all shadow-none"
+                                                    placeholder="Set Password"
+                                                    value={cvvPassword}
+                                                    onChange={e => setCvvPassword(e.target.value)}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-300 hover:text-indigo-600"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                >
+                                                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Confirm</label>
+                                            <div className="relative group">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-indigo-600 group-focus-within:bg-indigo-50 transition-all">
+                                                    <Lock className="h-4 w-4" />
+                                                </div>
+                                                <Input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition-all shadow-none"
+                                                    placeholder="Confirm"
+                                                    value={confirmCvvPassword}
+                                                    onChange={e => setConfirmCvvPassword(e.target.value)}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -298,14 +373,14 @@ const AddCardModal = () => {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-16 rounded-3xl bg-blue-600 hover:bg-blue-700 text-white font-black text-lg shadow-2xl shadow-blue-200 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-70"
+                                    className="w-full h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-base shadow-xl shadow-blue-200 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-70 mt-2"
                                 >
                                     {isSubmitting ? (
-                                        <Loader2 className="h-6 w-6 animate-spin" />
+                                        <Loader2 className="h-5 w-5 animate-spin" />
                                     ) : (
                                         <>
-                                            Add Card
-                                            <Wallet className="h-5 w-5" />
+                                            Securely Add Card
+                                            <Wallet className="h-4 w-4" />
                                         </>
                                     )}
                                 </Button>

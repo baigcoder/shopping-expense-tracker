@@ -23,15 +23,18 @@ const TTL = {
     INSIGHTS: 5 * 60,      // 5 minutes
     FORECAST: 10 * 60,     // 10 minutes
     RISK_ALERTS: 5 * 60,   // 5 minutes
-    USER_DATA: 2 * 60      // 2 minutes
+    USER_DATA: 5 * 60,     // 5 minutes (increased from 2 min to reduce cache misses)
+    CHAT_HISTORY: 30 * 60   // 30 minutes
 };
+
 
 // Cache key prefixes
 const KEYS = {
     INSIGHTS: 'ai:insights:',
     FORECAST: 'ai:forecast:',
     RISKS: 'ai:risks:',
-    USER_CONTEXT: 'user:context:'
+    USER_CONTEXT: 'user:context:',
+    CHAT_HISTORY: 'ai:chat:history:'
 };
 
 /**
@@ -139,6 +142,27 @@ export async function setCachedUserContext(userId: string, context: any) {
     return setCache(KEYS.USER_CONTEXT + userId, context, TTL.USER_DATA);
 }
 
+// ==================== CHAT HISTORY CACHE ====================
+
+export async function getChatHistory(userId: string): Promise<any[]> {
+    const history = await getCache<any[]>(KEYS.CHAT_HISTORY + userId);
+    return history || [];
+}
+
+export async function appendChatHistory(userId: string, message: { role: string; content: string }): Promise<void> {
+    const history = await getChatHistory(userId);
+    history.push(message);
+
+    // Keep only last 10 messages for context efficiency
+    const trimmedHistory = history.slice(-10);
+
+    await setCache(KEYS.CHAT_HISTORY + userId, trimmedHistory, TTL.CHAT_HISTORY);
+}
+
+export async function clearChatHistory(userId: string): Promise<void> {
+    await deleteCache(KEYS.CHAT_HISTORY + userId);
+}
+
 /**
  * Check Redis connection status
  */
@@ -180,6 +204,9 @@ export default {
     setCachedRisks,
     getCachedUserContext,
     setCachedUserContext,
+    getChatHistory,
+    appendChatHistory,
+    clearChatHistory,
     checkConnection,
     getCacheStats
 };

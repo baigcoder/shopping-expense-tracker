@@ -2,6 +2,8 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import MobileBottomNav from '../components/MobileBottomNav';
+import MobileHelpButton from '../components/MobileHelpButton';
 import AddCardModal from '../components/AddCardModal';
 import TransactionModal from '../components/TransactionModal';
 import AIChatbot from '../components/AIChatbot';
@@ -11,7 +13,6 @@ import ErrorBoundary from '../components/ErrorBoundary';
 import { useAuthStore, useUIStore } from '../store/useStore';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
 import { fetchAiTipInBackground } from '../services/aiTipCacheService';
-import { ToastContainer } from 'react-toastify';
 import styles from './DashboardLayout.module.css';
 
 const DashboardLayout = () => {
@@ -26,7 +27,7 @@ const DashboardLayout = () => {
             try {
                 const transactions = await supabaseTransactionService.getAll(user.id);
                 const expenses = transactions.filter(t => t.type === 'expense');
-                const monthlyTotal = expenses.filter(t => t.type === 'expense').reduce((sum, t) => sum + Math.abs(t.amount), 0);
+                const monthlyTotal = expenses.reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
                 const categoryTotals: Record<string, number> = {};
                 expenses.forEach(t => {
@@ -65,19 +66,23 @@ const DashboardLayout = () => {
             <Sidebar />
             <ExtensionAlert />
 
-            <main className={styles.contentWrapper}>
+            <main className={`${styles.contentWrapper} pb-20 lg:pb-0`}>
                 <ErrorBoundary>
                     <Outlet />
                 </ErrorBoundary>
             </main>
 
+            {/* Mobile Bottom Navigation */}
+            <MobileBottomNav />
+
             <AddCardModal />
             <TransactionModal />
-            {/* <QuickAddFAB /> */}
+            <QuickAddFAB />
+            <MobileHelpButton />
             <AIChatbot />
-            <ToastContainer />
         </div>
     );
 };
+
 
 export default DashboardLayout;

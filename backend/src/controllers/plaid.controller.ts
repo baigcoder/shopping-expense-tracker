@@ -81,7 +81,7 @@ export async function exchangePublicToken(req: Request, res: Response) {
 
         // Store linked accounts in database
         for (const account of accounts) {
-            await supabase.from('linked_accounts').upsert({
+            await supabase.from('bank_accounts').upsert({
                 user_id,
                 institution_name: institution?.name || 'Unknown Bank',
                 institution_id: institution?.institution_id || itemId,
@@ -124,14 +124,27 @@ export async function getLinkedAccounts(req: Request, res: Response) {
         }
 
         const { data, error } = await supabase
-            .from('linked_accounts')
-            .select('id, institution_name, account_name, account_type, account_mask, current_balance, available_balance, currency, last_synced')
+            .from('bank_accounts')
+            .select('id, name, bank_name, account_type, balance, currency, is_active, last_updated, created_at')
             .eq('user_id', user_id)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        res.json({ success: true, accounts: data || [] });
+        // Map to expected frontend format
+        const accounts = (data || []).map(acc => ({
+            id: acc.id,
+            institution_name: acc.bank_name,
+            account_name: acc.name,
+            account_type: acc.account_type,
+            account_mask: '', // Not stored in this schema
+            current_balance: acc.balance,
+            available_balance: acc.balance,
+            currency: acc.currency,
+            last_synced: acc.last_updated
+        }));
+
+        res.json({ success: true, accounts });
     } catch (error: any) {
         console.error('Get accounts error:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch accounts' });
@@ -146,7 +159,7 @@ export async function syncTransactions(req: Request, res: Response) {
 
         // Get the access token for this account
         const { data: account, error: accountError } = await supabase
-            .from('linked_accounts')
+            .from('bank_accounts')
             .select('access_token_encrypted, item_id')
             .eq('id', accountId)
             .single();
@@ -198,7 +211,7 @@ export async function syncTransactions(req: Request, res: Response) {
 
         // Update last synced timestamp
         await supabase
-            .from('linked_accounts')
+            .from('bank_accounts')
             .update({ last_synced: new Date().toISOString() })
             .eq('id', accountId);
 
@@ -225,7 +238,7 @@ export async function disconnectAccount(req: Request, res: Response) {
 
         // Get access token to remove from Plaid
         const { data: account } = await supabase
-            .from('linked_accounts')
+            .from('bank_accounts')
             .select('access_token_encrypted')
             .eq('id', accountId)
             .single();
@@ -239,7 +252,7 @@ export async function disconnectAccount(req: Request, res: Response) {
 
         // Delete from database
         const { error } = await supabase
-            .from('linked_accounts')
+            .from('bank_accounts')
             .delete()
             .eq('id', accountId);
 
@@ -258,7 +271,7 @@ export async function refreshBalances(req: Request, res: Response) {
         const { accountId } = req.params;
 
         const { data: account } = await supabase
-            .from('linked_accounts')
+            .from('bank_accounts')
             .select('access_token_encrypted')
             .eq('id', accountId)
             .single();
@@ -275,7 +288,7 @@ export async function refreshBalances(req: Request, res: Response) {
 
         if (balances) {
             await supabase
-                .from('linked_accounts')
+                .from('bank_accounts')
                 .update({
                     current_balance: balances.current,
                     available_balance: balances.available,

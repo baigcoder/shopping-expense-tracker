@@ -7,7 +7,7 @@
 .mainContent {
     width: 100%;
     background: #f8fafc;
-    min-height: 100vh;
+    min-height: auto;
     padding: 24px;
     font-family: var(--font-sans);
     color: hsl(var(--foreground));

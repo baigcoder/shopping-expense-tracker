@@ -1,6 +1,6 @@
 // Extension Sync Hook - Manages extension communication and auto-login
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { genZToast } from '../services/genZToast';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
@@ -46,11 +46,24 @@ const broadcastSyncStatus = async (userId: string, eventType: 'synced' | 'remove
 
 export const useExtensionSync = () => {
     const { user } = useAuthStore();
-    const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>({
-        installed: false,
-        loggedIn: false
-    });
-    const [checking, setChecking] = useState(true);
+
+    // OPTIMIZATION: Check cached sync status immediately (synchronous)
+    const getCachedStatus = (): ExtensionStatus => {
+        try {
+            const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
+            if (syncedData) {
+                const data = JSON.parse(syncedData);
+                if (data.synced && data.email) {
+                    return { installed: true, loggedIn: true, userEmail: data.email };
+                }
+            }
+        } catch (e) { /* ignore */ }
+        return { installed: false, loggedIn: false };
+    };
+
+    const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>(getCachedStatus);
+    // OPTIMIZATION: If already synced from cache, don't show as "checking"
+    const [checking, setChecking] = useState(() => !getCachedStatus().loggedIn);
     const [syncing, setSyncing] = useState(false);
 
     // Consolidated extension tracking state (use ref for synchronous access)
@@ -58,6 +71,7 @@ export const useExtensionSync = () => {
         wasInstalled: false,
         hasAlertedRemoval: false
     });
+
 
     // Check if extension is installed and synced
     const checkExtension = useCallback(async () => {
@@ -287,10 +301,8 @@ export const useExtensionSync = () => {
             }));
             setChecking(false);
 
-            // Trigger styled toast via helper with unique ID
-            genZToast.extensionSynced({
-                toastId: 'extension-synced-hook'
-            });
+            // Trigger styled toast via helper (handles deduplication internally)
+            genZToast.extensionSynced();
         };
 
         // NEW: Listen for behavior-based transaction events from extension

@@ -1,9 +1,10 @@
 // Cashly Dashboard - Premium Modern SaaS Finance Dashboard
 // Midnight Coral Theme - Light Mode
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, Share2, TrendingUp, TrendingDown, Sparkles, Filter, MoreHorizontal, ShoppingCart, Store, Heart, Wallet, Activity, Eye, EyeOff, Zap } from 'lucide-react';
+import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, TrendingUp, TrendingDown, ShoppingCart, Store, Heart, Wallet, Activity, Eye, EyeOff, Zap, X, Trash2, Copy, Shield, Check } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import PremiumCard from '../components/PremiumCard';
 import MoneyTwinPulse from '../components/dashboard/MoneyTwinPulse';
 import ExtensionStatsCard from '../components/ExtensionStatsCard';
@@ -11,7 +12,6 @@ import {
     AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
     CartesianGrid
 } from 'recharts';
-import LoadingScreen from '../components/LoadingScreen';
 import { useAuthStore, useCardStore, useModalStore } from '../store/useStore';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { budgetService } from '../services/budgetService';
@@ -22,6 +22,7 @@ import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
 import styles from './DashboardPage.module.css';
+import { DashboardSkeleton } from '../components/LoadingSkeleton';
 
 // Animation variants
 const containerVariants = {
@@ -67,6 +68,39 @@ const DashboardPage = () => {
     const [recentTransactions, setRecentTransactions] = useState<SupabaseTransaction[]>([]);
     const [healthScore, setHealthScore] = useState(0);
     const [merchantData, setMerchantData] = useState<{ name: string; amount: number; count: number }[]>([]);
+    const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+    const [isCardPreviewOpen, setIsCardPreviewOpen] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const { removeCard } = useCardStore();
+    const navigate = useNavigate();
+
+    const handleCardClick = (card: CardData) => {
+        setSelectedCard(card);
+        setIsCardPreviewOpen(true);
+        soundManager.play('click');
+    };
+
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        soundManager.play('click');
+        setTimeout(() => setCopied(false), 1500);
+    };
+
+    const handleDeleteCard = async () => {
+        if (!selectedCard) return;
+        if (confirm('Are you sure you want to delete this card?')) {
+            await removeCard(selectedCard.id);
+            setIsCardPreviewOpen(false);
+            setSelectedCard(null);
+            // Refresh cards
+            if (user?.id) {
+                const cards = await cardService.getAll(user.id);
+                setUserCards(cards);
+            }
+            soundManager.play('success');
+        }
+    };
 
     // Fetch data
     useEffect(() => {
@@ -159,12 +193,37 @@ const DashboardPage = () => {
                 });
 
                 // Financial Health Score Calculation
-                // Factors: Streak (30%), Budget Adherence (40%), Savings Rate (30%)
-                const streakPoints = Math.min(100, streakData.currentStreak * 10);
-                const budgetPoints = 100 - budgetPercentage; // Lower usage is better for score
-                const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
-                const score = Math.round((streakPoints * 0.3) + (budgetPoints * 0.4) + (Math.max(0, savingsRate) * 0.3));
-                setHealthScore(score || 72); // Default to a decent score if new user
+                // Factors: Streak (20%), Budget Adherence (25%), Savings Rate (25%), Activity (15%), Diversification (15%)
+                let score = 0;
+
+                // 1. Streak Points (20%) - Consistent tracking
+                const streakPoints = Math.min(100, streakData.currentStreak * 12);
+                score += streakPoints * 0.20;
+
+                // 2. Budget Adherence (25%) - Staying under budget
+                const budgetAdherence = totalBudget > 0
+                    ? Math.max(0, 100 - budgetPercentage)  // Lower usage is better
+                    : 50; // Default if no budget set
+                score += budgetAdherence * 0.25;
+
+                // 3. Savings Rate (25%) - Money saved vs income
+                const savingsRateCalc = totalIncome > 0
+                    ? Math.max(0, Math.min(100, ((totalIncome - totalExpense) / totalIncome) * 100))
+                    : 50;
+                score += savingsRateCalc * 0.25;
+
+                // 4. Activity (15%) - Regular transactions
+                const activityPoints = Math.min(100, allTxs.length * 5);
+                score += activityPoints * 0.15;
+
+                // 5. Category Diversification (15%) - Not overspending in one area
+                const uniqueCategories = new Set(allTxs.map(t => t.category)).size;
+                const diversificationPoints = Math.min(100, uniqueCategories * 15);
+                score += diversificationPoints * 0.15;
+
+                // Round and clamp between 0-100
+                const finalScore = Math.max(0, Math.min(100, Math.round(score)));
+                setHealthScore(allTxs.length > 0 ? finalScore : 50); // Default to 50 if no transactions
 
                 // Merchant Data Extraction
                 const merchantMap = new Map<string, { amount: number; count: number }>();
@@ -211,7 +270,14 @@ const DashboardPage = () => {
         return icons[category] || '📦';
     };
 
-    if (loading) return <LoadingScreen />;
+    if (loading) {
+        return (
+            <div className={styles.dashboardWrapper}>
+                <DashboardSkeleton />
+            </div>
+        );
+    }
+
 
     return (
         <div className={styles.dashboardWrapper}>
@@ -257,7 +323,7 @@ const DashboardPage = () => {
                         </div>
                         <div className="flex justify-between items-start">
                             <div>
-                                <p className={styles.statTitle}>{stats.totalBalance >= 0 ? 'Total Liquidity' : 'Cumulative Spend'}</p>
+                                <p className={styles.statTitle}>{stats.totalBalance >= 0 ? 'Total Balance' : 'Total Spent'}</p>
                                 <h2 className={styles.value}>
                                     {showBalance ? formatCurrency(Math.abs(stats.totalBalance)) : '••••••'}
                                 </h2>
@@ -267,7 +333,7 @@ const DashboardPage = () => {
                             </button>
                         </div>
                         <div className={styles.statTrend}>
-                            <TrendingUp size={12} /> <span>{Math.abs(stats.balanceTrend)}% SAVINGS RATE</span>
+                            <TrendingUp size={12} /> <span>{Math.abs(stats.balanceTrend)}% Saved</span>
                         </div>
                     </motion.div>
 
@@ -287,9 +353,9 @@ const DashboardPage = () => {
                                 <TrendingUp size={20} />
                             </motion.div>
                         </div>
-                        <p className={styles.statTitle}>Monthly Inflow</p>
+                        <p className={styles.statTitle}>Money In</p>
                         <h2 className={styles.value}>{formatCurrency(stats.monthlyIncome)}</h2>
-                        <p className="text-[10px] text-slate-400 font-black mt-2 uppercase tracking-widest">Current Interval</p>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-2">This Month</p>
                     </motion.div>
 
                     <motion.div
@@ -308,11 +374,11 @@ const DashboardPage = () => {
                                 <TrendingDown size={20} />
                             </motion.div>
                         </div>
-                        <p className={styles.statTitle}>Monthly Outflow</p>
+                        <p className={styles.statTitle}>Money Out</p>
                         <h2 className={styles.value}>{formatCurrency(stats.monthlyExpense)}</h2>
                         <div className={cn(styles.statTrend, stats.expenseTrend <= 0 ? styles.trendUp : styles.trendDown)}>
                             {stats.expenseTrend <= 0 ? <TrendingDown size={12} /> : <TrendingUp size={12} />}
-                            <span>{Math.abs(stats.expenseTrend)}% VS LAST MONTH</span>
+                            <span>{Math.abs(stats.expenseTrend)}% vs last month</span>
                         </div>
                     </motion.div>
 
@@ -332,9 +398,9 @@ const DashboardPage = () => {
                                 <Zap size={20} strokeWidth={2.5} />
                             </motion.div>
                         </div>
-                        <p className={styles.statTitle}>Usage Streak</p>
+                        <p className={styles.statTitle}>Your Streak</p>
                         <h2 className={styles.value}>{stats.streakDays} Days 🔥</h2>
-                        <p className="text-[10px] text-slate-400 font-black mt-2 uppercase tracking-widest">Consistent Tracking</p>
+                        <p className="text-[10px] text-slate-400 font-semibold mt-2">Keep it going! 💪</p>
                     </motion.div>
                 </div>
 
@@ -344,9 +410,9 @@ const DashboardPage = () => {
                     <div className="space-y-6">
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
-                                <h3 className={styles.sectionTitle}>Spending Velocity</h3>
+                                <h3 className={styles.sectionTitle}>Spending Chart</h3>
                                 <Link to="/analytics" className="text-xs font-black text-blue-600 uppercase tracking-widest hover:underline flex items-center gap-1">
-                                    Deep Analysis <ArrowRight size={14} />
+                                    See More <ArrowRight size={14} />
                                 </Link>
                             </div>
                             <div className="h-[300px]">
@@ -425,7 +491,7 @@ const DashboardPage = () => {
 
                         <div className="grid md:grid-cols-2 gap-6">
                             <motion.div variants={itemVariants} className={styles.whiteCard}>
-                                <h3 className={cn(styles.sectionTitle, "mb-6")}>Top Categories</h3>
+                                <h3 className={cn(styles.sectionTitle, "mb-6")}>Where Your Money Goes</h3>
                                 <motion.div
                                     variants={{
                                         hidden: { opacity: 0 },
@@ -681,18 +747,19 @@ const DashboardPage = () => {
                                     <Plus size={18} />
                                 </button>
                             </div>
-                            <div className="space-y-4">
-                                {userCards.length > 0 ? userCards.slice(0, 2).map((card, i) => (
-                                    <PremiumCard
-                                        key={card.id}
-                                        card={{
-                                            ...card,
-                                            type: card.card_type // Map card_type to type for PremiumCard
-                                        } as any}
-                                        onClick={() => { }} // Could link to cards page
-                                    />
+                            <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
+                                {userCards.length > 0 ? userCards.map((card) => (
+                                    <div key={card.id} className="flex-shrink-0 cursor-pointer" style={{ scrollSnapAlign: 'start', minWidth: userCards.length > 1 ? '280px' : '100%' }}>
+                                        <PremiumCard
+                                            card={{
+                                                ...card,
+                                                type: card.card_type // Map card_type to type for PremiumCard
+                                            } as any}
+                                            onClick={() => handleCardClick(card)}
+                                        />
+                                    </div>
                                 )) : (
-                                    <div className="text-center py-10 opacity-30">
+                                    <div className="text-center py-10 opacity-30 w-full">
                                         <CreditCard size={40} className="mx-auto mb-3" />
                                         <p className="text-xs font-black uppercase tracking-widest">No Cards Linked</p>
                                     </div>
@@ -759,6 +826,85 @@ const DashboardPage = () => {
                     <MoneyTwinPulse userId={user?.id || ''} />
                 </motion.div>
             </motion.div>
+
+            {/* Card Preview Dialog */}
+            <Dialog open={isCardPreviewOpen} onOpenChange={setIsCardPreviewOpen}>
+                <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                    <DialogHeader className="px-6 pt-6 pb-4 bg-gradient-to-br from-slate-50 to-blue-50">
+                        <DialogTitle className="flex items-center gap-3">
+                            <div className="p-2 bg-blue-100 rounded-xl">
+                                <CreditCard className="text-blue-600" size={24} />
+                            </div>
+                            <span className="font-bold text-slate-800">Card Details</span>
+                        </DialogTitle>
+                    </DialogHeader>
+
+                    {selectedCard && (
+                        <div className="p-6 space-y-5">
+                            {/* Card Preview */}
+                            <div className="transform scale-95 origin-center">
+                                <PremiumCard
+                                    card={{
+                                        ...selectedCard,
+                                        type: selectedCard.card_type
+                                    } as any}
+                                />
+                            </div>
+
+                            {/* Card Info */}
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                    <span className="text-sm text-slate-500">Card Number</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-mono font-semibold">**** **** **** {selectedCard.last4}</span>
+                                        <button
+                                            onClick={() => handleCopy(selectedCard.last4 || '')}
+                                            className="p-1.5 hover:bg-slate-200 rounded-lg transition-colors"
+                                        >
+                                            {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} className="text-slate-400" />}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                    <span className="text-sm text-slate-500">Card Holder</span>
+                                    <span className="font-semibold">{selectedCard.holder}</span>
+                                </div>
+
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                    <span className="text-sm text-slate-500">Expires</span>
+                                    <span className="font-semibold">{selectedCard.expiry}</span>
+                                </div>
+                            </div>
+
+                            {/* Security Notice */}
+                            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl text-green-700">
+                                <Shield size={16} />
+                                <span className="text-xs">PCI-DSS compliant • No sensitive data stored</span>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    onClick={() => {
+                                        setIsCardPreviewOpen(false);
+                                        navigate('/cards');
+                                    }}
+                                    className="flex-1 py-3 px-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors"
+                                >
+                                    Manage Cards
+                                </button>
+                                <button
+                                    onClick={handleDeleteCard}
+                                    className="p-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

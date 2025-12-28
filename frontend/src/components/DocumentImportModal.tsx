@@ -4,13 +4,17 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     X, Upload, FileText, FileSpreadsheet, Image, Loader2,
-    CheckCircle, AlertTriangle, Brain, Sparkles, Plus, Check, FileImage
+    CheckCircle, AlertTriangle, Brain, Sparkles, Plus, Check, FileImage,
+    ArrowUpRight, ArrowDownLeft, Calendar, FileType
 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { formatCurrency } from '../services/currencyService';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
 import { supabase } from '../config/supabase';
+import { Badge } from '@/components/ui/badge';
+import styles from './DocumentImportModal.module.css';
 
 interface ExtractedTransaction {
     description: string;
@@ -75,9 +79,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
     }, []);
 
     const handleFileSelect = (selectedFile: File) => {
-        const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp', 'text/csv', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
         const allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'csv', 'docx'];
-
         const ext = selectedFile.name.split('.').pop()?.toLowerCase();
 
         if (!ext || !allowedExtensions.includes(ext)) {
@@ -113,10 +115,8 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
             setRawText(result.raw_text);
             setTransactions(result.transactions.map((t: any) => ({ ...t, selected: true })));
 
-            // Handle detected period
             if (result.detected_period) {
                 setDetectedPeriod(result.detected_period);
-                // Set month from detected month name
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                     'July', 'August', 'September', 'October', 'November', 'December'];
                 const monthIndex = monthNames.indexOf(result.detected_period.month);
@@ -144,7 +144,6 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
         }
     };
 
-    // Filter transactions by selected period (unless Show All is enabled)
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
     const shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -153,15 +152,11 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
     const displayedTransactions = showAllTransactions
         ? transactions
         : transactions.filter(tx => {
-            if (!tx.date) return true; // Include transactions without dates
-
+            if (!tx.date) return true;
             const dateStr = tx.date.toLowerCase();
-
-            // Try to parse month from the date string
             let txMonth = -1;
-            let txYear = selectedYear; // Default to selected year
+            let txYear = selectedYear;
 
-            // Check for month names (Feb, February, etc.)
             for (let i = 0; i < 12; i++) {
                 if (dateStr.includes(monthNames[i].toLowerCase()) ||
                     dateStr.includes(shortMonthNames[i].toLowerCase())) {
@@ -170,20 +165,28 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                 }
             }
 
-            // Try parsing as actual date if month not found
+            const ddmmMatch = dateStr.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})/);
+            if (ddmmMatch && txMonth === -1) {
+                const month = parseInt(ddmmMatch[2]);
+                const year = parseInt(ddmmMatch[3]);
+                if (month >= 1 && month <= 12) {
+                    txMonth = month;
+                    txYear = year > 100 ? year : 2000 + year;
+                }
+            }
+
             if (txMonth === -1) {
                 const txDate = new Date(tx.date);
                 if (!isNaN(txDate.getTime())) {
                     txMonth = txDate.getMonth() + 1;
                     txYear = txDate.getFullYear();
                 } else {
-                    return true; // Can't parse, include it
+                    return true;
                 }
             }
 
-            // Check for year in date string (e.g., "2024" or "25")
             const yearMatch = dateStr.match(/\b(20\d{2})\b/) || dateStr.match(/\b(\d{2})\b/);
-            if (yearMatch) {
+            if (yearMatch && !ddmmMatch) {
                 const year = parseInt(yearMatch[1]);
                 txYear = year > 100 ? year : 2000 + year;
             }
@@ -230,36 +233,25 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                 throw new Error('Please sign in to import transactions');
             }
 
-            // Batch insert all transactions at once
-            // Use selected period for transactions without dates
-            const defaultDate = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-15`; // Middle of month
+            const defaultDate = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-15`;
 
             const transactionsToInsert = selected.map(tx => ({
                 user_id: user.id,
-                description: tx.description.slice(0, 100), // Limit description length
+                description: tx.description.slice(0, 100),
                 amount: tx.amount,
                 date: tx.date || defaultDate,
                 category: tx.category || 'Other',
                 type: tx.type
             }));
 
-            // Insert in batches of 50 to avoid timeout
             const batchSize = 50;
-            let imported = 0;
-
             for (let i = 0; i < transactionsToInsert.length; i += batchSize) {
                 const batch = transactionsToInsert.slice(i, i + batchSize);
                 const { error } = await supabase
                     .from('transactions')
                     .insert(batch);
 
-                if (error) {
-                    console.error('Batch insert error:', error);
-                    throw new Error(`Failed to import batch: ${error.message}`);
-                }
-
-                imported += batch.length;
-                console.log(`Imported ${imported}/${transactionsToInsert.length} transactions`);
+                if (error) throw new Error(`Failed to import batch: ${error.message}`);
             }
 
             setStep('success');
@@ -297,364 +289,233 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
 
     if (!isOpen) return null;
 
-    return (
-        <AnimatePresence>
+    const modalContent = (
+        <div className={styles.overlay} onClick={handleClose}>
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className={styles.modalContainer}
+                onClick={e => e.stopPropagation()}
             >
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                    onClick={handleClose}
-                />
+                {/* Header */}
+                <div className={styles.header}>
+                    <div className={styles.headerGlass} />
+                    <button onClick={handleClose} className={styles.closeBtn}>
+                        <X size={20} />
+                    </button>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    transition={{ type: 'spring', duration: 0.5 }}
-                    className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-blue-100 max-h-[85vh] flex flex-col my-auto"
-                >
-                    {/* Header */}
-                    <div className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 p-6 text-white relative overflow-hidden shrink-0">
-                        <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-xl" />
-
-                        <button
-                            onClick={handleClose}
-                            className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
-                        >
-                            <X size={20} />
-                        </button>
-
-                        <div className="relative z-10 flex items-center gap-4">
-                            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
-                                <Brain size={28} />
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-black flex items-center gap-2">
-                                    AI Document Import
-                                    <Sparkles size={18} className="text-yellow-300" />
-                                </h2>
-                                <p className="text-sm opacity-80 font-medium">Extract transactions from PDF, images, or CSV</p>
-                            </div>
+                    <div className={styles.headerContent}>
+                        <div className={styles.brandIcon}>
+                            <Brain size={32} className="text-white" />
+                        </div>
+                        <div className={styles.headerInfo}>
+                            <h2>
+                                AI Document Import
+                                <Sparkles size={20} className="inline-block ml-2 text-yellow-300 animate-pulse" />
+                            </h2>
+                            <p>Extract transactions from PDF, images, or CSV</p>
                         </div>
                     </div>
+                </div>
 
-                    {/* Content */}
-                    <div className="p-6 overflow-y-auto flex-1">
-                        {step === 'upload' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="space-y-6"
+                {/* Main Content */}
+                <div className={styles.content}>
+                    {step === 'upload' && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            <div
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                                onClick={() => document.getElementById('file-input')?.click()}
+                                className={cn(styles.dropzone, isDragging && styles.dropzoneActive)}
                             >
-                                <div
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                    className={cn(
-                                        "border-3 border-dashed rounded-2xl p-12 text-center transition-all cursor-pointer",
-                                        isDragging
-                                            ? "border-blue-500 bg-blue-50"
-                                            : "border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50/50"
-                                    )}
-                                    onClick={() => document.getElementById('file-input')?.click()}
-                                >
-                                    <input
-                                        id="file-input"
-                                        type="file"
-                                        accept=".pdf,.png,.jpg,.jpeg,.webp,.csv,.docx"
-                                        onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
-                                        className="hidden"
-                                    />
-
-                                    <motion.div
-                                        animate={{ y: [0, -8, 0] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                        className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                                    >
-                                        <Upload size={32} className="text-blue-600" />
-                                    </motion.div>
-
-                                    <p className="text-lg font-bold text-slate-700 mb-2">
-                                        Drop your document here
-                                    </p>
-                                    <p className="text-sm text-slate-500">
-                                        or click to browse • PDF, Images, CSV, Word
-                                    </p>
+                                <input
+                                    id="file-input"
+                                    type="file"
+                                    accept=".pdf,.png,.jpg,.jpeg,.webp,.csv,.docx"
+                                    onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
+                                    className="hidden"
+                                />
+                                <div className={styles.uploadIcon}>
+                                    <Upload size={40} />
                                 </div>
+                                <h3>Drop your document here</h3>
+                                <p>or click to browse • PDF, Images, CSV, Word</p>
+                            </div>
 
-                                {error && (
-                                    <div className="flex items-center gap-3 p-4 bg-rose-50 border-2 border-rose-100 rounded-xl">
-                                        <AlertTriangle size={20} className="text-rose-500" />
-                                        <p className="text-sm text-rose-600 font-medium">{error}</p>
-                                    </div>
-                                )}
-
-                                <div className="grid grid-cols-4 gap-3">
-                                    {['PDF', 'PNG/JPG', 'CSV', 'DOCX'].map((type) => (
-                                        <div key={type} className="p-3 bg-slate-50 rounded-xl text-center border-2 border-slate-100">
-                                            <p className="text-xs font-black text-slate-400 uppercase tracking-wider">{type}</p>
-                                        </div>
-                                    ))}
+                            {error && (
+                                <div className="mt-4 flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-xl">
+                                    <AlertTriangle size={20} className="text-rose-500" />
+                                    <p className="text-sm text-rose-600 font-bold">{error}</p>
                                 </div>
-                            </motion.div>
-                        )}
+                            )}
 
-                        {step === 'processing' && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="py-12 text-center space-y-6"
-                            >
-                                <div className="relative mx-auto w-24 h-24">
-                                    <motion.div
-                                        className="absolute inset-0 bg-blue-200 rounded-full"
-                                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                    />
-                                    <div className="relative w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-                                        <Loader2 size={40} className="text-blue-600 animate-spin" />
+                            <div className={styles.fileTypesGrid}>
+                                {['PDF', 'PNG/JPG', 'CSV', 'DOCX'].map((type) => (
+                                    <div key={type} className={styles.fileTypeBadge}>
+                                        <span>{type}</span>
                                     </div>
-                                </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
 
-                                <div>
-                                    <h3 className="text-lg font-black text-slate-800">AI is analyzing your document</h3>
-                                    <p className="text-sm text-slate-500 mt-1">Extracting text and detecting transactions...</p>
-                                </div>
-
-                                {file && (
-                                    <div className="flex items-center justify-center gap-3 p-4 bg-slate-50 rounded-xl mx-auto max-w-xs">
-                                        {getFileIcon(file.name)}
-                                        <span className="text-sm font-medium text-slate-600 truncate">{file.name}</span>
-                                    </div>
-                                )}
-                            </motion.div>
-                        )}
-
-                        {step === 'review' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="space-y-6"
-                            >
-                                {/* Period Selector */}
-                                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border-2 border-blue-100">
-                                    <div className="flex items-center justify-between mb-3">
-                                        <h3 className="text-sm font-black text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                                            📅 Statement Period
-                                            {detectedPeriod && (
-                                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">
-                                                    Auto-detected
-                                                </span>
-                                            )}
-                                        </h3>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <select
-                                            value={selectedMonth}
-                                            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                                            className="flex-1 px-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        >
-                                            {['January', 'February', 'March', 'April', 'May', 'June',
-                                                'July', 'August', 'September', 'October', 'November', 'December'].map((m, i) => (
-                                                    <option key={m} value={i + 1}>{m}</option>
-                                                ))}
-                                        </select>
-                                        <select
-                                            value={selectedYear}
-                                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                                            className="w-28 px-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        >
-                                            {[2023, 2024, 2025, 2026].map(y => (
-                                                <option key={y} value={y}>{y}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <p className="text-xs text-slate-500 mt-2">
-                                        Transactions without dates will use: <strong>{selectedYear}-{String(selectedMonth).padStart(2, '0')}</strong>
-                                    </p>
-                                </div>
-
-                                {transactions.length > 0 ? (
-                                    <>
-                                        <div className="flex items-center justify-between flex-wrap gap-2">
-                                            <div className="flex items-center gap-2">
-                                                <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">
-                                                    {showAllTransactions
-                                                        ? `All Transactions (${displayedTransactions.filter(t => t.selected).length}/${displayedTransactions.length})`
-                                                        : displayedTransactions.length > 0
-                                                            ? `${monthNames[selectedMonth - 1]} ${selectedYear} (${displayedTransactions.filter(t => t.selected).length}/${displayedTransactions.length})`
-                                                            : `No records for ${monthNames[selectedMonth - 1]} ${selectedYear}`
-                                                    }
-                                                </h3>
-                                                <button
-                                                    onClick={() => setShowAllTransactions(!showAllTransactions)}
-                                                    className={cn(
-                                                        "text-xs font-bold px-2 py-1 rounded-lg transition-colors",
-                                                        showAllTransactions
-                                                            ? "bg-blue-100 text-blue-600"
-                                                            : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                                                    )}
-                                                >
-                                                    {showAllTransactions ? '📅 Filter' : '📋 Show All'}
-                                                </button>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={deselectAll}
-                                                    className="text-xs font-bold text-slate-400 hover:text-slate-600"
-                                                >
-                                                    Clear
-                                                </button>
-                                                <button
-                                                    onClick={selectAll}
-                                                    className="text-xs font-bold text-blue-600 hover:text-blue-700"
-                                                >
-                                                    Select All
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {displayedTransactions.length > 0 ? (
-                                            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
-                                                {displayedTransactions.map((tx, idx) => (
-                                                    <motion.div
-                                                        key={idx}
-                                                        initial={{ opacity: 0, x: -10 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ delay: Math.min(idx * 0.02, 0.5) }}
-                                                        onClick={() => toggleTransaction(idx)}
-                                                        className={cn(
-                                                            "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
-                                                            tx.selected
-                                                                ? "bg-blue-50 border-blue-200"
-                                                                : "bg-slate-50 border-slate-100 opacity-60"
-                                                        )}
-                                                    >
-                                                        <div className={cn(
-                                                            "w-6 h-6 rounded-lg flex items-center justify-center border-2",
-                                                            tx.selected
-                                                                ? "bg-blue-600 border-blue-600"
-                                                                : "bg-white border-slate-300"
-                                                        )}>
-                                                            {tx.selected && <Check size={14} className="text-white" />}
-                                                        </div>
-
-                                                        <div className="flex-1 min-w-0">
-                                                            <p className="font-bold text-slate-800 truncate">{tx.description}</p>
-                                                            <div className="flex items-center gap-2 mt-1">
-                                                                <span className="text-xs font-bold text-slate-400">{tx.category || 'Other'}</span>
-                                                                {tx.date && <span className="text-xs text-slate-300">• {tx.date}</span>}
-                                                            </div>
-                                                        </div>
-
-                                                        <span className={cn(
-                                                            "text-lg font-black",
-                                                            tx.type === 'income' ? "text-emerald-600" : "text-rose-600"
-                                                        )}>
-                                                            {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
-                                                        </span>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="text-center py-6 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                                                <p className="text-sm text-slate-500">
-                                                    No transactions for this period
-                                                </p>
-                                                <button
-                                                    onClick={() => setShowAllTransactions(true)}
-                                                    className="mt-2 text-xs font-bold text-blue-600 hover:text-blue-700"
-                                                >
-                                                    Show all {transactions.length} transactions
-                                                </button>
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <div className="text-center py-8">
-                                        <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                            <AlertTriangle size={32} className="text-amber-500" />
-                                        </div>
-                                        <h3 className="text-lg font-bold text-slate-800">No transactions detected</h3>
-                                        <p className="text-sm text-slate-500 mt-1">The AI couldn't find structured transaction data in this document.</p>
-                                    </div>
-                                )}
-
-                                {rawText && (
-                                    <details className="bg-slate-50 rounded-xl border-2 border-slate-100">
-                                        <summary className="p-4 cursor-pointer text-sm font-bold text-slate-600 hover:text-slate-800">
-                                            View Raw Extracted Text
-                                        </summary>
-                                        <div className="p-4 pt-0">
-                                            <pre className="text-xs text-slate-500 whitespace-pre-wrap max-h-40 overflow-auto">
-                                                {rawText}
-                                            </pre>
-                                        </div>
-                                    </details>
-                                )}
-
-                                <div className="flex gap-3 pt-4">
-                                    <button
-                                        onClick={() => { setStep('upload'); setFile(null); setTransactions([]); }}
-                                        className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold text-slate-600 transition-colors"
-                                    >
-                                        Upload Another
-                                    </button>
-                                    <button
-                                        onClick={importTransactions}
-                                        disabled={importing || transactions.filter(t => t.selected).length === 0}
-                                        className={cn(
-                                            "flex-1 py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2",
-                                            transactions.filter(t => t.selected).length > 0
-                                                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                                : "bg-slate-200 text-slate-400 cursor-not-allowed"
-                                        )}
-                                    >
-                                        {importing ? (
-                                            <Loader2 size={18} className="animate-spin" />
-                                        ) : (
-                                            <>
-                                                <Plus size={18} />
-                                                Import {transactions.filter(t => t.selected).length} Transactions
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {step === 'success' && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="text-center py-12 space-y-4"
-                            >
+                    {step === 'processing' && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center py-12"
+                        >
+                            <div className="relative w-24 h-24 mx-auto mb-6">
                                 <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: 'spring', delay: 0.2 }}
-                                    className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto"
-                                >
-                                    <CheckCircle size={40} className="text-green-500" />
-                                </motion.div>
-                                <h3 className="text-xl font-black text-slate-800">Import Complete!</h3>
-                                <p className="text-sm text-slate-500">
-                                    Your transactions have been added to the ledger.
-                                </p>
+                                    className="absolute inset-0 bg-blue-100 rounded-full"
+                                    animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0.2, 0.5] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                />
+                                <div className="relative w-24 h-24 bg-rose-600 rounded-full flex items-center justify-center shadow-lg">
+                                    <Loader2 size={40} className="text-white animate-spin" />
+                                </div>
+                            </div>
+                            <h3 className="text-xl font-black text-slate-800">AI is analyzing your document</h3>
+                            <p className="text-slate-500 font-bold mt-2 truncate max-w-xs mx-auto">
+                                {file?.name || 'Processing...'}
+                            </p>
+                        </motion.div>
+                    )}
+
+                    {step === 'review' && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={styles.reviewSection}
+                        >
+                            <div className={styles.periodSelector}>
+                                <div className="flex items-center justify-between">
+                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <Calendar size={14} /> Statement Period
+                                    </label>
+                                    {detectedPeriod && (
+                                        <Badge className="bg-rose-100 text-rose-700 border-none font-bold">Auto-detected</Badge>
+                                    )}
+                                </div>
+                                <div className="flex gap-3 mt-2">
+                                    <select
+                                        value={selectedMonth}
+                                        onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+                                        className="flex-1 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-rose-300 transition-all"
+                                    >
+                                        {monthNames.map((m, i) => (
+                                            <option key={m} value={i + 1}>{m}</option>
+                                        ))}
+                                    </select>
+                                    <select
+                                        value={selectedYear}
+                                        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                                        className="w-28 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-rose-300 transition-all"
+                                    >
+                                        {[2023, 2024, 2025, 2026].map(y => (
+                                            <option key={y} value={y}>{y}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+                                    {showAllTransactions ? 'All Records' : `${monthNames[selectedMonth - 1]} ${selectedYear}`}
+                                </h3>
+                                <div className="flex gap-4">
+                                    <button onClick={deselectAll} className="text-xs font-black text-slate-400 hover:text-slate-600 uppercase transition-colors">Clear</button>
+                                    <button onClick={selectAll} className="text-xs font-black text-rose-600 hover:text-rose-700 uppercase transition-colors">Select All</button>
+                                </div>
+                            </div>
+
+                            <div className={styles.transactionList}>
+                                {displayedTransactions.map((tx, idx) => (
+                                    <div
+                                        key={idx}
+                                        onClick={() => toggleTransaction(idx)}
+                                        className={cn(styles.transactionCard, tx.selected && styles.transactionCardSelected)}
+                                    >
+                                        <div className={styles.checkbox}>
+                                            {tx.selected && <Check size={14} strokeWidth={3} />}
+                                        </div>
+                                        <div className={cn(
+                                            "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
+                                            tx.type === 'income' ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"
+                                        )}>
+                                            {tx.type === 'income' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-bold text-slate-800 truncate">{tx.description}</p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-[10px] font-black text-slate-400 uppercase">{tx.category || 'Other'}</span>
+                                                {tx.date && <span className="text-[10px] font-bold text-slate-200 px-1 inline-block">•</span>}
+                                                {tx.date && <span className="text-[10px] font-bold text-slate-400">{tx.date}</span>}
+                                            </div>
+                                        </div>
+                                        <div className={cn(
+                                            "text-lg font-black",
+                                            tx.type === 'income' ? "text-emerald-600" : "text-rose-600"
+                                        )}>
+                                            {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {step === 'success' && (
+                        <div className="text-center py-12">
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm"
+                            >
+                                <CheckCircle size={40} className="text-emerald-600" />
                             </motion.div>
-                        )}
-                    </div>
-                </motion.div>
+                            <h3 className="text-2xl font-black text-slate-800">Import Complete!</h3>
+                            <p className="text-slate-500 font-bold mt-2">Transactions are safely added to your ledger.</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Footer */}
+                <div className={styles.footer}>
+                    {step === 'review' && (
+                        <>
+                            <button
+                                onClick={() => { setStep('upload'); setFile(null); }}
+                                className={styles.btnSecondary}
+                                disabled={importing}
+                            >
+                                Re-upload
+                            </button>
+                            <button
+                                onClick={importTransactions}
+                                className={styles.btnPrimary}
+                                disabled={importing || transactions.filter(t => t.selected).length === 0}
+                            >
+                                {importing ? <Loader2 className="animate-spin" /> : <Plus size={20} />}
+                                Import {transactions.filter(t => t.selected).length} Items
+                            </button>
+                        </>
+                    )}
+                </div>
             </motion.div>
-        </AnimatePresence>
+        </div>
+    );
+
+    return createPortal(
+        <AnimatePresence>
+            {isOpen && modalContent}
+        </AnimatePresence>,
+        document.body
     );
 };
 

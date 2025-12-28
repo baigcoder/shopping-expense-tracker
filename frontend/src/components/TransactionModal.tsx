@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2, Calendar, DollarSign, FileText, Tag, ChevronDown, Check } from 'lucide-react';
 import { useModalStore, useAuthStore } from '../store/useStore';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 const CATEGORIES = [

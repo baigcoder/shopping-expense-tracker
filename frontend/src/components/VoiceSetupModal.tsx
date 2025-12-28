@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mic, User, Sparkles, Check, Volume2, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import api from '../services/api';
 
 interface VoiceSetupModalProps {
     isOpen: boolean;
@@ -11,16 +12,19 @@ interface VoiceSetupModalProps {
     onSetupComplete: (voiceId: string, voiceName: string) => void;
 }
 
-// ElevenLabs voice IDs mapping
+// Python AI Server TTS URL
+const AI_SERVER_URL = 'http://localhost:8000';
+
+// Voice options - 2 Female + 2 Male (using edge-tts)
 const VOICE_OPTIONS = [
-    { id: '21m00Tcm4TlvDq8ikWAM', name: 'Rachel', gender: 'female', description: 'Professional & warm', emoji: '👩‍💼' },
-    { id: 'pNInz6obpgDQGcFmaJgB', name: 'Adam', gender: 'male', description: 'Confident & clear', emoji: '👨‍💼' },
-    { id: 'MF3mGyEYCl7XYWbV9V6O', name: 'Emily', gender: 'female', description: 'Friendly & approachable', emoji: '👩‍🏫' },
-    { id: 'TxGEqnHWrfWFTfGW9XjX', name: 'Josh', gender: 'male', description: 'Calm & trustworthy', emoji: '👨‍🏫' },
+    { id: 'jenny', name: 'Jenny', gender: 'female', description: 'Professional & warm', emoji: '👩‍💼' },
+    { id: 'aria', name: 'Aria', gender: 'female', description: 'Expressive & helpful', emoji: '👩‍🏫' },
+    { id: 'guy', name: 'Guy', gender: 'male', description: 'Confident & clear', emoji: '👨‍💼' },
+    { id: 'davis', name: 'Davis', gender: 'male', description: 'Calm & trustworthy', emoji: '👨‍🏫' },
 ];
 
 // Sample text for voice preview
-const PREVIEW_TEXT = "Hello! I'm your AI financial accountant. I can help you track expenses, analyze spending patterns, and provide personalized savings tips.";
+const PREVIEW_TEXT = "Hello! I'm your AI Financial Accountant. I can help you track expenses, analyze spending, and provide personalized finance tips.";
 
 const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSetupComplete }) => {
     const [selectedVoice, setSelectedVoice] = useState(VOICE_OPTIONS[0]);
@@ -29,6 +33,31 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
     const [step, setStep] = useState<'select' | 'confirm'>('select');
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    // Fallback to browser's Web Speech API
+    const speakWithWebSpeech = (text: string, isMale: boolean = false) => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = isMale ? 0.9 : 1.1;
+
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = isMale
+                ? voices.find(v => v.name.includes('David') || v.name.includes('Mark') || v.name.includes('Male'))
+                : voices.find(v => v.name.includes('Google') || v.name.includes('Microsoft'));
+
+            if (preferredVoice) utterance.voice = preferredVoice;
+
+            utterance.onend = () => setIsPreviewing(false);
+            utterance.onerror = () => setIsPreviewing(false);
+
+            window.speechSynthesis.speak(utterance);
+        } else {
+            setIsPreviewing(false);
+            toast.error('Speech not supported in this browser');
+        }
+    };
+
     const handlePreviewVoice = async () => {
         if (isPreviewing) {
             // Stop current playback
@@ -36,6 +65,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                 audioRef.current.pause();
                 audioRef.current = null;
             }
+            window.speechSynthesis?.cancel();
             setIsPreviewing(false);
             return;
         }
@@ -43,26 +73,26 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
         setIsPreviewing(true);
 
         try {
-            const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
+            // Use Python TTS (FREE edge-tts)
+            const shortPreview = `Hi! I'm ${selectedVoice.name}, your AI Financial Accountant. Ready to help you manage your finances!`;
 
-            // Shorter preview text for faster response
-            const shortPreview = "Hi! I'm your AI financial assistant. Ready to help you manage your money!";
-
-            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${selectedVoice.id}?optimize_streaming_latency=4&output_format=mp3_44100_64`, {
+            const response = await fetch(`${AI_SERVER_URL}/tts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'xi-api-key': apiKey,
                 },
                 body: JSON.stringify({
                     text: shortPreview,
-                    model_id: 'eleven_flash_v2_5',
-                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+                    voice: selectedVoice.id,
+                    rate: '+0%',
+                    pitch: selectedVoice.gender === 'male' ? '-5Hz' : '+0Hz'
                 })
             });
 
             if (!response.ok) {
-                throw new Error('Failed to generate voice preview');
+                console.log('⚠️ Python TTS unavailable, using Web Speech API...');
+                speakWithWebSpeech(shortPreview, selectedVoice.gender === 'male');
+                return;
             }
 
             const audioBlob = await response.blob();
@@ -77,33 +107,20 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
 
         } catch (error) {
             console.error('Voice preview error:', error);
-            toast.error('Preview failed', { description: 'Could not load voice sample' });
-            setIsPreviewing(false);
+            console.log('⚠️ Falling back to Web Speech API...');
+            speakWithWebSpeech("Hi! I'm your AI Financial Accountant. Ready to help!", selectedVoice.gender === 'male');
         }
     };
 
     const handleConfirm = async () => {
         setIsLoading(true);
         try {
-            // Get Supabase user ID for x-user-id header (same pattern as AI endpoints)
-            const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
-            const parsed = token ? JSON.parse(token) : null;
-            const supabaseUserId = parsed?.user?.id;
-
-            const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
-            const response = await fetch(`${apiUrl}/api/voice/preferences`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-id': supabaseUserId || ''
-                },
-                body: JSON.stringify({
-                    voiceId: selectedVoice.id,
-                    voiceName: selectedVoice.name
-                })
+            const response = await api.post('/voice/preferences', {
+                voiceId: selectedVoice.id,
+                voiceName: selectedVoice.name
             });
 
-            if (!response.ok) {
+            if (response.status !== 200 && response.status !== 201) {
                 throw new Error('Failed to save voice preferences');
             }
 

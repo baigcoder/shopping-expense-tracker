@@ -3,25 +3,53 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import routes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { initializeEmailTransporter } from './services/emailService.js';
+import { csrfTokenMiddleware } from './middleware/csrf.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security middleware
-app.use(helmet());
+// Frontend origin for CORS and CSP
+const frontendOrigin = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
 
-// CORS configuration - strip trailing slash to prevent mismatch with browser origin
-const allowedOrigin = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
+// Security middleware with Content Security Policy
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", frontendOrigin],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            connectSrc: ["'self'", frontendOrigin, "https://*.supabase.co", "https://api.groq.com"],
+            frameSrc: ["'none'"],
+            objectSrc: ["'none'"],
+            baseUri: ["'self'"],
+            formAction: ["'self'"],
+            upgradeInsecureRequests: []
+        }
+    },
+    crossOriginEmbedderPolicy: false, // Allow embedding for some integrations
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Cookie parser (required for CSRF)
+app.use(cookieParser());
+
+// CORS configuration
 app.use(cors({
-    origin: allowedOrigin,
+    origin: frontendOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token', 'x-user-id']
 }));
+
+// CSRF token middleware (sets token on GET requests)
+app.use(csrfTokenMiddleware);
 
 // Rate limiting
 const limiter = rateLimit({

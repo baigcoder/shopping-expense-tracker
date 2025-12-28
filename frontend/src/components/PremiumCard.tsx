@@ -1,5 +1,6 @@
+import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
-import { Smartphone, Disc } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 import { Card, CardBrand } from '../store/useStore';
 import { getThemeById, getBrandGradient } from '../services/cardService';
 import { cn } from '@/lib/utils';
@@ -57,61 +58,66 @@ interface PremiumCardProps {
     showFullNumber?: boolean;
 }
 
-const PremiumCard = ({ card, className, onClick, showFullNumber = false }: PremiumCardProps) => {
-    return (
-        <motion.div
-            layout
-            whileHover={{ scale: 1.02, y: -5 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onClick}
-            className={cn(styles.premiumCard, className)}
-            style={{ background: getCardGradient(card) }}
-        >
-            <div className={styles.cardBorder} />
-            <div className={styles.cardGlass} />
-            <div className={styles.cardShine} />
+const PremiumCard = forwardRef<HTMLDivElement, PremiumCardProps>(
+    ({ card, className, onClick, showFullNumber = false }, ref) => {
+        return (
+            <motion.div
+                ref={ref}
+                layout
+                whileHover={{ scale: 1.02, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onClick}
+                className={cn(styles.premiumCard, className)}
+                style={{ background: getCardGradient(card) }}
+            >
+                <div className={styles.cardBorder} />
+                <div className={styles.cardGlass} />
+                <div className={styles.cardShine} />
 
-            <div className={styles.cardContent}>
-                <div className={styles.cardTop}>
-                    <div className={styles.cardLabel}>
-                        <span className={styles.labelSmall}>Digital Asset</span>
-                        <span className={styles.labelMain}>Elite Status</span>
-                    </div>
-                    <div className={styles.brandContainer}>
-                        {getBrandLogo(card.type)}
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-5">
-                    <div className={styles.cardChip}>
-                        <div className={styles.chipGrid}>
-                            {[...Array(9)].map((_, i) => <div key={i} />)}
+                <div className={styles.cardContent}>
+                    <div className={styles.cardTop}>
+                        <div className={styles.cardLabel}>
+                            <span className={styles.labelSmall}>Digital Asset</span>
+                            <span className={styles.labelMain}>Elite Status</span>
+                        </div>
+                        <div className={styles.brandContainer}>
+                            {getBrandLogo(card.type)}
                         </div>
                     </div>
-                    <Smartphone className="h-6 w-6 text-white/30" strokeWidth={1.5} />
-                </div>
 
-                <div className="space-y-4">
-                    <div className={styles.cardNumbers}>
-                        {showFullNumber
-                            ? card.number
-                            : (card.number ? card.number.replace(/\d(?=\d{4})/g, "•") : "•••• •••• •••• ••••")
-                        }
-                    </div>
-                    <div className={styles.cardInfo}>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.infoLabel}>Card Holder</span>
-                            <span className={styles.infoText}>{card.holder || 'YOUR NAME'}</span>
+                    <div className="flex items-center gap-5">
+                        <div className={styles.cardChip}>
+                            <div className={styles.chipGrid}>
+                                {[...Array(9)].map((_, i) => <div key={i} />)}
+                            </div>
                         </div>
-                        <div className={styles.infoBlock} style={{ alignItems: 'flex-end' }}>
-                            <span className={styles.infoLabel}>Expires</span>
-                            <span className={styles.infoText}>{card.expiry || 'MM/YY'}</span>
+                        <Smartphone className="h-6 w-6 text-white/30" strokeWidth={1.5} />
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className={styles.cardNumbers}>
+                            {showFullNumber
+                                ? card.number
+                                : (card.number ? card.number.replace(/\d(?=\d{4})/g, "•") : "•••• •••• •••• ••••")
+                            }
+                        </div>
+                        <div className={styles.cardInfo}>
+                            <div className={styles.infoBlock}>
+                                <span className={styles.infoLabel}>Card Holder</span>
+                                <span className={styles.infoText}>{card.holder || 'YOUR NAME'}</span>
+                            </div>
+                            <div className={styles.infoBlock} style={{ alignItems: 'flex-end' }}>
+                                <span className={styles.infoLabel}>Expires</span>
+                                <span className={styles.infoText}>{card.expiry || 'MM/YY'}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </motion.div>
-    );
-};
+            </motion.div>
+        );
+    }
+);
+
+PremiumCard.displayName = 'PremiumCard';
 
 export default PremiumCard;

@@ -35,8 +35,13 @@ self.addEventListener('activate', (event) => {
 
 // Fetch - network first, fallback to cache
 self.addEventListener('fetch', (event) => {
-    // Skip non-GET requests and API calls
-    if (event.request.method !== 'GET' || event.request.url.includes('/api/')) {
+    // Skip non-GET requests, API calls, and chrome-extension URLs
+    if (
+        event.request.method !== 'GET' ||
+        event.request.url.includes('/api/') ||
+        event.request.url.startsWith('chrome-extension://') ||
+        event.request.url.startsWith('moz-extension://')
+    ) {
         return;
     }
 

@@ -1,11 +1,12 @@
 // Voice Routes - ElevenLabs voice AI integration
 import { Router } from 'express';
 import { getVoicePreferences, saveVoicePreferences, getElevenLabsSignedUrl, textToSpeech } from '../controllers/voiceController.js';
+import { authMiddleware } from '../middleware/auth.js';
 
 const router = Router();
 
-// All routes now accept x-user-id header (like AI endpoints) instead of auth middleware
-// This simplifies auth and matches the pattern that works for AI chat
+// All routes require authentication
+router.use(authMiddleware);
 
 // Get user's voice preferences
 router.get('/preferences', getVoicePreferences);

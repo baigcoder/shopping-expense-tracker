@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight, TrendingUp, Wallet } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { signInWithEmail, signInWithGoogle } from '../config/supabase';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import { isValidEmail, formatSupabaseError } from '../utils/validationUtils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

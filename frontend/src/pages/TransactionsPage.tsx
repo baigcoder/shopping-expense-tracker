@@ -16,7 +16,6 @@ import { supabaseTransactionService, SupabaseTransaction } from '../services/sup
 import { supabase } from '../config/supabase';
 import { useTransactionRealtime } from '../hooks/useRealtimeSync';
 import { toast } from 'sonner';
-import LoadingScreen from '../components/LoadingScreen';
 import TransactionDialog from '../components/TransactionDialog';
 import CSVImport from '../components/CSVImport';
 import ExportModal from '../components/ExportModal';
@@ -27,6 +26,7 @@ import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
 import { Badge } from '@/components/ui/badge';
 import styles from './TransactionsPage.module.css';
+import { TransactionsSkeleton } from '../components/LoadingSkeleton';
 
 // Animation Variants
 const staggerContainer = {
@@ -209,7 +209,11 @@ const TransactionsPage = () => {
     const balance = totalIncome - totalExpense;
 
     if (isLoading || (isLoadingSupabase && supabaseTransactions.length === 0)) {
-        return <LoadingScreen />;
+        return (
+            <div className={styles.mainContent}>
+                <TransactionsSkeleton />
+            </div>
+        );
     }
 
     return (
@@ -361,7 +365,7 @@ const TransactionsPage = () => {
                             {allTransactions.length > 0 ? (
                                 allTransactions.slice((page - 1) * 10, page * 10).map((transaction: any, index: number) => (
                                     <motion.div
-                                        key={transaction.id || `tx-${index}-${transaction.date}`}
+                                        key={transaction.id || `tx-fallback-${index}-${transaction.date}-${transaction.amount}`}
                                         className={styles.transactionCard}
                                         variants={itemVariants}
                                         initial="hidden"
@@ -456,11 +460,12 @@ const TransactionsPage = () => {
 
                 {/* Premium Modals */}
                 <AnimatePresence>
-                    {showImport && <CSVImport onImport={refreshTransactions} onClose={() => setShowImport(false)} />}
-                    {showPDFAnalyzer && <PDFAnalyzer onComplete={refreshTransactions} onClose={() => setShowPDFAnalyzer(false)} />}
-                    {showExport && <ExportModal onClose={() => setShowExport(false)} transactions={allTransactions} />}
+                    {showImport && <CSVImport key="csv-import" onImport={refreshTransactions} onClose={() => setShowImport(false)} />}
+                    {showPDFAnalyzer && <PDFAnalyzer key="pdf-analyzer" onComplete={refreshTransactions} onClose={() => setShowPDFAnalyzer(false)} />}
+                    {showExport && <ExportModal key="export-modal" onClose={() => setShowExport(false)} transactions={allTransactions} />}
                     {selectedTransaction && (
                         <TransactionDialog
+                            key="transaction-dialog"
                             transaction={selectedTransaction}
                             onSave={handleUpdate}
                             onDelete={handleDelete}
@@ -468,6 +473,7 @@ const TransactionsPage = () => {
                         />
                     )}
                     <ResetConfirmModal
+                        key="reset-modal"
                         isOpen={showResetModal}
                         onClose={() => setShowResetModal(false)}
                         category="transactions"
@@ -478,6 +484,7 @@ const TransactionsPage = () => {
                         }}
                     />
                     <DocumentImportModal
+                        key="document-import"
                         isOpen={showAIImport}
                         onClose={() => setShowAIImport(false)}
                         onImportComplete={() => {

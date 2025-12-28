@@ -193,8 +193,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                     id: 'top-category-high',
                     type: 'warning',
                     severity: 'high',
-                    title: `${topCat.category} Dominates Spending`,
-                    message: `${topCat.percentage}% of your spending is on ${topCat.category}. Consider diversifying or reducing this category.`,
+                    title: `Too Much on ${topCat.category}`,
+                    message: `${topCat.percentage}% of your spending goes to ${topCat.category}. Try cutting back a bit!`,
                     value: topCat.amount,
                     action: 'Set Budget Limit',
                     actionPath: '/budgets',
@@ -209,8 +209,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                         id: 'category-spike',
                         type: 'trend',
                         severity: 'medium',
-                        title: `${topCat.category} Spiked ${increase}%`,
-                        message: `Your ${topCat.category} spending increased by ${increase}% compared to last month.`,
+                        title: `${topCat.category} Went Up ${increase}%`,
+                        message: `You spent more on ${topCat.category} than last month.`,
                         value: topCat.amount - topCat.previousAmount,
                         action: 'Review Transactions',
                         actionPath: '/transactions',
@@ -228,8 +228,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'weekend-spending',
                 type: 'trend',
                 severity: 'medium',
-                title: 'Weekend Warrior Spending',
-                message: `${patterns.weekendSpendingPct}% of your spending happens on weekends. Setting weekend limits could save you ${formatCurrency(potentialSave)}/month.`,
+                title: 'High Weekend Spending',
+                message: `${patterns.weekendSpendingPct}% of your money is spent on weekends. A weekend budget could save you ${formatCurrency(potentialSave)}/month.`,
                 value: potentialSave,
                 action: 'Set Weekend Budget',
                 actionPath: '/budgets',
@@ -261,8 +261,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'over-budget',
                 type: 'warning',
                 severity: 'high',
-                title: `Over Budget Alert`,
-                message: `You've exceeded your budget in: ${overBudgetCategories.join(', ')}. Time to pause non-essential spending.`,
+                title: `Over Budget!`,
+                message: `You've spent too much on: ${overBudgetCategories.join(', ')}. Try to spend less.`,
                 action: 'View Budgets',
                 actionPath: '/budgets',
                 icon: 'AlertTriangle',
@@ -275,8 +275,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'near-budget',
                 type: 'warning',
                 severity: 'medium',
-                title: 'Budget Warning',
-                message: `Approaching limit in: ${nearBudgetCategories.join(', ')}. ${Math.floor((now.getDate() / 30) * 100)}% of the month gone.`,
+                title: 'Almost at Budget Limit',
+                message: `Getting close to your limit for: ${nearBudgetCategories.join(', ')}.`,
                 action: 'Adjust Spending',
                 actionPath: '/budgets',
                 icon: 'Target',
@@ -302,8 +302,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                     id: 'unused-subs',
                     type: 'savings',
                     severity: 'medium',
-                    title: 'Unused Subscriptions Found',
-                    message: `${unusedSubs.length} subscription(s) showing no recent activity: ${unusedSubs.slice(0, 2).map(s => s.name).join(', ')}. Cancel to save ${formatCurrency(potentialSave)}/month.`,
+                    title: 'Unused Subscriptions',
+                    message: `You have ${unusedSubs.length} subscription(s) you might not be using: ${unusedSubs.slice(0, 2).map(s => s.name).join(', ')}. Cancel to save ${formatCurrency(potentialSave)}/month.`,
                     value: potentialSave,
                     action: 'Review Subscriptions',
                     actionPath: '/subscriptions',
@@ -317,8 +317,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                     id: 'high-subs',
                     type: 'tip',
                     severity: 'low',
-                    title: 'Subscription Cost Analysis',
-                    message: `Your ${subscriptions.length} subscriptions cost ${formatCurrency(monthlySubs)}/month (${formatCurrency(monthlySubs * 12)}/year). Consider annual plans for savings.`,
+                    title: 'Your Subscriptions',
+                    message: `You pay ${formatCurrency(monthlySubs)}/month for ${subscriptions.length} subscriptions (${formatCurrency(monthlySubs * 12)}/year). Yearly plans can save money.`,
                     value: monthlySubs,
                     action: 'Manage Subscriptions',
                     actionPath: '/subscriptions',
@@ -334,8 +334,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'low-savings',
                 type: 'warning',
                 severity: 'high',
-                title: 'Low Savings Rate',
-                message: `You're only saving ${savingsRate}% of your income. Financial experts recommend saving at least 20%.`,
+                title: 'Save More!',
+                message: `You're only saving ${savingsRate}% of your money. Try to save at least 20%.`,
                 action: 'Create Savings Goal',
                 actionPath: '/goals',
                 icon: 'PiggyBank',
@@ -347,8 +347,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'great-savings',
                 type: 'achievement',
                 severity: 'low',
-                title: 'Excellent Savings! 🎉',
-                message: `You're saving ${savingsRate}% of your income. Keep up the great work! Consider investing your surplus.`,
+                title: 'Great Job Saving! 🎉',
+                message: `You're saving ${savingsRate}% of your money - that's awesome! Keep going!`,
                 action: 'Explore Goals',
                 actionPath: '/goals',
                 icon: 'Trophy',
@@ -369,7 +369,7 @@ export async function generateSmartInsights(userId: string): Promise<{
                 type: 'tip',
                 severity: 'low',
                 title: 'Small Purchases Add Up',
-                message: `${smallTx.length} small purchases totaled ${formatCurrency(smallTxTotal)}. These "latte factor" expenses can be reduced.`,
+                message: `${smallTx.length} small purchases added up to ${formatCurrency(smallTxTotal)}. Watch those little expenses!`,
                 value: smallTxTotal,
                 action: 'View Small Transactions',
                 actionPath: '/transactions',
@@ -390,8 +390,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'dining-high',
                 type: 'savings',
                 severity: 'medium',
-                title: 'Dining Out Opportunity',
-                message: `Food & dining is ${Math.round((diningSpend / currentMonthExpenses) * 100)}% of spending. Cooking more could save ${formatCurrency(potentialSave)}/month.`,
+                title: 'Eating Out a Lot',
+                message: `Food & dining is ${Math.round((diningSpend / currentMonthExpenses) * 100)}% of your spending. Cooking at home could save ${formatCurrency(potentialSave)}/month.`,
                 value: potentialSave,
                 action: 'Set Food Budget',
                 actionPath: '/budgets',
@@ -431,8 +431,8 @@ export async function generateSmartInsights(userId: string): Promise<{
                 id: 'fallback',
                 type: 'tip',
                 severity: 'low',
-                title: 'Track Your Spending',
-                message: 'Add more transactions to get personalized insights and recommendations.',
+                title: 'Start Tracking',
+                message: 'Add your spending to get tips on how to save money.',
                 action: 'Add Transaction',
                 actionPath: '/transactions',
                 icon: 'Plus',
@@ -452,13 +452,13 @@ export async function generateSmartInsights(userId: string): Promise<{
 // Get cached AI tip with fallback
 export function getLocalFallbackTip(stats: InsightsStats): string {
     if (stats.alerts > 0) {
-        return `⚠️ You have ${stats.alerts} budget alert(s) to address. Check your insights for details.`;
+        return `⚠️ You have ${stats.alerts} thing(s) to check. Look at your tips for details.`;
     }
     if (stats.potentialSavings > 0) {
-        return `💡 You could save up to ${formatCurrency(stats.potentialSavings)} by following our recommendations.`;
+        return `💡 You could save up to ${formatCurrency(stats.potentialSavings)} by following our tips.`;
     }
     if (stats.healthScore >= 80) {
-        return `🌟 Great job! Your financial health score is ${stats.healthScore}/100. Keep it up!`;
+        return `🌟 Great job! Your money health score is ${stats.healthScore}/100. Keep it up!`;
     }
-    return `📊 Track more transactions to unlock personalized insights and savings opportunities.`;
+    return `📊 Add more spending to see tips on how to save money.`;
 }

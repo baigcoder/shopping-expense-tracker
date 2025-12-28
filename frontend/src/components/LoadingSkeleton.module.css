@@ -1,15 +1,18 @@
 /* ============================================
-   FINZEN - Loading Skeleton Component
-   Gen-Z Fintech Theme - Dark Slate + Emerald
+   CASHLY - Loading Skeleton Component
+   Midnight Coral Theme - Premium Light Mode
    ============================================ */
 
 /* Base Skeleton with Shimmer */
 .skeleton {
-    background: linear-gradient(90deg, #E2E8F0 0%, #FFFFFF 50%, #E2E8F0 100%);
+    background: linear-gradient(90deg,
+            rgba(226, 232, 240, 0.4) 0%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(226, 232, 240, 0.4) 100%);
     background-size: 200% 100%;
-    animation: shimmer 1.5s infinite linear;
-    border: 2px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
+    animation: shimmer 1.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 @keyframes shimmer {
@@ -24,20 +27,20 @@
 
 /* Card Skeleton */
 .cardSkeleton {
-    background: var(--color-surface);
-    border: 3px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    padding: 1.5rem;
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 36px;
+    padding: 2.25rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    box-shadow: 4px 4px 0 var(--color-primary);
+    gap: 1.5rem;
+    box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.03);
 }
 
 .cardHeader {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .cardTitleArea {
@@ -48,14 +51,14 @@
 
 /* Stat Skeleton */
 .statSkeleton {
-    background: var(--color-surface);
-    border: 3px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    padding: 1.5rem;
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 32px;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    box-shadow: 4px 4px 0 var(--color-accent);
+    gap: 1rem;
+    box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.03);
 }
 
 /* Transaction Skeleton */
@@ -64,36 +67,34 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-    margin-bottom: 0.75rem;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 20px;
 }
 
 .txDetails {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 /* Table Skeleton */
 .tableSkeleton {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
 /* Chart Skeleton */
 .chartSkeleton {
-    background: var(--color-surface);
-    border: 3px solid var(--color-border);
-    border-radius: var(--border-radius-xl);
-    padding: 2rem;
-    height: 280px;
+    background: white;
+    border: 3px solid #e2e8f0;
+    border-radius: 36px;
+    padding: 2.25rem;
+    min-height: 380px;
     display: flex;
     flex-direction: column;
-    box-shadow: 6px 6px 0 var(--color-primary);
+    box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.03);
 }
 
 .chartBars {
@@ -101,38 +102,46 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
-    padding-bottom: 1rem;
+    padding: 2rem 1rem;
+    gap: 1rem;
 }
 
 .chartBar {
-    width: 40px;
-    background: linear-gradient(90deg, #F3F4F6 0%, #FFFFFF 50%, #F3F4F6 100%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite linear;
-    border-radius: 8px 8px 0 0;
-    border: 2px solid var(--color-border);
-    border-bottom: none;
+    width: 100%;
+    max-width: 60px;
+    background: rgba(226, 232, 240, 0.4);
+    border-radius: 12px 12px 0 0;
 }
 
 .chartLabels {
     display: flex;
     justify-content: space-around;
-    padding-top: 0.5rem;
-    border-top: 3px solid var(--color-border);
+    padding-top: 1.5rem;
+    border-top: 2px solid #f1f5f9;
 }
 
-/* Page Skeleton */
+/* Page Skeleton Layouts */
 .pageSkeleton {
-    padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .pageHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    border: 3px solid #e2e8f0;
+    border-radius: 36px;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
 }
 
 .statsRow {
@@ -141,43 +150,54 @@
     gap: 1.5rem;
 }
 
-/* Budget Skeleton */
-.budgetSkeleton {
-    background: var(--color-surface);
-    border: 3px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    padding: 1.5rem;
+/* Grid Layouts */
+.grid2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.grid4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+/* Modal Skeleton */
+.modalSkeleton {
+    background: white;
+    border-radius: 40px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    box-shadow: 4px 4px 0 var(--color-warning);
-}
-
-.budgetHeader {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.budgetAmount {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    text-align: right;
-}
-
-.budgetProgress {
-    display: flex;
-    justify-content: space-between;
+    gap: 2rem;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .statsRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid2 {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
     .statsRow {
         grid-template-columns: 1fr;
     }
 
-    .chartBar {
-        width: 24px;
+    .grid4 {
+        grid-template-columns: 1fr;
     }
 }

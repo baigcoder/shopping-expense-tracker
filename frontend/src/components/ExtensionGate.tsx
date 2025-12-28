@@ -1,8 +1,8 @@
-// Extension Gate - Wraps protected routes
+// Extension Gate - Wraps protected routes (OPTIMIZED for fast loading)
 import { ReactNode, useEffect, useState } from 'react';
 import { useExtensionSync } from '../hooks/useExtensionSync';
 import ExtensionRequiredModal from './ExtensionRequiredModal';
-import LoadingScreen from './LoadingScreen';
+import { DashboardSkeleton } from './LoadingSkeleton';
 
 // Check localStorage sync flag directly (fast synchronous check)
 const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
@@ -37,13 +37,22 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
     const [showModal, setShowModal] = useState(false);
     const [verificationComplete, setVerificationComplete] = useState(false);
 
-    // Initial sync flag (for faster first paint)
+    // Initial sync flag (for faster first paint) - computed ONCE
     const [wasPreviouslySynced] = useState(() => isPreviouslySynced());
+
+    // OPTIMIZATION: If previously synced, immediately mark verification complete
+    // This allows children to render while we verify in background
+    useEffect(() => {
+        if (wasPreviouslySynced) {
+            setVerificationComplete(true);
+        }
+    }, [wasPreviouslySynced]);
 
     // Listen for extension sync event - hide modal immediately when synced
     useEffect(() => {
         const handleExtensionSynced = () => {
             setShowModal(false);
+            setVerificationComplete(true);
         };
 
         window.addEventListener('extension-synced', handleExtensionSynced);
@@ -78,13 +87,13 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
             clearSyncFlag(); // Clear stale sync flag
         }
 
-        // Give a short grace period for extension to initialize, then show modal
+        // OPTIMIZED: Reduced grace period from 1500ms to 500ms for faster response
         const timer = setTimeout(() => {
             setVerificationComplete(true);
             if (!extensionStatus.installed || !extensionStatus.loggedIn) {
                 setShowModal(true);
             }
-        }, 1500); // 1.5 second grace period
+        }, 500); // 500ms grace period (was 1500ms)
 
         return () => clearTimeout(timer);
     }, [checking, extensionStatus.installed, extensionStatus.loggedIn, wasPreviouslySynced]);
@@ -102,14 +111,24 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
         }
     }, [extensionStatus.installed, extensionStatus.loggedIn]);
 
-    // FAST PATH: If previously synced AND extension is currently detected, skip loading
-    if (wasPreviouslySynced && extensionStatus.installed && extensionStatus.loggedIn) {
+    // FAST PATH 1: If previously synced, render children immediately (don't wait for checks)
+    // Background verification will show modal if extension was actually removed
+    if (wasPreviouslySynced && !showModal) {
         return <>{children}</>;
     }
 
-    // Show loading while checking (but only briefly)
-    if (checking || !verificationComplete) {
-        return <LoadingScreen />;
+    // FAST PATH 2: If extension is currently detected and logged in, render immediately
+    if (extensionStatus.installed && extensionStatus.loggedIn) {
+        return <>{children}</>;
+    }
+
+    // Show loading while checking (but only if not previously synced)
+    if ((checking || !verificationComplete) && !wasPreviouslySynced) {
+        return (
+            <div className="flex-1 overflow-auto bg-slate-50/50">
+                <DashboardSkeleton />
+            </div>
+        );
     }
 
     // Show modal if extension not detected after verification
@@ -117,8 +136,9 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
         return <ExtensionRequiredModal />;
     }
 
-    // Extension installed AND logged in, render children
+    // Default: render children
     return <>{children}</>;
 };
 
 export default ExtensionGate;
+

@@ -5,7 +5,7 @@ import { usePlaidLink, PlaidLinkOnSuccess, PlaidLinkOnExit } from 'react-plaid-l
 import { motion } from 'framer-motion';
 import { Landmark, Loader2, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import styles from './PlaidLinkButton.module.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';

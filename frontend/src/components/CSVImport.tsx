@@ -71,7 +71,61 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                 toast.dismiss('pdf-analyze');
 
                 if (result.success && result.transactions.length > 0) {
-                    const parsed: ParsedTransaction[] = result.transactions.map((tx, i) => ({
+                    // Filter out invalid/fragment transactions - STRICT validation
+                    const isValidDescription = (desc: string): boolean => {
+                        if (!desc) return false;
+
+                        const cleaned = desc.trim();
+
+                        // Too short - must be at least 8 characters for a meaningful description
+                        if (cleaned.length < 8) return false;
+
+                        // Must contain at least one word with 5+ letters
+                        const words = cleaned.match(/[a-zA-Z]+/g) || [];
+                        const hasLongWord = words.some(w => w.length >= 5);
+                        if (!hasLongWord && words.length < 3) return false;
+
+                        // Reject specific fragment patterns
+                        const fragmentPatterns = [
+                            /^:\s*(?:AM|PM)?/i,                                    // Starts with colon
+                            /^Phone:\s*\(\s*\)/i,                                  // "Phone: ( )"
+                            /^Phone:\s*$/i,                                        // "Phone:" alone
+                            /^\(\s*\)$/,                                           // "( )" empty parens
+                            /^(?:AM|PM)\s*$/i,                                     // Just AM/PM
+                            /^(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?:uary|ruary|ch|il|e|y|ust|tember|ober|ember)?\s*\d{0,4}$/i,  // Month names
+                            /^\d{1,2}\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i,  // "15 Aug"
+                            /^[A-Z]{1,4}$/,                                        // Just short caps
+                            /^\d+$/,                                               // Just numbers
+                            /^[^a-zA-Z]*$/,                                        // No letters at all
+                            /^OTHER\s*$/i,                                         // "OTHER"
+                            /^N\/?A\s*$/i,                                         // "N/A"
+                            /^-+$/,                                                // Just dashes
+                            /^\.+$/,                                               // Just dots
+                            /^(?:Debit|Credit|DR|CR)\s*$/i,                        // Transaction type only
+                            /^\d{1,2}:\d{2}\s*(?:AM|PM)?$/i,                       // Time only "2:30 PM"
+                            /^\d{1,2}[-\/]\d{1,2}(?:[-\/]\d{2,4})?$/,              // Date only
+                            /^Rs\.?\s*\d/i,                                        // "Rs 123" - amount only
+                            /^PKR\s*\d/i,                                          // "PKR 123" - amount only
+                            /^\d+\s*(?:AM|PM)$/i,                                  // "3 PM"
+                        ];
+
+                        if (fragmentPatterns.some(p => p.test(cleaned))) {
+                            return false;
+                        }
+
+                        // Check that it doesn't start with just punctuation/numbers
+                        if (/^[^a-zA-Z]{0,3}:/.test(cleaned) && cleaned.length < 15) {
+                            return false;
+                        }
+
+                        return true;
+                    };
+
+                    const validTransactions = result.transactions.filter(tx =>
+                        isValidDescription(tx.description) && tx.amount > 0
+                    );
+
+                    const parsed: ParsedTransaction[] = validTransactions.map((tx, i) => ({
                         id: tx.id || `pdf-${Date.now()}-${i}`,
                         date: tx.date,
                         description: tx.description,
@@ -83,10 +137,17 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
                     setTransactions(parsed);
                     setErrors([]);
                     setStep('preview');
-                    toast.success(`Found ${parsed.length} transactions in PDF`);
+
+                    const skipped = result.transactions.length - parsed.length;
+                    if (skipped > 0) {
+                        toast.success(`Found ${parsed.length} valid transactions (${skipped} fragments skipped)`);
+                    } else {
+                        toast.success(`Found ${parsed.length} transactions in PDF`);
+                    }
                 } else {
                     toast.error(result.error || 'No transactions found in PDF');
                 }
+
             } else {
                 // Process CSV
                 const content = await file.text();

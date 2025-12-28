@@ -16,7 +16,7 @@ import { budgetService, Budget } from '../services/budgetService';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'sonner';
-import LoadingScreen from '../components/LoadingScreen';
+import { BudgetsSkeleton } from '../components/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
 import styles from './BudgetsPage.module.css';
@@ -164,7 +164,13 @@ const BudgetsPage = () => {
         return styles.safe;
     };
 
-    if (isLoading && budgets.length === 0) return <LoadingScreen />;
+    if (isLoading && budgets.length === 0) {
+        return (
+            <div className={styles.mainContent}>
+                <BudgetsSkeleton />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.mainContent}>

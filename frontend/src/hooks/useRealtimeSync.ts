@@ -91,8 +91,8 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 detail: payload.payload
             }));
 
-            // Show success toast
-            genZToast.extensionSynced({ toastId: 'realtime-sync' });
+            // Show success toast (handles deduplication internally)
+            genZToast.extensionSynced();
         });
 
         channel.on('broadcast', { event: 'extension-removed' }, (payload) => {
@@ -315,7 +315,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
             // Refresh all data when another device makes changes
             config.onAnyChange?.();
 
-            genZToast.info('📱 Synced from another device!', { toastId: 'device-sync' });
+            genZToast.info('📱 Synced from another device!');
         });
 
         // Subscribe to channel with enhanced status handling

@@ -1,26 +1,29 @@
-// Voice Call Modal - Live voice conversation with AI Accountant
+// Voice Call Modal - Live voice conversation with AI Financial Accountant
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mic, MicOff, PhoneOff, Settings, Minimize2, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { aiDataCache } from '../services/aiDataCacheService';
+import api from '../services/api';
 
 interface VoiceCallModalProps {
     isOpen: boolean;
     onClose: () => void;
-    voiceName: string;
+    voiceName: string;  // Voice ID: jenny, aria, guy, davis
     userId: string;
     userName?: string;
     onEditPreferences?: () => void;
 }
 
-const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
+// Python AI Server TTS URL
+const AI_SERVER_URL = 'http://localhost:8000';
 
-const VOICE_IDS: { [key: string]: string } = {
-    'Rachel': '21m00Tcm4TlvDq8ikWAM',
-    'Adam': 'pNInz6obpgDQGcFmaJgB',
-    'Emily': 'MF3mGyEYCl7XYWbV9V6O',
-    'Josh': 'TxGEqnHWrfWFTfGW9XjX',
+// Voice ID mapping (lowercase to ensure consistency)
+const VOICE_IDS: { [key: string]: { id: string; gender: string } } = {
+    'jenny': { id: 'jenny', gender: 'female' },
+    'aria': { id: 'aria', gender: 'female' },
+    'guy': { id: 'guy', gender: 'male' },
+    'davis': { id: 'davis', gender: 'male' },
 };
 
 const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
@@ -47,54 +50,140 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         }
     }, [transcript, interimText]);
 
-    // Speak using ElevenLabs directly from browser (avoids server IP flagging)
+    // Fallback to browser's Web Speech API
+    const speakWithWebSpeech = useCallback((text: string) => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Stop any current speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = 0.9; // Slightly lower for male voice
+            utterance.volume = 1.0;
+
+            // Try to find a male voice
+            const voices = window.speechSynthesis.getVoices();
+            const maleVoice = voices.find(v =>
+                v.name.includes('David') || v.name.includes('Mark') || v.name.includes('Guy') || v.name.includes('Male')
+            ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+
+            if (maleVoice) {
+                utterance.voice = maleVoice;
+            }
+
+            utterance.onend = () => setIsAISpeaking(false);
+            utterance.onerror = () => setIsAISpeaking(false);
+
+            setIsAISpeaking(true);
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn('Web Speech API not supported');
+            setIsAISpeaking(false);
+        }
+    }, []);
+
+    // Speak using Python edge-tts (FREE!) with selected voice
     const speakWithElevenLabs = useCallback(async (text: string) => {
-        const voiceId = VOICE_IDS[voiceName] || VOICE_IDS['Rachel'];
-        const apiKey = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
+        // Get voice config from voiceName prop (fallback to jenny)
+        const voiceKey = voiceName.toLowerCase();
+        const voiceConfig = VOICE_IDS[voiceKey] || VOICE_IDS['jenny'];
+        const isMale = voiceConfig.gender === 'male';
 
         try {
             setIsAISpeaking(true);
 
-            const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?optimize_streaming_latency=4&output_format=mp3_44100_64`, {
+            console.log(`🔊 Using Python TTS (edge-tts ${voiceConfig.id} voice)...`);
+
+            const response = await fetch(`${AI_SERVER_URL}/tts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'xi-api-key': apiKey,
                 },
                 body: JSON.stringify({
                     text,
-                    model_id: 'eleven_flash_v2_5',
-                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+                    voice: voiceConfig.id,
+                    rate: '+0%',
+                    pitch: isMale ? '-5Hz' : '+0Hz'  // Slightly deeper for male
                 })
             });
 
-            if (!response.ok) throw new Error('TTS failed');
+            if (!response.ok) {
+                console.error('Python TTS error:', response.status);
+                console.log('⚠️ Falling back to Web Speech API...');
+                speakWithWebSpeech(text);
+                return;
+            }
 
             const audioBlob = await response.blob();
             const audioUrl = URL.createObjectURL(audioBlob);
 
-            audioRef.current = new Audio(audioUrl);
-            audioRef.current.onended = () => {
+            // Properly cleanup previous audio to prevent pool exhaustion
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.onended = null;
+                audioRef.current.onerror = null;
+                audioRef.current.src = '';
+                audioRef.current.load(); // Release resources
+                audioRef.current = null;
+            }
+
+            // Create new audio with proper cleanup handlers
+            const audio = new Audio(audioUrl);
+            audioRef.current = audio;
+
+            audio.onended = () => {
                 setIsAISpeaking(false);
                 URL.revokeObjectURL(audioUrl);
+                if (audioRef.current === audio) {
+                    audioRef.current = null;
+                }
             };
-            audioRef.current.play();
+            audio.onerror = (e) => {
+                console.error('Audio playback error:', e);
+                setIsAISpeaking(false);
+                URL.revokeObjectURL(audioUrl);
+                if (audioRef.current === audio) {
+                    audioRef.current = null;
+                }
+            };
+
+            // Try to play with promise handling for autoplay policy
+            try {
+                await audio.play();
+            } catch (playError) {
+                console.warn('Audio autoplay blocked:', playError);
+                setIsAISpeaking(false);
+                URL.revokeObjectURL(audioUrl);
+            }
         } catch (error) {
             console.error('TTS error:', error);
-            setIsAISpeaking(false);
+            console.log('⚠️ Falling back to Web Speech API...');
+            speakWithWebSpeech(text);
         }
-    }, [voiceName]);
+    }, [voiceName, speakWithWebSpeech]);
 
-    // Handle user speech -> AI response
+    // Ref to track ongoing fetch requests for cleanup
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    // Handle user speech -> AI response with timeout and abort support
     const handleUserSpeech = useCallback(async (userText: string) => {
-        if (isAISpeaking || isThinking || !userText.trim()) {
-            console.log('⏸️ Skipping speech - AI speaking or thinking');
+        if (isAISpeaking || isThinking || !userText.trim() || callEndedRef.current) {
+            console.log('⏸️ Skipping speech - AI speaking, thinking, or call ended');
             return;
         }
 
         console.log('📝 Processing user speech:', userText);
         setTranscript(prev => [...prev, { role: 'user', text: userText }]);
         setIsThinking(true);
+
+        // Create abort controller for this request
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal;
+
+        // 10 second timeout for AI response
+        const timeoutId = setTimeout(() => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        }, 10000);
 
         try {
             // Get user ID for AI request
@@ -116,58 +205,48 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                 textLower.includes('expense');
 
             let aiText = '';
+            const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
+            const baseUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
 
             if (isActionCommand) {
                 // Try voice-action endpoint for commands
                 console.log('🎯 Detected action command, calling voice-action...');
-                const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
-                const actionResponse = await fetch(`${apiUrl}/api/ai/voice-action`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-user-id': supabaseUserId || userId
-                    },
-                    body: JSON.stringify({
+                try {
+                    const actionResponse = await api.post('/ai/voice-action', {
                         message: userText,
                         userName: userName
-                    })
-                });
+                    }, { signal });
 
-                if (actionResponse.ok) {
-                    const actionData = await actionResponse.json();
+                    const actionData = actionResponse.data;
                     console.log('🎯 Action result:', actionData);
-
                     if (actionData.action !== 'none' && actionData.success) {
                         aiText = actionData.confirmation;
                     } else {
-                        // Fall back to chat for non-action or failed action
                         aiText = actionData.confirmation || '';
                     }
+                } catch (e: any) {
+                    if (e.name === 'AbortError' || e.name === 'CanceledError') throw e;
+                    console.log('Action endpoint failed, trying chat...');
                 }
             }
 
             // If no action response, use regular chat
             if (!aiText) {
                 console.log('🤖 Calling AI chat...');
-                const chatApiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
-                const response = await fetch(`${chatApiUrl}/api/ai/chat`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-user-id': supabaseUserId || userId
-                    },
-                    body: JSON.stringify({
-                        message: userText,
-                        userName: userName
-                    })
-                });
+                const response = await api.post('/ai/chat', {
+                    message: userText,
+                    userName: userName
+                }, { signal });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    aiText = data.reply || data.response || "Could you repeat that?";
-                } else {
-                    throw new Error(`API returned ${response.status}`);
-                }
+                aiText = response.data.reply || response.data.response || "Could you repeat that?";
+            }
+
+            clearTimeout(timeoutId);
+
+            // Check if call ended while waiting
+            if (callEndedRef.current) {
+                console.log('⚠️ Call ended, not speaking response');
+                return;
             }
 
             console.log('🔊 AI says:', aiText.substring(0, 50) + '...');
@@ -175,14 +254,32 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             setTranscript(prev => [...prev, { role: 'ai', text: aiText }]);
             await speakWithElevenLabs(aiText);
 
-        } catch (error) {
+        } catch (error: any) {
+            clearTimeout(timeoutId);
+
+            if (error.name === 'AbortError') {
+                console.log('⚠️ Request aborted (timeout or call ended)');
+                if (!callEndedRef.current) {
+                    setIsThinking(false);
+                    const timeoutMsg = "Sorry, that took too long. Could you try again?";
+                    setTranscript(prev => [...prev, { role: 'ai', text: timeoutMsg }]);
+                    await speakWithElevenLabs(timeoutMsg);
+                }
+                return;
+            }
+
             console.error('❌ AI error:', error);
             setIsThinking(false);
-            const fallback = "Sorry, I'm having trouble connecting. Please try again.";
-            setTranscript(prev => [...prev, { role: 'ai', text: fallback }]);
-            await speakWithElevenLabs(fallback);
+
+            if (!callEndedRef.current) {
+                const fallback = "Sorry, I couldn't connect. Please try again.";
+                setTranscript(prev => [...prev, { role: 'ai', text: fallback }]);
+                await speakWithElevenLabs(fallback);
+            }
+        } finally {
+            abortControllerRef.current = null;
         }
-    }, [isAISpeaking, isThinking, speakWithElevenLabs]);
+    }, [isAISpeaking, isThinking, userId, userName, speakWithElevenLabs]);
 
     // Reset state when modal opens
     useEffect(() => {
@@ -303,11 +400,24 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         // Stop everything immediately
         callEndedRef.current = true; // Prevent recognition from restarting
         setCallStatus('ended');
+        setIsThinking(false);
+        setIsAISpeaking(false);
 
-        // Stop speech recognition
+        // Abort any ongoing API requests
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+            abortControllerRef.current = null;
+        }
+
+        // Stop Web Speech synthesis
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+
+        // Stop speech recognition immediately
         if (recognitionRef.current) {
             try {
-                recognitionRef.current.abort(); // Use abort for immediate stop
+                recognitionRef.current.abort();
                 recognitionRef.current.stop();
             } catch (e) { }
             recognitionRef.current = null;
@@ -326,15 +436,8 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             audioContextRef.current = null;
         }
 
-        // Add farewell to transcript (visible but not spoken for quick exit)
-        const farewellName = userName && userName !== 'there' ? `, Sir ${userName}` : '';
-        setTranscript(prev => [...prev, {
-            role: 'ai',
-            text: `Goodbye${farewellName}! It was great helping you today. 👋`
-        }]);
-
-        // Close modal after brief delay to show farewell
-        setTimeout(onClose, 800);
+        // Close modal immediately (no farewell delay for faster exit)
+        onClose();
     };
 
     if (!isOpen) return null;

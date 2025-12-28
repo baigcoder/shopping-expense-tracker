@@ -18,6 +18,27 @@ const SUPABASE_ANON_KEY = self.CONFIG.SUPABASE_ANON_KEY;
 const WEBSITE_ORIGINS = self.CONFIG.WEBSITE_ORIGINS;
 
 // ================================
+// PENDING CANCELLATION MAP (for notification button clicks)
+// ================================
+const pendingCancellations = new Map();
+
+// Global notification button click handler (prevents memory leak from multiple listeners)
+chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
+    if (pendingCancellations.has(notificationId) && buttonIndex === 0) {
+        const data = pendingCancellations.get(notificationId);
+        console.log('User wants to remove subscription:', data.name);
+        notifyWebsiteTabs('REMOVE_SUBSCRIPTION_REQUEST', {
+            name: data.name,
+            hostname: data.hostname
+        });
+        pendingCancellations.delete(notificationId);
+    } else if (pendingCancellations.has(notificationId)) {
+        // User clicked "No, keep it"
+        pendingCancellations.delete(notificationId);
+    }
+});
+
+// ================================
 // RATE LIMITER CLASS
 // ================================
 class RateLimiter {
@@ -118,13 +139,24 @@ class OfflineQueue {
         }
 
         const storage = await chrome.storage.local.get(['offlineQueue', 'accessToken', 'userId']);
-        const queue = storage.offlineQueue || [];
+        let queue = storage.offlineQueue || [];
 
         if (queue.length === 0 || !storage.accessToken) return;
+
+        // Filter out expired items (older than 24 hours)
+        const MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
+        const now = Date.now();
+        const validQueue = queue.filter(item => now - (item.queuedAt || 0) < MAX_AGE_MS);
+        const expiredCount = queue.length - validQueue.length;
+        if (expiredCount > 0) {
+            console.log(`🗑️ Discarded ${expiredCount} expired queue items (>24h old)`);
+        }
+        queue = validQueue;
 
         console.log(`🔄 Processing ${queue.length} queued transactions...`);
 
         const remaining = [];
+
 
         for (const item of queue) {
             try {
@@ -275,6 +307,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             // Popup requesting current tracking state
             sendResponse(currentTrackingState);
             return true;
+
+        case 'CANCELLATION_DETECTED':
+            handleCancellationDetected(message.data);
+            break;
     }
 
     sendResponse({ received: true });
@@ -494,7 +530,8 @@ async function handleBehaviorTransaction(data) {
             notes: `Auto-tracked via behavior detection from ${data.hostname || 'web'}. Flow: ${data.behaviorFlow?.map(s => s.to).join(' → ') || 'direct'}`
         };
 
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
+        // Use rate limiter to prevent API abuse
+        const response = await transactionRateLimiter.throttledFetch(`${SUPABASE_URL}/rest/v1/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -504,6 +541,7 @@ async function handleBehaviorTransaction(data) {
             },
             body: JSON.stringify(transactionData)
         });
+
 
         if (response.ok) {
             const created = await response.json();
@@ -750,8 +788,143 @@ function showSubscriptionNotification(data) {
         setTimeout(() => {
             chrome.notifications.clear(notificationId);
         }, 8000);
+
+        // Schedule trial expiry reminders
+        if (isTrial && trialDays > 0) {
+            scheduleTrialReminders(name, trialDays);
+        }
     } catch (error) {
         console.log('Subscription notification error:', error);
+    }
+}
+
+// ================================
+// TRIAL EXPIRY REMINDER SYSTEM
+// ================================
+async function scheduleTrialReminders(subscriptionName, trialDays) {
+    const today = new Date();
+    const trialEndDate = new Date(today);
+    trialEndDate.setDate(trialEndDate.getDate() + trialDays);
+
+    // Store trial info for alarm handler
+    const trialId = `trial_${subscriptionName.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`;
+    const trialInfo = {
+        name: subscriptionName,
+        endDate: trialEndDate.toISOString(),
+        trialDays: trialDays
+    };
+
+    // Save to storage for alarm handler
+    const storage = await chrome.storage.local.get(['scheduledTrialReminders']);
+    const reminders = storage.scheduledTrialReminders || {};
+    reminders[trialId] = trialInfo;
+    await chrome.storage.local.set({ scheduledTrialReminders: reminders });
+
+    // Schedule reminder 2 days before trial ends
+    if (trialDays > 2) {
+        const twoDaysBefore = new Date(trialEndDate);
+        twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
+        const delayMs2Days = twoDaysBefore.getTime() - Date.now();
+
+        if (delayMs2Days > 0) {
+            chrome.alarms.create(`trial_2day_${trialId}`, {
+                when: twoDaysBefore.getTime()
+            });
+            console.log(`⏰ Trial reminder scheduled: ${subscriptionName} - 2 days before (${twoDaysBefore.toDateString()})`);
+        }
+    }
+
+    // Schedule reminder 1 day before trial ends
+    if (trialDays > 1) {
+        const oneDayBefore = new Date(trialEndDate);
+        oneDayBefore.setDate(oneDayBefore.getDate() - 1);
+        const delayMs1Day = oneDayBefore.getTime() - Date.now();
+
+        if (delayMs1Day > 0) {
+            chrome.alarms.create(`trial_1day_${trialId}`, {
+                when: oneDayBefore.getTime()
+            });
+            console.log(`⏰ Trial reminder scheduled: ${subscriptionName} - 1 day before (${oneDayBefore.toDateString()})`);
+        }
+    }
+
+    // Schedule reminder on trial end day
+    chrome.alarms.create(`trial_end_${trialId}`, {
+        when: trialEndDate.getTime()
+    });
+    console.log(`⏰ Trial end reminder scheduled: ${subscriptionName} - ends on ${trialEndDate.toDateString()}`);
+}
+
+// Alarm listener for trial reminders
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+    console.log('⏰ Alarm triggered:', alarm.name);
+
+    if (alarm.name.startsWith('trial_')) {
+        const storage = await chrome.storage.local.get(['scheduledTrialReminders']);
+        const reminders = storage.scheduledTrialReminders || {};
+
+        // Extract trial ID from alarm name
+        const parts = alarm.name.split('_');
+        const reminderType = parts[1]; // '2day', '1day', or 'end'
+        const trialId = parts.slice(2).join('_');
+
+        // Find matching reminder
+        for (const [id, info] of Object.entries(reminders)) {
+            if (id === trialId || alarm.name.includes(id)) {
+                showTrialReminderNotification(info, reminderType);
+
+                // Notify website tabs
+                notifyWebsiteTabs('TRIAL_REMINDER', {
+                    name: info.name,
+                    endDate: info.endDate,
+                    reminderType: reminderType,
+                    daysLeft: reminderType === '2day' ? 2 : reminderType === '1day' ? 1 : 0
+                });
+
+                // Clean up expired reminders
+                if (reminderType === 'end') {
+                    delete reminders[id];
+                    await chrome.storage.local.set({ scheduledTrialReminders: reminders });
+                }
+                break;
+            }
+        }
+    }
+});
+
+function showTrialReminderNotification(trialInfo, reminderType) {
+    const notificationId = `trial-reminder-${Date.now()}`;
+    let title, message;
+
+    if (reminderType === '2day') {
+        title = '⚠️ Trial Ending Soon!';
+        message = `${trialInfo.name} trial ends in 2 days! Cancel now if you don't want to be charged.`;
+    } else if (reminderType === '1day') {
+        title = '🚨 Trial Ends Tomorrow!';
+        message = `${trialInfo.name} trial ends TOMORROW! Last chance to cancel before being charged.`;
+    } else {
+        title = '⏰ Trial Ended Today!';
+        message = `${trialInfo.name} trial period has ended. Check if you've been charged.`;
+    }
+
+    try {
+        chrome.notifications.create(notificationId, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/logo.png'),
+            title: title,
+            message: message,
+            priority: 2,
+            requireInteraction: reminderType === '1day' || reminderType === 'end' // Keep on screen for urgent reminders
+        });
+
+        // Auto-clear after 30 seconds if not urgent
+        if (reminderType === '2day') {
+            setTimeout(() => {
+                chrome.notifications.clear(notificationId);
+            }, 30000);
+        }
+    } catch (error) {
+        console.log('Trial reminder notification error:', error);
     }
 }
 
@@ -760,11 +933,13 @@ function showSubscriptionNotification(data) {
 // ================================
 async function notifyWebsiteTabs(messageType, data) {
     try {
-        const tabs = await chrome.tabs.query({});
+        // Optimized: Query only tabs matching our website origins instead of ALL tabs
+        const urlPatterns = WEBSITE_ORIGINS.map(origin => `${origin}/*`);
+        const tabs = await chrome.tabs.query({ url: urlPatterns });
 
         for (const tab of tabs) {
-            // Only message tabs with valid URLs that match our origins
-            if (tab.id && tab.url && WEBSITE_ORIGINS.some(origin => tab.url.startsWith(origin))) {
+            // Only message tabs with valid URLs
+            if (tab.id && tab.url) {
                 // Use a separate try-catch for each tab to prevent one failure from stopping others
                 chrome.tabs.sendMessage(tab.id, {
                     type: messageType,
@@ -800,6 +975,44 @@ function safeSendMessage(tabId, message) {
         }
     });
 }
+
+// ================================
+// CANCELLATION DETECTION HANDLER
+// ================================
+function handleCancellationDetected(data) {
+    console.log('🗑️ Cancellation detected:', data.name);
+
+    const notificationId = `cancel-${Date.now()}`;
+
+    try {
+        // Store the data for the global button click handler
+        pendingCancellations.set(notificationId, {
+            name: data.name,
+            hostname: data.hostname
+        });
+
+        chrome.notifications.create(notificationId, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/logo.png'),
+            title: '🗑️ Subscription Canceled?',
+            message: `Detected cancellation for ${data.name}. Would you like to remove it from your Cashly dashboard?`,
+            buttons: [
+                { title: 'Yes, remove it' },
+                { title: 'No, keep it' }
+            ],
+            priority: 2
+        });
+
+        // Auto-clear after timeout and remove from pending map
+        setTimeout(() => {
+            chrome.notifications.clear(notificationId);
+            pendingCancellations.delete(notificationId);
+        }, 10000);
+    } catch (error) {
+        console.log('Cancellation notification error:', error);
+    }
+}
+
 
 // ================================
 // PURCHASE DETECTION

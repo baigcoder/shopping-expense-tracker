@@ -28,6 +28,13 @@ const CONFIG = {
     redirectDelayMs: 2000,
 };
 
+// Mobile detection
+const isMobileDevice = () => {
+    if (typeof window === 'undefined') return false;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.innerWidth < 1024;
+};
+
 type AlertType = 'not_installed' | 'not_synced' | 'extension_removed' | 'sync_success' | null;
 
 const ExtensionAlert = () => {
@@ -36,12 +43,21 @@ const ExtensionAlert = () => {
     const [syncInProgress, setSyncInProgress] = useState(false);
     const [redirecting, setRedirecting] = useState(false);
     const [initialCheckDone, setInitialCheckDone] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const lastKnownStatusRef = useRef<{ installed: boolean; loggedIn: boolean } | null>(null);
     const hasShownSyncSuccessRef = useRef(false);
 
     const { extensionStatus, checking, checkExtension } = useExtensionSync();
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Check if on mobile device
+    useEffect(() => {
+        setIsMobile(isMobileDevice());
+        const handleResize = () => setIsMobile(isMobileDevice());
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Check if user is logged into the website
     const isWebsiteLoggedIn = useCallback(() => {
@@ -189,6 +205,9 @@ const ExtensionAlert = () => {
     const handleDownload = useCallback(() => {
         window.open('/cashly-extension.zip', '_blank');
     }, []);
+
+    // Don't render on mobile - extensions not supported
+    if (isMobile) return null;
 
     // Don't render if no alert type
     if (!alertType) return null;

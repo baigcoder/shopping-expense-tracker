@@ -1,12 +1,28 @@
 // AI Routes - Endpoints for AI insights, forecasts, and risk alerts
 // With Redis caching for instant responses
+// SECURITY: Input sanitization and rate limiting applied
 
 import { Router, Request, Response } from 'express';
 import { createClient } from '@supabase/supabase-js';
+import rateLimit from 'express-rate-limit';
 import groqService, { FinancialContext } from '../services/groqService';
 import cacheService from '../services/redisCacheService';
+import { authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { sanitizeChatMessage, sanitizeContext } from '../utils/security';
 
 const router = Router();
+
+// Apply auth middleware to ALL AI routes
+router.use(authMiddleware);
+
+// Rate limiting specifically for AI chat endpoints (stricter than global)
+const aiChatLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 20, // 20 requests per minute per IP
+    message: { error: 'Too many AI requests. Please wait a moment.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 // Supabase client for fetching user data
 const supabase = createClient(
@@ -25,7 +41,8 @@ async function buildUserContext(userId: string): Promise<FinancialContext> {
     // Fetch from Supabase
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const weekStart = new Date(now.setDate(now.getDate() - 7));
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - 7);
 
     const { data: transactions } = await supabase
         .from('transactions')
@@ -89,8 +106,8 @@ function calculateHealthScore(monthlySpent: number, txCount: number): number {
  * GET /api/ai/insights
  * Get AI-generated financial insights (cached)
  */
-router.get('/insights', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.get('/insights', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
@@ -129,8 +146,8 @@ router.get('/insights', async (req: Request, res: Response) => {
  * GET /api/ai/forecast
  * Get AI-generated spending forecast (cached)
  */
-router.get('/forecast', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.get('/forecast', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
@@ -161,8 +178,8 @@ router.get('/forecast', async (req: Request, res: Response) => {
  * GET /api/ai/risks
  * Get AI-generated risk alerts (cached)
  */
-router.get('/risks', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.get('/risks', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
@@ -193,8 +210,8 @@ router.get('/risks', async (req: Request, res: Response) => {
  * POST /api/ai/refresh
  * Force refresh all AI data (invalidate cache)
  */
-router.post('/refresh', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.post('/refresh', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
@@ -250,20 +267,27 @@ router.get('/status', async (_req: Request, res: Response) => {
 /**
  * POST /api/ai/chat
  * AI chatbot with FULL financial context
+ * SECURITY: Rate limited to 20 req/min, input sanitized
  */
-router.post('/chat', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
     const { message } = req.body;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
     }
 
-    if (!message) {
-        return res.status(400).json({ error: 'Message required' });
+    // SECURITY: Validate and sanitize user input
+    const validation = sanitizeChatMessage(message);
+    if (!validation.valid) {
+        return res.status(400).json({ error: validation.error || 'Invalid message' });
     }
+    const sanitizedMessage = validation.sanitized;
 
     try {
+        // 1. Get previous chat history from Redis
+        const history = await cacheService.getChatHistory(userId);
+
         // Fetch ALL user financial data in parallel
         const now = new Date();
         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -418,13 +442,18 @@ ${sortedCategories.slice(0, 5).map(([cat, amt]) => `• ${cat}: Rs ${(amt as num
             model: 'llama-3.1-8b-instant',
             messages: [
                 { role: 'system', content: systemPrompt },
-                { role: 'user', content: message }
+                ...history,
+                { role: 'user', content: sanitizedMessage }
             ],
             temperature: 0.7,
             max_tokens: 500
         });
 
         const reply = response.choices[0]?.message?.content || 'I could not generate a response.';
+
+        // 2. Save current interaction to chat history
+        await cacheService.appendChatHistory(userId, { role: 'user', content: sanitizedMessage });
+        await cacheService.appendChatHistory(userId, { role: 'assistant', content: reply });
 
         res.json({
             reply,
@@ -436,7 +465,8 @@ ${sortedCategories.slice(0, 5).map(([cat, amt]) => `• ${cat}: Rs ${(amt as num
                 goals: goals.length,
                 budgets: budgets.length,
                 reminders: reminders.length
-            }
+            },
+            historyLength: history.length + 2
         });
     } catch (error: any) {
         console.error('AI chat error:', error.message);
@@ -449,8 +479,8 @@ ${sortedCategories.slice(0, 5).map(([cat, amt]) => `• ${cat}: Rs ${(amt as num
  * FAST AI chatbot - accepts pre-built context from frontend cache
  * No database fetching = instant responses
  */
-router.post('/chat/fast', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.post('/chat/fast', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
     const { message, context } = req.body;
 
     if (!userId) {
@@ -513,11 +543,31 @@ ${context}`;
 });
 
 /**
+ * POST /api/ai/chat/clear
+ * Clear AI chatbot history for the user
+ */
+router.post('/chat/clear', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
+
+    if (!userId) {
+        return res.status(401).json({ error: 'User ID required' });
+    }
+
+    try {
+        await cacheService.clearChatHistory(userId);
+        res.json({ success: true, message: 'Chat history cleared' });
+    } catch (error: any) {
+        console.error('Clear context error:', error.message);
+        res.status(500).json({ error: 'Failed to clear chat history' });
+    }
+});
+
+/**
  * POST /api/ai/voice-action
  * Execute actions via voice commands (add goals, reminders, transactions)
  */
-router.post('/voice-action', async (req: Request, res: Response) => {
-    const userId = req.headers['x-user-id'] as string;
+router.post('/voice-action', async (req: AuthRequest, res: Response) => {
+    const userId = req.user?.supabaseId;
     const { message, userName } = req.body;
 
     if (!userId) {

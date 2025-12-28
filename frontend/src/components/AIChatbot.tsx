@@ -12,6 +12,7 @@ import { useAIRealtime } from '../hooks/useAIRealtime';
 import { cn } from '@/lib/utils';
 import VoiceSetupModal from './VoiceSetupModal';
 import VoiceCallModal from './VoiceCallModal';
+import api from '../services/api';
 
 interface Message {
     id: string;
@@ -106,18 +107,9 @@ const AIChatbot = () => {
         const fetchVoicePrefs = async () => {
             if (!user?.id) return;
             try {
-                // Get Supabase user ID for x-user-id header (same pattern as AI endpoints)
-                const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
-                const parsed = token ? JSON.parse(token) : null;
-                const supabaseUserId = parsed?.user?.id;
-
-                const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
-                const response = await fetch(`${apiUrl}/api/voice/preferences`, {
-                    headers: { 'x-user-id': supabaseUserId || user.id }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
+                const response = await api.get('/voice/preferences');
+                if (response.status === 200) {
+                    const data = response.data;
                     setVoicePrefs({ isSetup: data.isSetup, voiceName: data.voiceName });
                 }
             } catch (err) {
@@ -198,7 +190,7 @@ const AIChatbot = () => {
 
     return (
         <>
-            {/* Floating Button - Cashly Theme */}
+            {/* Floating Button - Desktop */}
             <motion.button
                 className={cn(
                     "fixed bottom-6 right-6 z-[9990]",
@@ -206,14 +198,12 @@ const AIChatbot = () => {
                     "bg-gradient-to-br from-primary to-blue-700",
                     "text-white border-2 border-white/20",
                     "shadow-lg shadow-primary/20",
-
                     "flex items-center justify-center",
                     "cursor-pointer transition-all duration-300",
                     "hover:shadow-xl hover:shadow-primary/30",
-
                     "hover:scale-105 hover:-translate-y-1",
                     "active:scale-95",
-                    "hidden lg:flex" // Hide on mobile/tablet
+                    "hidden lg:flex" // Desktop only
                 )}
                 onClick={toggleChat}
                 whileHover={{ rotate: isChatOpen ? 0 : 10 }}
@@ -248,6 +238,52 @@ const AIChatbot = () => {
                 </AnimatePresence>
             </motion.button>
 
+            {/* Floating Button - Mobile (smaller) */}
+            <motion.button
+                className={cn(
+                    "fixed bottom-20 right-4 z-[9990]",
+                    "w-11 h-11 rounded-xl",
+                    "bg-gradient-to-br from-primary to-blue-700",
+                    "text-white border border-white/20",
+                    "shadow-lg shadow-primary/30",
+                    "flex items-center justify-center",
+                    "cursor-pointer transition-all duration-300",
+                    "active:scale-95",
+                    "lg:hidden" // Mobile/tablet only
+                )}
+                onClick={toggleChat}
+                whileTap={{ scale: 0.9 }}
+            >
+                <AnimatePresence mode="wait">
+                    {isChatOpen ? (
+                        <motion.div
+                            key="close-mobile"
+                            initial={{ rotate: -90, opacity: 0 }}
+                            animate={{ rotate: 0, opacity: 1 }}
+                            exit={{ rotate: 90, opacity: 0 }}
+                        >
+                            <X size={18} strokeWidth={2.5} />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="open-mobile"
+                            initial={{ rotate: 90, opacity: 0 }}
+                            animate={{ rotate: 0, opacity: 1 }}
+                            exit={{ rotate: -90, opacity: 0 }}
+                            className="relative"
+                        >
+                            <Sparkles size={18} strokeWidth={2} />
+                            <motion.span
+                                className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"
+                                animate={{ scale: [1, 1.3, 1] }}
+                                transition={{ repeat: Infinity, duration: 2 }}
+                            />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.button>
+
+
             {/* Chat Window */}
             <AnimatePresence>
                 {isChatOpen && (
@@ -255,13 +291,13 @@ const AIChatbot = () => {
                         className={cn(
                             "fixed z-[9991]",
                             isMinimized
-                                ? "bottom-24 right-6 w-80 h-16"
-                                : "bottom-24 right-6 w-[380px] h-[520px] max-h-[calc(100vh-140px)]",
-                            "bg-primary rounded-2xl",
+                                ? "bottom-24 right-4 lg:right-6 w-72 lg:w-80 h-16"
+                                : "bottom-0 right-0 w-full h-[85vh] lg:bottom-24 lg:right-6 lg:w-[380px] lg:h-[520px] lg:max-h-[calc(100vh-140px)] lg:rounded-2xl",
+                            "bg-primary",
+                            !isMinimized && "rounded-t-3xl lg:rounded-2xl",
                             "border border-white/20",
                             "shadow-2xl shadow-indigo-900/40",
-                            "flex flex-col overflow-hidden",
-                            "max-w-[calc(100vw-48px)]"
+                            "flex flex-col overflow-hidden"
                         )}
                         initial={{ opacity: 0, y: 30, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}

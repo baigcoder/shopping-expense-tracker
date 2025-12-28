@@ -2,11 +2,10 @@
 import { Request, Response } from 'express';
 import { supabase } from '../config/supabase.js';
 
-// Get user's voice preferences (uses x-user-id header like AI endpoints)
+// Get user's voice preferences
 export const getVoicePreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Accept x-user-id header OR auth middleware user
-        const userId = req.headers['x-user-id'] as string || (req as any).user?.supabaseId || (req as any).user?.id;
+        const userId = (req as any).user?.supabaseId || (req as any).user?.id;
 
         if (!userId) {
             res.status(401).json({ error: 'Unauthorized - no user ID' });
@@ -38,8 +37,7 @@ export const getVoicePreferences = async (req: Request, res: Response): Promise<
 // Save voice preferences (initial setup or update)
 export const saveVoicePreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Accept x-user-id header OR auth middleware user
-        const userId = req.headers['x-user-id'] as string || (req as any).user?.supabaseId || (req as any).user?.id;
+        const userId = (req as any).user?.supabaseId || (req as any).user?.id;
 
         if (!userId) {
             res.status(401).json({ error: 'Unauthorized - no user ID' });
