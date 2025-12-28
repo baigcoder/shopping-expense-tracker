@@ -7,6 +7,19 @@ import { DashboardSkeleton } from './LoadingSkeleton';
 // Check localStorage sync flag directly (fast synchronous check)
 const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
 
+// Mobile detection - extensions are not available on mobile browsers
+const isMobileDevice = (): boolean => {
+    if (typeof window === 'undefined') return false;
+
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera || '';
+    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
+
+    // Also check screen width for tablets in mobile mode
+    const isSmallScreen = window.innerWidth <= 768;
+
+    return mobileRegex.test(userAgent) || isSmallScreen;
+};
+
 const isPreviouslySynced = (): boolean => {
     try {
         const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
@@ -39,6 +52,9 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
 
     // Initial sync flag (for faster first paint) - computed ONCE
     const [wasPreviouslySynced] = useState(() => isPreviouslySynced());
+
+    // Mobile detection - computed ONCE
+    const [isMobile] = useState(() => isMobileDevice());
 
     // OPTIMIZATION: If previously synced, immediately mark verification complete
     // This allows children to render while we verify in background
@@ -110,6 +126,12 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
             }
         }
     }, [extensionStatus.installed, extensionStatus.loggedIn]);
+
+    // FAST PATH 0: Mobile devices - skip extension requirement entirely
+    // Browser extensions are not available on mobile browsers
+    if (isMobile) {
+        return <>{children}</>;
+    }
 
     // FAST PATH 1: If previously synced, render children immediately (don't wait for checks)
     // Background verification will show modal if extension was actually removed
