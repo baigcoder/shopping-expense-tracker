@@ -4,8 +4,6 @@
 (function () {
     'use strict';
 
-    console.log('💳 Cashly Extension: Website sync loaded');
-
     // Session-based flag to prevent repeated notifications
     const SESSION_SYNC_KEY = 'cashly_session_synced';
     const LAST_SYNC_KEY = 'cashly_last_sync_timestamp';
@@ -30,7 +28,6 @@
     const markAsSynced = () => {
         sessionStorage.setItem(SESSION_SYNC_KEY, 'true');
         localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
-        console.log('✅ Marked as synced for this session');
     };
 
     // Set a flag so website knows extension is installed
@@ -62,14 +59,7 @@
                         timestamp: Date.now()
                     }));
                 }
-
-                console.log('✅ Extension flags set:', {
-                    installed: true,
-                    loggedIn: authData.loggedIn,
-                    email: authData.email
-                });
             } catch (e) {
-                console.log('Could not set auth flag:', e);
                 // Set flag as not logged in if error
                 localStorage.setItem('cashly_extension_auth', JSON.stringify({
                     loggedIn: false,
@@ -85,7 +75,7 @@
                 }));
             }
         } catch (e) {
-            console.log('Could not set extension flag:', e);
+            // Silently ignore
         }
     };
 
@@ -107,10 +97,9 @@
             const result = await chrome.storage.local.get('siteVisits');
             if (result.siteVisits && Object.keys(result.siteVisits).length > 0) {
                 localStorage.setItem('cashly_site_visits', JSON.stringify(result.siteVisits));
-                console.log('✅ Synced', Object.keys(result.siteVisits).length, 'site visits to localStorage');
             }
         } catch (e) {
-            console.log('Could not sync site visits:', e);
+            // Silently ignore
         }
     };
 
@@ -121,8 +110,6 @@
 
     // Listen for messages from the popup or background script
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log('Website received message:', message.type);
-
         switch (message.type) {
             case 'GET_SUPABASE_SESSION':
                 // Get session from localStorage (where Supabase stores it)
@@ -184,7 +171,6 @@
 
             case 'SITE_VISIT_TRACKED':
                 // Live site visit tracking - dispatch to Shopping Activity page
-                console.log('🛒 Site visit tracked:', message.data?.siteName);
                 window.dispatchEvent(new CustomEvent('cashly-site-detected', {
                     detail: message.data
                 }));
@@ -208,8 +194,6 @@
         const message = event.data;
         if (!message || message.type !== 'WEBSITE_TO_EXTENSION') return;
 
-        console.log('Extension received postMessage:', message.action);
-
         switch (message.action) {
             case 'SYNC_SESSION':
                 // Website is sharing session with extension (only if not already synced)
@@ -220,9 +204,8 @@
                             data: message.data
                         });
                         markAsSynced();
-                        console.log('Session forwarded to extension background');
                     } catch (e) {
-                        console.log('Could not forward session:', e);
+                        // Silently ignore
                     }
                 }
                 break;
@@ -235,7 +218,7 @@
                         type: 'USER_LOGGED_OUT'
                     });
                 } catch (e) {
-                    console.log('Could not forward logout:', e);
+                    // Silently ignore
                 }
                 break;
 
@@ -250,7 +233,7 @@
                         email: data.userEmail
                     }, '*');
                 } catch (e) {
-                    console.log('Could not check status:', e);
+                    // Silently ignore
                 }
                 break;
         }
@@ -268,8 +251,6 @@
                 if (sessionData && sessionData.access_token && sessionData.user) {
                     // Only sync if not already synced in this session
                     if (canSync()) {
-                        console.log('🔄 Detected website login, syncing with extension...');
-
                         // Notify extension of new session
                         chrome.runtime.sendMessage({
                             type: 'WEBSITE_LOGIN',
@@ -281,7 +262,7 @@
                             }
                         }).then(() => {
                             markAsSynced();
-                        }).catch(e => console.log('Could not notify extension:', e));
+                        }).catch(() => { });
                     }
                 }
             } catch (e) {
@@ -294,12 +275,11 @@
     const originalRemoveItem = localStorage.removeItem;
     localStorage.removeItem = function (key) {
         if (key.startsWith('sb-') && key.endsWith('-auth-token')) {
-            console.log('🔄 Detected website logout, notifying extension...');
             sessionStorage.removeItem(SESSION_SYNC_KEY);
             localStorage.removeItem(LAST_SYNC_KEY);
             chrome.runtime.sendMessage({
                 type: 'USER_LOGGED_OUT'
-            }).catch(e => console.log('Could not notify extension:', e));
+            }).catch(() => { });
         }
         originalRemoveItem.apply(this, arguments);
     };
@@ -308,7 +288,6 @@
     setTimeout(() => {
         // Skip if already synced in this session
         if (hasAlreadySyncedInSession()) {
-            console.log('🔕 Already synced in this session, skipping auto-sync');
             return;
         }
 
@@ -331,7 +310,7 @@
                         }
                     }).then(() => {
                         markAsSynced();
-                    }).catch(e => console.log('Auto-sync failed:', e));
+                    }).catch(() => { });
                 }
             }
         } catch (e) {
@@ -340,4 +319,3 @@
     }, 1000);
 
 })();
-
