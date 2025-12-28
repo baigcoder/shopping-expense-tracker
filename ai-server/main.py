@@ -51,10 +51,16 @@ except ImportError:
 
 app = FastAPI(title="AI Document Parser + Free TTS", version="1.1.0")
 
-# CORS - allow frontend
+# CORS - allow frontend (production + development)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://shopping-expense-tracker.vercel.app",
+        "https://shopping-expense-tracker-svas.vercel.app",
+        "*"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
