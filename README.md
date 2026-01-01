@@ -10,6 +10,10 @@
 </p>
 
 <p align="center">
+  <a href="https://shopping-expense-tracker.vercel.app"><img src="https://img.shields.io/badge/🚀_Live_Demo-Visit_App-2563EB?style=for-the-badge" alt="Live Demo"></a>
+</p>
+
+<p align="center">
   <a href="#-features"><img src="https://img.shields.io/badge/Features-View-2563EB?style=flat-square" alt="Features"></a>
   <a href="#-quick-start"><img src="https://img.shields.io/badge/Quick%20Start-Guide-10B981?style=flat-square" alt="Quick Start"></a>
   <a href="#-api-reference"><img src="https://img.shields.io/badge/API-Reference-F59E0B?style=flat-square" alt="API Reference"></a>
