@@ -345,6 +345,37 @@
 
 @media (max-width: 1024px) {
     .fab {
-        display: none;
+        /* Show on mobile but smaller and above AI chat button */
+        display: flex;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        bottom: 100px;
+        /* Above AI chat button which is at ~30px */
+        right: 20px;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .fab svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Mobile landscape adjustments */
+@media (max-width: 1024px) and (max-height: 500px) {
+    .fab {
+        bottom: 20px;
+        right: 80px;
+        /* Move left when in landscape to avoid overlap */
+    }
+}
+
+/* Safe area for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    @media (max-width: 1024px) {
+        .fab {
+            bottom: calc(100px + env(safe-area-inset-bottom));
+        }
     }
 }
