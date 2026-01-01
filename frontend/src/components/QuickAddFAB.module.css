@@ -4,15 +4,15 @@
 /* The Button Itself */
 .fab {
     position: fixed;
-    bottom: 90px;
-    right: 16px;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    bottom: 80px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
     color: #fff;
     border: none;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 3px 12px rgba(37, 99, 235, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,8 +23,8 @@
 }
 
 .fab svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .fab:hover {

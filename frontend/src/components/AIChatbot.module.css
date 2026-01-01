@@ -17,16 +17,16 @@
 /* Floating Button */
 .floatingBtn {
     position: fixed;
-    bottom: 28px;
-    right: 16px;
+    bottom: 24px;
+    right: 12px;
     left: auto;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
     color: white;
     border: none;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 3px 12px rgba(59, 130, 246, 0.25);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -37,8 +37,8 @@
 }
 
 .floatingBtn svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .floatingBtn:hover {
