@@ -44,6 +44,16 @@
             try {
                 const data = await chrome.storage.local.get(['accessToken', 'userEmail']);
                 const loggedIn = !!(data.accessToken && data.userEmail);
+
+                // Check if this is a NEW login (wasn't logged in before)
+                const prevAuth = localStorage.getItem('cashly_extension_auth');
+                let wasLoggedIn = false;
+                if (prevAuth) {
+                    try {
+                        wasLoggedIn = JSON.parse(prevAuth).loggedIn === true;
+                    } catch { /* ignore */ }
+                }
+
                 const authData = {
                     loggedIn: loggedIn,
                     email: data.userEmail || null,
@@ -58,6 +68,15 @@
                         email: data.userEmail,
                         timestamp: Date.now()
                     }));
+
+                    // Dispatch sync event if this is a NEW login (transitioned from not logged in)
+                    if (!wasLoggedIn && !hasAlreadySyncedInSession()) {
+                        console.log('🔗 Extension: Dispatching extension-synced event');
+                        window.dispatchEvent(new CustomEvent('extension-synced', {
+                            detail: { email: data.userEmail, timestamp: Date.now() }
+                        }));
+                        markAsSynced();
+                    }
                 }
             } catch (e) {
                 // Set flag as not logged in if error

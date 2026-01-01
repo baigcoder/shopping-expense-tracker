@@ -14,6 +14,7 @@ const STORAGE_KEYS = {
     LAST_SYNC_CHECK: 'cashly_extension_last_check',
     DISMISSED_AT: 'cashly_extension_dismissed_at',
     DISMISSED_TYPE: 'cashly_extension_dismissed_type',
+    NEVER_SHOW: 'cashly_extension_never_show',
 };
 
 // Configuration
@@ -22,10 +23,12 @@ const CONFIG = {
     syncGracePeriodMs: 24 * 60 * 60 * 1000,
     // Don't show dismissed alerts again within this period (1 week)
     dismissGracePeriodMs: 7 * 24 * 60 * 60 * 1000,
-    // Delay before showing alert on page load (prevent flash) - reduced for faster feedback
+    // Delay before showing alert on page load (prevent flash)
     showDelayMs: 1000,
     // Redirect delay after successful sync
     redirectDelayMs: 2000,
+    // Current extension version
+    extensionVersion: '6.0.0',
 };
 
 // Mobile detection
@@ -51,6 +54,9 @@ const ExtensionAlert = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // Force refresh the status when extension events happen
+    const forceRefreshRef = useRef(0);
+
     // Check if on mobile device
     useEffect(() => {
         setIsMobile(isMobileDevice());
@@ -58,6 +64,19 @@ const ExtensionAlert = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // Recheck when tab becomes visible (user returns to tab)
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                console.log('👁️ ExtensionAlert: Tab visible, rechecking...');
+                forceRefreshRef.current++;
+                checkExtension();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, [checkExtension]);
 
     // Check if user is logged into the website
     const isWebsiteLoggedIn = useCallback(() => {
@@ -74,6 +93,9 @@ const ExtensionAlert = () => {
 
     // Check if alert was recently dismissed
     const wasRecentlyDismissed = useCallback((type: AlertType) => {
+        // Check for permanent dismiss first
+        if (localStorage.getItem(STORAGE_KEYS.NEVER_SHOW) === 'true') return true;
+
         const dismissedAt = localStorage.getItem(STORAGE_KEYS.DISMISSED_AT);
         const dismissedType = localStorage.getItem(STORAGE_KEYS.DISMISSED_TYPE);
         if (!dismissedAt || dismissedType !== type) return false;
@@ -88,15 +110,15 @@ const ExtensionAlert = () => {
 
     // Main effect to determine alert type
     useEffect(() => {
-        // Don't process while checking
-        if (checking) return;
+        // Don't process while still in initial checking phase
+        if (checking && !initialCheckDone) return;
 
         const currentStatus = { installed: extensionStatus.installed, loggedIn: extensionStatus.loggedIn };
         const lastStatus = lastKnownStatusRef.current;
 
-        // Wait for initial delay on first check
+        // Wait for initial delay on first check (reduced to 500ms for faster feedback)
         if (!initialCheckDone) {
-            const timer = setTimeout(() => setInitialCheckDone(true), CONFIG.showDelayMs);
+            const timer = setTimeout(() => setInitialCheckDone(true), 500);
             return () => clearTimeout(timer);
         }
 
@@ -168,7 +190,65 @@ const ExtensionAlert = () => {
         }
 
         lastKnownStatusRef.current = currentStatus;
-    }, [checking, extensionStatus.installed, extensionStatus.loggedIn, isWebsiteLoggedIn, initialCheckDone, navigate, location.pathname, wasRecentlySynced, wasRecentlyDismissed, markAsSynced]);
+    }, [checking, extensionStatus.installed, extensionStatus.loggedIn, isWebsiteLoggedIn, initialCheckDone, navigate, location.pathname, wasRecentlySynced, wasRecentlyDismissed, markAsSynced, forceRefreshRef.current]);
+
+    // NEW: Listen for extension events directly for instant updates
+    useEffect(() => {
+        const handleExtensionSynced = (event: CustomEvent) => {
+            console.log('📡 ExtensionAlert: Received extension-synced event', event.detail);
+            forceRefreshRef.current++;
+            lastKnownStatusRef.current = { installed: true, loggedIn: false }; // Force transition detection
+            setInitialCheckDone(true);
+            checkExtension(); // Trigger immediate recheck
+        };
+
+        const handleExtensionRemoved = () => {
+            console.log('📡 ExtensionAlert: Received extension-removed event');
+            forceRefreshRef.current++;
+            localStorage.removeItem(STORAGE_KEYS.SYNCED_AT);
+            localStorage.removeItem(STORAGE_KEYS.DISMISSED_AT);
+            setAlertType('extension_removed');
+            setInitialCheckDone(true);
+        };
+
+        // Listen for storage changes from extension (works across tabs)
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'cashly_extension_auth' || e.key === 'cashly_extension') {
+                console.log('📡 ExtensionAlert: Storage changed, rechecking...');
+                forceRefreshRef.current++;
+                checkExtension();
+            }
+        };
+
+        window.addEventListener('extension-synced', handleExtensionSynced as EventListener);
+        window.addEventListener('extension-removed', handleExtensionRemoved as EventListener);
+        window.addEventListener('storage', handleStorageChange);
+
+        // SAME-TAB storage monitoring: Poll localStorage every 2 seconds for changes
+        // This catches changes that 'storage' event misses (same-tab writes)
+        let lastAuthData = localStorage.getItem('cashly_extension_auth');
+        let lastExtData = localStorage.getItem('cashly_extension');
+
+        const pollStorageInterval = setInterval(() => {
+            const currentAuthData = localStorage.getItem('cashly_extension_auth');
+            const currentExtData = localStorage.getItem('cashly_extension');
+
+            if (currentAuthData !== lastAuthData || currentExtData !== lastExtData) {
+                console.log('📡 ExtensionAlert: localStorage changed (same-tab), rechecking...');
+                lastAuthData = currentAuthData;
+                lastExtData = currentExtData;
+                forceRefreshRef.current++;
+                checkExtension();
+            }
+        }, 2000);
+
+        return () => {
+            window.removeEventListener('extension-synced', handleExtensionSynced as EventListener);
+            window.removeEventListener('extension-removed', handleExtensionRemoved as EventListener);
+            window.removeEventListener('storage', handleStorageChange);
+            clearInterval(pollStorageInterval);
+        };
+    }, [checkExtension]);
 
     // Handle dismiss with persistence
     const handleDismiss = useCallback(() => {
@@ -178,32 +258,71 @@ const ExtensionAlert = () => {
         setShowSteps(false);
     }, [alertType]);
 
+    // Handle permanent dismiss (never show again)
+    const handleNeverShow = useCallback(() => {
+        localStorage.setItem(STORAGE_KEYS.NEVER_SHOW, 'true');
+        setAlertType(null);
+        setShowSteps(false);
+    }, []);
+
     // Handle refresh/recheck extension
     const handleRefresh = useCallback(async () => {
         setSyncInProgress(true);
         try {
-            // Clear cached data to force fresh check
-            localStorage.removeItem('cashly_extension');
-            localStorage.removeItem('cashly_extension_auth');
+            // Request extension to update its localStorage flags
+            window.postMessage({
+                type: 'WEBSITE_TO_EXTENSION',
+                action: 'CHECK_STATUS'
+            }, '*');
 
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Wait for extension to respond and update localStorage
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Now check the updated status
             await checkExtension();
 
-            // If now synced, hide alert
-            if (extensionStatus.installed && extensionStatus.loggedIn) {
-                markAsSynced();
-                setAlertType(null);
+            // Check status after recheck
+            const authData = localStorage.getItem('cashly_extension_auth');
+            if (authData) {
+                try {
+                    const parsed = JSON.parse(authData);
+                    if (parsed.loggedIn) {
+                        markAsSynced();
+                        setAlertType(null);
+                        return;
+                    }
+                } catch { /* ignore */ }
             }
         } catch (error) {
             console.error('Refresh error:', error);
         } finally {
             setSyncInProgress(false);
         }
-    }, [checkExtension, extensionStatus.installed, extensionStatus.loggedIn, markAsSynced]);
+    }, [checkExtension, markAsSynced]);
 
-    // Handle download click
+    // Handle download click - direct download
     const handleDownload = useCallback(() => {
-        window.open('/cashly-extension.zip', '_blank');
+        const link = document.createElement('a');
+        link.href = '/cashly-extension.zip';
+        link.download = `cashly-extension-v${CONFIG.extensionVersion}.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }, []);
+
+    // Copy extensions URL to clipboard
+    const handleCopyExtensionsUrl = useCallback(async () => {
+        try {
+            await navigator.clipboard.writeText('chrome://extensions');
+        } catch {
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = 'chrome://extensions';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
     }, []);
 
     // Don't render on mobile - extensions not supported
@@ -276,7 +395,7 @@ const ExtensionAlert = () => {
 
             case 'sync_success':
                 return (
-                    <div className={`${styles.alertCard} ${styles.successCard}`}>
+                    <div className={`${styles.alertCard} ${styles.successCard}`} role="alert" aria-live="polite">
                         <div className={styles.alertEmoji}>
                             <CheckCircle className="w-7 h-7 text-emerald-500" />
                         </div>
@@ -289,28 +408,34 @@ const ExtensionAlert = () => {
                                 <div className={styles.progressFill}></div>
                             </div>
                         )}
+                        {/* Confetti particles */}
+                        <div className={styles.confetti}>
+                            {[...Array(12)].map((_, i) => (
+                                <div key={i} className={styles.confettiPiece} style={{ '--delay': `${i * 0.1}s`, '--x': `${(i % 4) * 25}%` } as React.CSSProperties} />
+                            ))}
+                        </div>
                     </div>
                 );
 
             case 'not_installed':
             default:
                 return (
-                    <div className={`${styles.alertCard} ${styles.warningCard}`}>
+                    <div className={`${styles.alertCard} ${styles.warningCard}`} role="alert" aria-live="polite">
                         <div className={styles.alertEmoji}>🧩</div>
                         <div className={styles.alertContent}>
                             <strong>Auto-Track Your Purchases! ✨</strong>
                             <p>Get our browser extension for automatic expense tracking</p>
                         </div>
                         <div className={styles.alertActions}>
-                            <button onClick={() => setShowSteps(true)} className={styles.installBtn}>
+                            <button onClick={() => setShowSteps(true)} className={styles.installBtn} aria-label="Get extension">
                                 <Sparkles size={16} />
                                 Get Extension
                             </button>
-                            <button className={styles.laterBtn} onClick={handleDismiss}>
+                            <button className={styles.laterBtn} onClick={handleDismiss} aria-label="Dismiss for now">
                                 Later
                             </button>
                         </div>
-                        <button className={styles.closeBtn} onClick={handleDismiss}>
+                        <button className={styles.closeBtn} onClick={handleDismiss} aria-label="Close alert">
                             <X size={16} />
                         </button>
                     </div>
@@ -357,15 +482,17 @@ const ExtensionAlert = () => {
                                 <span className={styles.stepNumber}>1</span>
                                 <div>
                                     <strong>Download</strong>
-                                    <p>Click below to get the extension file</p>
+                                    <p>Click the button below to download the extension</p>
                                 </div>
                             </div>
 
                             <div className={styles.step}>
                                 <span className={styles.stepNumber}>2</span>
                                 <div>
-                                    <strong>Open Extensions</strong>
-                                    <p>Go to chrome://extensions and enable Developer mode</p>
+                                    <strong>Extract & Open Extensions</strong>
+                                    <p>
+                                        Unzip the file, then go to <button onClick={handleCopyExtensionsUrl} className={styles.copyLink}>chrome://extensions</button> and enable <strong>Developer mode</strong>
+                                    </p>
                                 </div>
                             </div>
 
@@ -373,21 +500,28 @@ const ExtensionAlert = () => {
                                 <span className={styles.stepNumber}>3</span>
                                 <div>
                                     <strong>Load Extension</strong>
-                                    <p>Drag & drop the ZIP file or use Load unpacked</p>
+                                    <p>Click <strong>Load unpacked</strong> and select the extracted folder</p>
                                 </div>
                             </div>
                         </div>
 
                         <div className={styles.stepsActions}>
-                            <button onClick={handleDownload} className={styles.downloadBtn}>
+                            <button onClick={handleDownload} className={styles.downloadBtn} aria-label="Download extension">
                                 <Download size={16} />
-                                Download Extension
+                                Download v{CONFIG.extensionVersion}
                             </button>
                             <button
                                 onClick={() => setShowSteps(false)}
                                 className={styles.backBtn}
+                                aria-label="Go back"
                             >
                                 Back
+                            </button>
+                        </div>
+
+                        <div className={styles.neverShowContainer}>
+                            <button onClick={handleNeverShow} className={styles.neverShowBtn}>
+                                Don't show this again
                             </button>
                         </div>
 

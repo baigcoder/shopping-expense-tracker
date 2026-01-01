@@ -481,3 +481,98 @@
         font-size: 0.65rem;
     }
 }
+
+/* Copy link button */
+.copyLink {
+    background: #EFF6FF;
+    border: none;
+    color: #2563EB;
+    font-weight: 600;
+    font-size: inherit;
+    cursor: pointer;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    transition: all 0.2s ease;
+}
+
+.copyLink:hover {
+    background: #DBEAFE;
+    text-decoration: underline;
+}
+
+/* Never show container */
+.neverShowContainer {
+    border-top: 1px solid #E2E8F0;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.neverShowBtn {
+    background: transparent;
+    border: none;
+    color: #94A3B8;
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.neverShowBtn:hover {
+    color: #64748B;
+    text-decoration: underline;
+}
+
+/* Confetti animation */
+.confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confettiPiece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #10B981, #34D399);
+    border-radius: 2px;
+    top: 50%;
+    left: var(--x, 50%);
+    animation: confettiFall 1.5s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+    opacity: 0;
+}
+
+.confettiPiece:nth-child(2n) {
+    background: linear-gradient(135deg, #3B82F6, #60A5FA);
+    border-radius: 50%;
+}
+
+.confettiPiece:nth-child(3n) {
+    background: linear-gradient(135deg, #F59E0B, #FBBF24);
+    width: 6px;
+    height: 10px;
+}
+
+@keyframes confettiFall {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) rotate(720deg) scale(0.5);
+    }
+}
