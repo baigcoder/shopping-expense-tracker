@@ -717,3 +717,157 @@ body {
     text-shadow: none !important;
   }
 }
+
+/* ============================================
+   Mobile Touch Optimization
+   ============================================ */
+
+/* Improve touch scrolling performance */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+}
+
+/* Prevent accidental touch actions while scrolling */
+.touch-action-pan-y {
+  touch-action: pan-y;
+}
+
+.touch-action-manipulation {
+  touch-action: manipulation;
+}
+
+/* Remove tap highlight on mobile (keeps it for accessibility focus) */
+.tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Larger touch targets for mobile (min 44px per Apple HIG) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* Mobile-optimized buttons */
+@media (max-width: 768px) {
+
+  button,
+  [role="button"],
+  a[role="button"],
+  .btn,
+  .button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Increase input field sizes on mobile */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+    /* Prevents iOS zoom on focus */
+    min-height: 44px;
+  }
+
+  /* Faster touch feedback */
+  .fast-tap {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+}
+
+/* Pull to refresh indicator styling */
+.ptr-indicator {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 8px 16px;
+  background: hsl(var(--primary));
+  color: white;
+  border-radius: 0 0 12px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Swipe-friendly card styling */
+.swipe-card {
+  touch-action: pan-x pan-y;
+  user-select: none;
+}
+
+/* Haptic feedback visual indicators */
+@media (hover: none) and (pointer: coarse) {
+
+  /* Touch devices only */
+  .haptic-feedback:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+  }
+
+  /* Improve button press feedback */
+  button:active,
+  [role="button"]:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+
+  /* Disable hover effects on touch devices */
+  .hover-lift:hover {
+    transform: none;
+    box-shadow: inherit;
+  }
+
+  .card-hover:hover {
+    transform: none;
+    box-shadow: inherit;
+  }
+}
+
+/* iOS standalone mode (PWA) */
+@media (display-mode: standalone) {
+  body {
+    /* Prevent overscroll bounce on iOS */
+    overscroll-behavior-y: none;
+  }
+
+  /* Ensure content doesn't go under notch */
+  .app-content {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-nav-hide-landscape {
+    display: none !important;
+  }
+
+  /* Reduce padding in landscape */
+  .landscape-compact {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Touch-friendly spacing for lists */
+@media (max-width: 768px) {
+  .touch-list>* {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .touch-list>*:last-child {
+    border-bottom: none;
+  }
+}
