@@ -193,10 +193,10 @@ const AIChatbot = () => {
             {/* Floating Button - Desktop */}
             <motion.button
                 className={cn(
-                    "fixed bottom-6 right-6 z-[9990]",
-                    "w-14 h-14 rounded-2xl",
+                    "fixed bottom-6 right-3 z-[9990]",
+                    "w-9 h-9 rounded-xl",
                     "bg-gradient-to-br from-primary to-blue-700",
-                    "text-white border-2 border-white/20",
+                    "text-white border border-white/20",
                     "shadow-lg shadow-primary/20",
                     "flex items-center justify-center",
                     "cursor-pointer transition-all duration-300",
@@ -217,7 +217,7 @@ const AIChatbot = () => {
                             animate={{ rotate: 0, opacity: 1 }}
                             exit={{ rotate: 90, opacity: 0 }}
                         >
-                            <X size={24} strokeWidth={2.5} />
+                            <X size={16} strokeWidth={2.5} />
                         </motion.div>
                     ) : (
                         <motion.div
@@ -227,9 +227,9 @@ const AIChatbot = () => {
                             exit={{ rotate: -90, opacity: 0 }}
                             className="relative"
                         >
-                            <Brain size={26} strokeWidth={2} />
+                            <Brain size={18} strokeWidth={2} />
                             <motion.span
-                                className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full border-2 border-white"
+                                className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full border border-white"
                                 animate={{ scale: [1, 1.2, 1] }}
                                 transition={{ repeat: Infinity, duration: 2 }}
                             />
@@ -238,11 +238,11 @@ const AIChatbot = () => {
                 </AnimatePresence>
             </motion.button>
 
-            {/* Floating Button - Mobile (smaller) */}
+            {/* Floating Button - Mobile (same size as desktop now) */}
             <motion.button
                 className={cn(
-                    "fixed bottom-20 right-4 z-[9990]",
-                    "w-11 h-11 rounded-xl",
+                    "fixed bottom-20 right-3 z-[9990]",
+                    "w-9 h-9 rounded-xl",
                     "bg-gradient-to-br from-primary to-blue-700",
                     "text-white border border-white/20",
                     "shadow-lg shadow-primary/30",
@@ -262,7 +262,7 @@ const AIChatbot = () => {
                             animate={{ rotate: 0, opacity: 1 }}
                             exit={{ rotate: 90, opacity: 0 }}
                         >
-                            <X size={18} strokeWidth={2.5} />
+                            <X size={16} strokeWidth={2.5} />
                         </motion.div>
                     ) : (
                         <motion.div
@@ -272,7 +272,7 @@ const AIChatbot = () => {
                             exit={{ rotate: -90, opacity: 0 }}
                             className="relative"
                         >
-                            <Sparkles size={18} strokeWidth={2} />
+                            <Brain size={18} strokeWidth={2} />
                             <motion.span
                                 className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"
                                 animate={{ scale: [1, 1.3, 1] }}
