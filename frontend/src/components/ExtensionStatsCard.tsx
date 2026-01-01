@@ -120,10 +120,35 @@ const ExtensionStatsCard = () => {
                 </div>
             </div>
 
-            <Link to="/shopping-activity" className={styles.seeMore}>
-                <span>View Shopping Activity</span>
-                <ArrowRight size={14} />
-            </Link>
+            {/* Action Buttons */}
+            <div className={styles.actionButtons}>
+                {isConnected ? (
+                    <button
+                        className={styles.openExtensionBtn}
+                        onClick={() => {
+                            // Try to open extension popup via postMessage
+                            window.postMessage({ type: 'OPEN_EXTENSION_POPUP' }, '*');
+                        }}
+                    >
+                        <Globe size={14} />
+                        <span>Open Extension</span>
+                    </button>
+                ) : (
+                    <a
+                        href="/cashly-extension.zip"
+                        download="cashly-extension-v6.0.0.zip"
+                        className={styles.installExtensionBtn}
+                    >
+                        <Activity size={14} />
+                        <span>Install Extension</span>
+                    </a>
+                )}
+
+                <Link to="/shopping-activity" className={styles.seeMore}>
+                    <span>View Activity</span>
+                    <ArrowRight size={14} />
+                </Link>
+            </div>
         </motion.div>
     );
 };
