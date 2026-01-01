@@ -6,7 +6,7 @@ import { useAuthStore } from './store/useStore';
 import { supabase } from './config/supabase';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-import { DashboardSkeleton, Spinner } from './components/LoadingSkeleton';
+import { Spinner } from './components/LoadingSkeleton';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
 // Extension Integration
@@ -234,8 +234,11 @@ function App() {
                     }}
                 />
                 <Suspense fallback={
-                    <div className="flex-1 overflow-auto">
-                        <DashboardSkeleton />
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+                        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white font-black text-2xl shadow-xl shadow-blue-200 mb-6 animate-pulse">
+                            C
+                        </div>
+                        <Spinner size={32} color="#2563eb" />
                     </div>
                 }>
                     <Routes>
