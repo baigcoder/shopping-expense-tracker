@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cashly - Smart Expense Tracker",
-  "version": "5.1.0",
+  "version": "6.1.0",
   "description": "Automatically track expenses as you shop online. Your money, autopilot.",
   "short_name": "Cashly",
   "author": "BaigCoder",
@@ -53,6 +53,16 @@
     "https://*.nayapay.com/*",
     "https://*.bookme.pk/*",
     "https://*.clickticket.pk/*",
+    "https://*.vercel.com/*",
+    "https://*.railway.app/*",
+    "https://*.heroku.com/*",
+    "https://*.digitalocean.com/*",
+    "https://*.netlify.com/*",
+    "https://*.render.com/*",
+    "https://*.fly.io/*",
+    "https://*.supabase.com/*",
+    "https://*.planetscale.com/*",
+    "https://*.aws.amazon.com/*",
     "http://localhost:*/*",
     "<all_urls>"
   ],
@@ -84,7 +94,9 @@
         "http://127.0.0.1:*/*",
         "https://*.vercel.app/*"
       ],
-      "js": ["content-website.js"],
+      "js": [
+        "content-website.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -116,8 +128,12 @@
         "https://*.bookme.pk/*",
         "<all_urls>"
       ],
-      "js": ["content.js"],
-      "css": ["content.css"],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -138,7 +154,9 @@
         "icons/icon128.png",
         "icons/logo.png"
       ],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }

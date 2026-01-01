@@ -144,12 +144,79 @@
     };
 
     // ================================
-    // EXCLUDED DOMAINS (own app)
+    // EXCLUDED DOMAINS (own app only)
     // ================================
     const EXCLUDED_DOMAINS = [
         'localhost', '127.0.0.1', 'vibe-tracker', 'vibetracker',
-        'shopping-expense-tracker', 'vercel.app', 'netlify.app', 'cashly'
+        'shopping-expense-tracker', 'cashly.app', 'cashly'
     ];
+
+    // ================================
+    // CLOUD PLATFORM BILLING DOMAINS
+    // These are allowed to track billing/invoices
+    // ================================
+    const CLOUD_PLATFORMS = {
+        'vercel.com': {
+            name: 'Vercel',
+            billingPaths: ['/~/usage', '/account/billing', '/teams?tab=billing', '/settings/billing'],
+            priceSelectors: ['[data-testid="usage-total"]', '.billing-amount', '[class*="price"]', '[class*="total"]'],
+            category: 'Cloud Hosting'
+        },
+        'railway.app': {
+            name: 'Railway',
+            billingPaths: ['/billing', '/account/billing', '/settings/billing'],
+            priceSelectors: ['[class*="amount"]', '[class*="price"]', '[class*="total"]'],
+            category: 'Cloud Hosting'
+        },
+        'heroku.com': {
+            name: 'Heroku',
+            billingPaths: ['/account/billing', '/account-billing', '/bills'],
+            priceSelectors: ['[class*="billing"]', '[class*="amount"]', '.total'],
+            category: 'Cloud Hosting'
+        },
+        'digitalocean.com': {
+            name: 'DigitalOcean',
+            billingPaths: ['/account/billing', '/billing', '/settings/billing'],
+            priceSelectors: ['[class*="billing"]', '[class*="amount"]', '[class*="total"]'],
+            category: 'Cloud Hosting'
+        },
+        'netlify.com': {
+            name: 'Netlify',
+            billingPaths: ['/billing', '/account/billing', '/settings/billing'],
+            priceSelectors: ['[class*="price"]', '[class*="amount"]', '[class*="total"]'],
+            category: 'Cloud Hosting'
+        },
+        'render.com': {
+            name: 'Render',
+            billingPaths: ['/billing', '/account/billing'],
+            priceSelectors: ['[class*="price"]', '[class*="amount"]'],
+            category: 'Cloud Hosting'
+        },
+        'fly.io': {
+            name: 'Fly.io',
+            billingPaths: ['/billing', '/organizations', '/dashboard/billing'],
+            priceSelectors: ['[class*="price"]', '[class*="amount"]'],
+            category: 'Cloud Hosting'
+        },
+        'supabase.com': {
+            name: 'Supabase',
+            billingPaths: ['/project/', '/account/billing', '/org/'],
+            priceSelectors: ['[class*="price"]', '[class*="cost"]'],
+            category: 'Database'
+        },
+        'planetscale.com': {
+            name: 'PlanetScale',
+            billingPaths: ['/billing', '/settings/billing'],
+            priceSelectors: ['[class*="price"]', '[class*="amount"]'],
+            category: 'Database'
+        },
+        'aws.amazon.com': {
+            name: 'AWS',
+            billingPaths: ['/billing', '/cost-management', '/bills'],
+            priceSelectors: ['[class*="amount"]', '[class*="total"]', '[class*="cost"]'],
+            category: 'Cloud Hosting'
+        }
+    };
 
     // ================================
     // USER BLACKLIST (sites to never track)
@@ -478,18 +545,75 @@
         detectCategory() {
             const text = (document.title + ' ' + hostname).toLowerCase();
 
+            // Cloud Hosting & DevOps
+            if (/vercel|railway|heroku|digitalocean|netlify|render|fly\.io|aws|azure|gcp|cloudflare/.test(text)) return 'Cloud Hosting';
+
+            // Database Services
+            if (/supabase|planetscale|mongodb|neon|upstash|fauna|firebase/.test(text)) return 'Database';
+
+            // Entertainment
             if (/netflix|hulu|disney|hbo|spotify|youtube|twitch|prime video/.test(text)) return 'Entertainment';
-            if (/adobe|figma|canva|sketch/.test(text)) return 'Creative';
-            if (/notion|slack|trello|asana|monday/.test(text)) return 'Productivity';
-            if (/github|vercel|aws|azure|digitalocean|heroku/.test(text)) return 'Development';
-            if (/dropbox|google.*drive|icloud|box/.test(text)) return 'Storage';
+
+            // Creative
+            if (/adobe|figma|canva|sketch|framer/.test(text)) return 'Creative';
+
+            // Productivity
+            if (/notion|slack|trello|asana|monday|linear|clickup/.test(text)) return 'Productivity';
+
+            // Development Tools
+            if (/github|gitlab|bitbucket|jira|sentry|datadog|logdna/.test(text)) return 'Development';
+
+            // Storage
+            if (/dropbox|google.*drive|icloud|box|backblaze/.test(text)) return 'Storage';
+
+            // Shopping
             if (/amazon|ebay|walmart|target|aliexpress|daraz|shopify/.test(text)) return 'Shopping';
+
+            // Food Delivery
             if (/uber.*eat|doordash|grubhub|foodpanda|deliveroo/.test(text)) return 'Food Delivery';
-            if (/chatgpt|openai|claude|gemini|midjourney/.test(text)) return 'AI Services';
+
+            // AI Services
+            if (/chatgpt|openai|claude|gemini|midjourney|replicate|huggingface/.test(text)) return 'AI Services';
+
+            // Health & Fitness
             if (/gym|fitness|peloton|headspace|calm/.test(text)) return 'Health & Fitness';
-            if (/coursera|udemy|skillshare|masterclass/.test(text)) return 'Education';
+
+            // Education
+            if (/coursera|udemy|skillshare|masterclass|pluralsight/.test(text)) return 'Education';
 
             return 'Other';
+        }
+
+        // NEW: Check if current page is a cloud platform billing page
+        isCloudPlatformBillingPage() {
+            const platform = CLOUD_PLATFORMS[hostname] ||
+                Object.entries(CLOUD_PLATFORMS).find(([domain]) => hostname.includes(domain))?.[1];
+
+            if (!platform) return null;
+
+            const path = window.location.pathname.toLowerCase();
+            const isBillingPage = platform.billingPaths.some(bp => path.includes(bp.toLowerCase()));
+
+            if (isBillingPage) {
+                log(`☁️ Cloud platform billing detected: ${platform.name}`);
+                return platform;
+            }
+            return null;
+        }
+
+        // NEW: Extract cloud platform subscription amount
+        extractCloudPlatformAmount(platform) {
+            for (const selector of platform.priceSelectors) {
+                const elements = document.querySelectorAll(selector);
+                for (const el of elements) {
+                    const text = el.innerText || el.textContent || '';
+                    const match = text.match(/\$([\d,]+\.?\d*)/i);
+                    if (match) {
+                        return parseFloat(match[1].replace(/,/g, ''));
+                    }
+                }
+            }
+            return 0;
         }
     }
 
