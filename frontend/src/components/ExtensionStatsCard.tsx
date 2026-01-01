@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Globe, Activity, ArrowRight, RefreshCw, Wifi, WifiOff } from 'lucide-react';
+import { Globe, Activity, ArrowRight, RefreshCw, Wifi, WifiOff, Puzzle } from 'lucide-react';
 import { useExtensionSync } from '../hooks/useExtensionSync';
+import { toast } from 'sonner';
 import styles from './ExtensionStatsCard.module.css';
 
 interface TrackingStats {
@@ -126,11 +127,16 @@ const ExtensionStatsCard = () => {
                     <button
                         className={styles.openExtensionBtn}
                         onClick={() => {
-                            // Try to open extension popup via postMessage
-                            window.postMessage({ type: 'OPEN_EXTENSION_POPUP' }, '*');
+                            toast.info(
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <strong>📍 Open Cashly Extension</strong>
+                                    <span>Click the <strong>puzzle piece icon</strong> (🧩) in your browser toolbar, then click <strong>Cashly</strong>.</span>
+                                </div>,
+                                { duration: 5000 }
+                            );
                         }}
                     >
-                        <Globe size={14} />
+                        <Puzzle size={14} />
                         <span>Open Extension</span>
                     </button>
                 ) : (
