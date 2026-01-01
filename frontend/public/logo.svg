@@ -1,27 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="finzenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
+    <linearGradient id="cashlyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="15" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#2563eb" flood-opacity="0.3"/>
     </filter>
   </defs>
   
-  <g filter="url(#glow)">
-    <!-- Stylized F Monogram -->
-    <!-- Vertical Bar -->
-    <path d="M140 80 H 220 V 432 H 140 Z" fill="url(#finzenGradient)" rx="10" />
-    
-    <!-- Top Horizontal Bar -->
-    <path d="M240 80 H 380 C 400 80 410 100 390 120 L 372 138 C 362 148 350 150 240 150 Z" fill="#DC2626" />
-    
-    <!-- Middle Horizontal Bar -->
-    <path d="M240 220 H 340 C 360 220 370 240 350 260 L 332 278 C 322 288 310 290 240 290 Z" fill="#EF4444" />
-    
-    <!-- Emerald Accent Dot -->
-    <circle cx="400" cy="100" r="15" fill="#10B981" opacity="0.8" />
-  </g>
+  <!-- Rounded Square Background -->
+  <rect x="40" y="40" width="432" height="432" rx="100" fill="url(#cashlyGradient)" filter="url(#shadow)"/>
+  
+  <!-- Bold C Letter -->
+  <text x="256" y="340" 
+        font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="320" 
+        font-weight="900" 
+        fill="white" 
+        text-anchor="middle">C</text>
 </svg>
