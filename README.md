@@ -1,152 +1,145 @@
-# Cashly 💰
+<p align="center">
+  <img src="https://img.shields.io/badge/Cashly-Finance%20Tracker-2563EB?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMnYyMG02LjM2NCAxLjY0bC0xLjQxNC0xLjQxNE0yMSAxMmgyTTIuMDY0IDEySDRNNS42MzYgNS42MzZsMS40MTQgMS40MTRNNi4zNjQgMTguMzY0bDEuNDE0LTEuNDE0Ii8+PC9zdmc+" alt="Cashly Logo">
+</p>
 
-**Your AI-Powered Financial Companion** — Automated expense tracking with intelligent insights, voice actions, and real-time analytics.
+<h1 align="center">💰 Cashly</h1>
 
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript)](https://typescriptlang.org)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?logo=supabase)](https://supabase.com)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
+<p align="center">
+  <strong>Your AI-Powered Financial Companion</strong><br>
+  Automated expense tracking with intelligent insights, voice AI, and real-time analytics.
+</p>
 
-![Cashly Dashboard Preview](https://via.placeholder.com/900x450?text=Cashly+Dashboard+Preview)
+<p align="center">
+  <a href="#-features"><img src="https://img.shields.io/badge/Features-View-2563EB?style=flat-square" alt="Features"></a>
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/Quick%20Start-Guide-10B981?style=flat-square" alt="Quick Start"></a>
+  <a href="#-api-reference"><img src="https://img.shields.io/badge/API-Reference-F59E0B?style=flat-square" alt="API Reference"></a>
+  <a href="#-contributing"><img src="https://img.shields.io/badge/Contribute-Welcome-7C3AED?style=flat-square" alt="Contributing"></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?logo=supabase&logoColor=white" alt="Supabase">
+  <img src="https://img.shields.io/badge/Tailwind-4.0-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind">
+  <img src="https://img.shields.io/badge/Groq-LLM-FF6B35?logo=openai&logoColor=white" alt="Groq">
+</p>
 
 ---
 
-## ✨ Key Features
+## ⚡ Highlights
 
-### 🛍️ Smart Purchase Detection (Browser Extension)
+| Feature | Description |
+|:--------|:------------|
+| 🛍️ **Smart Extension** | Auto-tracks purchases from Amazon, Daraz, eBay, Shopify, and 20+ platforms |
+| 🤖 **AI Assistant** | Groq-powered chatbot with full financial context awareness |
+| 🎙️ **Voice AI** | Add transactions, goals, and reminders using natural voice commands |
+| 📊 **Real-time Sync** | Supabase Realtime for instant updates across all devices |
+| 🏦 **Bank Integration** | Connect accounts via Plaid for automatic transaction import |
+| 📱 **PWA Ready** | Mobile-optimized with touch gestures and haptic feedback |
 
-Automatically detects and records purchases from major e-commerce platforms using our intelligent DOM parsing engine:
+---
 
-| Platform Type | Supported Sites |
-|--------------|-----------------|
-| **Global Marketplaces** | Amazon, eBay, Shopify, Etsy, AliExpress |
-| **Retail Giants** | Walmart, Best Buy, Target |
-| **Regional Favorites** | Daraz, Foodpanda |
-| **Payment Processors** | Stripe, PayPal, Gumroad, BuyMeACoffee |
+## ✨ Features
 
-### 🤖 AI-Powered Intelligence (Cashly AI)
+### 🛍️ Browser Extension - Smart Purchase Tracking
 
-Powered by **Groq LLM** for instant, intelligent financial assistance:
+Automatically detects and records purchases using intelligent DOM parsing:
 
-- **Smart Chatbot**: Context-aware conversations about your spending with full financial data access
-- **AI Insights**: Personalized tips based on your spending patterns (cached via Redis for speed)
-- **Spending Forecasts**: Predictive analytics for future months
-- **Risk Alerts**: Proactive warnings about overspending or unusual patterns
-- **Voice Actions**: Add goals, reminders, or transactions using natural voice commands
+```
+✅ Amazon, eBay, Walmart, Target, Best Buy
+✅ Shopify stores (universal), Etsy, AliExpress  
+✅ Daraz, Foodpanda (regional)
+✅ Stripe, PayPal, Gumroad, BuyMeACoffee
+```
+
+**Extension Features:**
+- 🔄 Offline queue with auto-sync
+- 🛡️ Rate limiting & JWT validation
+- 📡 Real-time broadcasting to dashboard
+- 🧪 Test mode for development
+
+### 🤖 Cashly AI - Intelligent Financial Assistant
+
+| Capability | Description |
+|:-----------|:------------|
+| **Smart Chat** | Context-aware conversations with full access to your financial data |
+| **AI Insights** | Personalized tips cached via Redis for instant delivery |
+| **Forecasting** | Predictive analytics for future spending patterns |
+| **Risk Alerts** | Proactive warnings about overspending or anomalies |
+| **Voice Actions** | "Add a goal to save Rs 50,000 for iPhone by December" |
 
 ### 📊 Premium Dashboard
 
-Modern SaaS design with premium fintech aesthetics:
+- **Real-time Analytics**: Interactive Recharts visualizations
+- **30-Day Streak Tracker**: Gamified daily engagement
+- **Financial Health Score**: AI-calculated score based on habits
+- **Quick Add FAB**: Tap to add transactions in seconds
+- **Extension Status Widget**: Monitor tracking in real-time
 
-- **Real-time Analytics**: Interactive charts (Recharts) for spending breakdowns
-- **Category Visualization**: Visual spending by category with custom icons
-- **Trend Analysis**: Weekly/monthly spending trends and comparisons
-- **Financial Health Score**: AI-calculated score based on your habits
+### 💳 Digital Vault
 
-### 💳 Card Management
-
-Secure digital wallet for tracking your payment methods:
-
-- **Multi-card Support**: Add unlimited credit/debit cards
-- **Card Theming**: Beautiful gradient card designs
-- **Auto-detection**: Detects Visa, Mastercard, Amex, Discover, etc.
-- **Encrypted Storage**: Secure token-based storage
+- Multi-card support with beautiful gradient themes
+- Auto-detection of Visa, Mastercard, Amex, Discover
+- Secure encrypted storage with masking
 
 ### 🎯 Goals & Budgets
 
-Complete financial planning toolkit:
-
-- **Savings Goals**: Set targets with deadlines and track progress
-- **Budget Limits**: Set category or overall monthly budgets
-- **Progress Visualization**: Animated progress bars and charts
-- **Smart Alerts**: Notifications at 80% and 100% budget usage
+- Savings goals with progress tracking
+- Category & overall budget limits
+- Smart alerts at 80% and 100% usage
+- Visual progress with animations
 
 ### 📅 Subscriptions & Bills
 
-Never miss a payment again:
+- Track all recurring payments
+- Trial-to-paid conversion alerts
+- Due date notifications
+- Monthly cost analysis
 
-- **Subscription Tracker**: Track all recurring subscriptions
-- **Trial Detection**: Alerts before free trials convert to paid
-- **Bill Reminders**: Due date notifications with amount tracking
-- **Monthly Cost Analysis**: Total subscription cost breakdown
+### 📱 Mobile-First Experience
 
-### 🏦 Bank Integration (Plaid)
-
-Seamless bank account connectivity:
-
-- **Secure OAuth**: Industry-standard Plaid integration
-- **Auto-sync Transactions**: Automatic import from linked accounts
-- **Multi-bank Support**: Link multiple financial institutions
-- **Real-time Updates**: Transactions sync automatically
-
-### 📱 Smart Imports
-
-Multiple ways to add transactions:
-
-- **PDF Bank Statements**: OCR-powered parsing via Tesseract.js
-- **CSV Import**: Support for various bank export formats
-- **Manual Entry**: Quick add with smart categorization
-- **Extension Auto-capture**: Automatic from browser shopping
-
-### 💬 Voice & Notifications
-
-Interactive features for power users:
-
-- **Voice Commands**: "Add a goal to save Rs 50,000 for iPhone"
-- **Smart Notifications**: Real-time alerts via Supabase Realtime
-- **Sound Effects**: Satisfying audio feedback for actions
-- **Gen-Z Toast Notifications**: Fun, playful notification style
-
-### 📈 Reports & Exports
-
-Comprehensive reporting capabilities:
-
-- **PDF Reports**: Download beautiful expense reports
-- **Excel/CSV Export**: Export transactions for external analysis
-- **Analytics Dashboard**: Detailed spending insights page
-- **Data Portability**: Full data export/delete options
+- **Touch Optimization**: 44px minimum touch targets
+- **Haptic Feedback**: Vibration patterns for actions
+- **PWA Support**: Standalone mode with safe-area insets
+- **Landscape Mode**: Adaptive layouts
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-| Technology | Purpose |
-|------------|---------|
-| **React 18** | UI framework with hooks & concurrent features |
-| **TypeScript 5.6** | Type-safe development |
-| **Vite 5** | Lightning-fast dev server & builds |
-| **Tailwind CSS 4** | Utility-first styling |
-| **shadcn/ui + Radix** | Accessible component primitives |
-| **Framer Motion** | Premium animations & transitions |
-| **Zustand** | Lightweight state management |
-| **React Query** | Data fetching & caching |
-| **Recharts** | Data visualization |
-| **Zod 4** | Schema validation |
-| **Tesseract.js** | OCR for PDF parsing |
+| Technology | Version | Purpose |
+|:-----------|:--------|:--------|
+| React | 18.3 | UI framework with concurrent features |
+| TypeScript | 5.6 | Type-safe development |
+| Vite | 5.4 | Lightning-fast bundler |
+| Tailwind CSS | 4.0 | Utility-first styling |
+| Framer Motion | 11.11 | Premium animations |
+| Zustand | 5.0 | Lightweight state management |
+| React Query | 5.60 | Data fetching & caching |
+| Recharts | 2.13 | Data visualization |
+| Tesseract.js | 6.0 | OCR for PDF bank statements |
 
 ### Backend
-| Technology | Purpose |
-|------------|---------|
-| **Node.js 18+** | JavaScript runtime |
-| **Express 4** | Web framework |
-| **TypeScript** | Type-safe backend |
-| **Prisma ORM** | Database toolkit |
-| **PostgreSQL** | Primary database (Supabase) |
-| **Supabase Auth** | Authentication & RLS |
-| **Redis (ioredis)** | Caching layer |
-| **Groq SDK** | AI/LLM integration |
-| **Plaid SDK** | Bank connections |
-| **Helmet** | Security headers |
-| **Vitest** | Unit testing |
+| Technology | Version | Purpose |
+|:-----------|:--------|:--------|
+| Node.js | 18+ | JavaScript runtime |
+| Express | 4.21 | Web framework |
+| Prisma | 5.22 | Database ORM |
+| PostgreSQL | - | Primary database (Supabase) |
+| Groq SDK | 0.37 | LLM integration |
+| ioredis | 5.8 | Redis caching |
+| Plaid | 40.0 | Bank connectivity |
+| Helmet | 7.1 | Security headers |
+| Zod | 3.23 | Schema validation |
 
-### Deployment
-| Platform | Component |
-|----------|-----------|
-| **Vercel** | Frontend hosting |
-| **Vercel/Railway** | Backend API |
-| **Supabase** | Database + Auth |
-| **Redis Cloud** | Caching |
+### Infrastructure
+| Service | Purpose |
+|:--------|:--------|
+| Supabase | Database + Auth + Realtime |
+| Redis Cloud | AI response caching |
+| Vercel | Frontend & API hosting |
+| Sentry | Error tracking |
 
 ---
 
@@ -154,277 +147,185 @@ Comprehensive reporting capabilities:
 
 ```
 cashly/
-├── frontend/                    # React Web Dashboard
+├── frontend/                 # React Dashboard
 │   ├── src/
-│   │   ├── components/          # 118+ UI components
-│   │   │   ├── AIChatbot.tsx    # AI chat interface
-│   │   │   ├── VoiceCallModal.tsx # Voice interaction
-│   │   │   ├── NotificationsPanel.tsx
-│   │   │   └── ...
-│   │   ├── pages/               # 26 page components
-│   │   │   ├── DashboardPage.tsx
-│   │   │   ├── AnalyticsPage.tsx
-│   │   │   ├── TransactionsPage.tsx
-│   │   │   ├── BudgetsPage.tsx
-│   │   │   ├── GoalsPage.tsx
-│   │   │   ├── SubscriptionsPage.tsx
-│   │   │   ├── MoneyTwinPage.tsx # What-if scenarios
-│   │   │   └── ...
-│   │   ├── services/            # 40+ service modules
-│   │   │   ├── aiService.ts     # AI chat & insights
-│   │   │   ├── plaidService.ts  # Bank integration
-│   │   │   ├── currencyService.ts
-│   │   │   ├── pdfAnalyzerService.ts
-│   │   │   └── ...
-│   │   ├── hooks/               # 13 custom hooks
-│   │   ├── store/               # Zustand stores
-│   │   ├── config/              # Configuration
-│   │   └── types/               # TypeScript definitions
-│   ├── public/                  # Static assets & sounds
-│   └── package.json
+│   │   ├── components/       # 118+ UI components
+│   │   ├── pages/            # 26 page components
+│   │   ├── services/         # 40+ service modules
+│   │   ├── hooks/            # 13+ custom hooks
+│   │   ├── store/            # Zustand stores
+│   │   └── styles/           # CSS modules
+│   └── public/               # Static assets & sounds
 │
-├── backend/                     # Express API Server
+├── backend/                  # Express API
 │   ├── src/
-│   │   ├── controllers/         # Request handlers
-│   │   │   ├── transactionController.ts
-│   │   │   ├── analyticsController.ts
-│   │   │   ├── plaidController.ts
-│   │   │   ├── voiceController.ts
-│   │   │   └── ...
-│   │   ├── routes/              # API route definitions
-│   │   │   ├── ai.ts            # AI endpoints (707 lines!)
-│   │   │   ├── plaid.routes.ts
-│   │   │   ├── voice.routes.ts
-│   │   │   └── ...
-│   │   ├── services/            # Business logic
-│   │   │   ├── groqService.ts   # LLM integration
-│   │   │   ├── redisCacheService.ts
-│   │   │   └── ...
-│   │   ├── middleware/          # Auth, validation, errors
-│   │   └── validators/          # Zod schemas
-│   ├── prisma/
-│   │   └── schema.prisma        # Database schema
-│   └── extension/               # Browser Extension
-│       ├── manifest.json        # Chrome Manifest V3
-│       ├── background.js        # Service worker
-│       ├── content.js           # DOM parser
-│       ├── popup.html/js        # Extension UI
-│       └── icons/               # Extension icons
+│   │   ├── controllers/      # Request handlers
+│   │   ├── routes/           # API endpoints
+│   │   ├── services/         # Business logic
+│   │   ├── middleware/       # Auth, caching, errors
+│   │   └── validators/       # Zod schemas
+│   ├── extension/            # Chrome Extension v6.0
+│   └── prisma/               # Database schema
 │
-└── supabase/                    # Database setup
-    ├── migrations/
-    └── supabase_realtime_tables.sql
+├── ai-server/                # AI microservice (optional)
+└── supabase/                 # Database migrations
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL database (or Supabase project)
-- Redis instance (local or Redis Cloud)
+- PostgreSQL (or free Supabase project)
+- Redis (or free Redis Cloud)
 - Groq API key (free at console.groq.com)
-- npm or yarn
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/cashly.git
-cd cashly
-```
-
-### 2. Backend Setup
+### 1. Clone & Install
 
 ```bash
-cd backend
-npm install
+git clone https://github.com/baigcoder/shopping-expense-tracker.git
+cd shopping-expense-tracker
 
-# Copy environment template
-cp .env.example .env
+# Install dependencies
+cd backend && npm install
+cd ../frontend && npm install
 ```
 
-Configure `.env`:
+### 2. Environment Setup
+
+**Backend (`backend/.env`):**
 ```env
-# Server
 PORT=5000
 NODE_ENV=development
 
-# Database (Supabase Postgres)
-DATABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
-DIRECT_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
+# Database
+DATABASE_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
 
 # Supabase
-SUPABASE_URL=https://[PROJECT].supabase.co
-SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+SUPABASE_URL=https://project.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
-# AI (Groq - free tier available)
-GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxx
+# AI
+GROQ_API_KEY=gsk_xxxxxxxxxxxx
 
 # Cache
 REDIS_URL=redis://default:password@host:port
 
-# Frontend URL (for CORS)
+# Security
+JWT_SECRET=your_secure_random_secret_min_32_chars
 FRONTEND_URL=http://localhost:5173
-
-# JWT
-JWT_SECRET=your_secure_random_jwt_secret_min_32_chars
-JWT_EXPIRES_IN=7d
-
-# Optional: Plaid (for bank integration)
-PLAID_CLIENT_ID=your_plaid_client_id
-PLAID_SECRET=your_plaid_secret
-PLAID_ENV=sandbox
-
-# Optional: Email (for OTP)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_app_password
 ```
 
-Initialize database:
+**Frontend (`frontend/.env`):**
+```env
+VITE_SUPABASE_URL=https://project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key
+VITE_API_URL=http://localhost:5000/api
+```
+
+### 3. Database Setup
+
 ```bash
+cd backend
 npm run prisma:push
 npm run prisma:generate
 ```
 
-Start backend:
-```bash
-npm run dev     # Development with hot reload
-npm run build   # Production build
-npm start       # Production server
-```
-
-### 3. Frontend Setup
+### 4. Run Development
 
 ```bash
-cd frontend
-npm install
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
 ```
 
-Create `.env`:
-```env
-VITE_SUPABASE_URL=https://[PROJECT].supabase.co
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_API_URL=http://localhost:5000/api
-```
+Open http://localhost:5173 🎉
 
-Start frontend:
-```bash
-npm run dev     # Development
-npm run build   # Production build
-npm run preview # Preview production build
-```
+### 5. Install Extension
 
-### 4. Browser Extension Setup
-
-1. Open Chrome and navigate to `chrome://extensions/`
-2. Enable **Developer mode** (top right)
-3. Click **Load unpacked**
-4. Select the `backend/extension` folder
-5. Click the extension icon and log in with your Cashly account
+1. Open `chrome://extensions/`
+2. Enable **Developer mode**
+3. Click **Load unpacked** → select `backend/extension`
+4. Pin the extension and log in
 
 ---
 
-## 🧪 Testing
-
-### Frontend Tests
-```bash
-cd frontend
-npm run test          # Watch mode
-npm run test:run      # Single run
-npm run test:coverage # With coverage report
-```
-
-### Backend Tests
-```bash
-cd backend
-npm run test          # Watch mode
-npm run test:run      # Single run
-npm run test:coverage # With coverage report
-```
-
----
-
-## 📡 API Endpoints
+## 📡 API Reference
 
 ### Authentication
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+|:-------|:---------|:------------|
 | POST | `/api/auth/register` | Register new user |
 | POST | `/api/auth/login` | Login user |
 | GET | `/api/auth/profile` | Get user profile |
-| PATCH | `/api/auth/profile` | Update profile |
 
 ### Transactions
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/transactions` | List transactions (paginated) |
-| GET | `/api/transactions/:id` | Get single transaction |
+|:-------|:---------|:------------|
+| GET | `/api/transactions` | List (paginated) |
 | POST | `/api/transactions` | Create transaction |
-| PATCH | `/api/transactions/:id` | Update transaction |
-| DELETE | `/api/transactions/:id` | Delete transaction |
-| GET | `/api/transactions/recent` | Get recent transactions |
+| PATCH | `/api/transactions/:id` | Update |
+| DELETE | `/api/transactions/:id` | Delete |
 
 ### AI & Insights
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/ai/insights` | Get AI-generated insights (cached) |
-| GET | `/api/ai/forecast` | Get spending forecast |
-| GET | `/api/ai/risks` | Get risk alerts |
+|:-------|:---------|:------------|
+| GET | `/api/ai/insights` | AI-generated insights (cached) |
 | POST | `/api/ai/chat` | Chat with Cashly AI |
-| POST | `/api/ai/chat/fast` | Fast chat with pre-built context |
 | POST | `/api/ai/voice-action` | Execute voice commands |
-| POST | `/api/ai/refresh` | Force refresh AI data |
-| GET | `/api/ai/status` | Check AI service status |
+| GET | `/api/ai/forecast` | Spending predictions |
 
 ### Plaid (Bank Integration)
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/plaid/create-link-token` | Create Plaid Link token |
-| POST | `/api/plaid/exchange-token` | Exchange public token |
-| GET | `/api/plaid/accounts` | Get linked accounts |
-| POST | `/api/plaid/sync-transactions` | Sync bank transactions |
-
-### Categories, Budgets & More
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/categories` | List categories |
-| POST | `/api/categories` | Create category |
-| GET | `/api/budgets` | List budgets |
-| POST | `/api/budgets` | Create budget |
-| GET | `/api/cards` | List user cards |
-| POST | `/api/cards` | Add new card |
-| GET | `/api/analytics/summary` | Get analytics summary |
+|:-------|:---------|:------------|
+| POST | `/api/plaid/create-link-token` | Create Plaid Link |
+| POST | `/api/plaid/exchange-token` | Exchange token |
+| POST | `/api/plaid/sync-transactions` | Sync transactions |
 
 ---
 
 ## 🎨 Design System
 
-**Premium Fintech Aesthetics with Gen-Z Energy**
-
 | Element | Value |
-|---------|-------|
-| **Primary Colors** | Blue (#2563EB) + Purple (#7C3AED) |
-| **Gradients** | Linear 135deg blue-to-purple |
-| **Font Family** | Space Grotesk (headings) + Inter (body) |
-| **Border Radius** | 16px (cards), 12px (buttons) |
-| **Shadows** | Soft glow with colored edges |
-| **Animations** | Framer Motion (spring physics) |
+|:--------|:------|
+| **Primary** | Blue `#2563EB` → Purple `#7C3AED` gradient |
+| **Success** | Emerald `#10B981` |
+| **Warning** | Amber `#F59E0B` |
+| **Typography** | Space Grotesk (headings) + Inter (body) |
+| **Radius** | `16px` cards, `12px` buttons |
+| **Animations** | Framer Motion spring physics |
 | **Dark Mode** | Full support via Tailwind |
 
 ---
 
-## 🔒 Security Features
+## 🔒 Security
 
-- **Supabase RLS**: Row-Level Security on all database tables
-- **JWT Verification**: Backend validates all Supabase tokens
-- **Rate Limiting**: 100 requests/15min per IP
-- **Helmet.js**: Security headers (XSS, clickjacking protection)
-- **Zod Validation**: Input validation on all endpoints
-- **CORS Protection**: Origin restriction configured
-- **Error Sanitization**: No stack traces in production
+- **Supabase RLS**: Row-Level Security on all tables
+- **JWT Verification**: Backend validates all tokens
+- **Rate Limiting**: 100 req/15min per IP
+- **Helmet.js**: XSS, clickjacking protection
+- **Zod Validation**: Input sanitization
+- **CORS**: Origin restriction configured
+
+---
+
+## 🧪 Testing
+
+```bash
+# Frontend
+cd frontend
+npm run test          # Watch mode
+npm run test:coverage # Coverage report
+
+# Backend
+cd backend
+npm run test
+npm run test:coverage
+```
 
 ---
 
@@ -432,41 +333,32 @@ npm run test:coverage # With coverage report
 
 ### Vercel (Recommended)
 
-**Frontend:**
 ```bash
-cd frontend
-vercel --prod
-```
+# Frontend
+cd frontend && vercel --prod
 
-**Backend:**
-```bash
-cd backend
-vercel --prod
-```
-
-### Railway (Alternative)
-```bash
-railway up
+# Backend
+cd backend && vercel --prod
 ```
 
 ### Environment Variables
-Set all environment variables in your deployment platform's dashboard.
+Configure in Vercel dashboard or `.env.production` files.
 
 ---
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch: `git checkout -b feature/amazing`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push: `git push origin feature/amazing`
+5. Open Pull Request
 
 ---
 
 ## 📄 License
 
-MIT License. Built with ❤️ for smart money management.
+MIT License. Built with ❤️ for smarter money management.
 
 ---
 
@@ -476,8 +368,10 @@ MIT License. Built with ❤️ for smart money management.
 - [Groq](https://groq.com) - Ultra-fast LLM inference
 - [Plaid](https://plaid.com) - Bank connectivity
 - [shadcn/ui](https://ui.shadcn.com) - UI components
-- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [Framer Motion](https://framer.com/motion) - Animations
 
 ---
 
-**Cashly** — *Every Transaction, Perfectly Tracked* 💸
+<p align="center">
+  <strong>Cashly</strong> — Every Transaction, Perfectly Tracked 💸
+</p>
