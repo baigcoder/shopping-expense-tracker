@@ -1,157 +1,157 @@
 /* Extension Stats Card - Premium Compact Tracking Widget */
 
 .card {
-    background: white;
-    border: 3px solid #e2e8f0;
-    border-radius: 2rem;
-    padding: 1.5rem 1.75rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s ease;
-    overflow: hidden;
+  background: white;
+  border: 3px solid #e2e8f0;
+  border-radius: 2rem;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .card:hover {
-    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
-    border-color: #cbd5e1;
-    transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  transform: translateY(-4px);
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
 .titleRow {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .icon {
-    width: 2.25rem;
-    height: 2.25rem;
-    background: #eff6ff;
-    color: #2563eb;
-    border-radius: 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
-    font-size: 0.8rem;
-    font-weight: 950;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 950;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .statusBadge {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 2rem;
-    font-size: 0.7rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid transparent;
 }
 
 .connected {
-    background: #f0fdf4;
-    color: #10b981;
-    border-color: #dcfce7;
+  background: #f0fdf4;
+  color: #10b981;
+  border-color: #dcfce7;
 }
 
 .disconnected {
-    background: #f8fafc;
-    color: #64748b;
-    border-color: #f1f5f9;
+  background: #f8fafc;
+  color: #64748b;
+  border-color: #f1f5f9;
 }
 
 .statsGrid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .statItem {
-    text-align: center;
-    flex: 1;
+  text-align: center;
+  flex: 1;
 }
 
 .statValue {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: #0f172a;
-    line-height: 1.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    letter-spacing: -0.02em;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  letter-spacing: -0.02em;
 }
 
 .activeNum {
-    color: #2563eb;
-    margin-left: 0.25rem;
+  color: #2563eb;
+  margin-left: 0.25rem;
 }
 
 .statLabel {
-    font-size: 0.7rem;
-    color: #94a3b8;
-    font-weight: 800;
-    margin-top: 0.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 800;
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .statDivider {
-    width: 3px;
-    height: 2rem;
-    background: #f1f5f9;
-    border-radius: 1rem;
+  width: 3px;
+  height: 2rem;
+  background: #f1f5f9;
+  border-radius: 1rem;
 }
 
 .seeMore {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #0f172a;
-    color: #fff;
-    border-radius: 1.25rem;
-    font-size: 0.8rem;
-    font-weight: 900;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .seeMore:hover {
-    background: #1e293b;
-    transform: scale(1.02);
-    box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.5);
+  background: #1e293b;
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.5);
 }
 
 .spinning {
-    animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }

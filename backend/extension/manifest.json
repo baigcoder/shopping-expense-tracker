@@ -1,23 +1,94 @@
 {
-    "manifest_version": 3,
-    "name": "Cashly - Smart Expense Tracker",
-    "version": "5.1.0",
-    "description": "Automatically track expenses as you shop online. Your money, autopilot.",
-    "short_name": "Cashly",
-    "author": "BaigCoder",
-    "homepage_url": "https://spendsync-expense.vercel.app",
-    "permissions": [
-        "storage",
-        "activeTab",
-        "notifications",
-        "tabs",
-        "scripting",
-        "alarms"
-    ],
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
+  "manifest_version": 3,
+  "name": "Cashly - Smart Expense Tracker",
+  "version": "5.1.0",
+  "description": "Automatically track expenses as you shop online. Your money, autopilot.",
+  "short_name": "Cashly",
+  "author": "BaigCoder",
+  "homepage_url": "https://spendsync-expense.vercel.app",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications",
+    "tabs",
+    "scripting",
+    "alarms"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "host_permissions": [
+    "https://*.amazon.com/*",
+    "https://*.ebay.com/*",
+    "https://*.walmart.com/*",
+    "https://*.bestbuy.com/*",
+    "https://*.target.com/*",
+    "https://*.etsy.com/*",
+    "https://*.aliexpress.com/*",
+    "https://*.shopify.com/*",
+    "https://*.buymeacoffee.com/*",
+    "https://*.gumroad.com/*",
+    "https://*.stripe.com/*",
+    "https://*.paypal.com/*",
+    "https://*.daraz.pk/*",
+    "https://*.foodpanda.pk/*",
+    "https://*.carrefour.pk/*",
+    "https://*.metro.pk/*",
+    "https://*.alfatah.pk/*",
+    "https://*.imtiaz.com.pk/*",
+    "https://*.naheed.pk/*",
+    "https://*.chase.pk/*",
+    "https://*.yayvo.com/*",
+    "https://*.telemart.pk/*",
+    "https://*.whatmobile.com.pk/*",
+    "https://*.priceoye.pk/*",
+    "https://*.ishopping.pk/*",
+    "https://*.cheetay.pk/*",
+    "https://*.airlift.pk/*",
+    "https://*.golootlo.pk/*",
+    "https://*.bykea.com/*",
+    "https://*.jazzcash.com.pk/*",
+    "https://*.easypaisa.com.pk/*",
+    "https://*.sadapay.pk/*",
+    "https://*.nayapay.com/*",
+    "https://*.bookme.pk/*",
+    "https://*.clickticket.pk/*",
+    "http://localhost:*/*",
+    "<all_urls>"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "http://localhost:*/*",
+      "http://127.0.0.1:*/*",
+      "https://*.vercel.app/*",
+      "https://vibe-tracker-expense-genz.vercel.app/*"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Cashly - Smart Expense Tracker 💸",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost:*/*",
+        "http://127.0.0.1:*/*",
+        "https://*.vercel.app/*"
+      ],
+      "js": ["content-website.js"],
+      "run_at": "document_start"
     },
-    "host_permissions": [
+    {
+      "matches": [
         "https://*.amazon.com/*",
         "https://*.ebay.com/*",
         "https://*.walmart.com/*",
@@ -25,7 +96,6 @@
         "https://*.target.com/*",
         "https://*.etsy.com/*",
         "https://*.aliexpress.com/*",
-        "https://*.shopify.com/*",
         "https://*.buymeacoffee.com/*",
         "https://*.gumroad.com/*",
         "https://*.stripe.com/*",
@@ -37,116 +107,38 @@
         "https://*.alfatah.pk/*",
         "https://*.imtiaz.com.pk/*",
         "https://*.naheed.pk/*",
-        "https://*.chase.pk/*",
-        "https://*.yayvo.com/*",
-        "https://*.telemart.pk/*",
-        "https://*.whatmobile.com.pk/*",
         "https://*.priceoye.pk/*",
-        "https://*.ishopping.pk/*",
+        "https://*.telemart.pk/*",
         "https://*.cheetay.pk/*",
-        "https://*.airlift.pk/*",
-        "https://*.golootlo.pk/*",
-        "https://*.bykea.com/*",
         "https://*.jazzcash.com.pk/*",
         "https://*.easypaisa.com.pk/*",
         "https://*.sadapay.pk/*",
-        "https://*.nayapay.com/*",
         "https://*.bookme.pk/*",
-        "https://*.clickticket.pk/*",
-        "http://localhost:*/*",
         "<all_urls>"
-    ],
-    "externally_connectable": {
-        "matches": [
-            "http://localhost:*/*",
-            "http://127.0.0.1:*/*",
-            "https://*.vercel.app/*",
-            "https://vibe-tracker-expense-genz.vercel.app/*"
-        ]
-    },
-    "action": {
-        "default_popup": "popup.html",
-        "default_title": "Cashly - Smart Expense Tracker 💸",
-        "default_icon": {
-            "16": "icons/icon16.png",
-            "32": "icons/icon32.png",
-            "48": "icons/icon48.png",
-            "128": "icons/icon128.png"
-        }
-    },
-    "background": {
-        "service_worker": "background.js"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "http://localhost:*/*",
-                "http://127.0.0.1:*/*",
-                "https://*.vercel.app/*"
-            ],
-            "js": [
-                "content-website.js"
-            ],
-            "run_at": "document_start"
-        },
-        {
-            "matches": [
-                "https://*.amazon.com/*",
-                "https://*.ebay.com/*",
-                "https://*.walmart.com/*",
-                "https://*.bestbuy.com/*",
-                "https://*.target.com/*",
-                "https://*.etsy.com/*",
-                "https://*.aliexpress.com/*",
-                "https://*.buymeacoffee.com/*",
-                "https://*.gumroad.com/*",
-                "https://*.stripe.com/*",
-                "https://*.paypal.com/*",
-                "https://*.daraz.pk/*",
-                "https://*.foodpanda.pk/*",
-                "https://*.carrefour.pk/*",
-                "https://*.metro.pk/*",
-                "https://*.alfatah.pk/*",
-                "https://*.imtiaz.com.pk/*",
-                "https://*.naheed.pk/*",
-                "https://*.priceoye.pk/*",
-                "https://*.telemart.pk/*",
-                "https://*.cheetay.pk/*",
-                "https://*.jazzcash.com.pk/*",
-                "https://*.easypaisa.com.pk/*",
-                "https://*.sadapay.pk/*",
-                "https://*.bookme.pk/*",
-                "<all_urls>"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "css": [
-                "content.css"
-            ],
-            "run_at": "document_idle"
-        }
-    ],
-    "icons": {
-        "16": "icons/icon16.png",
-        "32": "icons/icon32.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
-    },
-    "web_accessible_resources": [
-        {
-            "resources": [
-                "config.js",
-                "content.css",
-                "icons/icon16.png",
-                "icons/icon32.png",
-                "icons/icon48.png",
-                "icons/icon128.png",
-                "icons/logo.png"
-            ],
-            "matches": [
-                "<all_urls>"
-            ]
-        }
-    ]
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "config.js",
+        "content.css",
+        "icons/icon16.png",
+        "icons/icon32.png",
+        "icons/icon48.png",
+        "icons/icon128.png",
+        "icons/logo.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
