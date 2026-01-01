@@ -10,11 +10,12 @@ import plaidRoutes from './plaid.routes.js';
 import aiRoutes from './ai.js';
 import resetRoutes from './reset.routes.js';
 import voiceRoutes from './voice.routes.js';
+import { cacheControl } from '../middleware/cache.js';
 
 const router = Router();
 
-// Health check
-router.get('/health', (_req, res) => {
+// Health check (cached for 1 minute)
+router.get('/health', cacheControl('dynamic'), (_req, res) => {
     res.json({
         success: true,
         message: 'Shopping Expense Tracker API is running',
