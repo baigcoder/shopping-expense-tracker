@@ -42,6 +42,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     const audioContextRef = useRef<AudioContext | null>(null);
     const transcriptRef = useRef<HTMLDivElement>(null);
     const callEndedRef = useRef(false); // Track if call ended to prevent recognition restart
+    const cachedContextRef = useRef<string>(''); // Pre-cached context for faster AI calls
 
     // Auto-scroll transcript when new messages appear
     useEffect(() => {
@@ -163,7 +164,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     // Ref to track ongoing fetch requests for cleanup
     const abortControllerRef = useRef<AbortController | null>(null);
 
-    // Handle user speech -> AI response with timeout and abort support
+    // Handle user speech -> AI response with FAST endpoint and timeout
     const handleUserSpeech = useCallback(async (userText: string) => {
         if (isAISpeaking || isThinking || !userText.trim() || callEndedRef.current) {
             console.log('⏸️ Skipping speech - AI speaking, thinking, or call ended');
@@ -178,19 +179,14 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         abortControllerRef.current = new AbortController();
         const signal = abortControllerRef.current.signal;
 
-        // 10 second timeout for AI response
+        // 6 second timeout for faster voice response (reduced from 10s)
         const timeoutId = setTimeout(() => {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }
-        }, 10000);
+        }, 6000);
 
         try {
-            // Get user ID for AI request
-            const token = localStorage.getItem('sb-ynmvjnsdygimhjxcjvzp-auth-token');
-            const parsed = token ? JSON.parse(token) : null;
-            const supabaseUserId = parsed?.user?.id;
-
             const textLower = userText.toLowerCase();
             // Check if this is an action command
             const isActionCommand =
@@ -205,11 +201,12 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                 textLower.includes('expense');
 
             let aiText = '';
-            const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
-            const baseUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
+
+            // Use pre-cached context for INSTANT AI responses (no fetch needed!)
+            const contextString = cachedContextRef.current || aiDataCache.buildContextString(await aiDataCache.getCachedData(userId));
 
             if (isActionCommand) {
-                // Try voice-action endpoint for commands
+                // For action commands, call voice-action endpoint (handles DB operations)
                 console.log('🎯 Detected action command, calling voice-action...');
                 try {
                     const actionResponse = await api.post('/ai/voice-action', {
@@ -219,26 +216,35 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
 
                     const actionData = actionResponse.data;
                     console.log('🎯 Action result:', actionData);
-                    if (actionData.action !== 'none' && actionData.success) {
+                    if (actionData.action !== 'none') {
                         aiText = actionData.confirmation;
-                    } else {
-                        aiText = actionData.confirmation || '';
                     }
                 } catch (e: any) {
                     if (e.name === 'AbortError' || e.name === 'CanceledError') throw e;
-                    console.log('Action endpoint failed, trying chat...');
+                    console.log('Action endpoint failed, using fast chat...');
                 }
             }
 
-            // If no action response, use regular chat
+            // Use FAST endpoint with pre-cached context (no DB fetch = instant)
             if (!aiText) {
-                console.log('🤖 Calling AI chat...');
-                const response = await api.post('/ai/chat', {
-                    message: userText,
-                    userName: userName
-                }, { signal });
-
-                aiText = response.data.reply || response.data.response || "Could you repeat that?";
+                console.log('⚡ Calling FAST AI chat with cached context...');
+                try {
+                    const response = await api.post('/ai/chat/fast', {
+                        message: userText,
+                        context: contextString
+                    }, { signal });
+                    aiText = response.data.reply || "Could you repeat that?";
+                    console.log(`⚡ Fast response in ${response.data.responseTime}ms`);
+                } catch (fastError: any) {
+                    if (fastError.name === 'AbortError' || fastError.name === 'CanceledError') throw fastError;
+                    // Fallback to regular chat only if fast fails
+                    console.log('Fast endpoint failed, trying regular chat...');
+                    const response = await api.post('/ai/chat', {
+                        message: userText,
+                        userName: userName
+                    }, { signal });
+                    aiText = response.data.reply || response.data.response || "Could you repeat that?";
+                }
             }
 
             clearTimeout(timeoutId);
@@ -257,7 +263,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         } catch (error: any) {
             clearTimeout(timeoutId);
 
-            if (error.name === 'AbortError') {
+            if (error.name === 'AbortError' || error.name === 'CanceledError') {
                 console.log('⚠️ Request aborted (timeout or call ended)');
                 if (!callEndedRef.current) {
                     setIsThinking(false);
@@ -294,9 +300,15 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
         }
     }, [isOpen]);
 
-    // Initialize call with greeting
+    // Initialize call with greeting - FAST
     useEffect(() => {
         if (isOpen && callStatus === 'connecting') {
+            // Pre-cache context immediately when call starts
+            aiDataCache.getCachedData(userId).then(data => {
+                cachedContextRef.current = aiDataCache.buildContextString(data);
+                console.log('⚡ Context pre-cached for fast responses');
+            });
+
             const timer = setTimeout(async () => {
                 setCallStatus('active');
 
@@ -305,12 +317,13 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
 
                 // Get proper display name
                 const displayName = userName && userName !== 'there' ? `Sir ${userName}` : '';
+                // Shorter, faster greeting
                 const greeting = displayName
-                    ? `Hello ${displayName}! I'm ${voiceName}, your AI financial assistant. I can see you have ${txCount} transactions on record. How may I assist you with your finances today?`
-                    : `Hello! I'm ${voiceName}, your AI financial assistant. How can I help you today?`;
+                    ? `Hello ${displayName}! I'm ready to help with your finances. What would you like to know?`
+                    : `Hello! I'm ${voiceName}, your AI assistant. How can I help?`;
                 setTranscript([{ role: 'ai', text: greeting }]);
                 speakWithElevenLabs(greeting);
-            }, 1500);
+            }, 800); // Reduced from 1500ms to 800ms
 
             return () => clearTimeout(timer);
         }
@@ -333,7 +346,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             // Accumulator for building complete sentences on mobile
             let accumulatedText = '';
             let silenceTimer: NodeJS.Timeout | null = null;
-            const SILENCE_DELAY = 1500; // Wait 1.5s of silence before sending
+            const SILENCE_DELAY = 1000; // Wait 1s of silence before sending (faster response)
 
             const sendAccumulatedText = () => {
                 if (accumulatedText.trim() && !callEndedRef.current) {
@@ -477,7 +490,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     if (isMinimized) {
         return (
             <motion.div
-                className="fixed bottom-20 right-6 z-[9999]"
+                className="fixed bottom-[205px] right-4 z-[9999] lg:bottom-20"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
             >

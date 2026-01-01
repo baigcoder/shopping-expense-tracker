@@ -112,8 +112,11 @@ const AIChatbot = () => {
                     const data = response.data;
                     setVoicePrefs({ isSetup: data.isSetup, voiceName: data.voiceName });
                 }
-            } catch (err) {
-                console.log('Voice prefs not loaded');
+            } catch (err: any) {
+                // Silently ignore 401/403 errors (user not authenticated or no prefs yet)
+                if (err?.response?.status !== 401 && err?.response?.status !== 403) {
+                    console.log('Voice prefs not loaded');
+                }
             }
         };
         fetchVoicePrefs();
@@ -238,11 +241,11 @@ const AIChatbot = () => {
                 </AnimatePresence>
             </motion.button>
 
-            {/* Floating Button - Mobile (same size as desktop now) */}
+            {/* Floating Button - Mobile (Standardized stacking: Level 2) */}
             <motion.button
                 className={cn(
-                    "fixed bottom-20 right-3 z-[9990]",
-                    "w-9 h-9 rounded-xl",
+                    "fixed bottom-[145px] right-4 z-[9990]",
+                    "w-11 h-11 rounded-xl",
                     "bg-gradient-to-br from-primary to-blue-700",
                     "text-white border border-white/20",
                     "shadow-lg shadow-primary/30",

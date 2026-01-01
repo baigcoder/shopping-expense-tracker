@@ -6,13 +6,13 @@
     position: fixed;
     bottom: 80px;
     right: 12px;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
     color: #fff;
     border: none;
-    box-shadow: 0 3px 12px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,8 +23,8 @@
 }
 
 .fab svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
 }
 
 .fab:hover {
@@ -314,18 +314,17 @@
 
 @media (max-width: 1024px) {
     .fab {
-        /* Smaller on mobile, same position */
-        width: 42px;
-        height: 42px;
+        width: 44px;
+        height: 44px;
         border-radius: 12px;
-        bottom: 90px;
-        right: 20px;
+        bottom: 85px;
+        right: 16px;
         box-shadow: 0 5px 14px rgba(37, 99, 235, 0.3);
     }
 
     .fab svg {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
     }
 }
 
@@ -342,7 +341,7 @@
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
     @media (max-width: 1024px) {
         .fab {
-            bottom: calc(100px + env(safe-area-inset-bottom));
+            bottom: calc(85px + env(safe-area-inset-bottom));
         }
     }
 }

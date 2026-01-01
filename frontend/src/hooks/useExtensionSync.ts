@@ -69,7 +69,8 @@ export const useExtensionSync = () => {
     // Consolidated extension tracking state (use ref for synchronous access)
     const extensionState = useRef({
         wasInstalled: false,
-        hasAlertedRemoval: false
+        hasAlertedRemoval: false,
+        lastSyncEventDispatch: 0 // Prevent recursive event dispatch
     });
 
 
@@ -188,13 +189,18 @@ export const useExtensionSync = () => {
                         }));
 
                         // Dispatch sync event for immediate dashboard access
-                        window.dispatchEvent(new CustomEvent('extension-synced', {
-                            detail: { email: userEmail, timestamp: Date.now() }
-                        }));
+                        // DEBOUNCE: Only dispatch if last dispatch was more than 2 seconds ago
+                        const now = Date.now();
+                        if (now - extensionState.current.lastSyncEventDispatch > 2000) {
+                            extensionState.current.lastSyncEventDispatch = now;
+                            window.dispatchEvent(new CustomEvent('extension-synced', {
+                                detail: { email: userEmail, timestamp: now }
+                            }));
 
-                        // Broadcast to other tabs via Supabase Realtime
-                        if (user?.id) {
-                            broadcastSyncStatus(user.id, 'synced', { email: userEmail });
+                            // Broadcast to other tabs via Supabase Realtime
+                            if (user?.id) {
+                                broadcastSyncStatus(user.id, 'synced', { email: userEmail });
+                            }
                         }
                     }
 

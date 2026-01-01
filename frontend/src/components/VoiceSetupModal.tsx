@@ -149,7 +149,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
             >
                 {/* Backdrop */}
                 <motion.div
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/70 backdrop-blur-md"
                     onClick={onClose}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -157,23 +157,20 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
 
                 {/* Modal */}
                 <motion.div
-                    className="relative w-full max-w-md bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+                    className="relative w-full max-w-md bg-[#0f1629] rounded-3xl overflow-hidden border border-blue-500/20 shadow-2xl shadow-blue-500/10"
                     initial={{ scale: 0.9, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: 20 }}
                 >
-                    {/* Animated background */}
-                    <div className="absolute inset-0 overflow-hidden">
-                        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-violet-500/20 to-transparent rounded-full blur-3xl animate-pulse" />
-                        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-                    </div>
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-blue-600/5 via-transparent to-transparent pointer-events-none" />
 
                     {/* Content */}
                     <div className="relative p-6">
                         {/* Close button */}
                         <button
                             onClick={onClose}
-                            className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+                            className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors"
                         >
                             <X size={18} />
                         </button>
@@ -181,19 +178,18 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                         {/* Header */}
                         <div className="text-center mb-6">
                             <motion.div
-                                className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30"
+                                className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30"
                                 animate={{
                                     scale: [1, 1.05, 1],
-                                    rotate: [0, 5, -5, 0]
                                 }}
-                                transition={{ duration: 3, repeat: Infinity }}
+                                transition={{ duration: 2, repeat: Infinity }}
                             >
-                                <Mic size={36} className="text-white" />
+                                <Mic size={28} className="text-white" />
                             </motion.div>
-                            <h2 className="text-2xl font-bold text-white mb-2">
+                            <h2 className="text-xl font-bold text-white mb-2">
                                 Meet Your AI Accountant
                             </h2>
-                            <p className="text-white/60 text-sm">
+                            <p className="text-white/50 text-sm">
                                 Choose a voice for your personal financial assistant
                             </p>
                         </div>
@@ -207,9 +203,9 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                             key={voice.id}
                                             onClick={() => setSelectedVoice(voice)}
                                             className={cn(
-                                                "relative p-4 rounded-2xl border-2 transition-all text-left",
+                                                "relative p-4 rounded-2xl border transition-all text-left",
                                                 selectedVoice.id === voice.id
-                                                    ? "bg-violet-500/20 border-violet-500 shadow-lg shadow-violet-500/20"
+                                                    ? "bg-blue-500/15 border-blue-500/50 shadow-lg shadow-blue-500/10"
                                                     : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
                                             )}
                                             whileHover={{ scale: 1.02 }}
@@ -217,7 +213,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                         >
                                             {selectedVoice.id === voice.id && (
                                                 <motion.div
-                                                    className="absolute top-2 right-2 w-5 h-5 rounded-full bg-violet-500 flex items-center justify-center"
+                                                    className="absolute top-2 right-2 w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center"
                                                     initial={{ scale: 0 }}
                                                     animate={{ scale: 1 }}
                                                 >
@@ -225,8 +221,8 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                                 </motion.div>
                                             )}
                                             <span className="text-2xl mb-2 block">{voice.emoji}</span>
-                                            <h3 className="font-bold text-white">{voice.name}</h3>
-                                            <p className="text-xs text-white/50">{voice.description}</p>
+                                            <h3 className="font-semibold text-white">{voice.name}</h3>
+                                            <p className="text-xs text-white/40">{voice.description}</p>
                                         </motion.button>
                                     ))}
                                 </div>
@@ -238,8 +234,8 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                     className={cn(
                                         "w-full py-3 px-4 mb-4 rounded-xl border flex items-center justify-center gap-2 transition-colors",
                                         isPreviewing
-                                            ? "bg-violet-500/20 border-violet-500 text-violet-300"
-                                            : "bg-white/5 border-white/10 text-white/80 hover:bg-white/10"
+                                            ? "bg-blue-500/15 border-blue-500/50 text-blue-300"
+                                            : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
                                     )}
                                     whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.99 }}
@@ -252,7 +248,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                                 {[0, 1, 2].map((i) => (
                                                     <motion.div
                                                         key={i}
-                                                        className="w-1 h-4 bg-violet-400 rounded-full"
+                                                        className="w-1 h-4 bg-blue-400 rounded-full"
                                                         animate={{ scaleY: [0.5, 1, 0.5] }}
                                                         transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.15 }}
                                                     />
@@ -271,11 +267,11 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                 {/* Continue button */}
                                 <motion.button
                                     onClick={() => setStep('confirm')}
-                                    className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 transition-shadow flex items-center justify-center gap-2"
+                                    className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-shadow flex items-center justify-center gap-2"
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                 >
-                                    <Sparkles size={20} />
+                                    <Sparkles size={18} />
                                     Continue with {selectedVoice.name}
                                 </motion.button>
                             </>
@@ -327,7 +323,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                     <motion.button
                                         onClick={handleConfirm}
                                         disabled={isLoading}
-                                        className="flex-[2] py-3 px-6 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-lg shadow-violet-500/30 disabled:opacity-50 flex items-center justify-center gap-2"
+                                        className="flex-[2] py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg shadow-blue-500/25 disabled:opacity-50 flex items-center justify-center gap-2"
                                         whileHover={{ scale: isLoading ? 1 : 1.02 }}
                                         whileTap={{ scale: isLoading ? 1 : 0.98 }}
                                     >

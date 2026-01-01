@@ -193,13 +193,25 @@ const ExtensionAlert = () => {
     }, [checking, extensionStatus.installed, extensionStatus.loggedIn, isWebsiteLoggedIn, initialCheckDone, navigate, location.pathname, wasRecentlySynced, wasRecentlyDismissed, markAsSynced, forceRefreshRef.current]);
 
     // NEW: Listen for extension events directly for instant updates
+    // Add debounce ref to prevent recursive calls
+    const lastEventHandledRef = useRef(0);
+
     useEffect(() => {
         const handleExtensionSynced = (event: CustomEvent) => {
+            // DEBOUNCE: Prevent handling same event multiple times
+            const now = Date.now();
+            if (now - lastEventHandledRef.current < 2000) {
+                console.log('📡 ExtensionAlert: Debounced extension-synced event');
+                return;
+            }
+            lastEventHandledRef.current = now;
+
             console.log('📡 ExtensionAlert: Received extension-synced event', event.detail);
             forceRefreshRef.current++;
             lastKnownStatusRef.current = { installed: true, loggedIn: false }; // Force transition detection
             setInitialCheckDone(true);
-            checkExtension(); // Trigger immediate recheck
+            // Don't call checkExtension here - it dispatches the same event and causes recursion!
+            // Instead, just update state directly
         };
 
         const handleExtensionRemoved = () => {
