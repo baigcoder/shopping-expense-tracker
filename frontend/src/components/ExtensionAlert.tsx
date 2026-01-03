@@ -174,15 +174,18 @@ const ExtensionAlert = () => {
             return;
         }
 
-        // Determine alert type
+        // Determine alert type - ALWAYS show on first load if extension not installed
         if (!currentStatus.installed) {
+            // On first load (no lastStatus), always show unless dismissed
             if (!wasRecentlyDismissed('not_installed')) {
+                console.log('🔔 Extension not installed - showing alert');
                 setAlertType('not_installed');
             } else {
                 setAlertType(null);
             }
         } else if (!currentStatus.loggedIn) {
             if (!wasRecentlyDismissed('not_synced')) {
+                console.log('🔔 Extension not synced - showing alert');
                 setAlertType('not_synced');
             } else {
                 setAlertType(null);
