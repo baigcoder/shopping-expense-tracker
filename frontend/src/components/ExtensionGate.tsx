@@ -25,7 +25,10 @@ const isPreviouslySynced = (): boolean => {
         const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
         if (syncedData) {
             const data = JSON.parse(syncedData);
-            return data.synced === true && !!data.email;
+            // Allow up to 60 seconds for fast path (extension updates every 30s)
+            // This provides good UX while still detecting removal within a minute
+            const isRecent = data.timestamp && (Date.now() - data.timestamp < 60 * 1000);
+            return data.synced === true && !!data.email && isRecent;
         }
     } catch (e) {
         // Ignore

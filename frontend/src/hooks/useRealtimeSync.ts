@@ -36,13 +36,20 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
     const { user } = useAuthStore();
     const channelRef = useRef<RealtimeChannel | null>(null);
     const isSubscribed = useRef(false);
+    const retryCountRef = useRef(0); // Track reconnection attempts for exponential backoff
     // Use state for connectionStatus so components re-render on status change
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
 
-    const setupSubscription = useCallback(() => {
+    const setupSubscription = useCallback(async () => {
         if (!user?.id || isSubscribed.current) return;
 
-
+        // Verify we have a valid session before subscribing
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (!session || error) {
+            console.warn('No valid session, skipping realtime subscription');
+            setConnectionStatus('disconnected');
+            return;
+        }
 
         // Create a unique channel for this user with optimized settings
         const channel = supabase.channel(`realtime-${user.id}`, {
@@ -324,18 +331,27 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
 
             if (status === 'SUBSCRIBED') {
                 isSubscribed.current = true;
+                retryCountRef.current = 0; // Reset retry count on success
                 setConnectionStatus('connected');
             } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
                 setConnectionStatus('disconnected');
-                console.error('❌ Real-time connection error, will retry...');
-                // Auto-retry after 3 seconds
-                setTimeout(() => {
-                    if (!isSubscribed.current) {
+                console.error('❌ Real-time connection error, will retry with backoff...');
 
-                        cleanup();
-                        setupSubscription();
-                    }
-                }, 3000);
+                // Exponential backoff: 1s, 2s, 4s, 8s, 16s (max 30s)
+                const retryDelay = Math.min(1000 * Math.pow(2, retryCountRef.current), 30000);
+                retryCountRef.current++;
+
+                if (retryCountRef.current <= 5) {
+                    console.log(`🔄 Retrying realtime connection in ${retryDelay / 1000}s (attempt ${retryCountRef.current}/5)`);
+                    setTimeout(() => {
+                        if (!isSubscribed.current) {
+                            cleanup();
+                            setupSubscription();
+                        }
+                    }, retryDelay);
+                } else {
+                    console.error('❌ Max retries reached for realtime connection');
+                }
             } else if (status === 'CLOSED') {
                 setConnectionStatus('disconnected');
                 isSubscribed.current = false;

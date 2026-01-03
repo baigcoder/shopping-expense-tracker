@@ -420,12 +420,26 @@ async function handleExtensionStatusCheck(sendResponse) {
 
 async function handleWebsiteLogin(data) {
     try {
+        const incomingEmail = data.user?.email || data.email;
+
+        // CHECK: If already logged in as same user, skip re-sync to prevent session conflicts
+        const existing = await chrome.storage.local.get(['userEmail', 'accessToken']);
+        if (existing.accessToken && existing.userEmail === incomingEmail) {
+            console.log('✅ Already synced as same user, skipping re-sync');
+            // Still notify tabs to update UI state
+            notifyWebsiteTabs('EXTENSION_SYNCED', {
+                email: incomingEmail,
+                userId: data.user?.id || data.userId
+            });
+            return; // Don't overwrite existing session
+        }
+
         await chrome.storage.local.set({
             supabaseSession: data.session,
             accessToken: data.session?.access_token || data.accessToken,
             userId: data.user?.id || data.userId,
-            userEmail: data.user?.email || data.email,
-            userName: data.user?.user_metadata?.name || data.name || data.email?.split('@')[0],
+            userEmail: incomingEmail,
+            userName: data.user?.user_metadata?.name || data.name || incomingEmail?.split('@')[0],
             syncedFromWebsite: true,
             lastSync: Date.now()
         });
@@ -434,7 +448,7 @@ async function handleWebsiteLogin(data) {
 
         // Show sync notification ONLY if not suppressed
         if (!data.skipNotification) {
-            showSyncNotification(data.user?.email || data.email);
+            showSyncNotification(incomingEmail);
         } else {
             console.log('🔕 Notification suppressed (auto-sync)');
         }
@@ -447,7 +461,7 @@ async function handleWebsiteLogin(data) {
 
         // Notify all website tabs that extension is now synced
         notifyWebsiteTabs('EXTENSION_SYNCED', {
-            email: data.user?.email || data.email,
+            email: incomingEmail,
             userId: data.user?.id || data.userId
         });
 
@@ -1279,6 +1293,27 @@ function getCategoryFromStore(storeName) {
 }
 
 // ================================
+// CROSS-TAB AUTH SYNC
+// ================================
+// Listen for storage changes from other tabs/contexts
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'local') {
+        if (changes.accessToken) {
+            if (!changes.accessToken.newValue && changes.accessToken.oldValue) {
+                // Token was removed - user logged out
+                console.log('🔓 Token removed, notifying tabs of logout');
+                notifyWebsiteTabs('EXTENSION_LOGGED_OUT', {});
+            } else if (changes.accessToken.newValue && !changes.accessToken.oldValue) {
+                // Token was added - user logged in
+                const email = changes.userEmail?.newValue;
+                console.log('🔐 Token added, notifying tabs of login:', email);
+                notifyWebsiteTabs('EXTENSION_SYNCED', { email });
+            }
+        }
+    }
+});
+
+// ================================
 // LIFECYCLE EVENTS
 // ================================
 chrome.runtime.onStartup.addListener(() => {
@@ -1305,6 +1340,53 @@ chrome.runtime.onInstalled.addListener(() => {
 // Periodic sync check (every 5 minutes)
 setInterval(() => {
     syncPendingTransactions();
+}, 5 * 60 * 1000);
+
+// ================================
+// TOKEN REFRESH - Auto-refresh before expiry
+// ================================
+// Check every 5 minutes, refresh if less than 10 minutes remaining
+setInterval(async () => {
+    try {
+        const { supabaseSession, accessToken } = await chrome.storage.local.get(['supabaseSession', 'accessToken']);
+        if (!supabaseSession || !accessToken) return;
+
+        // Decode JWT to check expiry
+        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+        const expiresIn = (payload.exp * 1000) - Date.now();
+
+        // If less than 10 minutes remaining, refresh the token
+        if (expiresIn < 10 * 60 * 1000 && expiresIn > 0) {
+            console.log('🔄 Token expiring soon, refreshing...');
+
+            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ refresh_token: supabaseSession.refresh_token })
+            });
+
+            if (response.ok) {
+                const newSession = await response.json();
+                await chrome.storage.local.set({
+                    supabaseSession: newSession,
+                    accessToken: newSession.access_token,
+                    lastSync: Date.now()
+                });
+                console.log('✅ Token refreshed successfully');
+
+                // Notify website tabs of refreshed session
+                notifyWebsiteTabs('EXTENSION_SYNCED', { email: newSession.user?.email });
+            } else {
+                console.error('❌ Token refresh failed:', await response.text());
+            }
+        }
+    } catch (error) {
+        // Token decode or refresh error - might be invalid token
+        console.log('Token refresh check error:', error.message);
+    }
 }, 5 * 60 * 1000);
 
 // ================================

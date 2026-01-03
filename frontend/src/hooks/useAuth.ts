@@ -112,8 +112,31 @@ export const useAuth = () => {
             }
         });
 
+        // Cross-tab auth sync via storage events
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key?.startsWith('sb-') && e.key?.endsWith('-auth-token')) {
+                // Auth token changed in another tab, check session
+                supabase.auth.getSession().then(({ data: { session } }) => {
+                    if (session?.user) {
+                        setUser({
+                            id: session.user.id,
+                            email: session.user.email!,
+                            name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
+                            avatarUrl: session.user.user_metadata.avatar_url,
+                            currency: 'USD',
+                            createdAt: session.user.created_at || new Date().toISOString()
+                        });
+                    } else {
+                        setUser(null);
+                    }
+                });
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+
         return () => {
             subscription.unsubscribe();
+            window.removeEventListener('storage', handleStorageChange);
         };
     }, [setUser, setLoading]);
 

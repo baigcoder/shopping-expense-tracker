@@ -20,6 +20,13 @@ const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
 // Uses proper channel subscription to avoid REST fallback deprecation warning
 const broadcastSyncStatus = async (userId: string, eventType: 'synced' | 'removed', data: any) => {
     try {
+        // Verify we have a valid session before broadcasting
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session && eventType === 'synced') {
+            console.warn('Cannot broadcast sync - no valid session');
+            return;
+        }
+
         const channelName = `realtime-${userId}`;
         const channel = supabase.channel(channelName, {
             config: { broadcast: { self: false } }
@@ -67,10 +74,12 @@ export const useExtensionSync = () => {
     const [syncing, setSyncing] = useState(false);
 
     // Consolidated extension tracking state (use ref for synchronous access)
+    // CRITICAL: Initialize wasInstalled based on cached sync state so we can detect removal on first load
     const extensionState = useRef({
-        wasInstalled: false,
+        wasInstalled: getCachedStatus().loggedIn, // If previously synced, assume was installed
         hasAlertedRemoval: false,
-        lastSyncEventDispatch: 0 // Prevent recursive event dispatch
+        lastSyncEventDispatch: 0, // Prevent recursive event dispatch
+        lastToastTime: 0 // Debounce toast notifications (3 second cooldown)
     });
 
 
@@ -97,18 +106,25 @@ export const useExtensionSync = () => {
 
             // DOUBLE-CHECK: If extension seems inactive, verify localStorage sync flag
             // The extension writes sync data that persists even if heartbeat is delayed
+            // REDUCED: From 5 minutes to 30 seconds to detect removal faster
             if (!extensionIsActive) {
                 const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
                 if (syncedData) {
                     try {
                         const parsed = JSON.parse(syncedData);
-                        // If synced within last 5 minutes, extension is likely still working
-                        if (parsed.synced && parsed.timestamp && Date.now() - parsed.timestamp < 5 * 60 * 1000) {
-
+                        // If synced within last 60 SECONDS, extension is likely still working
+                        if (parsed.synced && parsed.timestamp && Date.now() - parsed.timestamp < 60 * 1000) {
                             extensionIsActive = true;
+                        } else {
+                            // Stale sync flag - extension is gone, clear it immediately
+                            console.log('🧹 Clearing stale sync flag - timestamp too old');
+                            localStorage.removeItem(EXTENSION_SYNCED_KEY);
+                            localStorage.removeItem('cashly_extension');
+                            localStorage.removeItem('cashly_extension_auth');
                         }
                     } catch (e) {
-                        // Ignore parse errors
+                        // Parse error - clear the corrupt data
+                        localStorage.removeItem(EXTENSION_SYNCED_KEY);
                     }
                 }
             }
@@ -307,8 +323,12 @@ export const useExtensionSync = () => {
             }));
             setChecking(false);
 
-            // Trigger styled toast via helper (handles deduplication internally)
-            genZToast.extensionSynced();
+            // Trigger styled toast via helper (with 3 second debounce to prevent spam)
+            const now = Date.now();
+            if (now - extensionState.current.lastToastTime > 3000) {
+                extensionState.current.lastToastTime = now;
+                genZToast.extensionSynced();
+            }
         };
 
         // NEW: Listen for behavior-based transaction events from extension
@@ -348,6 +368,15 @@ export const useExtensionSync = () => {
         window.addEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
         window.addEventListener('message', handleBehaviorTransaction);
 
+        // Listen for storage changes from other tabs/windows
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'cashly_extension_synced' || e.key === 'cashly_extension_auth') {
+                // Another tab/window changed extension state, re-check
+                checkExtension();
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+
         // Initial check
         checkExtension();
 
@@ -360,6 +389,7 @@ export const useExtensionSync = () => {
             window.removeEventListener('extension-synced', handleExtensionSynced as EventListener);
             window.removeEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
             window.removeEventListener('message', handleBehaviorTransaction);
+            window.removeEventListener('storage', handleStorageChange);
             clearInterval(interval);
         };
     }, [checkExtension]);

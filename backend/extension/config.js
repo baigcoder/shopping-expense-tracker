@@ -12,7 +12,8 @@ const DEFAULT_CONFIG = {
         'http://localhost:5173',
         'http://localhost:3000',
         'https://finzen-expense.vercel.app',
-        'https://spendsync-expense.vercel.app'
+        'https://spendsync-expense.vercel.app',
+        'https://shopping-expense-tracker.vercel.app'
     ],
 
     WEBSITE_URL: 'http://localhost:5173',

@@ -23,6 +23,7 @@ import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
 import BRAND from '@/config/branding';
+import SyncStatusIndicator from './SyncStatusIndicator';
 
 const navItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -218,6 +219,20 @@ const Sidebar = () => {
                         </AnimatePresence>
                     </div>
                 </div>
+
+                {/* Sync Status Indicator - Shows realtime connection health */}
+                <AnimatePresence>
+                    {isExpanded && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="px-4 py-2 border-b border-slate-100"
+                        >
+                            <SyncStatusIndicator />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
 
                 {/* Navigation Links */}
