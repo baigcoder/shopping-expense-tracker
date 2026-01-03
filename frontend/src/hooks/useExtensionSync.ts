@@ -55,12 +55,15 @@ export const useExtensionSync = () => {
     const { user } = useAuthStore();
 
     // OPTIMIZATION: Check cached sync status immediately (synchronous)
+    // CRITICAL: Must also check timestamp to avoid stale cache causing false positives
     const getCachedStatus = (): ExtensionStatus => {
         try {
             const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
             if (syncedData) {
                 const data = JSON.parse(syncedData);
-                if (data.synced && data.email) {
+                // Only trust the cache if timestamp is recent (within 60 seconds)
+                const isRecent = data.timestamp && (Date.now() - data.timestamp < 60 * 1000);
+                if (data.synced && data.email && isRecent) {
                     return { installed: true, loggedIn: true, userEmail: data.email };
                 }
             }

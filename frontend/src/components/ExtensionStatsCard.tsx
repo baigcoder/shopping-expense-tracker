@@ -66,7 +66,9 @@ const ExtensionStatsCard = () => {
         return () => window.removeEventListener('extension-stats-updated', handleStatsUpdate as EventListener);
     }, [checking, extensionStatus.installed, extensionStatus.loggedIn]);
 
-    const isConnected = extensionStatus.installed && extensionStatus.loggedIn;
+    // CRITICAL: Only show connected AFTER checking is complete AND extension is verified
+    // While checking, always show disconnected to avoid false positives
+    const isConnected = !checking && extensionStatus.installed && extensionStatus.loggedIn;
 
     return (
         <motion.div
