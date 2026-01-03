@@ -161,7 +161,22 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
         return <ExtensionRequiredModal />;
     }
 
-    // Default: render children
+    // Still waiting for verification to complete - show skeleton
+    if (!verificationComplete) {
+        return (
+            <div className="flex-1 overflow-auto bg-slate-50/50">
+                <DashboardSkeleton />
+            </div>
+        );
+    }
+
+    // If verification is complete but extension is STILL not detected, show modal
+    // This is the fallback case - ensures we never render children without extension
+    if (!extensionStatus.installed || !extensionStatus.loggedIn) {
+        return <ExtensionRequiredModal />;
+    }
+
+    // Default: render children (only reachable if extension is verified)
     return <>{children}</>;
 };
 
