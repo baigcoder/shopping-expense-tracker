@@ -75,7 +75,8 @@ export default defineConfig({
     cacheDir: 'node_modules/.vite',
     // Ignore unnecessary files
     esbuild: {
-        drop: ['console', 'debugger'], // Remove console.logs in production
+        drop: ['debugger'],     // Keep console.error/warn for debugging
+        pure: ['console.log'],  // Only remove console.log, keep error/warn
         legalComments: 'none', // Remove license comments
     },
 });
