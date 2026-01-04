@@ -99,9 +99,9 @@ export const useExtensionSync = () => {
             if (extensionData) {
                 try {
                     const data = JSON.parse(extensionData);
-                    // Extension must have updated within last 60 seconds to be considered active
-                    // Increased from 30s to reduce false positives during slow networks
-                    extensionIsActive = Date.now() - data.timestamp < 60000;
+                    // Extension must have updated within last 10 seconds to be considered active
+                    // This ensures fast detection when extension is removed
+                    extensionIsActive = Date.now() - data.timestamp < 10000;
                 } catch (e) {
                     extensionIsActive = false;
                 }

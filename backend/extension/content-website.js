@@ -107,8 +107,9 @@
     // Retry after 3 seconds as well
     setTimeout(setExtensionFlag, 3000);
 
-    // Refresh flags every 30 seconds to keep them fresh (reduced from 10s)
-    setInterval(setExtensionFlag, 30000);
+    // Refresh flags every 3 seconds to enable instant removal detection
+    // Website checks for 10s expiry, so 3s heartbeat = ~3s max detection time
+    setInterval(setExtensionFlag, 3000);
 
     // SYNC SITE VISITS from chrome.storage to localStorage (for website access)
     const syncSiteVisitsToLocalStorage = async () => {
