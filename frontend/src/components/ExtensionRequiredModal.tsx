@@ -92,7 +92,7 @@ const ExtensionRequiredModal = () => {
 
                         <h2 className={styles.title}>Extension Required</h2>
                         <p className={styles.subtitle}>
-                            Install the Finzen extension to unlock real-time purchase tracking & high-frequency syncing.
+                            Install the Cashly extension to unlock real-time purchase tracking & high-frequency syncing.
                         </p>
                     </div>
 

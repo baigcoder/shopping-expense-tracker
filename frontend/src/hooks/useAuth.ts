@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
 
-// Notify extension of auth state changes
+// Notify extension of auth state changes with retry for page load reliability
 const notifyExtension = (type: 'LOGIN' | 'LOGOUT', data?: any) => {
     try {
         // Clear persistent sync flag on logout
@@ -26,24 +26,47 @@ const notifyExtension = (type: 'LOGIN' | 'LOGOUT', data?: any) => {
             console.log('🔓 Notified extension of logout');
         }
 
-        // Notify extension of login
+        // Notify extension of login with retry mechanism
         if (type === 'LOGIN' && data) {
-            window.postMessage({
-                type: 'WEBSITE_TO_EXTENSION',
-                action: 'SYNC_SESSION',
-                data: {
-                    session: data.session,
-                    user: data.user,
-                    accessToken: data.session?.access_token
-                }
-            }, '*');
+            const sendSyncMessage = () => {
+                window.postMessage({
+                    type: 'WEBSITE_TO_EXTENSION',
+                    action: 'SYNC_SESSION',
+                    data: {
+                        session: data.session,
+                        user: data.user,
+                        accessToken: data.session?.access_token
+                    }
+                }, '*');
+            };
 
-            console.log('🔐 Notified extension of login');
+            // Send immediately
+            sendSyncMessage();
+            console.log('🔐 Notified extension of login (attempt 1)');
+
+            // Retry after 500ms - extension content script may not be ready yet
+            setTimeout(() => {
+                sendSyncMessage();
+                console.log('🔐 Notified extension of login (attempt 2)');
+            }, 500);
+
+            // Retry after 1.5s - final attempt
+            setTimeout(() => {
+                sendSyncMessage();
+                console.log('🔐 Notified extension of login (attempt 3)');
+            }, 1500);
+
+            // Retry after 3s - catch slow loads
+            setTimeout(() => {
+                sendSyncMessage();
+                console.log('🔐 Notified extension of login (attempt 4 - final)');
+            }, 3000);
         }
     } catch (error) {
         console.error('Error notifying extension:', error);
     }
 };
+
 
 export const useAuth = () => {
     const { user, isAuthenticated, isLoading, setUser, setLoading } = useAuthStore();

@@ -216,17 +216,19 @@
 
         switch (message.action) {
             case 'SYNC_SESSION':
-                // Website is sharing session with extension (only if not already synced)
-                if (canSync()) {
-                    try {
-                        await chrome.runtime.sendMessage({
-                            type: 'SYNC_SESSION_FROM_WEBSITE',
-                            data: message.data
-                        });
-                        markAsSynced();
-                    } catch (e) {
-                        // Silently ignore
-                    }
+                // Website is sharing session with extension
+                // Always accept session data to enable instant sync on page refresh
+                try {
+                    console.log('📥 Extension: Received SYNC_SESSION from website');
+                    await chrome.runtime.sendMessage({
+                        type: 'SYNC_SESSION_FROM_WEBSITE',
+                        data: message.data
+                    });
+                    // Update localStorage flags immediately
+                    setExtensionFlag();
+                    markAsSynced();
+                } catch (e) {
+                    console.log('Extension sync error:', e.message);
                 }
                 break;
 
