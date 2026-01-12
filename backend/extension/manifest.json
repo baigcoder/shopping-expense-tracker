@@ -94,9 +94,7 @@
         "http://127.0.0.1:*/*",
         "https://*.vercel.app/*"
       ],
-      "js": [
-        "content-website.js"
-      ],
+      "js": ["content-website.js"],
       "run_at": "document_start"
     },
     {
@@ -128,12 +126,8 @@
         "https://*.bookme.pk/*",
         "<all_urls>"
       ],
-      "js": [
-        "content.js"
-      ],
-      "css": [
-        "content.css"
-      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
       "run_at": "document_idle"
     }
   ],
@@ -154,9 +148,7 @@
         "icons/icon128.png",
         "icons/logo.png"
       ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "matches": ["<all_urls>"]
     }
   ]
 }
