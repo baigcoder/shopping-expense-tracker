@@ -664,17 +664,83 @@
         }
 
         checkSubscriptionIndicators() {
-            const pageText = (document.body?.innerText || '').toLowerCase().slice(0, 10000);
+            const pageText = (document.body?.innerText || '').toLowerCase().slice(0, 15000);
+            let subscriptionScore = 0;
+
+            // 1. Subscription keywords (+10 each, max 2)
             const subscriptionKeywords = [
                 'subscription', 'subscribe now', 'recurring billing',
-                'billed monthly', 'billed annually', 'per month', '/mo',
+                'billed monthly', 'billed annually', 'per month', '/month',
+                'per year', '/year', '/mo', '/yr',
                 'free trial', 'cancel anytime', 'premium plan',
-                'pro plan', 'enterprise', 'team plan', 'starter plan'
+                'pro plan', 'enterprise', 'team plan', 'starter plan',
+                'basic plan', 'professional', 'business plan'
             ];
 
-            const found = subscriptionKeywords.filter(kw => pageText.includes(kw));
-            if (found.length >= 2) {
+            let keywordCount = 0;
+            for (const kw of subscriptionKeywords) {
+                if (pageText.includes(kw)) {
+                    keywordCount++;
+                    if (keywordCount >= 2) break;
+                }
+            }
+            if (keywordCount >= 2) subscriptionScore += 15;
+            else if (keywordCount >= 1) subscriptionScore += 8;
+
+            // 2. Pricing tier detection (+15 points)
+            const tierPatterns = [
+                /basic|starter|free/i,
+                /pro|professional|plus/i,
+                /enterprise|business|team/i,
+                /premium|ultimate|unlimited/i
+            ];
+            let tiersFound = 0;
+            for (const pattern of tierPatterns) {
+                if (pattern.test(pageText)) tiersFound++;
+            }
+            if (tiersFound >= 2) {
+                subscriptionScore += 15;
+                console.log('💸 Pricing tiers detected:', tiersFound);
+            }
+
+            // 3. Price with period indicator (+12 points)
+            const priceWithPeriod = /(?:rs\.?|pkr|\$|€|£|₹)\s*[\d,]+(?:\.\d{2})?\s*\/?\s*(?:mo|month|year|yr|annually|monthly)/i;
+            if (priceWithPeriod.test(pageText)) {
+                subscriptionScore += 12;
+                console.log('💸 Price with period detected');
+            }
+
+            // 4. Pricing page URL patterns (+10 points)
+            const url = window.location.href.toLowerCase();
+            if (/pricing|plans|subscription|upgrade|billing/i.test(url)) {
+                subscriptionScore += 10;
+            }
+
+            // 5. CTA buttons for subscriptions (+10 points)
+            const buttons = document.querySelectorAll('button, a, [role="button"]');
+            for (const btn of buttons) {
+                const text = (btn.innerText || '').toLowerCase();
+                if (/get\s*started|choose\s*plan|select\s*plan|upgrade\s*now|start\s*trial|try\s*free|buy\s*now|subscribe/i.test(text)) {
+                    subscriptionScore += 10;
+                    break;
+                }
+            }
+
+            // 6. Pricing card elements (+8 points)
+            const pricingCards = document.querySelectorAll('[class*="pricing"], [class*="plan-card"], [class*="subscription"], [class*="tier"]');
+            if (pricingCards.length >= 2) {
+                subscriptionScore += 8;
+                console.log('💸 Pricing cards detected:', pricingCards.length);
+            }
+
+            // Add signal based on total score
+            if (subscriptionScore >= 20) {
+                this.addSignal('subscription_saas', 25);
+                console.log('💸 SaaS subscription page detected! Score:', subscriptionScore);
+            } else if (subscriptionScore >= 10) {
                 this.addSignal('subscription_keywords', 15);
+            } else if (subscriptionScore >= 5) {
+                this.addSignal('subscription_weak', 8);
             }
         }
 
