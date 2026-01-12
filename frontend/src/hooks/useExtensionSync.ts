@@ -1,4 +1,5 @@
-// Extension Sync Hook - Manages extension communication and auto-login
+// Extension Sync Hook - Enterprise Connection v9.0
+// Manages robust extension communication with connection status tracking
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'sonner';
 import { genZToast } from '../services/genZToast';
@@ -11,10 +12,22 @@ interface ExtensionStatus {
     version?: string;
     userEmail?: string;
     lastSync?: number;
+    connectionStatus?: 'connecting' | 'connected' | 'disconnected' | 'reconnecting';
+    connectionId?: string;
+    queuedMessages?: number;
 }
 
-// Persistent key for extension sync status (doesn't expire unless explicitly cleared)
+interface ConnectionState {
+    status: 'connecting' | 'connected' | 'disconnected' | 'reconnecting';
+    connectionId: string;
+    timestamp: number;
+    reconnectAttempts: number;
+    queuedMessages: number;
+}
+
+// Persistent key for extension sync status
 const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
+const CONNECTION_STATE_KEY = 'cashly_connection_state';
 
 // Broadcast extension sync status to all tabs via Supabase Realtime
 // Uses proper channel subscription to avoid REST fallback deprecation warning
@@ -54,35 +67,54 @@ const broadcastSyncStatus = async (userId: string, eventType: 'synced' | 'remove
 export const useExtensionSync = () => {
     const { user } = useAuthStore();
 
+    // Get connection state from localStorage
+    const getConnectionState = (): ConnectionState | null => {
+        try {
+            const data = localStorage.getItem(CONNECTION_STATE_KEY);
+            if (data) {
+                return JSON.parse(data);
+            }
+        } catch (e) { /* ignore */ }
+        return null;
+    };
+
     // OPTIMIZATION: Check cached sync status immediately (synchronous)
-    // CRITICAL: Must also check timestamp to avoid stale cache causing false positives
     const getCachedStatus = (): ExtensionStatus => {
         try {
             const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
+            const connectionState = getConnectionState();
+
             if (syncedData) {
                 const data = JSON.parse(syncedData);
                 // Only trust the cache if timestamp is recent (within 60 seconds)
                 const isRecent = data.timestamp && (Date.now() - data.timestamp < 60 * 1000);
                 if (data.synced && data.email && isRecent) {
-                    return { installed: true, loggedIn: true, userEmail: data.email };
+                    return {
+                        installed: true,
+                        loggedIn: true,
+                        userEmail: data.email,
+                        connectionStatus: connectionState?.status || 'connected',
+                        connectionId: connectionState?.connectionId,
+                        queuedMessages: connectionState?.queuedMessages || 0
+                    };
                 }
             }
         } catch (e) { /* ignore */ }
-        return { installed: false, loggedIn: false };
+        return { installed: false, loggedIn: false, connectionStatus: 'disconnected' };
     };
 
     const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>(getCachedStatus);
+    const [connectionStatus, setConnectionStatus] = useState<ConnectionState | null>(getConnectionState);
     // OPTIMIZATION: If already synced from cache, don't show as "checking"
     const [checking, setChecking] = useState(() => !getCachedStatus().loggedIn);
     const [syncing, setSyncing] = useState(false);
 
     // Consolidated extension tracking state (use ref for synchronous access)
-    // CRITICAL: Initialize wasInstalled based on cached sync state so we can detect removal on first load
     const extensionState = useRef({
-        wasInstalled: getCachedStatus().loggedIn, // If previously synced, assume was installed
+        wasInstalled: getCachedStatus().loggedIn,
         hasAlertedRemoval: false,
-        lastSyncEventDispatch: 0, // Prevent recursive event dispatch
-        lastToastTime: 0 // Debounce toast notifications (3 second cooldown)
+        lastSyncEventDispatch: 0,
+        lastToastTime: 0
     });
 
 
@@ -366,16 +398,51 @@ export const useExtensionSync = () => {
             }));
         };
 
+        // NEW: Handle connection status changes
+        const handleConnectionChange = (event: CustomEvent) => {
+            const detail = event.detail;
+            console.log('🔌 Connection changed:', detail.status);
+
+            setConnectionStatus({
+                status: detail.status,
+                connectionId: detail.connectionId,
+                timestamp: detail.timestamp,
+                reconnectAttempts: detail.reconnectAttempts || 0,
+                queuedMessages: detail.queuedMessages || 0
+            });
+
+            setExtensionStatus(prev => ({
+                ...prev,
+                connectionStatus: detail.status,
+                connectionId: detail.connectionId,
+                queuedMessages: detail.queuedMessages
+            }));
+
+            // Show toast for disconnection
+            if (detail.status === 'disconnected' && detail.prevStatus === 'connected') {
+                toast.warning('Extension connection lost. Reconnecting...');
+            } else if (detail.status === 'connected' && detail.prevStatus === 'reconnecting') {
+                toast.success('Extension reconnected!');
+            }
+        };
+
         window.addEventListener('cashly-extension-ready', handleExtensionReady as EventListener);
         window.addEventListener('extension-synced', handleExtensionSynced as EventListener);
         window.addEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
+        window.addEventListener('cashly-connection-change', handleConnectionChange as EventListener);
         window.addEventListener('message', handleBehaviorTransaction);
 
         // Listen for storage changes from other tabs/windows
         const handleStorageChange = (e: StorageEvent) => {
             if (e.key === 'cashly_extension_synced' || e.key === 'cashly_extension_auth') {
-                // Another tab/window changed extension state, re-check
                 checkExtension();
+            }
+            // Also check for connection state changes
+            if (e.key === CONNECTION_STATE_KEY) {
+                const newState = getConnectionState();
+                if (newState) {
+                    setConnectionStatus(newState);
+                }
             }
         };
         window.addEventListener('storage', handleStorageChange);
@@ -384,13 +451,13 @@ export const useExtensionSync = () => {
         checkExtension();
 
         // Periodic check every 3 seconds for fast detection
-        // This quickly catches extension install/uninstall events
         const interval = setInterval(checkExtension, 3000);
 
         return () => {
             window.removeEventListener('cashly-extension-ready', handleExtensionReady as EventListener);
             window.removeEventListener('extension-synced', handleExtensionSynced as EventListener);
             window.removeEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
+            window.removeEventListener('cashly-connection-change', handleConnectionChange as EventListener);
             window.removeEventListener('message', handleBehaviorTransaction);
             window.removeEventListener('storage', handleStorageChange);
             clearInterval(interval);
@@ -399,6 +466,7 @@ export const useExtensionSync = () => {
 
     return {
         extensionStatus,
+        connectionStatus,
         checking,
         syncing,
         checkExtension,
