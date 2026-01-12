@@ -60,6 +60,180 @@ document.addEventListener('DOMContentLoaded', async () => {
     const manualCategory = document.getElementById('manualCategory');
 
     // ================================
+    // ENTERPRISE UI ELEMENTS (v9.0)
+    // ================================
+    const healthIndicator = document.getElementById('healthIndicator');
+    const healthDot = healthIndicator?.querySelector('.health-dot');
+    const diagnosticsBtn = document.getElementById('diagnosticsBtn');
+    const diagnosticsPanel = document.getElementById('diagnosticsPanel');
+    const closeDiagnostics = document.getElementById('closeDiagnostics');
+    const forceSync = document.getElementById('forceSync');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const versionBadge = document.getElementById('versionBadge');
+
+    // Diagnostic value elements
+    const diagHealthScore = document.getElementById('diagHealthScore');
+    const diagLatency = document.getElementById('diagLatency');
+    const diagSyncRate = document.getElementById('diagSyncRate');
+    const diagPending = document.getElementById('diagPending');
+    const diagErrors = document.getElementById('diagErrors');
+
+    // ================================
+    // DIAGNOSTICS PANEL HANDLERS
+    // ================================
+    if (diagnosticsBtn) {
+        diagnosticsBtn.addEventListener('click', async () => {
+            if (diagnosticsPanel) {
+                const isVisible = diagnosticsPanel.style.display !== 'none';
+                diagnosticsPanel.style.display = isVisible ? 'none' : 'block';
+                if (!isVisible) {
+                    await updateDiagnostics();
+                }
+            }
+        });
+    }
+
+    if (closeDiagnostics) {
+        closeDiagnostics.addEventListener('click', () => {
+            if (diagnosticsPanel) diagnosticsPanel.style.display = 'none';
+        });
+    }
+
+    if (forceSync) {
+        forceSync.addEventListener('click', async () => {
+            forceSync.textContent = 'Syncing...';
+            forceSync.disabled = true;
+            try {
+                await chrome.runtime.sendMessage({ type: 'FORCE_BATCH_SYNC' });
+                showToast('✅ Sync initiated');
+            } catch (e) {
+                showToast('❌ Sync failed');
+            }
+            forceSync.textContent = 'Force Sync';
+            forceSync.disabled = false;
+            await updateDiagnostics();
+        });
+    }
+
+    // Health indicator click opens diagnostics
+    if (healthIndicator) {
+        healthIndicator.addEventListener('click', () => {
+            if (diagnosticsBtn) diagnosticsBtn.click();
+        });
+    }
+
+    // Function to update diagnostics data
+    async function updateDiagnostics() {
+        try {
+            const response = await chrome.runtime.sendMessage({ type: 'GET_FULL_DIAGNOSTICS' });
+            if (response) {
+                // Update version badge
+                if (versionBadge) versionBadge.textContent = `v${response.version || '9.0'}`;
+
+                // Health Score
+                if (diagHealthScore) {
+                    const score = response.metrics?.apiSuccessRate || 100;
+                    diagHealthScore.textContent = `${score}%`;
+                    diagHealthScore.className = 'diag-value ' +
+                        (score >= 90 ? '' : score >= 70 ? 'warning' : 'error');
+                }
+
+                // Latency
+                if (diagLatency) {
+                    const latency = response.metrics?.avgSyncTime || 0;
+                    diagLatency.textContent = `${latency}ms`;
+                    diagLatency.className = 'diag-value ' +
+                        (latency < 500 ? '' : latency < 1000 ? 'warning' : 'error');
+                }
+
+                // Sync Rate
+                if (diagSyncRate) {
+                    const success = response.metrics?.apiSuccess || 0;
+                    const failure = response.metrics?.apiFailure || 0;
+                    diagSyncRate.textContent = `${success}/${success + failure}`;
+                }
+
+                // Pending
+                if (diagPending) {
+                    diagPending.textContent = response.pendingSync || 0;
+                }
+
+                // Errors
+                if (diagErrors) {
+                    const errors = response.metrics?.totalErrors || 0;
+                    diagErrors.textContent = errors;
+                    diagErrors.className = 'diag-value ' + (errors === 0 ? '' : 'error');
+                }
+
+                // Update health indicator
+                updateHealthIndicator(response);
+            }
+        } catch (e) {
+            console.log('Diagnostics fetch failed:', e);
+        }
+    }
+
+    // Function to update health indicator
+    function updateHealthIndicator(data) {
+        if (!healthDot) return;
+
+        const successRate = parseFloat(data?.metrics?.apiSuccessRate || 100);
+        const pendingCount = data?.pendingSync || 0;
+        const errorCount = data?.metrics?.totalErrors || 0;
+
+        healthDot.classList.remove('healthy', 'warning', 'error');
+
+        if (successRate >= 95 && pendingCount === 0 && errorCount === 0) {
+            healthDot.classList.add('healthy');
+            healthIndicator.title = 'All systems healthy';
+        } else if (successRate >= 80 || (pendingCount > 0 && pendingCount < 5)) {
+            healthDot.classList.add('warning');
+            healthIndicator.title = `Warning: ${pendingCount} pending, ${errorCount} errors`;
+        } else {
+            healthDot.classList.add('error');
+            healthIndicator.title = `Error: ${pendingCount} pending, ${errorCount} errors`;
+        }
+    }
+
+    // Toast helper
+    function showToast(message) {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = 'cashly-toast';
+        toast.innerHTML = `<span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Show loading overlay
+    function showLoading(show = true, text = 'Loading...') {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = show ? 'flex' : 'none';
+            const loadingText = loadingOverlay.querySelector('.loading-text');
+            if (loadingText) loadingText.textContent = text;
+        }
+    }
+
+    // Periodically update health indicator (every 30s)
+    setInterval(async () => {
+        try {
+            const response = await chrome.runtime.sendMessage({ type: 'GET_METRICS' });
+            if (response) {
+                updateHealthIndicator({ metrics: response });
+            }
+        } catch (e) { }
+    }, 30000);
+
+    // Initial health check
+    setTimeout(updateDiagnostics, 1000);
+
+    // ================================
     // CONFIGURATION (from config.js loaded in HTML)
     // ================================
     const SUPABASE_URL = window.CONFIG?.SUPABASE_URL || 'https://ebfolvhqjvavrwrfcbhn.supabase.co';

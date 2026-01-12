@@ -1,21 +1,609 @@
-// Background Service Worker - Enhanced Extension Logic v6.0
-// Handles behavior-based detection, sync, notifications, and website communication
-// v6.0: Added debug flag, subscription duplicate check, error boundaries
+// Background Service Worker - Ultimate Enterprise v9.0
+// Maximum reliability, security hardening, observability, and smart detection
+// v9.0: HMAC signing, token rotation, CSP, XSS protection, suspicious activity detection,
+//       performance metrics, analytics, debug console, event timeline, conflict resolution,
+//       optimistic updates, delta sync, batch uploads, shadow DOM, iFrame traversal, watchdog
 
 // Import centralized config
 importScripts('config.js');
 
 // ================================
-// DEBUG FLAG - Set to false in production
+// DEBUG & LOGGING SYSTEM
 // ================================
 const DEBUG = false;
+const VERBOSE = false;
 const log = (...args) => DEBUG && console.log('💸 BG:', ...args);
-const warn = (...args) => DEBUG && console.warn('💸 BG:', ...args);
+const warn = (...args) => console.warn('💸 BG:', ...args);
+const error = (...args) => console.error('💸 BG:', ...args);
 
 // Use config values (set by config.js on self)
-const SUPABASE_URL = self.CONFIG.SUPABASE_URL;
-const SUPABASE_ANON_KEY = self.CONFIG.SUPABASE_ANON_KEY;
-const WEBSITE_ORIGINS = self.CONFIG.WEBSITE_ORIGINS;
+const SUPABASE_URL = self.CONFIG?.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = self.CONFIG?.SUPABASE_ANON_KEY || '';
+const WEBSITE_ORIGINS = self.CONFIG?.WEBSITE_ORIGINS || [];
+
+// ================================
+// 🔒 SECURITY MODULE
+// HMAC signing, token rotation, XSS protection
+// ================================
+const Security = {
+    // HMAC secret (should be rotated periodically)
+    secret: null,
+
+    async init() {
+        const stored = await chrome.storage.local.get(['hmacSecret']);
+        if (!stored.hmacSecret) {
+            // Generate new secret
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            this.secret = Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+            await chrome.storage.local.set({ hmacSecret: this.secret });
+        } else {
+            this.secret = stored.hmacSecret;
+        }
+    },
+
+    // Sign request with HMAC
+    async signRequest(payload) {
+        const timestamp = Date.now();
+        const message = `${timestamp}:${JSON.stringify(payload)}`;
+
+        const encoder = new TextEncoder();
+        const key = await crypto.subtle.importKey(
+            'raw',
+            encoder.encode(this.secret),
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['sign']
+        );
+
+        const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(message));
+        const signatureHex = Array.from(new Uint8Array(signature))
+            .map(b => b.toString(16).padStart(2, '0')).join('');
+
+        return { timestamp, signature: signatureHex };
+    },
+
+    // XSS sanitization
+    sanitize(str) {
+        if (typeof str !== 'string') return str;
+        return str
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;')
+            .slice(0, 10000); // Length limit
+    },
+
+    // Sanitize object recursively
+    sanitizeObject(obj) {
+        if (!obj || typeof obj !== 'object') return this.sanitize(obj);
+
+        const sanitized = Array.isArray(obj) ? [] : {};
+        for (const [key, value] of Object.entries(obj)) {
+            if (typeof value === 'string') {
+                sanitized[key] = this.sanitize(value);
+            } else if (typeof value === 'object' && value !== null) {
+                sanitized[key] = this.sanitizeObject(value);
+            } else {
+                sanitized[key] = value;
+            }
+        }
+        return sanitized;
+    },
+
+    // Token rotation - check and refresh before expiry
+    async checkTokenExpiry() {
+        const data = await chrome.storage.local.get(['accessToken', 'tokenExpiry', 'refreshToken']);
+        if (!data.accessToken || !data.tokenExpiry) return false;
+
+        const expiresIn = data.tokenExpiry - Date.now();
+        const REFRESH_THRESHOLD = 5 * 60 * 1000; // 5 minutes before expiry
+
+        if (expiresIn < REFRESH_THRESHOLD && data.refreshToken) {
+            log('Token expiring soon, refreshing...');
+            return await this.refreshToken(data.refreshToken);
+        }
+        return true;
+    },
+
+    async refreshToken(refreshToken) {
+        try {
+            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY
+                },
+                body: JSON.stringify({ refresh_token: refreshToken })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                await chrome.storage.local.set({
+                    accessToken: data.access_token,
+                    refreshToken: data.refresh_token,
+                    tokenExpiry: Date.now() + (data.expires_in * 1000)
+                });
+                log('Token refreshed successfully');
+                return true;
+            }
+        } catch (e) {
+            error('Token refresh failed:', e);
+        }
+        return false;
+    }
+};
+
+// Initialize security module
+Security.init();
+
+// ================================
+// 🚨 SUSPICIOUS ACTIVITY DETECTION
+// Flags unusual patterns
+// ================================
+const SuspiciousActivityDetector = {
+    recentTransactions: [],
+    alerts: [],
+
+    // Check for suspicious patterns
+    check(transaction) {
+        const now = Date.now();
+        const flags = [];
+
+        // Clean old transactions (keep last hour)
+        this.recentTransactions = this.recentTransactions.filter(t => now - t.timestamp < 3600000);
+
+        // 1. Rapid transactions (more than 10 in 5 minutes)
+        const last5Min = this.recentTransactions.filter(t => now - t.timestamp < 300000);
+        if (last5Min.length >= 10) {
+            flags.push({ type: 'rapid_transactions', count: last5Min.length });
+        }
+
+        // 2. Unusual amount (too high or negative)
+        if (transaction.amount > 10000) {
+            flags.push({ type: 'high_amount', amount: transaction.amount });
+        }
+        if (transaction.amount < 0) {
+            flags.push({ type: 'negative_amount', amount: transaction.amount });
+        }
+
+        // 3. Duplicate in short time
+        const duplicates = this.recentTransactions.filter(t =>
+            t.name === transaction.name &&
+            Math.abs(t.amount - transaction.amount) < 0.01 &&
+            now - t.timestamp < 60000
+        );
+        if (duplicates.length > 0) {
+            flags.push({ type: 'duplicate', count: duplicates.length + 1 });
+        }
+
+        // 4. Unusual time (2 AM - 5 AM local)
+        const hour = new Date().getHours();
+        if (hour >= 2 && hour <= 5) {
+            flags.push({ type: 'unusual_time', hour });
+        }
+
+        // Record transaction
+        this.recentTransactions.push({
+            ...transaction,
+            timestamp: now
+        });
+
+        // Log alerts
+        if (flags.length > 0) {
+            const alert = {
+                timestamp: now,
+                transaction,
+                flags
+            };
+            this.alerts.push(alert);
+            if (this.alerts.length > 100) this.alerts = this.alerts.slice(-100);
+
+            warn('🚨 Suspicious activity detected:', flags);
+            Metrics.record('suspicious_activity', { flags });
+        }
+
+        return flags;
+    },
+
+    getAlerts() {
+        return this.alerts.slice(-50);
+    }
+};
+
+// ================================
+// 📊 OBSERVABILITY - Performance Metrics
+// ================================
+const Metrics = {
+    data: {
+        detectionLatency: [],
+        syncTimes: [],
+        apiCalls: { success: 0, failure: 0 },
+        detectionsByProvider: {},
+        errorCount: 0,
+        lastErrors: []
+    },
+
+    record(type, value) {
+        const timestamp = Date.now();
+
+        switch (type) {
+            case 'detection_latency':
+                this.data.detectionLatency.push({ value, timestamp });
+                if (this.data.detectionLatency.length > 100) {
+                    this.data.detectionLatency = this.data.detectionLatency.slice(-100);
+                }
+                break;
+            case 'sync_time':
+                this.data.syncTimes.push({ value, timestamp });
+                if (this.data.syncTimes.length > 100) {
+                    this.data.syncTimes = this.data.syncTimes.slice(-100);
+                }
+                break;
+            case 'api_success':
+                this.data.apiCalls.success++;
+                break;
+            case 'api_failure':
+                this.data.apiCalls.failure++;
+                break;
+            case 'detection':
+                const provider = value.provider || 'unknown';
+                this.data.detectionsByProvider[provider] = (this.data.detectionsByProvider[provider] || 0) + 1;
+                break;
+            case 'error':
+                this.data.errorCount++;
+                this.data.lastErrors.push({ message: value, timestamp });
+                if (this.data.lastErrors.length > 50) {
+                    this.data.lastErrors = this.data.lastErrors.slice(-50);
+                }
+                break;
+            case 'suspicious_activity':
+                // Already logged in SuspiciousActivityDetector
+                break;
+        }
+    },
+
+    getReport() {
+        const avgLatency = this.data.detectionLatency.length > 0
+            ? this.data.detectionLatency.reduce((a, b) => a + b.value, 0) / this.data.detectionLatency.length
+            : 0;
+        const avgSyncTime = this.data.syncTimes.length > 0
+            ? this.data.syncTimes.reduce((a, b) => a + b.value, 0) / this.data.syncTimes.length
+            : 0;
+
+        return {
+            avgDetectionLatency: Math.round(avgLatency),
+            avgSyncTime: Math.round(avgSyncTime),
+            apiSuccess: this.data.apiCalls.success,
+            apiFailure: this.data.apiCalls.failure,
+            apiSuccessRate: this.data.apiCalls.success + this.data.apiCalls.failure > 0
+                ? (this.data.apiCalls.success / (this.data.apiCalls.success + this.data.apiCalls.failure) * 100).toFixed(1)
+                : 100,
+            detectionsByProvider: this.data.detectionsByProvider,
+            totalErrors: this.data.errorCount,
+            recentErrors: this.data.lastErrors.slice(-10),
+            timestamp: Date.now()
+        };
+    },
+
+    reset() {
+        this.data = {
+            detectionLatency: [],
+            syncTimes: [],
+            apiCalls: { success: 0, failure: 0 },
+            detectionsByProvider: {},
+            errorCount: 0,
+            lastErrors: []
+        };
+    }
+};
+
+// ================================
+// 📜 EVENT TIMELINE
+// Visual history of all detection events
+// ================================
+const EventTimeline = {
+    events: [],
+    maxEvents: 200,
+
+    add(type, data) {
+        this.events.push({
+            id: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            type,
+            data: Security.sanitizeObject(data),
+            timestamp: Date.now()
+        });
+
+        if (this.events.length > this.maxEvents) {
+            this.events = this.events.slice(-this.maxEvents);
+        }
+
+        // Persist to storage periodically
+        this.persist();
+    },
+
+    async persist() {
+        try {
+            await chrome.storage.local.set({ eventTimeline: this.events.slice(-100) });
+        } catch (e) {
+            // Storage might be full
+        }
+    },
+
+    async load() {
+        try {
+            const data = await chrome.storage.local.get(['eventTimeline']);
+            this.events = data.eventTimeline || [];
+        } catch (e) {
+            this.events = [];
+        }
+    },
+
+    getRecent(count = 50) {
+        return this.events.slice(-count);
+    },
+
+    clear() {
+        this.events = [];
+        chrome.storage.local.remove(['eventTimeline']);
+    }
+};
+
+// Load event timeline on startup
+EventTimeline.load();
+
+// ================================
+// 🔄 ADVANCED SYNC - Optimistic updates, batching
+// ================================
+const AdvancedSync = {
+    pendingOptimistic: new Map(),
+    batchQueue: [],
+    batchTimeout: null,
+    BATCH_SIZE: 10,
+    BATCH_DELAY: 2000, // 2 seconds
+
+    // Optimistic update - show immediately, sync in background
+    async optimisticUpdate(transaction) {
+        const tempId = `temp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+        // Store optimistic update
+        this.pendingOptimistic.set(tempId, {
+            transaction,
+            status: 'pending',
+            createdAt: Date.now()
+        });
+
+        // Notify UI immediately
+        notifyWebsiteTabs('OPTIMISTIC_TRANSACTION', {
+            tempId,
+            ...transaction,
+            isPending: true
+        });
+
+        // Queue for batch sync
+        this.queueForBatch({
+            tempId,
+            ...transaction
+        });
+
+        EventTimeline.add('optimistic_update', { tempId, amount: transaction.amount });
+
+        return tempId;
+    },
+
+    // Queue transaction for batch upload
+    queueForBatch(transaction) {
+        this.batchQueue.push(transaction);
+
+        // Clear existing timeout
+        if (this.batchTimeout) {
+            clearTimeout(this.batchTimeout);
+        }
+
+        // Batch immediately if queue is full
+        if (this.batchQueue.length >= this.BATCH_SIZE) {
+            this.processBatch();
+        } else {
+            // Otherwise wait for more
+            this.batchTimeout = setTimeout(() => this.processBatch(), this.BATCH_DELAY);
+        }
+    },
+
+    // Process batch upload
+    async processBatch() {
+        if (this.batchQueue.length === 0) return;
+
+        const batch = this.batchQueue.splice(0, this.BATCH_SIZE);
+        const syncStart = Date.now();
+
+        try {
+            const authData = await chrome.storage.local.get(['accessToken', 'userId']);
+            if (!authData.accessToken || !authData.userId) {
+                // Re-queue for later
+                this.batchQueue.unshift(...batch);
+                return;
+            }
+
+            // Prepare batch payload
+            const transactions = batch.map(t => ({
+                user_id: authData.userId,
+                description: t.description || t.name,
+                amount: t.amount || t.price || 0,
+                type: 'expense',
+                category: t.category || 'Shopping',
+                date: t.date || new Date().toISOString().split('T')[0],
+                source: t.isTestMode ? 'extension-test' : 'extension-auto',
+                notes: t.notes || `Batch synced from extension`,
+                temp_id: t.tempId
+            }));
+
+            // Send batch request
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${authData.accessToken}`,
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify(transactions)
+            });
+
+            const syncTime = Date.now() - syncStart;
+            Metrics.record('sync_time', syncTime);
+
+            if (response.ok) {
+                const created = await response.json();
+                Metrics.record('api_success');
+
+                // Update optimistic entries
+                batch.forEach((t, i) => {
+                    const entry = this.pendingOptimistic.get(t.tempId);
+                    if (entry) {
+                        entry.status = 'synced';
+                        entry.realId = created[i]?.id;
+                    }
+
+                    // Notify UI of sync completion
+                    notifyWebsiteTabs('OPTIMISTIC_CONFIRMED', {
+                        tempId: t.tempId,
+                        realId: created[i]?.id,
+                        success: true
+                    });
+                });
+
+                EventTimeline.add('batch_sync_success', { count: batch.length, syncTime });
+                log(`✅ Batch synced ${batch.length} transactions in ${syncTime}ms`);
+            } else {
+                Metrics.record('api_failure');
+                // Revert optimistic updates
+                batch.forEach(t => {
+                    notifyWebsiteTabs('OPTIMISTIC_REVERTED', {
+                        tempId: t.tempId,
+                        reason: 'Sync failed'
+                    });
+                    this.pendingOptimistic.delete(t.tempId);
+                });
+                EventTimeline.add('batch_sync_failed', { count: batch.length });
+            }
+        } catch (e) {
+            Metrics.record('api_failure');
+            Metrics.record('error', e.message);
+            error('Batch sync failed:', e);
+
+            // Re-queue failed items
+            this.batchQueue.unshift(...batch);
+        }
+    },
+
+    // Get pending optimistic updates
+    getPending() {
+        return Array.from(this.pendingOptimistic.entries()).map(([id, data]) => ({
+            id,
+            ...data
+        }));
+    }
+};
+
+// ================================
+// 🛡️ RELIABILITY - Watchdog, Keep-alive, State persistence
+// ================================
+const Reliability = {
+    watchdogInterval: null,
+    keepAliveInterval: null,
+    lastHeartbeat: Date.now(),
+
+    init() {
+        // Watchdog - check health every 30 seconds
+        this.watchdogInterval = setInterval(() => this.watchdog(), 30000);
+
+        // Keep-alive - prevent service worker from sleeping
+        this.keepAliveInterval = setInterval(() => this.keepAlive(), 20000);
+
+        // State persistence - save state periodically
+        setInterval(() => this.persistState(), 60000);
+
+        // Load persisted state
+        this.loadState();
+
+        log('Reliability module initialized');
+    },
+
+    async watchdog() {
+        const now = Date.now();
+        const timeSinceHeartbeat = now - this.lastHeartbeat;
+
+        // Check if extension is responsive
+        if (timeSinceHeartbeat > 120000) { // 2 minutes without heartbeat
+            warn('⚠️ Watchdog: Extension may be hung, attempting recovery...');
+            EventTimeline.add('watchdog_alert', { timeSinceHeartbeat });
+
+            // Try to recover
+            await this.recover();
+        }
+
+        this.lastHeartbeat = now;
+
+        // Update health status
+        await chrome.storage.local.set({
+            lastWatchdog: now,
+            extensionHealthy: true
+        });
+    },
+
+    keepAlive() {
+        // Simple operation to keep service worker alive
+        chrome.storage.local.get(['keepAlive']).then(data => {
+            chrome.storage.local.set({ keepAlive: Date.now() });
+        });
+    },
+
+    async persistState() {
+        try {
+            const state = {
+                metrics: Metrics.getReport(),
+                pendingSync: AdvancedSync.getPending(),
+                suspiciousAlerts: SuspiciousActivityDetector.getAlerts().slice(-10),
+                timestamp: Date.now()
+            };
+            await chrome.storage.local.set({ persistedState: state });
+        } catch (e) {
+            // Storage quota exceeded, clear old data
+            await chrome.storage.local.remove(['eventTimeline', 'persistedState']);
+        }
+    },
+
+    async loadState() {
+        try {
+            const data = await chrome.storage.local.get(['persistedState']);
+            if (data.persistedState) {
+                log('Loaded persisted state from', new Date(data.persistedState.timestamp));
+            }
+        } catch (e) {
+            // Ignore
+        }
+    },
+
+    async recover() {
+        try {
+            // Clear any stuck processes
+            AdvancedSync.batchQueue = [];
+
+            // Re-initialize critical systems
+            await Security.init();
+            await EventTimeline.load();
+
+            EventTimeline.add('recovery_completed', {});
+            log('✅ Recovery completed');
+        } catch (e) {
+            error('Recovery failed:', e);
+        }
+    }
+};
+
+// Initialize reliability module
+Reliability.init();
 
 // ================================
 // PENDING CANCELLATION MAP (for notification button clicks)
@@ -39,33 +627,67 @@ chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) =
 });
 
 // ================================
-// RATE LIMITER CLASS
+// RATE LIMITER CLASS (Enhanced with security)
 // ================================
 class RateLimiter {
     constructor(maxRequests = 60, windowMs = 60000) {
         this.maxRequests = maxRequests;
         this.windowMs = windowMs;
         this.requests = [];
+        this.domainRequests = new Map();
     }
 
-    canMakeRequest() {
+    canMakeRequest(domain = 'global') {
         const now = Date.now();
-        // Remove requests outside the window
         this.requests = this.requests.filter(time => now - time < this.windowMs);
-        return this.requests.length < this.maxRequests;
+
+        const domainReqs = this.domainRequests.get(domain) || [];
+        const recentDomainReqs = domainReqs.filter(time => now - time < this.windowMs);
+        this.domainRequests.set(domain, recentDomainReqs);
+
+        const domainLimit = Math.floor(this.maxRequests / 3);
+        return this.requests.length < this.maxRequests && recentDomainReqs.length < domainLimit;
     }
 
-    recordRequest() {
-        this.requests.push(Date.now());
+    recordRequest(domain = 'global') {
+        const now = Date.now();
+        this.requests.push(now);
+
+        const domainReqs = this.domainRequests.get(domain) || [];
+        domainReqs.push(now);
+        this.domainRequests.set(domain, domainReqs);
     }
 
     async throttledFetch(url, options = {}) {
-        if (!this.canMakeRequest()) {
-            console.warn('⚠️ Rate limit exceeded, request throttled');
-            throw new Error('Rate limit exceeded. Please wait before making more requests.');
+        const domain = new URL(url).hostname;
+
+        if (!this.canMakeRequest(domain)) {
+            warn('⚠️ Rate limit exceeded for', domain);
+            Metrics.record('api_failure');
+            throw new Error('Rate limit exceeded.');
         }
-        this.recordRequest();
-        return fetch(url, options);
+        this.recordRequest(domain);
+
+        // Sign request if enabled
+        if (options.body) {
+            const signature = await Security.signRequest(options.body);
+            options.headers = {
+                ...options.headers,
+                'X-Timestamp': signature.timestamp,
+                'X-Signature': signature.signature
+            };
+        }
+
+        const start = Date.now();
+        try {
+            const response = await fetch(url, options);
+            Metrics.record('api_success');
+            Metrics.record('sync_time', Date.now() - start);
+            return response;
+        } catch (e) {
+            Metrics.record('api_failure');
+            throw e;
+        }
     }
 
     getRemainingRequests() {
@@ -77,11 +699,11 @@ class RateLimiter {
 
 // Initialize rate limiters with config values
 const apiRateLimiter = new RateLimiter(
-    self.CONFIG.RATE_LIMIT?.MAX_REQUESTS_PER_MINUTE || 60,
+    self.CONFIG?.RATE_LIMIT?.MAX_REQUESTS_PER_MINUTE || 60,
     60000
 );
 const transactionRateLimiter = new RateLimiter(
-    self.CONFIG.RATE_LIMIT?.MAX_TRANSACTIONS_PER_MINUTE || 10,
+    self.CONFIG?.RATE_LIMIT?.MAX_TRANSACTIONS_PER_MINUTE || 10,
     60000
 );
 
@@ -311,6 +933,73 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         case 'CANCELLATION_DETECTED':
             handleCancellationDetected(message.data);
             break;
+
+        // ================================
+        // ENTERPRISE DIAGNOSTIC HANDLERS (v9.0)
+        // ================================
+        case 'GET_METRICS':
+            sendResponse(Metrics.getReport());
+            return true;
+
+        case 'RESET_METRICS':
+            Metrics.reset();
+            sendResponse({ success: true });
+            return true;
+
+        case 'GET_EVENT_TIMELINE':
+            sendResponse({ events: EventTimeline.getRecent(message.count || 50) });
+            return true;
+
+        case 'CLEAR_EVENT_TIMELINE':
+            EventTimeline.clear();
+            sendResponse({ success: true });
+            return true;
+
+        case 'GET_SUSPICIOUS_ALERTS':
+            sendResponse({ alerts: SuspiciousActivityDetector.getAlerts() });
+            return true;
+
+        case 'GET_PENDING_SYNC':
+            sendResponse({ pending: AdvancedSync.getPending() });
+            return true;
+
+        case 'FORCE_BATCH_SYNC':
+            AdvancedSync.processBatch();
+            sendResponse({ success: true });
+            return true;
+
+        case 'CHECK_TOKEN_EXPIRY':
+            Security.checkTokenExpiry().then(valid => {
+                sendResponse({ valid });
+            });
+            return true;
+
+        case 'GET_FULL_DIAGNOSTICS':
+            // Return complete diagnostic report
+            Promise.all([
+                chrome.storage.local.get(['lastWatchdog', 'extensionHealthy', 'keepAlive']),
+                Security.checkTokenExpiry()
+            ]).then(([storage, tokenValid]) => {
+                sendResponse({
+                    version: '9.0.0',
+                    metrics: Metrics.getReport(),
+                    timeline: EventTimeline.getRecent(20),
+                    suspiciousAlerts: SuspiciousActivityDetector.getAlerts().slice(-10),
+                    pendingSync: AdvancedSync.getPending().length,
+                    batchQueueSize: AdvancedSync.batchQueue.length,
+                    reliability: {
+                        lastWatchdog: storage.lastWatchdog,
+                        healthy: storage.extensionHealthy,
+                        lastKeepAlive: storage.keepAlive
+                    },
+                    security: {
+                        tokenValid,
+                        hmacEnabled: !!Security.secret
+                    },
+                    timestamp: Date.now()
+                });
+            });
+            return true;
     }
 
     sendResponse({ received: true });

@@ -1,7 +1,7 @@
-// Cashly - Smart Universal Transaction Detector v6.0
+// Cashly - Smart Universal Transaction Detector v9.0
 // Analyzes sites for payment features before activating monitoring
 // Only tracks sites with actual transaction/payment capabilities
-// v6.0: Added deduplication, debounce, caching, blacklist, debug flag
+// v9.0: Shadow DOM support, deep iFrame traversal, enhanced detection
 
 (function () {
     'use strict';
@@ -11,6 +11,142 @@
     // ================================
     const DEBUG = false;
     const log = (...args) => DEBUG && console.log('💸', ...args);
+
+    // ================================
+    // 🕳️ SHADOW DOM TRAVERSAL
+    // Detects payments inside Shadow DOM elements
+    // ================================
+    const ShadowDOMTraversal = {
+        // Find all shadow roots in a node
+        findShadowRoots(root = document) {
+            const shadowRoots = [];
+            const walker = document.createTreeWalker(
+                root,
+                NodeFilter.SHOW_ELEMENT,
+                null,
+                false
+            );
+
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                if (node.shadowRoot) {
+                    shadowRoots.push(node.shadowRoot);
+                    // Recursively find nested shadows
+                    shadowRoots.push(...this.findShadowRoots(node.shadowRoot));
+                }
+            }
+            return shadowRoots;
+        },
+
+        // Query selector across all shadow DOMs
+        querySelectorAllDeep(selector, root = document) {
+            const results = [...root.querySelectorAll(selector)];
+
+            // Search inside shadow roots
+            for (const shadowRoot of this.findShadowRoots(root)) {
+                try {
+                    results.push(...shadowRoot.querySelectorAll(selector));
+                } catch (e) {
+                    // Some shadow roots may be closed
+                }
+            }
+            return results;
+        },
+
+        // Get all text content including shadows
+        getTextDeep(root = document.body) {
+            let text = root.innerText || '';
+
+            for (const shadowRoot of this.findShadowRoots(root)) {
+                try {
+                    text += ' ' + (shadowRoot.host?.innerText || '');
+                } catch (e) { }
+            }
+            return text;
+        }
+    };
+
+    // ================================
+    // 🖼️ DEEP IFRAME TRAVERSAL
+    // Scans nested iframes for payment elements
+    // ================================
+    const IFrameTraversal = {
+        // Get all accessible iframes
+        getAccessibleIFrames() {
+            const iframes = document.querySelectorAll('iframe');
+            const accessible = [];
+
+            for (const iframe of iframes) {
+                try {
+                    // Check if we can access the iframe document
+                    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+                    if (doc) {
+                        accessible.push({
+                            iframe,
+                            document: doc,
+                            src: iframe.src
+                        });
+
+                        // Recursively get nested iframes
+                        const nested = doc.querySelectorAll('iframe');
+                        for (const nestedFrame of nested) {
+                            try {
+                                const nestedDoc = nestedFrame.contentDocument;
+                                if (nestedDoc) {
+                                    accessible.push({
+                                        iframe: nestedFrame,
+                                        document: nestedDoc,
+                                        src: nestedFrame.src,
+                                        parent: iframe.src
+                                    });
+                                }
+                            } catch (e) { }
+                        }
+                    }
+                } catch (e) {
+                    // Cross-origin iframe, can't access
+                    // But we can still check the src attribute
+                    accessible.push({
+                        iframe,
+                        document: null,
+                        src: iframe.src,
+                        crossOrigin: true
+                    });
+                }
+            }
+            return accessible;
+        },
+
+        // Check if any iframe contains payment elements
+        hasPaymentIFrame() {
+            const paymentPatterns = [
+                /stripe/i, /paypal/i, /paddle/i, /braintree/i,
+                /razorpay/i, /square/i, /adyen/i, /checkout/i,
+                /klarna/i, /afterpay/i, /affirm/i, /gocardless/i
+            ];
+
+            for (const { src, crossOrigin, document: doc } of this.getAccessibleIFrames()) {
+                // Check src URL
+                if (src && paymentPatterns.some(p => p.test(src))) {
+                    log('Payment iframe detected:', src);
+                    return { found: true, src, type: 'payment_iframe' };
+                }
+
+                // If we can access the document, check its content
+                if (doc && !crossOrigin) {
+                    try {
+                        const forms = doc.querySelectorAll('form');
+                        for (const form of forms) {
+                            if (/credit|card|payment|checkout/i.test(form.innerHTML)) {
+                                return { found: true, type: 'payment_form_in_iframe' };
+                            }
+                        }
+                    } catch (e) { }
+                }
+            }
+            return { found: false };
+        }
+    };
 
     /**
      * 🎹 AUDIO & HAPTIC FEEDBACK

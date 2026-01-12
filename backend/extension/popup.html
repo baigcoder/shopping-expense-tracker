@@ -57,10 +57,21 @@
                 </div>
                 <div class="brand-text">
                     <h1>Cashly</h1>
-                    <span class="badge">v5.0</span>
+                    <span class="badge" id="versionBadge">v9.0</span>
                 </div>
             </div>
             <div class="header-actions">
+                <!-- Health Status Indicator -->
+                <div class="health-indicator" id="healthIndicator" title="Extension Health">
+                    <span class="health-dot healthy"></span>
+                </div>
+                <!-- Diagnostics Toggle -->
+                <button class="icon-btn" id="diagnosticsBtn" title="Diagnostics">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>
+                </button>
                 <button class="icon-btn" id="settingsBtn" title="Settings" onclick="openSettings()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -79,6 +90,43 @@
                 </button>
             </div>
         </header>
+
+        <!-- Diagnostics Panel (Hidden by default) -->
+        <div id="diagnosticsPanel" class="diagnostics-panel" style="display: none;">
+            <div class="diag-header">
+                <span class="diag-title">🔧 Diagnostics</span>
+                <button class="diag-close" id="closeDiagnostics">×</button>
+            </div>
+            <div class="diag-content">
+                <div class="diag-row">
+                    <span class="diag-label">Health Score</span>
+                    <span class="diag-value" id="diagHealthScore">--</span>
+                </div>
+                <div class="diag-row">
+                    <span class="diag-label">API Latency</span>
+                    <span class="diag-value" id="diagLatency">--ms</span>
+                </div>
+                <div class="diag-row">
+                    <span class="diag-label">Sync Rate</span>
+                    <span class="diag-value" id="diagSyncRate">--</span>
+                </div>
+                <div class="diag-row">
+                    <span class="diag-label">Pending Sync</span>
+                    <span class="diag-value" id="diagPending">0</span>
+                </div>
+                <div class="diag-row">
+                    <span class="diag-label">Errors (5min)</span>
+                    <span class="diag-value" id="diagErrors">0</span>
+                </div>
+                <button class="diag-btn" id="forceSync">Force Sync</button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Syncing...</span>
+        </div>
 
         <div class="container main-container">
             <!-- User Card -->
