@@ -1450,7 +1450,11 @@
         checkConfirmation();
         window.addEventListener('popstate', checkConfirmation);
 
-        const observer = new MutationObserver(checkConfirmation);
+        // Watch DOM for success modals - ALWAYS check for success elements on mutations
+        const observer = new MutationObserver(() => {
+            // Always check success elements on DOM changes (modal detection)
+            checkSuccessElements();
+        });
         observer.observe(document.body, { childList: true, subtree: true });
 
         setTimeout(() => {
@@ -1462,13 +1466,69 @@
     function checkSuccessElements() {
         if (tracker.currentState === STATES.TRANSACTION_CONFIRMED) return;
 
-        for (const selector of SUCCESS_ELEMENT_SELECTORS) {
+        // 1. Check entire page text for success patterns (catches modals)
+        const pageText = (document.body?.innerText || '').toLowerCase();
+        const successTextPatterns = [
+            /transaction\s*(has\s*been\s*)?completed\s*successfully/i,
+            /payment\s*(was\s*)?successful/i,
+            /order\s*(has\s*been\s*)?placed/i,
+            /thank\s*you\s*for\s*(your\s*)?(purchase|order|payment|subscription)/i,
+            /subscription\s*(activated|started|confirmed)/i,
+            /you(\u2019|')?re\s*(now\s*)?subscribed/i,
+            /welcome\s*to\s*(your\s*)?(premium|pro|subscription)/i,
+            /receipt\s*(sent|emailed)/i,
+            /confirmation\s*(email\s*)?(sent|emailed)/i,
+            /we(\u2019|')?ve\s*emailed\s*(you\s*)?(the|your)\s*(details|receipt|confirmation)/i
+        ];
+
+        for (const pattern of successTextPatterns) {
+            if (pattern.test(pageText)) {
+                log('🎉 Success text detected:', pattern);
+                tracker.transition(STATES.TRANSACTION_CONFIRMED, { confirmedAt: Date.now() });
+                return;
+            }
+        }
+
+        // 2. Check for success modals/dialogs
+        const modalSelectors = [
+            '[role="dialog"]', '[role="alertdialog"]', '.modal', '[class*="modal"]',
+            '[class*="dialog"]', '[class*="popup"]', '[class*="overlay"]',
+            '[class*="success"]', '[class*="complete"]', '[class*="confirm"]'
+        ];
+
+        for (const selector of modalSelectors) {
             const elements = document.querySelectorAll(selector);
             for (const el of elements) {
                 const rect = el.getBoundingClientRect();
-                if (rect.width > 0 && rect.height > 0) {
-                    const text = el.innerText.toLowerCase();
-                    if (/thank|success|confirm|complete|order.*placed|payment.*received/i.test(text)) {
+                if (rect.width > 50 && rect.height > 50) {
+                    const text = (el.innerText || '').toLowerCase();
+                    if (/success|complete|confirmed|thank\s*you|congratulation|welcome/i.test(text)) {
+                        // Check for checkmark icons as additional confirmation
+                        const hasCheckmark = el.querySelector('svg, [class*="check"], [class*="success"], [class*="tick"]');
+                        if (hasCheckmark || /success|complete|confirmed/i.test(text)) {
+                            log('🎉 Success modal detected!');
+                            tracker.transition(STATES.TRANSACTION_CONFIRMED, { confirmedAt: Date.now() });
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Check for success icons (green checkmarks, etc)
+        const successIcons = document.querySelectorAll(
+            '[class*="success"] svg, [class*="check"] svg, [class*="complete"] svg, ' +
+            'svg[class*="success"], svg[class*="check"], svg.text-green, .text-green-500'
+        );
+        for (const icon of successIcons) {
+            const rect = icon.getBoundingClientRect();
+            if (rect.width > 20 && rect.height > 20) {
+                // Icon is visible, check nearby text
+                const parent = icon.closest('div, section, [role="dialog"], .modal');
+                if (parent) {
+                    const text = (parent.innerText || '').toLowerCase();
+                    if (/success|complete|confirm|thank|emailed|receipt/i.test(text)) {
+                        log('🎉 Success icon with confirmation text detected!');
                         tracker.transition(STATES.TRANSACTION_CONFIRMED, { confirmedAt: Date.now() });
                         return;
                     }
