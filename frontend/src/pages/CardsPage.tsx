@@ -1,9 +1,10 @@
+// CardsPage - Stark Gen Z Brutalist Wallet Audit
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Plus, CreditCard, Trash2, Eye, Shield, Smartphone, X, Clock, Lock, Copy,
     Landmark, Building2, CheckCircle2, Edit3, Snowflake, Star, TrendingUp,
-    Calendar, DollarSign, BarChart3, AlertCircle, Check, Pencil
+    Calendar, DollarSign, BarChart3, AlertCircle, Check, Pencil, Zap, Target
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -59,11 +60,6 @@ const CardsPage = () => {
     const [cvvValue, setCvvValue] = useState('');
     const [cvvTimer, setCvvTimer] = useState(0);
 
-    // Computed values
-    const totalSpending = cards.reduce((sum, c) => sum + (c.total_spent || 0), 0);
-    const frozenCount = cards.filter(c => c.is_frozen).length;
-    const defaultCard = cards.find(c => c.is_default);
-
     // Initialize cards on mount
     useEffect(() => {
         if (user?.id) {
@@ -92,14 +88,13 @@ const CardsPage = () => {
         const newFrozen = !viewingCard.is_frozen;
         updateCard(viewingCard.id, { is_frozen: newFrozen });
         setViewingCard({ ...viewingCard, is_frozen: newFrozen });
-        toast.success(newFrozen ? 'Card frozen' : 'Card unfrozen');
+        toast.success(newFrozen ? 'CARD_FROZEN' : 'CARD_UNFROZEN');
         sound.playClick();
     };
 
     // Set as default
     const handleSetDefault = async () => {
         if (!viewingCard) return;
-        // Unset previous default
         cards.forEach(c => {
             if (c.is_default && c.id !== viewingCard.id) {
                 updateCard(c.id, { is_default: false });
@@ -107,7 +102,7 @@ const CardsPage = () => {
         });
         updateCard(viewingCard.id, { is_default: true });
         setViewingCard({ ...viewingCard, is_default: true });
-        toast.success('Set as default card');
+        toast.success('DEFAULT_NODE_SET');
         sound.playSuccess();
     };
 
@@ -117,7 +112,7 @@ const CardsPage = () => {
         updateCard(viewingCard.id, { nickname: editedNickname });
         setViewingCard({ ...viewingCard, nickname: editedNickname });
         setIsEditingNickname(false);
-        toast.success('Nickname updated');
+        toast.success('ALIAS_UPDATED');
         sound.playClick();
     };
 
@@ -128,17 +123,17 @@ const CardsPage = () => {
         updateCard(viewingCard.id, { spending_limit: limit });
         setViewingCard({ ...viewingCard, spending_limit: limit });
         setIsEditingLimit(false);
-        toast.success('Spending limit updated');
+        toast.success('LIMIT_VERIFIED');
         sound.playClick();
     };
 
     // Delete card
     const handleDeleteCard = async () => {
         if (!viewingCard) return;
-        if (confirm('Are you sure you want to delete this card?')) {
+        if (confirm('TERMINATE_CARD_CONNECTION?')) {
             removeCard(viewingCard.id);
             setViewingCard(null);
-            toast.success('Card deleted');
+            toast.success('NODE_DELETED');
             sound.playSuccess();
         }
     };
@@ -146,7 +141,7 @@ const CardsPage = () => {
     // Copy to clipboard
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
-        toast.success('Copied');
+        toast.success('COPIED_TO_BUFFER');
         sound.playClick();
     };
 
@@ -158,15 +153,15 @@ const CardsPage = () => {
 
     // Format last used
     const formatLastUsed = (date?: string) => {
-        if (!date) return 'Never used';
+        if (!date) return 'NEVER_USED';
         const d = new Date(date);
         const now = new Date();
         const diff = now.getTime() - d.getTime();
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        if (days === 0) return 'Today';
-        if (days === 1) return 'Yesterday';
-        if (days < 7) return `${days} days ago`;
-        return d.toLocaleDateString();
+        if (days === 0) return 'TODAY';
+        if (days === 1) return 'YESTERDAY';
+        if (days < 7) return `${days}D AGO`;
+        return d.toLocaleDateString().toUpperCase();
     };
 
     // CVV Timer countdown
@@ -180,28 +175,27 @@ const CardsPage = () => {
         }
     }, [cvvTimer, cvvVerified]);
 
-    // Save CVV password to Supabase
+    // Save CVV password
     const handleSaveCvvPassword = async () => {
         if (!viewingCard) return;
         if (cvvPassword.length < 4) {
-            toast.error('Password must be at least 4 characters');
+            toast.error('PASSWORD_MIN_4_CHARS');
             return;
         }
         if (cvvPassword !== confirmCvvPassword) {
-            toast.error('Passwords do not match');
+            toast.error('MISMATCH_ERROR');
             return;
         }
-        // Save to card (will be synced to Supabase via cardService)
         updateCard(viewingCard.id, {
             cvv_password: cvvPassword,
-            cvv_encrypted: cvvValue // Store the CVV encrypted
+            cvv_encrypted: cvvValue
         });
         setViewingCard({ ...viewingCard, cvv_password: cvvPassword, cvv_encrypted: cvvValue });
         setIsSettingCvvPassword(false);
         setCvvPassword('');
         setConfirmCvvPassword('');
         setCvvValue('');
-        toast.success('CVV password saved securely');
+        toast.success('VAULT_PROTECTED');
         sound.playSuccess();
     };
 
@@ -210,19 +204,18 @@ const CardsPage = () => {
         if (!viewingCard) return;
         if (cvvPassword === viewingCard.cvv_password) {
             setCvvVerified(true);
-            setCvvTimer(30); // Show CVV for 30 seconds
+            setCvvTimer(30);
             setCvvValue(viewingCard.cvv_encrypted || '***');
             setIsVerifyingCvv(false);
             setCvvPassword('');
-            toast.success('CVV revealed for 30 seconds');
+            toast.success('CVV_REVEALED_30S');
             sound.playSuccess();
         } else {
-            toast.error('Incorrect password');
+            toast.error('INVALID_ACCESS_KEY');
             sound.playClick();
         }
     };
 
-    // Reset CVV state when card changes
     const handleCardClick = (card: Card) => {
         setViewingCard(card);
         setEditedNickname(card.nickname || '');
@@ -243,10 +236,9 @@ const CardsPage = () => {
         return <CardsSkeleton />;
     }
 
-
     return (
         <div className={styles.mainContent}>
-            {/* Glass Header */}
+            {/* Brutalist Header */}
             <motion.header
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -254,32 +246,31 @@ const CardsPage = () => {
             >
                 <div className={styles.headerTitle}>
                     <div className={styles.headerIcon}>
-                        <CreditCard className="h-7 w-7" />
+                        <CreditCard size={32} strokeWidth={3} />
                     </div>
                     <div className={styles.headerInfo}>
-                        <h1>My Cards</h1>
+                        <h1>Wallet Audit</h1>
                         <p>
-                            Digital Wallet Management
-                            <span className={styles.secureBadge}>Secure</span>
+                            DIGITAL_ASSET_MANAGER
+                            <span className={styles.secureBadge}>AUDIT_SECURE</span>
                         </p>
                     </div>
                 </div>
                 <div className={styles.headerActions}>
-                    <Button
-                        variant="ghost"
-                        className="rounded-2xl font-bold text-slate-500 hover:bg-slate-100 h-12 px-5"
+                    <button
+                        className="h-14 px-8 border-4 border-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors"
                         onClick={() => initializeCards(user?.id || '')}
                     >
-                        <Clock className="mr-2 h-4 w-4" />
-                        Refresh
-                    </Button>
-                    <Button
+                        <Clock className="inline mr-2 h-4 w-4" strokeWidth={3} />
+                        Refresh_Nodes
+                    </button>
+                    <button
                         onClick={openAddCard}
-                        className="h-12 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow-xl shadow-blue-200 transition-all hover:scale-[1.02]"
+                        className="h-14 px-8 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors"
                     >
-                        <Plus className="mr-2 h-5 w-5" />
-                        Add New Card
-                    </Button>
+                        <Plus className="inline mr-2 h-5 w-5" strokeWidth={3} />
+                        Issue_New_Node
+                    </button>
                 </div>
             </motion.header>
 
@@ -290,73 +281,33 @@ const CardsPage = () => {
                 animate="visible"
                 className={styles.overviewGrid}
             >
-                {/* Active Cards Stat */}
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.cardDecoration} />
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-blue-50 text-blue-600")}>
-                            <CreditCard className="h-6 w-6" />
+                {[
+                    { icon: <CreditCard size={28} strokeWidth={3} />, label: "ACTIVE_NODES", value: cards.length, sub: "Digital Assets", progress: (cards.length / 5) * 100, color: "#000000" },
+                    { icon: <Shield size={28} strokeWidth={3} />, label: "SECURITY_INTEGRITY", value: "100%", sub: "Encrypted", progress: 100, color: "#000000" },
+                    { icon: <Landmark size={28} strokeWidth={3} />, label: "FINANCIAL_HUB", value: "READY", sub: "Digital Pay", progress: 100, color: "#E11D48" }
+                ].map((stat, i) => (
+                    <motion.div key={i} variants={itemVariants} className={styles.premiumStatCard}>
+                        <div className={styles.statHeader}>
+                            <div className={styles.statIconContainer}>
+                                {stat.icon}
+                            </div>
+                            <div className={styles.secureBadge}>VERIFIED</div>
                         </div>
-                        <Badge variant="outline" className="border-blue-100 bg-blue-50/50 text-blue-600 font-black text-[10px] uppercase">Active</Badge>
-                    </div>
-                    <div className={styles.statLabel}>Active Cards</div>
-                    <div className={styles.statValueContainer}>
-                        <div className={styles.statValue}>{cards.length}</div>
-                        <div className={styles.statSubtext}>Digital Assets</div>
-                    </div>
-                    <div className={styles.statProgress}>
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${Math.min(100, (cards.length / 5) * 100)}%` }}
-                            className={cn(styles.progressFill, "bg-blue-600")}
-                        />
-                    </div>
-                </motion.div>
-
-                {/* Security Stat */}
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.cardDecoration} style={{ background: 'radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%)' }} />
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-indigo-50 text-indigo-600")}>
-                            <Shield className="h-6 w-6" />
+                        <div className={styles.statLabel}>{stat.label}</div>
+                        <div className={styles.statValueContainer}>
+                            <div className={styles.statValue} style={{ color: stat.color }}>{stat.value}</div>
+                            <div className={styles.statSubtext}>{stat.sub}</div>
                         </div>
-                        <Badge variant="outline" className="border-indigo-100 bg-indigo-50/50 text-indigo-600 font-black text-[10px] uppercase">Shielded</Badge>
-                    </div>
-                    <div className={styles.statLabel}>Security Status</div>
-                    <div className={styles.statValueContainer}>
-                        <div className={styles.statValue} style={{ color: '#4f46e5' }}>100%</div>
-                        <div className={styles.statSubtext}>Encrypted</div>
-                    </div>
-                    <div className={styles.statProgress}>
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: '100%' }}
-                            className={cn(styles.progressFill, "bg-indigo-600")}
-                        />
-                    </div>
-                </motion.div>
-
-                {/* Hub Stat */}
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.cardDecoration} style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%)' }} />
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-emerald-50 text-emerald-600")}>
-                            <Landmark className="h-6 w-6" />
+                        <div className={styles.statProgress}>
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${stat.progress}%` }}
+                                className={styles.progressFill}
+                                style={{ background: stat.color }}
+                            />
                         </div>
-                        <Badge variant="outline" className="border-emerald-100 bg-emerald-50/50 text-emerald-600 font-black text-[10px] uppercase">Connected</Badge>
-                    </div>
-                    <div className={styles.statLabel}>Financial Hub</div>
-                    <div className={styles.statValueContainer}>
-                        <div className={styles.statValue}>Ready</div>
-                        <div className={styles.statSubtext}>Digital Pay</div>
-                    </div>
-                    <div className={styles.statProgress}>
-                        <div className="flex items-center gap-1.5 mt-2">
-                            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-tighter">Systems Operational</span>
-                        </div>
-                    </div>
-                </motion.div>
+                    </motion.div>
+                ))}
             </motion.div>
 
             {/* Connected Banks Section */}
@@ -368,12 +319,13 @@ const CardsPage = () => {
             >
                 <div className={styles.banksHeader}>
                     <div className={styles.banksIconContainer}>
-                        <Building2 className="h-7 w-7" />
+                        <Building2 size={32} strokeWidth={3} />
                     </div>
                     <div className={styles.banksInfo}>
                         <h3>Linked Institutions</h3>
-                        <p>Manage external financial connections & accounts</p>
+                        <p>EXTERNAL_FINANCIAL_NODES_MANIFEST</p>
                     </div>
+                    <div className={styles.secureBadge}>ENCRYPTED_FLOW</div>
                 </div>
                 <div className={styles.banksContent}>
                     <LinkedAccountsCard />
@@ -384,33 +336,31 @@ const CardsPage = () => {
             <div className={styles.walletSection}>
                 <div className={styles.sectionHeader}>
                     <div className={styles.sectionTitle}>
-                        <h2>Your Digital Wallet</h2>
-                        <p>Access your securely stored virtual and physical cards</p>
+                        <h2>Digital Wallet</h2>
+                        <p>SECURE_VIRTUAL_ASSET_VAULT</p>
                     </div>
                     <div className={styles.sectionLine} />
                     <div className={styles.encryptedTag}>
-                        <Lock className="h-3 w-3" />
-                        Bank-Grade Encryption
+                        <Lock size={14} strokeWidth={3} />
+                        BANK_GRADE_ENCRYPTION
                     </div>
                 </div>
 
                 <div className={styles.cardsGrid}>
-                    {/* Add Card Tile */}
                     <motion.div
-                        whileHover={{ scale: 1.02, y: -5 }}
+                        whileHover={{ scale: 1.02, translate: '-4px, -4px' }}
                         whileTap={{ scale: 0.98 }}
                         onClick={openAddCard}
                         className={styles.addCardTile}
                     >
                         <div className={styles.addCardIcon}>
-                            <Plus className="h-10 w-10" />
+                            <Plus size={40} strokeWidth={3} />
                         </div>
-                        <span className={styles.addCardText}>Issue New Card</span>
+                        <span className={styles.addCardText}>Issue_New_Node</span>
                     </motion.div>
 
-                    {/* Card List */}
                     <AnimatePresence mode="popLayout">
-                        {cards.map((card, index) => (
+                        {cards.map((card) => (
                             <PremiumCard
                                 key={card.id}
                                 card={card}
@@ -421,343 +371,242 @@ const CardsPage = () => {
                 </div>
             </div>
 
-            {/* Enhanced Card Details Modal */}
+            {/* Brutalist Card Details Modal */}
             <Dialog open={!!viewingCard} onOpenChange={() => setViewingCard(null)}>
                 <AnimatePresence>
                     {viewingCard && (
-                        <DialogContent className={cn(styles.glassDialog, "max-w-lg")}>
+                        <DialogContent className={styles.glassDialog}>
                             <div className={styles.modalHeader}>
-                                <div className="absolute top-6 right-6 flex gap-2">
+                                <div className="absolute top-8 right-8 flex gap-3">
                                     {viewingCard.is_frozen && (
-                                        <Badge className="bg-blue-100 text-blue-700 font-bold">
-                                            <Snowflake className="h-3 w-3 mr-1" /> Frozen
+                                        <Badge className="bg-[#E11D48] text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
+                                            FROZEN
                                         </Badge>
                                     )}
                                     {viewingCard.is_default && (
-                                        <Badge className="bg-amber-100 text-amber-700 font-bold">
-                                            <Star className="h-3 w-3 mr-1" /> Default
+                                        <Badge className="bg-black text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
+                                            DEFAULT
                                         </Badge>
                                     )}
                                 </div>
-                                <div className={cn(styles.modalIcon, viewingCard.is_frozen ? "bg-blue-600" : "bg-indigo-600")}>
-                                    {viewingCard.is_frozen ? <Snowflake className="h-8 w-8" /> : <CreditCard className="h-8 w-8" />}
+                                <div className={styles.modalIcon}>
+                                    {viewingCard.is_frozen ? <Snowflake size={32} strokeWidth={3} /> : <Target size={32} strokeWidth={3} />}
                                 </div>
-                                {/* Nickname Section */}
+                                
                                 {isEditingNickname ? (
-                                    <div className="flex items-center gap-2 justify-center">
+                                    <div className="flex items-center gap-4 justify-center mt-6">
                                         <Input
                                             value={editedNickname}
                                             onChange={(e) => setEditedNickname(e.target.value)}
-                                            placeholder="Card nickname..."
-                                            className="h-8 w-40 text-center font-bold rounded-lg text-sm"
+                                            className="h-12 w-60 border-4 border-black text-center font-black uppercase text-sm"
                                             autoFocus
                                         />
-                                        <Button size="icon" className="h-8 w-8 rounded-lg bg-emerald-500 hover:bg-emerald-600" onClick={handleSaveNickname}>
-                                            <Check className="h-3 w-3" />
-                                        </Button>
-                                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg" onClick={() => setIsEditingNickname(false)}>
-                                            <X className="h-3 w-3" />
-                                        </Button>
+                                        <button className="h-12 px-6 bg-black text-white font-black" onClick={handleSaveNickname}>
+                                            <Check size={20} strokeWidth={3} />
+                                        </button>
                                     </div>
                                 ) : (
-                                    <DialogTitle className="text-xl font-black text-slate-800 tracking-tight flex items-center justify-center gap-1">
+                                    <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter flex items-center justify-center gap-4 mt-6">
                                         {viewingCard.nickname || `${viewingCard.type.toUpperCase()} •••${viewingCard.last4}`}
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-6 w-6 rounded-md hover:bg-slate-100"
-                                            onClick={() => { setEditedNickname(viewingCard.nickname || ''); setIsEditingNickname(true); }}
-                                        >
-                                            <Pencil className="h-3 w-3 text-slate-400" />
-                                        </Button>
+                                        <button onClick={() => { setEditedNickname(viewingCard.nickname || ''); setIsEditingNickname(true); }}>
+                                            <Pencil size={20} className="text-black/30 hover:text-black" strokeWidth={3} />
+                                        </button>
                                     </DialogTitle>
                                 )}
-                                <DialogDescription className="text-slate-500 font-bold text-xs">
-                                    {viewingCard.holder} • Expires {viewingCard.expiry}
+                                <DialogDescription className="text-black/50 font-black text-xs uppercase tracking-widest mt-2">
+                                    {viewingCard.holder} // EXPIRES_{viewingCard.expiry}
                                 </DialogDescription>
                             </div>
 
                             <div className={styles.modalContent}>
-                                {/* Card Preview */}
-                                <div className="mb-4">
-                                    <PremiumCard card={viewingCard} showFullNumber={false} className="scale-90 origin-top" />
+                                <div className="mb-10 flex justify-center">
+                                    <PremiumCard card={viewingCard} showFullNumber={false} className="scale-110" />
                                 </div>
 
-                                {/* Spending Limit Section */}
-                                <div className="bg-slate-50 rounded-xl p-3 mb-3 border border-slate-100">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center gap-1.5">
-                                            <DollarSign className="h-3.5 w-3.5 text-emerald-500" />
-                                            <span className="font-bold text-[11px] text-slate-700">Monthly Limit</span>
+                                <div className="bg-black text-white p-8 mb-8 border-4 border-black">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <DollarSign size={20} strokeWidth={3} />
+                                            <span className="font-black text-xs uppercase tracking-widest">CYCLE_LIMIT</span>
                                         </div>
                                         {isEditingLimit ? (
-                                            <div className="flex items-center gap-1.5">
+                                            <div className="flex items-center gap-4">
                                                 <Input
                                                     type="number"
                                                     value={editedLimit}
                                                     onChange={(e) => setEditedLimit(e.target.value)}
-                                                    placeholder="0"
-                                                    className="h-7 w-20 text-right font-bold rounded-md text-[11px]"
+                                                    className="h-10 w-32 border-2 border-white bg-black text-white text-right font-black uppercase text-xs"
                                                 />
-                                                <Button size="icon" className="h-7 w-7 rounded-md bg-emerald-500 hover:bg-emerald-600" onClick={handleSaveLimit}>
-                                                    <Check className="h-3 w-3" />
-                                                </Button>
+                                                <button className="bg-white text-black p-2" onClick={handleSaveLimit}>
+                                                    <Check size={16} strokeWidth={3} />
+                                                </button>
                                             </div>
                                         ) : (
-                                            <Button
-                                                variant="ghost"
-                                                className="h-7 text-[10px] font-black text-slate-500 hover:text-slate-700 p-0 px-2"
+                                            <button
+                                                className="font-black text-xs uppercase text-[#E11D48] hover:underline"
                                                 onClick={() => { setEditedLimit(viewingCard.spending_limit?.toString() || ''); setIsEditingLimit(true); }}
                                             >
-                                                {viewingCard.spending_limit ? `Rs ${viewingCard.spending_limit.toLocaleString()}` : 'Set limit'}
-                                                <Pencil className="h-2.5 w-2.5 ml-1" />
-                                            </Button>
+                                                {viewingCard.spending_limit ? `RS ${viewingCard.spending_limit.toLocaleString()}` : 'SET_LIMIT'}
+                                            </button>
                                         )}
                                     </div>
                                     {viewingCard.spending_limit && viewingCard.spending_limit > 0 && (
                                         <>
-                                            <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                            <div className="h-6 bg-white/10 border-2 border-white overflow-hidden">
                                                 <motion.div
                                                     initial={{ width: 0 }}
                                                     animate={{ width: `${getSpendingProgress(viewingCard)}%` }}
-                                                    className={cn(
-                                                        "h-full rounded-full",
-                                                        getSpendingProgress(viewingCard) > 90 ? "bg-red-500" :
-                                                            getSpendingProgress(viewingCard) > 70 ? "bg-amber-500" : "bg-emerald-500"
-                                                    )}
+                                                    className="h-full bg-[#E11D48]"
                                                 />
                                             </div>
-                                            <div className="flex justify-between mt-1 text-[10px] font-black">
-                                                <span className="text-slate-500">Rs {(viewingCard.total_spent || 0).toLocaleString()} spent</span>
-                                                <span className={cn(
-                                                    getSpendingProgress(viewingCard) > 90 ? "text-red-500" : "text-slate-400"
-                                                )}>
-                                                    {Math.round(getSpendingProgress(viewingCard))}%
-                                                </span>
+                                            <div className="flex justify-between mt-4 font-black text-[10px] uppercase tracking-widest">
+                                                <span>OUTFLOW: RS {(viewingCard.total_spent || 0).toLocaleString()}</span>
+                                                <span>{Math.round(getSpendingProgress(viewingCard))}%_UTILIZED</span>
                                             </div>
                                         </>
                                     )}
                                 </div>
 
-                                {/* Usage Insights & Quick Actions Grid */}
-                                <div className="grid grid-cols-2 gap-2 mb-3">
-                                    <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100 flex items-center gap-2">
-                                        <Calendar className="h-3.5 w-3.5 text-blue-500 shrink-0" />
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] font-bold text-slate-400 leading-tight">Last Used</span>
-                                            <span className="font-black text-slate-700 text-xs leading-tight">{formatLastUsed(viewingCard.last_used_at)}</span>
+                                <div className="grid grid-cols-2 gap-4 mb-8">
+                                    <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
+                                        <Calendar size={24} strokeWidth={3} className="text-black/30" />
+                                        <div>
+                                            <div className="text-[10px] font-black uppercase text-black/30">LAST_ACTIVE</div>
+                                            <div className="font-black text-sm">{formatLastUsed(viewingCard.last_used_at)}</div>
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100 flex items-center gap-2">
-                                        <BarChart3 className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
-                                        <div className="flex flex-col">
-                                            <span className="text-[10px] font-bold text-slate-400 leading-tight">This Month</span>
-                                            <span className="font-black text-slate-700 text-xs leading-tight">Rs {(viewingCard.total_spent || 0).toLocaleString()}</span>
+                                    <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
+                                        <BarChart3 size={24} strokeWidth={3} className="text-black/30" />
+                                        <div>
+                                            <div className="text-[10px] font-black uppercase text-black/30">MONTHLY_VOLUME</div>
+                                            <div className="font-black text-sm">RS {(viewingCard.total_spent || 0).toLocaleString()}</div>
                                         </div>
                                     </div>
 
-                                    <Button
-                                        variant={viewingCard.is_frozen ? "default" : "outline"}
+                                    <button
                                         className={cn(
-                                            "h-10 rounded-xl font-black text-xs",
-                                            viewingCard.is_frozen
-                                                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                                : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                                            "h-16 border-4 border-black font-black uppercase text-xs flex items-center justify-center gap-3 transition-colors",
+                                            viewingCard.is_frozen ? "bg-[#E11D48] text-white" : "bg-white text-black hover:bg-black hover:text-white"
                                         )}
                                         onClick={handleToggleFreeze}
                                     >
-                                        <Snowflake className="h-3.5 w-3.5 mr-1.5" />
-                                        {viewingCard.is_frozen ? 'Unfreeze' : 'Freeze'}
-                                    </Button>
-                                    <Button
-                                        variant={viewingCard.is_default ? "default" : "outline"}
+                                        <Snowflake size={20} strokeWidth={3} />
+                                        {viewingCard.is_frozen ? 'UNFREEZE_NODE' : 'FREEZE_NODE'}
+                                    </button>
+                                    <button
                                         className={cn(
-                                            "h-10 rounded-xl font-black text-xs",
-                                            viewingCard.is_default
-                                                ? "bg-amber-500 hover:bg-amber-600 text-white border-transparent"
-                                                : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                                            "h-16 border-4 border-black font-black uppercase text-xs flex items-center justify-center gap-3 transition-colors",
+                                            viewingCard.is_default ? "bg-black text-white" : "bg-white text-black hover:bg-black hover:text-white"
                                         )}
                                         onClick={handleSetDefault}
                                         disabled={viewingCard.is_default}
                                     >
-                                        <Star className="h-3.5 w-3.5 mr-1.5" />
-                                        {viewingCard.is_default ? 'Default' : 'Set Default'}
-                                    </Button>
+                                        <Star size={20} strokeWidth={3} />
+                                        {viewingCard.is_default ? 'DEFAULT_NODE' : 'SET_DEFAULT'}
+                                    </button>
                                 </div>
 
-                                {/* Card Info */}
                                 <div className={styles.vaultDetails}>
                                     <div className={styles.detailRow}>
-                                        <div className="flex items-center gap-2">
-                                            <CreditCard className="h-5 w-5 text-blue-500" />
-                                            <div className="flex flex-col">
-                                                <span className={styles.infoLabel}>Card Number</span>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 bg-black text-white flex items-center justify-center border-2 border-black">
+                                                <CreditCard size={24} strokeWidth={3} />
+                                            </div>
+                                            <div>
+                                                <span className={styles.infoLabel}>NODE_IDENTIFIER</span>
                                                 <code className="text-sm font-black tracking-widest">
                                                     •••• •••• •••• {viewingCard.last4 || '****'}
                                                 </code>
                                             </div>
                                         </div>
-                                        <Button size="icon" variant="ghost" className="rounded-xl" onClick={() => handleCopy(viewingCard.last4 || '')}>
-                                            <Copy className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-
-                                    <div className={styles.detailRow}>
-                                        <div className="flex items-center gap-3">
-                                            <Shield className="h-5 w-5 text-emerald-500" />
-                                            <div className="flex flex-col">
-                                                <span className={styles.infoLabel}>Security</span>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-black text-emerald-600">Encrypted</span>
-                                                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <button className="p-3 hover:bg-black hover:text-white transition-colors" onClick={() => handleCopy(viewingCard.last4 || '')}>
+                                            <Copy size={20} strokeWidth={3} />
+                                        </button>
                                     </div>
                                 </div>
 
-                                {/* CVV Protection Section */}
-                                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-100 mt-4">
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Lock className="h-4 w-4 text-indigo-600" />
-                                        <span className="font-bold text-sm text-indigo-700">CVV Protection</span>
+                                {/* CVV Protection */}
+                                <div className="bg-[#E11D48] text-white p-8 border-4 border-black mt-8 shadow-[8px_8px_0px_#000000]">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <Lock size={20} strokeWidth={3} />
+                                        <span className="font-black text-sm uppercase tracking-widest">CVV_PROTECTION_PROTOCOL</span>
                                     </div>
 
-                                    {/* If setting CVV password */}
                                     {isSettingCvvPassword ? (
-                                        <div className="space-y-3">
+                                        <div className="space-y-4">
                                             <Input
                                                 type="password"
-                                                placeholder="Enter CVV (3-4 digits)"
+                                                placeholder="CVV (3-4 DIGITS)"
                                                 value={cvvValue}
                                                 onChange={(e) => setCvvValue(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                                                className="h-10 rounded-lg text-center font-bold tracking-widest"
+                                                className="h-12 border-2 border-white bg-black text-white text-center font-black tracking-[1em]"
                                                 maxLength={4}
                                             />
                                             <Input
                                                 type="password"
-                                                placeholder="Set password (min 4 chars)"
+                                                placeholder="ACCESS_KEY (MIN_4_CHARS)"
                                                 value={cvvPassword}
                                                 onChange={(e) => setCvvPassword(e.target.value)}
-                                                className="h-10 rounded-lg"
+                                                className="h-12 border-2 border-white bg-black text-white"
                                             />
-                                            <Input
-                                                type="password"
-                                                placeholder="Confirm password"
-                                                value={confirmCvvPassword}
-                                                onChange={(e) => setConfirmCvvPassword(e.target.value)}
-                                                className="h-10 rounded-lg"
-                                            />
-                                            <div className="flex gap-2">
-                                                <Button
-                                                    className="flex-1 h-10 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
-                                                    onClick={handleSaveCvvPassword}
-                                                >
-                                                    <Lock className="h-4 w-4 mr-2" />
-                                                    Save CVV
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="h-10 rounded-lg"
-                                                    onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}
-                                                >
-                                                    Cancel
-                                                </Button>
+                                            <div className="flex gap-4">
+                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleSaveCvvPassword}>INITIALIZE_VAULT</button>
+                                                <button className="px-6 border-2 border-white font-black uppercase text-xs" onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}>ABORT</button>
                                             </div>
                                         </div>
                                     ) : isVerifyingCvv ? (
-                                        /* Verifying CVV password */
-                                        <div className="space-y-3">
+                                        <div className="space-y-4">
                                             <Input
                                                 type="password"
-                                                placeholder="Enter your CVV password"
+                                                placeholder="ENTER_ACCESS_KEY"
                                                 value={cvvPassword}
                                                 onChange={(e) => setCvvPassword(e.target.value)}
-                                                className="h-10 rounded-lg"
+                                                className="h-12 border-2 border-white bg-black text-white"
                                                 autoFocus
                                             />
-                                            <div className="flex gap-2">
-                                                <Button
-                                                    className="flex-1 h-10 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold"
-                                                    onClick={handleVerifyCvv}
-                                                >
-                                                    <Eye className="h-4 w-4 mr-2" />
-                                                    Reveal CVV
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="h-10 rounded-lg"
-                                                    onClick={() => { setIsVerifyingCvv(false); setCvvPassword(''); }}
-                                                >
-                                                    Cancel
-                                                </Button>
+                                            <div className="flex gap-4">
+                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleVerifyCvv}>REVEAL_DATA</button>
+                                                <button className="px-6 border-2 border-white font-black uppercase text-xs" onClick={() => { setIsVerifyingCvv(false); setCvvPassword(''); }}>ABORT</button>
                                             </div>
                                         </div>
                                     ) : cvvVerified ? (
-                                        /* CVV Revealed */
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <div className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-black tracking-widest text-lg">
-                                                    {cvvValue}
-                                                </div>
-                                                <span className="text-xs font-bold text-indigo-500">
-                                                    Hiding in {cvvTimer}s
-                                                </span>
+                                        <div className="flex items-center justify-between bg-black p-6 border-2 border-white">
+                                            <div className="flex items-center gap-6">
+                                                <div className="text-3xl font-black tracking-[0.5em]">{cvvValue}</div>
+                                                <div className="text-[10px] font-black uppercase text-white/50">HIDING_IN_{cvvTimer}S</div>
                                             </div>
-                                            <Button
-                                                size="icon"
-                                                variant="ghost"
-                                                className="rounded-lg"
-                                                onClick={() => handleCopy(cvvValue)}
-                                            >
-                                                <Copy className="h-4 w-4" />
-                                            </Button>
+                                            <button className="p-2 hover:text-[#E11D48]" onClick={() => handleCopy(cvvValue)}>
+                                                <Copy size={20} strokeWidth={3} />
+                                            </button>
                                         </div>
                                     ) : (
-                                        /* Default state */
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm text-slate-600">
-                                                {viewingCard.cvv_password ? 'CVV protected with password' : 'No CVV saved yet'}
+                                            <span className="text-xs font-black uppercase opacity-70">
+                                                {viewingCard.cvv_password ? 'VAULT_ENCRYPTED' : 'VAULT_EMPTY'}
                                             </span>
-                                            {viewingCard.cvv_password ? (
-                                                <Button
-                                                    variant="outline"
-                                                    className="h-9 rounded-lg text-indigo-600 border-indigo-200 hover:bg-indigo-50 font-bold"
-                                                    onClick={() => setIsVerifyingCvv(true)}
-                                                >
-                                                    <Eye className="h-4 w-4 mr-2" />
-                                                    View CVV
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    variant="outline"
-                                                    className="h-9 rounded-lg text-indigo-600 border-indigo-200 hover:bg-indigo-50 font-bold"
-                                                    onClick={() => setIsSettingCvvPassword(true)}
-                                                >
-                                                    <Lock className="h-4 w-4 mr-2" />
-                                                    Set CVV
-                                                </Button>
-                                            )}
+                                            <button
+                                                className="h-12 px-8 bg-white text-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors"
+                                                onClick={() => viewingCard.cvv_password ? setIsVerifyingCvv(true) : setIsSettingCvvPassword(true)}
+                                            >
+                                                {viewingCard.cvv_password ? 'ACCESS_VAULT' : 'INIT_VAULT'}
+                                            </button>
                                         </div>
                                     )}
                                 </div>
 
-                                {/* Actions */}
-                                <div className="flex gap-3 mt-6">
-                                    <Button
-                                        className="flex-1 h-12 rounded-xl bg-slate-900 hover:bg-black text-white font-bold"
+                                <div className="flex gap-4 mt-12">
+                                    <button
+                                        className="flex-1 h-16 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors"
                                         onClick={() => setViewingCard(null)}
                                     >
-                                        <CheckCircle2 className="h-4 w-4 mr-2" />
-                                        Done
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        className="h-12 w-12 rounded-xl border-2 border-red-100 text-red-500 hover:bg-red-50"
+                                        TERMINATE_SESSION
+                                    </button>
+                                    <button
+                                        className="h-16 w-16 border-4 border-black text-black hover:bg-[#E11D48] hover:text-white transition-colors flex items-center justify-center"
                                         onClick={handleDeleteCard}
                                     >
-                                        <Trash2 className="h-5 w-5" />
-                                    </Button>
+                                        <Trash2 size={24} strokeWidth={3} />
+                                    </button>
                                 </div>
                             </div>
                         </DialogContent>

@@ -15,8 +15,7 @@
         "https://*.target.com/*",
         "https://*.etsy.com/*",
         "https://*.aliexpress.com/*",
-        "https://*.shopify.com/*",
-        "<all_urls>"
+        "https://*.shopify.com/*"
     ],
     "browser_action": {
         "default_popup": "popup.html",
@@ -43,7 +42,7 @@
                 "https://*.target.com/*",
                 "https://*.etsy.com/*",
                 "https://*.aliexpress.com/*",
-                "<all_urls>"
+                "https://*.shopify.com/*"
             ],
             "js": [
                 "content.js"

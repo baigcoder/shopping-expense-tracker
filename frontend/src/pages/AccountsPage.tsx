@@ -12,14 +12,14 @@ import styles from './AccountsPage.module.css';
 import { AccountsSkeleton } from '../components/LoadingSkeleton';
 
 const ACCOUNT_TYPES = {
-    checking: { label: 'Checking', icon: Building2, color: '#3B82F6' },
-    savings: { label: 'Savings', icon: PiggyBank, color: '#10B981' },
-    credit: { label: 'Credit Card', icon: CreditCard, color: '#EF4444' },
-    investment: { label: 'Investment', icon: Briefcase, color: '#8B5CF6' },
-    cash: { label: 'Cash', icon: Banknote, color: '#F59E0B' }
+    checking: { label: 'Checking', icon: Building2, color: '#000000' },
+    savings: { label: 'Savings', icon: PiggyBank, color: '#000000' },
+    credit: { label: 'Credit Card', icon: CreditCard, color: '#E11D48' },
+    investment: { label: 'Investment', icon: Briefcase, color: '#000000' },
+    cash: { label: 'Cash', icon: Banknote, color: '#000000' }
 };
 
-const BANK_COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899', '#14B8A6', '#6366F1'];
+const BANK_COLORS = ['#E11D48', '#000000', '#FFFFFF', '#FFD700', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF'];
 
 const AccountsPage = () => {
     const { user } = useAuthStore();
@@ -174,32 +174,35 @@ const AccountsPage = () => {
             <motion.div className={styles.netWorthCard} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <div className={styles.netWorthMain}>
                     <div className={styles.netWorthIconWrap}>
-                        <Wallet size={28} />
+                        <Wallet size={32} />
                     </div>
                     <div>
                         <span className={styles.netWorthLabel}>Total Net Worth</span>
-                        <span className={`${styles.netWorthValue} ${totals.netWorth < 0 ? styles.negative : ''}`}>
-                            ${totals.netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                        </span>
+                        <div className="flex items-baseline gap-2">
+                            <span className={`${styles.netWorthValue} ${totals.netWorth < 0 ? styles.negative : ''}`}>
+                                ${totals.netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            </span>
+                            <span className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-1.5 py-0.5">Live Ledger</span>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.netWorthBreakdown}>
                     <div className={styles.breakdownItem}>
-                        <div style={{ background: '#DCFCE7', padding: 8, borderRadius: 8 }}>
-                            <TrendingUp size={16} className={styles.positive} />
+                        <div className={styles.breakdownIcon} style={{ background: '#000000', color: '#FFFFFF' }}>
+                            <TrendingUp size={18} />
                         </div>
                         <div>
                             <span>Assets</span>
                             <strong>${totals.assets.toLocaleString()}</strong>
                         </div>
                     </div>
-                    <div className={styles.breakdownItem}>
-                        <div style={{ background: '#FEE2E2', padding: 8, borderRadius: 8 }}>
-                            <TrendingDown size={16} className={styles.negative} />
+                    <div className={styles.breakdownItem} style={{ borderColor: '#E11D48' }}>
+                        <div className={styles.breakdownIcon} style={{ background: '#E11D48', color: '#FFFFFF' }}>
+                            <TrendingDown size={18} />
                         </div>
                         <div>
                             <span>Liabilities</span>
-                            <strong>${totals.liabilities.toLocaleString()}</strong>
+                            <strong className={styles.negative}>${totals.liabilities.toLocaleString()}</strong>
                         </div>
                     </div>
                 </div>
@@ -229,14 +232,18 @@ const AccountsPage = () => {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
+                                style={{ borderLeft: `8px solid ${account.color || '#000000'}` }}
                             >
                                 <div className={styles.cardHeader}>
-                                    <div className={styles.cardIcon} style={{ background: account.color + '15', color: account.color }}>
+                                    <div className={styles.cardIcon} style={{ background: '#000000', color: '#FFFFFF' }}>
                                         <Icon size={24} />
                                     </div>
                                     <div className={styles.cardInfo}>
-                                        <h3>{account.name}</h3>
-                                        <p>{account.bank_name}</p>
+                                        <div className="flex items-center gap-2">
+                                            <h3>{account.name}</h3>
+                                            {account.balance > 1000 && <span className="text-[9px] font-black bg-[#E11D48] text-white px-1 py-0.5 tracking-tighter">HYPE</span>}
+                                        </div>
+                                        <p className="uppercase tracking-widest text-[10px] font-bold opacity-60">{account.bank_name}</p>
                                     </div>
                                     <div className={styles.cardActions}>
                                         <button onClick={() => openEdit(account)}><Edit2 size={14} /></button>
@@ -245,7 +252,7 @@ const AccountsPage = () => {
                                 </div>
 
                                 <div className={styles.cardBalance} onClick={() => handleUpdateBalance(account.id)}>
-                                    <span className={styles.balanceLabel}>Current Balance</span>
+                                    <span className={styles.balanceLabel}>Liquidity</span>
                                     <span className={`${styles.balanceValue} ${isNegative ? styles.negative : ''}`}>
                                         {account.currency === 'USD' ? '$' : account.currency} {Math.abs(account.balance).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                     </span>
@@ -253,9 +260,10 @@ const AccountsPage = () => {
 
                                 <div className={styles.cardFooter}>
                                     <span className={styles.accountType}>{typeConfig?.label || account.account_type}</span>
-                                    <span className={styles.lastUpdated}>
-                                        Updated {new Date(account.last_updated).toLocaleDateString()}
-                                    </span>
+                                    <div className="flex items-center gap-1">
+                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                        <span className={styles.lastUpdated}>Sync: Active</span>
+                                    </div>
                                 </div>
                             </motion.div>
                         );

@@ -403,9 +403,35 @@ export const useTransactionRealtime = (handlers: {
     onUpdate?: (tx: any) => void;
     onDelete?: (id: string) => void;
 }) => {
+    const { onInsert, onUpdate, onDelete } = handlers;
+
+    useEffect(() => {
+        const seen = new Set<string>();
+        const handleExtensionTransaction = (event: Event) => {
+            const detail = (event as CustomEvent).detail;
+            const tx = detail?.transaction || detail;
+            if (tx) {
+                const key = tx.id || `${tx.description || tx.name}-${tx.amount}-${tx.date || tx.created_at}`;
+                if (key && seen.has(key)) return;
+                if (key) {
+                    seen.add(key);
+                    setTimeout(() => seen.delete(key), 5000);
+                }
+                onInsert?.(tx);
+            }
+        };
+
+        window.addEventListener('new-transaction', handleExtensionTransaction);
+        window.addEventListener('transaction-added-realtime', handleExtensionTransaction);
+        return () => {
+            window.removeEventListener('new-transaction', handleExtensionTransaction);
+            window.removeEventListener('transaction-added-realtime', handleExtensionTransaction);
+        };
+    }, [onInsert]);
+
     return useRealtimeSync({
-        onTransactionInsert: (payload) => handlers.onInsert?.(payload.new),
-        onTransactionUpdate: (payload) => handlers.onUpdate?.(payload.new),
-        onTransactionDelete: (payload) => handlers.onDelete?.(payload.old?.id)
+        onTransactionInsert: (payload) => onInsert?.(payload.new),
+        onTransactionUpdate: (payload) => onUpdate?.(payload.new),
+        onTransactionDelete: (payload) => onDelete?.(payload.old?.id)
     });
 };

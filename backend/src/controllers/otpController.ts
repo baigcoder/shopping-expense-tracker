@@ -47,7 +47,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         // Check if email is already registered in Supabase
         const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
         const emailExists = existingUsers?.users?.some(
-            (user) => user.email?.toLowerCase() === email.toLowerCase()
+            (user: any) => user.email?.toLowerCase() === email.toLowerCase()
         );
 
         if (emailExists) {
@@ -239,7 +239,7 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
 
                 if (isAlreadyRegistered) {
                     const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
-                    const existingUser = usersData?.users?.find(u => u.email?.toLowerCase() === email.toLowerCase());
+                    const existingUser = usersData?.users?.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
 
                     if (existingUser) {
                         userId = existingUser.id;

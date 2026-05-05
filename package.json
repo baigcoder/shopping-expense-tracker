@@ -5,6 +5,8 @@
     "prettier": "^3.7.4"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "sync:extension-popup": "powershell -ExecutionPolicy Bypass -File scripts/sync-extension-popup.ps1",
+    "sync:extension-core": "powershell -ExecutionPolicy Bypass -File scripts/sync-extension-core.ps1"
   }
 }

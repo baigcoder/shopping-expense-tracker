@@ -1,7 +1,17 @@
 // Export Service - CSV, Excel, PDF generation
-import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+async function loadXlsx() {
+    return import('xlsx');
+}
+
+async function loadJsPdf() {
+    const mod = await import('jspdf');
+    return mod.default;
+}
+
+async function loadHtml2Canvas() {
+    const mod = await import('html2canvas');
+    return mod.default;
+}
 
 export interface ExportTransaction {
     id?: string;
@@ -61,7 +71,8 @@ export function exportToCSV(transactions: ExportTransaction[], options: ExportOp
 // ================================
 // EXCEL EXPORT
 // ================================
-export function exportToExcel(transactions: ExportTransaction[], options: ExportOptions = {}): void {
+export async function exportToExcel(transactions: ExportTransaction[], options: ExportOptions = {}): Promise<void> {
+    const XLSX = await loadXlsx();
     const filename = options.filename || `cashly-transactions-${new Date().toISOString().split('T')[0]}`;
 
     // Create workbook and worksheet
@@ -132,6 +143,10 @@ export async function exportToPDF(
     elementId: string,
     options: ExportOptions = {}
 ): Promise<void> {
+    const [html2canvas, jsPDF] = await Promise.all([
+        loadHtml2Canvas(),
+        loadJsPdf()
+    ]);
     const filename = options.filename || `cashly-report-${new Date().toISOString().split('T')[0]}`;
 
     const element = document.getElementById(elementId);
@@ -181,10 +196,11 @@ export async function exportToPDF(
 }
 
 // Manual PDF generation (for transactions list without HTML element)
-export function exportTransactionsToPDF(
+export async function exportTransactionsToPDF(
     transactions: ExportTransaction[],
     options: ExportOptions = {}
-): void {
+): Promise<void> {
+    const jsPDF = await loadJsPdf();
     const filename = options.filename || `cashly-transactions-${new Date().toISOString().split('T')[0]}`;
 
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -296,6 +312,7 @@ export async function importFromCSV(file: File): Promise<ImportResult> {
 }
 
 export async function importFromExcel(file: File): Promise<ImportResult> {
+    const XLSX = await loadXlsx();
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
@@ -485,10 +502,10 @@ interface UnifiedExportOptions {
     fileName?: string;
 }
 
-export function exportTransactions(
+export async function exportTransactions(
     transactions: ExportTransaction[],
     options: UnifiedExportOptions
-): void {
+): Promise<void> {
     const { format, fileName } = options;
     const baseFilename = fileName || `cashly-export-${new Date().toISOString().split('T')[0]}`;
 
@@ -500,7 +517,7 @@ export function exportTransactions(
             exportToJSON(transactions, baseFilename);
             break;
         case 'pdf':
-            exportTransactionsToPDF(transactions, { filename: baseFilename });
+            await exportTransactionsToPDF(transactions, { filename: baseFilename });
             break;
     }
 }

@@ -25,7 +25,7 @@
   <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
   <img src="https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?logo=supabase&logoColor=white" alt="Supabase">
   <img src="https://img.shields.io/badge/Tailwind-4.0-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind">
-  <img src="https://img.shields.io/badge/Groq-LLM-FF6B35?logo=openai&logoColor=white" alt="Groq">
+  <img src="https://img.shields.io/badge/OpenRouter-LLM-FF6B35?logo=openai&logoColor=white" alt="OpenRouter">
 </p>
 
 ---
@@ -35,7 +35,7 @@
 | Feature | Description |
 |:--------|:------------|
 | 🛍️ **Smart Extension** | Auto-tracks purchases from Amazon, Daraz, eBay, Shopify, and 20+ platforms |
-| 🤖 **AI Assistant** | Groq-powered chatbot with full financial context awareness |
+| 🤖 **AI Assistant** | OpenRouter-powered chatbot with full financial context awareness |
 | 🎙️ **Voice AI** | Add transactions, goals, and reminders using natural voice commands |
 | 📊 **Real-time Sync** | Supabase Realtime for instant updates across all devices |
 | 🏦 **Bank Integration** | Connect accounts via Plaid for automatic transaction import |
@@ -131,7 +131,7 @@ Automatically detects and records purchases using intelligent DOM parsing:
 | Express | 4.21 | Web framework |
 | Prisma | 5.22 | Database ORM |
 | PostgreSQL | - | Primary database (Supabase) |
-| Groq SDK | 0.37 | LLM integration |
+| OpenRouter API | - | LLM integration |
 | ioredis | 5.8 | Redis caching |
 | Plaid | 40.0 | Bank connectivity |
 | Helmet | 7.1 | Security headers |
@@ -183,7 +183,7 @@ cashly/
 - Node.js 18+
 - PostgreSQL (or free Supabase project)
 - Redis (or free Redis Cloud)
-- Groq API key (free at console.groq.com)
+- OpenRouter API key (create one at openrouter.ai)
 
 ### 1. Clone & Install
 
@@ -204,7 +204,9 @@ PORT=5000
 NODE_ENV=development
 
 # Database
-DATABASE_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
+DATABASE_URL="postgresql://postgres.[PROJECT_REF]:password@pooler-host:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres:password@db.[PROJECT_REF].supabase.co:5432/postgres"
+AUTH_DB_SYNC_ENABLED=true
 
 # Supabase
 SUPABASE_URL=https://project.supabase.co
@@ -212,7 +214,15 @@ SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
 # AI
-GROQ_API_KEY=gsk_xxxxxxxxxxxx
+OPENROUTER_API_KEY=sk-or-v1_xxxxxxxxxxxx
+OPENROUTER_APP_NAME=Cashly
+OPENROUTER_CHAT_MODEL=meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_FAST_CHAT_MODEL=nvidia/nemotron-nano-9b-v2:free
+OPENROUTER_ANALYSIS_MODEL=nvidia/nemotron-3-super-120b-a12b:free
+OPENROUTER_FORECAST_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
+OPENROUTER_RISK_MODEL=nvidia/nemotron-3-super-120b-a12b:free
+OPENROUTER_VOICE_MODEL=nvidia/nemotron-nano-9b-v2:free
+OPENROUTER_DOCUMENT_MODEL=inclusionai/ling-2.6-1t:free
 
 # Cache
 REDIS_URL=redis://default:password@host:port
@@ -369,7 +379,7 @@ MIT License. Built with ❤️ for smarter money management.
 ## 🙏 Acknowledgments
 
 - [Supabase](https://supabase.com) - Backend as a Service
-- [Groq](https://groq.com) - Ultra-fast LLM inference
+- [OpenRouter](https://openrouter.ai) - Multi-model LLM routing
 - [Plaid](https://plaid.com) - Bank connectivity
 - [shadcn/ui](https://ui.shadcn.com) - UI components
 - [Framer Motion](https://framer.com/motion) - Animations

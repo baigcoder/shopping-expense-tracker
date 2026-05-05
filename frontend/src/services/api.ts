@@ -15,6 +15,30 @@ const api = axios.create({
     },
 });
 
+const authRequiredPrefixes = [
+    '/ai',
+    '/voice',
+    '/plaid',
+    '/reset',
+    '/transaction-inbox',
+    '/merchant-rules',
+    '/imports',
+    '/dashboard',
+    '/onboarding',
+    '/money-twin',
+    '/cashflow-calendar',
+    '/subscription-command-center',
+    '/extension-health',
+    '/reports',
+    '/coach',
+    '/settings',
+];
+
+const requiresAuth = (url = '') => {
+    const path = url.startsWith('http') ? new URL(url).pathname.replace(/^\/api/, '') : url;
+    return authRequiredPrefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+};
+
 // Add auth token to requests
 api.interceptors.request.use(async (config) => {
     try {
@@ -22,8 +46,13 @@ api.interceptors.request.use(async (config) => {
 
         if (session?.access_token) {
             config.headers.Authorization = `Bearer ${session.access_token}`;
+        } else if (requiresAuth(config.url)) {
+            throw new axios.CanceledError('Auth token is not ready yet');
         }
     } catch (error) {
+        if (axios.isCancel(error)) {
+            throw error;
+        }
         console.error('Error getting auth token:', error);
     }
     return config;

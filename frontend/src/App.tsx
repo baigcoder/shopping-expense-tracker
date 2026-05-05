@@ -40,6 +40,9 @@ const SubscriptionsPage = lazy(() => import('./pages/SubscriptionsPage'));
 const GoalsPage = lazy(() => import('./pages/GoalsPage'));
 const InsightsPage = lazy(() => import('./pages/InsightsPage'));
 const ReportsPage = lazy(() => import('./pages/ReportsPage'));
+const TransactionInboxPage = lazy(() => import('./pages/TransactionInboxPage'));
+const CashflowCalendarPage = lazy(() => import('./pages/CashflowCalendarPage'));
+const ExtensionHealthPage = lazy(() => import('./pages/ExtensionHealthPage'));
 const RecurringPage = lazy(() => import('./pages/RecurringPage'));
 const AccountsPage = lazy(() => import('./pages/AccountsPage'));
 const MoneyTwinPage = lazy(() => import('./pages/MoneyTwinPage'));
@@ -141,13 +144,8 @@ const AuthCallback = () => {
     );
 };
 
-// Background AI Insights Fetcher
-import { fetchAiTipInBackground } from './services/aiTipCacheService';
-import { supabaseTransactionService } from './services/supabaseTransactionService';
-
 function App() {
     const { isAuthenticated, isLoading } = useAuth();
-    const { user } = useAuthStore();
 
     // Track if Zustand has hydrated from localStorage
     const [hasHydrated, setHasHydrated] = React.useState(false);
@@ -167,42 +165,6 @@ function App() {
         return unsubscribe;
     }, []);
 
-    // Auto-fetch AI insights when user is authenticated
-    useEffect(() => {
-        const prefetchAiInsights = async () => {
-            if (!isAuthenticated || !user?.id) return;
-
-            try {
-                console.log('🧠 Pre-fetching AI insights in background...');
-                const transactions = await supabaseTransactionService.getAll(user.id);
-
-                if (transactions.length > 0) {
-                    // Calculate spending data
-                    const expenses = transactions.filter(t => t.type === 'expense');
-                    const monthlyTotal = expenses.reduce((sum, t) => sum + Math.abs(t.amount), 0);
-                    const categoryTotals: Record<string, number> = {};
-                    expenses.forEach(t => {
-                        const cat = t.category || 'Other';
-                        categoryTotals[cat] = (categoryTotals[cat] || 0) + Math.abs(t.amount);
-                    });
-                    const topCat = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
-
-                    // Trigger background AI fetch
-                    fetchAiTipInBackground(user.id, {
-                        monthlyTotal,
-                        topCategory: topCat?.[0] || 'Various',
-                        categoryAmount: topCat?.[1] || 0
-                    });
-                }
-            } catch (error) {
-                console.log('Background AI prefetch failed:', error);
-            }
-        };
-
-        // Delay slightly to not block initial render
-        const timeout = setTimeout(prefetchAiInsights, 2000);
-        return () => clearTimeout(timeout);
-    }, [isAuthenticated, user?.id]);
 
     // Wait for BOTH hydration AND session check to complete
     if (!hasHydrated || isLoading) {
@@ -264,11 +226,13 @@ function App() {
                         >
                             <Route path="/dashboard" element={<DashboardPage />} />
                             <Route path="/transactions" element={<TransactionsPage />} />
+                            <Route path="/transaction-inbox" element={<TransactionInboxPage />} />
                             <Route path="/analytics" element={<AnalyticsPage />} />
                             <Route path="/cards" element={<CardsPage />} />
                             <Route path="/expenses" element={<ExpenseDetailsPage />} />
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/settings" element={<SettingsPage />} />
+                            <Route path="/setting" element={<Navigate to="/settings" replace />} />
                             {/* New Feature Routes */}
                             <Route path="/budgets" element={<BudgetsPage />} />
                             <Route path="/bills" element={<BillsPage />} />
@@ -276,6 +240,8 @@ function App() {
                             <Route path="/goals" element={<GoalsPage />} />
                             <Route path="/insights" element={<InsightsPage />} />
                             <Route path="/reports" element={<ReportsPage />} />
+                            <Route path="/cashflow-calendar" element={<CashflowCalendarPage />} />
+                            <Route path="/extension-health" element={<ExtensionHealthPage />} />
                             <Route path="/recurring" element={<RecurringPage />} />
                             <Route path="/accounts" element={<AccountsPage />} />
                             <Route path="/money-twin" element={<MoneyTwinPage />} />

@@ -3,12 +3,12 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, FileText, CheckCircle, AlertCircle, X, Download, ArrowRight, Sparkles, FileUp, Database, Calendar, Tag, FileType } from 'lucide-react';
 import { parseCSV, validateTransactions, getImportSummary, ParsedTransaction } from '../services/csvImportService';
-import { processBankStatementPDF } from '../services/pdfAnalyzerService';
 import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { importsApi } from '../services/featureExpansionApi';
 
 interface CSVImportProps {
     onImport: (transactions: ParsedTransaction[]) => void;
@@ -67,6 +67,7 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
             if (isPDF) {
                 // Process PDF with AI analyzer
                 toast.loading('Analyzing PDF statement...', { id: 'pdf-analyze' });
+                const { processBankStatementPDF } = await import('../services/pdfAnalyzerService');
                 const result = await processBankStatementPDF(file);
                 toast.dismiss('pdf-analyze');
 
@@ -172,10 +173,21 @@ const CSVImport = ({ onImport, onClose }: CSVImportProps) => {
         }
     };
 
-    const handleConfirmImport = () => {
+    const handleConfirmImport = async () => {
+        const session = await importsApi.createSession({
+            fileName,
+            fileType: fileName.toLowerCase().endsWith('.pdf') ? 'pdf' : 'csv',
+            rows: transactions.map(tx => ({
+                ...tx,
+                confidence: 0.85,
+                selected: true,
+                rawPayload: tx,
+            })),
+        });
+        await importsApi.commitSession(session.session.id);
         onImport(transactions);
         setStep('complete');
-        toast.success(`Imported ${transactions.length} transactions! 🎉`);
+        toast.success(`${transactions.length} transactions queued for inbox review`);
     };
 
     const summary = transactions.length > 0 ? getImportSummary(transactions) : null;

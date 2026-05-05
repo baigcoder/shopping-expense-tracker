@@ -5,7 +5,6 @@ import {
     X, Download, FileSpreadsheet, FileJson, FileText,
     CheckCircle, Database, FileDown, ShieldCheck
 } from 'lucide-react';
-import { exportTransactions } from '../services/exportService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -66,8 +65,9 @@ const ExportModal = ({ transactions, onClose }: ExportModalProps) => {
 
         try {
             await new Promise(r => setTimeout(r, 1200)); // Deliberate delay for premium feel
+            const { exportTransactions } = await import('../services/exportService');
 
-            exportTransactions(transactions, {
+            await exportTransactions(transactions, {
                 format: selectedFormat,
                 fileName: `treasury-ledger-export-${new Date().toISOString().split('T')[0]}`,
             });

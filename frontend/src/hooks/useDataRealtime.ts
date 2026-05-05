@@ -3,10 +3,9 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
-import { moneyTwinService } from '../services/moneyTwinService';
-import { refreshBackendAI } from '../services/aiService';
 import genZToast from '../services/genZToast';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { FINANCIAL_DATA_EVENTS, getFinancialDataEventSource } from '../services/financialDataEvents';
 
 interface DataRealtimeConfig {
     // Callback when money twin data needs refresh
@@ -28,7 +27,12 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
     const { user } = useAuthStore();
     const channelRef = useRef<RealtimeChannel | null>(null);
     const refreshDebounce = useRef<NodeJS.Timeout | null>(null);
+    const configRef = useRef(config);
     const DEBOUNCE_MS = 300; // Reduced for faster updates
+
+    useEffect(() => {
+        configRef.current = config;
+    }, [config]);
 
     // Unified refresh function with debounce
     const triggerRefresh = useCallback((source: string) => {
@@ -40,16 +44,22 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
         refreshDebounce.current = setTimeout(async () => {
             console.log(`🔄 Realtime refresh triggered by: ${source}`);
 
-            // 1. Clear MoneyTwin cache
-            moneyTwinService.clearCache();
+            import('../services/moneyTwinService')
+                .then(({ moneyTwinService }) => moneyTwinService.clearCache())
+                .catch(() => { });
+
+            import('../services/aiService')
+                .then(({ clearAIContext }) => clearAIContext())
+                .catch(() => { });
 
             // 2. Refresh backend AI cache (in background, don't await)
             if (user?.id) {
-                refreshBackendAI(user.id).then(() => {
-                    console.log('🤖 Backend AI cache refreshed');
-                }).catch(() => {
-                    console.log('Backend AI refresh skipped');
-                });
+                import('../services/aiDataCacheService').then(({ aiDataCache }) => {
+                    aiDataCache.refreshCache(user.id).catch(() => {
+                        aiDataCache.invalidate();
+                    });
+                }).catch(() => { });
+
             }
 
             // 3. Dispatch insights-data-changed for InsightsPage
@@ -62,23 +72,24 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
             window.dispatchEvent(new CustomEvent('money-twin-refresh'));
 
             // Notify callbacks
-            config.onMoneyTwinRefresh?.();
-            config.onAnalyticsRefresh?.();
-            config.onInsightsRefresh?.();
+            configRef.current.onMoneyTwinRefresh?.();
+            configRef.current.onAnalyticsRefresh?.();
+            configRef.current.onInsightsRefresh?.();
 
         }, DEBOUNCE_MS);
-    }, [config, user?.id]);
+    }, [user?.id]);
 
     // Check health score changes and detect risks
     const checkHealthAndRisks = useCallback(async () => {
         if (!user?.id) return;
 
         try {
+            const { moneyTwinService } = await import('../services/moneyTwinService');
             const twinState = await moneyTwinService.getMoneyTwin(user.id);
 
             // Check health score change
             if (lastHealthScore !== null && twinState.healthScore !== lastHealthScore) {
-                config.onHealthScoreChange?.(twinState.healthScore, lastHealthScore);
+                configRef.current.onHealthScoreChange?.(twinState.healthScore, lastHealthScore);
 
                 // Animate if significant change (±10 points)
                 const diff = twinState.healthScore - lastHealthScore;
@@ -101,14 +112,14 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
                 // Only alert new risks (created in last 5 minutes)
                 const riskAge = Date.now() - new Date(risk.createdAt).getTime();
                 if (riskAge < 5 * 60 * 1000) {
-                    config.onRiskDetected?.(risk);
+                    configRef.current.onRiskDetected?.(risk);
                     genZToast.warning(`⚠️ ${risk.title}: ${risk.message}`);
                 }
             }
         } catch (e) {
 
         }
-    }, [user?.id, config]);
+    }, [user?.id]);
 
     useEffect(() => {
         if (!user?.id) return;
@@ -127,6 +138,15 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
                 triggerRefresh('transaction');
 
                 // Check health after a delay (let data settle)
+                setTimeout(checkHealthAndRisks, 2000);
+            }
+        );
+
+        channel.on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'transaction_candidates', filter: `user_id=eq.${user.id}` },
+            () => {
+                triggerRefresh('transaction-candidate');
                 setTimeout(checkHealthAndRisks, 2000);
             }
         );
@@ -174,11 +194,22 @@ export const useDataRealtime = (config: DataRealtimeConfig = {}) => {
 
         });
 
+        const handleLocalDataChange = (event: Event) => {
+            triggerRefresh(getFinancialDataEventSource(event.type));
+        };
+
+        FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+            window.addEventListener(eventName, handleLocalDataChange);
+        });
+
         return () => {
             if (refreshDebounce.current) {
                 clearTimeout(refreshDebounce.current);
             }
             channel.unsubscribe();
+            FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+                window.removeEventListener(eventName, handleLocalDataChange);
+            });
         };
     }, [user?.id, triggerRefresh, checkHealthAndRisks]);
 

@@ -7,6 +7,8 @@ import { goalService, Goal } from './goalService';
 import { formatCurrency } from './currencyService';
 import api from './api';
 
+const BACKEND_AI_TIMEOUT_MS = 9000;
+
 // ==================== INTERFACES ====================
 
 export interface SpendingPattern {
@@ -44,11 +46,31 @@ export interface SpendingVelocity {
 export interface MoneyTwinState {
     userId: string;
     lastUpdated: string;
+    dataVersion?: string;
+    source?: 'backend' | 'local';
+    model?: {
+        backendOwned?: boolean;
+        includesPendingCandidates?: boolean;
+        aiLiveEnabled?: boolean;
+        transactionCount?: number;
+        pendingCandidateCount?: number;
+    };
     patterns: SpendingPattern[];
     velocity: SpendingVelocity;
     forecasts: FinancialForecast[];
     healthScore: number; // 0-100
     riskAlerts: RiskAlert[];
+    pendingCandidateImpact?: {
+        count: number;
+        totalAmount: number;
+        duplicateWarnings: number;
+        byCategory: Record<string, number>;
+        candidates: any[];
+    };
+    whatIfInputs?: {
+        topCategories: Array<{ category: string; avgMonthlySpend: number; suggestedReductionPercent: number }>;
+        subscriptions: Array<{ id: string; name: string; price: number; cycle: string; is_trial?: boolean }>;
+    };
 }
 
 export interface RiskAlert {
@@ -70,7 +92,23 @@ class MoneyTwinService {
     private cacheExpiry: number = 0;
     private readonly CACHE_TTL = 60 * 1000; // 1 minute for fresher data
 
-    // Try fetching AI-generated insights from backend (Groq-powered)
+    private async fetchBackendMoneyTwin(userId: string, forceRefresh = false): Promise<MoneyTwinState | null> {
+        try {
+            const response = await api.get('/money-twin', {
+                params: {
+                    force: forceRefresh ? 'true' : 'false',
+                    includePending: 'true',
+                },
+                timeout: 12000,
+            });
+            return response.data?.data || null;
+        } catch (error) {
+            console.warn('Backend Money Twin unavailable, using local fallback');
+            return null;
+        }
+    }
+
+    // Try fetching AI-generated insights from backend (OpenRouter-powered)
     private async fetchBackendAI(userId: string): Promise<{
         insights: any[] | null;
         forecast: any[] | null;
@@ -78,9 +116,9 @@ class MoneyTwinService {
     }> {
         try {
             const [insightsRes, forecastRes, risksRes] = await Promise.all([
-                api.get('/ai/insights', { headers: { 'x-user-id': userId } }).catch(() => null),
-                api.get('/ai/forecast', { headers: { 'x-user-id': userId } }).catch(() => null),
-                api.get('/ai/risks', { headers: { 'x-user-id': userId } }).catch(() => null)
+                api.get('/ai/insights', { headers: { 'x-user-id': userId }, timeout: BACKEND_AI_TIMEOUT_MS }).catch(() => null),
+                api.get('/ai/forecast', { headers: { 'x-user-id': userId }, timeout: BACKEND_AI_TIMEOUT_MS }).catch(() => null),
+                api.get('/ai/risks', { headers: { 'x-user-id': userId }, timeout: BACKEND_AI_TIMEOUT_MS }).catch(() => null)
             ]);
 
             console.log('🤖 Backend AI fetched:', {
@@ -108,19 +146,26 @@ class MoneyTwinService {
             return this.cache;
         }
 
+        const backendState = await this.fetchBackendMoneyTwin(userId, forceRefresh);
+        if (backendState) {
+            this.cache = backendState;
+            this.cacheExpiry = now + this.CACHE_TTL;
+            return backendState;
+        }
+
         // Fetch all user data AND backend AI in parallel
         const [transactions, subscriptions, budgets, goals, backendAI] = await Promise.all([
-            supabaseTransactionService.getAll(userId),
+            supabaseTransactionService.getAll(userId, { force: forceRefresh, limit: 1000 }),
             subscriptionService.getAll(userId).catch(() => []),
             budgetService.getAll(userId).catch(() => []),
             goalService.getAll(userId).catch(() => []),
-            this.fetchBackendAI(userId) // Try backend Groq AI
+            this.fetchBackendAI(userId) // Try backend OpenRouter AI
         ]);
 
         // Analyze patterns locally
         const patterns = this.analyzeSpendingPatterns(transactions);
         const velocity = this.calculateSpendingVelocity(transactions);
-        const forecasts = this.generateForecasts(transactions, patterns, subscriptions);
+        const forecasts = this.generateForecasts(transactions, patterns, subscriptions, backendAI.forecast || []);
         const healthScore = this.calculateHealthScore(velocity, patterns, budgets, goals);
         let riskAlerts = this.detectRisks(transactions, velocity, budgets, forecasts);
 
@@ -144,6 +189,7 @@ class MoneyTwinService {
         const state: MoneyTwinState = {
             userId,
             lastUpdated: new Date().toISOString(),
+            source: 'local',
             patterns,
             velocity,
             forecasts,
@@ -355,7 +401,8 @@ class MoneyTwinService {
     generateForecasts(
         transactions: SupabaseTransaction[],
         patterns: SpendingPattern[],
-        subscriptions: Subscription[]
+        subscriptions: Subscription[],
+        aiForecasts: any[] = []
     ): FinancialForecast[] {
         const forecasts: FinancialForecast[] = [];
         const now = new Date();
@@ -451,11 +498,16 @@ class MoneyTwinService {
             }
 
             // Use actual expense base with trend for prediction
+            const historicalSubSpend = expenses
+                .filter(t => /subscription|netflix|spotify|adobe|youtube|openai|github|canva|figma/i.test(`${t.category} ${t.description}`))
+                .reduce((sum, t) => sum + Math.abs(t.amount), 0) / Math.max(1, monthKeys.length);
+            const incrementalSubCost = Math.max(0, monthlySubCost - historicalSubSpend);
+            const aiForecast = aiForecasts.find((item: any) => String(item?.month || '').toLowerCase().includes(monthName.split(' ')[0].toLowerCase()));
             const predictedExpenses = Math.round(
-                (baseExpense > 0 ? baseExpense * trendMultiplier : categoryTotal) + monthlySubCost
+                Number(aiForecast?.predictedExpenses) || ((baseExpense > 0 ? baseExpense * trendMultiplier : categoryTotal) + incrementalSubCost)
             );
 
-            const predictedIncome = Math.round(actualMonthlyIncome);
+            const predictedIncome = Math.round(Number(aiForecast?.predictedIncome) || actualMonthlyIncome);
             const predictedSavings = predictedIncome - predictedExpenses;
 
             // Generate warnings based on real analysis
@@ -463,6 +515,10 @@ class MoneyTwinService {
             let riskLevel: 'low' | 'medium' | 'high' | 'critical' = 'low';
 
             const savingsRate = predictedIncome > 0 ? (predictedSavings / predictedIncome) * 100 : 0;
+
+            if (Array.isArray(aiForecast?.insights)) {
+                warnings.push(...aiForecast.insights.slice(0, 2));
+            }
 
             if (predictedSavings < 0) {
                 riskLevel = 'critical';
@@ -598,7 +654,7 @@ class MoneyTwinService {
             const expectedPercent = (dayOfMonth / daysInMonth) * 100;
 
             if (percentUsed > expectedPercent * 1.3 && percentUsed < 100) {
-                const daysLeft = daysInMonth - dayOfMonth;
+                const daysLeft = Math.max(1, daysInMonth - dayOfMonth);
                 const dailyBudget = (budget.amount - spent) / daysLeft;
 
                 alerts.push({
@@ -607,7 +663,7 @@ class MoneyTwinService {
                     severity: percentUsed > 90 ? 'danger' : 'warning',
                     title: `📊 ${budget.category} Budget at Risk`,
                     message: `You've used ${Math.round(percentUsed)}% of your ${budget.category} budget with ${daysLeft} days left.`,
-                    daysUntil: dailyBudget > 0 ? Math.round((budget.amount - spent) / velocity.dailyRate) : 0,
+                    daysUntil: dailyBudget > 0 && velocity.dailyRate > 0 ? Math.round((budget.amount - spent) / velocity.dailyRate) : null,
                     probability: Math.min(100, percentUsed + 10),
                     preventionTip: `Limit ${budget.category} spending to ${formatCurrency(dailyBudget)}/day for the rest of the month.`,
                     createdAt: now.toISOString()
@@ -622,7 +678,7 @@ class MoneyTwinService {
         });
         const weeklyTotal = recentWeek.reduce((s, t) => s + Math.abs(t.amount), 0);
 
-        if (weeklyTotal > velocity.weeklyRate * 1.5) {
+        if (velocity.weeklyRate > 0 && weeklyTotal > velocity.weeklyRate * 1.5) {
             alerts.push({
                 id: `unusual-${now.getTime()}`,
                 type: 'unusual_spending',

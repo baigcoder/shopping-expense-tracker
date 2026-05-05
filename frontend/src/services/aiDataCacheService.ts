@@ -3,6 +3,7 @@
 
 import { supabase } from '../config/supabase';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { FINANCIAL_DATA_EVENTS } from './financialDataEvents';
 
 export interface CachedUserData {
     userId: string;
@@ -37,6 +38,9 @@ class AIDataCacheService {
     private isLoading = false;
     private loadPromise: Promise<CachedUserData> | null = null;
     private listeners: Set<() => void> = new Set();
+    private localCleanup: (() => void) | null = null;
+    private refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    private backendInvalidateTimer: ReturnType<typeof setTimeout> | null = null;
 
     // Cache TTL (5 minutes - but realtime updates keep it fresh)
     private readonly CACHE_TTL = 5 * 60 * 1000;
@@ -95,6 +99,18 @@ class AIDataCacheService {
         this.listeners.forEach(cb => cb());
     }
 
+    private notifyBackendInvalidated(userId: string): void {
+        if (this.backendInvalidateTimer) clearTimeout(this.backendInvalidateTimer);
+
+        this.backendInvalidateTimer = setTimeout(() => {
+            import('./api')
+                .then(({ default: api }) => api.post('/ai/cache/invalidate', {}))
+                .catch(() => {
+                    // Backend cache invalidation is best-effort; frontend realtime cache remains fresh.
+                });
+        }, 500);
+    }
+
     /**
      * Setup Supabase realtime for auto-refresh
      */
@@ -103,11 +119,15 @@ class AIDataCacheService {
         if (this.channel) {
             this.channel.unsubscribe();
         }
+        if (this.localCleanup) {
+            this.localCleanup();
+            this.localCleanup = null;
+        }
 
         this.channel = supabase.channel(`ai-cache-${userId}`);
 
         // Listen to all relevant tables
-        const tables = ['transactions', 'subscriptions', 'goals', 'budgets', 'bill_reminders'];
+        const tables = ['transactions', 'subscriptions', 'goals', 'budgets', 'bills'];
 
         tables.forEach(table => {
             this.channel!.on(
@@ -120,9 +140,41 @@ class AIDataCacheService {
             );
         });
 
-        this.channel.subscribe((status) => {
+        this.channel!.subscribe((status) => {
             console.log('🔌 AI Cache realtime:', status);
         });
+        const handleLocalDataChange = (event?: Event) => {
+            const detail = event instanceof CustomEvent ? event.detail : null;
+            this.invalidate();
+            if (!detail?.remote) {
+                this.notifyBackendInvalidated(userId);
+            }
+            if (this.refreshTimer) clearTimeout(this.refreshTimer);
+
+            this.refreshTimer = setTimeout(() => {
+                this.refreshCache(userId).catch(() => {
+                    this.invalidate();
+                });
+            }, 150);
+        };
+
+        FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+            window.addEventListener(eventName, handleLocalDataChange);
+        });
+
+        this.localCleanup = () => {
+            if (this.refreshTimer) {
+                clearTimeout(this.refreshTimer);
+                this.refreshTimer = null;
+            }
+            if (this.backendInvalidateTimer) {
+                clearTimeout(this.backendInvalidateTimer);
+                this.backendInvalidateTimer = null;
+            }
+            FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+                window.removeEventListener(eventName, handleLocalDataChange);
+            });
+        };
     }
 
     /**
@@ -132,6 +184,14 @@ class AIDataCacheService {
         if (this.channel) {
             this.channel.unsubscribe();
             this.channel = null;
+        }
+        if (this.localCleanup) {
+            this.localCleanup();
+            this.localCleanup = null;
+        }
+        if (this.backendInvalidateTimer) {
+            clearTimeout(this.backendInvalidateTimer);
+            this.backendInvalidateTimer = null;
         }
         this.cache = null;
     }

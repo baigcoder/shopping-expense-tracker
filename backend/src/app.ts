@@ -25,7 +25,7 @@ app.use(helmet({
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
-            connectSrc: ["'self'", frontendOrigin, "https://*.supabase.co", "https://api.groq.com"],
+            connectSrc: ["'self'", frontendOrigin, "https://*.supabase.co", "https://openrouter.ai"],
             frameSrc: ["'none'"],
             objectSrc: ["'none'"],
             baseUri: ["'self'"],
@@ -51,16 +51,32 @@ app.use(cors({
 // CSRF token middleware (sets token on GET requests)
 app.use(csrfTokenMiddleware);
 
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: {
-        success: false,
-        message: 'Too many requests, please try again later'
-    }
+const rateLimitMessage = {
+    success: false,
+    message: 'Too many requests, please try again shortly'
+};
+
+const createLimiter = (windowMs: number, max: number) => rateLimit({
+    windowMs,
+    max,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: rateLimitMessage,
+    skip: (req) => req.method === 'OPTIONS' || req.path === '/health',
 });
-app.use('/api', limiter);
+
+// The web app now hydrates several backend-owned panels in parallel and the
+// browser extension can sync health/session state at the same time. Keep the
+// global API limit high enough for normal app usage, then protect sensitive
+// write-heavy endpoints with narrower route-specific limits.
+app.use('/api', createLimiter(
+    Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000),
+    Number(process.env.RATE_LIMIT_MAX || (process.env.NODE_ENV === 'production' ? 1500 : 5000))
+));
+app.use('/api/auth', createLimiter(15 * 60 * 1000, Number(process.env.AUTH_RATE_LIMIT_MAX || 120)));
+app.use('/api/settings/security', createLimiter(15 * 60 * 1000, Number(process.env.SECURITY_RATE_LIMIT_MAX || 60)));
+app.use('/api/settings/data', createLimiter(15 * 60 * 1000, Number(process.env.SECURITY_RATE_LIMIT_MAX || 60)));
+app.use('/api/reset', createLimiter(15 * 60 * 1000, Number(process.env.SECURITY_RATE_LIMIT_MAX || 60)));
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));

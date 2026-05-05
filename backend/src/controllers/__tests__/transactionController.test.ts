@@ -1,56 +1,44 @@
-// Tests for Transaction Controller
+// Tests for Supabase-backed transaction controller
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { Request, Response, NextFunction } from 'express'
 
-// Test data
 const mockUser = {
     id: 'test-user-id',
     supabaseId: 'supabase-123',
     email: 'test@example.com',
-    name: 'Test User',
-    currency: 'USD',
-    createdAt: new Date(),
-    updatedAt: new Date(),
 }
 
 const mockTransaction = {
     id: 'test-transaction-id',
-    userId: 'test-user-id',
+    user_id: mockUser.supabaseId,
     amount: 99.99,
-    currency: 'USD',
-    storeName: 'Amazon',
-    storeUrl: 'https://amazon.com',
-    productName: 'Test Product',
-    categoryId: 'test-category-id',
-    purchaseDate: new Date(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    notes: 'Test notes',
-    category: {
-        id: 'test-category-id',
-        name: 'Shopping',
-        icon: '🛍️',
-        color: '#6366f1',
-    },
+    description: 'Amazon - Test Product',
+    category: 'Shopping',
+    type: 'expense',
+    date: '2026-04-29T00:00:00.000Z',
+    store_name: 'Amazon',
+    product_name: 'Test Product',
+    created_at: '2026-04-29T00:00:00.000Z',
 }
 
-// Mock Prisma
-const mockPrisma = {
-    transaction: {
-        findMany: vi.fn(),
-        findFirst: vi.fn(),
-        create: vi.fn(),
-        update: vi.fn(),
-        delete: vi.fn(),
-        count: vi.fn(),
-    },
-}
+const mockListUserTransactions = vi.hoisted(() => vi.fn())
+const mockListUserTransactionsPage = vi.hoisted(() => vi.fn())
+const mockGetMoneyTransaction = vi.hoisted(() => vi.fn())
+const mockCreateMoneyTransaction = vi.hoisted(() => vi.fn())
+const mockCreateDetectedTransaction = vi.hoisted(() => vi.fn())
+const mockUpdateMoneyTransaction = vi.hoisted(() => vi.fn())
+const mockDeleteMoneyTransaction = vi.hoisted(() => vi.fn())
 
-vi.mock('../../config/prisma.js', () => ({
-    default: mockPrisma,
+vi.mock('../../services/transactionDomainService.js', () => ({
+    listUserTransactions: mockListUserTransactions,
+    listUserTransactionsPage: mockListUserTransactionsPage,
+    getMoneyTransaction: mockGetMoneyTransaction,
+    createMoneyTransaction: mockCreateMoneyTransaction,
+    createDetectedTransaction: mockCreateDetectedTransaction,
+    updateMoneyTransaction: mockUpdateMoneyTransaction,
+    deleteMoneyTransaction: mockDeleteMoneyTransaction,
 }))
 
-// Mock error handler
 vi.mock('../../middleware/errorHandler.js', () => ({
     asyncHandler: (fn: Function) => fn,
     createError: (message: string, status: number) => {
@@ -60,14 +48,6 @@ vi.mock('../../middleware/errorHandler.js', () => ({
     },
 }))
 
-// Mock Decimal from Prisma
-vi.mock('@prisma/client/runtime/library', () => ({
-    Decimal: class {
-        constructor(public value: number) { }
-    },
-}))
-
-// Helper functions
 const createMockRequest = (overrides = {}): Partial<Request> => ({
     user: mockUser as any,
     params: {},
@@ -80,17 +60,16 @@ const createMockResponse = (): Partial<Response> => {
     const res: Partial<Response> = {}
     res.status = vi.fn().mockReturnValue(res)
     res.json = vi.fn().mockReturnValue(res)
-    res.send = vi.fn().mockReturnValue(res)
     return res
 }
 
 const createMockNext = (): NextFunction => vi.fn()
 
-
 import {
     getTransactions,
     getTransaction,
     createTransaction,
+    createDetectedTransaction,
     updateTransaction,
     deleteTransaction,
     getRecentTransactions,
@@ -102,21 +81,31 @@ describe('Transaction Controller', () => {
     })
 
     describe('getTransactions', () => {
-        it('should return paginated transactions', async () => {
-            const mockTransactions = [mockTransaction]
-            mockPrisma.transaction.findMany.mockResolvedValueOnce(mockTransactions)
-            mockPrisma.transaction.count.mockResolvedValueOnce(1)
+        it('returns paginated canonical transactions', async () => {
+            mockListUserTransactionsPage.mockResolvedValueOnce({
+                transactions: [mockTransaction],
+                page: 1,
+                limit: 20,
+                total: 1,
+                totalPages: 1,
+            })
 
             const req = createMockRequest({ query: { page: '1', limit: '20' } })
             const res = createMockResponse()
 
             await getTransactions(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.findMany).toHaveBeenCalled()
-            expect(mockPrisma.transaction.count).toHaveBeenCalled()
+            expect(mockListUserTransactionsPage).toHaveBeenCalledWith(mockUser.supabaseId, {
+                page: 1,
+                limit: 20,
+                category: undefined,
+                search: undefined,
+                sortBy: 'date',
+                sortOrder: 'desc',
+            })
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
-                data: mockTransactions,
+                data: [mockTransaction],
                 pagination: {
                     page: 1,
                     limit: 20,
@@ -126,69 +115,60 @@ describe('Transaction Controller', () => {
             })
         })
 
-        it('should apply search filter', async () => {
-            mockPrisma.transaction.findMany.mockResolvedValueOnce([])
-            mockPrisma.transaction.count.mockResolvedValueOnce(0)
+        it('passes search and category filters to the domain service', async () => {
+            mockListUserTransactionsPage.mockResolvedValueOnce({
+                transactions: [],
+                page: 2,
+                limit: 10,
+                total: 0,
+                totalPages: 0,
+            })
 
-            const req = createMockRequest({ query: { search: 'laptop' } })
+            const req = createMockRequest({
+                query: {
+                    page: '2',
+                    limit: '10',
+                    search: 'laptop',
+                    category: 'Shopping',
+                    sortBy: 'amount',
+                    sortOrder: 'asc',
+                },
+            })
             const res = createMockResponse()
 
             await getTransactions(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.findMany).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    where: expect.objectContaining({
-                        OR: expect.arrayContaining([
-                            expect.objectContaining({ storeName: expect.anything() }),
-                            expect.objectContaining({ productName: expect.anything() }),
-                        ]),
-                    }),
-                })
-            )
-        })
-
-        it('should apply category filter', async () => {
-            mockPrisma.transaction.findMany.mockResolvedValueOnce([])
-            mockPrisma.transaction.count.mockResolvedValueOnce(0)
-
-            const req = createMockRequest({ query: { categoryId: 'cat-123' } })
-            const res = createMockResponse()
-
-            await getTransactions(req as Request, res as Response, createMockNext())
-
-            expect(mockPrisma.transaction.findMany).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    where: expect.objectContaining({
-                        categoryId: 'cat-123',
-                    }),
-                })
-            )
+            expect(mockListUserTransactionsPage).toHaveBeenCalledWith(mockUser.supabaseId, {
+                page: 2,
+                limit: 10,
+                category: 'Shopping',
+                search: 'laptop',
+                sortBy: 'amount',
+                sortOrder: 'asc',
+            })
         })
     })
 
     describe('getTransaction', () => {
-        it('should return a single transaction', async () => {
-            mockPrisma.transaction.findFirst.mockResolvedValueOnce(mockTransaction)
+        it('returns a single transaction', async () => {
+            mockGetMoneyTransaction.mockResolvedValueOnce(mockTransaction)
 
             const req = createMockRequest({ params: { id: 'txn-123' } })
             const res = createMockResponse()
 
             await getTransaction(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.findFirst).toHaveBeenCalledWith({
-                where: { id: 'txn-123', userId: mockUser.id },
-                include: expect.anything(),
-            })
+            expect(mockGetMoneyTransaction).toHaveBeenCalledWith(mockUser.supabaseId, 'txn-123')
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 data: mockTransaction,
             })
         })
 
-        it('should throw 404 if transaction not found', async () => {
-            mockPrisma.transaction.findFirst.mockResolvedValueOnce(null)
+        it('throws 404 if transaction not found', async () => {
+            mockGetMoneyTransaction.mockResolvedValueOnce(null)
 
-            const req = createMockRequest({ params: { id: 'nonexistent' } })
+            const req = createMockRequest({ params: { id: 'missing' } })
             const res = createMockResponse()
 
             await expect(
@@ -198,14 +178,15 @@ describe('Transaction Controller', () => {
     })
 
     describe('createTransaction', () => {
-        it('should create a new transaction', async () => {
-            const newTransaction = { ...mockTransaction, id: 'new-txn' }
-            mockPrisma.transaction.create.mockResolvedValueOnce(newTransaction)
+        it('creates a manual transaction in the canonical ledger', async () => {
+            mockCreateMoneyTransaction.mockResolvedValueOnce(mockTransaction)
 
             const req = createMockRequest({
                 body: {
                     amount: 99.99,
                     storeName: 'Amazon',
+                    productName: 'Test Product',
+                    category: 'Shopping',
                     currency: 'USD',
                 },
             })
@@ -213,21 +194,60 @@ describe('Transaction Controller', () => {
 
             await createTransaction(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.create).toHaveBeenCalled()
+            expect(mockCreateMoneyTransaction).toHaveBeenCalledWith(expect.objectContaining({
+                user_id: mockUser.supabaseId,
+                amount: 99.99,
+                description: 'Amazon - Test Product',
+                category: 'Shopping',
+                source: 'manual-api',
+                store_name: 'Amazon',
+                product_name: 'Test Product',
+            }))
             expect(res.status).toHaveBeenCalledWith(201)
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 message: 'Transaction created successfully',
-                data: newTransaction,
+                data: mockTransaction,
+            })
+        })
+    })
+
+    describe('createDetectedTransaction', () => {
+        it('saves detected transactions through the transaction domain service', async () => {
+            const payload = {
+                amount: 2500,
+                serviceName: 'Netflix',
+                type: 'subscription',
+                isSubscription: true,
+            }
+            mockCreateDetectedTransaction.mockResolvedValueOnce({
+                transaction: mockTransaction,
+                duplicate: false,
+                transactionHash: 'test-hash',
+            })
+
+            const req = createMockRequest({ body: payload })
+            const res = createMockResponse()
+
+            await createDetectedTransaction(req as Request, res as Response, createMockNext())
+
+            expect(mockCreateDetectedTransaction).toHaveBeenCalledWith(mockUser.supabaseId, payload)
+            expect(res.status).toHaveBeenCalledWith(201)
+            expect(res.json).toHaveBeenCalledWith({
+                success: true,
+                message: 'Detected transaction saved',
+                data: mockTransaction,
+                transaction: mockTransaction,
+                duplicate: false,
+                transactionHash: 'test-hash',
             })
         })
     })
 
     describe('updateTransaction', () => {
-        it('should update an existing transaction', async () => {
-            mockPrisma.transaction.findFirst.mockResolvedValueOnce(mockTransaction)
+        it('updates an existing transaction', async () => {
             const updatedTransaction = { ...mockTransaction, amount: 150 }
-            mockPrisma.transaction.update.mockResolvedValueOnce(updatedTransaction)
+            mockUpdateMoneyTransaction.mockResolvedValueOnce(updatedTransaction)
 
             const req = createMockRequest({
                 params: { id: 'txn-123' },
@@ -237,6 +257,7 @@ describe('Transaction Controller', () => {
 
             await updateTransaction(req as Request, res as Response, createMockNext())
 
+            expect(mockUpdateMoneyTransaction).toHaveBeenCalledWith(mockUser.supabaseId, 'txn-123', { amount: 150 })
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 message: 'Transaction updated successfully',
@@ -244,11 +265,11 @@ describe('Transaction Controller', () => {
             })
         })
 
-        it('should throw 404 if transaction not found', async () => {
-            mockPrisma.transaction.findFirst.mockResolvedValueOnce(null)
+        it('throws 404 if transaction not found', async () => {
+            mockUpdateMoneyTransaction.mockResolvedValueOnce(null)
 
             const req = createMockRequest({
-                params: { id: 'nonexistent' },
+                params: { id: 'missing' },
                 body: { amount: 150 },
             })
             const res = createMockResponse()
@@ -260,18 +281,17 @@ describe('Transaction Controller', () => {
     })
 
     describe('deleteTransaction', () => {
-        it('should delete an existing transaction', async () => {
-            mockPrisma.transaction.findFirst.mockResolvedValueOnce(mockTransaction)
-            mockPrisma.transaction.delete.mockResolvedValueOnce(mockTransaction)
+        it('deletes an existing transaction', async () => {
+            mockGetMoneyTransaction.mockResolvedValueOnce(mockTransaction)
+            mockDeleteMoneyTransaction.mockResolvedValueOnce(undefined)
 
             const req = createMockRequest({ params: { id: 'txn-123' } })
             const res = createMockResponse()
 
             await deleteTransaction(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.delete).toHaveBeenCalledWith({
-                where: { id: 'txn-123' },
-            })
+            expect(mockGetMoneyTransaction).toHaveBeenCalledWith(mockUser.supabaseId, 'txn-123')
+            expect(mockDeleteMoneyTransaction).toHaveBeenCalledWith(mockUser.supabaseId, 'txn-123')
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 message: 'Transaction deleted successfully',
@@ -280,38 +300,30 @@ describe('Transaction Controller', () => {
     })
 
     describe('getRecentTransactions', () => {
-        it('should return recent transactions with default limit', async () => {
-            const recentTransactions = [mockTransaction]
-            mockPrisma.transaction.findMany.mockResolvedValueOnce(recentTransactions)
+        it('returns recent transactions with default limit', async () => {
+            mockListUserTransactions.mockResolvedValueOnce([mockTransaction])
 
             const req = createMockRequest({})
             const res = createMockResponse()
 
             await getRecentTransactions(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.findMany).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    take: 5,
-                    orderBy: { purchaseDate: 'desc' },
-                })
-            )
+            expect(mockListUserTransactions).toHaveBeenCalledWith(mockUser.supabaseId, { limit: 5 })
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
-                data: recentTransactions,
+                data: [mockTransaction],
             })
         })
 
-        it('should use custom limit when provided', async () => {
-            mockPrisma.transaction.findMany.mockResolvedValueOnce([])
+        it('uses custom limit when provided', async () => {
+            mockListUserTransactions.mockResolvedValueOnce([])
 
             const req = createMockRequest({ query: { limit: '10' } })
             const res = createMockResponse()
 
             await getRecentTransactions(req as Request, res as Response, createMockNext())
 
-            expect(mockPrisma.transaction.findMany).toHaveBeenCalledWith(
-                expect.objectContaining({ take: 10 })
-            )
+            expect(mockListUserTransactions).toHaveBeenCalledWith(mockUser.supabaseId, { limit: 10 })
         })
     })
 })

@@ -1,13 +1,14 @@
 /* ============================================
-   FINZEN - ACCOUNTS PAGE
-   Clean SaaS Design
+   CASHLY - ACCOUNTS PAGE (STARK GEN Z)
+   Brutalist Design System
    ============================================ */
 
 .container {
     width: 100%;
-    background: #F8FAFC;
-    min-height: auto;
-    padding: 24px 32px;
+    background: #FFFFFF;
+    min-height: 100vh;
+    padding: 2rem 2.5rem;
+    color: #000000;
 }
 
 /* === HEADER === */
@@ -15,69 +16,75 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 3rem;
 }
 
 .titleSection h1 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #0F172A;
-    margin: 0 0 4px;
-    letter-spacing: -0.5px;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #000000;
+    margin: 0;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
 }
 
 .titleSection p {
-    font-size: 0.95rem;
-    color: #64748B;
-    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .headerActions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 1rem;
 }
 
 .refreshBtn {
-    width: 40px;
-    height: 40px;
+    width: 3.5rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 10px;
-    color: #64748B;
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 0;
+    color: #000000;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: 4px 4px 0px #000000;
 }
 
 .refreshBtn:hover {
-    border-color: #CBD5E1;
-    color: #475569;
-    background: #F8FAFC;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000000;
 }
 
 .addBtn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: #0F172A;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    gap: 0.75rem;
+    padding: 0 1.5rem;
+    height: 3.5rem;
+    background: #E11D48;
+    color: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    box-shadow: 4px 4px 0px #000000;
 }
 
 .addBtn:hover {
-    background: #1E293B;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #000000;
 }
 
 .spinning {
@@ -85,437 +92,389 @@
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* === NET WORTH CARD === */
 .netWorthCard {
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 32px;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    border-radius: 0;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 12px 12px 0px #000000;
 }
 
 .netWorthMain {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 2rem;
 }
 
 .netWorthIconWrap {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: #F0F9FF;
-    color: #0284C7;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 0;
+    background: #000000;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 3px solid #E11D48;
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .netWorthLabel {
     display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #64748B;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
 }
 
 .netWorthValue {
     display: block;
-    font-size: 2rem;
-    font-weight: 800;
-    color: #0F172A;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #000000;
     line-height: 1;
+    letter-spacing: -0.05em;
 }
 
 .negative {
-    color: #EF4444;
+    color: #E11D48 !important;
 }
 
 .netWorthBreakdown {
     display: flex;
-    gap: 24px;
+    gap: 1.5rem;
 }
 
 .breakdownItem {
     display: flex;
     align-items: center;
-    gap: 12px;
-    background: #F8FAFC;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1px solid #F1F5F9;
+    gap: 1rem;
+    background: #FFFFFF;
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0px #000000;
+}
+
+.breakdownIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000000;
 }
 
 .breakdownItem span {
     display: block;
-    font-size: 0.8rem;
-    color: #64748B;
-    margin-bottom: 2px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .breakdownItem strong {
     display: block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0F172A;
-}
-
-.positive {
-    color: #10B981;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: -0.02em;
 }
 
 /* === ACCOUNTS GRID === */
 .accountsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
 }
 
-.loading,
 .empty {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 40px;
-    color: #64748B;
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #E2E8F0;
-}
-
-.empty svg {
-    color: #CBD5E1;
-    margin-bottom: 16px;
+    padding: 5rem 2rem;
+    background: #f8fafc;
+    border: 4px dashed #000000;
 }
 
 .accountCard {
-    background: white;
-    border: 1px solid #E2E8F0;
-    border-radius: 16px;
-    padding: 20px;
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    border-radius: 0;
+    padding: 1.75rem;
     transition: all 0.2s;
     position: relative;
-    overflow: hidden;
+    box-shadow: 6px 6px 0px #000000;
 }
 
 .accountCard:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
-    border-color: #CBD5E1;
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px #000000;
 }
 
 .cardHeader {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 }
 
 .cardIcon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-}
-
-.cardInfo {
-    flex: 1;
+    border: 3px solid #000000;
+    box-shadow: 3px 3px 0px #000000;
 }
 
 .cardInfo h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #0F172A;
-    margin: 0 0 4px;
-}
-
-.cardInfo p {
-    font-size: 0.85rem;
-    color: #64748B;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #000000;
+    margin: 0;
+    letter-spacing: -0.02em;
 }
 
 .cardActions {
     display: flex;
-    gap: 6px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.accountCard:hover .cardActions {
-    opacity: 1;
+    gap: 0.5rem;
+    margin-left: auto;
 }
 
 .cardActions button {
-    width: 28px;
-    height: 28px;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    background: #F1F5F9;
-    color: #64748B;
-    border: none;
+    border: 2px solid #000000;
+    background: #FFFFFF;
+    color: #000000;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .cardActions button:hover {
-    background: #0F172A;
-    color: white;
+    background: #000000;
+    color: #FFFFFF;
 }
 
 .deleteBtn:hover {
-    background: #EF4444 !important;
-    color: white !important;
+    background: #E11D48 !important;
 }
 
 .cardBalance {
-    background: #F8FAFC;
-    border: 1px solid #F1F5F9;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    margin-bottom: 16px;
+    background: #f8fafc;
+    border: 3px solid #000000;
+    border-radius: 0;
+    padding: 1.5rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
     cursor: pointer;
     transition: all 0.2s;
-}
-
-.cardBalance:hover {
-    background: #F1F5F9;
-    border-color: #E2E8F0;
+    box-shadow: inset 4px 4px 0px rgba(0,0,0,0.05);
 }
 
 .balanceLabel {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #64748B;
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
 }
 
 .balanceValue {
     display: block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #0F172A;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: -0.04em;
 }
 
 .cardFooter {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.8rem;
-    padding-top: 12px;
-    border-top: 1px solid #F1F5F9;
+    padding-top: 1.25rem;
+    border-top: 2px solid #f1f5f9;
 }
 
 .accountType {
-    background: #F1F5F9;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    color: #475569;
-    font-size: 0.75rem;
+    background: #000000;
+    padding: 0.25rem 0.75rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .lastUpdated {
-    color: #94A3B8;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
 }
 
 /* === MODAL === */
 .modalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: 2rem;
 }
 
 .modal {
-    background: white;
-    border-radius: 20px;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    border-radius: 0;
     width: 100%;
-    max-width: 480px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 500px;
+    box-shadow: 16px 16px 0px #E11D48;
 }
 
 .modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px;
-    border-bottom: 1px solid #E2E8F0;
+    padding: 2rem;
+    border-bottom: 4px solid #000000;
+    background: #f8fafc;
 }
 
 .modalHeader h2 {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #0F172A;
-    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
 }
 
 .modalHeader button {
-    background: transparent;
+    background: #000000;
     border: none;
-    color: #94A3B8;
+    color: #FFFFFF;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
-.modalHeader button:hover {
-    color: #0F172A;
-}
-
 .form {
-    padding: 24px;
+    padding: 2rem;
 }
 
 .formGroup {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .formGroup label {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: #000000;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .formGroup input,
 .formGroup select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #CBD5E1;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    color: #0F172A;
-    transition: all 0.2s;
-    background: #F8FAFC;
-    font-family: inherit;
+    height: 3.5rem;
+    padding: 0 1rem;
+    border: 3px solid #000000;
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000000;
+    background: #FFFFFF;
+    outline: none;
 }
 
 .formGroup input:focus,
 .formGroup select:focus {
-    outline: none;
-    border-color: #4F46E5;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background: #fff;
+    box-shadow: 4px 4px 0px #000000;
 }
 
 .formRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 1rem;
 }
 
 .colorPicker {
     display: flex;
-    gap: 10px;
+    gap: 0.75rem;
     flex-wrap: wrap;
 }
 
 .colorOption {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 0 1px #E2E8F0;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #000000;
     cursor: pointer;
     transition: all 0.15s;
 }
 
-.colorOption:hover {
-    transform: scale(1.1);
-}
-
 .colorOption.selected {
-    box-shadow: 0 0 0 2px #0F172A;
-    transform: scale(1.1);
+    box-shadow: 4px 4px 0px #000000;
+    transform: translate(-2px, -2px);
 }
 
 .formActions {
     display: flex;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
 .cancelBtn {
     flex: 1;
-    padding: 12px;
-    background: white;
-    border: 1px solid #CBD5E1;
-    border-radius: 10px;
-    font-weight: 600;
-    color: #475569;
+    height: 3.5rem;
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    font-weight: 900;
+    text-transform: uppercase;
     cursor: pointer;
-}
-
-.cancelBtn:hover {
-    background: #F1F5F9;
 }
 
 .submitBtn {
-    flex: 1;
-    padding: 12px;
-    background: #0F172A;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 700;
+    flex: 2;
+    height: 3.5rem;
+    background: #000000;
+    color: #FFFFFF;
+    border: 3px solid #000000;
+    font-weight: 900;
+    text-transform: uppercase;
     cursor: pointer;
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .submitBtn:hover {
-    background: #1E293B;
-}
-
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-
-    .netWorthCard {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-
-    .netWorthBreakdown {
-        width: 100%;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .breakdownItem {
-        width: 100%;
-    }
-
-    .cardActions {
-        opacity: 1;
-    }
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #E11D48;
 }

@@ -217,29 +217,26 @@ const GoalsPage = () => {
             >
                 <div className={styles.headerTitle}>
                     <div className={styles.headerIcon}>
-                        <PiggyBank className="h-7 w-7" />
+                        <PiggyBank className="h-9 w-9" strokeWidth={3} />
                     </div>
                     <div className={styles.headerInfo}>
                         <h1>Savings Goals</h1>
-                        <p>Track your financial dreams and aspirations</p>
+                        <p>Total Freedom Tracker</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <Button
-                        variant="ghost"
-                        className="rounded-2xl font-bold text-slate-500 hover:bg-slate-100 h-12 px-5"
+                <div className="flex items-center gap-6">
+                    <button
+                        className="font-black text-black uppercase tracking-widest text-[12px] hover:underline"
                         onClick={() => fetchGoals()}
                     >
-                        <Clock className="mr-2 h-4 w-4" />
-                        Sync
-                    </Button>
-                    <Button
+                        Sync Data
+                    </button>
+                    <button
                         onClick={openAddModal}
-                        className="h-12 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow-xl shadow-blue-200 transition-all hover:scale-[1.02]"
+                        className="h-14 px-8 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[6px_6px_0px_#E11D48] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48]"
                     >
-                        <Plus className="mr-2 h-5 w-5" />
                         New Goal
-                    </Button>
+                    </button>
                 </div>
             </motion.header>
 
@@ -250,56 +247,52 @@ const GoalsPage = () => {
                 animate="visible"
                 className={styles.overviewGrid}
             >
-                {/* Active Goals */}
                 <motion.div variants={itemVariants} className={styles.premiumStatCard}>
                     <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-blue-50 text-blue-600")}>
-                            <Target className="h-6 w-6" />
+                        <div className={styles.statIconContainer}>
+                            <Target className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <Badge variant="outline" className="border-blue-100 bg-blue-50/50 text-blue-600 font-black text-[10px] uppercase">Active</Badge>
+                        <span className="text-[10px] font-black uppercase bg-black text-white px-2 py-0.5">Active</span>
                     </div>
                     <div className={styles.statLabel}>Total Goals</div>
                     <div className={styles.statValue}>{goals.length}</div>
-                    <div className={styles.statSubtext}>Active Targets</div>
+                    <div className={styles.statSubtext}>Mission Status</div>
                 </motion.div>
 
-                {/* Achieved Goals */}
                 <motion.div variants={itemVariants} className={styles.premiumStatCard}>
                     <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-indigo-50 text-indigo-600")}>
-                            <Trophy className="h-6 w-6" />
+                        <div className={styles.statIconContainer}>
+                            <Trophy className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <Badge variant="outline" className="border-indigo-100 bg-indigo-50/50 text-indigo-600 font-black text-[10px] uppercase">Elite</Badge>
+                        <span className="text-[10px] font-black uppercase bg-[#E11D48] text-white px-2 py-0.5">Elite</span>
                     </div>
                     <div className={styles.statLabel}>Completed</div>
                     <div className={styles.statValue}>{completedGoalsCount}</div>
-                    <div className={styles.statSubtext}>Goals Achieved</div>
+                    <div className={styles.statSubtext}>Targets Achieved</div>
                 </motion.div>
 
-                {/* Total Saved */}
                 <motion.div variants={itemVariants} className={styles.premiumStatCard}>
                     <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-amber-50 text-amber-600")}>
-                            <TrendingUp className="h-6 w-6" />
+                        <div className={styles.statIconContainer}>
+                            <TrendingUp className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <Badge variant="outline" className="border-amber-100 bg-amber-50/50 text-amber-600 font-black text-[10px] uppercase">Growth</Badge>
+                        <span className="text-[10px] font-black uppercase bg-black text-white px-2 py-0.5">Wealth</span>
                     </div>
                     <div className={styles.statLabel}>Total Saved</div>
                     <div className={styles.statValue}>${totalSaved.toLocaleString()}</div>
-                    <div className={styles.statSubtext}>Across All Goals</div>
+                    <div className={styles.statSubtext}>Capital Stashed</div>
                 </motion.div>
 
-                {/* Avg Progress */}
                 <motion.div variants={itemVariants} className={styles.premiumStatCard}>
                     <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-rose-50 text-rose-600")}>
-                            <Sparkles className="h-6 w-6" />
+                        <div className={styles.statIconContainer}>
+                            <Sparkles className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <Badge variant="outline" className="border-rose-100 bg-rose-50/50 text-rose-600 font-black text-[10px] uppercase">Velocity</Badge>
+                        <span className="text-[10px] font-black uppercase bg-[#E11D48] text-white px-2 py-0.5">Power</span>
                     </div>
                     <div className={styles.statLabel}>Avg. Progress</div>
                     <div className={styles.statValue}>{avgProgress}%</div>
-                    <div className={styles.statSubtext}>Completion Rate</div>
+                    <div className={styles.statSubtext}>Efficiency Rate</div>
                 </motion.div>
             </motion.div>
 
@@ -312,17 +305,16 @@ const GoalsPage = () => {
                 >
                     <div className={styles.emptyStateCard}>
                         <div className={styles.emptyIconWrapper}>
-                            <Target className="h-10 w-10" />
+                            <Target className="h-14 w-14" strokeWidth={4} />
                         </div>
-                        <h2>No savings goals yet</h2>
-                        <p>Start your journey to financial freedom by creating your first goal today.</p>
-                        <Button
+                        <h2 className="font-black uppercase italic text-3xl">Zero Targets Detected</h2>
+                        <p className="font-bold text-black opacity-60">Your financial arsenal is empty. Deploy your first savings mission now.</p>
+                        <button
                             onClick={openAddModal}
-                            className="h-14 px-8 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow-xl shadow-blue-200 mt-2"
+                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48] mt-4"
                         >
-                            <Plus className="mr-2 h-6 w-6" />
-                            Create First Goal
-                        </Button>
+                            Deploy First Mission
+                        </button>
                     </div>
                 </motion.div>
             ) : (
@@ -378,25 +370,20 @@ const GoalsPage = () => {
                                     </div>
 
                                     <div className={styles.progressContainer}>
-                                        <div className={styles.progressCircleWrapper}>
-                                            <svg className={styles.circularSvg}>
-                                                <circle className={styles.circleBg} cx="40" cy="40" r="34" />
-                                                <circle
-                                                    className={styles.circleFill}
-                                                    cx="40" cy="40" r="34"
-                                                    stroke={color.bg}
-                                                    strokeDasharray={`${progress * 2.13} 213`}
-                                                />
-                                            </svg>
-                                            <div className={styles.percentageLabel}>{progress}%</div>
+                                        <div className={styles.percentageBadge}>{progress}% Complete</div>
+                                        <div className={styles.linearProgressBase}>
+                                            <div
+                                                className={styles.linearProgressFill}
+                                                style={{ width: `${progress}%`, backgroundColor: color.bg }}
+                                            />
                                         </div>
                                         <div className={styles.progressDetails}>
                                             <div className={styles.detailRow}>
-                                                <span className={styles.detailLabel}>Saved</span>
+                                                <span className={styles.detailLabel}>Capital Saved</span>
                                                 <span className={styles.detailValue}>${goal.current_amount.toLocaleString()}</span>
                                             </div>
                                             <div className={styles.detailRow}>
-                                                <span className={styles.detailLabel}>Target</span>
+                                                <span className={styles.detailLabel}>Target Objective</span>
                                                 <span className={styles.detailValue}>${goal.target_amount.toLocaleString()}</span>
                                             </div>
                                         </div>
@@ -518,20 +505,19 @@ const GoalsPage = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex gap-4 pt-4">
-                            <Button
-                                variant="ghost"
-                                className="flex-1 h-14 rounded-2xl font-bold bg-slate-50 text-slate-500 hover:bg-slate-100"
+                        <div className="flex gap-6 pt-6">
+                            <button
+                                className="flex-1 h-14 border-4 border-black bg-white font-black uppercase tracking-widest text-black hover:bg-slate-50 transition-all"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 Discard
-                            </Button>
-                            <Button
-                                className="flex-2 h-14 px-10 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black shadow-xl shadow-blue-200"
+                            </button>
+                            <button
+                                className="flex-1 h-14 border-4 border-black bg-[#E11D48] text-white font-black uppercase tracking-widest shadow-[6px_6px_0px_#000000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px]"
                                 onClick={handleSubmit}
                             >
-                                {editingGoal ? 'Update Savings Target' : 'Activate Goal'}
-                            </Button>
+                                {editingGoal ? 'Update Mission' : 'Activate Objective'}
+                            </button>
                         </div>
                     </div>
                 </DialogContent>

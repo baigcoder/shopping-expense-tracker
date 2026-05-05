@@ -1,873 +1,153 @@
-/* ============================================
-   CASHLY - Premium SaaS Design System v2.0
-   "Midnight Coral" Theme - Teal + Coral/Orange
-   Industrial Standard, Production Ready
-   ============================================ */
+/* ============================================================
+   CASHLY — "Luminous Finance" Design System v5.0
+   Premium Light-first, Sophisticated, Linear Aesthetics.
+   ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-/* ============================================
-   CSS Variables (Design Tokens)
-   Light Mode (Default)
-   ============================================ */
-
 :root {
-  /* Core Base Colors */
-  --background: 210 40% 98%;
-  --foreground: 222.2 84% 4.9%;
+  /* Premium Light Mode is Default */
+  color-scheme: light;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --bg-page:       #F8FAFC;
+  --bg-card:       #FFFFFF;
+  --bg-card-hover: #F1F5F9;
+  --bg-sidebar:    #FFFFFF;
+  --bg-header:     rgba(255, 255, 255, 0.85);
+  --bg-input:      #F1F5F9;
+  --bg-input-focus:#FFFFFF;
+  --bg-subtle:     #F8FAFC;
+  --bg-overlay:    rgba(0, 0, 0, 0.4);
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
+  /* Borders — Soft & Professional (No thick black) */
+  --border:        #E2E8F0;
+  --border-strong: #CBD5E1;
+  --border-focus:  #3b82f6;
 
-  /* Primary - Premium Indigo */
-  --primary: 221.2 83.2% 53.3%;
-  --primary-foreground: 210 40% 98%;
+  /* Text — Deep Indigo & Gray */
+  --text-primary:  #0F172A;
+  --text-secondary:#475569;
+  --text-muted:    #94A3B8;
+  --text-inverse:  #FFFFFF;
+  --text-link:     #3b82f6;
 
-  /* Secondary - Soft Slate */
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+  /* Brand — Modern Blue */
+  --brand:         #3b82f6;
+  --brand-hover:   #2563eb;
+  --brand-light:   rgba(59, 130, 246, 0.08);
+  --brand-muted:   rgba(59, 130, 246, 0.04);
+  --brand-glow:    rgba(59, 130, 246, 0.2);
 
-  /* Muted */
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  /* Semantic */
+  --success:       #10b981;
+  --success-light: rgba(16, 185, 129, 0.1);
+  --warning:       #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.1);
+  --danger:        #ef4444;
+  --danger-light:  rgba(239, 68, 68, 0.1);
 
-  /* Accent - Subtle Indigo */
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+  /* Radius — Apple Style */
+  --r-sm:  10px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-2xl: 36px;
 
-  /* Destructive */
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  /* Shadows — Soft Multi-layer */
+  --shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:     0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg:     0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-xl:     0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  --shadow-premium: 0 10px 40px -10px rgba(59, 130, 246, 0.15);
 
-  /* Borders & Inputs */
-  --border: 214.3 31.8% 91%;
-  --input: 214.3 31.8% 91%;
-  --ring: 221.2 83.2% 53.3%;
-
-  --radius: 0.75rem;
-
-  /* Extended Palette */
-  --success: 142.1 76.2% 36.3%;
-  --success-foreground: 210 40% 98%;
-  --warning: 38 92% 50%;
-  --warning-foreground: 222.2 84% 4.9%;
-  --info: 221.2 83.2% 53.3%;
-  --info-foreground: 210 40% 98%;
-
-  /* Chart Colors */
-  --chart-1: 221.2 83.2% 53.3%;
-  --chart-2: 212 95% 68%;
-  --chart-3: 216 92% 60%;
-  --chart-4: 210 98% 78%;
-  --chart-5: 212 97% 87%;
+  /* Tailwind compat */
+  --background:             210 40% 98%;
+  --foreground:             222 47% 11%;
+  --card:                   0 0% 100%;
+  --card-foreground:        222 47% 11%;
+  --primary:                217 91% 60%;
+  --radius:                 1.25rem;
 }
 
-
-/* ============================================
-   Base Styles
-   ============================================ */
-
-* {
-  border-color: hsl(var(--border));
+/* Dark mode fallback — Obsidian */
+[data-theme='dark'], .dark {
+  color-scheme: dark;
+  --bg-page:       #050505;
+  --bg-card:       #0f111a;
+  --bg-card-hover: #161924;
+  --bg-sidebar:    #0a0a0a;
+  --bg-header:     rgba(5, 5, 5, 0.8);
+  --bg-input:      rgba(255, 255, 255, 0.03);
+  --bg-input-focus:rgba(255, 255, 255, 0.06);
+  --border:        rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text-primary:  #FFFFFF;
+  --text-secondary:rgba(255, 255, 255, 0.6);
+  --text-muted:    rgba(255, 255, 255, 0.3);
 }
 
-html {
-  scroll-behavior: smooth;
-  height: 100%;
-  overflow-x: hidden;
-}
+/* ============================================================
+   BASE
+   ============================================================ */
+*, *::before, *::after { border-color: var(--border); box-sizing: border-box; }
 
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "cv11", "ss01";
-  min-height: 100%;
-}
-
-/* ============================================
-   Typography Utilities
-   ============================================ */
-
-.font-sans {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  margin: 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.font-display {
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  font-feature-settings: "ss01";
-  letter-spacing: -0.02em;
-}
-
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* ============================================
-   Theme Color Utilities
-   ============================================ */
-
-.bg-background {
-  background-color: hsl(var(--background));
-}
-
-.bg-foreground {
-  background-color: hsl(var(--foreground));
-}
-
-.bg-card {
-  background-color: hsl(var(--card));
-}
-
-.bg-primary {
-  background-color: hsl(var(--primary));
-}
-
-.bg-secondary {
-  background-color: hsl(var(--secondary));
-}
-
-.bg-muted {
-  background-color: hsl(var(--muted));
-}
-
-.bg-accent {
-  background-color: hsl(var(--accent));
-}
-
-.bg-destructive {
-  background-color: hsl(var(--destructive));
-}
-
-.text-foreground {
-  color: hsl(var(--foreground));
-}
-
-.text-primary {
-  color: hsl(var(--primary));
-}
-
-.text-primary-foreground {
-  color: hsl(var(--primary-foreground));
-}
-
-.text-secondary {
-  color: hsl(var(--secondary));
-}
-
-.text-secondary-foreground {
-  color: hsl(var(--secondary-foreground));
-}
-
-.text-muted-foreground {
-  color: hsl(var(--muted-foreground));
-}
-
-.text-destructive {
-  color: hsl(var(--destructive));
-}
-
-.text-card-foreground {
-  color: hsl(var(--card-foreground));
-}
-
-.text-accent {
-  color: hsl(var(--accent));
-}
-
-.border-border {
-  border-color: hsl(var(--border));
-}
-
-.border-input {
-  border-color: hsl(var(--input));
-}
-
-.border-primary {
-  border-color: hsl(var(--primary));
-}
-
-.ring-ring {
-  --tw-ring-color: hsl(var(--ring));
-}
-
-/* ============================================
-   Gradient Utilities
-   ============================================ */
-
-.gradient-primary {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(173 80% 30%) 100%);
-}
-
-.gradient-accent {
-  background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(16 90% 45%) 100%);
-}
-
-.gradient-primary-accent {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.mesh-gradient {
-  background-image:
-    radial-gradient(at 40% 20%, hsla(221, 83%, 53%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(262, 83%, 58%, 0.08) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(221, 83%, 53%, 0.05) 0px, transparent 50%);
-}
-
-
-.hero-gradient {
-  background: linear-gradient(135deg,
-      hsla(221, 83%, 53%, 0.05) 0%,
-      hsla(262, 83%, 58%, 0.03) 50%,
-      hsla(210, 40%, 96%, 0.02) 100%);
-}
-
-
-/* ============================================
-   Glassmorphism
-   ============================================ */
-
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-.glass-card {
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.6));
+/* ============================================================
+   PREMIUM CARD SYSTEM
+   ============================================================ */
+.card {
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
 }
 
-
-/* ============================================
-   Glow Effects
-   ============================================ */
-
-.glow-primary {
-  box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.4);
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
 }
 
-.glow-accent {
-  box-shadow: 0 0 20px -5px hsl(var(--accent) / 0.4);
+/* Decoupled resets to allow component-specific styling */
+[class*="neo-brutalist"], [class*="stark"] {
+  border-width: 1px;
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.5);
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--r-md);
+  transition: all 0.2s; cursor: pointer; border: none;
 }
-
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.12);
-}
-
-
-
-
-/* ============================================
-   Animations
-   ============================================ */
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.7;
-  }
-
-  50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(0.95);
-    opacity: 0.7;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Pulse animation for sync status indicator */
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: scale(1.2);
-  }
-}
-
-@keyframes bounce-gentle {
-
-  0%,
-  100% {
-    transform: translateY(-5%);
-  }
-
-  50% {
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.4s ease-out;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out;
-}
-
-.animate-fade-in-down {
-  animation: fade-in-down 0.5s ease-out;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.3s ease-out;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s linear infinite;
-}
-
-.animate-pulse-ring {
-  animation: pulse-ring 2s ease-in-out infinite;
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-.animate-bounce-gentle {
-  animation: bounce-gentle 2s ease-in-out infinite;
-}
-
-/* Staggered animations for lists */
-.animate-stagger>*:nth-child(1) {
-  animation-delay: 0ms;
-}
-
-.animate-stagger>*:nth-child(2) {
-  animation-delay: 50ms;
-}
-
-.animate-stagger>*:nth-child(3) {
-  animation-delay: 100ms;
-}
-
-.animate-stagger>*:nth-child(4) {
-  animation-delay: 150ms;
-}
-
-.animate-stagger>*:nth-child(5) {
-  animation-delay: 200ms;
-}
-
-.animate-stagger>*:nth-child(6) {
-  animation-delay: 250ms;
-}
-
-/* ============================================
-   Skeleton Loading
-   ============================================ */
-
-.skeleton {
-  background: linear-gradient(90deg,
-      hsl(var(--muted)) 25%,
-      hsl(var(--muted) / 0.5) 50%,
-      hsl(var(--muted)) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: var(--radius);
-}
-
-/* ============================================
-   Scrollbar Styles
-   ============================================ */
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
-}
-
-/* ============================================
-   Selection Styles
-   ============================================ */
-
-::selection {
-  background-color: hsl(var(--primary) / 0.2);
-  color: hsl(var(--primary));
-}
-
-/* ============================================
-   Focus Ring
-   ============================================ */
-
-.focus-ring:focus-visible {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
-}
-
-/* ============================================
-   Toast Overrides (Premium Indigo Theme)
-   ============================================ */
-
-.Toastify__toast {
-  font-family: 'Inter', sans-serif;
-  border-radius: 16px;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.Toastify__toast--success {
-  background: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(221 83% 40%) 100%);
-  color: white;
-}
-
-.Toastify__toast--error {
-  background: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(0 84% 50%) 100%);
-  color: white;
-}
-
-.Toastify__toast--warning {
-  background: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(38 92% 40%) 100%);
-  color: white;
-}
-
-.Toastify__toast--info {
-  background: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(262 83% 58%) 100%);
-  color: white;
-}
-
-/* ============================================
-   Recharts Overrides
-   ============================================ */
-
-.recharts-cartesian-grid line {
-  stroke: hsl(var(--border));
-}
-
-.recharts-text {
-  fill: hsl(var(--muted-foreground));
-  font-size: 12px;
-  font-family: 'Inter', sans-serif;
-}
-
-.recharts-tooltip-wrapper {
-  outline: none !important;
-}
-
-.recharts-default-tooltip {
-  background: hsl(var(--card)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* ============================================
-   Button Utilities
-   ============================================ */
-
 .btn-primary {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(173 80% 35%) 100%);
-  color: hsl(var(--primary-foreground));
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px -4px hsl(var(--primary) / 0.4);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px -4px hsl(var(--primary) / 0.5);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-.btn-accent {
-  background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(16 90% 45%) 100%);
-  color: hsl(var(--accent-foreground));
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px -4px hsl(var(--accent) / 0.4);
-}
-
-.btn-accent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px -4px hsl(var(--accent) / 0.5);
-}
-
-/* ============================================
-   Card Utilities
-   ============================================ */
-
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
-}
-
-
-
-
-/* ============================================
-   Sound Interaction Feedback (Visual)
-   ============================================ */
-
-.sound-click::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle, hsl(var(--primary) / 0.3) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  pointer-events: none;
-}
-
-.sound-click:active::after {
-  opacity: 1;
-}
-
-/* ============================================
-   Reduced Motion Support
-   ============================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ============================================
-   Scrollbar Hide Utility
-   ============================================ */
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Opera */
-}
-
-/* ============================================
-   Safe Area Insets (for notched devices)
-   ============================================ */
-
-.safe-area-pb {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.safe-area-pt {
-  padding-top: env(safe-area-inset-top, 0px);
-}
-
-.safe-area-inset {
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  padding-left: env(safe-area-inset-left, 0px);
-  padding-right: env(safe-area-inset-right, 0px);
-}
-
-/* ============================================
-   Print Styles
-   ============================================ */
-
-@media print {
-
-  *,
-  *::before,
-  *::after {
-    background: transparent !important;
-    color: #000 !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-}
-
-/* ============================================
-   Mobile Touch Optimization
-   ============================================ */
-
-/* Improve touch scrolling performance */
-.touch-scroll {
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  touch-action: pan-y;
-}
-
-/* Prevent accidental touch actions while scrolling */
-.touch-action-pan-y {
-  touch-action: pan-y;
-}
-
-.touch-action-manipulation {
-  touch-action: manipulation;
-}
-
-/* Remove tap highlight on mobile (keeps it for accessibility focus) */
-.tap-highlight-none {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Larger touch targets for mobile (min 44px per Apple HIG) */
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-.touch-target-lg {
-  min-height: 48px;
-  min-width: 48px;
-}
-
-/* Mobile-optimized buttons */
-@media (max-width: 768px) {
-
-  button,
-  [role="button"],
-  a[role="button"],
-  .btn,
-  .button {
-    min-height: 44px;
-    touch-action: manipulation;
-  }
-
-  /* Increase input field sizes on mobile */
-  input,
-  select,
-  textarea {
-    font-size: 16px !important;
-    /* Prevents iOS zoom on focus */
-    min-height: 44px;
-  }
-
-  /* Faster touch feedback */
-  .fast-tap {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-  }
-}
-
-/* Pull to refresh indicator styling */
-.ptr-indicator {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 8px 16px;
-  background: hsl(var(--primary));
+  background: var(--brand);
   color: white;
-  border-radius: 0 0 12px 12px;
-  font-size: 12px;
-  font-weight: 600;
+  box-shadow: var(--shadow-premium);
+}
+.btn-primary:hover {
+  background: var(--brand-hover);
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
 }
 
-/* Swipe-friendly card styling */
-.swipe-card {
-  touch-action: pan-x pan-y;
-  user-select: none;
-}
-
-/* Haptic feedback visual indicators */
-@media (hover: none) and (pointer: coarse) {
-
-  /* Touch devices only */
-  .haptic-feedback:active {
-    transform: scale(0.97);
-    opacity: 0.9;
-    transition: transform 0.1s ease, opacity 0.1s ease;
-  }
-
-  /* Improve button press feedback */
-  button:active,
-  [role="button"]:active {
-    transform: scale(0.97);
-    transition: transform 0.1s ease;
-  }
-
-  /* Disable hover effects on touch devices */
-  .hover-lift:hover {
-    transform: none;
-    box-shadow: inherit;
-  }
-
-  .card-hover:hover {
-    transform: none;
-    box-shadow: inherit;
-  }
-}
-
-/* iOS standalone mode (PWA) */
-@media (display-mode: standalone) {
-  body {
-    /* Prevent overscroll bounce on iOS */
-    overscroll-behavior-y: none;
-  }
-
-  /* Ensure content doesn't go under notch */
-  .app-content {
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-}
-
-/* Landscape mobile adjustments */
-@media (max-height: 500px) and (orientation: landscape) {
-  .mobile-nav-hide-landscape {
-    display: none !important;
-  }
-
-  /* Reduce padding in landscape */
-  .landscape-compact {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-}
-
-/* Touch-friendly spacing for lists */
-@media (max-width: 768px) {
-  .touch-list>* {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid hsl(var(--border));
-  }
-
-  .touch-list>*:last-child {
-    border-bottom: none;
-  }
-}
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.1); }

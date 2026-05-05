@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, X, Chrome, Sparkles, RefreshCw, CheckCircle, AlertTriangle, Zap, Link2 } from 'lucide-react';
 import { useExtensionSync } from '../hooks/useExtensionSync';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { supabase } from '../config/supabase';
+import { useAuthStore } from '../store/useStore';
 import styles from './ExtensionAlert.module.css';
 
 // Storage keys for persistent state
@@ -38,6 +40,12 @@ const isMobileDevice = () => {
         window.innerWidth < 1024;
 };
 
+const sameEmail = (a?: string | null, b?: string | null) => {
+    const expected = (b || '').trim().toLowerCase();
+    if (!expected) return true;
+    return (a || '').trim().toLowerCase() === expected;
+};
+
 type AlertType = 'not_installed' | 'not_synced' | 'extension_removed' | 'sync_success' | null;
 
 const ExtensionAlert = () => {
@@ -50,7 +58,8 @@ const ExtensionAlert = () => {
     const lastKnownStatusRef = useRef<{ installed: boolean; loggedIn: boolean } | null>(null);
     const hasShownSyncSuccessRef = useRef(false);
 
-    const { extensionStatus, checking, checkExtension } = useExtensionSync();
+    const { extensionStatus, checking, checkExtension, syncSession } = useExtensionSync();
+    const websiteUser = useAuthStore((s) => s.user);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -80,8 +89,18 @@ const ExtensionAlert = () => {
 
     // Check if user is logged into the website
     const isWebsiteLoggedIn = useCallback(() => {
-        return localStorage.getItem('supabase.auth.token') ||
-            Object.keys(localStorage).some(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+        if (typeof window === 'undefined') return false;
+        if (localStorage.getItem('supabase.auth.token')) return true;
+        if (Object.keys(localStorage).some(k => k.startsWith('sb-') && k.endsWith('-auth-token'))) return true;
+        if (localStorage.getItem('cashly_web_session_bridge')) return true;
+        try {
+            const raw = localStorage.getItem('auth-storage');
+            if (!raw) return false;
+            const parsed = JSON.parse(raw);
+            return !!(parsed?.state?.isAuthenticated && parsed?.state?.user);
+        } catch {
+            return false;
+        }
     }, []);
 
     // Check if we recently synced (within grace period)
@@ -211,7 +230,19 @@ const ExtensionAlert = () => {
 
             console.log('📡 ExtensionAlert: Received extension-synced event', event.detail);
             forceRefreshRef.current++;
-            lastKnownStatusRef.current = { installed: true, loggedIn: false }; // Force transition detection
+            if (!sameEmail(event.detail?.email, websiteUser?.email)) {
+                lastKnownStatusRef.current = { installed: true, loggedIn: false };
+                setAlertType('not_synced');
+                setInitialCheckDone(true);
+                return;
+            }
+
+            markAsSynced();
+            hasShownSyncSuccessRef.current = true;
+            lastKnownStatusRef.current = { installed: true, loggedIn: true };
+            setAlertType(null);
+            setShowSteps(false);
+            setRedirecting(false);
             setInitialCheckDone(true);
             // Don't call checkExtension here - it dispatches the same event and causes recursion!
             // Instead, just update state directly
@@ -263,7 +294,7 @@ const ExtensionAlert = () => {
             window.removeEventListener('storage', handleStorageChange);
             clearInterval(pollStorageInterval);
         };
-    }, [checkExtension]);
+    }, [checkExtension, markAsSynced, websiteUser?.email]);
 
     // Handle dismiss with persistence
     const handleDismiss = useCallback(() => {
@@ -283,20 +314,29 @@ const ExtensionAlert = () => {
     // Handle refresh/recheck extension
     const handleRefresh = useCallback(async () => {
         setSyncInProgress(true);
+        const CHECK_MS = 12000;
         try {
-            // Request extension to update its localStorage flags
+            // Get current session and push it to the extension
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user) {
+                // syncSession sends SYNC_SESSION message AND waits for EXTENSION_STATUS response
+                await syncSession(session, session.user);
+            }
+            // Also send CHECK_STATUS for good measure
             window.postMessage({
                 type: 'WEBSITE_TO_EXTENSION',
                 action: 'CHECK_STATUS'
             }, '*');
 
-            // Wait for extension to respond and update localStorage
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Now check the updated status
-            await checkExtension();
+            await Promise.race([
+                Promise.resolve(checkExtension()),
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Extension check timed out')), CHECK_MS)
+                ),
+            ]);
 
-            // Check status after recheck
             const authData = localStorage.getItem('cashly_extension_auth');
             if (authData) {
                 try {
@@ -313,7 +353,7 @@ const ExtensionAlert = () => {
         } finally {
             setSyncInProgress(false);
         }
-    }, [checkExtension, markAsSynced]);
+    }, [checkExtension, syncSession, markAsSynced]);
 
     // Handle download click - direct download
     const handleDownload = useCallback(() => {

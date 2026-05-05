@@ -1,5 +1,4 @@
-// ReportsPage - Cashly Premium Financial Reports
-// Midnight Coral Theme - Light Mode
+// ReportsPage - Stark Gen Z Brutalist Audit Manager
 import { useState, useEffect, useRef } from 'react';
 import {
     Receipt, TrendingUp, ArrowDown, DollarSign, Calendar,
@@ -9,7 +8,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabaseTransactionService } from '@/services/supabaseTransactionService';
-import { exportService, ExportTransaction } from '@/services/exportService';
 import { useAuthStore } from '../store/useStore';
 import { toast } from 'sonner';
 import { AreaChart, Area, PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
@@ -17,6 +15,7 @@ import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import styles from './ReportsPage.module.css';
 import { ReportsSkeleton } from '../components/LoadingSkeleton';
+import { featureExpansionApi } from '../services/featureExpansionApi';
 
 const ReportsPage = () => {
     const { user } = useAuthStore();
@@ -25,17 +24,25 @@ const ReportsPage = () => {
     const [exporting, setExporting] = useState<string | null>(null);
     const [showImportModal, setShowImportModal] = useState(false);
     const [dateRange, setDateRange] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+    const [reportType, setReportType] = useState<'tax' | 'category' | 'merchant' | 'subscription' | 'monthly_summary'>('monthly_summary');
+    const [reportPreview, setReportPreview] = useState<any>(null);
+    const [exportHistory, setExportHistory] = useState<any[]>([]);
 
-    // Fetch transactions
     const fetchData = async () => {
-        if (!user?.id) return;
+        if (!user?.id) {
+            setTransactions([]);
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         try {
             const data = await supabaseTransactionService.getAll(user.id);
             setTransactions(data);
+            setExportHistory(await featureExpansionApi.reportExports());
         } catch (error) {
             console.error('Failed to fetch transactions:', error);
-            toast.error('Failed to sync data');
+            toast.error('SYNC_FAILURE');
         } finally {
             setLoading(false);
         }
@@ -45,7 +52,6 @@ const ReportsPage = () => {
         fetchData();
     }, [user?.id]);
 
-    // Filter logic
     const filteredTransactions = transactions.filter(t => {
         if (dateRange === 'all') return true;
         const date = new Date(t.date);
@@ -58,12 +64,10 @@ const ReportsPage = () => {
         return date >= start;
     });
 
-    // Stats calculations
     const totalIncome = filteredTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
     const totalExpenses = filteredTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const netSavings = totalIncome - totalExpenses;
 
-    // Chart Data Preparation
     const categoryData = filteredTransactions
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => {
@@ -77,7 +81,7 @@ const ReportsPage = () => {
         .slice(0, 6)
         .map(([name, value]) => ({ name, value }));
 
-    const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#f43f5e', '#f59e0b', '#10b981'];
+    const COLORS = ['#000000', '#E11D48', '#000000', '#E11D48', '#000000', '#E11D48'];
 
     const monthlyTrend = transactions.reduce((acc, t) => {
         const month = new Date(t.date).toLocaleString('default', { month: 'short' });
@@ -89,10 +93,10 @@ const ReportsPage = () => {
 
     const chartData = Object.values(monthlyTrend).slice(-6);
 
-    // Export Handlers
     const handleExport = async (type: 'csv' | 'excel' | 'pdf') => {
         setExporting(type);
         try {
+            const { exportService } = await import('@/services/exportService');
             const dataToExport = filteredTransactions.map(t => ({
                 date: t.date,
                 description: t.description,
@@ -102,18 +106,38 @@ const ReportsPage = () => {
             }));
 
             if (type === 'csv') exportService.exportToCSV(dataToExport);
-            else if (type === 'excel') exportService.exportToExcel(dataToExport);
+            else if (type === 'excel') await exportService.exportToExcel(dataToExport);
             else if (type === 'pdf') {
-                exportService.exportTransactionsToPDF(dataToExport, {
+                await exportService.exportTransactionsToPDF(dataToExport, {
                     dateRange: {
                         start: filteredTransactions[filteredTransactions.length - 1]?.date || '',
                         end: filteredTransactions[0]?.date || ''
                     }
                 });
             }
-            toast.success(`${type.toUpperCase()} exported successfully!`);
+            toast.success(`EXPORT_${type.toUpperCase()}_SUCCESS`);
         } catch (error) {
-            toast.error('Export failed');
+            toast.error('EXPORT_FAILURE');
+        } finally {
+            setExporting(null);
+        }
+    };
+
+    const handleGenerateReport = async () => {
+        setExporting('report');
+        try {
+            const payload = {
+                reportType,
+                startDate: filteredTransactions[filteredTransactions.length - 1]?.date,
+                endDate: filteredTransactions[0]?.date,
+                format: 'preview',
+            };
+            const result = await featureExpansionApi.generateReport(payload);
+            setReportPreview(result.summary);
+            setExportHistory(await featureExpansionApi.reportExports());
+            toast.success('REPORT_GENERATED');
+        } catch (error) {
+            toast.error('GENERATION_FAILURE');
         } finally {
             setExporting(null);
         }
@@ -140,7 +164,7 @@ const ReportsPage = () => {
     return (
         <div className={styles.mainContent}>
             <div className={styles.contentArea}>
-                {/* Header */}
+                {/* Brutalist Header */}
                 <motion.header
                     className={styles.header}
                     initial={{ opacity: 0, y: -20 }}
@@ -148,15 +172,15 @@ const ReportsPage = () => {
                 >
                     <div className={styles.headerLeft}>
                         <div className={styles.titleIcon}>
-                            <Receipt size={24} />
+                            <Receipt size={32} strokeWidth={3} />
                         </div>
                         <div>
                             <h1 className={styles.title}>
-                                Financial Reports
-                                <div className={styles.liveBadge}>ANALYTICS</div>
+                                Financial Audit
+                                <div className={styles.liveBadge}>LIVE_INTEL</div>
                             </h1>
-                            <p className="text-muted-foreground mt-1 font-medium text-sm">
-                                Comprehensive audit of your capital movement
+                            <p className="text-black/60 mt-2 font-black text-xs uppercase tracking-widest">
+                                COMPREHENSIVE_CAPITAL_MOVEMENT_LOG
                             </p>
                         </div>
                     </div>
@@ -168,81 +192,102 @@ const ReportsPage = () => {
                                 onClick={() => setDateRange(range)}
                                 className={cn(styles.rangeBtn, dateRange === range && styles.activeRange)}
                             >
-                                {range}
+                                {range.toUpperCase()}
                             </button>
                         ))}
                     </div>
                 </motion.header>
 
-                {/* Stats Summary */}
+                {/* Report Generation Section */}
+                <section className="bg-white border-4 border-black p-10 mb-10 shadow-[8px_8px_0px_#000000]">
+                    <div className="flex flex-col lg:flex-row gap-8 lg:items-center lg:justify-between mb-8 pb-8 border-b-4 border-black">
+                        <div>
+                            <h2 className="text-3xl font-black italic uppercase italic">Audit Engine 2.0</h2>
+                            <p className="text-sm font-bold text-black/50 mt-1 uppercase tracking-wider">Generate mission-critical manifests for tax, sectors, or cycles.</p>
+                        </div>
+                        <div className="flex flex-wrap gap-4">
+                            <select
+                                value={reportType}
+                                onChange={e => setReportType(e.target.value as any)}
+                                className="h-14 px-6 border-4 border-black font-black uppercase text-sm focus:outline-none"
+                            >
+                                <option value="monthly_summary">Cycle Summary</option>
+                                <option value="tax">Tax Manifest</option>
+                                <option value="category">Sector Audit</option>
+                                <option value="merchant">Node Analysis</option>
+                                <option value="subscription">Stream Report</option>
+                            </select>
+                            <button
+                                onClick={handleGenerateReport}
+                                disabled={exporting === 'report'}
+                                className="h-14 px-10 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors"
+                            >
+                                {exporting === 'report' ? 'GENERATING...' : 'INITIALIZE'}
+                            </button>
+                        </div>
+                    </div>
+                    {reportPreview && (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="p-6 border-4 border-black bg-black text-white">
+                                <div className="text-[10px] font-black uppercase tracking-widest mb-2 opacity-60">Events</div>
+                                <div className="text-3xl font-black">{reportPreview.transactionCount}</div>
+                            </div>
+                            <div className="p-6 border-4 border-black">
+                                <div className="text-[10px] font-black uppercase tracking-widest mb-2 text-black/50">Total Inflow</div>
+                                <div className="text-3xl font-black text-black">{formatCurrency(reportPreview.totalIncome || 0)}</div>
+                            </div>
+                            <div className="p-6 border-4 border-black bg-[#E11D48] text-white">
+                                <div className="text-[10px] font-black uppercase tracking-widest mb-2 opacity-60">Total Outflow</div>
+                                <div className="text-3xl font-black">{formatCurrency(reportPreview.totalExpense || 0)}</div>
+                            </div>
+                        </div>
+                    )}
+                </section>
+
+                {/* Stats Summary Row */}
                 <motion.div
                     className={styles.statsRow}
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#f0fdf4', color: '#10b981' }}>
-                            <TrendingUp size={22} />
-                        </div>
-                        <p className={styles.statLabel}>Total Inflow</p>
-                        <h3 className={styles.statValue}>{formatCurrency(totalIncome)}</h3>
-                        <div className={styles.statBadge} style={{ background: '#f0fdf4', color: '#10b981' }}>
-                            <Zap size={12} fill="currentColor" />
-                            +12.4% vs prev
-                        </div>
-                    </motion.div>
-
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#fef2f2', color: '#ef4444' }}>
-                            <ArrowDown size={22} />
-                        </div>
-                        <p className={styles.statLabel}>Total Outflow</p>
-                        <h3 className={styles.statValue}>{formatCurrency(totalExpenses)}</h3>
-                        <div className={styles.statBadge} style={{ background: '#fef2f2', color: '#ef4444' }}>
-                            <Zap size={12} fill="currentColor" />
-                            -3.2% vs prev
-                        </div>
-                    </motion.div>
-
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
-                            <DollarSign size={22} />
-                        </div>
-                        <p className={styles.statLabel}>Net Reserve</p>
-                        <h3 className={styles.statValue} style={{ color: netSavings >= 0 ? '#0f172a' : '#ef4444' }}>
-                            {formatCurrency(netSavings)}
-                        </h3>
-                        <div className={styles.statBadge} style={{ background: '#eff6ff', color: '#3b82f6' }}>
-                            <Shield size={12} fill="currentColor" />
-                            Stable Liquidity
-                        </div>
-                    </motion.div>
+                    {[
+                        { icon: <TrendingUp size={28} strokeWidth={3} />, label: "Resource Inflow", value: totalIncome, color: "#000000" },
+                        { icon: <ArrowDown size={28} strokeWidth={3} />, label: "Resource Outflow", value: totalExpenses, color: "#E11D48" },
+                        { icon: <Shield size={28} strokeWidth={3} />, label: "Net Liquidity", value: netSavings, color: "#000000" }
+                    ].map((stat, i) => (
+                        <motion.div key={i} className={styles.premiumStatCard} variants={fadeInUp}>
+                            <div className={styles.statIconBox}>
+                                {stat.icon}
+                            </div>
+                            <p className={styles.statLabel}>{stat.label}</p>
+                            <h3 className={styles.statValue} style={{ color: stat.color }}>{formatCurrency(stat.value as number)}</h3>
+                            <div className={styles.statBadge}>
+                                <Zap size={14} fill="currentColor" strokeWidth={0} />
+                                AUDIT_VERIFIED
+                            </div>
+                        </motion.div>
+                    ))}
                 </motion.div>
 
                 {/* Charts Grid */}
                 <div className={styles.chartsGrid}>
-                    <motion.div
-                        className={styles.chartCard}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3 }}
-                    >
+                    <motion.div className={styles.chartCard} variants={fadeInUp}>
                         <div className={styles.chartHeader}>
                             <div>
                                 <h3 className={styles.chartTitle}>
-                                    <BarChart3 size={20} className="text-indigo-500" />
-                                    Growth Dynamics
+                                    <BarChart3 size={24} strokeWidth={3} />
+                                    Execution Dynamics
                                 </h3>
-                                <p className={styles.chartDesc}>Income vs Expenses • 6 Months Trend</p>
+                                <p className={styles.chartDesc}>Inflow vs Outflow • 6 Cycle Trend</p>
                             </div>
                             <div className={styles.chartLegend}>
                                 <div className={styles.legendItem}>
-                                    <div className={styles.legendDot} style={{ background: '#10b981' }} />
+                                    <div className={styles.legendDot} style={{ background: '#000000' }} />
                                     Inflow
                                 </div>
                                 <div className={styles.legendItem}>
-                                    <div className={styles.legendDot} style={{ background: '#ef4444' }} />
+                                    <div className={styles.legendDot} style={{ background: '#E11D48' }} />
                                     Outflow
                                 </div>
                             </div>
@@ -250,54 +295,40 @@ const ReportsPage = () => {
 
                         <div className="h-80 w-full">
                             <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                                    <defs>
-                                        <linearGradient id="colorInc" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
-                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                        </linearGradient>
-                                        <linearGradient id="colorExp" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15} />
-                                            <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="#f1f5f9" strokeWidth={2} />
                                     <XAxis
                                         dataKey="month"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
+                                        axisLine={true}
+                                        tickLine={true}
+                                        tick={{ fill: '#000000', fontSize: 11, fontWeight: 900 }}
                                         dy={10}
                                     />
                                     <YAxis
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 700 }}
+                                        axisLine={true}
+                                        tickLine={true}
+                                        tick={{ fill: '#000000', fontSize: 11, fontWeight: 900 }}
                                     />
                                     <Tooltip
-                                        cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
-                                        contentStyle={{ background: '#fff', border: 'none', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                        cursor={{ stroke: '#000000', strokeWidth: 4 }}
+                                        contentStyle={{ background: '#000000', border: 'none', padding: '16px', color: '#FFF' }}
+                                        itemStyle={{ color: '#FFF', fontWeight: 900, textTransform: 'uppercase' }}
                                     />
-                                    <Area type="monotone" dataKey="income" stroke="#10b981" fill="url(#colorInc)" strokeWidth={4} />
-                                    <Area type="monotone" dataKey="expenses" stroke="#ef4444" fill="url(#colorExp)" strokeWidth={4} />
+                                    <Area type="stepAfter" dataKey="income" stroke="#000000" fill="#000000" fillOpacity={0.05} strokeWidth={4} />
+                                    <Area type="stepAfter" dataKey="expenses" stroke="#E11D48" fill="#E11D48" fillOpacity={0.05} strokeWidth={4} />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
                     </motion.div>
 
-                    <motion.div
-                        className={styles.chartCard}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4 }}
-                    >
+                    <motion.div className={styles.chartCard} variants={fadeInUp}>
                         <div className={styles.chartHeader}>
                             <div>
                                 <h3 className={styles.chartTitle}>
-                                    <PieChart size={20} className="text-pink-500" />
-                                    Distribution
+                                    <PieChart size={24} strokeWidth={3} />
+                                    Sector Map
                                 </h3>
-                                <p className={styles.chartDesc}>Top spending sectors</p>
+                                <p className={styles.chartDesc}>Top Allocation Nodes</p>
                             </div>
                         </div>
 
@@ -310,23 +341,24 @@ const ReportsPage = () => {
                                         cy="50%"
                                         innerRadius={60}
                                         outerRadius={90}
-                                        paddingAngle={5}
+                                        paddingAngle={0}
                                         dataKey="value"
-                                        strokeWidth={0}
+                                        stroke="#000000"
+                                        strokeWidth={4}
                                     >
                                         {pieData.map((_, index) => (
                                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                         ))}
                                     </Pie>
                                     <Tooltip
-                                        contentStyle={{ background: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                        contentStyle={{ background: '#000000', border: 'none', padding: '12px', color: '#FFF' }}
                                     />
                                 </RechartsPie>
                             </ResponsiveContainer>
-                            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4">
+                            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mt-6">
                                 {pieData.map((d, i) => (
-                                    <div key={d.name} className="flex items-center gap-1.5 font-bold text-[10px] text-slate-500 uppercase">
-                                        <div className="w-2 h-2 rounded-full" style={{ background: COLORS[i % COLORS.length] }} />
+                                    <div key={d.name} className="flex items-center gap-2 font-black text-[10px] text-black uppercase">
+                                        <div className="w-3 h-3 border-2 border-black" style={{ background: COLORS[i % COLORS.length] }} />
                                         {d.name}
                                     </div>
                                 ))}
@@ -335,16 +367,14 @@ const ReportsPage = () => {
                     </motion.div>
                 </div>
 
-                {/* Data Management */}
+                {/* Data Management Section */}
                 <div className={styles.dataSection}>
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>
-                            <Target size={22} className="text-indigo-600" />
-                            Data Management
+                            <Target size={28} strokeWidth={3} />
+                            Data Protocol
                         </h2>
-                        <div className={styles.liveBadge} style={{ background: '#f1f5f9', color: '#64748b' }}>
-                            ENCRYPTED FLOW
-                        </div>
+                        <div className={styles.liveBadge}>ENCRYPTED_INTEL_FLOW</div>
                     </div>
 
                     <motion.div
@@ -353,58 +383,34 @@ const ReportsPage = () => {
                         initial="hidden"
                         animate="visible"
                     >
-                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('csv')}>
-                            <div className={styles.reportIconBox} style={{ background: '#f0fdf4', color: '#10b981' }}>
-                                <FileText size={24} />
-                            </div>
-                            <h3 className={styles.reportName}>Export to CSV</h3>
-                            <p className={styles.reportInfo}>Lightweight sheet for external auditing and processing.</p>
-                            <button className={styles.downloadButton}>
-                                {exporting === 'csv' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
-                                {exporting === 'csv' ? 'Syncing...' : 'Collect Data'}
-                            </button>
-                        </motion.div>
-
-                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('excel')}>
-                            <div className={styles.reportIconBox} style={{ background: '#f5f3ff', color: '#7c3aed' }}>
-                                <FileSpreadsheet size={24} />
-                            </div>
-                            <h3 className={styles.reportName}>Export to Excel</h3>
-                            <p className={styles.reportInfo}>Full workbook with intelligence summary and breakouts.</p>
-                            <button className={styles.downloadButton}>
-                                {exporting === 'excel' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
-                                {exporting === 'excel' ? 'Syncing...' : 'Collect Data'}
-                            </button>
-                        </motion.div>
-
-                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => handleExport('pdf')}>
-                            <div className={styles.reportIconBox} style={{ background: '#fff7ed', color: '#f97316' }}>
-                                <File size={24} />
-                            </div>
-                            <h3 className={styles.reportName}>Export to PDF</h3>
-                            <p className={styles.reportInfo}>Polished certificate ready for professional presentation.</p>
-                            <button className={styles.downloadButton}>
-                                {exporting === 'pdf' ? <RefreshCw className={styles.spinning} size={16} /> : <Download size={16} />}
-                                {exporting === 'pdf' ? 'Syncing...' : 'Collect Data'}
-                            </button>
-                        </motion.div>
-
-                        <motion.div className={styles.reportGlassCard} variants={fadeInUp} onClick={() => setShowImportModal(true)}>
-                            <div className={styles.reportIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
-                                <Upload size={24} />
-                            </div>
-                            <h3 className={styles.reportName}>Import Matrix</h3>
-                            <p className={styles.reportInfo}>Injest external statements to update your financial DNA.</p>
-                            <button className={styles.downloadButton}>
-                                <Zap size={16} />
-                                Start Flow
-                            </button>
-                        </motion.div>
+                        {[
+                            { id: 'csv', icon: <FileText size={28} />, title: "CSV Export", info: "Lightweight manifest for external auditing.", color: "#000000" },
+                            { id: 'excel', icon: <FileSpreadsheet size={28} />, title: "Excel Workbook", info: "Full intelligence sheet with breakouts.", color: "#000000" },
+                            { id: 'pdf', icon: <File size={28} />, title: "PDF Certificate", info: "Polished audit report for presentation.", color: "#000000" },
+                            { id: 'import', icon: <Upload size={28} />, title: "Import Matrix", info: "Injest external statements into DNA.", color: "#E11D48" }
+                        ].map((item, i) => (
+                            <motion.div
+                                key={item.id}
+                                className={styles.reportGlassCard}
+                                variants={fadeInUp}
+                                onClick={() => item.id === 'import' ? setShowImportModal(true) : handleExport(item.id as any)}
+                            >
+                                <div className={styles.reportIconBox}>
+                                    {item.icon}
+                                </div>
+                                <h3 className={styles.reportName}>{item.title}</h3>
+                                <p className={styles.reportInfo}>{item.info}</p>
+                                <button className={styles.downloadButton}>
+                                    {exporting === item.id ? <RefreshCw className={styles.spinning} size={18} strokeWidth={3} /> : <Zap size={18} strokeWidth={3} />}
+                                    {exporting === item.id ? 'SYNCING...' : 'INITIATE_FLOW'}
+                                </button>
+                            </motion.div>
+                        ))}
                     </motion.div>
                 </div>
             </div>
 
-            {/* Import Modal */}
+            {/* Brutalist Import Modal */}
             <ImportModal
                 isOpen={showImportModal}
                 onClose={() => setShowImportModal(false)}
@@ -414,7 +420,6 @@ const ReportsPage = () => {
     );
 };
 
-// Simplified Import Modal for Redesign
 const ImportModal = ({ isOpen, onClose, onImport }: any) => {
     const { user } = useAuthStore();
     const [file, setFile] = useState<File | null>(null);
@@ -425,6 +430,7 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
         if (!file || !user?.id) return;
         setImporting(true);
         try {
+            const { exportService } = await import('@/services/exportService');
             const isExcel = file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
             const result = isExcel
                 ? await exportService.importFromExcel(file)
@@ -437,11 +443,11 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
                     source: 'import'
                 });
             }
-            toast.success(`Matrix updated with ${result.transactions.length} entries!`);
+            toast.success(`MATRIX_UPDATED: ${result.transactions.length} ENTRIES`);
             onImport();
             onClose();
         } catch (error) {
-            toast.error('Manifest ingestion failed');
+            toast.error('MANIFEST_INGESTION_FAILURE');
         } finally {
             setImporting(false);
         }
@@ -451,29 +457,29 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
                 <motion.div
-                    className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/80"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
                 />
                 <motion.div
-                    className="relative w-full max-w-lg bg-white rounded-[40px] shadow-2xl overflow-hidden p-10"
+                    className="relative w-full max-w-xl bg-white border-8 border-black p-12 shadow-[20px_20px_0px_#E11D48]"
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                 >
-                    <div className="text-center mb-8">
-                        <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <Upload size={32} />
+                    <div className="text-center mb-10">
+                        <div className="w-20 h-20 bg-black text-white border-4 border-black flex items-center justify-center mx-auto mb-6">
+                            <Upload size={40} strokeWidth={3} />
                         </div>
-                        <h2 className="text-2xl font-black text-slate-800 tracking-tight">Data Ingestion</h2>
-                        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">External Statements</p>
+                        <h2 className="text-4xl font-black italic uppercase tracking-tighter">Data Ingestion</h2>
+                        <p className="text-black/50 font-black text-xs uppercase tracking-widest mt-2">EXTERNAL_STATEMENT_MANIFEST</p>
                     </div>
 
                     <div
-                        className="border-4 border-dashed border-slate-100 rounded-[32px] p-10 text-center cursor-pointer hover:border-blue-200 transition-colors"
+                        className="border-8 border-dashed border-black/10 p-12 text-center cursor-pointer hover:border-black transition-colors"
                         onClick={() => fileInputRef.current?.click()}
                     >
                         <input
@@ -483,26 +489,26 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
                             className="hidden"
                             onChange={(e) => setFile(e.target.files?.[0] || null)}
                         />
-                        <FileSpreadsheet size={40} className="mx-auto text-slate-200 mb-4" />
-                        <p className="text-sm font-bold text-slate-500">
-                            {file ? file.name : "Select CSV/Excel Matrix"}
+                        <FileSpreadsheet size={64} strokeWidth={1} className="mx-auto text-black/10 mb-6" />
+                        <p className="text-lg font-black uppercase text-black/40">
+                            {file ? file.name : "SELECT_CSV_EXCEL_MATRIX"}
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mt-8">
+                    <div className="grid grid-cols-2 gap-6 mt-12">
                         <button
-                            className="p-4 rounded-2xl bg-slate-50 text-slate-500 font-black text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-colors"
+                            className="h-16 border-4 border-black font-black uppercase text-sm hover:bg-black hover:text-white transition-colors"
                             onClick={onClose}
                         >
                             Abort
                         </button>
                         <button
-                            className="p-4 rounded-2xl bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-100 flex items-center justify-center gap-2"
+                            className="h-16 bg-black text-white font-black uppercase text-sm flex items-center justify-center gap-4 hover:bg-[#E11D48] transition-colors disabled:opacity-50"
                             onClick={handleImport}
                             disabled={!file || importing}
                         >
-                            {importing ? <RefreshCw size={14} className="animate-spin" /> : <Check size={14} />}
-                            {importing ? "Syncing" : "Initiate Inflow"}
+                            {importing ? <RefreshCw size={20} className="animate-spin" strokeWidth={3} /> : <Check size={20} strokeWidth={3} />}
+                            {importing ? "SYNCING..." : "INITIATE"}
                         </button>
                     </div>
                 </motion.div>

@@ -1,4 +1,4 @@
-// Parallel Universe Service - Alternate Reality Financial Comparisons
+// Parallel scenario service - compares practical financial choices against current history.
 // "If you had followed your budget for the last 6 months, you'd have Rs 45,000 saved"
 import { supabaseTransactionService, SupabaseTransaction } from './supabaseTransactionService';
 import { subscriptionService, Subscription } from './subscriptionService';
@@ -68,18 +68,22 @@ class ParallelUniverseService {
 
     // Get all parallel universes for a user
     async getAllUniverses(userId: string, monthsBack: number = 6): Promise<ParallelUniverse[]> {
-        const universeTypes: UniverseType[] = [
-            'perfect_budget',
-            'no_impulse',
-            'investor_you',
-            'subscription_free',
-            'saver_you',
-            'frugal_you'
+        const [transactions, subscriptions, budgets] = await Promise.all([
+            supabaseTransactionService.getAll(userId, { limit: 1000 }),
+            subscriptionService.getAll(userId).catch(() => []),
+            budgetService.getAll(userId).catch(() => [])
+        ]);
+        const cutoffDate = new Date();
+        cutoffDate.setMonth(cutoffDate.getMonth() - monthsBack);
+        const filteredTx = transactions.filter(t => new Date(t.date) >= cutoffDate);
+        const universes = [
+            this.perfectBudgetUniverse(filteredTx, budgets, monthsBack),
+            this.noImpulseUniverse(filteredTx, monthsBack),
+            this.investorUniverse(filteredTx, monthsBack),
+            this.subscriptionFreeUniverse(filteredTx, subscriptions, monthsBack),
+            this.saverUniverse(filteredTx, monthsBack),
+            this.frugalUniverse(filteredTx, monthsBack)
         ];
-
-        const universes = await Promise.all(
-            universeTypes.map(type => this.getUniverse(userId, type, monthsBack))
-        );
 
         // Sort by potential savings (most impactful first)
         return universes.sort((a, b) => b.comparison.difference - a.comparison.difference);

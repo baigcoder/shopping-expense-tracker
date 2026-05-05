@@ -1,132 +1,124 @@
-// Cashly Sidebar Component - Enhanced Smooth Animations & Interaction Logic
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    LayoutDashboard,
-    Receipt,
-    BarChart3,
-    Settings,
-    LogOut,
-    Target,
-    CreditCard,
-    Repeat,
-    Brain,
-    PiggyBank,
-    Plus,
-    FileText,
-    Bell
+    LayoutDashboard, Receipt, BarChart3, Settings, LogOut,
+    Target, CreditCard, Landmark, Repeat, Brain, PiggyBank,
+    Plus, FileText, Bell, Inbox, CalendarDays, Activity,
+    ShoppingBag, Sparkles, WalletCards, ChevronDown, HelpCircle,
+    User, Moon, Sun,
 } from 'lucide-react';
 import { useUIStore, useModalStore, useAuthStore } from '../store/useStore';
 import { logout as supabaseLogout } from '../config/supabase';
 import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
-import BRAND from '@/config/branding';
-import SyncStatusIndicator from './SyncStatusIndicator';
+import styles from './Sidebar.module.css';
 
-const navItems = [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/transactions', icon: Receipt, label: 'Transactions' },
-    { path: '/analytics', icon: BarChart3, label: 'Analytics' },
-    { path: '/insights', icon: Brain, label: 'AI Insights' },
-    { path: '/reports', icon: FileText, label: 'Reports' },
-    { path: '/budgets', icon: Target, label: 'Budgets' },
-    { path: '/goals', icon: PiggyBank, label: 'Goals' },
-    { path: '/subscriptions', icon: Repeat, label: 'Subscriptions' },
-    { path: '/reminders', icon: Bell, label: 'Reminders' },
-    { path: '/cards', icon: CreditCard, label: 'Cards' },
+// ─── Navigation structure ───
+const navGroups = [
+    {
+        label: 'Overview',
+        items: [
+            { path: '/dashboard',        icon: LayoutDashboard, label: 'Dashboard' },
+            { path: '/insights',         icon: Brain,           label: 'AI Assistant' },
+        ],
+    },
+    {
+        label: 'Finance',
+        items: [
+            { path: '/transactions',     icon: Receipt,         label: 'Transactions' },
+            { path: '/transaction-inbox', icon: Inbox,          label: 'Inbox' },
+            { path: '/accounts',         icon: Landmark,        label: 'Accounts' },
+            { path: '/cashflow-calendar', icon: CalendarDays,   label: 'Calendar' },
+        ],
+    },
+    {
+        label: 'Planning',
+        items: [
+            { path: '/budgets',          icon: Target,          label: 'Budgets' },
+            { path: '/goals',            icon: PiggyBank,       label: 'Goals' },
+            { path: '/bills',            icon: WalletCards,     label: 'Bills' },
+            { path: '/subscriptions',    icon: Repeat,          label: 'Subscriptions' },
+        ],
+    },
+    {
+        label: 'Insights',
+        items: [
+            { path: '/analytics',        icon: BarChart3,       label: 'Analytics' },
+            { path: '/money-twin',       icon: Sparkles,        label: 'Money Twin' },
+            { path: '/reports',          icon: FileText,        label: 'Reports' },
+            { path: '/shopping-activity', icon: ShoppingBag,    label: 'Shopping' },
+        ],
+    },
+    {
+        label: 'System',
+        items: [
+            { path: '/cards',            icon: CreditCard,      label: 'Cards' },
+            { path: '/extension-health', icon: Activity,        label: 'Extension' },
+            { path: '/reminders',        icon: Bell,            label: 'Reminders' },
+        ],
+    },
 ];
 
-const smoothTransition = {
-    duration: 0.35,
-    ease: [0.32, 0.72, 0, 1] // Custom cubic-bezier for premium feel
-};
+const SPRING = { type: 'spring', stiffness: 420, damping: 38, mass: 0.75 } as const;
+const FADE   = { duration: 0.2, ease: [0.32, 0.72, 0, 1] } as const;
 
 const Sidebar = () => {
-    const {
-        sidebarOpen,
-        toggleSidebar,
-        sidebarHovered,
-        setSidebarHovered,
-        setSidebarOpen
-    } = useUIStore();
+    const { sidebarOpen, toggleSidebar, sidebarHovered, setSidebarHovered, setSidebarOpen } = useUIStore();
     const { openAddTransaction } = useModalStore();
-    const { logout: storeLogout } = useAuthStore();
-    const navigate = useNavigate();
-    const location = useLocation();
+    const { user, logout: storeLogout } = useAuthStore();
+    const navigate  = useNavigate();
+    const location  = useLocation();
 
     const isExpanded = sidebarOpen || sidebarHovered;
+    const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
 
-    // Track mouse interaction state to prevent expansion on page load
-    const hasUserInteractedRef = useRef(false);
-    const mouseMovementCountRef = useRef(0);
-    const isMouseInsideRef = useRef(false);
-    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const hasInteracted    = useRef(false);
+    const moveCount        = useRef(0);
+    const isInside         = useRef(false);
+    const hoverTimer       = useRef<NodeJS.Timeout | null>(null);
+    const collapseTimer    = useRef<NodeJS.Timeout | null>(null);
 
-    // Reset all hover state on route change
+    const toggleGroup = (label: string) => {
+        setCollapsedGroups(prev => ({ ...prev, [label]: !prev[label] }));
+    };
+
     useEffect(() => {
         setSidebarHovered(false);
-        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-        if (collapseTimeoutRef.current) clearTimeout(collapseTimeoutRef.current);
+        hoverTimer.current   && clearTimeout(hoverTimer.current);
+        collapseTimer.current && clearTimeout(collapseTimer.current);
     }, [location.pathname, setSidebarHovered]);
 
-    // Track mouse movement to confirm intentional interaction
+    useEffect(() => () => {
+        hoverTimer.current   && clearTimeout(hoverTimer.current);
+        collapseTimer.current && clearTimeout(collapseTimer.current);
+    }, []);
+
     const handleMouseMove = useCallback(() => {
-        if (!hasUserInteractedRef.current) {
-            mouseMovementCountRef.current += 1;
-            if (mouseMovementCountRef.current >= 3) {
-                hasUserInteractedRef.current = true;
-            }
+        if (!hasInteracted.current) {
+            if (++moveCount.current >= 3) hasInteracted.current = true;
         }
     }, []);
 
     const handleMouseEnter = useCallback(() => {
-        isMouseInsideRef.current = true;
-
-        if (collapseTimeoutRef.current) {
-            clearTimeout(collapseTimeoutRef.current);
-            collapseTimeoutRef.current = null;
-        }
-
-        // Only expand if user has moved the mouse deliberately
-        if (!hasUserInteractedRef.current) return;
-
-        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-        hoverTimeoutRef.current = setTimeout(() => {
-            if (isMouseInsideRef.current) {
-                setSidebarHovered(true);
-            }
-        }, 150); // Reduced from 300ms to 150ms for faster response
+        isInside.current = true;
+        collapseTimer.current && clearTimeout(collapseTimer.current);
+        if (!hasInteracted.current) return;
+        hoverTimer.current && clearTimeout(hoverTimer.current);
+        hoverTimer.current = setTimeout(() => { if (isInside.current) setSidebarHovered(true); }, 140);
     }, [setSidebarHovered]);
 
     const handleMouseLeave = useCallback(() => {
-        isMouseInsideRef.current = false;
-
-        if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current);
-            hoverTimeoutRef.current = null;
-        }
-
-        collapseTimeoutRef.current = setTimeout(() => {
-            setSidebarHovered(false);
-        }, 100); // Reduced from 200ms to 100ms for snappier collapse
+        isInside.current = false;
+        hoverTimer.current && clearTimeout(hoverTimer.current);
+        collapseTimer.current = setTimeout(() => setSidebarHovered(false), 90);
     }, [setSidebarHovered]);
-
-
-    // Cleanup
-    useEffect(() => {
-        return () => {
-            if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-            if (collapseTimeoutRef.current) clearTimeout(collapseTimeoutRef.current);
-        };
-    }, []);
 
     const handleNavClick = () => {
         soundManager.play('click');
-        setSidebarOpen(false);
-        setSidebarHovered(false);
+        if (window.innerWidth >= 1024) { setSidebarOpen(true); setSidebarHovered(false); return; }
+        setSidebarOpen(false); setSidebarHovered(false);
     };
 
     const handleLogout = async () => {
@@ -134,201 +126,257 @@ const Sidebar = () => {
             await supabaseLogout();
             storeLogout();
             localStorage.clear();
-            genZToast.success("See you soon! 👋");
+            genZToast.success('Signed out successfully.');
             soundManager.play('whoosh');
             navigate('/login');
-        } catch (error) {
-            console.error('Logout error:', error);
-            storeLogout();
-            localStorage.clear();
-            navigate('/login');
+        } catch {
+            storeLogout(); localStorage.clear(); navigate('/login');
         }
     };
 
+    const firstName = user?.name?.split(' ')[0] || 'User';
+    const initials = (user?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
     return (
         <>
-            {/* Mobile Overlay */}
+            {/* Mobile backdrop */}
             <AnimatePresence>
                 {sidebarOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 lg:hidden"
+                        className="fixed inset-0 z-40 lg:hidden"
+                        style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(4px)' }}
                         onClick={() => toggleSidebar()}
                     />
                 )}
             </AnimatePresence>
 
-            {/* Sidebar */}
+            {/* Sidebar Shell */}
             <motion.aside
                 className={cn(
-                    "fixed inset-y-0 left-0 z-50",
-                    "bg-white border-r border-slate-200/60",
-                    "flex flex-col",
-                    "shadow-[10px_0_40px_rgba(0,0,0,0.04)]",
-                    "max-lg:translate-x-[-100%]",
-                    sidebarOpen && "max-lg:translate-x-0"
+                    'fixed inset-y-0 left-0 z-50 flex flex-col',
+                    'max-lg:translate-x-[-100%]',
+                    sidebarOpen && 'max-lg:translate-x-0',
+                    isExpanded && 'sidebar-expanded'
                 )}
-                initial={false}
-                animate={{ width: isExpanded ? 240 : 80 }}
-                transition={{ type: "spring", stiffness: 400, damping: 35, mass: 0.8 }}
                 style={{
-                    cursor: isExpanded ? 'default' : 'pointer',
-                    transform: 'translate3d(0, 0, 0)',
-                    WebkitTransform: 'translate3d(0, 0, 0)',
+                    background: 'var(--bg-card)',
+                    borderRight: '1px solid var(--border)',
+                    boxShadow: isExpanded ? '10px 0 40px -10px rgba(0,0,0,0.06)' : 'none',
                     willChange: 'width',
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    perspective: 1000
                 }}
+                initial={false}
+                animate={{ width: isExpanded ? 272 : 76 }}
+                transition={SPRING}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
+                {/* ── Brand ── */}
+                <div className="flex h-[72px] shrink-0 items-center px-5 gap-3"
+                     style={{ borderBottom: '1px solid var(--border)' }}>
+                    <motion.div
+                        className={cn(styles.logoIcon, styles.liveIcon)}
+                        whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                        onClick={() => navigate('/dashboard')}
+                    >
+                        C
+                    </motion.div>
 
-                {/* Logo Section */}
-                <div className="h-18 flex items-center px-4 border-b border-slate-100">
-                    <div className="flex items-center gap-3">
-                        <motion.div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20"
-                            style={{ background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <span className="text-white font-bold text-xl drop-shadow-sm">C</span>
-                        </motion.div>
+                    <AnimatePresence mode="wait">
+                        {isExpanded && (
+                            <motion.div
+                                initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -8 }} transition={FADE}
+                                className="min-w-0 flex-1 overflow-hidden"
+                            >
+                                <p className="text-[17px] font-black tracking-tight truncate"
+                                   style={{ color: 'var(--text-primary)' }}>
+                                    Cashly
+                                </p>
+                                <p className="text-[10px] font-bold uppercase tracking-[0.15em] truncate"
+                                   style={{ color: 'var(--brand)' }}>
+                                    AI Finance
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* ── Quick Add ── */}
+                <div className="shrink-0 px-3 py-6">
+                    <motion.button
+                        onClick={() => { soundManager.play('click'); openAddTransaction(); }}
+                        className={styles.addButton}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <Plus size={22} strokeWidth={3} />
+                        <AnimatePresence mode="wait">
+                            {isExpanded && (
+                                <motion.span
+                                    initial={{ opacity: 0, width: 0 }}
+                                    animate={{ opacity: 1, width: 'auto' }}
+                                    exit={{ opacity: 0, width: 0 }}
+                                    className="overflow-hidden whitespace-nowrap"
+                                >
+                                    Quick Add
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </motion.button>
+                </div>
+
+                {/* ── Navigation ── */}
+                <nav
+                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-4 scrollbar-none"
+                    style={{ overscrollBehavior: 'contain' }}
+                    onWheel={e => e.stopPropagation()}
+                >
+                    {navGroups.map((group) => {
+                        const isCollapsed = collapsedGroups[group.label];
+                        return (
+                            <div key={group.label} className="mb-1">
+                                {/* Group Header */}
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.button
+                                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                            onClick={() => toggleGroup(group.label)}
+                                            className="flex items-center justify-between w-full px-3 pt-4 pb-2 group"
+                                        >
+                                            <span className="text-[10px] font-black uppercase tracking-[0.15em]"
+                                                  style={{ color: 'var(--text-muted)' }}>
+                                                {group.label}
+                                            </span>
+                                            <ChevronDown
+                                                size={12}
+                                                className={cn(
+                                                    'transition-transform duration-200',
+                                                    isCollapsed && '-rotate-90'
+                                                )}
+                                                style={{ color: 'var(--text-muted)' }}
+                                            />
+                                        </motion.button>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Group Items */}
+                                <AnimatePresence initial={false}>
+                                    {(!isCollapsed || !isExpanded) && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="space-y-1"
+                                        >
+                                            {group.items.map((item) => (
+                                                <NavLink
+                                                    key={item.path}
+                                                    to={item.path}
+                                                    onClick={handleNavClick}
+                                                    className={({ isActive }) => cn(
+                                                        styles.navItem,
+                                                        isActive && styles.active
+                                                    )}
+                                                >
+                                                    <motion.span 
+                                                        className={styles.navIcon}
+                                                        whileHover={{ scale: 1.2, rotate: 5, color: '#3b82f6' }}
+                                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                                    >
+                                                        <item.icon size={20} strokeWidth={2.5} />
+                                                    </motion.span>
+
+                                                    <AnimatePresence mode="wait">
+                                                        {isExpanded && (
+                                                            <motion.span
+                                                                initial={{ opacity: 0, x: -6 }}
+                                                                animate={{ opacity: 1, x: 0 }}
+                                                                exit={{ opacity: 0, x: -6 }}
+                                                                transition={FADE}
+                                                                className={styles.navLabel}
+                                                            >
+                                                                {item.label}
+                                                            </motion.span>
+                                                        )}
+                                                    </AnimatePresence>
+                                                </NavLink>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        );
+                    })}
+                </nav>
+
+                <div className={styles.bottom} style={{ borderBottom: '1px solid #F1F5F9', borderTop: 'none', paddingBottom: '0.5rem' }}>
+                    <NavLink
+                        to="/settings"
+                        onClick={handleNavClick}
+                        className={({ isActive }) => cn(
+                            styles.navItem,
+                            isActive && styles.active
+                        )}
+                    >
+                        <span className={styles.navIcon}>
+                            <Settings size={20} strokeWidth={2.5} />
+                        </span>
+                        <AnimatePresence mode="wait">
+                            {isExpanded && (
+                                <motion.span
+                                    initial={{ opacity: 0, x: -6 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -6 }}
+                                    transition={FADE}
+                                    className={styles.navLabel}
+                                >
+                                    Settings
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                    </NavLink>
+                </div>
+
+                {/* ── User Profile ── */}
+                <div className={styles.bottom}>
+                    <div className={styles.userProfile}>
+                        <div className={styles.avatar}>
+                            {initials}
+                        </div>
+
                         <AnimatePresence mode="wait">
                             {isExpanded && (
                                 <motion.div
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -10 }}
-                                    transition={smoothTransition}
-                                    className="flex flex-col overflow-hidden"
+                                    initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -6 }} transition={FADE}
+                                    className={styles.userInfo}
                                 >
-                                    <span className="font-display font-bold text-xl text-[#0F172A] leading-tight">
-                                        {BRAND.name}
+                                    <span className={styles.userName}>
+                                        {firstName}
                                     </span>
-                                    <span className="text-[10px] uppercase tracking-widest text-[#1d4ed8] font-bold opacity-80">
-                                        Premium Finance
+                                    <span className={styles.userEmail}>
+                                        {user?.email || 'Premium'}
                                     </span>
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                    </div>
-                </div>
 
-                {/* Sync Status Indicator - Shows realtime connection health */}
-                <AnimatePresence>
-                    {isExpanded && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="px-4 py-2 border-b border-slate-100"
-                        >
-                            <SyncStatusIndicator />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-
-                {/* Navigation Links */}
-                <nav
-                    className="flex-1 px-3 space-y-1 pt-2"
-                    style={{
-                        overflowY: 'auto',
-                        overflowX: 'hidden',
-                        overscrollBehavior: 'contain'
-                    }}
-                    onWheel={(e) => e.stopPropagation()}
-                >
-                    {navItems.map((item, index) => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            onClick={handleNavClick}
-                            className={({ isActive }) =>
-                                cn(
-                                    "group relative flex items-center gap-3 rounded-lg transition-all duration-300",
-                                    "font-semibold text-[14px]",
-                                    isExpanded ? "px-4 py-2.5" : "px-0 py-2.5 justify-center",
-                                    isActive
-                                        ? "text-white shadow-md shadow-blue-500/10"
-                                        : "text-slate-500 hover:bg-slate-50 hover:text-[#0F172A]"
-                                )
-                            }
-                            style={({ isActive }) => isActive ? { background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' } : {}}
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <div className={cn("flex items-center justify-center flex-shrink-0 transition-all duration-300", isActive ? "text-white scale-110" : "text-slate-400 group-hover:text-[#1d4ed8]")}>
-                                        <item.icon className={cn("h-[20px] w-[20px]", isActive ? "stroke-[2.5px]" : "stroke-[2px]")} />
-                                    </div>
-                                    <AnimatePresence mode="wait">
-                                        {isExpanded && (
-                                            <motion.span
-                                                initial={{ opacity: 0, x: -8 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                exit={{ opacity: 0, x: -8 }}
-                                                transition={{ ...smoothTransition, delay: index * 0.01 }}
-                                                className="whitespace-nowrap"
-                                            >
-                                                {item.label}
-                                            </motion.span>
-                                        )}
-                                    </AnimatePresence>
-                                </>
-                            )}
-                        </NavLink>
-                    ))}
-                </nav>
-
-                <div className="p-3 border-t border-slate-100 space-y-1">
-                    <NavLink
-                        to="/settings"
-                        onClick={handleNavClick}
-                        className={({ isActive }) =>
-                            cn(
-                                "flex items-center gap-3 rounded-lg transition-all duration-300",
-                                "font-semibold text-[14px]",
-                                isExpanded ? "px-4 py-2.5" : "px-0 py-2.5 justify-center",
-                                isActive
-                                    ? "text-white shadow-md shadow-blue-500/10"
-                                    : "text-slate-500 hover:bg-slate-50 hover:text-[#0F172A]"
-                            )
-                        }
-                        style={({ isActive }) => isActive ? { background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' } : {}}
-                    >
-                        {({ isActive }) => (
-                            <>
-                                <Settings className={cn("h-[20px] w-[20px]", isActive ? "text-white scale-110 stroke-[2.5px]" : "text-slate-400 group-hover:text-[#1d4ed8]")} />
-                                <AnimatePresence mode="wait">
-                                    {isExpanded && (
-                                        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Settings</motion.span>
-                                    )}
-                                </AnimatePresence>
-                            </>
-                        )}
-                    </NavLink>
-                    <button
-                        className={cn(
-                            "w-full flex items-center gap-3 rounded-lg transition-all duration-300",
-                            "font-semibold text-[14px]",
-                            isExpanded ? "px-4 py-2.5" : "px-0 py-2.5 justify-center",
-                            "text-rose-600 hover:bg-rose-50"
-                        )}
-                        onClick={() => { handleNavClick(); handleLogout(); }}
-                    >
-                        <LogOut className="h-[20px] w-[20px] text-current" />
                         <AnimatePresence mode="wait">
                             {isExpanded && (
-                                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Logout</motion.span>
+                                <motion.button
+                                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                    onClick={() => { handleNavClick(); handleLogout(); }}
+                                    className={styles.logoutBtn}
+                                    title="Sign out"
+                                >
+                                    <LogOut size={18} strokeWidth={3} />
+                                </motion.button>
                             )}
                         </AnimatePresence>
-                    </button>
+                    </div>
                 </div>
             </motion.aside>
         </>

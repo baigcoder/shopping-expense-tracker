@@ -3,10 +3,10 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
-import { clearAIContext } from '../services/aiService';
 import aiTipCacheService from '../services/aiTipCacheService';
 import genZToast from '../services/genZToast';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { FINANCIAL_DATA_EVENTS, getFinancialDataEventSource } from '../services/financialDataEvents';
 
 interface AIRealtimeConfig {
     onContextInvalidated?: () => void;
@@ -29,7 +29,12 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
     const { user } = useAuthStore();
     const channelRef = useRef<RealtimeChannel | null>(null);
     const lastContextUpdate = useRef<number>(0);
+    const configRef = useRef(config);
     const DEBOUNCE_MS = 500; // Debounce rapid updates
+
+    useEffect(() => {
+        configRef.current = config;
+    }, [config]);
 
     // Invalidate AI context with debounce
     const invalidateContext = useCallback(() => {
@@ -38,10 +43,12 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
         lastContextUpdate.current = now;
 
         console.log('🧠 AI Context invalidated - data changed');
-        clearAIContext();
+        import('../services/aiService')
+            .then(({ clearAIContext }) => clearAIContext())
+            .catch(() => { });
         aiTipCacheService.notifyDataChanged();
-        config.onContextInvalidated?.();
-    }, [config]);
+        configRef.current.onContextInvalidated?.();
+    }, []);
 
     // Detect spending anomalies
     const detectAnomaly = useCallback((transaction: any) => {
@@ -59,7 +66,7 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
                     severity: 'warning',
                     data: { amount, average: avgSpending }
                 };
-                config.onAnomalyDetected?.(anomaly);
+                configRef.current.onAnomalyDetected?.(anomaly);
                 genZToast.warning(anomaly.message);
             }
         }
@@ -69,7 +76,7 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
         if (recentSpending.length > SPENDING_WINDOW) {
             recentSpending.shift();
         }
-    }, [config]);
+    }, []);
 
     // Check budget thresholds for proactive insights
     const checkBudgetThreshold = useCallback((budget: any) => {
@@ -84,9 +91,9 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
                 severity: 'warning',
                 data: budget
             };
-            config.onAnomalyDetected?.(anomaly);
+            configRef.current.onAnomalyDetected?.(anomaly);
         }
-    }, [config]);
+    }, []);
 
     useEffect(() => {
         if (!user?.id) return;
@@ -173,7 +180,7 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
             (payload) => {
                 console.log('🤖 New AI insight ready');
                 const insight = payload.new;
-                config.onInsightReady?.(insight);
+                configRef.current.onInsightReady?.(insight);
 
                 genZToast.success(`🤖 AI Insight: ${(insight as any)?.title || 'New analysis ready!'}`);
 
@@ -186,10 +193,25 @@ export const useAIRealtime = (config: AIRealtimeConfig = {}) => {
             console.log('🧠 AI Realtime subscription:', status);
         });
 
+        const handleLocalDataChange = (event: Event) => {
+            console.log(`AI local data change detected: ${getFinancialDataEventSource(event.type)}`);
+            invalidateContext();
+            if (event.type === 'transaction-added' || event.type === 'new-transaction') {
+                detectAnomaly((event as CustomEvent).detail);
+            }
+        };
+
+        FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+            window.addEventListener(eventName, handleLocalDataChange);
+        });
+
         return () => {
             channel.unsubscribe();
+            FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+                window.removeEventListener(eventName, handleLocalDataChange);
+            });
         };
-    }, [user?.id, invalidateContext, detectAnomaly, checkBudgetThreshold, config]);
+    }, [user?.id, invalidateContext, detectAnomaly, checkBudgetThreshold]);
 
     return {
         invalidateContext,

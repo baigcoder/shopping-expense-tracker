@@ -9,11 +9,18 @@ import { getCurrencySymbol, getCurrencyInfo, formatCurrency } from './currencySe
 // Safe AI call that never throws - uses backend AI
 const safeCallAI = async (_type: string, systemPrompt: string, userPrompt: string, _userId?: string): Promise<{ response: string } | null> => {
     try {
-        const response = await api.post('/ai/chat', {
-            message: `${systemPrompt}\n\n${userPrompt}`,
-            context: 'insights'
-        });
-        return { response: response.data.response };
+        const response = await Promise.race([
+            api.post('/ai/chat', {
+                message: `${systemPrompt}\n\n${userPrompt}`,
+                context: 'insights'
+            }),
+            new Promise<null>((resolve) => setTimeout(() => resolve(null), 4500))
+        ]);
+
+        if (!response) return null;
+
+        const text = response.data?.reply || response.data?.response;
+        return text ? { response: text } : null;
     } catch (error) {
         console.error('Backend AI call failed:', error);
         return null;

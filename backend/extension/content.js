@@ -220,7 +220,12 @@
 
     // Generate transaction hash for deduplication
     function generateTransactionHash(data) {
-        const str = `${data.hostname || ''}-${data.name || ''}-${data.amount || data.price || 0}-${new Date().toDateString()}`;
+        const detectedDay = data.detectedAt
+            ? new Date(data.detectedAt).toISOString().slice(0, 10)
+            : new Date().toISOString().slice(0, 10);
+        const merchant = (data.merchantName || data.storeName || data.name || data.hostname || '').toLowerCase().trim();
+        const amount = Number(data.amount ?? data.price ?? 0).toFixed(2);
+        const str = `${data.hostname || ''}-${merchant}-${amount}-${data.type || 'purchase'}-${detectedDay}`;
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
@@ -934,32 +939,58 @@
             log('🎉 TRANSACTION CONFIRMED! Extracting data...');
 
             const prices = this.extractPrices();
-            const pageText = (document.body?.innerText || '').toLowerCase();
+            const rawPageText = document.body?.innerText || '';
+            const pageText = rawPageText.toLowerCase();
 
             const trialDays = this.extractTrialDays(pageText);
             const isTrial = trialDays > 0 || this.transactionData.isTrial;
             const isSubscription = this.transactionData.isSubscription || this.detectSubscription(pageText);
             const billingCycle = this.transactionData.billingCycle || this.detectBillingCycle(pageText);
             const planTier = this.detectPlanTier(pageText);  // NEW
+            const amount = prices[0] || 0;
+            const currency = this.detectCurrency(rawPageText);
+            const productName = this.extractProductName();
+            const detectionSignals = this.getDetectionSignals(pageText, amount, isSubscription, isTrial);
+            const confidence = this.calculateDetectionConfidence({
+                amount,
+                pageText,
+                isSubscription,
+                isTrial,
+                detectionSignals
+            });
 
             const transaction = {
                 name: this.siteInfo.name,
+                merchantName: this.siteInfo.name,
+                storeName: this.siteInfo.name,
+                productName,
                 hostname: this.siteInfo.hostname,
                 type: isTrial ? 'trial' : (isSubscription ? 'subscription' : 'purchase'),
                 label: isTrial ? 'Trial Started' : (isSubscription ? 'Subscription' : 'Purchase'),
                 icon: isTrial ? '🎁' : (isSubscription ? '💳' : '🛒'),
-                price: prices[0] || 0,
-                amount: prices[0] || 0,
+                price: amount,
+                amount,
+                currency,
                 isTrial,
                 trialDays: trialDays || (isTrial ? 7 : 0),
                 category: this.siteInfo.category,
                 billingCycle,
                 isSubscription,
                 planTier,  // NEW: Plan tier (starter, pro, enterprise)
+                confidence,
+                detectionConfidence: confidence,
+                detectionSignals,
                 sourceUrl: window.location.href,
                 favicon: this.siteInfo.favicon,
                 detectedAt: new Date().toISOString(),
+                date: new Date().toISOString().slice(0, 10),
                 behaviorFlow: this.stateHistory,
+                rawPayload: {
+                    title: document.title,
+                    url: window.location.href,
+                    signals: detectionSignals,
+                    priceCandidates: prices.slice(0, 5)
+                },
                 autoAddTransaction: true
             };
 
@@ -967,6 +998,8 @@
 
             // Check for duplicate transaction
             const txHash = generateTransactionHash(transaction);
+            transaction.transactionHash = txHash;
+            transaction.idempotencyKey = txHash;
             const isDuplicate = await isTransactionDuplicate(txHash);
             if (isDuplicate) {
                 log('Duplicate transaction detected, skipping:', txHash);
@@ -995,12 +1028,20 @@
                         hostname: transaction.hostname,
                         price: transaction.price,
                         amount: transaction.amount,
+                        currency: transaction.currency,
                         category: transaction.category,
                         billingCycle,
                         isTrial,
                         is_trial: isTrial,
                         trialDays,
                         trial_days: trialDays,
+                        productName: transaction.productName,
+                        planTier: transaction.planTier,
+                        confidence: transaction.confidence,
+                        detectionConfidence: transaction.detectionConfidence,
+                        detectionSignals: transaction.detectionSignals,
+                        transactionHash: transaction.transactionHash,
+                        idempotencyKey: transaction.idempotencyKey,
                         sourceUrl: transaction.sourceUrl,
                         favicon: transaction.favicon,
                         icon: transaction.icon,
@@ -1094,6 +1135,62 @@
                 .map(p => p.price);
 
             return [...new Set(sortedPrices)];
+        }
+
+        detectCurrency(text) {
+            if (/PKR|Rs\.?|₨/i.test(text)) return 'PKR';
+            if (/USD|\$/i.test(text)) return 'USD';
+            if (/EUR|€/i.test(text)) return 'EUR';
+            if (/GBP|£/i.test(text)) return 'GBP';
+            if (/INR|₹/i.test(text)) return 'INR';
+            return 'USD';
+        }
+
+        extractProductName() {
+            const selectors = [
+                '[data-testid*="product-title"]',
+                '[class*="product-title"]',
+                '[class*="product_name"]',
+                '[class*="plan-name"]',
+                '[class*="subscription-name"]',
+                'h1'
+            ];
+
+            for (const selector of selectors) {
+                const el = document.querySelector(selector);
+                const text = (el?.innerText || el?.textContent || '').trim();
+                if (text && text.length >= 3 && text.length <= 160) {
+                    return text.replace(/\s+/g, ' ');
+                }
+            }
+
+            const ogTitle = document.querySelector('meta[property="og:title"]')?.content;
+            if (ogTitle) return ogTitle.trim().slice(0, 160);
+            return undefined;
+        }
+
+        getDetectionSignals(pageText, amount, isSubscription, isTrial) {
+            const signals = this.stateHistory.map((state) => state.to);
+            if (amount > 0) signals.push('amount_detected');
+            if (isSubscription) signals.push('subscription_terms_detected');
+            if (isTrial) signals.push('trial_terms_detected');
+            if (SUCCESS_URL_PATTERNS.some((pattern) => pattern.test(window.location.href))) signals.push('success_url');
+            if (/receipt|confirmation|thank\s*you|payment\s*(was\s*)?successful|order\s*(has\s*)?been\s*placed/i.test(pageText)) {
+                signals.push('success_copy');
+            }
+            if (CHECKOUT_URL_PATTERNS.some((pattern) => pattern.test(window.location.href))) signals.push('checkout_url');
+            return [...new Set(signals)].slice(0, 12);
+        }
+
+        calculateDetectionConfidence({ amount, pageText, isSubscription, isTrial, detectionSignals }) {
+            let confidence = 0.55;
+            if (amount > 0) confidence += 0.18;
+            if (detectionSignals.includes('payment_submitted')) confidence += 0.08;
+            if (detectionSignals.includes('transaction_confirmed')) confidence += 0.12;
+            if (detectionSignals.includes('success_copy') || detectionSignals.includes('success_url')) confidence += 0.08;
+            if (isSubscription || isTrial) confidence += 0.04;
+            if (/receipt|invoice|order number|confirmation/i.test(pageText)) confidence += 0.05;
+            return Math.min(0.98, Number(confidence.toFixed(2)));
         }
 
         // Helper to extract price from a text string
@@ -1218,8 +1315,8 @@
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
                         <span style="font-size: 28px;">${data.icon}</span>
                         <div style="flex: 1;">
-                            <strong style="display: block; font-size: 14px;">✓ Saved to Cashly!</strong>
-                            <span style="font-size: 12px; opacity: 0.9;">${data.label}</span>
+                            <strong style="display: block; font-size: 14px;">Queued in Cashly Inbox</strong>
+                            <span style="font-size: 12px; opacity: 0.9;">${data.label} captured for review</span>
                         </div>
                         <button onclick="this.closest('#cashly-notification').remove()" 
                             style="background: rgba(255,255,255,0.2); border: none; 

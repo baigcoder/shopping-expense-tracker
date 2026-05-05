@@ -11,8 +11,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { formatCurrency } from '../services/currencyService';
-import { supabaseTransactionService } from '../services/supabaseTransactionService';
-import { supabase } from '../config/supabase';
+import { importsApi } from '../services/featureExpansionApi';
 import { Badge } from '@/components/ui/badge';
 import styles from './DocumentImportModal.module.css';
 
@@ -23,6 +22,9 @@ interface ExtractedTransaction {
     category?: string;
     type: 'expense' | 'income';
     selected?: boolean;
+    confidence?: number;
+    duplicateWarning?: boolean;
+    validationErrors?: string[];
 }
 
 interface DetectedPeriod {
@@ -228,34 +230,30 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
         setImporting(true);
 
         try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                throw new Error('Please sign in to import transactions');
-            }
-
             const defaultDate = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-15`;
 
-            const transactionsToInsert = selected.map(tx => ({
-                user_id: user.id,
+            const rows = selected.map(tx => ({
                 description: tx.description.slice(0, 100),
                 amount: tx.amount,
                 date: tx.date || defaultDate,
                 category: tx.category || 'Other',
-                type: tx.type
+                type: tx.type,
+                confidence: tx.confidence ?? 0.75,
+                duplicateWarning: tx.duplicateWarning || false,
+                validationErrors: tx.validationErrors || [],
+                selected: true,
+                rawPayload: tx,
             }));
 
-            const batchSize = 50;
-            for (let i = 0; i < transactionsToInsert.length; i += batchSize) {
-                const batch = transactionsToInsert.slice(i, i + batchSize);
-                const { error } = await supabase
-                    .from('transactions')
-                    .insert(batch);
-
-                if (error) throw new Error(`Failed to import batch: ${error.message}`);
-            }
+            const session = await importsApi.createSession({
+                fileName: file?.name || 'document-import',
+                fileType: file?.name.toLowerCase().endsWith('.pdf') ? 'pdf' : 'unknown',
+                rows,
+            });
+            await importsApi.commitSession(session.session.id);
 
             setStep('success');
-            toast.success(`Imported ${selected.length} transactions`);
+            toast.success(`Queued ${selected.length} transactions for inbox review`);
 
             setTimeout(() => {
                 onImportComplete?.();

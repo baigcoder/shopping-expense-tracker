@@ -6,7 +6,7 @@ import {
     TrendingUp, TrendingDown, PiggyBank, Sparkles, Save,
     FileText, Calendar, Building2, CreditCard, ArrowRight, ShieldCheck, Cpu
 } from 'lucide-react';
-import { processBankStatementPDF, PDFAnalysisResult, ExtractedTransaction } from '../services/pdfAnalyzerService';
+import type { PDFAnalysisResult, ExtractedTransaction } from '../services/pdfAnalyzerService';
 import { formatCurrency } from '../services/currencyService';
 import { useAuthStore } from '../store/useStore';
 import { toast } from 'sonner';
@@ -81,6 +81,7 @@ const PDFAnalyzer = ({ onComplete, onClose }: PDFAnalyzerProps) => {
         }, 300);
 
         try {
+            const { processBankStatementPDF } = await import('../services/pdfAnalyzerService');
             const analysisResult = await processBankStatementPDF(file, user?.id);
             clearInterval(progressInterval);
             setProgress(100);

@@ -1,1319 +1,660 @@
-// Enhanced Extension Popup Script - Full Feature Support v4.0
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log('Popup script initialized');
+(() => {
+    const CONFIG_DATA = window.CONFIG || {};
+    const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+    const WEBSITE_URL = CONFIG_DATA.WEBSITE_URL || 'http://localhost:5173';
 
-    // ================================
-    // DOM ELEMENTS
-    // ================================
-    const loginView = document.getElementById('loginView');
-    const mainView = document.getElementById('mainView');
-    const settingsView = document.getElementById('settingsView');
-    const addManualView = document.getElementById('addManualView');
+    const routes = {
+        dashboard: '/dashboard',
+        inbox: '/transaction-inbox',
+        calendar: '/cashflow-calendar',
+        reports: '/reports',
+        coach: '/insights',
+        health: '/extension-health',
+        transactions: '/transactions',
+        login: '/login',
+    };
 
-    // Login elements
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginError = document.getElementById('loginError');
+    const $ = (id) => document.getElementById(id);
+    const views = {
+        login: $('loginView'),
+        main: $('mainView'),
+        settings: $('settingsView'),
+        manual: $('addManualView'),
+    };
 
-    // Main view elements
-    const logoutBtn = document.getElementById('logoutBtn');
-    const settingsBtn = document.getElementById('settingsBtn');
-    console.log('Button elements found:', { logoutBtn: !!logoutBtn, settingsBtn: !!settingsBtn });
-
-    const userEmailEl = document.getElementById('userEmail');
-    const syncStatusEl = document.getElementById('syncStatus');
-    const monthlySpentEl = document.getElementById('monthlySpent');
-    const transactionCountEl = document.getElementById('transactionCount');
-    const sitesTrackedEl = document.getElementById('sitesTracked');
-    const totalTransactionsEl = document.getElementById('totalTransactions');
-    const recentTransactionsEl = document.getElementById('recentTransactions');
-    const categoriesListEl = document.getElementById('categoriesList');
-    const budgetAlertEl = document.getElementById('budgetAlert');
-
-    // Monitoring elements - NEW!
-    const siteNameEl = document.getElementById('siteName');
-    const siteStatusEl = document.getElementById('siteStatus');
-    const siteFaviconEl = document.getElementById('siteFavicon');
-    const flowIndicatorEl = document.getElementById('flowIndicator');
-
-    // Action buttons
-    const clipPageBtn = document.getElementById('clipPageBtn');
-    const addManualBtn = document.getElementById('addManualBtn');
-    const openDashboardBtn = document.getElementById('openDashboard');
-    const viewBudgetsBtn = document.getElementById('viewBudgetsBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
-
-    // Settings elements
-    const backFromSettings = document.getElementById('backFromSettings');
-    const autoTrackToggle = document.getElementById('autoTrackToggle');
-    const notificationsToggle = document.getElementById('notificationsToggle');
-    const budgetAlertsToggle = document.getElementById('budgetAlertsToggle');
-    const darkModeToggle = document.getElementById('darkModeToggle');
-
-    // Manual add elements
-    const backFromManual = document.getElementById('backFromManual');
-    const manualForm = document.getElementById('manualForm');
-    const manualDesc = document.getElementById('manualDesc');
-    const manualAmount = document.getElementById('manualAmount');
-    const manualCategory = document.getElementById('manualCategory');
-
-    // ================================
-    // ENTERPRISE UI ELEMENTS (v9.0)
-    // ================================
-    const healthIndicator = document.getElementById('healthIndicator');
-    const healthDot = healthIndicator?.querySelector('.health-dot');
-    const diagnosticsBtn = document.getElementById('diagnosticsBtn');
-    const diagnosticsPanel = document.getElementById('diagnosticsPanel');
-    const closeDiagnostics = document.getElementById('closeDiagnostics');
-    const forceSync = document.getElementById('forceSync');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const versionBadge = document.getElementById('versionBadge');
-
-    // Diagnostic value elements
-    const diagHealthScore = document.getElementById('diagHealthScore');
-    const diagLatency = document.getElementById('diagLatency');
-    const diagSyncRate = document.getElementById('diagSyncRate');
-    const diagPending = document.getElementById('diagPending');
-    const diagErrors = document.getElementById('diagErrors');
-
-    // ================================
-    // DIAGNOSTICS PANEL HANDLERS
-    // ================================
-    if (diagnosticsBtn) {
-        diagnosticsBtn.addEventListener('click', async () => {
-            if (diagnosticsPanel) {
-                const isVisible = diagnosticsPanel.style.display !== 'none';
-                diagnosticsPanel.style.display = isVisible ? 'none' : 'block';
-                if (!isVisible) {
-                    await updateDiagnostics();
-                }
-            }
-        });
-    }
-
-    if (closeDiagnostics) {
-        closeDiagnostics.addEventListener('click', () => {
-            if (diagnosticsPanel) diagnosticsPanel.style.display = 'none';
-        });
-    }
-
-    if (forceSync) {
-        forceSync.addEventListener('click', async () => {
-            forceSync.textContent = 'Syncing...';
-            forceSync.disabled = true;
-            try {
-                await chrome.runtime.sendMessage({ type: 'FORCE_BATCH_SYNC' });
-                showToast('✅ Sync initiated');
-            } catch (e) {
-                showToast('❌ Sync failed');
-            }
-            forceSync.textContent = 'Force Sync';
-            forceSync.disabled = false;
-            await updateDiagnostics();
-        });
-    }
-
-    // Health indicator click opens diagnostics
-    if (healthIndicator) {
-        healthIndicator.addEventListener('click', () => {
-            if (diagnosticsBtn) diagnosticsBtn.click();
-        });
-    }
-
-    // Function to update diagnostics data
-    async function updateDiagnostics() {
-        try {
-            const response = await chrome.runtime.sendMessage({ type: 'GET_FULL_DIAGNOSTICS' });
-            if (response) {
-                // Update version badge
-                if (versionBadge) versionBadge.textContent = `v${response.version || '9.0'}`;
-
-                // Health Score
-                if (diagHealthScore) {
-                    const score = response.metrics?.apiSuccessRate || 100;
-                    diagHealthScore.textContent = `${score}%`;
-                    diagHealthScore.className = 'diag-value ' +
-                        (score >= 90 ? '' : score >= 70 ? 'warning' : 'error');
-                }
-
-                // Latency
-                if (diagLatency) {
-                    const latency = response.metrics?.avgSyncTime || 0;
-                    diagLatency.textContent = `${latency}ms`;
-                    diagLatency.className = 'diag-value ' +
-                        (latency < 500 ? '' : latency < 1000 ? 'warning' : 'error');
-                }
-
-                // Sync Rate
-                if (diagSyncRate) {
-                    const success = response.metrics?.apiSuccess || 0;
-                    const failure = response.metrics?.apiFailure || 0;
-                    diagSyncRate.textContent = `${success}/${success + failure}`;
-                }
-
-                // Pending
-                if (diagPending) {
-                    diagPending.textContent = response.pendingSync || 0;
-                }
-
-                // Errors
-                if (diagErrors) {
-                    const errors = response.metrics?.totalErrors || 0;
-                    diagErrors.textContent = errors;
-                    diagErrors.className = 'diag-value ' + (errors === 0 ? '' : 'error');
-                }
-
-                // Update health indicator
-                updateHealthIndicator(response);
-            }
-        } catch (e) {
-            console.log('Diagnostics fetch failed:', e);
+    // Debug function to log all relevant info
+    const debugInfo = {
+        show: async () => {
+            const ext = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'lastSync']);
+            console.log('=== EXTENSION DEBUG INFO ===');
+            console.log('Storage data:', {
+                hasAccessToken: !!ext.accessToken,
+                userEmail: ext.userEmail,
+                userId: ext.userId,
+                lastSync: ext.lastSync ? new Date(ext.lastSync).toLocaleString() : 'Never'
+            });
+            console.log('URL:', window.location.href);
+            console.log('API_BASE_URL:', API_BASE_URL);
+            return ext;
         }
-    }
+    };
+    
+    // Expose for console debugging
+    window.CashlyDebug = debugInfo;
 
-    // Function to update health indicator
-    function updateHealthIndicator(data) {
-        if (!healthDot) return;
+    let authData = null;
 
-        const successRate = parseFloat(data?.metrics?.apiSuccessRate || 100);
-        const pendingCount = data?.pendingSync || 0;
-        const errorCount = data?.metrics?.totalErrors || 0;
+    const showView = (name) => {
+        Object.entries(views).forEach(([key, view]) => {
+            if (view) view.hidden = key !== name;
+        });
+    };
 
-        healthDot.classList.remove('healthy', 'warning', 'error');
-
-        if (successRate >= 95 && pendingCount === 0 && errorCount === 0) {
-            healthDot.classList.add('healthy');
-            healthIndicator.title = 'All systems healthy';
-        } else if (successRate >= 80 || (pendingCount > 0 && pendingCount < 5)) {
-            healthDot.classList.add('warning');
-            healthIndicator.title = `Warning: ${pendingCount} pending, ${errorCount} errors`;
-        } else {
-            healthDot.classList.add('error');
-            healthIndicator.title = `Error: ${pendingCount} pending, ${errorCount} errors`;
-        }
-    }
-
-    // Toast helper
-    function showToast(message) {
-        const container = document.getElementById('toastContainer');
+    const showToast = (message, type = 'success') => {
+        const container = $('toastContainer');
         if (!container) return;
-
         const toast = document.createElement('div');
-        toast.className = 'cashly-toast';
-        toast.innerHTML = `<span>${message}</span>`;
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
         container.appendChild(toast);
 
         setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 300);
+            toast.classList.add('hiding');
+            setTimeout(() => toast.remove(), 200);
         }, 3000);
-    }
-
-    // Show loading overlay
-    function showLoading(show = true, text = 'Loading...') {
-        if (loadingOverlay) {
-            loadingOverlay.style.display = show ? 'flex' : 'none';
-            const loadingText = loadingOverlay.querySelector('.loading-text');
-            if (loadingText) loadingText.textContent = text;
-        }
-    }
-
-    // Periodically update health indicator (every 30s)
-    setInterval(async () => {
-        try {
-            const response = await chrome.runtime.sendMessage({ type: 'GET_METRICS' });
-            if (response) {
-                updateHealthIndicator({ metrics: response });
-            }
-        } catch (e) { }
-    }, 30000);
-
-    // Initial health check
-    setTimeout(updateDiagnostics, 1000);
-
-    // ================================
-    // CONFIGURATION (from config.js loaded in HTML)
-    // ================================
-    const SUPABASE_URL = window.CONFIG?.SUPABASE_URL || 'https://ebfolvhqjvavrwrfcbhn.supabase.co';
-    const SUPABASE_ANON_KEY = window.CONFIG?.SUPABASE_ANON_KEY || '';
-    const WEBSITE_URL = window.CONFIG?.WEBSITE_URL || 'http://localhost:5173';
-    const DASHBOARD_URL = `${WEBSITE_URL}/dashboard`;
-    const BUDGETS_URL = `${WEBSITE_URL}/budgets`;
-
-    // State tracking map - Updated for Smart Site Detection v5.0
-    const STATE_DISPLAY = {
-        'idle': { stage: 0, status: '💤 Not a payment site', color: '#94A3B8' },
-        'monitoring': { stage: 0, status: '👁️ Monitoring...', color: '#10B981' },
-        'browsing': { stage: 0, status: '👁️ Monitoring...', color: '#10B981' },
-        'checkout_entered': { stage: 1, status: '🛒 In Checkout', color: '#F59E0B' },
-        'payment_form_active': { stage: 2, status: '💳 Filling Payment', color: '#6366F1' },
-        'payment_submitted': { stage: 2, status: '⏳ Processing...', color: '#2563EB' },
-        'awaiting_confirmation': { stage: 3, status: '🔄 Confirming...', color: '#2563EB' },
-        'transaction_confirmed': { stage: 3, status: '✅ Saved!', color: '#10B981' }
     };
 
-    // ================================
-    // CURRENT TAB MONITORING - Smart Site Detection v5.0
-    // ================================
-    async function updateCurrentTabInfo() {
+    const formatCurrency = (amount) => {
+        const value = Number(amount || 0);
+        return new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 2,
+        }).format(value);
+    };
+
+    const openWeb = (path) => chrome.tabs.create({ url: `${WEBSITE_URL}${path}` });
+
+    const getAuth = async () => {
+        // First check background status (source of truth)
         try {
-            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            if (!tab || !tab.url) {
-                // No active tab - update UI to show this
-                if (siteNameEl) siteNameEl.textContent = 'No active tab';
-                if (siteStatusEl) siteStatusEl.textContent = 'Open a website to start';
-                return;
-            }
-
-            // Check for special URLs that we can't track
-            if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://') ||
-                tab.url.startsWith('about:') || tab.url.startsWith('edge://')) {
-                if (siteNameEl) siteNameEl.textContent = 'Browser Page';
-                if (siteStatusEl) siteStatusEl.textContent = '⚙️ System page - not tracked';
-                if (siteFaviconEl) siteFaviconEl.src = '';
-                return;
-            }
-
-            const url = new URL(tab.url);
-            const hostname = url.hostname.replace('www.', '');
-
-            // Default site name from hostname (capitalize first letter)
-            let siteName = hostname.split('.')[0].charAt(0).toUpperCase() + hostname.split('.')[0].slice(1);
-            let siteCategory = 'Browsing';
-            let currentState = 'idle';
-            let isPaymentSite = false;
-            let analysisScore = 0;
-
-            // ALWAYS update favicon from hostname first
-            if (siteFaviconEl) {
-                siteFaviconEl.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
-                siteFaviconEl.onerror = () => { siteFaviconEl.src = ''; };
-            }
-
-            // Try to get tracking state from content script
-            try {
-                const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_CURRENT_SITE' });
-                if (response) {
-                    siteName = response.siteName || siteName;
-                    siteCategory = response.category || 'Shopping';
-                    currentState = response.currentState || 'idle';
-                    isPaymentSite = response.isPaymentSite || false;
-                    analysisScore = response.analysisScore || 0;
-
-                    // Update favicon with content script's better version
-                    if (siteFaviconEl && response.favicon) {
-                        siteFaviconEl.src = response.favicon;
-                    }
-
-                    console.log('📦 Content script response:', { siteName, currentState, isPaymentSite, analysisScore });
-                }
-            } catch (e) {
-                // Content script not loaded - show basic monitoring mode
-                console.log('⚠️ Content script not responding, showing basic info for:', hostname);
-                currentState = 'browsing'; // Show as browsing, not idle
-                isPaymentSite = true; // Assume it could be trackable
-            }
-
-            // ALWAYS update site name (even if content script failed)
-            if (siteNameEl) {
-                siteNameEl.textContent = siteName;
-            }
-
-            // Update status with state info
-            const stateInfo = STATE_DISPLAY[currentState] || STATE_DISPLAY['idle'];
-            if (siteStatusEl) {
-                siteStatusEl.textContent = stateInfo.status;
-                siteStatusEl.style.color = stateInfo.color || '';
-
-                // Add category if payment site
-                if (isPaymentSite && siteCategory && currentState !== 'idle') {
-                    siteStatusEl.textContent = `${stateInfo.status} • ${siteCategory}`;
-                }
-
-                // Add tracking-active class for pulsing effect
-                if (isPaymentSite && currentState !== 'idle') {
-                    siteStatusEl.classList.add('tracking-active');
-                } else {
-                    siteStatusEl.classList.remove('tracking-active');
-                }
-            }
-
-            // Update flow indicator
-            updateFlowIndicator(currentState);
-
-        } catch (e) {
-            console.log('Tab info error:', e);
-            if (siteNameEl) siteNameEl.textContent = 'Error';
-            if (siteStatusEl) siteStatusEl.textContent = 'Could not get tab info';
-        }
-    }
-
-    function updateFlowIndicator(currentState) {
-        if (!flowIndicatorEl) return;
-
-        const stages = flowIndicatorEl.querySelectorAll('.stage');
-        const stateInfo = STATE_DISPLAY[currentState] || STATE_DISPLAY['browsing'];
-        const activeStage = stateInfo.stage;
-
-        stages.forEach((stage, index) => {
-            stage.classList.remove('active', 'completed');
-            if (index < activeStage) {
-                stage.classList.add('completed');
-            } else if (index === activeStage) {
-                stage.classList.add('active');
-            }
-        });
-    }
-
-    // ================================
-    // INITIALIZATION
-    // ================================
-
-    // Load settings
-    await loadSettings();
-
-    // Check auth and show appropriate view
-    await checkAuthAndShowView();
-
-    // Start monitoring current tab
-    await updateCurrentTabInfo();
-
-    // Listen for tracking state updates from background
-    chrome.runtime.onMessage.addListener((message) => {
-        if (message.type === 'TRACKING_STATE_UPDATE') {
-            updateFlowIndicator(message.data.state);
-            if (siteNameEl) siteNameEl.textContent = message.data.siteName;
-            if (siteStatusEl) {
-                const stateInfo = STATE_DISPLAY[message.data.state] || STATE_DISPLAY['browsing'];
-                siteStatusEl.textContent = stateInfo.status;
-                // Add pulsing effect for active states
-                if (message.data.state !== 'browsing') {
-                    siteStatusEl.classList.add('tracking-active');
-                } else {
-                    siteStatusEl.classList.remove('tracking-active');
-                }
-            }
-        }
-        // Handle new transaction events - update stats immediately
-        if (message.type === 'TRANSACTION_ADDED' || message.type === 'BEHAVIOR_TRANSACTION_ADDED') {
-            loadStats();
-            loadRecentTransactions();
-        }
-        // INSTANT UPDATE: Sites tracked count
-        if (message.type === 'SITE_VISITS_UPDATED') {
-            if (sitesTrackedEl) {
-                sitesTrackedEl.textContent = message.count;
-                // Flash animation to show update
-                sitesTrackedEl.style.transform = 'scale(1.2)';
-                sitesTrackedEl.style.color = '#10B981';
-                setTimeout(() => {
-                    sitesTrackedEl.style.transform = 'scale(1)';
-                    sitesTrackedEl.style.color = '';
-                }, 300);
-            }
-        }
-    });
-
-    // REAL-TIME TAB MONITORING: Update when user switches tabs
-    chrome.tabs.onActivated.addListener(async (activeInfo) => {
-        console.log('Tab activated:', activeInfo.tabId);
-        await updateCurrentTabInfo();
-    });
-
-    // Also listen for URL changes within the same tab (SPA navigation)
-    chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-        if (changeInfo.status === 'complete' || changeInfo.url) {
-            // Only update if this is the active tab
-            const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-            if (activeTab && activeTab.id === tabId) {
-                await updateCurrentTabInfo();
-            }
-        }
-    });
-
-    // ================================
-    // VIEW NAVIGATION
-    // ================================
-
-    function showView(viewName) {
-        loginView.style.display = 'none';
-        mainView.style.display = 'none';
-        settingsView.style.display = 'none';
-        addManualView.style.display = 'none';
-
-        switch (viewName) {
-            case 'login':
-                loginView.style.display = 'flex'; // Flex for centering content
-                break;
-            case 'main':
-                mainView.style.display = 'block';
-                break;
-            case 'settings':
-                settingsView.style.display = 'block';
-                break;
-            case 'manual':
-                addManualView.style.display = 'block';
-                break;
-        }
-    }
-
-    // ================================
-    // AUTO-LOGIN FROM WEBSITE
-    // ================================
-
-    async function tryAutoLoginFromWebsite() {
-        try {
-            const [tab] = await chrome.tabs.query({ url: `${WEBSITE_URL}/*` });
-
-            if (tab) {
-                const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_SUPABASE_SESSION' });
-
-                if (response && response.session) {
-                    await chrome.storage.local.set({
-                        supabaseSession: response.session,
-                        userId: response.session.user.id,
-                        userEmail: response.session.user.email,
-                        userName: response.session.user.user_metadata?.name || response.session.user.email.split('@')[0],
-                        userAvatar: response.session.user.user_metadata?.avatar_url || response.session.user.user_metadata?.picture || '',
-                        accessToken: response.session.access_token,
-                        syncedFromWebsite: true,
-                        lastSync: Date.now()
-                    });
-
-                    console.log('✅ Auto-logged in from website session!');
-                    return true;
-                }
-            }
-        } catch (error) {
-            console.log('Could not auto-login:', error.message);
-        }
-        return false;
-    }
-
-    // ================================
-    // AUTH CHECK
-    // ================================
-
-    async function checkAuthAndShowView() {
-        await tryAutoLoginFromWebsite();
-
-        const authData = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'syncedFromWebsite', 'userAvatar', 'supabaseSession']);
-
-        if (authData.accessToken && authData.userEmail) {
-            // CHECK TOKEN EXPIRY & REFRESH IF NEEDED
-            const session = authData.supabaseSession;
-            if (session?.expires_at) {
-                const expiresAt = session.expires_at * 1000; // Convert to ms
-                const now = Date.now();
-                const fiveMinutes = 5 * 60 * 1000;
-
-                // Refresh if token expires in less than 5 minutes
-                if (expiresAt - now < fiveMinutes) {
-                    console.log('🔄 Token expiring soon, refreshing...');
-                    const refreshed = await refreshToken(session.refresh_token);
-                    if (!refreshed) {
-                        console.log('⚠️ Token refresh failed, showing login');
-                        showView('login');
-                        return;
-                    }
-                }
-            }
-
-            showView('main');
-            userEmailEl.textContent = authData.userEmail;
-
-            // Render avatar
-            const avatarImg = document.getElementById('userAvatarImg');
-            const avatarFallback = document.getElementById('userAvatarFallback');
-            if (authData.userAvatar && avatarImg && avatarFallback) {
-                avatarImg.src = authData.userAvatar;
-                avatarImg.style.display = 'block';
-                avatarFallback.style.display = 'none';
-            }
-
-            if (authData.syncedFromWebsite) {
-                syncStatusEl.innerHTML = '<span class="sync-dot"></span> Synced with Website';
-            } else {
-                syncStatusEl.innerHTML = '<span class="sync-dot"></span> Live Sync Active';
-            }
-
-            // Load all data including current tab info
-            await Promise.all([
-                loadStats(),
-                loadRecentTransactions(),
-                loadCategories(),
-                checkBudgetAlerts(),
-                updateCurrentTabInfo() // Update Active Session display
-            ]);
-        } else {
-            showView('login');
-        }
-    }
-
-    // ================================
-    // TOKEN REFRESH
-    // ================================
-    async function refreshToken(refreshToken) {
-        try {
-            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY
-                },
-                body: JSON.stringify({ refresh_token: refreshToken })
-            });
-
-            if (!response.ok) return false;
-
-            const data = await response.json();
-
-            await chrome.storage.local.set({
-                supabaseSession: data,
-                accessToken: data.access_token,
-                lastSync: Date.now()
-            });
-
-            console.log('✅ Token refreshed successfully');
-            return true;
-        } catch (error) {
-            console.error('Token refresh error:', error);
-            return false;
-        }
-    }
-
-    // ================================
-    // LOGIN HANDLER
-    // ================================
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-        if (!email || !password) {
-            showError('Please enter email and password');
-            return;
-        }
-
-        loginBtn.textContent = 'Signing in...';
-        loginBtn.disabled = true;
-        loginError.style.display = 'none';
-
-        try {
-            const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (data.error) {
-                throw new Error(data.error_description || data.error.message || 'Login failed');
-            }
-
-            await chrome.storage.local.set({
-                supabaseSession: data,
-                accessToken: data.access_token,
-                userId: data.user.id,
-                userEmail: data.user.email,
-                userName: data.user.user_metadata?.name || data.user.email.split('@')[0],
-                lastSync: Date.now()
-            });
-
-            // Notify background script
-            chrome.runtime.sendMessage({
-                type: 'USER_LOGGED_IN',
-                data: { email, userId: data.user.id }
-            });
-
-            // Directly inject localStorage flag into any open website tabs
-            await injectSyncFlagToWebsite(data.user.email);
-
-            await checkAuthAndShowView();
-
-        } catch (error) {
-            console.error('Login error:', error);
-            showError(error.message || 'Login failed. Check your credentials.');
-        } finally {
-            loginBtn.textContent = 'Sign In →';
-            loginBtn.disabled = false;
-        }
-    });
-
-    // Function to directly inject localStorage flag into website tabs
-    async function injectSyncFlagToWebsite(email) {
-        try {
-            // Find all website tabs
-            const tabs = await chrome.tabs.query({});
-            const websiteTabs = tabs.filter(tab =>
-                tab.url && (
-                    tab.url.includes('localhost:5173') ||
-                    tab.url.includes('127.0.0.1:5173') ||
-                    tab.url.includes('cashly') ||
-                    tab.url.includes('vercel.app')
-                )
-            );
-
-            for (const tab of websiteTabs) {
-                try {
-                    await chrome.scripting.executeScript({
-                        target: { tabId: tab.id },
-                        func: (userEmail) => {
-                            // Set persistent sync flag
-                            localStorage.setItem('cashly_extension_synced', JSON.stringify({
-                                synced: true,
-                                email: userEmail,
-                                timestamp: Date.now()
-                            }));
-                            // Also set the real-time flags
-                            localStorage.setItem('cashly_extension', JSON.stringify({
-                                installed: true,
-                                version: '5.0.0',
-                                timestamp: Date.now()
-                            }));
-                            localStorage.setItem('cashly_extension_auth', JSON.stringify({
-                                loggedIn: true,
-                                email: userEmail,
-                                timestamp: Date.now()
-                            }));
-                            console.log('✅ Cashly Extension sync flag injected!');
-                            // Dispatch event to notify React
-                            window.dispatchEvent(new CustomEvent('cashly-extension-synced', {
-                                detail: { email: userEmail }
-                            }));
-                        },
-                        args: [email]
-                    });
-                    console.log('✅ Injected sync flag into tab:', tab.id);
-                } catch (e) {
-                    console.log('Could not inject into tab:', tab.id, e.message);
-                }
-            }
-        } catch (error) {
-            console.log('Could not inject sync flags:', error.message);
-        }
-    }
-
-    // ================================
-    // LOGOUT HANDLER
-    // ================================
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-            console.log('Logout button clicked');
-            if (confirm('Sign out from Cashly? 👋')) {
-                await chrome.storage.local.remove([
-                    'supabaseSession', 'accessToken', 'userId', 'userEmail',
-                    'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
-                ]);
-                chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
-                // Reload the popup to show login view
-                window.location.reload();
-            }
-        });
-    } else {
-        console.error('logoutBtn not found');
-    }
-
-    // ================================
-    // NAVIGATION BUTTONS
-    // ================================
-
-    // Settings button - opens separate settings page
-    if (settingsBtn) {
-        settingsBtn.addEventListener('click', () => {
-            console.log('Settings button clicked - opening settings.html');
-            chrome.tabs.create({ url: chrome.runtime.getURL('settings.html') });
-        });
-    } else {
-        console.error('settingsBtn not found');
-    }
-
-    addManualBtn.addEventListener('click', () => showView('manual'));
-    backFromManual.addEventListener('click', () => showView('main'));
-
-    openDashboardBtn.addEventListener('click', () => {
-        chrome.tabs.create({ url: DASHBOARD_URL });
-    });
-
-    viewBudgetsBtn.addEventListener('click', () => {
-        chrome.tabs.create({ url: BUDGETS_URL });
-    });
-
-    refreshBtn.addEventListener('click', async () => {
-        refreshBtn.style.animation = 'spin 0.5s ease';
-        await Promise.all([
-            loadStats(),
-            loadRecentTransactions(),
-            loadCategories(),
-            checkBudgetAlerts()
-        ]);
-        setTimeout(() => {
-            refreshBtn.style.animation = '';
-        }, 500);
-    });
-
-    // ================================
-    // CLIP PAGE
-    // ================================
-
-    clipPageBtn.addEventListener('click', async () => {
-        const iconSpan = clipPageBtn.querySelector('.act-icon');
-        const originalIcon = iconSpan ? iconSpan.innerHTML : '';
-
-        if (iconSpan) iconSpan.textContent = '⏳';
-        clipPageBtn.disabled = true;
-
-        try {
-            const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-            chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_PRODUCT' }, async (response) => {
-                if (chrome.runtime.lastError) {
-                    showActionFeedback(clipPageBtn, '❌');
-                    return;
-                }
-
-                if (response && response.success) {
-                    await saveTransaction({
-                        description: `${response.data.storeName} - ${response.data.productName}`,
-                        amount: response.data.amount,
-                        category: getCategoryFromStore(response.data.storeName),
-                        source: 'extension-clip'
-                    });
-                    showActionFeedback(clipPageBtn, '✅');
-                    await loadStats();
-                    await loadRecentTransactions();
-                } else {
-                    showActionFeedback(clipPageBtn, '🚫');
-                }
-            });
-        } catch (error) {
-            console.error('Clip error:', error);
-            showActionFeedback(clipPageBtn, '❌');
-        }
-    });
-
-    // ================================
-    // MANUAL ADD
-    // ================================
-
-    manualForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const description = manualDesc.value.trim();
-        const amount = parseFloat(manualAmount.value);
-        const category = manualCategory.value;
-
-        if (!description || isNaN(amount) || amount <= 0) {
-            alert('Please enter valid description and amount');
-            return;
-        }
-
-        try {
-            await saveTransaction({
-                description,
-                amount,
-                category,
-                source: 'extension-manual'
-            });
-
-            // Clear form
-            manualDesc.value = '';
-            manualAmount.value = '';
-
-            // Go back to main view
-            showView('main');
-            await loadStats();
-            await loadRecentTransactions();
-
-        } catch (error) {
-            console.error('Manual add error:', error);
-            alert('Failed to add expense');
-        }
-    });
-
-    // ================================
-    // SETTINGS HANDLERS
-    // ================================
-
-    async function loadSettings() {
-        const settings = await chrome.storage.local.get([
-            'autoTrack', 'showNotifications', 'budgetAlerts', 'darkMode'
-        ]);
-
-        if (autoTrackToggle) autoTrackToggle.checked = settings.autoTrack !== false;
-        if (notificationsToggle) notificationsToggle.checked = settings.showNotifications !== false;
-        if (budgetAlertsToggle) budgetAlertsToggle.checked = settings.budgetAlerts !== false;
-
-        // Sync with website theme preference
-        let isDarkMode = settings.darkMode || false;
-
-        // Try to get theme from website localStorage via content script
-        try {
-            const [tab] = await chrome.tabs.query({ url: '*://localhost:5173/*' });
-            if (tab) {
-                const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_THEME_PREFERENCE' });
-                if (response && response.theme === 'dark') {
-                    isDarkMode = true;
-                } else if (response && response.theme === 'light') {
-                    isDarkMode = false;
-                }
+            const status = await chrome.runtime.sendMessage({ type: 'GET_SYNC_STATUS' });
+            if (status?.isAuthenticated) {
+                return {
+                    accessToken: status.accessToken || (await chrome.storage.local.get('accessToken')).accessToken,
+                    userEmail: status.user?.email || (await chrome.storage.local.get('userEmail')).userEmail,
+                    userId: status.user?.id || (await chrome.storage.local.get('userId')).userId
+                };
             }
         } catch (e) {
-            // Use stored preference
+            console.log('Background status check failed, falling back to storage');
         }
 
-        if (darkModeToggle) {
-            darkModeToggle.checked = isDarkMode;
-        }
+        const data = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId']);
+        if (data.accessToken && data.userEmail) return data;
+        return null;
+    };
 
-        // Apply theme
-        if (isDarkMode) {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
-    }
-
-    if (autoTrackToggle) {
-        autoTrackToggle.addEventListener('change', () => {
-            chrome.storage.local.set({ autoTrack: autoTrackToggle.checked });
-        });
-    }
-
-    if (notificationsToggle) {
-        notificationsToggle.addEventListener('change', () => {
-            chrome.storage.local.set({ showNotifications: notificationsToggle.checked });
-        });
-    }
-
-    if (budgetAlertsToggle) {
-        budgetAlertsToggle.addEventListener('change', () => {
-            chrome.storage.local.set({ budgetAlerts: budgetAlertsToggle.checked });
-        });
-    }
-
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('change', () => {
-            const isDark = darkModeToggle.checked;
-            chrome.storage.local.set({ darkMode: isDark });
-            document.body.classList.toggle('dark-mode', isDark);
-
-            // Also try to sync theme to website
-            chrome.tabs.query({ url: '*://localhost:5173/*' }).then(tabs => {
-                tabs.forEach(tab => {
-                    chrome.tabs.sendMessage(tab.id, {
-                        type: 'SET_THEME_PREFERENCE',
-                        theme: isDark ? 'dark' : 'light'
-                    }).catch(() => { });
-                });
-            });
-        });
-    }
-
-    // ================================
-    // DATA FUNCTIONS
-    // ================================
-
-    async function saveTransaction(data) {
-        const authData = await chrome.storage.local.get(['accessToken', 'userId']);
-
-        if (!authData.accessToken || !authData.userId) {
-            throw new Error('Not authenticated');
-        }
-
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
-            method: 'POST',
+    const apiFetch = async (path, options = {}) => {
+        const auth = await getAuth();
+        if (!auth?.accessToken) throw new Error('Session lost. Please sync again.');
+        
+        const response = await fetch(`${API_BASE_URL}${path}`, {
+            ...options,
             headers: {
                 'Content-Type': 'application/json',
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${authData.accessToken}`,
-                'Prefer': 'return=representation'
+                'Authorization': `Bearer ${auth.accessToken}`,
+                ...(options.headers || {}),
             },
-            body: JSON.stringify({
-                user_id: authData.userId,
-                description: data.description,
-                amount: data.amount,
-                type: 'expense',
-                category: data.category,
-                source: data.source || 'extension',
-                date: new Date().toISOString().split('T')[0]
-            })
         });
+        const text = await response.text();
+        const payload = text ? JSON.parse(text) : {};
+        if (!response.ok) throw new Error(payload.error || payload.message || text || `Request failed: ${response.status}`);
+        return payload.data ?? payload;
+    };
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to save');
-        }
+    const syncFromWebsite = async () => {
+        const btn = $('syncWebsiteBtn');
+        const originalText = btn.textContent;
+        const brandMark = document.querySelector('.brand-mark');
+        
+        btn.disabled = true;
+        btn.textContent = 'Scanning...';
+        brandMark?.classList.add('pulse');
+        $('loginError').hidden = true;
 
-        // Show notification
-        const settings = await chrome.storage.local.get(['showNotifications']);
-        if (settings.showNotifications !== false) {
-            chrome.runtime.sendMessage({
-                type: 'TRANSACTION_SYNCED',
-                data: { store: data.description, amount: data.amount, product: data.category }
-            });
-        }
-
-        return await response.json();
-    }
-
-    async function loadStats() {
-        const authData = await chrome.storage.local.get(['accessToken', 'userId']);
-
-        // Handle Site Visits (doesn't require auth)
         try {
-            const result = await chrome.storage.local.get('siteVisits');
-            const siteVisits = result.siteVisits || {};
-            const sitesCount = Object.keys(siteVisits).length;
-            if (sitesTrackedEl) sitesTrackedEl.textContent = sitesCount;
-        } catch (e) {
-            console.log('Sites tracked error:', e);
-        }
+            const origins = CONFIG_DATA.WEBSITE_ORIGINS || [WEBSITE_URL];
+            let targetTab = null;
 
-        // If not logged in, set defaults
-        if (!authData.accessToken || !authData.userId) {
-            if (monthlySpentEl) monthlySpentEl.textContent = '--';
-            if (transactionCountEl) transactionCountEl.textContent = '--';
-            if (totalTransactionsEl) totalTransactionsEl.textContent = '--';
-            return;
-        }
-
-        // Monthly Stats
-        try {
-            const startOfMonth = new Date();
-            startOfMonth.setDate(1);
-            startOfMonth.setHours(0, 0, 0, 0);
-
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&type=eq.expense&date=gte.${startOfMonth.toISOString().split('T')[0]}&select=amount`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-            if (response.ok) {
-                const transactions = await response.json();
-                const monthlySpent = transactions.reduce((sum, t) => sum + parseFloat(t.amount), 0);
-                if (monthlySpentEl) monthlySpentEl.textContent = `Rs ${monthlySpent.toFixed(0)}`;
-                if (transactionCountEl) transactionCountEl.textContent = transactions.length;
-            }
-        } catch (e) {
-            console.log('Monthly stats error:', e);
-        }
-
-        // All Time Stats
-        try {
-            const totalResponse = await fetch(
-                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&select=id`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-            if (totalResponse.ok) {
-                const allTx = await totalResponse.json();
-                if (totalTransactionsEl) totalTransactionsEl.textContent = allTx.length;
-            } else {
-                if (totalTransactionsEl) totalTransactionsEl.textContent = '0';
-            }
-        } catch (e) {
-            console.log('All time stats error:', e);
-            if (totalTransactionsEl) totalTransactionsEl.textContent = '0';
-        }
-    }
-
-    async function loadRecentTransactions() {
-        try {
-            const authData = await chrome.storage.local.get(['accessToken', 'userId']);
-
-            if (!authData.accessToken || !authData.userId) return;
-
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&order=created_at.desc&limit=5`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-
-            if (response.ok) {
-                const transactions = await response.json();
-                renderTransactions(transactions);
-            }
-        } catch (error) {
-            console.log('Transactions load error:', error);
-        }
-    }
-
-    async function loadCategories() {
-        try {
-            const authData = await chrome.storage.local.get(['accessToken', 'userId']);
-
-            if (!authData.accessToken || !authData.userId) return;
-
-            const startOfMonth = new Date();
-            startOfMonth.setDate(1);
-
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&type=eq.expense&date=gte.${startOfMonth.toISOString().split('T')[0]}&select=category,amount`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-
-            if (response.ok) {
-                const transactions = await response.json();
-                const categories = {};
-                let total = 0;
-
-                transactions.forEach(t => {
-                    const cat = t.category || 'Other';
-                    categories[cat] = (categories[cat] || 0) + parseFloat(t.amount);
-                    total += parseFloat(t.amount);
-                });
-
-                renderCategories(categories, total);
-            }
-        } catch (error) {
-            console.log('Categories load error:', error);
-        }
-    }
-
-    async function checkBudgetAlerts() {
-        try {
-            const authData = await chrome.storage.local.get(['accessToken', 'userId']);
-            const settings = await chrome.storage.local.get(['budgetAlerts']);
-
-            if (!authData.accessToken || !authData.userId || settings.budgetAlerts === false) {
-                budgetAlertEl.style.display = 'none';
-                return;
-            }
-
-            // Get budgets
-            const budgetResponse = await fetch(
-                `${SUPABASE_URL}/rest/v1/budgets?user_id=eq.${authData.userId}&select=*`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-
-            if (!budgetResponse.ok) return;
-
-            const budgets = await budgetResponse.json();
-            if (budgets.length === 0) {
-                budgetAlertEl.style.display = 'none';
-                return;
-            }
-
-            // Get current month spending
-            const startOfMonth = new Date();
-            startOfMonth.setDate(1);
-
-            const spendingResponse = await fetch(
-                `${SUPABASE_URL}/rest/v1/transactions?user_id=eq.${authData.userId}&type=eq.expense&date=gte.${startOfMonth.toISOString().split('T')[0]}&select=category,amount`,
-                {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${authData.accessToken}`
-                    }
-                }
-            );
-
-            if (!spendingResponse.ok) return;
-
-            const transactions = await spendingResponse.json();
-            const spending = {};
-            transactions.forEach(t => {
-                const cat = t.category || 'Other';
-                spending[cat] = (spending[cat] || 0) + parseFloat(t.amount);
-            });
-
-            // Check for alerts
-            let alertText = null;
-            for (const budget of budgets) {
-                const spent = spending[budget.category] || 0;
-                const percent = (spent / budget.limit) * 100;
-
-                if (percent >= 90) {
-                    alertText = `${budget.category} budget at ${Math.round(percent)}%`;
+            // First, try to find ANY tab from cashly domain
+            for (const origin of origins) {
+                const baseOrigin = origin.replace(/\/$/, '');
+                const queryPattern = `${baseOrigin}/*`;
+                
+                const tabs = await chrome.tabs.query({ url: queryPattern });
+                if (tabs.length > 0) {
+                    targetTab = tabs[0];
                     break;
                 }
             }
 
-            if (alertText) {
-                budgetAlertEl.style.display = 'flex';
-                document.getElementById('budgetAlertText').textContent = alertText;
-            } else {
-                budgetAlertEl.style.display = 'none';
+            // If no tabs found, also check localhost variations
+            if (!targetTab) {
+                const allTabs = await chrome.tabs.query({});
+                for (const tab of allTabs) {
+                    if (tab.url && (tab.url.includes('localhost') || tab.url.includes('127.0.0.1'))) {
+                        targetTab = tab;
+                        break;
+                    }
+                }
             }
 
-        } catch (error) {
-            console.log('Budget check error:', error);
-            budgetAlertEl.style.display = 'none';
-        }
-    }
+            if (!targetTab) {
+                openWeb(routes.login);
+                throw new Error('Cashly website not found. Opening login page...');
+            }
 
-    // ================================
-    // RENDER FUNCTIONS
-    // ================================
+            btn.textContent = 'Extracting...';
+            console.log('📱 Target tab:', targetTab.url);
+            
+            const injectionResults = await chrome.scripting.executeScript({
+                target: { tabId: targetTab.id },
+                func: () => {
+                    const findSession = (storage) => {
+                        const storageName = storage === localStorage ? 'localStorage' : 'sessionStorage';
+                        console.log('🔍 Searching for auth session in', storageName);
+                        
+                        const allKeys = Object.keys(storage);
+                        console.log(`📋 Total keys in ${storageName}:`, allKeys.length);
+                        console.log('🔑 Keys sample:', allKeys.slice(0, 30).join(', '));
+                        
+                        // Log all keys that look auth-related
+                        const authRelatedKeys = allKeys.filter(k => 
+                            k.toLowerCase().includes('auth') ||
+                            k.toLowerCase().includes('token') ||
+                            k.toLowerCase().includes('firebase') ||
+                            k.toLowerCase().includes('supabase') ||
+                            k.toLowerCase().includes('user') ||
+                            k.toLowerCase().includes('session')
+                        );
+                        console.log('🔐 Auth-related keys:', authRelatedKeys);
 
-    function renderTransactions(transactions) {
-        if (!recentTransactionsEl) return;
+                        // 0. Cashly web bridge + legacy expense_tracker_session (Firebase/IndexedDB has no localStorage key)
+                        const bridgeKeyNames = ['cashly_web_session_bridge', 'expense_tracker_session'];
+                        for (const bridgeKey of bridgeKeyNames) {
+                            try {
+                                const raw = storage.getItem(bridgeKey);
+                                if (!raw) continue;
+                                const parsed = JSON.parse(raw);
+                                const token = parsed.access_token || parsed.accessToken;
+                                if (token && typeof token === 'string' && token.length > 20) {
+                                    const u = parsed.user || {};
+                                    console.log('✅ Found Cashly bridge session (' + bridgeKey + ')');
+                                    return {
+                                        access_token: token,
+                                        user: {
+                                            id: u.id || parsed.userId || 'unknown',
+                                            email: u.email || parsed.email || 'User',
+                                            user_metadata: u.user_metadata || {},
+                                        },
+                                    };
+                                }
+                            } catch (e) {
+                                console.log('Bridge parse skip:', bridgeKey, e && e.message);
+                            }
+                        }
+                        
+                        // 1. Try Supabase (Most common for this app)
+                        const supabaseKey = Object.keys(storage).find(key =>
+                            key.startsWith('sb-') && key.endsWith('-auth-token')
+                        );
+                        if (supabaseKey) {
+                            try {
+                                const session = JSON.parse(storage.getItem(supabaseKey));
+                                if (session?.access_token) {
+                                    console.log('✅ Found Supabase session');
+                                    return {
+                                        access_token: session.access_token,
+                                        user: session.user || { email: 'User', id: 'unknown' }
+                                    };
+                                }
+                            } catch (e) { 
+                                console.error('Supabase parse error:', e);
+                            }
+                        }
 
-        if (transactions.length === 0) {
-            recentTransactionsEl.innerHTML = `
-                <div class="empty-state">
-                    <span>🦗</span>
-                    <p>No transactions yet</p>
-                </div>
-            `;
-            return;
-        }
+                        // 2. Try Firebase - Check ALL keys containing firebase (case-insensitive)
+                        const firebaseKeys = Object.keys(storage).filter(key => key.toLowerCase().includes('firebase'));
+                        console.log('🔥 Firebase keys found:', firebaseKeys);
+                        
+                        for (const firebaseKey of firebaseKeys) {
+                            try {
+                                const value = storage.getItem(firebaseKey);
+                                if (!value) {
+                                    console.log(`  [${firebaseKey}] = null/empty`);
+                                    continue;
+                                }
+                                
+                                const data = JSON.parse(value);
+                                console.log(`  [${firebaseKey}] keys:`, Object.keys(data || {}).slice(0, 10));
+                                
+                                // Check different Firebase storage formats
+                                if (data?.stsTokenManager?.accessToken) {
+                                    console.log('✅ Found Firebase session (stsTokenManager format)');
+                                    return {
+                                        access_token: data.stsTokenManager.accessToken,
+                                        user: { id: data.uid, email: data.email || 'User' }
+                                    };
+                                }
+                                if (data?.access_token && typeof data.access_token === 'string' && data.access_token.length > 20) {
+                                    console.log('✅ Found Firebase session (direct access_token)');
+                                    return {
+                                        access_token: data.access_token,
+                                        user: { id: data.uid || 'unknown', email: data.email || 'User' }
+                                    };
+                                }
+                                // Check if it's a user object with stsTokenManager
+                                if (data?.stsTokenManager) {
+                                    console.log('✅ Found Firebase stsTokenManager (nested format)');
+                                    return {
+                                        access_token: data.stsTokenManager.accessToken,
+                                        user: { id: data.localId || data.uid, email: data.email || 'User' }
+                                    };
+                                }
+                            } catch (e) { 
+                                console.error(`❌ Firebase parse error for key [${firebaseKey}]:`, e.message);
+                            }
+                        }
+                        
+                        // 3. Fallback: Generic 'token' or 'session' keys
+                        const genericKeys = ['token', 'accessToken', 'session', 'auth_token', 'id_token', 'current_user', 'authToken'];
+                        for (const key of genericKeys) {
+                            const val = storage.getItem(key);
+                            if (val && val.length > 50) { // Looks like a JWT or session object
+                                try {
+                                    // Try to parse as JSON first
+                                    const parsed = JSON.parse(val);
+                                    if (parsed?.access_token) {
+                                        console.log('✅ Found session in generic key:', key);
+                                        return { access_token: parsed.access_token, user: { email: 'User', id: 'unknown' } };
+                                    }
+                                } catch {
+                                    // It's a raw token string
+                                    if (val.includes('.') && val.length > 100) { // JWT format
+                                        console.log('✅ Found token in generic key:', key);
+                                        return { access_token: val, user: { email: 'User', id: 'unknown' } };
+                                    }
+                                }
+                            }
+                        }
 
-        recentTransactionsEl.innerHTML = transactions.map(tx => `
-            <div class="transaction-item">
-                <span class="tx-icon">${getCategoryIcon(tx.category)}</span>
-                <div class="tx-info">
-                    <span class="tx-name">${tx.description?.slice(0, 25) || tx.category}</span>
-                    <span class="tx-time">${formatDate(tx.date)}</span>
-                </div>
-                <span class="tx-amount">-Rs ${parseFloat(tx.amount).toFixed(0)}</span>
-            </div>
-        `).join('');
-    }
+                        console.log('❌ No session found in', storageName);
+                        return null;
+                    };
+                    
+                    // 4. Try checking document.body for user data (some apps embed it)
+                    const checkEmbeddedData = () => {
+                        try {
+                            const scripts = document.querySelectorAll('script[type="application/json"]');
+                            for (const script of scripts) {
+                                try {
+                                    const data = JSON.parse(script.textContent);
+                                    if (data?.user?.access_token || data?.access_token) {
+                                        console.log('✅ Found embedded auth data in script tag');
+                                        return {
+                                            access_token: data.user?.access_token || data.access_token,
+                                            user: data.user || { email: 'User', id: 'unknown' }
+                                        };
+                                    }
+                                } catch (e) { }
+                            }
+                        } catch (e) {
+                            console.log('Could not check embedded data:', e.message);
+                        }
+                        return null;
+                    };
 
-    function renderCategories(categories, total) {
-        if (!categoriesListEl) return;
+                    // Try both storages and return whatever is found
+                    let result = findSession(localStorage);
+                    if (!result) {
+                        console.log('📝 localStorage search failed, trying sessionStorage...');
+                        result = findSession(sessionStorage);
+                    }
+                    if (!result) {
+                        console.log('📝 sessionStorage search failed, trying embedded data...');
+                        result = checkEmbeddedData();
+                    }
+                    
+                    // 5. Try checking common API endpoints for current user endpoint response
+                    // (This would be for apps that fetch user data via API)
+                    
+                    return {
+                        success: !!result,
+                        data: result,
+                        debug: {
+                            localStorageSize: Object.keys(localStorage).length,
+                            sessionStorageSize: Object.keys(sessionStorage).length,
+                            documentTitle: document.title,
+                            currentUrl: window.location.href,
+                            timestamp: Date.now()
+                        }
+                    };
+                }
+            });
 
-        const sortedCats = Object.entries(categories)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 3);
+            const injectionResult = injectionResults[0]?.result;
+            console.log('🔬 Injection result:', injectionResult);
 
-        if (sortedCats.length === 0) {
-            categoriesListEl.innerHTML = `
-                <div class="category-item">
-                    <span class="cat-icon">📊</span>
-                    <div class="cat-info">
-                        <span class="cat-name">No spending yet</span>
-                        <div class="cat-bar"><div class="cat-fill" style="width: 0%;"></div></div>
-                    </div>
-                    <span class="cat-amount">Rs 0</span>
-                </div>
-            `;
-            return;
-        }
+            if (!injectionResult?.success || !injectionResult?.data?.access_token) {
+                const debugInfo = injectionResult?.debug ? 
+                    `\n[Debug: ${injectionResult.debug.localStorageSize} localStorage, ${injectionResult.debug.sessionStorageSize} sessionStorage items]` : '';
+                console.error('Session not found:', injectionResult);
+                throw new Error(`❌ No active session found on website.\nPlease ensure you are logged in at ${targetTab.url}${debugInfo}`);
+            }
 
-        categoriesListEl.innerHTML = sortedCats.map(([cat, amount]) => {
-            const percent = total > 0 ? (amount / total) * 100 : 0;
-            return `
-                <div class="category-item">
-                    <span class="cat-icon">${getCategoryIcon(cat)}</span>
-                    <div class="cat-info">
-                        <span class="cat-name">${cat}</span>
-                        <div class="cat-bar">
-                            <div class="cat-fill" style="width: ${percent}%;"></div>
-                        </div>
-                    </div>
-                    <span class="cat-amount">Rs ${amount.toFixed(0)}</span>
-                </div>
-            `;
-        }).join('');
-    }
+            const session = injectionResult.data;
+            btn.textContent = 'Syncing...';
 
-    // ================================
-    // HELPER FUNCTIONS
-    // ================================
-
-    function showError(message) {
-        loginError.textContent = message;
-        loginError.style.display = 'block';
-    }
-
-    function showActionFeedback(button, emoji) {
-        const iconSpan = button.querySelector('.action-icon');
-        const originalIcon = iconSpan ? iconSpan.textContent : '';
-
-        if (iconSpan) iconSpan.textContent = emoji;
-        button.disabled = true;
-
-        setTimeout(() => {
-            if (iconSpan) iconSpan.textContent = originalIcon;
-            button.disabled = false;
-        }, 1500);
-    }
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diff = now - date;
-
-        if (diff < 60000) return 'Just now';
-        if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-        if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
-        return date.toLocaleDateString();
-    }
-
-    function getCategoryIcon(category) {
-        const cat = (category || '').toLowerCase();
-        if (cat.includes('food') || cat.includes('dining')) return '🍔';
-        if (cat.includes('shopping')) return '🛍️';
-        if (cat.includes('transport')) return '🚗';
-        if (cat.includes('entertainment')) return '🎬';
-        if (cat.includes('bills') || cat.includes('utilities')) return '📱';
-        if (cat.includes('health')) return '💊';
-        if (cat.includes('education')) return '📚';
-        return '📦';
-    }
-
-    function getCategoryFromStore(storeName) {
-        const store = (storeName || '').toLowerCase();
-        if (store.includes('food') || store.includes('restaurant') || store.includes('foodpanda')) return 'Food & Dining';
-        if (store.includes('amazon') || store.includes('daraz') || store.includes('shopping')) return 'Shopping';
-        if (store.includes('netflix') || store.includes('spotify')) return 'Entertainment';
-        if (store.includes('uber') || store.includes('careem')) return 'Transport';
-        return 'Shopping';
-    }
-
-    // ================================
-    // MESSAGE LISTENER
-    // ================================
-
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        if (message.type === 'TRANSACTION_ADDED') {
-            loadStats();
-            loadRecentTransactions();
-            loadCategories();
-        }
-        if (message.type === 'SESSION_UPDATED') {
-            checkAuthAndShowView();
-        }
-        // Handle logout from website
-        if (message.type === 'WEBSITE_LOGGED_OUT' || message.type === 'USER_LOGGED_OUT') {
-            chrome.storage.local.remove([
-                'supabaseSession', 'accessToken', 'userId', 'userEmail',
-                'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
+            const SYNC_MESSAGE_TIMEOUT_MS = 20000;
+            const syncResponse = await Promise.race([
+                chrome.runtime.sendMessage({
+                    type: 'SYNC_SESSION_FROM_WEBSITE',
+                    data: {
+                        session: session,
+                        user: session.user,
+                        accessToken: session.access_token
+                    }
+                }),
+                new Promise((_, reject) =>
+                    setTimeout(
+                        () => reject(new Error('Sync timed out. Open chrome://extensions, reload Cashly, then try again.')),
+                        SYNC_MESSAGE_TIMEOUT_MS
+                    )
+                ),
             ]);
-            showView('login');
+
+            if (!syncResponse?.success) {
+                throw new Error(syncResponse?.message || syncResponse?.error || 'Sync failed in background');
+            }
+
+            btn.textContent = 'Verifying...';
+            await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
+
+            // Wait for storage to persist
+            await new Promise(r => setTimeout(r, 200));
+            
+            const storedAuth = await chrome.storage.local.get(['accessToken', 'userEmail']);
+            if (!storedAuth.accessToken || !storedAuth.userEmail) {
+                throw new Error('Session data failed to persist. Please try again.');
+            }
+
+            console.log('✅ Session verified:', storedAuth.userEmail);
+            showToast('Extension Synced! ✨');
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 800);
+
+        } catch (error) {
+            console.error('Sync Error:', error);
+            showToast(error.message || 'Sync failed', 'error');
+            $('loginError').textContent = error.message;
+            $('loginError').hidden = false;
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+            brandMark?.classList.remove('pulse');
         }
+    };
+
+    const recordHealth = async (payload) => {
+        const settings = await chrome.storage.local.get(['healthEvents']);
+        if (settings.healthEvents === false || !authData?.accessToken) return;
+        try {
+            await apiFetch('/extension-health/events', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            });
+        } catch {
+            // Health events should never break popup usage.
+        }
+    };
+
+    const getCurrentSite = async () => {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!tab?.url) return null;
+        try {
+            return new URL(tab.url).hostname;
+        } catch {
+            return null;
+        }
+    };
+
+    const loadSettings = async () => {
+        const settings = await chrome.storage.local.get(['autoTrack', 'showNotifications', 'healthEvents']);
+        $('autoTrackToggle').checked = settings.autoTrack !== false;
+        $('notificationsToggle').checked = settings.showNotifications !== false;
+        $('healthEventsToggle').checked = settings.healthEvents !== false;
+    };
+
+    const saveSettings = async () => {
+        await chrome.storage.local.set({
+            autoTrack: $('autoTrackToggle').checked,
+            showNotifications: $('notificationsToggle').checked,
+            healthEvents: $('healthEventsToggle').checked,
+        });
+    };
+
+    const loadMain = async () => {
+        console.log('🔄 Loading main view...');
+        authData = await getAuth();
+        await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
+        
+        // CRITICAL FIX: Retry getAuth if it fails on first try (sync might still be settling)
+        if (!authData?.accessToken) {
+            console.log('⚠️ Auth data not found immediately, retrying...');
+            await new Promise(r => setTimeout(r, 300)); // Wait 300ms
+            authData = await getAuth();
+        }
+        
+        if (!authData?.accessToken) {
+            console.log('⚠️ No auth data found in loadMain after retry');
+            showView('login');
+            return;
+        }
+
+        console.log('✅ Auth verified for:', authData.userEmail);
+        showView('main');
+        $('userEmail').textContent = authData.userEmail;
+        const site = await getCurrentSite();
+        $('siteName').textContent = site || 'Unknown';
+
+        try {
+            const [storage, summary, inbox, health] = await Promise.all([
+                chrome.storage.local.get(['offlineQueue', 'pendingSync', 'lastTransactionSyncStatus', 'lastSync']),
+                apiFetch('/dashboard/summary').catch(e => { console.error('Summary fetch failed:', e); return null; }),
+                apiFetch('/transaction-inbox?status=pending&limit=1').catch(e => { console.error('Inbox fetch failed:', e); return null; }),
+                apiFetch('/extension-health').catch(e => { console.error('Health fetch failed:', e); return null; }),
+            ]);
+
+            const pendingSync = Array.isArray(storage.pendingSync) ? storage.pendingSync.length : 0;
+            const offlineQueue = Array.isArray(storage.offlineQueue) ? storage.offlineQueue.length : 0;
+            const queued = pendingSync + offlineQueue + Number(health?.queuedSyncs || 0);
+            const failed = Number(health?.failedDetections || 0);
+
+            $('monthlySpent').textContent = formatCurrency(summary?.stats?.monthlyExpense || 0);
+            $('pendingCount').textContent = String(inbox?.pagination?.total ?? summary?.inbox?.pendingCount ?? 0);
+            $('queuedCount').textContent = String(queued);
+            $('failedCount').textContent = String(failed);
+            $('apiStatus').textContent = summary ? 'Connected' : 'Offline Mode';
+
+            const statusDot = $('syncStatus')?.querySelector('.dot');
+            if (statusDot) statusDot.classList.toggle('warn', failed > 0 || queued > 0 || !summary);
+            
+            const lastSyncTime = storage.lastSync ? new Date(storage.lastSync).toLocaleTimeString() : 'Never';
+            $('syncStatus').lastElementChild.textContent = !summary 
+                ? `Offline (Last Sync: ${lastSyncTime})`
+                : failed > 0
+                    ? 'Sync needs attention'
+                    : queued > 0
+                        ? 'Queued syncs pending'
+                        : `Live sync active (${lastSyncTime})`;
+
+            const latestCandidate = summary?.inbox?.candidates?.[0];
+            const lastSync = storage.lastTransactionSyncStatus;
+            $('lastDetection').textContent = latestCandidate
+                ? `${latestCandidate.merchant_name || latestCandidate.description} is waiting in the inbox.`
+                : lastSync?.message || 'No recent detection loaded.';
+
+            renderRecent(summary?.recentTransactions || []);
+
+            if (site) {
+                await recordHealth({
+                    eventType: 'site_visit',
+                    status: 'success',
+                    siteHostname: site,
+                    siteName: site,
+                    queuedCount: queued,
+                    failedCount: failed,
+                    permissionStatus: 'granted',
+                    message: 'Popup opened on tracked site.',
+                });
+            }
+        } catch (error) {
+            console.error('Critical loadMain error:', error);
+            $('apiStatus').textContent = 'Degraded';
+            $('syncStatus').lastElementChild.textContent = 'Connection error. Re-syncing...';
+        }
+    };
+
+    const renderRecent = (transactions) => {
+        const container = $('recentTransactions');
+        container.innerHTML = '';
+
+        if (!transactions.length) {
+            container.innerHTML = '<div class="empty">No transactions loaded.</div>';
+            return;
+        }
+
+        transactions.slice(0, 4).forEach((tx) => {
+            const row = document.createElement('div');
+            row.className = 'tx-row';
+            row.innerHTML = `
+                <div>
+                    <p>${tx.description || tx.store_name || 'Transaction'}</p>
+                    <span>${tx.category || 'Other'}</span>
+                </div>
+                <strong>${tx.type === 'income' ? '+' : '-'}${formatCurrency(Math.abs(Number(tx.amount || 0)))}</strong>
+            `;
+            container.appendChild(row);
+        });
+    };
+
+    const clipPage = async () => {
+        const site = await getCurrentSite();
+        await recordHealth({
+            eventType: 'clip_page',
+            status: 'success',
+            siteHostname: site,
+            siteName: site,
+            message: 'User clipped current page from popup.',
+        });
+        showToast('Page Clipped!');
+        $('lastDetection').textContent = site ? `${site} clipped for review context.` : 'Page clipped for review context.';
+    };
+
+    const saveManualExpense = async (event) => {
+        event.preventDefault();
+        const description = $('manualDesc').value.trim();
+        const amount = Number($('manualAmount').value);
+        const category = $('manualCategory').value;
+        if (!description || !Number.isFinite(amount) || amount <= 0) return;
+
+        await apiFetch('/transactions', {
+            method: 'POST',
+            body: JSON.stringify({
+                amount,
+                currency: 'USD',
+                storeName: description,
+                category,
+                purchaseDate: new Date().toISOString(),
+            }),
+        });
+
+        await recordHealth({
+            eventType: 'manual_transaction',
+            status: 'success',
+            message: 'Manual popup transaction saved.',
+        });
+
+        $('manualForm').reset();
+        await loadMain();
+        showToast('Transaction Saved!');
+    };
+
+    const logout = async () => {
+        await chrome.runtime.sendMessage({ type: 'LOGOUT_EXTENSION' }).catch(async () => {
+            await chrome.storage.local.remove([
+                'supabaseSession',
+                'accessToken',
+                'userId',
+                'userEmail',
+                'userAvatar',
+                'syncedFromWebsite',
+                'lastSync',
+            ]);
+        });
+        authData = null;
+        showView('login');
+    };
+
+    const bind = () => {
+        const on = (id, type, fn) => {
+            const el = $(id);
+            if (el) el.addEventListener(type, fn);
+        };
+
+        on('syncWebsiteBtn', 'click', syncFromWebsite);
+        on('openLoginBtn', 'click', () => openWeb(routes.login));
+        on('refreshBtn', 'click', loadMain);
+        on('settingsBtn', 'click', async () => { await loadSettings(); showView('settings'); });
+        on('logoutBtn', 'click', logout);
+        on('backFromSettings', 'click', loadMain);
+        on('backFromManual', 'click', loadMain);
+        on('clipPageBtn', 'click', clipPage);
+        on('addManualBtn', 'click', () => showView('manual'));
+        on('manualForm', 'submit', saveManualExpense);
+        on('autoTrackToggle', 'change', saveSettings);
+        on('notificationsToggle', 'change', saveSettings);
+        on('healthEventsToggle', 'change', saveSettings);
+
+        on('openDashboard', 'click', () => openWeb(routes.dashboard));
+        on('openInboxBtn', 'click', () => openWeb(routes.inbox));
+        on('openCalendarBtn', 'click', () => openWeb(routes.calendar));
+        on('openReportsBtn', 'click', () => openWeb(routes.reports));
+        on('openCoachBtn', 'click', () => openWeb(routes.coach));
+        on('openHealthBtn', 'click', () => openWeb(routes.health));
+        on('openTransactionsBtn', 'click', () => openWeb(routes.transactions));
+    };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        bind();
+        await loadSettings();
+        await loadMain();
+
+        // Listen for session updates from background (e.g., after sync)
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            if (message.type === 'SESSION_UPDATED') {
+                console.log('SESSION_UPDATED received in popup, refreshing...');
+                loadMain(); // Refresh the UI immediately
+                sendResponse({ received: true });
+            } else if (message.type === 'WEBSITE_LOGGED_OUT') {
+                console.log('WEBSITE_LOGGED_OUT received in popup, returning to login view...');
+                authData = null;
+                showView('login');
+                sendResponse({ received: true });
+            }
+        });
     });
-});
+})();

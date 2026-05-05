@@ -2,6 +2,7 @@
 import app from './app.js';
 import { initializeEmailTransporter } from './services/emailService.js';
 import cacheService from './services/redisCacheService.js';
+import openRouterService from './services/openRouterService.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -22,7 +23,7 @@ app.listen(PORT, async () => {
 ║   Environment: ${process.env.NODE_ENV || 'development'}                              ║
 ║                                                               ║
 ╠═══════════════════════════════════════════════════════════════╣
-║   🤖 AI Service: ${process.env.GROQ_API_KEY ? '✅ Groq Connected' : '❌ Not configured'}               ║
+║   🤖 AI Service: ${openRouterService.isConfigured() ? `✅ OpenRouter (${openRouterService.getModelName('chat')})` : '❌ Not configured'}               ║
 ║   🔴 Redis: ${redisConnected ? `✅ Connected (${redisStats.memory || 'N/A'})` : '❌ Disconnected'}                     ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝

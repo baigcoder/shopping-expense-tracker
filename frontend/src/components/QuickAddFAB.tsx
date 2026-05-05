@@ -82,9 +82,6 @@ const QuickAddFAB = () => {
             if (transaction) {
                 genZToast.cash(`${selectedCategory.emoji} Added ${formatCurrency(parseFloat(amount))} for ${selectedCategory.name}!`);
 
-                // Dispatch event for real-time updates
-                window.dispatchEvent(new CustomEvent('new-transaction', { detail: transaction }));
-
                 handleClose();
             }
         } catch (error) {

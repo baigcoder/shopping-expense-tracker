@@ -1,41 +1,44 @@
 /* ============================================
-   FINOVIX - Dashboard Layout
-   Production SaaS Layout Container
+   CASHLY — Dashboard Layout
+   Obsidian Finance Design System v3.0
    ============================================ */
 
 .appContainer {
     width: 100%;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    background: hsl(var(--background));
+    flex-direction: row;
+    background: var(--bg-page);
     overflow-x: hidden;
+    transition: background-color 0.3s ease;
 }
 
 .contentWrapper {
     flex: 1;
+    min-height: 100vh;
     width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: var(--space-6) var(--space-8);
-    padding-bottom: calc(var(--space-8) + 24px);
+    max-width: 100%;
+    margin: 0;
+    padding: 1.5rem 2rem;
+    padding-bottom: calc(2rem + 24px);
     overflow-x: hidden;
+    background: var(--bg-page);
 }
 
 /* When sidebar is present */
 .appContainer.withSidebar {
-    padding-left: 90px;
+    padding-left: 72px;
     transition: padding-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .appContainer.withSidebar.sidebarExpanded {
-    padding-left: 240px;
+    padding-left: 272px;
 }
 
 /* Tablet */
 @media (max-width: 1024px) {
     .contentWrapper {
-        padding: var(--space-4) var(--space-4);
+        padding: 1rem;
     }
 
     .appContainer.withSidebar {
@@ -46,13 +49,13 @@
 /* Mobile */
 @media (max-width: 768px) {
     .contentWrapper {
-        padding: var(--space-4) var(--space-3);
+        padding: 1rem 0.75rem;
         max-width: 100vw;
     }
 }
 
 @media (max-width: 480px) {
     .contentWrapper {
-        padding: var(--space-3) var(--space-2);
+        padding: 0.75rem 0.5rem;
     }
 }

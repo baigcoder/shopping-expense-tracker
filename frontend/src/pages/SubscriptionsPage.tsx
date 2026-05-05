@@ -1,10 +1,9 @@
-// SubscriptionsPage - Cashly Premium Subscriptions Manager
-// Midnight Coral Theme - Light Mode
+// SubscriptionsPage - Stark Gen Z Brutalist Mission Manager
 import { useState, useEffect } from 'react';
 import {
     Repeat, Plus, Calendar, DollarSign, Bell,
     Trash2, Edit2, Clock, Zap, CreditCard, RefreshCw, X,
-    CheckCircle2, Timer, Crown, Sparkles, Check, AlertCircle
+    CheckCircle2, Timer, Crown, Sparkles, Check, AlertCircle, TrendingUp, ArrowUpRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useStore';
@@ -23,6 +22,7 @@ import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import styles from './SubscriptionsPage.module.css';
 import { SubscriptionsSkeleton } from '../components/LoadingSkeleton';
+import { featureExpansionApi } from '../services/featureExpansionApi';
 
 const CATEGORIES = [
     'Entertainment', 'Music', 'Software', 'Gaming', 'Fitness',
@@ -30,12 +30,12 @@ const CATEGORIES = [
 ];
 
 const COLORS = [
-    { name: 'Blue', value: '#3B82F6' },
-    { name: 'Violet', value: '#8B5CF6' },
-    { name: 'Emerald', value: '#10B981' },
-    { name: 'Amber', value: '#F59E0B' },
-    { name: 'Red', value: '#EF4444' },
-    { name: 'Pink', value: '#EC4899' },
+    { name: 'Pure Black', value: '#000000' },
+    { name: 'Hyper Red', value: '#E11D48' },
+    { name: 'Slate Gray', value: '#64748b' },
+    { name: 'Deep Indigo', value: '#4338ca' },
+    { name: 'Dark Green', value: '#14532d' },
+    { name: 'Iron', value: '#1e293b' },
 ];
 
 const SubscriptionsPage = () => {
@@ -43,8 +43,7 @@ const SubscriptionsPage = () => {
     const [loading, setLoading] = useState(true);
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [editingSub, setEditingSub] = useState<Subscription | null>(null);
+    const [commandCenter, setCommandCenter] = useState<any>(null);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -52,7 +51,7 @@ const SubscriptionsPage = () => {
         category: 'Entertainment',
         price: '',
         cycle: 'monthly' as 'monthly' | 'yearly' | 'weekly',
-        color: '#3B82F6',
+        color: '#000000',
         is_trial: false,
         trial_days: '7',
         start_date: new Date().toISOString().split('T')[0],
@@ -63,8 +62,12 @@ const SubscriptionsPage = () => {
         setLoading(true);
         try {
             await subscriptionService.checkAndUpdateExpired(user.id);
-            const data = await subscriptionService.getAll(user.id);
+            const [data, center] = await Promise.all([
+                subscriptionService.getAll(user.id),
+                featureExpansionApi.subscriptionCommandCenter().catch(() => null)
+            ]);
             setSubscriptions(data);
+            setCommandCenter(center);
         } catch (error) {
             toast.error('Sync failed');
         } finally {
@@ -76,18 +79,10 @@ const SubscriptionsPage = () => {
         fetchSubscriptions();
     }, [user?.id]);
 
-    // Listen for subscription changes to update immediately
     useEffect(() => {
-        const handleSubscriptionChange = () => {
-            console.log('🔄 Subscription changed - refreshing');
-            fetchSubscriptions();
-        };
-
+        const handleSubscriptionChange = () => fetchSubscriptions();
         window.addEventListener('subscription-changed', handleSubscriptionChange);
-
-        return () => {
-            window.removeEventListener('subscription-changed', handleSubscriptionChange);
-        };
+        return () => window.removeEventListener('subscription-changed', handleSubscriptionChange);
     }, [user?.id]);
 
 
@@ -125,29 +120,23 @@ const SubscriptionsPage = () => {
                     next_payment_date: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0]
                 });
             }
-            toast.success('Subscription saved!');
+            toast.success('Mission Deployed!');
             setShowAddModal(false);
             fetchSubscriptions();
         } catch (error) {
-            toast.error('Creation failed');
+            toast.error('Deployment failed');
         }
     };
 
     const handleCancel = async (id: string, name: string) => {
-        if (!confirm(`Archive ${name}?`)) return;
+        if (!confirm(`Terminate Mission: ${name}?`)) return;
         try {
             await subscriptionService.cancel(id);
-            toast.success('Archived');
+            toast.success('Mission Terminated');
             fetchSubscriptions();
         } catch (error) {
             toast.error('Action failed');
         }
-    };
-
-    const getDaysUntil = (dateStr?: string) => {
-        if (!dateStr) return 0;
-        const diff = new Date(dateStr).getTime() - new Date().getTime();
-        return Math.max(0, Math.ceil(diff / (1000 * 3600 * 24)));
     };
 
     const containerVariants = {
@@ -171,124 +160,127 @@ const SubscriptionsPage = () => {
     return (
         <div className={styles.mainContent}>
             <div className={styles.contentArea}>
-                {/* Header */}
+                {/* Header Section */}
                 <motion.header
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
                     className={styles.header}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
                 >
                     <div className={styles.headerLeft}>
                         <div className={styles.titleIcon}>
-                            <Repeat size={28} />
+                            <Zap className="h-9 w-9" strokeWidth={3} />
                         </div>
                         <div>
                             <h1 className={styles.title}>
                                 Subscriptions
-                                <div className={styles.liveBadge}>LIVE TRACKER</div>
+                                <span className={styles.liveBadge}>Live Intel</span>
                             </h1>
-                            <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">
-                                Managing {activeSubscriptions.length} active pipelines
-                            </p>
                         </div>
                     </div>
-
-                    <div className="flex gap-4">
+                    <div className="flex items-center gap-6">
                         <button
-                            className={styles.miniBtn}
-                            onClick={fetchSubscriptions}
-                            style={{ width: 'auto', padding: '0 1.25rem', fontSize: '0.75rem', fontWeight: 800 }}
+                            className="font-black text-black uppercase tracking-widest text-[12px] hover:underline"
+                            onClick={() => fetchSubscriptions()}
                         >
-                            <RefreshCw size={16} className="mr-2" />
-                            REFRESH
+                            Sync Stream
                         </button>
                         <button
-                            className="h-14 px-8 rounded-2xl bg-[#3B82F6] text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-105 transition-all flex items-center gap-2"
                             onClick={() => setShowAddModal(true)}
+                            className="h-14 px-8 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[6px_6px_0px_#E11D48] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48]"
                         >
-                            <Plus size={18} />
-                            Add Service
+                            Deploy Mission
                         </button>
                     </div>
                 </motion.header>
 
-                {/* Main Stats */}
-                <motion.div
-                    className={styles.statsRow}
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#eff6ff', color: '#3b82f6' }}>
-                            <DollarSign size={24} />
+                {commandCenter && (
+                    <section className="bg-white border-4 border-black p-8 mb-12 shadow-[8px_8px_0px_#000000]">
+                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                            <div>
+                                <h2 className="text-2xl font-black uppercase italic text-black">Subscription Command Center</h2>
+                                <p className="text-black/60 font-bold">Intel on trials, price changes, and unused streams.</p>
+                            </div>
+                            <div className="lg:text-right">
+                                <div className="text-4xl font-black text-black">{formatCurrency(commandCenter.totals?.yearlyCost || monthlyTotal * 12)}</div>
+                                <div className="text-xs font-black uppercase text-red-600 tracking-widest">Yearly exposure</div>
+                            </div>
                         </div>
-                        <p className={styles.statLabel}>Monthly burn</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                            <div className="p-6 border-4 border-black bg-white shadow-[4px_4px_0px_#000000]">
+                                <div className="text-3xl font-black">{commandCenter.trialsEndingSoon?.length || 0}</div>
+                                <div className="text-xs font-black uppercase text-black/50">Trials ending soon</div>
+                            </div>
+                            <div className="p-6 border-4 border-black bg-red-600 text-white shadow-[4px_4px_0px_#000000]">
+                                <div className="text-3xl font-black">{commandCenter.priceIncreases?.length || 0}</div>
+                                <div className="text-xs font-black uppercase text-white/80">Price increases</div>
+                            </div>
+                            <div className="p-6 border-4 border-black bg-black text-white shadow-[4px_4px_0px_#E11D48]">
+                                <div className="text-3xl font-black">{commandCenter.unusedAlerts?.length || 0}</div>
+                                <div className="text-xs font-black uppercase text-white/80">Unused alerts</div>
+                            </div>
+                        </div>
+                        {commandCenter.cancellationHints?.[0] && (
+                            <div className="mt-8 p-4 border-2 border-black bg-slate-50 font-bold italic">
+                                <span className="text-red-600 mr-2">/ ADVICE:</span>
+                                {commandCenter.cancellationHints[0].hint}
+                            </div>
+                        )}
+                    </section>
+                )}
+
+                {/* Main Stats */}
+                <div className={styles.statsRow}>
+                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
+                        <div className={styles.statIconBox} style={{ backgroundColor: '#000000', color: '#FFFFFF' }}>
+                            <CreditCard className="h-7 w-7" strokeWidth={3} />
+                        </div>
+                        <p className={styles.statLabel}>Monthly Burn</p>
                         <h3 className={styles.statValue}>{formatCurrency(monthlyTotal)}</h3>
                         <div className={styles.statProgress}>
-                            <motion.div
-                                className={styles.progressFill}
-                                style={{ background: '#3b82f6' }}
-                                initial={{ width: 0 }}
-                                animate={{ width: '70%' }}
-                            />
+                            <div className={styles.progressFill} style={{ width: '70%', backgroundColor: '#E11D48' }} />
                         </div>
                     </motion.div>
 
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#f5f3ff', color: '#8b5cf6' }}>
-                            <Calendar size={24} />
+                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
+                        <div className={styles.statIconBox} style={{ backgroundColor: '#E11D48', color: '#FFFFFF' }}>
+                            <Zap className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <p className={styles.statLabel}>Yearly projection</p>
-                        <h3 className={styles.statValue}>{formatCurrency(monthlyTotal * 12)}</h3>
-                        <div className={styles.statProgress}>
-                            <motion.div
-                                className={styles.progressFill}
-                                style={{ background: '#8b5cf6' }}
-                                initial={{ width: 0 }}
-                                animate={{ width: '85%' }}
-                            />
-                        </div>
-                    </motion.div>
-
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#ecfdf5', color: '#10b981' }}>
-                            <CheckCircle2 size={24} />
-                        </div>
-                        <p className={styles.statLabel}>Active services</p>
+                        <p className={styles.statLabel}>Active Missions</p>
                         <h3 className={styles.statValue}>{activeSubscriptions.length}</h3>
                         <div className={styles.statProgress}>
-                            <motion.div
-                                className={styles.progressFill}
-                                style={{ background: '#10b981' }}
-                                initial={{ width: 0 }}
-                                animate={{ width: '100%' }}
-                            />
+                            <div className={styles.progressFill} style={{ width: '40%', backgroundColor: '#000000' }} />
                         </div>
                     </motion.div>
 
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <div className={styles.statIconBox} style={{ background: '#fffbeb', color: '#f59e0b' }}>
-                            <Timer size={24} />
+                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
+                        <div className={styles.statIconBox} style={{ backgroundColor: '#000000', color: '#FFFFFF' }}>
+                            <ArrowUpRight className="h-7 w-7" strokeWidth={3} />
                         </div>
-                        <p className={styles.statLabel}>Active trials</p>
-                        <h3 className={styles.statValue}>{trials.length}</h3>
+                        <p className={styles.statLabel}>Yearly Projection</p>
+                        <h3 className={styles.statValue}>{formatCurrency(monthlyTotal * 12)}</h3>
                         <div className={styles.statProgress}>
-                            <motion.div
-                                className={styles.progressFill}
-                                style={{ background: '#f59e0b' }}
-                                initial={{ width: 0 }}
-                                animate={{ width: trials.length > 0 ? '40%' : '0%' }}
-                            />
+                            <div className={styles.progressFill} style={{ width: '55%', backgroundColor: '#E11D48' }} />
                         </div>
                     </motion.div>
-                </motion.div>
+
+                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
+                        <div className={styles.statIconBox} style={{ backgroundColor: '#E11D48', color: '#FFFFFF' }}>
+                            <TrendingUp className="h-7 w-7" strokeWidth={3} />
+                        </div>
+                        <p className={styles.statLabel}>Trial Flow</p>
+                        <h3 className={styles.statValue}>{trials.length}</h3>
+                        <div className={styles.statProgress}>
+                            <div className={styles.progressFill} style={{ width: '85%', backgroundColor: '#000000' }} />
+                        </div>
+                    </motion.div>
+                </div>
 
                 {/* Trial Section */}
                 {trials.length > 0 && (
                     <div className="mb-12">
                         <div className={styles.sectionHeader}>
                             <h2 className={styles.sectionTitle}>
-                                <Timer className="text-amber-500" />
+                                <Timer className="text-red-600" strokeWidth={3} />
                                 Trial Inflow
                             </h2>
                         </div>
@@ -303,45 +295,31 @@ const SubscriptionsPage = () => {
                 {/* Active Pipeline Section */}
                 <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
-                        <CreditCard className="text-blue-500" />
+                        <CreditCard className="text-black" strokeWidth={3} />
                         Active Pipeline
                     </h2>
                 </div>
 
-                <motion.div
-                    className={styles.pipelineSection}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                >
+                <div className="mb-12">
                     {activeSubscriptions.length === 0 ? (
                         <div className={styles.emptyState}>
-                            <div className={styles.emptyIcon}>
-                                <Repeat size={32} />
-                            </div>
                             <h3 className={styles.emptyTitle}>Empty Pipeline</h3>
-                            <p className={styles.emptyText}>
-                                No active recurring payments detected in your matrix yet.
-                            </p>
-                            <Button
-                                className="h-12 px-8 rounded-xl bg-blue-600 font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-100 hover:scale-105 transition-all"
+                            <p className={styles.emptyText}>Zero active recurring streams detected.</p>
+                            <button
+                                className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48]"
                                 onClick={() => setShowAddModal(true)}
                             >
-                                Track Current Bill
-                            </Button>
+                                Track First Mission
+                            </button>
                         </div>
                     ) : (
-                        <motion.div
-                            className={styles.subsGrid}
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
+                        <div className={styles.subsGrid}>
                             {activeSubscriptions.map(sub => (
                                 <SubscriptionCard key={sub.id} sub={sub} onCancel={handleCancel} />
                             ))}
-                        </motion.div>
+                        </div>
                     )}
-                </motion.div>
+                </div>
             </div>
 
             {/* Add Modal */}
@@ -357,12 +335,6 @@ const SubscriptionsPage = () => {
 };
 
 const SubscriptionCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
-    const daysUntil = (dateStr?: string) => {
-        if (!dateStr) return 0;
-        const diff = new Date(dateStr).getTime() - new Date().getTime();
-        return Math.max(0, Math.ceil(diff / (1000 * 3600 * 24)));
-    };
-
     return (
         <motion.div
             className={styles.subCard}
@@ -374,7 +346,7 @@ const SubscriptionCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any 
         >
             <div className={styles.subCardTop}>
                 <div className={styles.subBrand}>
-                    <div className={styles.subLogoBox} style={{ background: sub.color }}>
+                    <div className={styles.subLogoBox}>
                         {sub.name.charAt(0)}
                     </div>
                     <div>
@@ -384,7 +356,7 @@ const SubscriptionCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any 
                 </div>
                 <div className={styles.cardActions}>
                     <button className={styles.miniBtn} onClick={() => onCancel(sub.id, sub.name)}>
-                        <X size={18} />
+                        <X className="h-5 w-5" strokeWidth={3} />
                     </button>
                 </div>
             </div>
@@ -396,12 +368,10 @@ const SubscriptionCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any 
 
             <div className={styles.paymentInfo}>
                 <div className={styles.nextBill}>
-                    <Clock size={14} className={daysUntil(sub.next_payment_date) <= 3 ? "text-amber-500" : "text-slate-400"} />
-                    Next in <span className={styles.daysLeft}>{daysUntil(sub.next_payment_date)} Days</span>
+                    Next Due: <span className={styles.daysLeft}>{sub.next_payment_date ? new Date(sub.next_payment_date).toLocaleDateString() : 'N/A'}</span>
                 </div>
-                <div className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">
-                    <Sparkles size={10} />
-                    Active
+                <div className="flex items-center gap-1 bg-black text-white px-3 py-1 text-[10px] font-black uppercase">
+                    ACTIVE
                 </div>
             </div>
         </motion.div>
@@ -415,7 +385,7 @@ const TrialCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
         <motion.div className={cn(styles.subCard, styles.trialCard)} whileHover={{ y: -10 }}>
             <div className={styles.subCardTop}>
                 <div className={styles.subBrand}>
-                    <div className={styles.subLogoBox} style={{ background: sub.color }}>
+                    <div className={styles.subLogoBox}>
                         {sub.name.charAt(0)}
                     </div>
                     <div>
@@ -424,7 +394,7 @@ const TrialCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
                     </div>
                 </div>
                 <button className={styles.miniBtn} onClick={() => onCancel(sub.id, sub.name)}>
-                    <X size={18} />
+                    <X className="h-5 w-5" strokeWidth={3} />
                 </button>
             </div>
 
@@ -438,11 +408,10 @@ const TrialCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
 
             <div className={styles.paymentInfo}>
                 <div className={styles.nextBill}>
-                    <Timer size={14} className="text-amber-500" />
                     <span className={styles.daysLeft}>{info.daysRemaining} Days</span> Remaining
                 </div>
                 <button
-                    className="bg-amber-500 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-amber-200"
+                    className="bg-red-600 text-white px-4 py-2 border-2 border-white font-black uppercase text-[10px]"
                 >
                     Upgrade
                 </button>
@@ -454,35 +423,32 @@ const TrialCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
 const AddModal = ({ isOpen, onClose, onSubmit, formData, setFormData }: any) => {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-none rounded-[40px] shadow-2xl">
-                <div className="bg-slate-50 p-10 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-8 text-blue-100 opacity-20">
-                        <Sparkles size={120} />
-                    </div>
+            <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-4 border-black rounded-none shadow-[12px_12px_0px_#000000]">
+                <div className="bg-black p-8 relative overflow-hidden">
                     <div className="relative z-10">
                         <DialogHeader>
                             <div className="flex items-center gap-4 mb-3">
-                                <div className="p-3 bg-blue-600 text-white rounded-2xl shadow-xl">
-                                    <Plus size={24} />
+                                <div className="p-3 bg-red-600 text-white border-2 border-white">
+                                    <Plus size={24} strokeWidth={3} />
                                 </div>
                                 <div>
-                                    <DialogTitle className="text-2xl font-black text-slate-800 tracking-tight">Add Service</DialogTitle>
-                                    <DialogDescription className="font-bold text-slate-400">Initialize a new recurring matrix</DialogDescription>
+                                    <DialogTitle className="text-3xl font-black text-white uppercase tracking-tighter italic">Deploy Mission</DialogTitle>
+                                    <DialogDescription className="font-bold text-red-600 uppercase text-xs tracking-widest">Initialize new recurring stream</DialogDescription>
                                 </div>
                             </div>
                         </DialogHeader>
                     </div>
                 </div>
 
-                <div className="p-10 space-y-8 bg-white">
-                    <div className="flex items-center justify-between p-5 bg-slate-50 rounded-[28px] border-2 border-slate-100">
+                <div className="p-8 space-y-8 bg-white">
+                    <div className="flex items-center justify-between p-5 border-4 border-black bg-slate-50">
                         <div className="flex items-center gap-4">
-                            <div className={cn("p-2 rounded-xl", formData.is_trial ? "bg-amber-500 text-white" : "bg-slate-200 text-slate-400")}>
-                                <Timer size={20} />
+                            <div className={cn("p-2 border-2 border-black", formData.is_trial ? "bg-red-600 text-white" : "bg-white text-black")}>
+                                <Timer size={20} strokeWidth={3} />
                             </div>
                             <div>
-                                <p className="text-sm font-black text-slate-700">Trial Mode</p>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Toggle for free trials</p>
+                                <p className="text-sm font-black uppercase">Trial Mission</p>
+                                <p className="text-[10px] font-bold text-black/50 uppercase tracking-widest">Toggle for limited engagement</p>
                             </div>
                         </div>
                         <Switch checked={formData.is_trial} onCheckedChange={(v) => setFormData({ ...formData, is_trial: v })} />
@@ -490,10 +456,10 @@ const AddModal = ({ isOpen, onClose, onSubmit, formData, setFormData }: any) => 
 
                     <div className="grid gap-6">
                         <div className="space-y-2">
-                            <Label className="text-xs font-black text-slate-500 uppercase tracking-[0.1em] ml-1">Service Name</Label>
+                            <Label className="text-xs font-black uppercase tracking-widest text-black/40">Target Name</Label>
                             <Input
-                                placeholder="Netflix, Disney, Cloud..."
-                                className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white text-lg font-bold"
+                                placeholder="NETFLIX / AWS / SPOTIFY"
+                                className="h-14 rounded-none border-4 border-black bg-white text-lg font-black uppercase"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             />
@@ -502,21 +468,21 @@ const AddModal = ({ isOpen, onClose, onSubmit, formData, setFormData }: any) => 
                         {!formData.is_trial ? (
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label className="text-xs font-black text-slate-500 uppercase tracking-[0.1em] ml-1">Daily/Monthly Cost</Label>
+                                    <Label className="text-xs font-black uppercase tracking-widest text-black/40">Resource Cost</Label>
                                     <Input
                                         type="number"
-                                        className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white font-bold"
+                                        className="h-14 rounded-none border-4 border-black bg-white font-black"
                                         value={formData.price}
                                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-xs font-black text-slate-500 uppercase tracking-[0.1em] ml-1">Cycle</Label>
+                                    <Label className="text-xs font-black uppercase tracking-widest text-black/40">Interval</Label>
                                     <Select value={formData.cycle} onValueChange={(v) => setFormData({ ...formData, cycle: v })}>
-                                        <SelectTrigger className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 font-bold">
+                                        <SelectTrigger className="h-14 rounded-none border-4 border-black bg-white font-black uppercase">
                                             <SelectValue />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="rounded-none border-4 border-black">
                                             <SelectItem value="weekly">Weekly</SelectItem>
                                             <SelectItem value="monthly">Monthly</SelectItem>
                                             <SelectItem value="yearly">Yearly</SelectItem>
@@ -526,41 +492,30 @@ const AddModal = ({ isOpen, onClose, onSubmit, formData, setFormData }: any) => 
                             </div>
                         ) : (
                             <div className="space-y-2">
-                                <Label className="text-xs font-black text-slate-500 uppercase tracking-[0.1em] ml-1">Trial Days</Label>
+                                <Label className="text-xs font-black uppercase tracking-widest text-black/40">Engagement Duration (Days)</Label>
                                 <Input
                                     type="number"
-                                    className="h-14 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white font-bold"
+                                    className="h-14 rounded-none border-4 border-black bg-white font-black"
                                     value={formData.trial_days}
                                     onChange={(e) => setFormData({ ...formData, trial_days: e.target.value })}
                                 />
                             </div>
                         )}
-
-                        <div className="space-y-2">
-                            <Label className="text-xs font-black text-slate-500 uppercase tracking-[0.1em] ml-1">Visual Identity</Label>
-                            <div className="flex gap-4">
-                                {COLORS.map(c => (
-                                    <button
-                                        key={c.value}
-                                        className={cn(
-                                            "w-10 h-10 rounded-xl transition-all",
-                                            formData.color === c.value ? "ring-4 ring-slate-100 scale-110" : "opacity-40 hover:opacity-100"
-                                        )}
-                                        style={{ background: c.value }}
-                                        onClick={() => setFormData({ ...formData, color: c.value })}
-                                    />
-                                ))}
-                            </div>
-                        </div>
                     </div>
 
                     <div className="flex gap-4 pt-4">
-                        <Button variant="outline" className="flex-1 h-14 rounded-2xl font-black text-xs uppercase" onClick={onClose}>
+                        <button 
+                            className="flex-1 h-16 border-4 border-black font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors" 
+                            onClick={onClose}
+                        >
                             Abort
-                        </Button>
-                        <Button className="flex-[2] h-14 rounded-2xl bg-blue-600 font-black text-xs uppercase shadow-xl shadow-blue-100" onClick={onSubmit}>
-                            Initiate Pipeline
-                        </Button>
+                        </button>
+                        <button 
+                            className="flex-[2] h-16 bg-black text-white border-4 border-black font-black uppercase tracking-widest shadow-[6px_6px_0px_#E11D48] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all" 
+                            onClick={onSubmit}
+                        >
+                            Initiate Stream
+                        </button>
                     </div>
                 </div>
             </DialogContent>

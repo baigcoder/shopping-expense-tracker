@@ -6,6 +6,9 @@ import { goalService, Goal } from './goalService';
 import { budgetService, Budget } from './budgetService';
 import { formatCurrency } from './currencyService';
 
+const AI_REQUEST_TIMEOUT_MS = 12000;
+const AI_REFRESH_TIMEOUT_MS = 18000;
+
 // User context cache
 let userContextCache: UserContext | null = null;
 let contextLastUpdated: number = 0;
@@ -249,14 +252,14 @@ function generateSmartResponse(message: string, context: UserContext): string {
     }
 
     // DEFAULT
-    return `Hey! I'm Cashly AI, your financial bestie 🤖\n\n` +
-        `Try asking me about:\n` +
-        `• "How much did I spend?"\n` +
-        `• "Roast my spending"\n` +
-        `• "Show my subscriptions"\n` +
-        `• "Goal progress"\n` +
-        `• "Budget status"\n` +
-        `• "Tips to save money"`;
+    return `Hey! I'm Cashly AI, your personal financial assistant 🤖\n\n` +
+        `I'm here to help you manage your money, track spending, and reach your goals. Try asking me:\n\n` +
+        `• "How much have I spent this month?"\n` +
+        `• "Give me a review of my spending"\n` +
+        `• "What are my active subscriptions?"\n` +
+        `• "Show my progress on savings goals"\n` +
+        `• "Tips for saving more money"`;
+
 }
 
 function getProgressBar(percent: number): string {
@@ -280,7 +283,6 @@ function getRandomTip(): string {
 // Main export - FAST AI response using frontend cache
 export const getAIResponse = async (message: string, userId?: string): Promise<string> => {
     if (!userId) {
-        // No user - use local fallback
         return generateSmartResponse(message, {
             userId: '',
             transactions: [],
@@ -300,44 +302,61 @@ export const getAIResponse = async (message: string, userId?: string): Promise<s
     }
 
     try {
-        // Import cache service dynamically to avoid circular deps
         const { aiDataCache } = await import('./aiDataCacheService');
-
-        // Get cached data (instant if already loaded)
         const cachedData = await aiDataCache.getCachedData(userId);
-
-        // Build context string from cache
         const contextString = aiDataCache.buildContextString(cachedData);
 
-        // Try FAST endpoint first (no DB fetching on backend)
+        // Try FAST endpoint
         try {
             const response = await api.post('/ai/chat/fast', {
                 message,
                 context: contextString
+            }, {
+                timeout: AI_REQUEST_TIMEOUT_MS
             });
-            console.log(`⚡ Fast AI response in ${response.data.responseTime}ms`);
             return response.data.reply;
         } catch (fastError) {
             console.log('Fast endpoint failed, trying regular...');
         }
 
-        // Fallback to regular endpoint
+        // Try regular endpoint
         try {
-            const response = await api.post('/ai/chat', { message });
-            console.log('✅ AI Chat via backend Groq');
+            const response = await api.post('/ai/chat', { message, clientContext: contextString }, {
+                timeout: AI_REQUEST_TIMEOUT_MS
+            });
+            
+            // Smarter fallback if backend AI is unavailable
+            if (response.data.aiUnavailable && cachedData.transactions.length > 0) {
+                console.log('Backend AI unavailable, using local intelligence');
+                return generateSmartResponse(message, {
+                    userId,
+                    transactions: cachedData.transactions,
+                    subscriptions: cachedData.subscriptions,
+                    goals: cachedData.goals,
+                    budgets: cachedData.budgets,
+                    stats: {
+                        totalSpent: cachedData.monthlySpent,
+                        monthlySpent: cachedData.monthlySpent,
+                        weeklySpent: cachedData.weeklySpent,
+                        topCategory: cachedData.topCategory,
+                        topCategoryAmount: cachedData.topCategoryAmount,
+                        avgTransactionAmount: cachedData.transactions.length > 0 
+                            ? cachedData.monthlySpent / Math.max(1, cachedData.transactions.length) 
+                            : 0,
+                        transactionCount: cachedData.transactions.length
+                    }
+                });
+            }
+
             return response.data.reply;
         } catch (backendError) {
             console.log('Backend AI unavailable, using local fallback');
+            const context = await getUserContext(userId);
+            return generateSmartResponse(message, context);
         }
-
-        // Local fallback with cached context
-        const context = await getUserContext(userId);
-        return generateSmartResponse(message, context);
 
     } catch (error) {
         console.error('AI response error:', error);
-
-        // Final fallback - try local context
         try {
             const context = await getUserContext(userId);
             return generateSmartResponse(message, context);
@@ -347,17 +366,16 @@ export const getAIResponse = async (message: string, userId?: string): Promise<s
     }
 };
 
-// Clear context cache (call when user logs out or data changes)
+// Clear context cache
 export const clearAIContext = () => {
     userContextCache = null;
     contextLastUpdated = 0;
-    // Also clear the data cache
     import('./aiDataCacheService').then(({ aiDataCache }) => {
         aiDataCache.invalidate();
     }).catch(() => { });
 };
 
-// Generate proactive insights based on current data
+// Generate proactive insights
 export const generateProactiveInsight = async (userId: string): Promise<{
     type: 'warning' | 'tip' | 'celebration';
     title: string;
@@ -366,7 +384,6 @@ export const generateProactiveInsight = async (userId: string): Promise<{
     try {
         const context = await getUserContext(userId);
 
-        // Check for budget warnings (80%+ spent)
         for (const budget of context.budgets) {
             const spent = context.transactions
                 .filter(t => t.category === budget.category && t.type === 'expense')
@@ -382,7 +399,6 @@ export const generateProactiveInsight = async (userId: string): Promise<{
             }
         }
 
-        // Check for goal milestones
         for (const goal of context.goals) {
             const progress = goal.target > 0 ? (goal.saved / goal.target) * 100 : 0;
             if (progress >= 50 && progress < 55) {
@@ -394,7 +410,6 @@ export const generateProactiveInsight = async (userId: string): Promise<{
             }
         }
 
-        // Trial expiring soon
         const trialSubs = context.subscriptions.filter(s => s.is_trial && s.trial_end_date);
         for (const sub of trialSubs) {
             const endDate = new Date(sub.trial_end_date!);
@@ -408,7 +423,6 @@ export const generateProactiveInsight = async (userId: string): Promise<{
             }
         }
 
-        // Spending insight
         if (context.stats.weeklySpent > 0) {
             const avgDaily = context.stats.weeklySpent / 7;
             if (avgDaily > context.stats.monthlySpent / 30 * 1.5) {
@@ -420,17 +434,16 @@ export const generateProactiveInsight = async (userId: string): Promise<{
             }
         }
 
-        return null; // No proactive insight needed
+        return null;
     } catch (error) {
         console.error('Error generating proactive insight:', error);
         return null;
     }
 };
 
-// Export for external use
 export { getUserContext };
 
-// ==================== BACKEND AI ENDPOINTS (New Fast AI) ====================
+// ==================== BACKEND AI ENDPOINTS ====================
 
 export interface BackendAIInsight {
     type: 'tip' | 'warning' | 'forecast' | 'risk';
@@ -448,15 +461,12 @@ export interface BackendAIForecast {
     insights: string[];
 }
 
-/**
- * Get AI insights from backend (with Redis caching)
- */
 export async function getBackendInsights(userId: string): Promise<{
     insights: BackendAIInsight[];
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/insights');
+        const response = await api.get('/ai/insights', { timeout: AI_REQUEST_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         console.error('Backend AI insights error:', error);
@@ -464,15 +474,12 @@ export async function getBackendInsights(userId: string): Promise<{
     }
 }
 
-/**
- * Get AI forecast from backend (with Redis caching)
- */
 export async function getBackendForecast(userId: string): Promise<{
     forecast: BackendAIForecast[];
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/forecast');
+        const response = await api.get('/ai/forecast', { timeout: AI_REQUEST_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         console.error('Backend AI forecast error:', error);
@@ -480,15 +487,12 @@ export async function getBackendForecast(userId: string): Promise<{
     }
 }
 
-/**
- * Get AI risk alerts from backend (with Redis caching)
- */
 export async function getBackendRisks(userId: string): Promise<{
     risks: BackendAIInsight[];
     fromCache: boolean;
 }> {
     try {
-        const response = await api.get('/ai/risks');
+        const response = await api.get('/ai/risks', { timeout: AI_REQUEST_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         console.error('Backend AI risks error:', error);
@@ -496,16 +500,13 @@ export async function getBackendRisks(userId: string): Promise<{
     }
 }
 
-/**
- * Force refresh all AI data from backend
- */
 export async function refreshBackendAI(userId: string): Promise<{
     insights: BackendAIInsight[];
     forecast: BackendAIForecast[];
     risks: BackendAIInsight[];
 }> {
     try {
-        const response = await api.post('/ai/refresh', {});
+        const response = await api.post('/ai/refresh', {}, { timeout: AI_REFRESH_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         console.error('Backend AI refresh error:', error);
@@ -513,19 +514,16 @@ export async function refreshBackendAI(userId: string): Promise<{
     }
 }
 
-/**
- * Check backend AI service status
- */
 export async function getAIServiceStatus(): Promise<{
-    groq: { status: string; model: string };
+    openrouter: { status: string; model: string; error?: string | null; models?: Record<string, string> };
     redis: { connected: boolean; memory?: string };
 }> {
     try {
-        const response = await api.get('/ai/status');
+        const response = await api.get('/ai/status', { timeout: AI_REQUEST_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         return {
-            groq: { status: 'error', model: 'unknown' },
+            openrouter: { status: 'error', model: 'unknown' },
             redis: { connected: false }
         };
     }

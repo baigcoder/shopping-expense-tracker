@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Chrome, ShoppingCart, Bell, Zap, Download, RefreshCw, Home, Sparkles } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
-import { supabase } from '../config/supabase';
+import { logout } from '../config/supabase';
 import styles from './ExtensionRequiredModal.module.css';
 
 const ExtensionRequiredModal = () => {
@@ -10,7 +10,7 @@ const ExtensionRequiredModal = () => {
 
     const handleGoHome = async () => {
         try {
-            await supabase.auth.signOut();
+            await logout();
             setUser(null);
             window.location.href = '/';
         } catch (error) {

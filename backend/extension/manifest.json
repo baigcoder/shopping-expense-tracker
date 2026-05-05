@@ -63,8 +63,7 @@
     "https://*.supabase.com/*",
     "https://*.planetscale.com/*",
     "https://*.aws.amazon.com/*",
-    "http://localhost:*/*",
-    "<all_urls>"
+    "http://localhost:*/*"
   ],
   "externally_connectable": {
     "matches": [
@@ -125,8 +124,7 @@
         "https://*.jazzcash.com.pk/*",
         "https://*.easypaisa.com.pk/*",
         "https://*.sadapay.pk/*",
-        "https://*.bookme.pk/*",
-        "<all_urls>"
+        "https://*.bookme.pk/*"
       ],
       "js": [
         "content.js"
@@ -155,7 +153,34 @@
         "icons/logo.png"
       ],
       "matches": [
-        "<all_urls>"
+        "http://localhost:*/*",
+        "http://127.0.0.1:*/*",
+        "https://*.vercel.app/*",
+        "https://*.amazon.com/*",
+        "https://*.ebay.com/*",
+        "https://*.walmart.com/*",
+        "https://*.bestbuy.com/*",
+        "https://*.target.com/*",
+        "https://*.etsy.com/*",
+        "https://*.aliexpress.com/*",
+        "https://*.buymeacoffee.com/*",
+        "https://*.gumroad.com/*",
+        "https://*.stripe.com/*",
+        "https://*.paypal.com/*",
+        "https://*.daraz.pk/*",
+        "https://*.foodpanda.pk/*",
+        "https://*.carrefour.pk/*",
+        "https://*.metro.pk/*",
+        "https://*.alfatah.pk/*",
+        "https://*.imtiaz.com.pk/*",
+        "https://*.naheed.pk/*",
+        "https://*.priceoye.pk/*",
+        "https://*.telemart.pk/*",
+        "https://*.cheetay.pk/*",
+        "https://*.jazzcash.com.pk/*",
+        "https://*.easypaisa.com.pk/*",
+        "https://*.sadapay.pk/*",
+        "https://*.bookme.pk/*"
       ]
     }
   ]

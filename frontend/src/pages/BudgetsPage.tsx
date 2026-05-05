@@ -1,16 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Plus, Trash2, Wallet, AlertTriangle, RefreshCw, Target,
-    ChevronRight, CheckCircle2, TrendingUp, Sparkles, Clock,
-    DollarSign, LayoutGrid, CalendarDays
+    Plus, Trash2, Wallet, RefreshCw, Target,
+    TrendingUp, Clock, DollarSign, LayoutGrid, Flame, AlertTriangle
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
 import { budgetService, Budget } from '../services/budgetService';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
@@ -28,35 +26,11 @@ const BUDGET_CATEGORIES = [
 
 const getCategoryEmoji = (category: string): string => {
     const emojis: Record<string, string> = {
-        'Shopping': '🛍️',
-        'Food & Dining': '🍽️',
-        'Transport': '🚗',
-        'Entertainment': '🎬',
-        'Bills & Utilities': '💡',
-        'Health': '💊',
-        'Education': '📚',
-        'Travel': '✈️',
-        'Other': '📦'
+        'Shopping': '🛍️', 'Food & Dining': '🍽️', 'Transport': '🚗',
+        'Entertainment': '🎬', 'Bills & Utilities': '💡', 'Health': '💊',
+        'Education': '📚', 'Travel': '✈️', 'Other': '📦'
     };
     return emojis[category] || '📦';
-};
-
-// Animation Variants
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 100 }
-    }
 };
 
 const BudgetsPage = () => {
@@ -152,6 +126,19 @@ const BudgetsPage = () => {
         }
     };
 
+    const calculateBurnRate = (spent: number, limit: number) => {
+        const today = new Date().getDate();
+        const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+        const remainingDays = daysInMonth - today;
+        const dailyAvg = spent / today;
+        const remainingBudget = limit - spent;
+        
+        if (remainingBudget <= 0) return 0;
+        if (dailyAvg === 0) return remainingDays;
+        
+        return Math.floor(remainingBudget / dailyAvg);
+    };
+
     const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
     const totalSpent = budgets.reduce((sum, b) => sum + (spendingMap[b.category] || 0), 0);
     const remaining = totalBudget - totalSpent;
@@ -165,295 +152,172 @@ const BudgetsPage = () => {
     };
 
     if (isLoading && budgets.length === 0) {
-        return (
-            <div className={styles.mainContent}>
-                <BudgetsSkeleton />
-            </div>
-        );
+        return <div className={styles.mainContent}><BudgetsSkeleton /></div>;
     }
 
     return (
         <div className={styles.mainContent}>
-            {/* Glass Header */}
-            <motion.header
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                className={styles.header}
-            >
+            <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className={styles.header}>
                 <div className={styles.headerTitle}>
-                    <div className={styles.headerIcon}>
-                        <Wallet className="h-7 w-7" />
-                    </div>
+                    <div className={styles.headerIcon}><Wallet size={28} /></div>
                     <div className={styles.headerInfo}>
                         <h1>Budget Health</h1>
                         <p>Track your monthly fuel and spending velocity</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button
-                        variant="ghost"
-                        className="rounded-2xl font-bold text-slate-500 hover:bg-slate-100 h-12 px-5"
-                        onClick={fetchData}
-                        disabled={isRefreshing}
-                    >
-                        <RefreshCw className={cn("mr-2 h-4 w-4", isRefreshing && "animate-spin")} />
+                    <button onClick={fetchData} disabled={isRefreshing} className="h-14 px-6 border-4 border-black bg-white font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all">
+                        <RefreshCw size={16} className={cn("inline mr-2", isRefreshing && "animate-spin")} />
                         Refresh
-                    </Button>
-                    <Button
-                        onClick={() => setShowModal(true)}
-                        className="h-12 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black shadow-xl shadow-indigo-200 transition-all hover:scale-[1.02]"
-                    >
-                        <Plus className="mr-2 h-5 w-5" />
+                    </button>
+                    <button onClick={() => setShowModal(true)} className="h-14 px-6 border-4 border-black bg-[#E11D48] text-white font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all">
+                        <Plus size={16} className="inline mr-2" />
                         New Budget
-                    </Button>
+                    </button>
                 </div>
             </motion.header>
 
-            {/* Stats Overview */}
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className={styles.overviewGrid}
-            >
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-blue-50 text-blue-600")}>
-                            <LayoutGrid className="h-6 w-6" />
-                        </div>
-                        <Badge variant="outline" className="border-blue-100 bg-blue-50/50 text-blue-600 font-black text-[10px] uppercase">Plan</Badge>
-                    </div>
-                    <div className={styles.statLabel}>Total Budget</div>
+            <div className={styles.overviewGrid}>
+                <div className={styles.premiumStatCard}>
+                    <span className={styles.statLabel}>Total Allocation</span>
                     <div className={styles.statValue}>{formatCurrency(totalBudget)}</div>
-                    <div className={styles.statSubtext}>Monthly Allocation</div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, "bg-slate-100 text-slate-600")}>
-                            <TrendingUp className="h-6 w-6" />
-                        </div>
-                        <Badge variant="outline" className="border-slate-200 bg-slate-50/50 text-slate-600 font-black text-[10px] uppercase">Spent</Badge>
-                    </div>
-                    <div className={styles.statLabel}>Total Spent</div>
+                    <div className={styles.statSubtext}>Planned Fuel</div>
+                </div>
+                <div className={styles.premiumStatCard}>
+                    <span className={styles.statLabel}>Total Burn</span>
                     <div className={styles.statValue}>{formatCurrency(totalSpent)}</div>
-                    <div className={styles.statSubtext}>Current Month</div>
-                </motion.div>
-
-                <motion.div
-                    variants={itemVariants}
-                    className={cn(styles.premiumStatCard, remaining < 0 && styles.overBudgetCard)}
-                >
-                    <div className={styles.statHeader}>
-                        <div className={cn(styles.statIconContainer, remaining < 0 ? "bg-rose-50 text-rose-600" : "bg-indigo-50 text-indigo-600")}>
-                            <Target className="h-6 w-6" />
-                        </div>
-                        <Badge
-                            variant="outline"
-                            className={cn(
-                                "font-black text-[10px] uppercase",
-                                remaining < 0 ? "border-rose-100 bg-rose-50 text-rose-600" : "border-indigo-100 bg-indigo-50 text-indigo-600"
-                            )}
-                        >
-                            {remaining < 0 ? 'CRITICAL' : 'REMAINING'}
-                        </Badge>
-                    </div>
-                    <div className={styles.statLabel}>{remaining < 0 ? 'Deficit' : 'Remaining'}</div>
-                    <div className={cn(styles.statValue, remaining < 0 ? "text-rose-600" : "text-indigo-600")}>
+                    <div className={styles.statSubtext}>Current Consumption</div>
+                </div>
+                <div className={cn(styles.premiumStatCard, remaining < 0 && styles.overBudgetCard)}>
+                    <span className={styles.statLabel}>{remaining < 0 ? 'DEFICIT' : 'REMAINING'}</span>
+                    <div className={cn(styles.statValue, remaining < 0 && "text-[#E11D48]")}>
                         {formatCurrency(Math.abs(remaining))}
                     </div>
                     <div className={styles.statSubtext}>Buying Power</div>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
 
-            {/* Budgets Grid */}
             {budgets.length === 0 ? (
-                <motion.div
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className={styles.emptyStateCard}
-                >
-                    <div className={styles.emptyIconBox}>
-                        <Wallet className="h-10 w-10" />
-                    </div>
-                    <h2 className="text-2xl font-black">No budgets established</h2>
-                    <p className="text-slate-500 font-bold max-w-sm">
+                <div className={styles.emptyStateCard}>
+                    <div className={styles.modalIcon} style={{ margin: '0 auto 1.5rem' }}><Wallet size={32} /></div>
+                    <h2 className="text-3xl font-black uppercase mb-4">No budgets established</h2>
+                    <p className="text-slate-500 font-bold max-w-sm mx-auto mb-8 uppercase tracking-widest text-xs">
                         Create your first budget limit to gain complete control over your cash flow.
                     </p>
-                    <Button
-                        onClick={() => setShowModal(true)}
-                        className="h-14 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black shadow-xl shadow-indigo-200 mt-2"
-                    >
-                        <Plus className="mr-2 h-6 w-6" />
-                        Establish First Budget
-                    </Button>
-                </motion.div>
+                    <button onClick={() => setShowModal(true)} className="h-16 px-10 border-4 border-black bg-[#000000] text-white font-black uppercase tracking-widest shadow-[8px_8px_0px_#E11D48] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+                        Launch First Target
+                    </button>
+                </div>
             ) : (
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className={styles.budgetGrid}
-                >
+                <div className={styles.budgetGrid}>
                     <AnimatePresence mode="popLayout">
-                        {budgets.map((budget, index) => {
+                        {budgets.map((budget) => {
                             const spent = spendingMap[budget.category] || 0;
                             const progress = getProgress(spent, budget.amount);
                             const statusClass = getStatusType(spent, budget.amount);
+                            const daysLeft = calculateBurnRate(spent, budget.amount);
 
                             return (
-                                <motion.div
-                                    key={budget.id}
-                                    layout
-                                    variants={itemVariants}
-                                    className={cn(styles.premiumBudgetCard, statusClass)}
-                                >
+                                <motion.div key={budget.id} layout className={cn(styles.premiumBudgetCard, statusClass)}>
                                     <div className={styles.cardTop}>
                                         <div className="flex items-center gap-4">
-                                            <div className={styles.categoryAvatar}>
-                                                {getCategoryEmoji(budget.category)}
-                                            </div>
+                                            <div className={styles.categoryAvatar}>{getCategoryEmoji(budget.category)}</div>
                                             <div className={styles.budgetInfo}>
                                                 <h3>{budget.category}</h3>
-                                                <div className={styles.limitLabel}>
-                                                    <Clock className="h-3 w-3" />
-                                                    Limit: {formatCurrency(budget.amount)}
-                                                </div>
+                                                <div className={styles.limitLabel}>TARGET: {formatCurrency(budget.amount)}</div>
                                             </div>
                                         </div>
-                                        <div className={styles.deleteAction}>
-                                            <button
-                                                className={styles.iconButton}
-                                                onClick={(e) => handleDeleteBudget(budget.id, e)}
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
-                                        </div>
+                                        <button className={styles.refreshBtn} style={{ width: '2.5rem', height: '2.5rem' }} onClick={(e) => handleDeleteBudget(budget.id, e)}>
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
 
                                     <div className={styles.progressTrack}>
                                         <div className={styles.progressLabelGroup}>
-                                            <span className={styles.progressText}>Current Utilization</span>
-                                            <span className={styles.progressPercent}>{progress.toFixed(0)}%</span>
+                                            <span>Utilization</span>
+                                            <span>{progress.toFixed(0)}%</span>
                                         </div>
                                         <div className={styles.progressBar}>
-                                            <div
-                                                className={styles.progressFill}
-                                                style={{ width: `${progress}%` }}
-                                            />
+                                            <div className={styles.progressFill} style={{ width: `${progress}%` }} />
                                         </div>
                                     </div>
 
-                                    <div className={styles.metricsRow}>
-                                        <div className={styles.metricItem}>
-                                            <span className={styles.mLabel}>Spent</span>
-                                            <span className={styles.mValue}>{formatCurrency(spent)}</span>
+                                    <div className="flex justify-between items-end">
+                                        <div>
+                                            <span className={styles.statLabel}>Burned</span>
+                                            <div className="text-xl font-black">{formatCurrency(spent)}</div>
                                         </div>
-                                        <div className={styles.metricItem} style={{ textAlign: 'right' }}>
-                                            <span className={styles.mLabel}>Left</span>
-                                            <span className={cn(styles.mValue, budget.amount - spent < 0 ? "text-rose-600" : "text-blue-600")}>
+                                        <div className="text-right">
+                                            <span className={styles.statLabel}>Fuel Left</span>
+                                            <div className={cn("text-xl font-black", budget.amount - spent < 0 ? "text-[#E11D48]" : "text-black")}>
                                                 {formatCurrency(budget.amount - spent)}
-                                            </span>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div className={styles.burnRate}>
+                                        <div className="flex items-center gap-2">
+                                            <Flame size={14} className={daysLeft < 5 ? "animate-pulse" : ""} />
+                                            <span>Burn Velocity</span>
+                                        </div>
+                                        <span>{daysLeft === 0 ? 'CRITICAL: EMPTY' : `${daysLeft} Days Left`}</span>
+                                    </div>
+
+                                    {progress >= 100 && (
+                                        <div className="bg-[#E11D48] text-white p-2 font-black uppercase text-[10px] tracking-tighter flex items-center gap-2 animate-bounce">
+                                            <AlertTriangle size={14} /> LIMIT BREACHED: ADJUST STRATEGY
+                                        </div>
+                                    )}
                                 </motion.div>
                             );
                         })}
                     </AnimatePresence>
-                </motion.div>
+                </div>
             )}
 
-            {/* Add Budget Modal */}
             <Dialog open={showModal} onOpenChange={setShowModal}>
                 <DialogContent className={styles.glassDialog}>
                     <div className={styles.modalHeader}>
-                        <div className={styles.modalIcon}>
-                            <Target className="h-8 w-8" />
-                        </div>
-                        <div className={styles.modalTitle}>
-                            <DialogTitle className="text-2xl font-black">Plan Spending</DialogTitle>
-                            <DialogDescription className="font-bold text-slate-500">Define a monthly limit for a specific category</DialogDescription>
-                        </div>
+                        <div className={styles.modalIcon}><Target size={32} /></div>
+                        <h2 className="text-2xl font-black uppercase">Plan Spending</h2>
+                        <p className="font-bold text-slate-500 uppercase tracking-widest text-[10px]">Define a monthly limit for a specific category</p>
                     </div>
 
-                    <div className={styles.modalContent}>
-                        {/* Category Selection */}
+                    <div className="p-8">
                         <div className={styles.formSection}>
                             <label className={styles.labelPremium}>Select Category</label>
-                            <Select
-                                value={newBudget.category}
-                                onValueChange={(value) => setNewBudget({ ...newBudget, category: value })}
-                            >
-                                <SelectTrigger className={styles.premiumInput}>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-2xl border-2 border-slate-100 shadow-2xl">
+                            <Select value={newBudget.category} onValueChange={(v) => setNewBudget({ ...newBudget, category: v })}>
+                                <SelectTrigger className={styles.premiumInput}><SelectValue /></SelectTrigger>
+                                <SelectContent className="border-4 border-black rounded-none">
                                     {BUDGET_CATEGORIES.map(cat => (
-                                        <SelectItem key={cat} value={cat} className="rounded-xl my-1 focus:bg-indigo-50">
-                                            <span className="flex items-center gap-3 font-bold text-slate-700">
-                                                <span className="text-xl">{getCategoryEmoji(cat)}</span>
-                                                {cat}
-                                            </span>
-                                        </SelectItem>
+                                        <SelectItem key={cat} value={cat} className="font-black uppercase text-[10px]">{cat}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
 
-                        {/* Amount Input */}
                         <div className={styles.formSection}>
                             <label className={styles.labelPremium}>Monthly Threshold</label>
                             <div className="relative">
-                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                                <Input
-                                    type="number"
-                                    placeholder="e.g. 5,000"
-                                    value={newBudget.limit}
-                                    onChange={(e) => setNewBudget({ ...newBudget, limit: e.target.value })}
-                                    className={cn(styles.premiumInput, "pl-12")}
-                                />
+                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
+                                <Input type="number" placeholder="5,000" value={newBudget.limit} onChange={(e) => setNewBudget({ ...newBudget, limit: e.target.value })} className={cn(styles.premiumInput, "pl-12")} />
                             </div>
                         </div>
 
-                        {/* Quick Amounts */}
-                        <div className={styles.formSection}>
-                            <label className={styles.labelPremium}>Direct Presets</label>
-                            <div className={styles.quickAmounts}>
-                                {[500, 1000, 2000, 5000].map((amount) => (
-                                    <button
-                                        key={amount}
-                                        onClick={() => setNewBudget({ ...newBudget, limit: amount.toString() })}
-                                        className={cn(
-                                            styles.amountBtn,
-                                            newBudget.limit === amount.toString() && styles.amountSelected
-                                        )}
-                                    >
-                                        {getCurrencySymbol()}{amount.toLocaleString()}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex gap-4 pt-4">
-                            <Button
-                                variant="ghost"
-                                onClick={() => setShowModal(false)}
-                                className="flex-1 h-14 rounded-2xl font-bold bg-slate-50 text-slate-500 hover:bg-slate-100"
+                        <div className="flex gap-4">
+                            <button 
+                                onClick={() => setShowModal(false)} 
+                                className="flex-1 h-16 border-4 border-black bg-white font-black uppercase tracking-widest hover:bg-slate-50 transition-all"
                             >
                                 Discard
-                            </Button>
-                            <Button
-                                onClick={handleAddBudget}
-                                disabled={saving || !newBudget.limit}
-                                className="flex-2 h-14 px-10 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black shadow-xl shadow-indigo-200"
+                            </button>
+                            <button 
+                                onClick={handleAddBudget} 
+                                disabled={saving || !newBudget.limit} 
+                                className="flex-[2] h-16 border-4 border-black bg-[#000000] text-white font-black uppercase tracking-widest shadow-[6px_6px_0px_#E11D48] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {saving ? (
-                                    <RefreshCw className="h-5 w-5 animate-spin" />
-                                ) : (
-                                    'Establish Plan'
-                                )}
-                            </Button>
+                                {saving ? <RefreshCw className="h-5 w-5 animate-spin mx-auto" /> : 'Establish Plan'}
+                            </button>
                         </div>
                     </div>
                 </DialogContent>
@@ -463,3 +327,4 @@ const BudgetsPage = () => {
 };
 
 export default BudgetsPage;
+

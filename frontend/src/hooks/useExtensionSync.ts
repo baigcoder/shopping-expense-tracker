@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { genZToast } from '../services/genZToast';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
+import { emitFinancialDataEvent } from '../services/financialDataEvents';
 
 interface ExtensionStatus {
     installed: boolean;
@@ -12,6 +13,12 @@ interface ExtensionStatus {
     version?: string;
     userEmail?: string;
     lastSync?: number;
+    lastTransactionSync?: {
+        status: 'pending' | 'syncing' | 'synced' | 'duplicate' | 'error';
+        timestamp: number;
+        error?: string;
+        queuedMessages?: number;
+    };
     connectionStatus?: 'connecting' | 'connected' | 'disconnected' | 'reconnecting';
     connectionId?: string;
     queuedMessages?: number;
@@ -28,6 +35,58 @@ interface ConnectionState {
 // Persistent key for extension sync status
 const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
 const CONNECTION_STATE_KEY = 'cashly_connection_state';
+const EXTENSION_PRESENCE_KEY = 'cashly_extension';
+const EXTENSION_AUTH_KEY = 'cashly_extension_auth';
+
+const parseStorageJson = <T,>(key: string): T | null => {
+    try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+};
+
+const normalizeEmail = (email?: string | null) => (email || '').trim().toLowerCase();
+
+const isSameAccount = (extensionEmail?: string | null, websiteEmail?: string | null) => {
+    const expected = normalizeEmail(websiteEmail);
+    if (!expected) return true;
+    return normalizeEmail(extensionEmail) === expected;
+};
+
+const getStoredSyncedStatus = (websiteEmail?: string | null): ExtensionStatus | null => {
+    const authData = parseStorageJson<{
+        loggedIn?: boolean;
+        email?: string | null;
+        timestamp?: number;
+        connectionStatus?: ExtensionStatus['connectionStatus'];
+    }>(EXTENSION_AUTH_KEY);
+
+    if (authData?.loggedIn && authData.email && isSameAccount(authData.email, websiteEmail)) {
+        return {
+            installed: true,
+            loggedIn: true,
+            userEmail: authData.email,
+            lastSync: authData.timestamp || Date.now(),
+            connectionStatus: authData.connectionStatus || 'connected'
+        };
+    }
+
+    const syncedData = parseStorageJson<{ synced?: boolean; email?: string | null; timestamp?: number }>(EXTENSION_SYNCED_KEY);
+    const isRecent = !!(syncedData?.timestamp && Date.now() - syncedData.timestamp < 60 * 1000);
+    if (syncedData?.synced && syncedData.email && isRecent && isSameAccount(syncedData.email, websiteEmail)) {
+        return {
+            installed: true,
+            loggedIn: true,
+            userEmail: syncedData.email,
+            lastSync: syncedData.timestamp,
+            connectionStatus: 'connected'
+        };
+    }
+
+    return null;
+};
 
 // Broadcast extension sync status to all tabs via Supabase Realtime
 // Uses proper channel subscription to avoid REST fallback deprecation warning
@@ -81,23 +140,16 @@ export const useExtensionSync = () => {
     // OPTIMIZATION: Check cached sync status immediately (synchronous)
     const getCachedStatus = (): ExtensionStatus => {
         try {
-            const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
             const connectionState = getConnectionState();
+            const storedSyncedStatus = getStoredSyncedStatus(user?.email);
 
-            if (syncedData) {
-                const data = JSON.parse(syncedData);
-                // Only trust the cache if timestamp is recent (within 60 seconds)
-                const isRecent = data.timestamp && (Date.now() - data.timestamp < 60 * 1000);
-                if (data.synced && data.email && isRecent) {
-                    return {
-                        installed: true,
-                        loggedIn: true,
-                        userEmail: data.email,
-                        connectionStatus: connectionState?.status || 'connected',
-                        connectionId: connectionState?.connectionId,
-                        queuedMessages: connectionState?.queuedMessages || 0
-                    };
-                }
+            if (storedSyncedStatus) {
+                return {
+                    ...storedSyncedStatus,
+                    connectionStatus: connectionState?.status || storedSyncedStatus.connectionStatus || 'connected',
+                    connectionId: connectionState?.connectionId,
+                    queuedMessages: connectionState?.queuedMessages || 0
+                };
             }
         } catch (e) { /* ignore */ }
         return { installed: false, loggedIn: false, connectionStatus: 'disconnected' };
@@ -123,8 +175,9 @@ export const useExtensionSync = () => {
         try {
             // FIRST: Check if extension is ACTIVELY present (not just cached)
             // Look for real-time flag that extension updates every 10 seconds
-            const extensionData = localStorage.getItem('cashly_extension');
-            const extensionAuth = localStorage.getItem('cashly_extension_auth');
+            const extensionData = localStorage.getItem(EXTENSION_PRESENCE_KEY);
+            const extensionAuth = localStorage.getItem(EXTENSION_AUTH_KEY);
+            const storedSyncedStatus = getStoredSyncedStatus(user?.email);
 
             let extensionIsActive = false;
 
@@ -148,20 +201,38 @@ export const useExtensionSync = () => {
                     try {
                         const parsed = JSON.parse(syncedData);
                         // If synced within last 60 SECONDS, extension is likely still working
-                        if (parsed.synced && parsed.timestamp && Date.now() - parsed.timestamp < 60 * 1000) {
+                        if (parsed.synced && parsed.timestamp && Date.now() - parsed.timestamp < 60 * 1000 && isSameAccount(parsed.email, user?.email)) {
                             extensionIsActive = true;
                         } else {
-                            // Stale sync flag - extension is gone, clear it immediately
-                            console.log('🧹 Clearing stale sync flag - timestamp too old');
-                            localStorage.removeItem(EXTENSION_SYNCED_KEY);
-                            localStorage.removeItem('cashly_extension');
-                            localStorage.removeItem('cashly_extension_auth');
+                            // Stale sync flag - but check auth before clearing
+                            console.log('🧹 Sync flag stale, checking auth before clearing...');
                         }
                     } catch (e) {
                         // Parse error - clear the corrupt data
                         localStorage.removeItem(EXTENSION_SYNCED_KEY);
                     }
                 }
+            }
+
+            // TRIPLE-CHECK: If still not active, check cashly_extension_auth directly
+            // The extension may have just synced (loggedIn: true) but heartbeat hasn't updated yet
+            if (!extensionIsActive && extensionAuth) {
+                try {
+                    const authParsed = JSON.parse(extensionAuth);
+                    if (authParsed.loggedIn && authParsed.email && isSameAccount(authParsed.email, user?.email)) {
+                        // Extension auth says logged in — trust it, don't clear
+                        console.log('✅ Extension auth shows loggedIn, considering active');
+                        extensionIsActive = true;
+                    }
+                } catch (e) { /* ignore parse error */ }
+            }
+
+            // Only clear stale data if auth also doesn't show loggedIn
+            if (!extensionIsActive) {
+                console.log('🧹 No active signals found, clearing stale data');
+                localStorage.removeItem(EXTENSION_SYNCED_KEY);
+                localStorage.removeItem(EXTENSION_PRESENCE_KEY);
+                localStorage.removeItem(EXTENSION_AUTH_KEY);
             }
 
             // CRITICAL: Detect extension REMOVAL immediately (only alert once)
@@ -174,8 +245,8 @@ export const useExtensionSync = () => {
                 // Clear all sync data
                 localStorage.removeItem(EXTENSION_SYNCED_KEY);
                 localStorage.removeItem('extension-alert-dismissed');
-                localStorage.removeItem('cashly_extension');
-                localStorage.removeItem('cashly_extension_auth');
+                localStorage.removeItem(EXTENSION_PRESENCE_KEY);
+                localStorage.removeItem(EXTENSION_AUTH_KEY);
 
                 setExtensionStatus({ installed: false, loggedIn: false });
                 extensionState.current.wasInstalled = false;
@@ -219,17 +290,18 @@ export const useExtensionSync = () => {
             if (extensionAuth) {
                 try {
                     const authData = JSON.parse(extensionAuth);
-                    const loggedIn = authData.loggedIn === true;
+                    const loggedIn = authData.loggedIn === true && isSameAccount(authData.email, user?.email);
                     const userEmail = authData.email;
 
 
 
-                    setExtensionStatus({
+                    setExtensionStatus(prev => ({
+                        ...prev,
                         installed: true,
                         loggedIn,
                         userEmail,
                         lastSync: Date.now()
-                    });
+                    }));
 
                     // Update persistent sync flag if logged in
                     if (loggedIn && userEmail) {
@@ -262,9 +334,21 @@ export const useExtensionSync = () => {
                 }
             }
 
+            if (storedSyncedStatus) {
+                setExtensionStatus(prev => ({
+                    ...prev,
+                    ...storedSyncedStatus,
+                    installed: true,
+                    loggedIn: true,
+                    lastSync: Date.now()
+                }));
+                setChecking(false);
+                return true;
+            }
+
             // Extension is active but not logged in
 
-            setExtensionStatus({ installed: true, loggedIn: false });
+            setExtensionStatus(prev => ({ ...prev, installed: true, loggedIn: false }));
             setChecking(false);
             return false;
 
@@ -274,15 +358,10 @@ export const useExtensionSync = () => {
             setChecking(false);
             return false;
         }
-    }, [user?.id]); // extensionState is a ref, no need in deps
+    }, [user?.email, user?.id]); // extensionState is a ref, no need in deps
 
     // Sync session with extension
     const syncSession = useCallback(async (session: any, user: any) => {
-        if (!extensionStatus.installed) {
-
-            return false;
-        }
-
         setSyncing(true);
 
         try {
@@ -297,23 +376,49 @@ export const useExtensionSync = () => {
             }, '*');
 
             await new Promise((resolve) => {
+                let settled = false;
+                let poll: number | undefined;
+                let timeout: number | undefined;
+
+                const finish = (value: boolean) => {
+                    if (settled) return;
+                    settled = true;
+                    if (poll) window.clearInterval(poll);
+                    if (timeout) window.clearTimeout(timeout);
+                    window.removeEventListener('message', handler);
+                    resolve(value);
+                };
+
                 const handler = (event: MessageEvent) => {
                     if (event.data?.type === 'EXTENSION_STATUS' && event.data?.loggedIn) {
                         setExtensionStatus(prev => ({
                             ...prev,
+                            installed: true,
                             loggedIn: true,
                             userEmail: user.email,
                             lastSync: Date.now()
                         }));
-                        window.removeEventListener('message', handler);
-                        resolve(true);
+                        finish(true);
                     }
                 };
                 window.addEventListener('message', handler);
 
-                setTimeout(() => {
-                    window.removeEventListener('message', handler);
-                    resolve(false);
+                poll = window.setInterval(() => {
+                    const storedSyncedStatus = getStoredSyncedStatus(user.email);
+                    if (!storedSyncedStatus) return;
+                    setExtensionStatus(prev => ({
+                        ...prev,
+                        ...storedSyncedStatus,
+                        installed: true,
+                        loggedIn: true,
+                        lastSync: Date.now()
+                    }));
+                    setChecking(false);
+                    finish(true);
+                }, 150);
+
+                timeout = window.setTimeout(() => {
+                    finish(false);
                 }, 3000);
             });
 
@@ -324,22 +429,34 @@ export const useExtensionSync = () => {
         } finally {
             setSyncing(false);
         }
-    }, [extensionStatus.installed]);
+    }, []);
 
     // Listen for extension events
     useEffect(() => {
         const handleExtensionReady = (event: CustomEvent) => {
 
-            setExtensionStatus({
+            setExtensionStatus(prev => ({
+                ...prev,
                 installed: true,
                 loggedIn: false,
                 version: event.detail.version
-            });
+            }));
             setChecking(false);
         };
 
         const handleExtensionSynced = (event: CustomEvent) => {
 
+
+            if (!isSameAccount(event.detail?.email, user?.email)) {
+                setExtensionStatus(prev => ({
+                    ...prev,
+                    installed: true,
+                    loggedIn: false,
+                    userEmail: event.detail?.email
+                }));
+                setChecking(false);
+                return;
+            }
 
             // Save persistent sync flag (no expiration)
             const syncData = {
@@ -375,7 +492,7 @@ export const useExtensionSync = () => {
 
 
                     // Dispatch event for components to refresh
-                    window.dispatchEvent(new CustomEvent('new-transaction', { detail: data }));
+                    emitFinancialDataEvent('transaction-added', data);
                     window.dispatchEvent(new CustomEvent('transaction-added-realtime', { detail: data }));
 
                     // Show toast notification
@@ -383,6 +500,15 @@ export const useExtensionSync = () => {
                     const name = data.name || data.transaction?.description || 'Transaction';
                     const iconType = data.type === 'trial' ? '🎁' : (data.type === 'subscription' ? '💳' : '🛒');
                     toast.success(`${iconType} ${name} ${amount > 0 ? `• $${amount.toFixed(2)}` : ''} tracked!`);
+                } else if (type === 'TRANSACTION_CANDIDATE_ADDED') {
+                    emitFinancialDataEvent('transaction-candidate-added', data);
+                    toast.info('New transaction is waiting in your inbox for review.');
+                } else if (type === 'CASHLY_DATA_UPDATED') {
+                    emitFinancialDataEvent('cashly-data-updated', data);
+                    window.dispatchEvent(new CustomEvent('cashly-data-updated', { detail: data }));
+                } else if (type === 'SUBSCRIPTION_ADDED') {
+                    emitFinancialDataEvent('subscription-added', data);
+                    toast.info('Subscription activity is waiting for review.');
                 }
             }
         };
@@ -426,11 +552,30 @@ export const useExtensionSync = () => {
             }
         };
 
+        const handleTransactionSyncStatus = (event: MessageEvent) => {
+            if (event.data?.source !== 'cashly-extension' || event.data?.type !== 'TRANSACTION_SYNC_STATUS') return;
+
+            const data = event.data.data || {};
+            setExtensionStatus(prev => ({
+                ...prev,
+                lastSync: data.timestamp || Date.now(),
+                lastTransactionSync: data,
+                queuedMessages: data.queuedMessages ?? prev.queuedMessages
+            }));
+
+            if (data.status === 'pending') {
+                toast.info('Transaction queued until the extension is logged in.');
+            } else if (data.status === 'error') {
+                toast.error(data.error || 'Extension transaction sync failed.');
+            }
+        };
+
         window.addEventListener('cashly-extension-ready', handleExtensionReady as EventListener);
         window.addEventListener('extension-synced', handleExtensionSynced as EventListener);
         window.addEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
         window.addEventListener('cashly-connection-change', handleConnectionChange as EventListener);
         window.addEventListener('message', handleBehaviorTransaction);
+        window.addEventListener('message', handleTransactionSyncStatus);
 
         // Listen for storage changes from other tabs/windows
         const handleStorageChange = (e: StorageEvent) => {
@@ -459,10 +604,55 @@ export const useExtensionSync = () => {
             window.removeEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
             window.removeEventListener('cashly-connection-change', handleConnectionChange as EventListener);
             window.removeEventListener('message', handleBehaviorTransaction);
+            window.removeEventListener('message', handleTransactionSyncStatus);
             window.removeEventListener('storage', handleStorageChange);
             clearInterval(interval);
         };
-    }, [checkExtension]);
+    }, [checkExtension, user?.email]);
+
+    /** When the extension becomes active on a logged-in tab, push session again (install-after-login or slow start). */
+    const lastAutoSessionPushRef = useRef(0);
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (!user?.id || checking) return;
+        if (!extensionStatus.installed || extensionStatus.loggedIn) return;
+
+        const now = Date.now();
+        if (now - lastAutoSessionPushRef.current < 4500) return;
+        lastAutoSessionPushRef.current = now;
+
+        let cancelled = false;
+        (async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session?.user || cancelled) return;
+                window.postMessage({
+                    type: 'WEBSITE_TO_EXTENSION',
+                    action: 'SYNC_SESSION',
+                    data: {
+                        session,
+                        user: session.user,
+                        accessToken: session.access_token,
+                    },
+                }, '*');
+                window.postMessage({
+                    type: 'WEBSITE_TO_EXTENSION',
+                    action: 'CHECK_STATUS',
+                }, '*');
+            } catch {
+                /* ignore */
+            }
+        })();
+
+        const t = window.setTimeout(() => {
+            if (!cancelled) checkExtension();
+        }, 1000);
+
+        return () => {
+            cancelled = true;
+            window.clearTimeout(t);
+        };
+    }, [user?.id, checking, extensionStatus.installed, extensionStatus.loggedIn, checkExtension]);
 
     return {
         extensionStatus,

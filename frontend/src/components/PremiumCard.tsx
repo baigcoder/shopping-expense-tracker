@@ -9,28 +9,27 @@ import styles from './PremiumCard.module.css';
 // Card Brand Logos (SVG Components)
 const VisaLogo = () => (
     <svg viewBox="0 0 80 26" className="h-6 w-auto">
-        <text x="0" y="22" fill="#fff" fontSize="22" fontWeight="800" fontFamily="Arial, sans-serif" fontStyle="italic">VISA</text>
+        <text x="0" y="22" fill="#000" fontSize="22" fontWeight="800" fontFamily="Arial, sans-serif" fontStyle="italic">VISA</text>
     </svg>
 );
 
 const MastercardLogo = () => (
-    <svg viewBox="0 0 60 40" className="h-6 w-auto">
-        <circle cx="20" cy="20" r="18" fill="#EB001B" />
-        <circle cx="40" cy="20" r="18" fill="#F79E1B" />
-        <path d="M30 7a18 18 0 0 0 0 26" fill="#FF5F00" />
+    <svg viewBox="0 0 60 40" className="h-7 w-auto">
+        <circle cx="20" cy="20" r="18" fill="#000" />
+        <circle cx="40" cy="20" r="18" fill="#E11D48" />
     </svg>
 );
 
 const AmexLogo = () => (
     <svg viewBox="0 0 80 26" className="h-6 w-auto">
-        <rect width="80" height="26" rx="4" fill="rgba(255,255,255,0.2)" />
-        <text x="8" y="18" fill="#fff" fontSize="14" fontWeight="700" fontFamily="Arial, sans-serif">AMEX</text>
+        <rect width="80" height="26" fill="#000" />
+        <text x="8" y="18" fill="#fff" fontSize="14" fontWeight="900" fontFamily="Arial, sans-serif">AMEX</text>
     </svg>
 );
 
 const GenericLogo = () => (
     <svg viewBox="0 0 60 26" className="h-6 w-auto">
-        <text x="0" y="20" fill="#fff" fontSize="16" fontWeight="700" fontFamily="Arial, sans-serif">BANK</text>
+        <text x="0" y="20" fill="#000" fontSize="16" fontWeight="700" fontFamily="Arial, sans-serif">BANK</text>
     </svg>
 );
 
@@ -64,20 +63,25 @@ const PremiumCard = forwardRef<HTMLDivElement, PremiumCardProps>(
             <motion.div
                 ref={ref}
                 layout
-                whileHover={{ scale: 1.02, y: -5 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onClick}
                 className={cn(styles.premiumCard, className)}
-                style={{ background: getCardGradient(card) }}
+                style={{ backgroundColor: '#FFFFFF' }}
             >
-                <div className={styles.cardBorder} />
-                <div className={styles.cardGlass} />
-                <div className={styles.cardShine} />
+
 
                 <div className={styles.cardContent}>
                     <div className={styles.cardTop}>
                         <div className={styles.cardLabel}>
-                            <span className={styles.labelSmall}>Digital Asset</span>
+                            <div className="flex items-center gap-2 mb-1">
+                                <motion.div 
+                                    animate={{ scale: [1, 1.3, 1], opacity: [1, 0.4, 1] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                    className="w-2 h-2 rounded-full bg-blue-500"
+                                />
+                                <span className={styles.labelSmall}>Live Asset</span>
+                            </div>
                             <span className={styles.labelMain}>Elite Status</span>
                         </div>
                         <div className={styles.brandContainer}>
@@ -91,7 +95,7 @@ const PremiumCard = forwardRef<HTMLDivElement, PremiumCardProps>(
                                 {[...Array(9)].map((_, i) => <div key={i} />)}
                             </div>
                         </div>
-                        <Smartphone className="h-6 w-6 text-white/30" strokeWidth={1.5} />
+                        <Smartphone className="h-7 w-7 text-black" strokeWidth={3} />
                     </div>
 
                     <div className="space-y-4">

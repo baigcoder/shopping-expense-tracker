@@ -21,7 +21,8 @@ const commonFiles = [
     'content.js',
     'content.css',
     'content-website.js',
-    'background.js'
+    'background.js',
+    'config.js'
 ];
 
 // Create dist directory

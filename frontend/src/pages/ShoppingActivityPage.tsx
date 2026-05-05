@@ -1,12 +1,11 @@
-// Shopping Activity Page - Premium Modern SaaS Redesign
-// Midnight Coral Theme - 3px Borders & Glassmorphism
+// Shopping Activity Page - Stark Gen Z Brutalist Telemetry Manager
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ShoppingCart, CreditCard, Clock, Store,
     Globe, Activity, RefreshCw, Zap, ExternalLink,
     Landmark, Smartphone, MonitorPlay, Package,
-    ShoppingBag, Tag, CreditCard as CardIcon
+    ShoppingBag, Tag, CreditCard as CardIcon, ArrowRight, Target
 } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
@@ -48,7 +47,6 @@ const SITE_CATEGORIES: Record<string, { category: 'shopping' | 'payment' | 'fina
     'mcb': { category: 'finance', iconComponent: Landmark },
 };
 
-// Animation variants
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -107,7 +105,7 @@ const ShoppingActivityPage = () => {
                         return;
                     }
                 } catch (e) {
-                    console.log('Could not parse extension cache');
+                    console.log('TELEMETRY_PARSE_FAILURE');
                 }
             }
 
@@ -213,10 +211,10 @@ const ShoppingActivityPage = () => {
     const timeAgo = (dateStr: string): string => {
         const diff = new Date().getTime() - new Date(dateStr).getTime();
         const mins = Math.floor(diff / 60000);
-        if (mins < 60) return `${mins}m ago`;
+        if (mins < 60) return `${mins}M AGO`;
         const hours = Math.floor(mins / 60);
-        if (hours < 24) return `${hours}h ago`;
-        return `${Math.floor(hours / 24)}d ago`;
+        if (hours < 24) return `${hours}H AGO`;
+        return `${Math.floor(hours / 24)}D AGO`;
     };
 
     if (loading) {
@@ -230,54 +228,40 @@ const ShoppingActivityPage = () => {
     return (
         <div className={styles.container}>
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-                {/* Header */}
+                {/* Brutalist Header */}
                 <motion.header className={styles.header} variants={itemVariants}>
                     <div className={styles.headerLeft}>
                         <h1>
-                            SyncStream Activity
+                            SyncStream Intel
                             <span className={styles.liveBadge}>
-                                <Activity size={12} className="animate-pulse" />
-                                LIVE PULSE
+                                <Activity size={14} strokeWidth={3} className="animate-pulse" />
+                                LIVE_TELEMETRY
                             </span>
                         </h1>
-                        <p>Real-time Extension Telemetry • Automated Analysis</p>
+                        <p>REAL-TIME EXTENSION FEED // AUTOMATED NODE ANALYSIS</p>
                     </div>
                     <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
-                        <RefreshCw size={16} className={cn(isRefreshing && styles.spinner)} />
-                        {isRefreshing ? 'SYNCING...' : 'SYNC PIPELINE'}
+                        <RefreshCw size={20} strokeWidth={3} className={cn(isRefreshing && styles.spinner)} />
+                        <span>{isRefreshing ? 'SYNCING...' : 'INITIALIZE SYNC'}</span>
                     </button>
                 </motion.header>
 
                 {/* Stats Grid */}
                 <div className={styles.statsGrid}>
-                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.shopping)}>
-                        <div className={styles.statIcon}><ShoppingCart size={20} /></div>
-                        <div>
-                            <div className={styles.statValue}>{stats.shoppingSites}</div>
-                            <div className={styles.statLabel}>Retail Clusters</div>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.payment)}>
-                        <div className={styles.statIcon}><CreditCard size={20} /></div>
-                        <div>
-                            <div className={styles.statValue}>{stats.paymentSites}</div>
-                            <div className={styles.statLabel}>Payment Hubs</div>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.visits)}>
-                        <div className={styles.statIcon}><Clock size={20} /></div>
-                        <div>
-                            <div className={styles.statValue}>{stats.totalVisits}</div>
-                            <div className={styles.statLabel}>Aggregate Hits</div>
-                        </div>
-                    </motion.div>
-                    <motion.div variants={itemVariants} className={cn(styles.statCard, styles.total)}>
-                        <div className={styles.statIcon}><Globe size={20} /></div>
-                        <div>
-                            <div className={styles.statValue}>{stats.totalSites}</div>
-                            <div className={styles.statLabel}>Sites Rooted</div>
-                        </div>
-                    </motion.div>
+                    {[
+                        { icon: <ShoppingCart size={24} strokeWidth={3} />, label: "RETAIL_CLUSTERS", value: stats.shoppingSites },
+                        { icon: <CreditCard size={24} strokeWidth={3} />, label: "PAYMENT_HUBS", value: stats.paymentSites },
+                        { icon: <Target size={24} strokeWidth={3} />, label: "AGGREGATE_HITS", value: stats.totalVisits },
+                        { icon: <Globe size={24} strokeWidth={3} />, label: "NODES_IDENTIFIED", value: stats.totalSites }
+                    ].map((stat, i) => (
+                        <motion.div key={i} variants={itemVariants} className={styles.statCard}>
+                            <div className={styles.statIcon}>{stat.icon}</div>
+                            <div>
+                                <div className={styles.statLabel}>{stat.label}</div>
+                                <div className={styles.statValue}>{stat.value}</div>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
 
                 {/* Filter Tabs */}
@@ -286,10 +270,10 @@ const ShoppingActivityPage = () => {
                         <button
                             key={filter}
                             className={cn(styles.filterTab, activeFilter === filter && styles.active)}
-                            onClick={() => setActiveFilter(filter)}
+                            onClick={() => { setActiveFilter(filter); }}
                         >
-                            {filter === 'all' && <Zap size={14} />}
-                            {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                            {filter === 'all' && <Zap size={16} strokeWidth={3} />}
+                            {filter.toUpperCase()}
                         </button>
                     ))}
                 </motion.div>
@@ -299,9 +283,9 @@ const ShoppingActivityPage = () => {
                     <AnimatePresence mode="popLayout">
                         {filteredSites.length === 0 ? (
                             <motion.div key="empty" className={styles.emptyState} variants={itemVariants}>
-                                <ShoppingBag size={64} strokeWidth={1} className="text-slate-200" />
-                                <h3>Telemetry Quiet</h3>
-                                <p>No shopping or payment activity detected in current interval.</p>
+                                <ShoppingBag size={80} strokeWidth={1} className="text-black/10" />
+                                <h3>TELEMETRY_QUIET</h3>
+                                <p>NO_ACTIVE_NODES_DETECTED_IN_INTERVAL</p>
                             </motion.div>
                         ) : (
                             filteredSites.map((site, index) => {
@@ -315,28 +299,28 @@ const ShoppingActivityPage = () => {
                                     >
                                         <div className={styles.siteHeader}>
                                             <div className={styles.siteIcon}>
-                                                <Icon size={28} strokeWidth={1.5} />
+                                                <Icon size={32} strokeWidth={3} />
                                             </div>
                                             <div className={styles.siteInfo}>
                                                 <h3>{site.site_name}</h3>
                                                 <span className={styles.siteHostname}>{site.hostname}</span>
                                             </div>
                                             <a href={site.url} target="_blank" rel="noopener noreferrer" className={styles.visitLink}>
-                                                <ExternalLink size={18} />
+                                                <ExternalLink size={20} strokeWidth={3} />
                                             </a>
                                         </div>
                                         <div className={styles.siteStats}>
                                             <div className={styles.siteStat}>
-                                                <Clock size={14} />
+                                                <Clock size={16} strokeWidth={3} />
                                                 <span>{timeAgo(site.last_visited)}</span>
                                             </div>
                                             <div className={styles.siteStat}>
-                                                <Activity size={14} />
+                                                <Activity size={16} strokeWidth={3} />
                                                 <span>{site.visit_count} HITS</span>
                                             </div>
                                         </div>
                                         <span className={styles.categoryBadge}>
-                                            {site.category}
+                                            {site.category.toUpperCase()}
                                         </span>
                                     </motion.div>
                                 );

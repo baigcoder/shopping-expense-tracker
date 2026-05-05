@@ -1,47 +1,14 @@
-// Extension Gate - Wraps protected routes (OPTIMIZED for fast loading)
 import { ReactNode, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Activity, Chrome, X } from 'lucide-react';
 import { useExtensionSync } from '../hooks/useExtensionSync';
-import ExtensionRequiredModal from './ExtensionRequiredModal';
-import { DashboardSkeleton } from './LoadingSkeleton';
 
-// Check localStorage sync flag directly (fast synchronous check)
-const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
+const DISMISS_KEY = 'cashly_extension_guidance_dismissed';
 
-// Mobile detection - extensions are not available on mobile browsers
 const isMobileDevice = (): boolean => {
     if (typeof window === 'undefined') return false;
-
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera || '';
-    const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
-
-    // Also check screen width for tablets in mobile mode
-    const isSmallScreen = window.innerWidth <= 768;
-
-    return mobileRegex.test(userAgent) || isSmallScreen;
-};
-
-const isPreviouslySynced = (): boolean => {
-    try {
-        const syncedData = localStorage.getItem(EXTENSION_SYNCED_KEY);
-        if (syncedData) {
-            const data = JSON.parse(syncedData);
-            // Allow up to 60 seconds for fast path (extension updates every 30s)
-            // This provides good UX while still detecting removal within a minute
-            const isRecent = data.timestamp && (Date.now() - data.timestamp < 60 * 1000);
-            return data.synced === true && !!data.email && isRecent;
-        }
-    } catch (e) {
-        // Ignore
-    }
-    return false;
-};
-
-const clearSyncFlag = () => {
-    try {
-        localStorage.removeItem(EXTENSION_SYNCED_KEY);
-    } catch (e) {
-        // Ignore
-    }
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(userAgent) || window.innerWidth <= 768;
 };
 
 interface ExtensionGateProps {
@@ -50,135 +17,71 @@ interface ExtensionGateProps {
 
 const ExtensionGate = ({ children }: ExtensionGateProps) => {
     const { extensionStatus, checking } = useExtensionSync();
-    const [showModal, setShowModal] = useState(false);
-    const [verificationComplete, setVerificationComplete] = useState(false);
-
-    // Initial sync flag (for faster first paint) - computed ONCE
-    const [wasPreviouslySynced] = useState(() => isPreviouslySynced());
-
-    // Mobile detection - computed ONCE
+    const [dismissed, setDismissed] = useState(() => localStorage.getItem(DISMISS_KEY) === 'true');
     const [isMobile] = useState(() => isMobileDevice());
 
-    // OPTIMIZATION: If previously synced, immediately mark verification complete
-    // This allows children to render while we verify in background
     useEffect(() => {
-        if (wasPreviouslySynced) {
-            setVerificationComplete(true);
-        }
-    }, [wasPreviouslySynced]);
-
-    // Listen for extension sync event - hide modal immediately when synced
-    useEffect(() => {
-        const handleExtensionSynced = () => {
-            setShowModal(false);
-            setVerificationComplete(true);
+        const handleExtensionSynced = () => setDismissed(true);
+        const handleExtensionRemoved = () => {
+            localStorage.removeItem(DISMISS_KEY);
+            setDismissed(false);
         };
 
         window.addEventListener('extension-synced', handleExtensionSynced);
-        return () => window.removeEventListener('extension-synced', handleExtensionSynced);
-    }, []);
-
-    // Listen for extension removal event - show modal immediately
-    useEffect(() => {
-        const handleExtensionRemoved = () => {
-            clearSyncFlag();
-            setShowModal(true);
-        };
-
         window.addEventListener('extension-removed', handleExtensionRemoved);
-        return () => window.removeEventListener('extension-removed', handleExtensionRemoved);
+        return () => {
+            window.removeEventListener('extension-synced', handleExtensionSynced);
+            window.removeEventListener('extension-removed', handleExtensionRemoved);
+        };
     }, []);
 
-    // Main verification logic - runs after async check completes
-    useEffect(() => {
-        if (checking) return; // Still checking, wait
+    // Desktop uses ExtensionWall (hard gate). Mobile: optional nudge only.
+    const shouldShowGuidance = isMobile
+        && !checking
+        && !dismissed
+        && (!extensionStatus.installed || !extensionStatus.loggedIn);
 
-        // If extension is detected and logged in, we're good
-        if (extensionStatus.installed && extensionStatus.loggedIn) {
-            setShowModal(false);
-            setVerificationComplete(true);
-            return;
-        }
+    const dismiss = () => {
+        localStorage.setItem(DISMISS_KEY, 'true');
+        setDismissed(true);
+    };
 
-        // Extension NOT detected after check completed
-        // If we thought we were previously synced, the extension must have been removed
-        if (wasPreviouslySynced) {
-            clearSyncFlag(); // Clear stale sync flag
-        }
-
-        // OPTIMIZED: Reduced grace period from 1500ms to 500ms for faster response
-        const timer = setTimeout(() => {
-            setVerificationComplete(true);
-            if (!extensionStatus.installed || !extensionStatus.loggedIn) {
-                setShowModal(true);
-            }
-        }, 500); // 500ms grace period (was 1500ms)
-
-        return () => clearTimeout(timer);
-    }, [checking, extensionStatus.installed, extensionStatus.loggedIn, wasPreviouslySynced]);
-
-    // Hide modal immediately when extension becomes detected
-    useEffect(() => {
-        if (extensionStatus.installed && extensionStatus.loggedIn) {
-            setShowModal(false);
-
-            // Auto-redirect to dashboard if on login/signup
-            const currentPath = window.location.pathname;
-            if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
-                window.location.href = '/dashboard';
-            }
-        }
-    }, [extensionStatus.installed, extensionStatus.loggedIn]);
-
-    // FAST PATH 0: Mobile devices - skip extension requirement entirely
-    // Browser extensions are not available on mobile browsers
-    if (isMobile) {
-        return <>{children}</>;
-    }
-
-    // FAST PATH 1: If previously synced, render children immediately (don't wait for checks)
-    // Background verification will show modal if extension was actually removed
-    if (wasPreviouslySynced && !showModal) {
-        return <>{children}</>;
-    }
-
-    // FAST PATH 2: If extension is currently detected and logged in, render immediately
-    if (extensionStatus.installed && extensionStatus.loggedIn) {
-        return <>{children}</>;
-    }
-
-    // Show loading while checking (but only if not previously synced)
-    if ((checking || !verificationComplete) && !wasPreviouslySynced) {
-        return (
-            <div className="flex-1 overflow-auto bg-slate-50/50">
-                <DashboardSkeleton />
-            </div>
-        );
-    }
-
-    // Show modal if extension not detected after verification
-    if (showModal) {
-        return <ExtensionRequiredModal />;
-    }
-
-    // Still waiting for verification to complete - show skeleton
-    if (!verificationComplete) {
-        return (
-            <div className="flex-1 overflow-auto bg-slate-50/50">
-                <DashboardSkeleton />
-            </div>
-        );
-    }
-
-    // If verification is complete but extension is STILL not detected, show modal
-    // This is the fallback case - ensures we never render children without extension
-    if (!extensionStatus.installed || !extensionStatus.loggedIn) {
-        return <ExtensionRequiredModal />;
-    }
-
-    // Default: render children (only reachable if extension is verified)
-    return <>{children}</>;
+    return (
+        <>
+            {children}
+            {shouldShowGuidance && (
+                <div className="fixed bottom-5 right-5 z-[80] w-[min(380px,calc(100vw-2rem))] rounded-2xl border border-blue-200 bg-white p-4 shadow-2xl shadow-slate-900/10">
+                    <div className="flex items-start gap-3">
+                        <div className="rounded-xl bg-blue-50 p-2 text-blue-700">
+                            <Chrome className="h-5 w-5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <div className="flex items-start justify-between gap-3">
+                                <div>
+                                    <h2 className="text-sm font-black text-slate-950">Extension on mobile</h2>
+                                    <p className="mt-1 text-xs leading-5 text-slate-600">
+                                        Install Cashly on desktop Chrome for auto-tracking. On mobile you can use the app without the extension.
+                                    </p>
+                                </div>
+                                <button onClick={dismiss} className="rounded-lg p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700" aria-label="Dismiss extension guidance">
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                <Link to="/extension-health" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white">
+                                    <Activity className="h-3.5 w-3.5" />
+                                    Open health
+                                </Link>
+                                <a href="/cashly-extension.zip" className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 };
 
 export default ExtensionGate;
-

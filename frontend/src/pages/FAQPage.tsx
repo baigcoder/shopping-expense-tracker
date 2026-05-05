@@ -1,90 +1,116 @@
-import StaticPageTemplate from '../components/StaticPageTemplate';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Minus } from 'lucide-react';
+// FAQ Page - Stark Gen Z Brutalist Mission Manifest
 import { useState } from 'react';
+import StaticPageTemplate from '../components/StaticPageTemplate';
+import { Plus, Minus, HelpCircle, MessageSquare, Zap } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const FAQPage = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const faqs = [
         {
-            q: "What is SpendSync?",
-            a: "SpendSync is a smart expense tracking application that automatically captures and categorizes your transactions using our browser extension. Get real-time insights, set budgets, and achieve your financial goals."
+            q: "What is Cashly Core?",
+            a: "Cashly is a mission-critical financial audit engine. It automatically captures and categorizes your shopping telemetry using our browser extension, providing real-time data on your financial outflow."
         },
         {
             q: "How does the browser extension work?",
-            a: "Our extension monitors your online shopping activity and automatically logs transactions. It works with popular e-commerce sites and captures details like merchant, amount, and category. All data is encrypted and stored securely."
+            a: "Our telemetry node monitors e-commerce sites and automatically logs transactions. It captures merchant data, quantum (amount), and category labels. All data is encrypted using high-fidelity protocols."
         },
         {
             q: "Is my financial data secure?",
-            a: "Yes! We use bank-level encryption (AES-256) for all data. We never store your credit card details or banking credentials. All data is encrypted in transit and at rest using Supabase's secure infrastructure."
+            a: "Affirmative. We utilize bank-grade AES-256 encryption. We never store credit card details or banking credentials. All telemetry is encrypted in transit and at rest."
         },
         {
-            q: "What's the difference between Free and Premium?",
-            a: "Free includes unlimited transaction tracking, basic analytics, and budgets. Premium adds AI insights, advanced analytics, PDF export, goal tracking, subscription management, and priority support."
+            q: "Free vs. Premium Tiers?",
+            a: "Free tier covers basic telemetry and budgeting. Premium unlocks AI Neural Insights, advanced audit reports, PDF manifests, and priority mission support."
         },
         {
-            q: "Can I export my data?",
-            a: "Yes! You can export your transactions in CSV, JSON, or PDF format anytime. Go to Profile > Data & Privacy > Export Data."
+            q: "Can I export my data manifest?",
+            a: "Yes. You can export your data in CSV, JSON, or PDF manifests at any time. Navigate to System Control > Security > Export Manifest."
         },
         {
-            q: "How do I delete my account?",
-            a: "Go to Settings > Security > Delete Account. This action is permanent and will remove all your data from our servers. You can also contact support for assistance."
+            q: "How do I terminate my account?",
+            a: "Navigate to System Control > Danger Protocol > Purge Account. This action is permanent and will securely wipe all your telemetry from our nodes."
         },
         {
-            q: "Does SpendSync work on mobile?",
-            a: "The web app is fully responsive and works on mobile browsers. We're currently developing native iOS and Android apps (coming Q2 2025)."
+            q: "Does Cashly work on mobile nodes?",
+            a: "The web interface is fully responsive across all mobile browsers. Dedicated mobile nodes for iOS and Android are currently in development."
         },
         {
-            q: "How accurate is transaction categorization?",
-            a: "Our AI achieves 95%+ accuracy for common categories. You can always manually edit categories, and the system learns from your corrections."
+            q: "Accuracy of categorization?",
+            a: "Our Neural Engine achieves 95%+ accuracy for common merchant nodes. You can manually reconfigure categories to train the system."
         },
         {
-            q: "Can I track cash transactions?",
-            a: "Yes! Use the 'Add Transaction' button to manually log cash expenses. The extension only auto-tracks online purchases."
+            q: "Manual transaction logging?",
+            a: "Yes. Use the 'Issue Transaction' protocol to manually log cash or external expenses that bypass the extension node."
         },
         {
-            q: "What browsers are supported?",
-            a: "Chrome, Edge, Firefox, and Brave. Safari support coming soon."
+            q: "Supported browser nodes?",
+            a: "Chrome, Edge, Firefox, and Brave. Safari node deployment is pending."
         }
     ];
 
     return (
         <StaticPageTemplate
-            title="Frequently Asked Questions"
-            subtitle="Everything you need to know about SpendSync"
+            title="System FAQ Matrix"
+            subtitle="EVERYTHING_YOU_NEED_TO_KNOW_ABOUT_CASHLY_CORE_OPERATIONS"
         >
-            <div className="space-y-3">
+            <div className="space-y-4">
                 {faqs.map((faq, index) => (
-                    <Card key={index} className="overflow-hidden">
+                    <div 
+                        key={index} 
+                        className={cn(
+                            "border-4 border-black transition-all",
+                            openIndex === index ? "bg-black text-white shadow-[8px_8px_0px_#E11D48]" : "bg-white text-black hover:border-[#E11D48]"
+                        )}
+                    >
                         <button
                             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                            className="w-full p-4 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
+                            className="w-full p-8 text-left flex items-center justify-between gap-6 outline-none"
                         >
-                            <span className="font-semibold">{faq.q}</span>
-                            {openIndex === index ? (
-                                <Minus className="h-5 w-5 text-primary" />
-                            ) : (
-                                <Plus className="h-5 w-5 text-muted-foreground" />
-                            )}
-                        </button>
-                        {openIndex === index && (
-                            <div className="px-4 pb-4 text-muted-foreground">
-                                {faq.a}
+                            <span className="font-black uppercase text-lg italic tracking-tighter">{faq.q}</span>
+                            <div className={cn(
+                                "p-2 border-2 shrink-0 transition-colors",
+                                openIndex === index ? "border-white bg-[#E11D48] text-white" : "border-black bg-white text-black"
+                            )}>
+                                {openIndex === index ? (
+                                    <Minus size={24} strokeWidth={4} />
+                                ) : (
+                                    <Plus size={24} strokeWidth={4} />
+                                )}
                             </div>
-                        )}
-                    </Card>
+                        </button>
+                        <AnimatePresence>
+                            {openIndex === index && (
+                                <div className="px-8 pb-10 font-bold text-sm uppercase tracking-widest leading-relaxed opacity-80">
+                                    {faq.a}
+                                </div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 ))}
             </div>
 
-            <div className="mt-8 p-6 bg-muted rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Still have questions?</h3>
-                <p className="text-muted-foreground mb-4">
-                    Can't find what you're looking for? Our support team is here to help.
-                </p>
-                <Button>Contact Support</Button>
+            <div className="mt-12 p-10 bg-white border-4 border-black shadow-[10px_10px_0px_#000000] flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 bg-black text-white flex items-center justify-center border-2 border-black shrink-0">
+                        <HelpCircle size={32} strokeWidth={3} />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-black uppercase italic tracking-tighter mb-1">Still have questions?</h3>
+                        <p className="text-xs font-black uppercase tracking-widest text-black/40">
+                            Our support team is active on the dispatch hub.
+                        </p>
+                    </div>
+                </div>
+                <button 
+                    onClick={() => window.location.href = '/contact'}
+                    className="h-16 px-10 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors flex items-center gap-3"
+                >
+                    <MessageSquare size={20} strokeWidth={3} />
+                    Contact_Support
+                </button>
             </div>
         </StaticPageTemplate>
     );

@@ -177,7 +177,7 @@ const DashboardPage = () => {
                     .map(([name, value], idx) => ({
                         name,
                         value,
-                        color: ['#2563EB', '#64748B', '#8B5CF6', '#3B82F6', '#0D9488', '#F43F5E'][idx % 6]
+                        color: ['#000000', '#E11D48', '#3F3F46', '#09090B', '#F43F5E', '#18181B'][idx % 6]
                     }))
                     .sort((a, b) => b.value - a.value)
                     .slice(0, 5);
@@ -291,14 +291,14 @@ const DashboardPage = () => {
                 <motion.header className={styles.header} variants={itemVariants}>
                     <div className={styles.welcomeText}>
                         <h1>Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name?.split(' ')[0] || 'there'} 👋</h1>
-                        <p>Ecosystem Pulse • {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                        <p>Financial Ecosystem • {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
                     </div>
-                    <div className="hidden md:flex items-center gap-4">
+                    <div className="hidden lg:flex items-center gap-6">
                         <div className="flex flex-col items-end">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Vault Status</span>
-                            <span className="text-xs font-bold text-teal-500 flex items-center gap-1">
-                                <Activity size={12} /> SECURED & ACTIVE
-                            </span>
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vault Security</span>
+                            <div className="flex items-center gap-2 mt-1 px-3 py-1 border-2 border-black bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase tracking-tighter">
+                                <Shield size={12} /> SECURED_CHANNEL
+                            </div>
                         </div>
                     </div>
                 </motion.header>
@@ -313,12 +313,13 @@ const DashboardPage = () => {
                         <div className={cn(styles.iconBox, styles.iconBoxGlass)}>
                             <motion.div
                                 animate={{
-                                    scale: [1, 1.1, 1],
-                                    rotate: [0, 5, -5, 0],
-                                    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                                    scale: [1, 1.15, 1],
+                                    rotate: [0, 10, -10, 0],
+                                    filter: ["drop-shadow(0 0 0px #3b82f6)", "drop-shadow(0 0 8px #3b82f6)", "drop-shadow(0 0 0px #3b82f6)"]
                                 }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                <Wallet size={20} />
+                                <Wallet size={20} className="text-blue-400" />
                             </motion.div>
                         </div>
                         <div className="flex justify-between items-start">
@@ -328,7 +329,7 @@ const DashboardPage = () => {
                                     {showBalance ? formatCurrency(Math.abs(stats.totalBalance)) : '••••••'}
                                 </h2>
                             </div>
-                            <button onClick={() => setShowBalance(!showBalance)} className="p-1.5 hover:bg-white/10 rounded-lg text-white/80 transition-colors">
+                            <button onClick={() => setShowBalance(!showBalance)} className="p-1.5 hover:bg-white/10 rounded-none text-white/80 transition-colors">
                                 {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
                             </button>
                         </div>
@@ -345,12 +346,12 @@ const DashboardPage = () => {
                         <div className={cn(styles.iconBox, styles.iconBoxBlue)}>
                             <motion.div
                                 animate={{
-                                    y: [0, -3, 0],
-                                    scale: [1, 1.05, 1],
-                                    transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                                    y: [0, -5, 0],
+                                    filter: ["drop-shadow(0 0 0px #10b981)", "drop-shadow(0 0 8px #10b981)", "drop-shadow(0 0 0px #10b981)"]
                                 }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                <TrendingUp size={20} />
+                                <TrendingUp size={20} className="text-emerald-400" />
                             </motion.div>
                         </div>
                         <p className={styles.statTitle}>Money In</p>
@@ -390,12 +391,12 @@ const DashboardPage = () => {
                         <div className={cn(styles.iconBox, styles.iconBoxIndigo)}>
                             <motion.div
                                 animate={{
-                                    rotate: [0, 10, -10, 0],
-                                    scale: [1, 1.15, 1],
-                                    transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                                    rotate: [0, 15, -15, 0],
+                                    scale: [1, 1.1, 1]
                                 }}
+                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                <Zap size={20} strokeWidth={2.5} />
+                                <Target size={20} className="text-purple-400" />
                             </motion.div>
                         </div>
                         <p className={styles.statTitle}>Your Streak</p>
@@ -411,51 +412,40 @@ const DashboardPage = () => {
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
                                 <h3 className={styles.sectionTitle}>Spending Chart</h3>
-                                <Link to="/analytics" className="text-xs font-black text-blue-600 uppercase tracking-widest hover:underline flex items-center gap-1">
+                                <Link to="/analytics" className="text-xs font-black text-rose-600 uppercase tracking-widest hover:underline flex items-center gap-1">
                                     See More <ArrowRight size={14} />
                                 </Link>
                             </div>
                             <div className="h-[300px]">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.4} />
-                                                <stop offset="50%" stopColor="#2563eb" stopOpacity={0.1} />
-                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
-                                            </linearGradient>
-                                            <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#64748b" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="#64748b" stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="6 6" stroke="#f1f5f9" vertical={false} />
+                                        <CartesianGrid strokeDasharray="0" stroke="#e5e7eb" vertical={true} />
                                         <XAxis
                                             dataKey="day"
-                                            axisLine={false}
+                                            axisLine={{ stroke: '#000000', strokeWidth: 3 }}
                                             tickLine={false}
-                                            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 800 }}
+                                            tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
                                             dy={10}
                                         />
                                         <YAxis
-                                            axisLine={false}
+                                            axisLine={{ stroke: '#000000', strokeWidth: 3 }}
                                             tickLine={false}
-                                            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 800 }}
-                                            tickFormatter={(v) => `$\${v}`}
+                                            tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
+                                            tickFormatter={(v) => `Rs${v}`}
                                         />
                                         <Tooltip
                                             content={({ active, payload }) => {
                                                 if (active && payload && payload.length) {
                                                     return (
-                                                        <div className="bg-white/90 backdrop-blur-md border-[3px] border-slate-200/50 p-4 rounded-2xl shadow-2xl">
-                                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 border-b border-slate-100 pb-1">
-                                                                {payload[0].payload.day}'s Pulse
+                                                        <div className="bg-white border-[3px] border-black p-4 shadow-[6px_6px_0px_#000000]">
+                                                            <p className="text-[10px] font-black text-black uppercase tracking-widest mb-2 border-b-2 border-black pb-1">
+                                                                {payload[0].payload.day}
                                                             </p>
                                                             {payload.map((entry, idx) => (
                                                                 <div key={idx} className="flex items-center gap-3 mt-1">
-                                                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                                                                    <span className="text-xs font-bold text-slate-500">{entry.name}:</span>
-                                                                    <span className="text-sm font-black text-slate-800">{formatCurrency(entry.value as number)}</span>
+                                                                    <div className="w-3 h-3 border-2 border-black" style={{ backgroundColor: entry.color }} />
+                                                                    <span className="text-[10px] font-black text-black uppercase tracking-tighter">{entry.name}:</span>
+                                                                    <span className="text-sm font-black text-black">Rs{entry.value}</span>
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -465,24 +455,25 @@ const DashboardPage = () => {
                                             }}
                                         />
                                         <Area
-                                            type="monotone"
+                                            type="stepAfter"
                                             dataKey="income"
-                                            stroke="#2563eb"
+                                            stroke="#000000"
                                             strokeWidth={4}
-                                            fill="url(#incomeGradient)"
+                                            fill="#000000"
+                                            fillOpacity={0.1}
                                             name="Inflow"
-                                            animationDuration={2000}
-                                            activeDot={{ r: 6, strokeWidth: 0, fill: '#2563eb', className: 'animate-pulse' }}
+                                            animationDuration={1000}
+                                            activeDot={{ r: 8, strokeWidth: 3, stroke: '#000000', fill: '#FFFFFF' }}
                                         />
                                         <Area
-                                            type="monotone"
+                                            type="stepAfter"
                                             dataKey="expense"
-                                            stroke="#94a3b8"
-                                            strokeWidth={3}
-                                            fill="url(#expenseGradient)"
-                                            strokeDasharray="5 5"
+                                            stroke="#E11D48"
+                                            strokeWidth={4}
+                                            fill="#E11D48"
+                                            fillOpacity={0.1}
                                             name="Outflow"
-                                            animationDuration={2500}
+                                            animationDuration={1500}
                                         />
                                     </AreaChart>
                                 </ResponsiveContainer>
@@ -538,31 +529,25 @@ const DashboardPage = () => {
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            className="text-center py-10 w-full relative"
+                                            className="text-center py-12 w-full relative"
                                         >
-                                            {/* Premium Ripple Animation */}
-                                            <div className="relative mb-8 flex justify-center">
+                                            <div className="relative mb-10 flex justify-center">
                                                 <motion.div
-                                                    className="absolute w-20 h-20 bg-slate-200/50 rounded-full"
-                                                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                                                    transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
-                                                />
-                                                <motion.div
-                                                    className="absolute w-20 h-20 bg-slate-200/50 rounded-full"
-                                                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                                                    transition={{ duration: 4, repeat: Infinity, ease: "easeOut", delay: 2 }}
+                                                    className="absolute w-24 h-24 bg-slate-100 rounded-lg border-2 border-black/5"
+                                                    animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
+                                                    transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
                                                 />
                                                 <motion.div
                                                     animate={{
-                                                        y: [0, -6, 0],
-                                                        transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                                                        y: [0, -10, 0],
+                                                        transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                                                     }}
-                                                    className="relative z-10 p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 shadow-lg"
+                                                    className="relative z-10 p-6 bg-white border-3 border-black shadow-[8px_8px_0px_#000000]"
                                                 >
-                                                    <ShoppingCart size={36} className="text-slate-300" />
+                                                    <ShoppingCart size={48} className="text-slate-200" />
                                                 </motion.div>
                                             </div>
-                                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">No Expense Records</p>
+                                            <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">NO_EXPENSE_DATA_STREAM</p>
                                         </motion.div>
                                     )}
                                 </motion.div>
@@ -572,31 +557,31 @@ const DashboardPage = () => {
                                 <div className={styles.cardHeader}>
                                     <h3 className={styles.sectionTitle}>Budget Usage</h3>
                                     <Link to="/budgets">
-                                        <Target size={18} className="text-slate-400 hover:text-blue-600 transition-colors" />
+                                        <Target size={18} className="text-slate-400 hover:text-rose-600 transition-colors" />
                                     </Link>
                                 </div>
                                 <div className="flex flex-col items-center justify-center p-4">
                                     {budgetProgress.total > 0 ? (
                                         <>
-                                            <div className="relative w-40 h-40 mb-6">
+                                            <div className="relative w-44 h-44 mb-6">
                                                 <svg className="w-full h-full transform -rotate-90">
-                                                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" strokeWidth="12" fill="none" />
+                                                    <circle cx="88" cy="88" r="75" stroke="#f1f5f9" strokeWidth="16" fill="none" />
                                                     <motion.circle
-                                                        cx="80" cy="80" r="70"
-                                                        stroke={budgetProgress.percentage > 90 ? '#f43f5e' : budgetProgress.percentage > 70 ? '#f59e0b' : '#2563eb'}
-                                                        strokeWidth="12" fill="none" strokeLinecap="round"
-                                                        initial={{ strokeDasharray: "0 440" }}
-                                                        animate={{ strokeDasharray: `${(budgetProgress.percentage / 100) * 440} 440` }}
-                                                        transition={{ duration: 1.5, ease: "easeOut" }}
+                                                        cx="88" cy="88" r="75"
+                                                        stroke={budgetProgress.percentage > 90 ? '#E11D48' : '#000000'}
+                                                        strokeWidth="20" fill="none"
+                                                        initial={{ strokeDasharray: "0 471" }}
+                                                        animate={{ strokeDasharray: `${(budgetProgress.percentage / 100) * 471} 471` }}
+                                                        transition={{ duration: 1, ease: "easeOut" }}
                                                     />
                                                 </svg>
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                                    <span className="text-3xl font-black text-slate-800">{budgetProgress.percentage}%</span>
-                                                    <span className="text-[10px] font-black text-slate-400 uppercase">Utilized</span>
+                                                    <span className="text-4xl font-black text-black">{budgetProgress.percentage}%</span>
+                                                    <span className="text-[10px] font-black text-black uppercase tracking-widest">Spent</span>
                                                 </div>
                                             </div>
-                                            <p className="text-sm font-bold text-slate-600">
-                                                {formatCurrency(budgetProgress.used)} <span className="text-slate-400 font-medium">of</span> {formatCurrency(budgetProgress.total)}
+                                            <p className="text-xs font-black text-black uppercase tracking-widest">
+                                                {formatCurrency(budgetProgress.used)} / {formatCurrency(budgetProgress.total)}
                                             </p>
                                         </>
                                     ) : (
@@ -608,12 +593,12 @@ const DashboardPage = () => {
                                             {/* Premium Ripple Animation */}
                                             <div className="relative mb-10 flex justify-center">
                                                 <motion.div
-                                                    className="absolute w-24 h-24 bg-blue-500/10 rounded-full"
+                                                    className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
                                                     animate={{ scale: [1, 2], opacity: [0.5, 0] }}
                                                     transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
                                                 />
                                                 <motion.div
-                                                    className="absolute w-24 h-24 bg-blue-500/10 rounded-full"
+                                                    className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
                                                     animate={{ scale: [1, 2], opacity: [0.5, 0] }}
                                                     transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1.5 }}
                                                 />
@@ -623,9 +608,9 @@ const DashboardPage = () => {
                                                         scale: [1, 1.05, 1],
                                                         transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                                                     }}
-                                                    className="relative z-10 p-5 bg-white/50 backdrop-blur-sm rounded-3xl border-2 border-slate-100/50 shadow-xl"
+                                                    className="relative z-10 p-5 bg-white/50 backdrop-blur-sm rounded-none border-2 border-slate-100/50 shadow-[8px_8px_0px_#000000]"
                                                 >
-                                                    <Target size={44} className="text-blue-600/40" />
+                                                    <Target size={44} className="text-rose-600/40" />
                                                 </motion.div>
                                             </div>
 
@@ -645,10 +630,10 @@ const DashboardPage = () => {
                                             >
                                                 <Link
                                                     to="/budgets"
-                                                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-2xl text-[10px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-slate-200"
+                                                    className="inline-flex items-center gap-3 px-8 py-4 bg-black text-white border-2 border-black font-black tracking-widest hover:translate-x-[-4px] hover:translate-y-[-4px] shadow-[6px_6px_0px_#E11D48] transition-all"
                                                 >
                                                     SET LIMIT
-                                                    <Plus size={14} />
+                                                    <Plus size={18} />
                                                 </Link>
                                             </motion.div>
                                         </motion.div>
@@ -662,65 +647,76 @@ const DashboardPage = () => {
                             <motion.div variants={itemVariants} className={styles.whiteCard}>
                                 <div className={styles.cardHeader}>
                                     <h3 className={styles.sectionTitle}>Financial Health</h3>
-                                    <motion.div
-                                        animate={{
-                                            scale: [1, 1.2, 1],
-                                            transition: { duration: 1, repeat: Infinity, ease: "easeInOut" }
-                                        }}
-                                    >
-                                        <Heart size={18} className="text-rose-500" />
-                                    </motion.div>
-                                </div>
-                                <div className={styles.healthGauge}>
-                                    <svg className="w-full h-full transform -rotate-90">
-                                        <circle cx="90" cy="90" r="75" stroke="#f8fafc" strokeWidth="14" fill="none" />
-                                        <motion.circle
-                                            cx="90" cy="90" r="75"
-                                            stroke="url(#healthGradient)"
-                                            strokeWidth="14" fill="none" strokeLinecap="round"
-                                            initial={{ strokeDasharray: "0 471" }}
-                                            animate={{ strokeDasharray: `${(healthScore / 100) * 471} 471` }}
-                                            transition={{ duration: 2, ease: "circOut" }}
-                                        />
-                                        <defs>
-                                            <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                                <stop offset="0%" stopColor="#14B8A6" />
-                                                <stop offset="100%" stopColor="#2563EB" />
-                                            </linearGradient>
-                                        </defs>
-                                    </svg>
-                                    <div className={styles.healthValue}>
-                                        <span className="text-4xl font-black text-slate-800 tracking-tighter">{healthScore}</span>
-                                        <span className="text-[10px] font-black text-teal-600 uppercase tracking-widest">Score</span>
+                                    <div className="flex items-center gap-3">
+                                        <div className="relative">
+                                            <motion.div
+                                                animate={{
+                                                    scale: [1, 1.2, 1],
+                                                    opacity: [1, 0.5, 1],
+                                                }}
+                                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                                className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full"
+                                            />
+                                            <Heart size={20} className="text-rose-500" strokeWidth={2.5} />
+                                        </div>
                                     </div>
                                 </div>
-                                <p className="text-center text-xs font-bold text-slate-400 mt-4 uppercase tracking-tighter">
-                                    {healthScore > 80 ? 'Excellent Status • Keeping it up!' : healthScore > 60 ? 'Healthy • Room for growth' : 'Action Required • Check advice'}
-                                </p>
+                                <div className={styles.healthGaugeContainer}>
+                                    <div className={styles.healthGauge}>
+                                        <svg className="w-full h-full transform -rotate-90">
+                                            <circle cx="90" cy="90" r="75" stroke="#F1F5F9" strokeWidth="12" fill="none" />
+                                            <motion.circle
+                                                cx="90" cy="90" r="75"
+                                                stroke="#000000"
+                                                strokeWidth="16" fill="none" strokeLinecap="round"
+                                                initial={{ strokeDasharray: "0 471" }}
+                                                animate={{ strokeDasharray: `${(healthScore / 100) * 471} 471` }}
+                                                transition={{ duration: 2, ease: "circOut" }}
+                                            />
+                                        </svg>
+                                        <div className={styles.healthValue}>
+                                            <span className="text-5xl font-black text-black tracking-tighter">{healthScore}</span>
+                                            <span className="text-[10px] font-black text-black uppercase tracking-[0.3em] mt-1">Score</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-8 text-center px-4">
+                                    <p className="text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">
+                                        Current Assessment
+                                    </p>
+                                    <p className="text-sm font-black text-black mt-2 uppercase">
+                                        {healthScore > 80 ? 'Excellent Status • Optimal Flow' : healthScore > 60 ? 'Healthy • Standard Operation' : 'Action Required • Review Strategy'}
+                                    </p>
+                                </div>
                             </motion.div>
 
                             <motion.div variants={itemVariants} className={styles.whiteCard}>
                                 <div className={styles.cardHeader}>
                                     <h3 className={styles.sectionTitle}>Top Merchants</h3>
-                                    <motion.div
-                                        animate={{
-                                            rotate: [0, 10, -10, 0],
-                                            transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-                                        }}
-                                    >
-                                        <Store size={18} className="text-indigo-500" />
-                                    </motion.div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="relative">
+                                            <motion.div
+                                                animate={{
+                                                    scale: [1, 1.3, 1],
+                                                    opacity: [1, 0, 1],
+                                                }}
+                                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 rounded-full"
+                                            />
+                                            <Store size={20} className="text-indigo-500" strokeWidth={2.5} />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="space-y-3">
                                     {merchantData.length > 0 ? merchantData.map((m, i) => (
-                                        <div key={i} className={styles.merchantItem}>
-                                            <div className={styles.merchantIcon}>🏪</div>
+                                        <div key={i} className="flex items-center gap-4 p-4 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-all rounded-lg">
+                                            <div className="w-10 h-10 bg-slate-100 flex items-center justify-center rounded-lg text-lg">🏪</div>
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-sm font-bold text-slate-700">{m.name}</span>
-                                                    <span className={styles.merchantCount}>{m.count} Txs</span>
+                                                    <span className="text-[13px] font-black uppercase tracking-tight text-slate-800">{m.name}</span>
+                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{m.count} Txs</span>
                                                 </div>
-                                                <p className="text-xs font-black text-blue-600 mt-1">{formatCurrency(m.amount)}</p>
+                                                <p className="text-sm font-black text-black mt-1">{formatCurrency(m.amount)}</p>
                                             </div>
                                         </div>
                                     )) : (
@@ -743,13 +739,13 @@ const DashboardPage = () => {
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
                                 <h3 className={styles.sectionTitle}>Digital Vault</h3>
-                                <button onClick={openAddCard} className="p-2 bg-slate-50 rounded-xl hover:bg-blue-50 text-blue-600 transition-colors">
-                                    <Plus size={18} />
+                                <button onClick={openAddCard} className="w-8 h-8 flex items-center justify-center border-4 border-black bg-white rounded-none hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_#000000]">
+                                    <Plus size={16} strokeWidth={4} />
                                 </button>
                             </div>
                             <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
                                 {userCards.length > 0 ? userCards.map((card) => (
-                                    <div key={card.id} className="flex-shrink-0 cursor-pointer" style={{ scrollSnapAlign: 'start', minWidth: userCards.length > 1 ? '280px' : '100%' }}>
+                                    <div key={card.id} className="flex-shrink-0 cursor-pointer w-[320px]" style={{ scrollSnapAlign: 'start' }}>
                                         <PremiumCard
                                             card={{
                                                 ...card,
@@ -759,9 +755,14 @@ const DashboardPage = () => {
                                         />
                                     </div>
                                 )) : (
-                                    <div className="text-center py-10 opacity-30 w-full">
-                                        <CreditCard size={40} className="mx-auto mb-3" />
-                                        <p className="text-xs font-black uppercase tracking-widest">No Cards Linked</p>
+                                    <div className="text-center py-16 w-full border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_#000000]">
+                                        <div className="relative mb-6 flex justify-center">
+                                            <CreditCard size={48} className="text-black" />
+                                        </div>
+                                        <p className="text-[11px] font-black uppercase tracking-[0.3em] text-black">VAULT_EMPTY</p>
+                                        <button onClick={openAddCard} className="mt-6 text-[10px] font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border-2 border-black px-4 py-2 transition-all">
+                                            + Initialize New Card
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -771,7 +772,7 @@ const DashboardPage = () => {
                             <div className={styles.cardHeader}>
                                 <h3 className={styles.sectionTitle}>Recent Pulse</h3>
                                 <Link to="/transactions">
-                                    <ArrowRight size={18} className="text-slate-400 hover:text-blue-600" />
+                                    <ArrowRight size={18} className="text-slate-400 hover:text-rose-600" />
                                 </Link>
                             </div>
                             <div className="space-y-1">
@@ -782,7 +783,7 @@ const DashboardPage = () => {
                                             <p className={styles.txDesc}>{tx.description || 'System Event'}</p>
                                             <p className={styles.txCat}>{tx.category}</p>
                                         </div>
-                                        <div className={cn(styles.txAmount, tx.type === 'expense' ? 'text-slate-600' : 'text-blue-600')}>
+                                        <div className={cn(styles.txAmount, tx.type === 'expense' ? 'text-slate-600' : 'text-violet-500')}>
                                             {tx.type === 'expense' ? '-' : '+'}{formatCurrency(Math.abs(tx.amount))}
                                         </div>
                                     </div>
@@ -801,19 +802,19 @@ const DashboardPage = () => {
                             </div>
                             <div className={styles.quickActionGrid}>
                                 <Link to="/budgets" className={styles.actionBtn}>
-                                    <motion.div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl" whileHover={{ scale: 1.1, rotate: 10 }}><Target size={20} /></motion.div>
+                                    <div className="p-3 bg-slate-100 text-slate-900 rounded-lg"><Target size={20} /></div>
                                     <span className={styles.actionLabel}>Budgets</span>
                                 </Link>
                                 <Link to="/goals" className={styles.actionBtn}>
-                                    <motion.div className="p-3 bg-violet-50 text-violet-600 rounded-xl" whileHover={{ scale: 1.1, rotate: -10 }}><PiggyBank size={20} /></motion.div>
+                                    <div className="p-3 bg-slate-100 text-slate-900 rounded-lg"><PiggyBank size={20} /></div>
                                     <span className={styles.actionLabel}>Goals</span>
                                 </Link>
                                 <Link to="/analytics" className={styles.actionBtn}>
-                                    <motion.div className="p-3 bg-blue-50 text-blue-600 rounded-xl" whileHover={{ scale: 1.1, y: -5 }}><BarChart3 size={20} /></motion.div>
+                                    <div className="p-3 bg-slate-100 text-slate-900 rounded-lg"><BarChart3 size={20} /></div>
                                     <span className={styles.actionLabel}>Trends</span>
                                 </Link>
                                 <Link to="/subscriptions" className={styles.actionBtn}>
-                                    <motion.div className="p-3 bg-amber-50 text-amber-600 rounded-xl" whileHover={{ scale: 1.1, x: 5 }}><Calendar size={20} /></motion.div>
+                                    <div className="p-3 bg-slate-100 text-slate-900 rounded-lg"><Calendar size={20} /></div>
                                     <span className={styles.actionLabel}>Bills</span>
                                 </Link>
                             </div>
@@ -830,10 +831,10 @@ const DashboardPage = () => {
             {/* Card Preview Dialog */}
             <Dialog open={isCardPreviewOpen} onOpenChange={setIsCardPreviewOpen}>
                 <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-                    <DialogHeader className="px-6 pt-6 pb-4 bg-gradient-to-br from-slate-50 to-blue-50">
+                    <DialogHeader className="px-6 pt-6 pb-4 bg-white border-b-2 border-black">
                         <DialogTitle className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-100 rounded-xl">
-                                <CreditCard className="text-blue-600" size={24} />
+                            <div className="p-2 bg-rose-100 rounded-none">
+                                <CreditCard className="text-rose-600" size={24} />
                             </div>
                             <span className="font-bold text-slate-800">Card Details</span>
                         </DialogTitle>
@@ -853,32 +854,32 @@ const DashboardPage = () => {
 
                             {/* Card Info */}
                             <div className="space-y-3">
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
                                     <span className="text-sm text-slate-500">Card Number</span>
                                     <div className="flex items-center gap-2">
                                         <span className="font-mono font-semibold">**** **** **** {selectedCard.last4}</span>
                                         <button
                                             onClick={() => handleCopy(selectedCard.last4 || '')}
-                                            className="p-1.5 hover:bg-slate-200 rounded-lg transition-colors"
+                                            className="p-1.5 hover:bg-slate-200 rounded-none transition-colors"
                                         >
                                             {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} className="text-slate-400" />}
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
                                     <span className="text-sm text-slate-500">Card Holder</span>
                                     <span className="font-semibold">{selectedCard.holder}</span>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
                                     <span className="text-sm text-slate-500">Expires</span>
                                     <span className="font-semibold">{selectedCard.expiry}</span>
                                 </div>
                             </div>
 
                             {/* Security Notice */}
-                            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl text-green-700">
+                            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-none text-green-700">
                                 <Shield size={16} />
                                 <span className="text-xs">PCI-DSS compliant • No sensitive data stored</span>
                             </div>
@@ -890,13 +891,13 @@ const DashboardPage = () => {
                                         setIsCardPreviewOpen(false);
                                         navigate('/cards');
                                     }}
-                                    className="flex-1 py-3 px-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors"
+                                    className="flex-1 py-3 px-4 bg-violet-500 text-white font-semibold rounded-none hover:bg-violet-600 transition-colors"
                                 >
                                     Manage Cards
                                 </button>
                                 <button
                                     onClick={handleDeleteCard}
-                                    className="p-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors"
+                                    className="p-3 bg-red-50 text-red-600 rounded-none hover:bg-red-100 transition-colors"
                                 >
                                     <Trash2 size={20} />
                                 </button>

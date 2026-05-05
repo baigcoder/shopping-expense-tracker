@@ -164,27 +164,27 @@ const AddCardModal = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+                        className="absolute inset-0 bg-white/80 backdrop-blur-sm border-4 border-black"
                         onClick={closeAddCard}
                     />
 
                     <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 50, scale: 0.95 }}
-                        className="relative w-full max-w-5xl bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        className="relative w-full max-w-5xl bg-white border-4 border-black shadow-[16px_16px_0px_#000000] flex flex-col md:flex-row max-h-[90vh] overflow-hidden"
                         onClick={e => e.stopPropagation()}
                     >
                         {/* Left Column: Visuals & Preview */}
-                        <div className="w-full md:w-[45%] bg-[#FAFBFF] p-8 md:p-12 flex flex-col justify-between border-r border-slate-100">
+                        <div className="w-full md:w-[45%] bg-black text-white p-8 md:p-12 flex flex-col justify-between border-b-4 md:border-b-0 md:border-r-4 border-black">
                             <div>
                                 <div className="flex items-center gap-4 mb-8">
-                                    <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-xl shadow-blue-200 ring-4 ring-blue-50">
+                                    <div className="p-3 border-4 border-white bg-black rounded-none shadow-[4px_4px_0px_#FFFFFF]">
                                         <Wallet className="h-6 w-6 text-white" />
                                     </div>
                                     <div>
-                                        <h2 className="text-3xl font-black text-slate-800 tracking-tight font-display">New Card</h2>
-                                        <p className="text-slate-500 font-bold">Configure your digital asset</p>
+                                        <h2 className="text-3xl font-black uppercase tracking-tight">New Card</h2>
+                                        <p className="text-[#E11D48] font-bold uppercase tracking-widest text-xs mt-1">Configure your digital asset</p>
                                     </div>
                                 </div>
 
@@ -200,29 +200,28 @@ const AddCardModal = () => {
                                         number: cardNumber // For preview only
                                     }}
                                     showFullNumber={true}
-                                    className="shadow-2xl shadow-blue-200/50"
                                 />
 
                                 <div className="mt-12 space-y-4">
                                     <div className="flex justify-between items-center px-1">
-                                        <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Select Card Aura</span>
-                                        <div className="h-px w-20 bg-slate-100" />
+                                        <span className="text-[11px] font-black uppercase tracking-widest text-white/50">Select Card Aura</span>
+                                        <div className="h-1 w-20 bg-white" />
                                     </div>
                                     <div className="flex flex-wrap gap-4">
                                         {CARD_THEMES.map(t => (
                                             <button
                                                 key={t.id}
                                                 className={cn(
-                                                    "w-12 h-12 rounded-2xl p-0.5 transition-all duration-300 transform active:scale-90",
-                                                    selectedTheme === t.id ? "ring-4 ring-blue-100 ring-offset-2 scale-110 shadow-lg" : "hover:scale-105"
+                                                    "w-12 h-12 p-0 transition-all duration-200 border-4",
+                                                    selectedTheme === t.id ? "border-[#E11D48] translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_#E11D48]" : "border-white hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#FFFFFF]"
                                                 )}
                                                 onClick={() => setSelectedTheme(t.id)}
                                             >
                                                 <div
-                                                    className="w-full h-full rounded-xl flex items-center justify-center shadow-inner"
+                                                    className="w-full h-full flex items-center justify-center"
                                                     style={{ background: t.gradient }}
                                                 >
-                                                    {selectedTheme === t.id && <Check className="h-5 w-5 text-white drop-shadow-md" />}
+                                                    {selectedTheme === t.id && <Check className="h-6 w-6 text-white drop-shadow-md stroke-[4]" />}
                                                 </div>
                                             </button>
                                         ))}
@@ -230,30 +229,30 @@ const AddCardModal = () => {
                                 </div>
                             </div>
 
-                            <div className="hidden md:flex items-center gap-3 text-slate-400">
+                            <div className="hidden md:flex items-center gap-3 text-[#E11D48] mt-8">
                                 <Shield className="h-5 w-5" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">Bank-Grade Security</span>
                             </div>
                         </div>
 
                         {/* Right Column: Form Inputs */}
-                        <div className="w-full md:w-[55%] p-8 md:p-12 bg-white overflow-y-auto">
+                        <div className="w-full md:w-[55%] p-8 md:p-12 bg-white overflow-y-auto relative">
                             <button
                                 onClick={closeAddCard}
-                                className="absolute right-8 top-8 p-2 rounded-full hover:bg-slate-50 text-slate-400 hover:text-slate-600 transition-colors"
+                                className="absolute right-6 top-6 p-2 border-4 border-black hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_#000000]"
                             >
-                                <X className="h-6 w-6" />
+                                <X className="h-6 w-6" strokeWidth={3} />
                             </button>
 
-                            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Card Number</label>
+                            <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-black uppercase tracking-widest">Card Number</label>
                                     <div className="relative group">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                            <CreditCard className="h-4 w-4" />
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                            <CreditCard className="h-5 w-5" strokeWidth={2.5} />
                                         </div>
                                         <Input
-                                            className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
                                             placeholder="0000 0000 0000 0000"
                                             value={cardNumber}
                                             onChange={handleCardNumberChange}
@@ -262,14 +261,14 @@ const AddCardModal = () => {
                                     </div>
                                 </div>
 
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Card Holder</label>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-black uppercase tracking-widest">Card Holder</label>
                                     <div className="relative group">
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                            <User className="h-4 w-4" />
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                            <User className="h-5 w-5" strokeWidth={2.5} />
                                         </div>
                                         <Input
-                                            className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
                                             placeholder="NAME ON CARD"
                                             value={cardHolder}
                                             onChange={e => setCardHolder(e.target.value.toUpperCase())}
@@ -277,15 +276,15 @@ const AddCardModal = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expiry</label>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-black uppercase tracking-widest">Expiry</label>
                                         <div className="relative group">
-                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                                <Calendar className="h-4 w-4" />
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                                <Calendar className="h-5 w-5" strokeWidth={2.5} />
                                             </div>
                                             <Input
-                                                className="h-12 pl-12 pr-6 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                                className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
                                                 placeholder="MM/YY"
                                                 value={expiry}
                                                 onChange={e => {
@@ -298,15 +297,15 @@ const AddCardModal = () => {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">CVV</label>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-black uppercase tracking-widest">CVV</label>
                                         <div className="relative group">
-                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-blue-600 group-focus-within:bg-blue-50 transition-all">
-                                                <Lock className="h-4 w-4" />
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                                <Lock className="h-5 w-5" strokeWidth={2.5} />
                                             </div>
                                             <Input
                                                 type={showCvv ? "text" : "password"}
-                                                className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-blue-100 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all shadow-none"
+                                                className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
                                                 placeholder="CVV"
                                                 value={cvv}
                                                 onChange={e => setCvv(e.target.value.slice(0, 4))}
@@ -314,54 +313,54 @@ const AddCardModal = () => {
                                             />
                                             <button
                                                 type="button"
-                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-300 hover:text-blue-600"
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 border-2 border-transparent hover:border-black transition-all"
                                                 onClick={() => setShowCvv(!showCvv)}
                                             >
-                                                {showCvv ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                {showCvv ? <EyeOff size={18} strokeWidth={2.5} /> : <Eye size={18} strokeWidth={2.5} />}
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="pt-2 border-t border-slate-100 space-y-4">
-                                    <div className="flex items-center gap-2 px-1">
-                                        <Shield className="h-4 w-4 text-indigo-600" />
-                                        <span className="text-[11px] font-black text-indigo-600 uppercase tracking-widest">CVV Protection Setup</span>
+                                <div className="pt-6 mt-4 border-t-4 border-black space-y-6">
+                                    <div className="flex items-center gap-2">
+                                        <Shield className="h-5 w-5 text-black" strokeWidth={2.5} />
+                                        <span className="text-[12px] font-black text-black uppercase tracking-widest">CVV Protection Setup</span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-1">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Password</label>
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-black uppercase tracking-widest">Password</label>
                                             <div className="relative group">
-                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-indigo-600 group-focus-within:bg-indigo-50 transition-all">
-                                                    <Lock className="h-4 w-4" />
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                                    <Lock className="h-5 w-5" strokeWidth={2.5} />
                                                 </div>
                                                 <Input
                                                     type={showPassword ? "text" : "password"}
-                                                    className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition-all shadow-none"
-                                                    placeholder="Set Password"
+                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                    placeholder="SET"
                                                     value={cvvPassword}
                                                     onChange={e => setCvvPassword(e.target.value)}
                                                 />
                                                 <button
                                                     type="button"
-                                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-300 hover:text-indigo-600"
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 border-2 border-transparent hover:border-black transition-all"
                                                     onClick={() => setShowPassword(!showPassword)}
                                                 >
-                                                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                    {showPassword ? <EyeOff size={18} strokeWidth={2.5} /> : <Eye size={18} strokeWidth={2.5} />}
                                                 </button>
                                             </div>
                                         </div>
-                                        <div className="space-y-1">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Confirm</label>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-black uppercase tracking-widest">Confirm</label>
                                             <div className="relative group">
-                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-focus-within:text-indigo-600 group-focus-within:bg-indigo-50 transition-all">
-                                                    <Lock className="h-4 w-4" />
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 p-1.5 text-black">
+                                                    <Lock className="h-5 w-5" strokeWidth={2.5} />
                                                 </div>
                                                 <Input
                                                     type={showPassword ? "text" : "password"}
-                                                    className="h-12 pl-12 pr-12 rounded-xl border-2 border-slate-50 bg-slate-50 placeholder:text-slate-300 text-slate-700 font-bold text-base focus:border-indigo-100 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition-all shadow-none"
-                                                    placeholder="Confirm"
+                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                    placeholder="CONFIRM"
                                                     value={confirmCvvPassword}
                                                     onChange={e => setConfirmCvvPassword(e.target.value)}
                                                 />
@@ -373,14 +372,14 @@ const AddCardModal = () => {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-base shadow-xl shadow-blue-200 transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-70 mt-2"
+                                    className="w-full h-16 mt-6 rounded-none bg-[#E11D48] hover:bg-black text-white font-black uppercase tracking-widest text-lg border-4 border-black shadow-[8px_8px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#000000] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[8px_8px_0px_#000000]"
                                 >
                                     {isSubmitting ? (
-                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <Loader2 className="h-6 w-6 animate-spin" />
                                     ) : (
                                         <>
                                             Securely Add Card
-                                            <Wallet className="h-4 w-4" />
+                                            <Wallet className="h-5 w-5" strokeWidth={3} />
                                         </>
                                     )}
                                 </Button>

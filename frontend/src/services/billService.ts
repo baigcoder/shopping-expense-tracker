@@ -1,5 +1,6 @@
 // Bill Service - Manage Bills and Reminders
 import { supabase } from '../config/supabase';
+import { emitFinancialDataEvent } from './financialDataEvents';
 
 export interface Bill {
     id: string;
@@ -25,6 +26,24 @@ export interface BillReminder {
 }
 
 class BillService {
+    private normalizeDate(date: Date): Date {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    private getRecurringDay(dueDate: string): number {
+        const parsedNumber = Number.parseInt(dueDate, 10);
+        if (Number.isFinite(parsedNumber) && parsedNumber >= 1 && parsedNumber <= 31) {
+            return parsedNumber;
+        }
+
+        const parsedDate = new Date(dueDate);
+        if (!Number.isNaN(parsedDate.getTime())) {
+            return parsedDate.getDate();
+        }
+
+        return 1;
+    }
+
     // Create a new bill
     async create(userId: string, billData: Omit<Bill, 'id' | 'user_id' | 'created_at' | 'updated_at'>): Promise<Bill> {
         const { data, error } = await supabase
@@ -39,6 +58,7 @@ class BillService {
             .single();
 
         if (error) throw error;
+        emitFinancialDataEvent('bill-reminder-changed', { action: 'create', id: data.id });
         return data;
     }
 
@@ -57,8 +77,8 @@ class BillService {
     // Get upcoming bills (due within next 30 days)
     async getUpcoming(userId: string, days: number = 30): Promise<Bill[]> {
         const bills = await this.getAll(userId);
-        const today = new Date();
-        const futureDate = new Date();
+        const today = this.normalizeDate(new Date());
+        const futureDate = this.normalizeDate(new Date());
         futureDate.setDate(today.getDate() + days);
 
         return bills.filter(bill => {
@@ -72,7 +92,7 @@ class BillService {
     // Get bills that need reminders
     async getBillsNeedingReminders(userId: string): Promise<BillReminder[]> {
         const bills = await this.getAll(userId);
-        const today = new Date();
+        const today = this.normalizeDate(new Date());
         const reminders: BillReminder[] = [];
 
         bills.forEach(bill => {
@@ -97,18 +117,19 @@ class BillService {
 
     // Calculate next due date based on bill frequency
     getNextDueDate(bill: Bill): Date {
-        const today = new Date();
+        const today = this.normalizeDate(new Date());
 
         if (bill.frequency === 'one-time') {
-            return new Date(bill.due_date);
+            return this.normalizeDate(new Date(bill.due_date));
         }
 
         // For recurring bills, calculate next occurrence
-        const dueDay = parseInt(bill.due_date);
+        const dueDay = this.getRecurringDay(bill.due_date);
         const currentMonth = today.getMonth();
         const currentYear = today.getFullYear();
 
-        let nextDue = new Date(currentYear, currentMonth, dueDay);
+        const lastDayOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        let nextDue = new Date(currentYear, currentMonth, Math.min(dueDay, lastDayOfCurrentMonth));
 
         // If due date has passed this month, move to next period
         if (nextDue < today) {
@@ -123,9 +144,12 @@ class BillService {
                     nextDue.setFullYear(nextDue.getFullYear() + 1);
                     break;
             }
+
+            const correctedLastDay = new Date(nextDue.getFullYear(), nextDue.getMonth() + 1, 0).getDate();
+            nextDue = new Date(nextDue.getFullYear(), nextDue.getMonth(), Math.min(dueDay, correctedLastDay));
         }
 
-        return nextDue;
+        return this.normalizeDate(nextDue);
     }
 
     // Mark bill as paid
@@ -157,6 +181,8 @@ class BillService {
                 })
                 .eq('id', billId);
         }
+
+        emitFinancialDataEvent('bill-reminder-changed', { action: 'paid', id: billId });
     }
 
     // Update a bill
@@ -172,6 +198,7 @@ class BillService {
             .single();
 
         if (error) throw error;
+        emitFinancialDataEvent('bill-reminder-changed', { action: 'update', id: data.id });
         return data;
     }
 
@@ -183,6 +210,7 @@ class BillService {
             .eq('id', billId);
 
         if (error) throw error;
+        emitFinancialDataEvent('bill-reminder-changed', { action: 'delete', id: billId });
     }
 
     // Get total upcoming bills amount

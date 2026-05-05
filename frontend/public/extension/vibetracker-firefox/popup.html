@@ -4,92 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Tracker</title>
+    <title>Cashly Extension</title>
     <link rel="stylesheet" href="popup.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="popup-container">
-        <!-- Login View (shown when not authenticated) -->
-        <div id="loginView" class="view" style="display: none;">
-            <div class="login-header">
-                <span class="logo-big">🛍️</span>
-                <h1>Vibe Tracker</h1>
-                <p>Login to sync your purchases</p>
+    <div class="popup-shell">
+        <section id="loginView" class="view">
+            <div class="brand-lockup">
+                <div class="brand-mark">C</div>
+                <div>
+                    <h1>Cashly</h1>
+                    <p>Review-first finance automation</p>
+                </div>
             </div>
 
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="emailInput" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="passwordInput" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
-                    Login 🚀
-                </button>
-                <p class="login-footer">
-                    No account? <a href="http://localhost:5173/signup" target="_blank">Sign up on web</a>
-                </p>
-            </form>
+            <div class="status-card">
+                <h2>Connect your website session</h2>
+                <p>Sign in on Cashly, then sync the browser extension. The extension uses backend APIs and keeps detected transactions in review.</p>
+                <button id="syncWebsiteBtn" class="btn primary">Sync from Cashly</button>
+                <button id="openLoginBtn" class="btn secondary">Open web login</button>
+                <div id="loginError" class="message error" hidden></div>
+            </div>
+        </section>
 
-            <div id="loginError" class="error-msg" style="display: none;"></div>
-        </div>
-
-        <!-- Main View (shown when authenticated) -->
-        <div id="mainView" class="view" style="display: none;">
-            <!-- Header -->
-            <header class="header">
-                <div class="logo-area">
-                    <span class="logo">🛍️</span>
-                    <h1>Vibe Check</h1>
-                </div>
-                <div class="header-right">
-                    <div class="status-badge" id="statusBadge">
-                        SYNCED 🔗
+        <section id="mainView" class="view" hidden>
+            <header class="topbar">
+                <div class="brand-lockup compact">
+                    <div class="brand-mark">C</div>
+                    <div>
+                        <h1>Cashly</h1>
+                        <p id="userEmail">Not synced</p>
                     </div>
-                    <button class="logout-btn" id="logoutBtn" title="Logout">🚪</button>
+                </div>
+                <div class="top-actions">
+                    <button id="refreshBtn" class="icon-btn" title="Refresh">R</button>
+                    <button id="settingsBtn" class="icon-btn" title="Settings">S</button>
+                    <button id="logoutBtn" class="icon-btn danger" title="Logout">L</button>
                 </div>
             </header>
 
-            <!-- User Info -->
-            <div class="user-card" id="userCard">
-                <span class="user-email" id="userEmail">user@email.com</span>
-                <span class="sync-status">✓ Live Sync Active</span>
+            <div class="health-strip" id="syncStatus">
+                <span class="dot"></span>
+                <span>Checking sync</span>
             </div>
 
-            <!-- Main Stats Card -->
-            <div class="card main-card">
-                <div class="card-header">
-                    <span class="label">Monthly Splurge</span>
-                    <span class="icon">💸</span>
+            <div class="metrics-grid">
+                <article class="metric-card">
+                    <span class="metric-label">This month</span>
+                    <strong id="monthlySpent">$0.00</strong>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Pending review</span>
+                    <strong id="pendingCount">0</strong>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Queued syncs</span>
+                    <strong id="queuedCount">0</strong>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label">Failed events</span>
+                    <strong id="failedCount">0</strong>
+                </article>
+            </div>
+
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Current site</h2>
+                    <span id="siteName" class="pill">Unknown</span>
                 </div>
-                <div class="amount" id="monthlySpent">$0.00</div>
-                <div class="subtext"><span id="transactionCount">0</span> vibes detected</div>
-            </div>
+                <p id="lastDetection" class="muted">No recent detection loaded.</p>
+            </section>
 
-            <!-- Action Buttons -->
-            <div class="actions">
-                <button class="btn btn-primary" id="clipPageBtn">
-                    Clip Page 📌
-                </button>
-                <button class="btn btn-secondary" id="openDashboard">
-                    Dashboard 🚀
-                </button>
-            </div>
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Quick actions</h2>
+                </div>
+                <div class="action-grid">
+                    <button id="clipPageBtn" class="action-card">Clip page</button>
+                    <button id="addManualBtn" class="action-card">Add expense</button>
+                    <button id="openDashboard" class="action-card">Dashboard</button>
+                    <button id="openInboxBtn" class="action-card">Inbox</button>
+                    <button id="openCalendarBtn" class="action-card">Calendar</button>
+                    <button id="openReportsBtn" class="action-card">Reports</button>
+                    <button id="openCoachBtn" class="action-card">Coach</button>
+                    <button id="openHealthBtn" class="action-card">Health</button>
+                </div>
+            </section>
 
-            <!-- Live Activity -->
-            <div class="section">
-                <h2>Recent Vibes <span class="live-dot"></span></h2>
-                <div class="transaction-list" id="recentTransactions">
-                    <div class="empty-state">No vibes yet 🦗</div>
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Recent approved</h2>
+                    <button id="openTransactionsBtn" class="link-btn">All</button>
+                </div>
+                <div id="recentTransactions" class="list">
+                    <div class="empty">No transactions loaded.</div>
+                </div>
+            </section>
+        </section>
+
+        <section id="settingsView" class="view" hidden>
+            <header class="subbar">
+                <button id="backFromSettings" class="link-btn">Back</button>
+                <h1>Extension Settings</h1>
+            </header>
+
+            <div class="settings-list">
+                <label class="setting-row">
+                    <span>
+                        <strong>Auto-track purchases</strong>
+                        <small>Detect checkout pages and queue candidates.</small>
+                    </span>
+                    <input type="checkbox" id="autoTrackToggle" checked>
+                </label>
+                <label class="setting-row">
+                    <span>
+                        <strong>Show notifications</strong>
+                        <small>Notify when a candidate is queued.</small>
+                    </span>
+                    <input type="checkbox" id="notificationsToggle" checked>
+                </label>
+                <label class="setting-row">
+                    <span>
+                        <strong>Share health events</strong>
+                        <small>Post sync, queue, permission, and failure status.</small>
+                    </span>
+                    <input type="checkbox" id="healthEventsToggle" checked>
+                </label>
+                <div class="diagnostics">
+                    <span>API</span>
+                    <strong id="apiStatus">Not checked</strong>
+                </div>
+                <div class="diagnostics">
+                    <span>Inbox-first mode</span>
+                    <strong>Enabled</strong>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="addManualView" class="view" hidden>
+            <header class="subbar">
+                <button id="backFromManual" class="link-btn">Back</button>
+                <h1>Add Expense</h1>
+            </header>
+
+            <form id="manualForm" class="manual-form">
+                <label>Description
+                    <input type="text" id="manualDesc" placeholder="Coffee at Starbucks" required>
+                </label>
+                <label>Amount
+                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required>
+                </label>
+                <label>Category
+                    <select id="manualCategory">
+                        <option value="Shopping">Shopping</option>
+                        <option value="Food & Dining">Food & Dining</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Health">Health</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn primary">Save expense</button>
+            </form>
+        </section>
     </div>
+
+    <script src="config.js"></script>
     <script src="popup.js"></script>
 </body>
 

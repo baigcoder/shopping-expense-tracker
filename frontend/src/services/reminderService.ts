@@ -136,6 +136,7 @@ export async function createReminder(input: CreateReminderInput): Promise<BillRe
         return null;
     }
 
+    window.dispatchEvent(new CustomEvent('reminder-changed', { detail: { action: 'create', data } }));
     return data;
 }
 
@@ -156,6 +157,7 @@ export async function updateReminder(id: string, updates: Partial<CreateReminder
         return null;
     }
 
+    window.dispatchEvent(new CustomEvent('reminder-changed', { detail: { action: 'update', data } }));
     return data;
 }
 
@@ -198,6 +200,7 @@ export async function deleteReminder(id: string): Promise<boolean> {
         return false;
     }
 
+    window.dispatchEvent(new CustomEvent('reminder-changed', { detail: { action: 'delete', id } }));
     return true;
 }
 

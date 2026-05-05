@@ -12,7 +12,8 @@
 
 | Variable | Description |
 |----------|-------------|
-| `GROQ_API_KEY` | Your Groq API key for AI parsing |
+| `OPENROUTER_API_KEY` | Your OpenRouter API key for AI parsing |
+| `OPENROUTER_DOCUMENT_MODEL` | Optional parser model, defaults to `inclusionai/ling-2.6-1t:free` |
 
 ## Endpoints
 

@@ -2,6 +2,7 @@
 import api from './api';
 import { Transaction, ApiResponse, PaginatedResponse, TransactionFormData } from '../types';
 import { transactionFormSchema } from '../validation/schemas';
+import { emitFinancialDataEvent } from './financialDataEvents';
 
 interface TransactionFilters {
     page?: number;
@@ -76,6 +77,7 @@ export const transactionService = {
         };
 
         const response = await api.post<ApiResponse<Transaction>>('/transactions', payload);
+        emitFinancialDataEvent('transaction-added', response.data);
         return response.data;
     },
 
@@ -92,12 +94,14 @@ export const transactionService = {
         if (data.notes !== undefined) payload.notes = data.notes || null;
 
         const response = await api.patch<ApiResponse<Transaction>>(`/transactions/${id}`, payload);
+        emitFinancialDataEvent('transaction-updated', response.data);
         return response.data;
     },
 
     // Delete transaction
     delete: async (id: string) => {
         const response = await api.delete<ApiResponse<null>>(`/transactions/${id}`);
+        emitFinancialDataEvent('transaction-deleted', { id });
         return response.data;
     },
 };

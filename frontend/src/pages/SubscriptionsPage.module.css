@@ -1,148 +1,92 @@
 /* ============================================
-   CASHLY - SUBSCRIPTIONS v2.0
-   Midnight Coral Theme - Premium Light Mode
+   SUBSCRIPTIONS — Stark Gen Z Brutalism
    ============================================ */
 
 .mainContent {
-    min-height: auto;
-    background: #f8fafc;
-    /* Premium Light Gray */
-    padding: 0 0 4rem 0;
-    color: #1e293b;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* Base Mesh Gradients */
-.mainContent::before {
-    content: '';
-    position: absolute;
-    top: -200px;
-    right: -200px;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-    filter: blur(80px);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.mainContent::after {
-    content: '';
-    position: absolute;
-    bottom: -100px;
-    left: -100px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.03) 0%, transparent 70%);
-    filter: blur(80px);
-    z-index: 0;
-    pointer-events: none;
+    min-height: 100vh;
+    background: #FFFFFF;
+    color: #000000;
 }
 
 .contentArea {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem 2.5rem;
-    position: relative;
-    z-index: 1;
+    padding: 3rem;
 }
 
-/* Glass Header */
+/* STARK HEADER */
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 2.5rem;
-    margin-bottom: 3rem;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    border: 3px solid rgba(226, 232, 240, 0.9);
-    border-radius: 40px;
-    box-shadow:
-        0 12px 40px -10px rgba(0, 0, 0, 0.04),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    padding: 2rem 2.5rem;
+    margin-bottom: 4rem;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    box-shadow: 8px 8px 0px #000000;
 }
 
 .headerLeft {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .titleIcon {
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-radius: 18px;
+    width: 4rem;
+    height: 4rem;
+    background: #000000;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.3);
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .title {
-    font-size: 2rem;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    color: #0f172a;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    font-size: 2.5rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: -0.06em;
+    color: #000000;
 }
 
 .liveBadge {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     font-weight: 900;
     padding: 0.25rem 0.75rem;
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    border-radius: 10px;
+    background: #E11D48;
+    color: #FFFFFF;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
 }
 
-/* Stats Grid */
+/* STATS GRID */
 .statsRow {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 3.5rem;
-}
-
-/* Pipeline Section Container */
-.pipelineSection {
-    background: rgba(255, 255, 255, 0.4);
-    border: 3px solid #e2e8f0;
-    border-radius: 48px;
-    padding: 2.5rem;
+    gap: 2rem;
     margin-bottom: 4rem;
-    position: relative;
-    backdrop-filter: blur(10px);
 }
 
 .premiumStatCard {
-    background: white;
-    border-radius: 36px;
+    background: #FFFFFF;
+    border: 4px solid #000000;
     padding: 1.75rem;
-    border: 3px solid #e2e8f0;
-    box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 6px 6px 0px #000000;
+    transition: all 0.2s;
 }
 
 .premiumStatCard:hover {
-    transform: translateY(-8px);
-    border-color: #cbd5e1;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px #E11D48;
 }
 
 .statIconBox {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,167 +94,139 @@
 }
 
 .statLabel {
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #64748b;
+    font-size: 0.8125rem;
+    font-weight: 900;
+    color: #000000;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.15em;
     margin-bottom: 0.5rem;
 }
 
 .statValue {
     font-size: 2.25rem;
     font-weight: 950;
-    color: #0f172a;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.25rem;
+    color: #000000;
+    letter-spacing: -0.05em;
 }
 
 .statProgress {
-    height: 6px;
+    height: 1rem;
     background: #f1f5f9;
-    border-radius: 10px;
+    border: 3px solid #000000;
+    margin-top: 1rem;
     overflow: hidden;
 }
 
 .progressFill {
     height: 100%;
-    border-radius: 10px;
+    background: #000000;
 }
 
-/* Section Controls */
-.sectionHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
-}
-
-.sectionTitle {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: #0f172a;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    letter-spacing: -0.02em;
-}
-
-/* Subscription Mesh Grid */
+/* SUBS GRID */
 .subsGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 4rem;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2.5rem;
 }
 
 .subCard {
-    background: white;
-    border-radius: 40px;
-    padding: 2.25rem;
-    border: 3px solid #e2e8f0;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    padding: 2.5rem;
     position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
+    transition: all 0.2s;
+    box-shadow: 8px 8px 0px #000000;
 }
 
 .subCard:hover {
-    transform: translateY(-12px);
-    border-color: #cbd5e1;
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
-}
-
-.subCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 100%;
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px #E11D48;
 }
 
 .subCardTop {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .subBrand {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
 .subLogoBox {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 950;
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+    background: #000000;
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .subName {
-    font-size: 1.25rem;
-    font-weight: 900;
-    color: #0f172a;
-    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    color: #000000;
 }
 
 .subCat {
     font-size: 0.75rem;
-    font-weight: 800;
-    color: #94a3b8;
+    font-weight: 900;
+    color: #E11D48;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .subAmount {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .amountVal {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 950;
-    color: #0f172a;
-    letter-spacing: -0.04em;
+    color: #000000;
+    letter-spacing: -0.05em;
 }
 
 .cycle {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #94a3b8;
-    margin-left: 0.25rem;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #000000;
+    opacity: 0.5;
+    margin-left: 0.5rem;
 }
 
 .paymentInfo {
     margin-top: auto;
-    padding-top: 1.5rem;
-    border-top: 2px solid #f8fafc;
+    padding-top: 2rem;
+    border-top: 4px solid #000000;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .nextBill {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #64748b;
+    font-size: 0.8125rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #000000;
 }
 
 .daysLeft {
-    color: #0f172a;
-    font-weight: 950;
+    background: #E11D48;
+    color: #FFFFFF;
+    padding: 0.25rem 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .cardActions {
@@ -319,114 +235,73 @@
 }
 
 .miniBtn {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    border: 2px solid #f1f5f9;
-    background: #f8fafc;
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #94a3b8;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    background: #FFFFFF;
+    color: #000000;
+    transition: all 0.1s;
 }
 
 .miniBtn:hover {
-    background: white;
-    border-color: #cbd5e1;
-    color: #0f172a;
-    transform: scale(1.05);
+    background: #000000;
+    color: #FFFFFF;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
-/* Trial Specifics */
+/* TRIAL CARD */
 .trialCard {
-    border-style: dashed;
-    background: linear-gradient(to bottom right, #ffffff, #fffbeb);
+    background: #000000;
+    color: #FFFFFF;
+    border-color: #E11D48;
+}
+
+.trialCard .subName,
+.trialCard .amountVal,
+.trialCard .cycle,
+.trialCard .nextBill {
+    color: #FFFFFF;
 }
 
 .trialProgress {
-    height: 8px;
-    background: #fef3c7;
-    border-radius: 10px;
-    margin: 1.5rem 0;
+    height: 1.5rem;
+    background: #222;
+    border: 3px solid #E11D48;
+    margin: 2rem 0;
     overflow: hidden;
 }
 
 .trialFill {
     height: 100%;
-    background: #f59e0b;
-    border-radius: 10px;
+    background: #E11D48;
 }
 
-/* Empty State - Modernized */
+/* EMPTY STATE */
 .emptyState {
-    background: white;
-    border-radius: 36px;
-    padding: 4rem 2rem;
+    border: 6px dashed #000000;
+    padding: 6rem 3rem;
     text-align: center;
-    border: 3px dashed #cbd5e1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    width: 100%;
-    margin: 1rem 0;
-    transition: all 0.3s ease;
-}
-
-.emptyState:hover {
-    border-color: #3b82f6;
-    background: rgba(59, 130, 246, 0.02);
-}
-
-.emptyIcon {
-    width: 72px;
-    height: 72px;
-    background: #f1f5f9;
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    margin-bottom: 0.5rem;
+    background: #FFFFFF;
 }
 
 .emptyTitle {
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 950;
-    color: #0f172a;
-    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    margin-bottom: 1.5rem;
 }
 
 .emptyText {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #64748b;
-    max-width: 400px;
-    line-height: 1.6;
-}
-
-/* Animations */
-.spinning {
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Responsive */
-@media (max-width: 1400px) {
-    .subsGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #E11D48;
+    margin-bottom: 2.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -437,24 +312,13 @@
 
 @media (max-width: 768px) {
     .contentArea {
-        padding: 1rem 1.25rem;
+        padding: 1.5rem;
     }
-
     .header {
         flex-direction: column;
-        gap: 1.5rem;
-        padding: 2rem;
+        text-align: center;
     }
-
     .statsRow {
         grid-template-columns: 1fr;
-    }
-
-    .subsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .title {
-        font-size: 1.5rem;
     }
 }

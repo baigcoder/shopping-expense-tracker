@@ -1,10 +1,11 @@
-// Extension Tracking Stats Card - Shows monitored sites and tracking status
+// Extension Tracking Stats Card - Premium Obsidian Tracking Widget
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Globe, Activity, ArrowRight, RefreshCw, Wifi, WifiOff, Puzzle } from 'lucide-react';
+import { Globe, Activity, ArrowRight, RefreshCw, Wifi, WifiOff, Puzzle, Shield } from 'lucide-react';
 import { useExtensionSync } from '../hooks/useExtensionSync';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 import styles from './ExtensionStatsCard.module.css';
 
 interface TrackingStats {
@@ -25,21 +26,19 @@ const ExtensionStatsCard = () => {
     useEffect(() => {
         const loadStats = async () => {
             try {
-                // Get tracking stats from extension via localStorage
                 const trackingData = localStorage.getItem('finzen_tracking_stats');
                 if (trackingData) {
                     const data = JSON.parse(trackingData);
                     setStats({
                         sitesTracked: data.sitesTracked || 0,
                         pagesMonitored: data.pagesMonitored || 0,
-                        isActive: extensionStatus.installed && extensionStatus.loggedIn
+                        isActive: !!(extensionStatus.installed && extensionStatus.loggedIn)
                     });
                 } else {
-                    // Fallback: Get from chrome storage via extension if available
                     setStats({
                         sitesTracked: 0,
                         pagesMonitored: 0,
-                        isActive: extensionStatus.installed && extensionStatus.loggedIn
+                        isActive: !!(extensionStatus.installed && extensionStatus.loggedIn)
                     });
                 }
             } catch (error) {
@@ -53,7 +52,6 @@ const ExtensionStatsCard = () => {
             loadStats();
         }
 
-        // Listen for stats updates from extension
         const handleStatsUpdate = (event: CustomEvent) => {
             setStats(prev => ({
                 ...prev,
@@ -66,8 +64,6 @@ const ExtensionStatsCard = () => {
         return () => window.removeEventListener('extension-stats-updated', handleStatsUpdate as EventListener);
     }, [checking, extensionStatus.installed, extensionStatus.loggedIn]);
 
-    // CRITICAL: Only show connected AFTER checking is complete AND extension is verified
-    // While checking, always show disconnected to avoid false positives
     const isConnected = !checking && extensionStatus.installed && extensionStatus.loggedIn;
 
     return (
@@ -75,23 +71,25 @@ const ExtensionStatsCard = () => {
             className={styles.card}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ duration: 0.5 }}
         >
             <div className={styles.header}>
                 <div className={styles.titleRow}>
-                    <Globe className={styles.icon} size={18} />
-                    <span className={styles.title}>Extension Tracking</span>
+                    <div className={styles.icon}>
+                        <Shield size={18} strokeWidth={2.5} />
+                    </div>
+                    <span className={styles.title}>Extension Monitor</span>
                 </div>
-                <div className={`${styles.statusBadge} ${isConnected ? styles.connected : styles.disconnected}`}>
+                <div className={cn(styles.statusBadge, isConnected ? styles.connected : styles.disconnected)}>
                     {isConnected ? (
                         <>
-                            <Wifi size={12} />
+                            <Wifi size={12} strokeWidth={2.5} />
                             <span>Active</span>
                         </>
                     ) : (
                         <>
-                            <WifiOff size={12} />
-                            <span>Offline</span>
+                            <WifiOff size={12} strokeWidth={2.5} />
+                            <span>Inactive</span>
                         </>
                     )}
                 </div>
@@ -101,7 +99,7 @@ const ExtensionStatsCard = () => {
                 <div className={styles.statItem}>
                     <div className={styles.statValue}>
                         {loading ? (
-                            <RefreshCw size={16} className={styles.spinning} />
+                            <RefreshCw size={20} className={styles.spinning} strokeWidth={2.5} />
                         ) : (
                             stats.sitesTracked
                         )}
@@ -112,34 +110,44 @@ const ExtensionStatsCard = () => {
                 <div className={styles.statItem}>
                     <div className={styles.statValue}>
                         {loading ? (
-                            <RefreshCw size={16} className={styles.spinning} />
+                            <RefreshCw size={20} className={styles.spinning} strokeWidth={2.5} />
                         ) : (
-                            <span className={isConnected ? styles.activeNum : ''}>
-                                {isConnected ? '●' : '○'}
-                            </span>
+                            <div className="flex items-center gap-2">
+                                <div className={cn("w-2 h-2 rounded-full", isConnected ? "bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" : "bg-rose-500 shadow-[0_0_8px_#e11d48]")} />
+                                <span className={cn("text-xs font-bold", isConnected ? "text-emerald-500" : "text-rose-500")}>
+                                    {isConnected ? "Live" : "Offline"}
+                                </span>
+                            </div>
                         )}
                     </div>
-                    <div className={styles.statLabel}>Monitoring</div>
+                    <div className={styles.statLabel}>Signal Status</div>
                 </div>
             </div>
 
-            {/* Action Buttons */}
             <div className={styles.actionButtons}>
                 {isConnected ? (
                     <button
                         className={styles.openExtensionBtn}
                         onClick={() => {
                             toast.info(
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <strong>📍 Open Cashly Extension</strong>
-                                    <span>Click the <strong>puzzle piece icon</strong> (🧩) in your browser toolbar, then click <strong>Cashly</strong>.</span>
+                                <div className="flex flex-col gap-2 p-1">
+                                    <div className="flex items-center gap-2 text-blue-400 font-bold">
+                                        <Puzzle size={16} />
+                                        <span>Open Extension</span>
+                                    </div>
+                                    <p className="text-xs text-white/70 leading-relaxed">
+                                        Click the puzzle icon in your browser toolbar and select Cashly to manage your tracking.
+                                    </p>
                                 </div>,
-                                { duration: 5000 }
+                                {
+                                    style: { background: '#0f111a', border: '1px solid rgba(255,255,255,0.1)', color: 'white' },
+                                    duration: 5000
+                                }
                             );
                         }}
                     >
                         <Puzzle size={14} />
-                        <span>Open Extension</span>
+                        <span>Manage</span>
                     </button>
                 ) : (
                     <a
@@ -148,12 +156,12 @@ const ExtensionStatsCard = () => {
                         className={styles.installExtensionBtn}
                     >
                         <Activity size={14} />
-                        <span>Install Extension</span>
+                        <span>Install</span>
                     </a>
                 )}
 
                 <Link to="/shopping-activity" className={styles.seeMore}>
-                    <span>View Activity</span>
+                    <span>Activity</span>
                     <ArrowRight size={14} />
                 </Link>
             </div>

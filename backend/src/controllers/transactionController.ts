@@ -1,73 +1,97 @@
-// Transaction Controller - CRUD operations for transactions
+// Transaction Controller - canonical Supabase-backed transaction operations
 import { Request, Response } from 'express';
-import prisma from '../config/prisma.js';
 import { asyncHandler, createError } from '../middleware/errorHandler.js';
-import { CreateTransactionInput, UpdateTransactionInput } from '../validators/schemas.js';
-import { Decimal } from '@prisma/client/runtime/library';
+import { CreateTransactionInput, DetectedTransactionInput, UpdateTransactionInput } from '../validators/schemas.js';
+import {
+    createMoneyTransaction,
+    deleteMoneyTransaction,
+    getMoneyTransaction,
+    listUserTransactions,
+    listUserTransactionsPage,
+    updateMoneyTransaction,
+} from '../services/transactionDomainService.js';
+import { createDetectedCandidate } from '../services/transactionInboxService.js';
 
-// Get all transactions with pagination
+const getCanonicalUserId = (req: Request) => req.user!.supabaseId || req.user!.id;
+
+const mapCreateInput = (userId: string, data: CreateTransactionInput) => {
+    const storeName = data.storeName.trim();
+    const productName = data.productName?.trim() || null;
+
+    return {
+        user_id: userId,
+        date: data.purchaseDate || new Date().toISOString(),
+        description: productName ? `${storeName} - ${productName}` : storeName,
+        amount: data.amount,
+        type: 'expense' as const,
+        category: data.category || data.categoryId || 'Shopping',
+        source: 'manual-api',
+        confidence: 1,
+        store_name: storeName,
+        product_name: productName,
+        store_url: data.storeUrl || null,
+        notes: data.notes || null,
+    };
+};
+
+const mapUpdateInput = (data: UpdateTransactionInput) => {
+    const storeName = data.storeName?.trim();
+    const productName = data.productName?.trim();
+    const description = storeName
+        ? productName
+            ? `${storeName} - ${productName}`
+            : storeName
+        : undefined;
+
+    return {
+        ...(data.amount !== undefined && { amount: data.amount }),
+        ...(data.purchaseDate !== undefined && { date: data.purchaseDate }),
+        ...(description !== undefined && { description }),
+        ...(data.category !== undefined || data.categoryId !== undefined
+            ? { category: data.category || data.categoryId || 'Other' }
+            : {}),
+        ...(data.storeName !== undefined && { store_name: storeName || null }),
+        ...(data.productName !== undefined && { product_name: productName || null }),
+        ...(data.storeUrl !== undefined && { store_url: data.storeUrl || null }),
+        ...(data.notes !== undefined && { notes: data.notes || null }),
+    };
+};
+
 export const getTransactions = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
-    const categoryId = req.query.categoryId as string | undefined;
+    const category = (req.query.category || req.query.categoryId) as string | undefined;
     const search = req.query.search as string | undefined;
-    const sortBy = req.query.sortBy as string || 'purchaseDate';
+    const sortBy = req.query.sortBy as string || 'date';
     const sortOrder = req.query.sortOrder as 'asc' | 'desc' || 'desc';
 
-    const skip = (page - 1) * limit;
-
-    const where = {
-        userId,
-        ...(categoryId && { categoryId }),
-        ...(search && {
-            OR: [
-                { storeName: { contains: search, mode: 'insensitive' as const } },
-                { productName: { contains: search, mode: 'insensitive' as const } },
-            ]
-        })
-    };
-
-    const [transactions, total] = await Promise.all([
-        prisma.transaction.findMany({
-            where,
-            include: {
-                category: {
-                    select: { id: true, name: true, icon: true, color: true }
-                }
-            },
-            orderBy: { [sortBy]: sortOrder },
-            skip,
-            take: limit
-        }),
-        prisma.transaction.count({ where })
-    ]);
+    const result = await listUserTransactionsPage(userId, {
+        page,
+        limit,
+        category,
+        search,
+        sortBy,
+        sortOrder,
+    });
 
     res.json({
         success: true,
-        data: transactions,
+        data: result.transactions,
         pagination: {
-            page,
-            limit,
-            total,
-            totalPages: Math.ceil(total / limit)
-        }
+            page: result.page,
+            limit: result.limit,
+            total: result.total,
+            totalPages: result.totalPages,
+        },
     });
 });
 
-// Get single transaction
 export const getTransaction = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const { id } = req.params;
 
-    const transaction = await prisma.transaction.findFirst({
-        where: { id, userId },
-        include: {
-            category: {
-                select: { id: true, name: true, icon: true, color: true }
-            }
-        }
-    });
+    const transaction = await getMoneyTransaction(userId, id);
 
     if (!transaction) {
         throw createError('Transaction not found', 404);
@@ -75,124 +99,84 @@ export const getTransaction = asyncHandler(async (req: Request, res: Response) =
 
     res.json({
         success: true,
-        data: transaction
+        data: transaction,
     });
 });
 
-// Create new transaction
 export const createTransaction = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const data = req.body as CreateTransactionInput;
 
-    const transaction = await prisma.transaction.create({
-        data: {
-            userId,
-            amount: new Decimal(data.amount),
-            currency: data.currency || 'USD',
-            storeName: data.storeName,
-            storeUrl: data.storeUrl,
-            productName: data.productName,
-            categoryId: data.categoryId,
-            purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : new Date(),
-            notes: data.notes
-        },
-        include: {
-            category: {
-                select: { id: true, name: true, icon: true, color: true }
-            }
-        }
-    });
+    const transaction = await createMoneyTransaction(mapCreateInput(userId, data));
 
     res.status(201).json({
         success: true,
         message: 'Transaction created successfully',
-        data: transaction
+        data: transaction,
     });
 });
 
-// Update transaction
+export const createDetectedTransaction = asyncHandler(async (req: Request, res: Response) => {
+    const userId = getCanonicalUserId(req);
+    const data = req.body as DetectedTransactionInput;
+
+    const result = await createDetectedCandidate(userId, data);
+
+    res.status(202).json({
+        success: true,
+        message: result.duplicate ? 'Detected transaction needs review and may be duplicate' : 'Detected transaction queued for review',
+        pendingReview: true,
+        data: result.candidate,
+        candidate: result.candidate,
+        transaction: result.candidate,
+        duplicate: result.duplicate,
+        duplicateTransaction: result.duplicateTransaction,
+        transactionHash: result.candidate.transaction_hash,
+    });
+});
+
 export const updateTransaction = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const { id } = req.params;
     const data = req.body as UpdateTransactionInput;
 
-    // Check if transaction exists and belongs to user
-    const existing = await prisma.transaction.findFirst({
-        where: { id, userId }
-    });
+    const transaction = await updateMoneyTransaction(userId, id, mapUpdateInput(data));
 
-    if (!existing) {
+    if (!transaction) {
         throw createError('Transaction not found', 404);
     }
-
-    const transaction = await prisma.transaction.update({
-        where: { id },
-        data: {
-            ...(data.amount !== undefined && { amount: new Decimal(data.amount) }),
-            ...(data.currency && { currency: data.currency }),
-            ...(data.storeName && { storeName: data.storeName }),
-            ...(data.storeUrl !== undefined && { storeUrl: data.storeUrl }),
-            ...(data.productName !== undefined && { productName: data.productName }),
-            ...(data.categoryId !== undefined && { categoryId: data.categoryId }),
-            ...(data.purchaseDate && { purchaseDate: new Date(data.purchaseDate) }),
-            ...(data.notes !== undefined && { notes: data.notes })
-        },
-        include: {
-            category: {
-                select: { id: true, name: true, icon: true, color: true }
-            }
-        }
-    });
 
     res.json({
         success: true,
         message: 'Transaction updated successfully',
-        data: transaction
+        data: transaction,
     });
 });
 
-// Delete transaction
 export const deleteTransaction = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const { id } = req.params;
-
-    // Check if transaction exists and belongs to user
-    const existing = await prisma.transaction.findFirst({
-        where: { id, userId }
-    });
+    const existing = await getMoneyTransaction(userId, id);
 
     if (!existing) {
         throw createError('Transaction not found', 404);
     }
 
-    await prisma.transaction.delete({
-        where: { id }
-    });
+    await deleteMoneyTransaction(userId, id);
 
     res.json({
         success: true,
-        message: 'Transaction deleted successfully'
+        message: 'Transaction deleted successfully',
     });
 });
 
-// Get recent transactions (for dashboard)
 export const getRecentTransactions = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+    const userId = getCanonicalUserId(req);
     const limit = parseInt(req.query.limit as string) || 5;
-
-    const transactions = await prisma.transaction.findMany({
-        where: { userId },
-        include: {
-            category: {
-                select: { id: true, name: true, icon: true, color: true }
-            }
-        },
-        orderBy: { purchaseDate: 'desc' },
-        take: limit
-    });
+    const transactions = await listUserTransactions(userId, { limit });
 
     res.json({
         success: true,
-        data: transactions
+        data: transactions,
     });
 });

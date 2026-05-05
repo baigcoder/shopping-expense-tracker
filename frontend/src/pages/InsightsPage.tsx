@@ -1,35 +1,39 @@
 // InsightsPage - Cashly AI Financial Insights (Premium Redesign)
 // Midnight Coral Theme - Light Mode
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     Brain, Lightbulb, TrendingUp, AlertTriangle, Sparkles, Target,
     ArrowRight, Zap, RefreshCw, PieChart, Scissors, Coffee,
     UtensilsCrossed, CreditCard, PiggyBank, Trophy, Calendar,
-    ChevronRight, Plus, Shield, Activity, Wallet, Star
+    ChevronRight, Plus, Shield, Activity, Wallet, Star, Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useStore';
 import { generateSmartInsights, SmartInsight, InsightsStats, CategorySpending, getLocalFallbackTip } from '../services/smartInsightsService';
 import { getCachedAiTip, fetchAiTipInBackground } from '../services/aiTipCacheService';
-import { useDataRealtime } from '../hooks/useDataRealtime';
+import { FINANCIAL_DATA_EVENTS } from '../services/financialDataEvents';
 import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import styles from './InsightsPage.module.css';
 import { InsightsSkeleton } from '../components/LoadingSkeleton';
+import { featureExpansionApi } from '../services/featureExpansionApi';
+
+const DEFAULT_INSIGHTS_STATS: InsightsStats = { potentialSavings: 0, activeTips: 0, alerts: 0, healthScore: 50 };
 
 const InsightsPage = () => {
     const { user } = useAuthStore();
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [insights, setInsights] = useState<SmartInsight[]>([]);
-    const [stats, setStats] = useState<InsightsStats>({ potentialSavings: 0, activeTips: 0, alerts: 0, healthScore: 50 });
+    const [stats, setStats] = useState<InsightsStats>(DEFAULT_INSIGHTS_STATS);
     const [categorySpending, setCategorySpending] = useState<CategorySpending[]>([]);
     const [aiTip, setAiTip] = useState<string | null>(null);
     const [aiLoading, setAiLoading] = useState(false);
+    const [coachPlan, setCoachPlan] = useState<any>(null);
 
     // Icon mapping
     const getIcon = (iconName: string) => {
@@ -42,14 +46,42 @@ const InsightsPage = () => {
     };
 
     // Fetch insights
-    const fetchInsights = async (showRefresh = false) => {
-        if (!user?.id) return;
+    const fetchInsights = useCallback(async (showRefresh = false) => {
+        if (!user?.id) {
+            setInsights([]);
+            setCategorySpending([]);
+            setLoading(false);
+            setRefreshing(false);
+            return;
+        }
 
         if (showRefresh) setRefreshing(true);
-        else if (!refreshing) setLoading(true);
 
         try {
-            const result = await generateSmartInsights(user.id);
+            const result = await Promise.race([
+                generateSmartInsights(user.id),
+                new Promise<{
+                    insights: SmartInsight[];
+                    stats: InsightsStats;
+                    categorySpending: CategorySpending[];
+                }>((resolve) => {
+                    setTimeout(() => resolve({
+                        insights: [{
+                            id: 'loading-fallback',
+                            type: 'tip',
+                            severity: 'low',
+                            title: 'Keep Tracking',
+                            message: 'Your local insights are taking a moment. Keep tracking transactions and Cashly will keep your tips fresh.',
+                            action: 'View Transactions',
+                            actionPath: '/transactions',
+                            icon: 'Lightbulb',
+                            color: 'emerald'
+                        }],
+                        stats: DEFAULT_INSIGHTS_STATS,
+                        categorySpending: []
+                    }), 1200);
+                })
+            ]);
             setInsights(result.insights);
             setStats(result.stats);
             setCategorySpending(result.categorySpending);
@@ -66,7 +98,7 @@ const InsightsPage = () => {
             setLoading(false);
             setRefreshing(false);
         }
-    };
+    }, [user?.id]);
 
     const tryFetchAiTip = async () => {
         if (!user?.id || categorySpending.length === 0) return;
@@ -84,23 +116,29 @@ const InsightsPage = () => {
         setAiLoading(false);
     };
 
-    useDataRealtime({
-        onInsightsRefresh: () => fetchInsights(true),
-    });
-
     useEffect(() => {
         fetchInsights();
+        featureExpansionApi.currentCoach()
+            .then(plan => plan || featureExpansionApi.generateCoach())
+            .then(setCoachPlan)
+            .catch(() => setCoachPlan(null));
         const handleAiTipReady = (e: CustomEvent) => setAiTip(e.detail.tip);
         const handleDataChanged = () => fetchInsights(true);
 
         window.addEventListener('ai-tip-ready', handleAiTipReady as EventListener);
         window.addEventListener('insights-data-changed', handleDataChanged);
+        FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+            window.addEventListener(eventName, handleDataChanged);
+        });
 
         return () => {
             window.removeEventListener('ai-tip-ready', handleAiTipReady as EventListener);
             window.removeEventListener('insights-data-changed', handleDataChanged);
+            FINANCIAL_DATA_EVENTS.forEach((eventName) => {
+                window.removeEventListener(eventName, handleDataChanged);
+            });
         };
-    }, [user?.id]);
+    }, [user?.id, fetchInsights]);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -179,6 +217,38 @@ const InsightsPage = () => {
                     </div>
                 </motion.header>
 
+                {coachPlan?.actions && (
+                    <section className="bg-white border-4 border-black p-6 mb-6 shadow-[8px_8px_0px_#000000]">
+                        <div className="flex items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h2 className="font-black text-black uppercase tracking-widest text-xl">AI Financial Coach Plan</h2>
+                                <p className="text-sm text-black font-bold mt-1">Three actions for this week, tracked against current spending, goals, and subscriptions.</p>
+                            </div>
+                            <Badge className="bg-black text-white border-2 border-white rounded-none font-black uppercase text-xs px-3 py-1 shadow-[4px_4px_0px_#E11D48]">Weekly</Badge>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {coachPlan.actions.map((action: any) => (
+                                <button
+                                    key={action.id}
+                                    onClick={async () => {
+                                        await featureExpansionApi.updateCoachAction(action.id, action.status === 'done' ? 'pending' : 'done');
+                                        setCoachPlan(await featureExpansionApi.currentCoach());
+                                    }}
+                                    className="text-left p-5 border-4 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E11D48] group"
+                                >
+                                    <div className="text-[10px] font-black uppercase text-[#E11D48] mb-3 tracking-widest">{action.action_type}</div>
+                                    <div className="font-black text-lg mb-2">{action.title}</div>
+                                    <p className="text-sm font-bold opacity-80 mt-2">{action.description}</p>
+                                    <div className="mt-4 pt-4 border-t-4 border-black group-hover:border-white text-xs font-black uppercase flex justify-between items-center">
+                                        <span>{action.status === 'done' ? 'Done' : 'Mark done'}</span>
+                                        {action.status === 'done' && <Check size={16} className="text-[#E11D48]" />}
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 {/* Main Stats Row */}
                 <motion.div
                     className={styles.statsRow}
@@ -191,11 +261,11 @@ const InsightsPage = () => {
                         <motion.div
                             {...iconAnim}
                             className={styles.statIconBox}
-                            style={{ background: '#f5f3ff', color: '#7c3aed' }}
+                            style={{ background: '#000000', color: '#E11D48', border: '2px solid #E11D48' }}
                         >
                             <Activity size={24} />
                         </motion.div>
-                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? '#10b981' : '#7c3aed' }}>
+                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? '#000000' : '#E11D48' }}>
                             {stats.healthScore}<span className="text-xl opacity-50">/100</span>
                         </h3>
                         <p className={styles.statLabel}>Money Health</p>
@@ -204,7 +274,7 @@ const InsightsPage = () => {
                                 className={styles.progressFill}
                                 style={{
                                     width: `${stats.healthScore}%`,
-                                    background: `linear-gradient(90deg, #7c3aed, ${stats.healthScore >= 70 ? '#10b981' : '#d946ef'})`
+                                    background: `linear-gradient(90deg, #E11D48, #000000)`
                                 }}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${stats.healthScore}%` }}
@@ -293,7 +363,7 @@ const InsightsPage = () => {
                             className={styles.refreshCircle}
                             onClick={tryFetchAiTip}
                             disabled={aiLoading}
-                            style={{ border: '2px solid #f5d0fe', background: 'transparent' }}
+                            style={{ border: '2px solid #E11D48', background: 'transparent' }}
                         >
                             <RefreshCw size={20} className={aiLoading ? styles.spinning : ''} />
                         </motion.button>
@@ -311,12 +381,12 @@ const InsightsPage = () => {
                     >
                         <div className="flex items-center justify-between mb-6">
                             <h2 className={styles.sectionTitle}>
-                                <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
-                                    <Target size={22} />
+                                <div className="p-2 border-4 border-black bg-black text-[#E11D48] shadow-[4px_4px_0px_#E11D48]">
+                                    <Target size={22} strokeWidth={3} />
                                 </div>
                                 Things To Do
                             </h2>
-                            <Badge variant="outline" className="h-8 px-4 border-2 border-indigo-100 bg-indigo-50/50 text-indigo-600 font-bold text-[10px]">
+                            <Badge variant="outline" className="h-8 px-4 border-4 border-black bg-white text-black font-black text-[10px] uppercase rounded-none shadow-[4px_4px_0px_#E11D48]">
                                 {insights.length} TIPS
                             </Badge>
                         </div>
@@ -327,13 +397,13 @@ const InsightsPage = () => {
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        className="text-center py-20 bg-white rounded-[2.5rem] border-3 border-dashed border-slate-200"
+                                        className="text-center py-20 bg-white border-4 border-black border-dashed"
                                     >
-                                        <div className="mx-auto w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-300 mb-6 shadow-inner">
+                                        <div className="mx-auto w-20 h-20 bg-black border-4 border-black flex items-center justify-center text-white mb-6 shadow-[6px_6px_0px_#E11D48]">
                                             <Trophy size={40} />
                                         </div>
-                                        <h3 className="text-xl font-black text-slate-800">You're Doing Great!</h3>
-                                        <p className="text-slate-500 font-bold max-w-xs mx-auto mt-2">
+                                        <h3 className="text-xl font-black text-black uppercase tracking-widest">You're Doing Great!</h3>
+                                        <p className="text-black font-bold max-w-xs mx-auto mt-2 opacity-80 uppercase tracking-widest text-[10px]">
                                             No problems found. Keep tracking your spending!
                                         </p>
                                     </motion.div>
@@ -361,16 +431,16 @@ const InsightsPage = () => {
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <h3 className={styles.insightTitle}>{insight.title}</h3>
                                                         {insight.severity === 'high' && (
-                                                            <span className="px-3 py-1 rounded-full bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest border border-rose-200">
+                                                            <span className="px-3 py-1 rounded-none bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest border-2 border-rose-600 shadow-[2px_2px_0px_#e11d48]">
                                                                 Urgent
                                                             </span>
                                                         )}
                                                     </div>
                                                     <p className={styles.insightText}>{insight.message}</p>
                                                     {insight.value !== undefined && insight.value > 0 && (
-                                                        <div className="flex items-center gap-2 mt-3 p-2 px-3 bg-indigo-50 rounded-xl border border-indigo-100 w-fit">
-                                                            <Zap size={14} className="text-indigo-600 fill-indigo-600" />
-                                                            <span className="text-xs font-bold text-indigo-700">
+                                                        <div className="flex items-center gap-2 mt-3 p-2 px-3 bg-white border-2 border-black shadow-[4px_4px_0px_#10b981] w-fit">
+                                                            <Zap size={14} className="text-[#10b981] fill-[#10b981]" />
+                                                            <span className="text-[10px] font-black uppercase text-black tracking-widest">
                                                                 You could save: {formatCurrency(insight.value)}
                                                             </span>
                                                         </div>
@@ -395,7 +465,7 @@ const InsightsPage = () => {
                         animate="visible"
                     >
                         <h2 className={cn(styles.sectionTitle, "mb-6")}>
-                            <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
+                            <div className="p-2.5 rounded-xl bg-zinc-900 text-rose-600 border border-rose-600">
                                 <PieChart size={22} />
                             </div>
                             Spending Breakdown
@@ -419,7 +489,7 @@ const InsightsPage = () => {
                                             <motion.div
                                                 className={styles.progressThumb}
                                                 style={{
-                                                    background: `linear-gradient(90deg, #7c3aed, #4f46e5)`,
+                                                    background: `linear-gradient(90deg, #000000, #E11D48)`,
                                                     width: `${cat.percentage}%`
                                                 }}
                                                 initial={{ width: 0 }}
@@ -453,7 +523,7 @@ const InsightsPage = () => {
                                 className={styles.actionBtn}
                                 onClick={() => navigate('/goals')}
                             >
-                                <div className={cn(styles.actionBtnIcon, "bg-purple-50 text-purple-600")}>
+                                <div className={cn(styles.actionBtnIcon, "bg-zinc-900 text-rose-600 border border-rose-600")}>
                                     <PiggyBank size={20} strokeWidth={2.5} />
                                 </div>
                                 Save for a Goal

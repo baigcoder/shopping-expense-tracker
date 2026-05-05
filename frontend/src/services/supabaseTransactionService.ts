@@ -2,6 +2,7 @@
 // Direct Supabase queries for transactions (for PDF imports, etc.)
 
 import { supabase } from '../config/supabase';
+import { emitFinancialDataEvent } from './financialDataEvents';
 
 export interface SupabaseTransaction {
     id: string;
@@ -17,22 +18,44 @@ export interface SupabaseTransaction {
     created_at: string;
 }
 
+const TRANSACTION_CACHE_TTL = 30 * 1000;
+const transactionCache = new Map<string, { data: SupabaseTransaction[]; timestamp: number }>();
+
+export const invalidateTransactionCache = (userId?: string) => {
+    if (userId) {
+        transactionCache.delete(userId);
+        return;
+    }
+
+    transactionCache.clear();
+};
+
 export const supabaseTransactionService = {
     // Get all transactions for current user
-    getAll: async (userId: string): Promise<SupabaseTransaction[]> => {
+    getAll: async (userId: string, options: { force?: boolean; limit?: number } = {}): Promise<SupabaseTransaction[]> => {
+        const cached = transactionCache.get(userId);
+        if (!options.force && !options.limit && cached && Date.now() - cached.timestamp < TRANSACTION_CACHE_TTL) {
+            return cached.data;
+        }
+
         const { data, error } = await supabase
             .from('transactions')
             .select('*')
             .eq('user_id', userId)
             .order('date', { ascending: false })
-            .limit(100);
+            .limit(options.limit || 100);
 
         if (error) {
             console.error('Error fetching transactions:', error);
             return [];
         }
 
-        return data || [];
+        const transactions = data || [];
+        if (!options.limit || options.limit === 100) {
+            transactionCache.set(userId, { data: transactions, timestamp: Date.now() });
+        }
+
+        return transactions;
     },
 
     // Get transactions by source (e.g., 'pdf_import', 'csv_import')
@@ -65,8 +88,8 @@ export const supabaseTransactionService = {
             return null;
         }
 
-        // Notify listeners that data changed
-        window.dispatchEvent(new CustomEvent('transaction-added', { detail: data }));
+        invalidateTransactionCache(transaction.user_id);
+        emitFinancialDataEvent('transaction-added', data);
         return data;
     },
 
@@ -82,8 +105,8 @@ export const supabaseTransactionService = {
             return [];
         }
 
-        // Notify listeners that data changed
-        window.dispatchEvent(new CustomEvent('transaction-added', { detail: { count: data?.length || 0 } }));
+        invalidateTransactionCache(transactions[0]?.user_id);
+        emitFinancialDataEvent('transaction-added', { count: data?.length || 0, transactions: data || [] });
         return data || [];
     },
 
@@ -101,8 +124,8 @@ export const supabaseTransactionService = {
             return null;
         }
 
-        // Notify listeners that data changed
-        window.dispatchEvent(new CustomEvent('transaction-updated', { detail: data }));
+        invalidateTransactionCache(data.user_id);
+        emitFinancialDataEvent('transaction-updated', data);
         return data;
     },
 
@@ -118,8 +141,8 @@ export const supabaseTransactionService = {
             return false;
         }
 
-        // Notify listeners that data changed
-        window.dispatchEvent(new CustomEvent('transaction-deleted', { detail: { id } }));
+        invalidateTransactionCache();
+        emitFinancialDataEvent('transaction-deleted', { id });
         return true;
     },
 };

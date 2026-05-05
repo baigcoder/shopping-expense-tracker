@@ -1,266 +1,212 @@
 /* ============================================
-   MIDNIGHT CORAL - CARDS PAGE (PREMIUM LIGHT)
-   High-Fidelity Glassmorphism & Mesh Gradients
+   CASHLY — STARK GEN Z CARDS
+   Brutalist Wallet Design System v1.0
    ============================================ */
 
 .mainContent {
     min-height: auto;
-    background: #f8fafc;
-    /* Premium Off-White */
-    padding: 2rem;
+    background: #FFFFFF;
+    padding: 32px;
     position: relative;
     overflow-x: hidden;
-    color: #0f172a;
+    color: #000000;
 }
 
-/* Subtle Mesh Gradient Background */
-.mainContent::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.02) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.02) 0px, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* === GLASS HEADER === */
+/* === BRUTALIST HEADER === */
 .header {
     position: sticky;
-    top: 1rem;
+    top: 0;
     z-index: 50;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 3px solid rgba(226, 232, 240, 0.8);
-    border-radius: 2rem;
-    padding: 1.25rem 2rem;
-    margin-bottom: 2.5rem;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    padding: 32px;
+    margin-bottom: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.02),
-        0 10px 15px -3px rgba(0, 0, 0, 0.03),
-        inset 0 0 20px rgba(255, 255, 255, 0.5);
+    box-shadow: 10px 10px 0px #000000;
 }
 
 .headerTitle {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 24px;
 }
 
 .headerIcon {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1.25rem;
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    width: 64px;
+    height: 64px;
+    background: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 4px solid #000000;
 }
 
 .headerInfo h1 {
-    font-size: 1.75rem;
+    font-size: 2.5rem;
     font-weight: 900;
-    color: #0f172a;
-    letter-spacing: -0.04em;
+    color: #000000;
+    letter-spacing: -0.05em;
     margin: 0;
     line-height: 1.1;
+    text-transform: uppercase;
+    font-style: italic;
 }
 
 .headerInfo p {
     font-size: 0.875rem;
-    font-weight: 600;
-    color: #64748b;
-    margin: 0.25rem 0 0;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 4px 0 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .secureBadge {
     font-size: 10px;
     font-weight: 900;
-    color: #3b82f6;
-    background: #eff6ff;
-    padding: 2px 8px;
-    border-radius: 99px;
-    border: 1px solid #dbeafe;
+    color: #FFFFFF;
+    background: #000000;
+    padding: 2px 10px;
+    border: 2px solid #000000;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 .headerActions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 16px;
 }
 
 /* === STATS GRID === */
 .overviewGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    gap: 32px;
+    margin-bottom: 48px;
 }
 
 .premiumStatCard {
-    background: white;
-    border: 3px solid #e2e8f0;
-    border-radius: 2.25rem;
-    padding: 1.75rem;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    padding: 40px;
     position: relative;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    transition: all 0.1s;
+    box-shadow: 8px 8px 0px #000000;
 }
 
 .premiumStatCard:hover {
-    transform: translateY(-8px);
-    border-color: #cbd5e1;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-}
-
-.cardDecoration {
-    position: absolute;
-    top: -2rem;
-    right: -2rem;
-    width: 8rem;
-    height: 8rem;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-    border-radius: 50%;
-    z-index: 0;
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px #E11D48;
 }
 
 .statHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.25rem;
-    position: relative;
-    z-index: 1;
+    margin-bottom: 24px;
 }
 
 .statIconContainer {
-    width: 3.25rem;
-    height: 3.25rem;
-    border-radius: 1rem;
+    width: 56px;
+    height: 56px;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
-}
-
-.premiumStatCard:hover .statIconContainer {
-    transform: scale(1.1) rotate(-5deg);
+    background: #000000;
+    color: #FFFFFF;
 }
 
 .statLabel {
-    font-size: 0.875rem;
-    font-weight: 800;
-    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.4);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.25rem;
-    position: relative;
-    z-index: 1;
-}
-
-.statValueContainer {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    position: relative;
-    z-index: 1;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
 }
 
 .statValue {
     font-size: 2.5rem;
     font-weight: 900;
-    color: #0f172a;
-    letter-spacing: -0.04em;
+    color: #000000;
+    letter-spacing: -0.05em;
 }
 
 .statSubtext {
     font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
 }
 
 .statProgress {
-    height: 0.5rem;
-    background: #f1f5f9;
-    border-radius: 99px;
-    margin-top: 1.25rem;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid #000000;
+    margin-top: 24px;
     overflow: hidden;
-    position: relative;
-    z-index: 1;
 }
 
 .progressFill {
     height: 100%;
-    border-radius: 99px;
     transition: width 1s ease-out;
 }
 
 /* === WALLET SECTION === */
 .walletSection {
-    margin-bottom: 3.5rem;
+    margin-bottom: 56px;
 }
 
 .sectionHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
-    padding: 0 0.5rem;
-}
-
-.sectionTitle {
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 32px;
 }
 
 .sectionTitle h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 900;
-    color: #0f172a;
-    letter-spacing: -0.02em;
+    color: #000000;
+    letter-spacing: -0.04em;
     margin: 0;
+    text-transform: uppercase;
+    font-style: italic;
 }
 
 .sectionTitle p {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #64748b;
-    margin: 0.25rem 0 0;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 4px 0 0;
+    text-transform: uppercase;
 }
 
 .sectionLine {
     flex: 1;
-    height: 2px;
-    background: #f1f5f9;
-    margin: 0 2rem;
+    height: 4px;
+    background: #000000;
+    margin: 0 32px;
 }
 
 .encryptedTag {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
     font-size: 11px;
     font-weight: 900;
-    color: #94a3b8;
+    color: #FFFFFF;
+    background: #000000;
+    padding: 6px 16px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -268,245 +214,184 @@
 /* === CARDS GRID === */
 .cardsGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(clamp(280px, 90vw, 360px), 1fr));
-    gap: clamp(1rem, 3vw, 2rem);
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 32px;
 }
 
 /* Add Card Tile */
 .addCardTile {
     aspect-ratio: 1.586/1;
-    border-radius: 2.25rem;
-    border: 4px dashed #e2e8f0;
-    background: rgba(248, 250, 252, 0.5);
+    background: #FFFFFF;
+    border: 4px dashed #000000;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 24px;
     cursor: pointer;
-    transition: all 0.4s ease;
-    overflow: hidden;
+    transition: all 0.1s;
     position: relative;
     width: 100%;
 }
 
 .addCardTile:hover {
-    border-color: #3b82f6;
-    background: #eff6ff;
-    transform: translateY(-0.5rem);
+    background: #000000;
+    border-style: solid;
 }
 
 .addCardIcon {
-    width: 4.5rem;
-    height: 4.5rem;
-    border-radius: 1.5rem;
-    background: white;
+    width: 72px;
+    height: 72px;
+    border: 4px solid #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #cbd5e1;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    color: #000000;
+    background: #FFFFFF;
 }
 
 .addCardTile:hover .addCardIcon {
-    color: #3b82f6;
-    transform: scale(1.1);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+    background: #FFFFFF;
+    color: #E11D48;
 }
 
 .addCardText {
-    font-size: 0.875rem;
+    font-size: 14px;
     font-weight: 900;
-    color: #94a3b8;
+    color: #000000;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    transition: color 0.3s ease;
+    letter-spacing: 0.2em;
 }
 
 .addCardTile:hover .addCardText {
-    color: #3b82f6;
+    color: #FFFFFF;
 }
 
 /* === CONNECTED BANKS === */
 .banksSection {
-    background: white;
-    border: 3px solid #e2e8f0;
-    border-radius: 2.5rem;
-    overflow: hidden;
-    margin-bottom: 3rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    margin-bottom: 48px;
+    box-shadow: 10px 10px 0px #E11D48;
 }
 
 .banksHeader {
-    padding: 2rem;
-    border-bottom: 2px solid #f1f5f9;
-    background: linear-gradient(to right, #f8fafc, white);
+    padding: 32px;
+    border-bottom: 4px solid #000000;
+    background: #FFFFFF;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 24px;
 }
 
 .banksIconContainer {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 1.25rem;
-    background: #ecfdf5;
-    color: #10b981;
+    width: 56px;
+    height: 56px;
+    background: #000000;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 3px solid #000000;
 }
 
 .banksInfo h3 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 900;
-    color: #0f172a;
-    letter-spacing: -0.02em;
+    color: #000000;
+    letter-spacing: -0.03em;
     margin: 0;
+    text-transform: uppercase;
+    font-style: italic;
 }
 
 .banksInfo p {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #64748b;
-    margin: 0.25rem 0 0;
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 4px 0 0;
+    text-transform: uppercase;
 }
 
 .banksContent {
-    padding: 2rem;
+    padding: 32px;
 }
 
 /* === MODALS === */
 .glassDialog {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(24px);
-    border: 3px solid #e2e8f0;
-    border-radius: 2rem;
+    background: #FFFFFF;
+    border: 8px solid #000000;
     padding: 0;
     max-height: 90vh;
     overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    /* Firefox */
-    -ms-overflow-style: none;
-    /* IE and Edge */
-}
-
-.glassDialog::-webkit-scrollbar {
-    display: none;
-    /* Chrome, Safari and Opera */
+    box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.8);
 }
 
 .modalHeader {
-    padding: 1rem 1rem 0.5rem;
-    background: rgba(248, 250, 252, 0.5);
+    padding: 40px;
+    background: #FFFFFF;
     text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    border-bottom: 4px solid #000000;
+    position: relative;
 }
 
 .modalIcon {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.75rem;
-    background: #2563eb;
-    margin: 0 auto 0.5rem;
+    width: 64px;
+    height: 64px;
+    background: #000000;
+    margin: 0 auto 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+    border: 3px solid #000000;
 }
 
 .modalContent {
-    padding: 0.5rem 1rem 1rem;
+    padding: 40px;
 }
 
-/* PIN Inputs */
-.pinContainer {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.pinInput {
-    width: 4rem;
-    height: 5rem;
-    border-radius: 1.25rem;
-    border: 3px solid #f1f5f9;
-    background: #f8fafc;
-    font-size: 2rem;
-    font-weight: 900;
-    text-align: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.pinInput:focus {
-    border-color: #3b82f6;
-    background: white;
-    transform: scale(1.05);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
-}
-
-/* Vault Management */
-.vaultCard {
-    aspect-ratio: 1.586/1;
-    border-radius: 2.5rem;
-    padding: 2.5rem;
-    margin-bottom: 2.5rem;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
-}
-
+/* Vault Details */
 .vaultDetails {
     display: grid;
-    gap: 1rem;
+    gap: 16px;
 }
 
 .detailRow {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem;
-    border-radius: 1.25rem;
-    background: #f8fafc;
-    border: 2px solid #f1f5f9;
-    transition: all 0.3s ease;
+    padding: 20px;
+    background: #FFFFFF;
+    border: 4px solid #000000;
+    transition: all 0.1s;
 }
 
 .detailRow:hover {
-    background: white;
-    border-color: #3b82f6;
-    transform: translateX(0.25rem);
+    background: #000000;
+    color: #FFFFFF;
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0px #E11D48;
+}
+
+.infoLabel {
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    margin-bottom: 4px;
+    display: block;
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .overviewGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .overviewGrid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1.5rem;
-    }
-
-    .overviewGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .cardsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .mainContent {
-        padding: 1rem;
-    }
+    .header { flex-direction: column; gap: 24px; padding: 24px; }
+    .overviewGrid { grid-template-columns: 1fr; }
+    .cardsGrid { grid-template-columns: 1fr; }
+    .mainContent { padding: 16px; }
 }

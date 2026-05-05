@@ -23,7 +23,7 @@ const callAI = async (_type: string, systemPrompt: string, userPrompt: string) =
         }, {
             headers: userId ? { 'x-user-id': userId } : {}
         });
-        return { response: response.data.response };
+        return { response: response.data.reply };
     } catch (error) {
         console.error('Backend AI call failed:', error);
         throw error;
@@ -323,7 +323,7 @@ Return ONLY valid JSON with the exact structure requested. No markdown, no expla
         }
 
         const response = result.response;
-        console.log('AI Response (DeepSeek-R1) length:', response.length);
+        console.log('AI Response (OpenRouter) length:', response.length);
 
         let parsed;
         try {

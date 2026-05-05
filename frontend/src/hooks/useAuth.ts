@@ -1,33 +1,40 @@
-
-// Custom Hook to manage Authentication with Extension Sync
 import { useEffect } from 'react';
-import { useAuthStore } from '../store/useStore';
+import { useAuthStore, useUIStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
+import { setCurrency as setCurrencyService } from '../services/currencyService';
 
-// Notify extension of auth state changes with retry for page load reliability
+let lastExtensionSyncKey: string | null = null;
+let lastExtensionSyncAt = 0;
+const EXTENSION_SYNC_COOLDOWN_MS = 60_000;
+
 const notifyExtension = (type: 'LOGIN' | 'LOGOUT', data?: any) => {
     try {
-        // Clear persistent sync flag on logout
         if (type === 'LOGOUT') {
+            lastExtensionSyncKey = null;
+            lastExtensionSyncAt = 0;
             localStorage.removeItem('cashly_extension_synced');
             localStorage.removeItem('cashly_extension');
             localStorage.removeItem('cashly_extension_auth');
 
-            // Dispatch event for extension to catch
             window.dispatchEvent(new CustomEvent('extension-logged-out'));
-
-            // Send message to extension via postMessage
             window.postMessage({
                 type: 'WEBSITE_TO_EXTENSION',
                 action: 'LOGOUT',
-                data: {}
+                data: {},
             }, '*');
 
-            console.log('🔓 Notified extension of logout');
+            console.log('Notified extension of logout');
         }
 
-        // Notify extension of login with retry mechanism
         if (type === 'LOGIN' && data) {
+            const syncKey = `${data.user?.id || ''}:${data.session?.access_token?.slice(-16) || ''}`;
+            const now = Date.now();
+            if (syncKey && lastExtensionSyncKey === syncKey && now - lastExtensionSyncAt < EXTENSION_SYNC_COOLDOWN_MS) {
+                return;
+            }
+            lastExtensionSyncKey = syncKey;
+            lastExtensionSyncAt = now;
+
             const sendSyncMessage = () => {
                 window.postMessage({
                     type: 'WEBSITE_TO_EXTENSION',
@@ -35,67 +42,73 @@ const notifyExtension = (type: 'LOGIN' | 'LOGOUT', data?: any) => {
                     data: {
                         session: data.session,
                         user: data.user,
-                        accessToken: data.session?.access_token
-                    }
+                        accessToken: data.session?.access_token,
+                    },
                 }, '*');
             };
 
-            // Send immediately
             sendSyncMessage();
-            console.log('🔐 Notified extension of login (attempt 1)');
-
-            // Retry after 500ms - extension content script may not be ready yet
-            setTimeout(() => {
-                sendSyncMessage();
-                console.log('🔐 Notified extension of login (attempt 2)');
-            }, 500);
-
-            // Retry after 1.5s - final attempt
-            setTimeout(() => {
-                sendSyncMessage();
-                console.log('🔐 Notified extension of login (attempt 3)');
-            }, 1500);
-
-            // Retry after 3s - catch slow loads
-            setTimeout(() => {
-                sendSyncMessage();
-                console.log('🔐 Notified extension of login (attempt 4 - final)');
-            }, 3000);
+            setTimeout(sendSyncMessage, 1000);
+            setTimeout(sendSyncMessage, 2800);
         }
     } catch (error) {
         console.error('Error notifying extension:', error);
     }
 };
 
-
 export const useAuth = () => {
     const { user, isAuthenticated, isLoading, setUser, setLoading } = useAuthStore();
+    const { setCurrency, setTheme } = useUIStore();
 
     useEffect(() => {
-        // Initial Session Check
+        const hydrateUser = async (sessionUser: any) => {
+            const fallbackUser = {
+                id: sessionUser.id,
+                email: sessionUser.email!,
+                name: sessionUser.user_metadata.full_name || sessionUser.user_metadata.name || sessionUser.email?.split('@')[0] || 'User',
+                avatarUrl: sessionUser.user_metadata.avatar_url,
+                currency: 'USD',
+                createdAt: sessionUser.created_at || new Date().toISOString(),
+            };
+
+            setUser(fallbackUser);
+
+            try {
+                const { default: settingsApi } = await import('../services/settingsApi');
+                const settings = await settingsApi.get();
+                const currency = settings.preferences?.currency || settings.profile?.currency || fallbackUser.currency;
+                const theme = settings.preferences?.theme || 'light';
+
+                const profile = settings.profile as any;
+                setUser({
+                    ...fallbackUser,
+                    name: profile?.name || fallbackUser.name,
+                    avatarUrl: profile?.avatarUrl || profile?.avatar_url || fallbackUser.avatarUrl,
+                    currency,
+                    createdAt: profile?.createdAt || fallbackUser.createdAt,
+                });
+                setCurrency(currency);
+                setCurrencyService(currency);
+                setTheme(theme);
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+            } catch (error) {
+                console.warn('Settings hydration skipped:', error instanceof Error ? error.message : error);
+            }
+        };
+
         const checkSession = async () => {
             try {
                 const { data: { session }, error } = await supabase.auth.getSession();
 
                 if (error) {
                     console.error('Session check error:', error);
-                    // If error (e.g. refresh token missing), clear session but don't error out app
                     setUser(null);
                     setLoading(false);
                     return;
                 }
 
                 if (session?.user) {
-                    setUser({
-                        id: session.user.id,
-                        email: session.user.email!,
-                        name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                        avatarUrl: session.user.user_metadata.avatar_url,
-                        currency: 'USD',
-                        createdAt: session.user.created_at || new Date().toISOString()
-                    });
-
-                    // Sync with extension on page load if logged in
+                    await hydrateUser(session.user);
                     notifyExtension('LOGIN', { session, user: session.user });
                 } else {
                     setUser(null);
@@ -110,62 +123,41 @@ export const useAuth = () => {
 
         checkSession();
 
-        // Auth State Listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             console.log('Auth State Change:', event);
 
             if (event === 'SIGNED_IN' && session?.user) {
-                setUser({
-                    id: session.user.id,
-                    email: session.user.email!,
-                    name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                    avatarUrl: session.user.user_metadata.avatar_url,
-                    currency: 'USD',
-                    createdAt: session.user.created_at || new Date().toISOString()
-                });
-
-                // Sync login with extension
+                await hydrateUser(session.user);
                 notifyExtension('LOGIN', { session, user: session.user });
-
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);
-
-                // Sync logout with extension
                 notifyExtension('LOGOUT');
             }
         });
 
-        // Cross-tab auth sync via storage events
-        const handleStorageChange = (e: StorageEvent) => {
-            if (e.key?.startsWith('sb-') && e.key?.endsWith('-auth-token')) {
-                // Auth token changed in another tab, check session
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key?.startsWith('firebase:authUser:')) {
                 supabase.auth.getSession().then(({ data: { session } }) => {
                     if (session?.user) {
-                        setUser({
-                            id: session.user.id,
-                            email: session.user.email!,
-                            name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                            avatarUrl: session.user.user_metadata.avatar_url,
-                            currency: 'USD',
-                            createdAt: session.user.created_at || new Date().toISOString()
-                        });
+                        hydrateUser(session.user);
                     } else {
                         setUser(null);
                     }
                 });
             }
         };
+
         window.addEventListener('storage', handleStorageChange);
 
         return () => {
             subscription.unsubscribe();
             window.removeEventListener('storage', handleStorageChange);
         };
-    }, [setUser, setLoading]);
+    }, [setUser, setLoading, setCurrency, setTheme]);
 
     return {
         user,
         isAuthenticated,
-        isLoading
+        isLoading,
     };
 };

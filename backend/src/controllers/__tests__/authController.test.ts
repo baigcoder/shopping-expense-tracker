@@ -14,14 +14,14 @@ const mockUser = {
 }
 
 // Mock Prisma
-const mockPrisma = {
+const mockPrisma = vi.hoisted(() => ({
     user: {
         findUnique: vi.fn(),
         findFirst: vi.fn(),
         create: vi.fn(),
         update: vi.fn(),
     },
-}
+}))
 
 vi.mock('../../config/prisma.js', () => ({
     default: mockPrisma,
@@ -78,15 +78,16 @@ describe('Auth Controller', () => {
 
             expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({
                 where: { id: mockUser.id },
-                include: {
-                    _count: {
-                        select: {
-                            transactions: true,
-                            categories: true,
-                        },
-                    },
-                },
+                select: expect.objectContaining({
+                    id: true,
+                    email: true,
+                    name: true,
+                    avatarUrl: true,
+                    currency: true,
+                    createdAt: true,
+                }),
             })
+            expect(res.status).toHaveBeenCalledWith(200)
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 data: expect.objectContaining({
@@ -102,9 +103,13 @@ describe('Auth Controller', () => {
             const req = createMockRequest({})
             const res = createMockResponse()
 
-            await expect(
-                getProfile(req as Request, res as Response)
-            ).rejects.toThrow('User not found')
+            await getProfile(req as Request, res as Response)
+
+            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.json).toHaveBeenCalledWith({
+                success: false,
+                error: 'User not found',
+            })
         })
     })
 
@@ -122,11 +127,12 @@ describe('Auth Controller', () => {
 
             expect(mockPrisma.user.update).toHaveBeenCalledWith({
                 where: { id: mockUser.id },
-                data: expect.objectContaining({ name: 'Updated Name' }),
+                data: { name: 'Updated Name' },
+                select: expect.objectContaining({ id: true, email: true, name: true }),
             })
+            expect(res.status).toHaveBeenCalledWith(200)
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
-                message: 'Profile updated successfully',
                 data: updatedUser,
             })
         })
@@ -144,7 +150,8 @@ describe('Auth Controller', () => {
 
             expect(mockPrisma.user.update).toHaveBeenCalledWith({
                 where: { id: mockUser.id },
-                data: expect.objectContaining({ currency: 'EUR' }),
+                data: { currency: 'EUR' },
+                select: expect.objectContaining({ id: true, email: true, currency: true }),
             })
         })
 
@@ -161,7 +168,8 @@ describe('Auth Controller', () => {
 
             expect(mockPrisma.user.update).toHaveBeenCalledWith({
                 where: { id: mockUser.id },
-                data: expect.objectContaining({ avatarUrl: 'https://example.com/avatar.jpg' }),
+                data: { avatarUrl: 'https://example.com/avatar.jpg' },
+                select: expect.objectContaining({ id: true, email: true, avatarUrl: true }),
             })
         })
     })

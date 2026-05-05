@@ -57,7 +57,7 @@ interface UIState {
 export const useUIStore = create<UIState>()(
     persist(
         (set) => ({
-            sidebarOpen: false, // Start closed for better UX
+            sidebarOpen: true, // Keep desktop sidebar open by default
             sidebarHovered: false,
             theme: 'dark',
             currency: 'USD',
@@ -80,7 +80,7 @@ export const useUIStore = create<UIState>()(
         {
             name: 'ui-storage',
             partialize: (state) => ({
-                // Don't persist sidebarOpen - always start closed for better UX
+                // Don't persist sidebarOpen - always start open by default
                 theme: state.theme,
                 currency: state.currency,
                 soundEnabled: state.soundEnabled,

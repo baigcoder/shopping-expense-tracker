@@ -11,6 +11,93 @@ export interface AuthRequest extends Request {
     };
 }
 
+type VerifiedAuthUser = Awaited<ReturnType<typeof verifyToken>>;
+
+const toRequestUser = (user: { id: string; email: string; supabaseId: string }) => ({
+    id: user.id,
+    email: user.email,
+    supabaseId: user.supabaseId,
+});
+
+const toFallbackRequestUser = (authUser: VerifiedAuthUser) => ({
+    id: authUser.id,
+    email: authUser.email || '',
+    supabaseId: authUser.id,
+});
+
+const DB_OPTIONAL_PREFIXES = [
+    '/api/ai',
+    '/api/voice',
+    '/api/dashboard',
+    '/api/onboarding',
+    '/api/money-twin',
+    '/api/settings',
+    '/api/transaction-inbox',
+    '/api/merchant-rules',
+    '/api/imports',
+    '/api/cashflow-calendar',
+    '/api/subscription-command-center',
+    '/api/extension-health',
+    '/api/reports',
+    '/api/coach',
+];
+
+const shouldSyncAuthDatabase = (req: Request) => {
+    if (process.env.AUTH_DB_SYNC_ENABLED === 'false') return false;
+
+    const path = req.originalUrl || req.url || '';
+    if (DB_OPTIONAL_PREFIXES.some((prefix) => path === prefix || path.startsWith(`${prefix}/`))) {
+        return false;
+    }
+
+    return true;
+};
+
+const logAuthDatabaseError = (error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`Auth database lookup failed; continuing with verified UID fallback: ${message}`);
+};
+
+const findOrCreateAppUser = async (authUser: VerifiedAuthUser, createIfMissing: boolean) => {
+    let user = await prisma.user.findUnique({
+        where: { supabaseId: authUser.id },
+    });
+
+    if (!user && authUser.email) {
+        const existingUser = await prisma.user.findUnique({
+            where: { email: authUser.email },
+        });
+
+        if (existingUser) {
+            user = await prisma.user.update({
+                where: { id: existingUser.id },
+                data: {
+                    supabaseId: authUser.id,
+                    name: existingUser.name || authUser.user_metadata?.name || null,
+                    avatarUrl: existingUser.avatarUrl || authUser.user_metadata?.avatar_url || null,
+                },
+            });
+        }
+    }
+
+    if (!user && createIfMissing) {
+        if (!authUser.email) {
+            throw new Error('Verified token does not include an email address');
+        }
+
+        user = await prisma.user.create({
+            data: {
+                supabaseId: authUser.id,
+                email: authUser.email,
+                name: authUser.user_metadata?.name || null,
+                avatarUrl: authUser.user_metadata?.avatar_url || null,
+            },
+        });
+    }
+
+    return user;
+};
+
 export const authMiddleware = async (
     req: AuthRequest,
     res: Response,
@@ -32,28 +119,18 @@ export const authMiddleware = async (
         // Verify Supabase token
         const supabaseUser = await verifyToken(token);
 
-        // Find or create user in our database
-        let user = await prisma.user.findUnique({
-            where: { supabaseId: supabaseUser.id },
-        });
+        req.user = toFallbackRequestUser(supabaseUser);
 
-        if (!user) {
-            // Auto-create user if not exists
-            user = await prisma.user.create({
-                data: {
-                    supabaseId: supabaseUser.id,
-                    email: supabaseUser.email!,
-                    name: supabaseUser.user_metadata?.name || null,
-                    avatarUrl: supabaseUser.user_metadata?.avatar_url || null,
-                },
-            });
+        // AI and voice routes key all user data by the verified UID, so they
+        // should not fail or spam logs when the legacy Prisma database is down.
+        if (shouldSyncAuthDatabase(req)) {
+            try {
+                const user = await findOrCreateAppUser(supabaseUser, true);
+                req.user = user ? toRequestUser(user) : req.user;
+            } catch (dbError) {
+                logAuthDatabaseError(dbError);
+            }
         }
-
-        req.user = {
-            id: user.id,
-            email: user.email,
-            supabaseId: user.supabaseId,
-        };
 
         next();
     } catch (error) {
@@ -78,16 +155,15 @@ export const optionalAuth = async (
             const token = authHeader.split(' ')[1];
             const supabaseUser = await verifyToken(token);
 
-            const user = await prisma.user.findUnique({
-                where: { supabaseId: supabaseUser.id },
-            });
+            req.user = toFallbackRequestUser(supabaseUser);
 
-            if (user) {
-                req.user = {
-                    id: user.id,
-                    email: user.email,
-                    supabaseId: user.supabaseId,
-                };
+            if (shouldSyncAuthDatabase(req)) {
+                try {
+                    const user = await findOrCreateAppUser(supabaseUser, false);
+                    req.user = user ? toRequestUser(user) : req.user;
+                } catch (dbError) {
+                    logAuthDatabaseError(dbError);
+                }
             }
         }
     } catch {

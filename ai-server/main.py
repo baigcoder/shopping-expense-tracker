@@ -9,6 +9,8 @@ import re
 import json
 import asyncio
 import tempfile
+import urllib.error
+import urllib.request
 from datetime import datetime
 from typing import Optional, List
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -43,11 +45,6 @@ try:
     print("✅ edge-tts available (FREE TTS!)")
 except ImportError:
     print("⚠️ edge-tts not installed - run: pip install edge-tts")
-
-try:
-    from groq import Groq
-except ImportError:
-    Groq = None
 
 app = FastAPI(title="AI Document Parser + Free TTS", version="1.1.0")
 
@@ -470,27 +467,25 @@ def extract_text_from_csv(file_content: bytes) -> str:
 
 
 def parse_transactions_with_ai(text: str) -> dict:
-    """Use Groq AI to extract transactions from text"""
+    """Use OpenRouter AI to extract transactions from text"""
     
     # Get API key from environment
-    api_key = os.getenv("GROQ_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         # Try to read from backend .env
         backend_env = os.path.join(os.path.dirname(__file__), '..', 'backend', '.env')
         if os.path.exists(backend_env):
             with open(backend_env, 'r') as f:
                 for line in f:
-                    if line.startswith('GROQ_API_KEY='):
+                    if line.startswith('OPENROUTER_API_KEY='):
                         api_key = line.split('=', 1)[1].strip()
                         break
     
-    if not api_key or not Groq:
+    if not api_key:
         # Fallback: simple regex-based parsing
         return parse_transactions_regex(text)
     
     try:
-        client = Groq(api_key=api_key)
-        
         prompt = f"""Analyze this bank statement text and extract all transactions.
 
 For each transaction, identify:
@@ -514,14 +509,29 @@ Return ONLY valid JSON in this exact format:
 Bank Statement Text:
 {text[:8000]}"""  # Limit text length
 
-        response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=4000,
+        payload = json.dumps({
+            "model": os.getenv("OPENROUTER_DOCUMENT_MODEL") or os.getenv("OPENROUTER_MODEL", "inclusionai/ling-2.6-1t:free"),
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.1,
+            "max_tokens": 4000,
+            "response_format": {"type": "json_object"},
+        }).encode("utf-8")
+
+        request = urllib.request.Request(
+            "https://openrouter.ai/api/v1/chat/completions",
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "X-OpenRouter-Title": os.getenv("OPENROUTER_APP_NAME", "Cashly"),
+            },
+            method="POST",
         )
+
+        with urllib.request.urlopen(request, timeout=60) as response:
+            data = json.loads(response.read().decode("utf-8"))
         
-        content = response.choices[0].message.content
+        content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
         
         # Extract JSON from response
         json_match = re.search(r'\{[\s\S]*\}', content)

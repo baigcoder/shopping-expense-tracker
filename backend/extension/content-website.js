@@ -1,9 +1,14 @@
-// Content Script for Website - Enterprise Connection v9.0
+// Content Script for Website - Enterprise Connection v9.1
 // Handles robust session sharing between website and extension
 // Features: Heartbeat, reconnection, message queue, bidirectional ping
 
 (function () {
     'use strict';
+
+    if (window.__cashlyWebsiteBridgeInitialized) {
+        return;
+    }
+    window.__cashlyWebsiteBridgeInitialized = true;
 
     // ================================
     // CONNECTION STATE MANAGEMENT
@@ -27,16 +32,77 @@
     const SYNC_COOLDOWN_MS = 60 * 1000;
     const CONNECTION_KEY = 'cashly_connection_state';
 
+    // Local table used by the app's Firebase compatibility layer.
+    const tableStorageKey = (table) => `cashly_table_${table}`;
+
+    const readRows = (table) => {
+        try {
+            const stored = localStorage.getItem(tableStorageKey(table));
+            const parsed = stored ? JSON.parse(stored) : [];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    };
+
+    const writeRows = (table, rows) => {
+        localStorage.setItem(tableStorageKey(table), JSON.stringify(rows));
+    };
+
+    const normalizeExtensionTransaction = (detail) => {
+        const tx = detail?.transaction || detail || {};
+        const amount = Number(tx.amount ?? tx.price ?? 0);
+        const id = tx.id || `ext_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const description = tx.description || tx.name || [tx.store, tx.product].filter(Boolean).join(' - ') || tx.storeName || 'Detected Purchase';
+
+        return {
+            ...tx,
+            id,
+            user_id: tx.user_id || tx.userId || null,
+            date: tx.date || tx.detectedAt || tx.created_at || new Date().toISOString(),
+            description,
+            amount: Number.isFinite(amount) ? amount : 0,
+            type: tx.type === 'income' ? 'income' : 'expense',
+            category: tx.category || 'Shopping',
+            source: tx.source || 'extension-detected',
+            created_at: tx.created_at || new Date().toISOString(),
+        };
+    };
+
+    const saveTransactionToLocalTable = (detail) => {
+        const row = normalizeExtensionTransaction(detail);
+        const rows = readRows('transactions');
+        const existingIndex = rows.findIndex((item) => item.id === row.id);
+
+        if (existingIndex >= 0) {
+            rows[existingIndex] = { ...rows[existingIndex], ...row };
+        } else {
+            rows.unshift(row);
+        }
+
+        writeRows('transactions', rows);
+        return row;
+    };
+
+    const dispatchTransaction = (detail, source) => {
+        const row = saveTransactionToLocalTable(detail);
+        window.dispatchEvent(new CustomEvent('new-transaction', { detail: row }));
+        window.dispatchEvent(new CustomEvent('transaction-added-realtime', {
+            detail: { transaction: row, source }
+        }));
+        return row;
+    };
+
     // ================================
     // UTILITY FUNCTIONS
     // ================================
-    const hasAlreadySyncedInSession = () => sessionStorage.getItem(SESSION_SYNC_KEY) === 'true';
+    const hasAlreadySyncedInSession = () => false; // Always allow syncing to ensure freshness
 
     const canSync = () => {
-        if (hasAlreadySyncedInSession()) return false;
         const lastSync = localStorage.getItem(LAST_SYNC_KEY);
         if (!lastSync) return true;
-        return Date.now() - parseInt(lastSync, 10) > SYNC_COOLDOWN_MS;
+        // Reduce cooldown to 5 seconds for better responsiveness
+        return Date.now() - parseInt(lastSync, 10) > 5000;
     };
 
     const markAsSynced = () => {
@@ -44,7 +110,6 @@
         localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
     };
 
-    // Generate message ID for acknowledgment tracking
     const generateMessageId = () => `msg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
     // ================================
@@ -54,39 +119,29 @@
         const messageId = generateMessageId();
         const wrappedMessage = { ...message, _messageId: messageId, _timestamp: Date.now() };
 
-        // If disconnected, queue the message
         if (ConnectionState.status === 'disconnected' || ConnectionState.status === 'reconnecting') {
-            if (ConnectionState.messageQueue.length < 100) { // Limit queue size
+            if (ConnectionState.messageQueue.length < 100) {
                 ConnectionState.messageQueue.push(wrappedMessage);
-                console.log(`📤 Message queued (${ConnectionState.messageQueue.length} pending):`, message.type);
             }
             return { queued: true };
         }
 
         try {
             const response = await chrome.runtime.sendMessage(wrappedMessage);
-
-            // Track pending acknowledgment if needed
             if (expectAck) {
                 ConnectionState.pendingAcks.set(messageId, {
                     message: wrappedMessage,
                     sentAt: Date.now()
                 });
             }
-
-            // Update last successful communication
             ConnectionState.lastHeartbeat = Date.now();
             if (ConnectionState.status !== 'connected') {
                 updateConnectionStatus('connected');
                 ConnectionState.reconnectAttempts = 0;
             }
-
             return response;
         } catch (error) {
-            console.error('❌ Message send failed:', error);
             handleConnectionError();
-
-            // Queue the message for retry
             if (ConnectionState.messageQueue.length < 100) {
                 ConnectionState.messageQueue.push(wrappedMessage);
             }
@@ -94,14 +149,9 @@
         }
     };
 
-    // ================================
-    // CONNECTION STATUS MANAGEMENT
-    // ================================
     const updateConnectionStatus = (status) => {
         const prevStatus = ConnectionState.status;
         ConnectionState.status = status;
-
-        // Store connection state for website access
         const connectionData = {
             status,
             connectionId: ConnectionState.connectionId,
@@ -110,55 +160,34 @@
             queuedMessages: ConnectionState.messageQueue.length
         };
         localStorage.setItem(CONNECTION_KEY, JSON.stringify(connectionData));
-
-        // Dispatch event for website to react
         window.dispatchEvent(new CustomEvent('cashly-connection-change', {
             detail: { status, prevStatus, ...connectionData }
         }));
-
-        console.log(`🔌 Connection: ${prevStatus} → ${status}`);
     };
 
-    // ================================
-    // RECONNECTION LOGIC
-    // ================================
     const handleConnectionError = () => {
-        if (ConnectionState.status === 'reconnecting') return; // Already reconnecting
-
+        if (ConnectionState.status === 'reconnecting') return;
         updateConnectionStatus('disconnected');
         attemptReconnect();
     };
 
     const attemptReconnect = async () => {
         if (ConnectionState.reconnectAttempts >= ConnectionState.maxReconnectAttempts) {
-            console.error('❌ Max reconnection attempts reached');
             updateConnectionStatus('disconnected');
             return;
         }
-
         updateConnectionStatus('reconnecting');
         ConnectionState.reconnectAttempts++;
-
-        // Exponential backoff with jitter
         const delay = Math.min(
             ConnectionState.baseReconnectDelay * Math.pow(2, ConnectionState.reconnectAttempts - 1),
             ConnectionState.maxReconnectDelay
         ) * (0.5 + Math.random() * 0.5);
-
-        console.log(`🔄 Reconnect attempt ${ConnectionState.reconnectAttempts}/${ConnectionState.maxReconnectAttempts} in ${Math.round(delay)}ms`);
-
         await new Promise(r => setTimeout(r, delay));
-
         try {
-            // Ping the background script
             const response = await chrome.runtime.sendMessage({ type: 'PING', _timestamp: Date.now() });
-
             if (response) {
-                console.log('✅ Reconnection successful');
                 updateConnectionStatus('connected');
                 ConnectionState.reconnectAttempts = 0;
-
-                // Process queued messages
                 await processMessageQueue();
             } else {
                 attemptReconnect();
@@ -168,41 +197,26 @@
         }
     };
 
-    // ================================
-    // MESSAGE QUEUE PROCESSING
-    // ================================
     const processMessageQueue = async () => {
         if (ConnectionState.messageQueue.length === 0) return;
-
-        console.log(`📬 Processing ${ConnectionState.messageQueue.length} queued messages`);
         const queue = [...ConnectionState.messageQueue];
         ConnectionState.messageQueue = [];
-
         for (const message of queue) {
             try {
                 await chrome.runtime.sendMessage(message);
-                console.log('✅ Queued message sent:', message.type);
             } catch (error) {
-                // Re-queue failed messages
                 ConnectionState.messageQueue.push(message);
             }
-            // Small delay between messages
             await new Promise(r => setTimeout(r, 100));
         }
     };
 
-    // ================================
-    // HEARTBEAT SYSTEM
-    // ================================
     const startHeartbeat = () => {
         setInterval(async () => {
             try {
                 await setExtensionFlag();
-
-                // Check if we've lost connection
                 const timeSinceLastHeartbeat = Date.now() - ConnectionState.lastHeartbeat;
                 if (timeSinceLastHeartbeat > ConnectionState.heartbeatInterval * 3) {
-                    console.warn('⚠️ Heartbeat timeout detected');
                     handleConnectionError();
                 }
             } catch (error) {
@@ -211,9 +225,6 @@
         }, ConnectionState.heartbeatInterval);
     };
 
-    // ================================
-    // EXTENSION FLAG (Enhanced)
-    // ================================
     const setExtensionFlag = async () => {
         try {
             const extensionData = {
@@ -225,7 +236,6 @@
             };
             localStorage.setItem('cashly_extension', JSON.stringify(extensionData));
 
-            // Also set auth status
             try {
                 const data = await chrome.storage.local.get(['accessToken', 'userEmail']);
                 const loggedIn = !!(data.accessToken && data.userEmail);
@@ -252,20 +262,16 @@
                     }));
 
                     if (!wasLoggedIn && !hasAlreadySyncedInSession()) {
-                        console.log('🔗 Extension: Dispatching extension-synced event');
                         window.dispatchEvent(new CustomEvent('extension-synced', {
                             detail: { email: data.userEmail, timestamp: Date.now() }
                         }));
                         markAsSynced();
                     }
                 }
-
-                // Update connection state
                 ConnectionState.lastHeartbeat = Date.now();
                 if (ConnectionState.status !== 'connected') {
                     updateConnectionStatus('connected');
                 }
-
             } catch (e) {
                 localStorage.setItem('cashly_extension_auth', JSON.stringify({
                     loggedIn: false,
@@ -274,249 +280,404 @@
                     error: e.message
                 }));
             }
-
-            if (!hasAlreadySyncedInSession()) {
-                window.dispatchEvent(new CustomEvent('cashly-extension-ready', {
-                    detail: extensionData
-                }));
-            }
         } catch (e) {
             handleConnectionError();
         }
     };
 
     // ================================
-    // INITIALIZATION
+    // AUTO-SYNC SESSION FROM WEBSITE LOGIN
     // ================================
-    setExtensionFlag();
-    setTimeout(setExtensionFlag, 1000);
-    setTimeout(setExtensionFlag, 3000);
-    startHeartbeat();
-
-    // Sync site visits to localStorage
-    const syncSiteVisitsToLocalStorage = async () => {
+    const autoSyncSessionIfLoggedIn = async () => {
         try {
-            const result = await chrome.storage.local.get('siteVisits');
-            if (result.siteVisits && Object.keys(result.siteVisits).length > 0) {
-                localStorage.setItem('cashly_site_visits', JSON.stringify(result.siteVisits));
+            // Check if user is logged in on the website
+            const allKeys = Object.keys(localStorage);
+            const authRelatedKeys = allKeys.filter(k => 
+                k.toLowerCase().includes('firebase') ||
+                k.toLowerCase().includes('supabase') ||
+                (k.toLowerCase().includes('auth') && k.length > 10)
+            );
+
+            console.log('[Cashly Extension] Checking for login... Found auth keys:', authRelatedKeys.length);
+            let foundSession = false;
+
+            // Check Firebase (most common)
+            for (const key of authRelatedKeys) {
+                if (key.includes('firebase')) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data?.stsTokenManager?.accessToken) {
+                            foundSession = true;
+                            console.log('[Cashly Extension] ✅ Detected Firebase login, syncing...');
+                            
+                            const session = {
+                                access_token: data.stsTokenManager.accessToken,
+                                user: {
+                                    id: data.uid,
+                                    email: data.email,
+                                    name: data.displayName || data.email?.split('@')[0]
+                                }
+                            };
+
+                            // Auto-sync to extension
+                            const response = await sendToBackground({
+                                type: 'WEBSITE_LOGIN',
+                                data: {
+                                    session: session,
+                                    user: session.user,
+                                    accessToken: session.access_token,
+                                    autoSync: true,
+                                    timestamp: Date.now()
+                                }
+                            });
+
+                            console.log('[Cashly Extension] Auto-sync response:', response);
+                            markAsSynced();
+                            break;
+                        }
+                    } catch (e) {
+                        console.log('[Cashly Extension] Firebase parse error:', e.message);
+                    }
+                }
             }
-        } catch (e) { }
+
+            // Check Supabase as fallback
+            const supabaseKey = allKeys.find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+            if (supabaseKey) {
+                try {
+                    const session = JSON.parse(localStorage.getItem(supabaseKey));
+                    if (session?.access_token) {
+                        foundSession = true;
+                        console.log('[Cashly Extension] ✅ Detected Supabase login, syncing...');
+                        
+                        const response = await sendToBackground({
+                            type: 'WEBSITE_LOGIN',
+                            data: {
+                                session: session,
+                                user: session.user || { email: 'User', id: 'unknown' },
+                                accessToken: session.access_token,
+                                autoSync: true,
+                                timestamp: Date.now()
+                            }
+                        });
+
+                        console.log('[Cashly Extension] Auto-sync response:', response);
+                        markAsSynced();
+                    }
+                } catch (e) {
+                    console.log('[Cashly Extension] Supabase parse error:', e.message);
+                }
+            }
+
+            if (!foundSession) {
+                const bridgeRaw = localStorage.getItem('cashly_web_session_bridge');
+                if (bridgeRaw) {
+                    try {
+                        const bridgeSession = JSON.parse(bridgeRaw);
+                        if (bridgeSession?.access_token && bridgeSession?.user) {
+                            foundSession = true;
+                            console.log('[Cashly Extension] ✅ Detected bridge login, syncing...');
+                            const response = await sendToBackground({
+                                type: 'WEBSITE_LOGIN',
+                                data: {
+                                    session: bridgeSession,
+                                    user: bridgeSession.user,
+                                    accessToken: bridgeSession.access_token,
+                                    autoSync: true,
+                                    timestamp: Date.now()
+                                }
+                            });
+                            console.log('[Cashly Extension] Bridge auto-sync response:', response);
+                            markAsSynced();
+                        }
+                    } catch (e) {
+                        console.log('[Cashly Extension] Bridge parse error:', e.message);
+                    }
+                }
+            }
+
+            if (!foundSession) {
+                const currentAuth = await chrome.storage.local.get(['accessToken', 'userEmail']);
+                if (currentAuth.accessToken || currentAuth.userEmail) {
+                    console.log('[Cashly Extension] ⚠️ Website session missing, logging extension out');
+                    sessionStorage.removeItem(SESSION_SYNC_KEY);
+                    localStorage.removeItem(LAST_SYNC_KEY);
+                    await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' }).catch(() => undefined);
+                    await setExtensionFlag();
+                }
+            }
+        } catch (e) {
+            console.error('[Cashly Extension] Auto-sync error:', e);
+        }
     };
 
-    syncSiteVisitsToLocalStorage();
-    setTimeout(syncSiteVisitsToLocalStorage, 2000);
-    setInterval(syncSiteVisitsToLocalStorage, 5000);
+    // Run auto-sync on page load
+    autoSyncSessionIfLoggedIn();
+    setTimeout(autoSyncSessionIfLoggedIn, 2000);
 
-    // Listen for messages from the popup or background script
+    // Monitor localStorage changes for login
+    const originalStorageSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+        const oldValue = this.getItem(key);
+        originalStorageSetItem.call(this, key, value);
+
+        // Detect login via localStorage changes
+        if ((key.includes('firebase') || key.includes('supabase') || key.includes('auth')) && oldValue !== value) {
+            console.log('[Cashly Extension] Detected localStorage change:', key.slice(0, 30) + '...');
+            
+            // Debounce: only sync if enough time has passed
+            const now = Date.now();
+            const lastSync = parseInt(localStorage.getItem(LAST_SYNC_KEY) || '0', 10);
+            if (now - lastSync > 3000) {
+                setTimeout(() => autoSyncSessionIfLoggedIn(), 500);
+            }
+        }
+    };
+
+    setExtensionFlag();
+    setTimeout(setExtensionFlag, 1000);
+    startHeartbeat();
+
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         switch (message.type) {
             case 'GET_SUPABASE_SESSION':
-                // Get session from localStorage (where Supabase stores it)
                 try {
+                    // Try Supabase pattern
                     const supabaseKey = Object.keys(localStorage).find(key =>
                         key.startsWith('sb-') && key.endsWith('-auth-token')
                     );
-
                     if (supabaseKey) {
                         const sessionData = JSON.parse(localStorage.getItem(supabaseKey));
-                        sendResponse({
-                            success: true,
-                            session: sessionData
-                        });
-                    } else {
-                        sendResponse({ success: false, error: 'No session found' });
+                        sendResponse({ success: true, session: sessionData });
+                        return true;
                     }
+                    // Try Firebase pattern
+                    const firebaseKey = Object.keys(localStorage).find(key =>
+                        key.startsWith('firebase:authUser:')
+                    );
+                    if (firebaseKey) {
+                        const data = JSON.parse(localStorage.getItem(firebaseKey));
+                        if (data?.stsTokenManager) {
+                            sendResponse({
+                                success: true,
+                                session: {
+                                    access_token: data.stsTokenManager.accessToken,
+                                    refresh_token: data.stsTokenManager.refreshToken,
+                                    user: { id: data.uid, email: data.email, user_metadata: { full_name: data.displayName, avatar_url: data.photoURL } }
+                                }
+                            });
+                            return true;
+                        }
+                    }
+                    sendResponse({ success: false, error: 'No session found' });
                 } catch (error) {
                     sendResponse({ success: false, error: error.message });
                 }
                 break;
-
             case 'EXTENSION_SYNCED':
-                // Extension is now synced - notify the website (only if not already synced)
                 if (!hasAlreadySyncedInSession()) {
-                    window.dispatchEvent(new CustomEvent('extension-synced', {
-                        detail: message.data
-                    }));
+                    window.dispatchEvent(new CustomEvent('extension-synced', { detail: message.data }));
                     markAsSynced();
                 }
-
-                // Refresh flags immediately to update auth status
                 setExtensionFlag();
                 sendResponse({ received: true });
                 break;
-
             case 'EXTENSION_LOGGED_OUT':
-                // Clear sync flags on logout
                 sessionStorage.removeItem(SESSION_SYNC_KEY);
                 localStorage.removeItem(LAST_SYNC_KEY);
                 window.dispatchEvent(new CustomEvent('extension-logged-out'));
                 sendResponse({ received: true });
                 break;
-
             case 'NEW_TRANSACTION':
-                // New transaction added via extension
-                window.dispatchEvent(new CustomEvent('new-transaction', {
-                    detail: message.data
-                }));
-                sendResponse({ received: true });
-                break;
-
-            case 'TRANSACTIONS_SYNCED':
-                window.dispatchEvent(new CustomEvent('transactions-synced', {
-                    detail: message.data
-                }));
-                sendResponse({ received: true });
-                break;
-
-            case 'SITE_VISIT_TRACKED':
-                // Live site visit tracking - dispatch to Shopping Activity page
-                window.dispatchEvent(new CustomEvent('cashly-site-detected', {
-                    detail: message.data
-                }));
-                // Also dispatch for stats update
-                window.dispatchEvent(new CustomEvent('site-visit-tracked', {
-                    detail: message.data
-                }));
-                // INSTANT SYNC: Update localStorage immediately for website
-                syncSiteVisitsToLocalStorage();
+            case 'TRANSACTION_ADDED':
+                dispatchTransaction(message.data, 'extension');
                 sendResponse({ received: true });
                 break;
         }
-
         return true;
     });
 
-    // Listen for messages from the website (postMessage)
     window.addEventListener('message', async (event) => {
-        if (event.source !== window) return;
-
+        if (event.source !== window || !event.data || event.data.type !== 'WEBSITE_TO_EXTENSION') return;
         const message = event.data;
-        if (!message || message.type !== 'WEBSITE_TO_EXTENSION') return;
-
-        switch (message.action) {
-            case 'SYNC_SESSION':
-                // Website is sharing session with extension
-                // Always accept session data to enable instant sync on page refresh
-                try {
-                    console.log('📥 Extension: Received SYNC_SESSION from website');
-                    await chrome.runtime.sendMessage({
-                        type: 'SYNC_SESSION_FROM_WEBSITE',
-                        data: message.data
-                    });
-                    // Update localStorage flags immediately
-                    setExtensionFlag();
-                    markAsSynced();
-                } catch (e) {
-                    console.log('Extension sync error:', e.message);
-                }
-                break;
-
-            case 'LOGOUT':
-                try {
-                    sessionStorage.removeItem(SESSION_SYNC_KEY);
-                    localStorage.removeItem(LAST_SYNC_KEY);
-                    await chrome.runtime.sendMessage({
-                        type: 'USER_LOGGED_OUT'
-                    });
-                } catch (e) {
-                    // Silently ignore
-                }
-                break;
-
-            case 'CHECK_STATUS':
-                // Website checking extension status
-                try {
-                    const data = await chrome.storage.local.get(['accessToken', 'userEmail']);
-                    window.postMessage({
-                        type: 'EXTENSION_STATUS',
-                        installed: true,
-                        loggedIn: !!(data.accessToken && data.userEmail),
-                        email: data.userEmail
-                    }, '*');
-                } catch (e) {
-                    // Silently ignore
-                }
-                break;
+        if (message.action === 'SYNC_SESSION') {
+            try {
+                await chrome.runtime.sendMessage({ type: 'SYNC_SESSION_FROM_WEBSITE', data: message.data });
+                setExtensionFlag();
+                markAsSynced();
+            } catch (e) { }
+        } else if (message.action === 'LOGOUT') {
+            try {
+                sessionStorage.removeItem(SESSION_SYNC_KEY);
+                localStorage.removeItem(LAST_SYNC_KEY);
+                await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
+            } catch (e) { }
+        } else if (message.action === 'CHECK_STATUS') {
+            try {
+                await setExtensionFlag();
+                autoSyncSessionIfLoggedIn();
+            } catch (e) { }
         }
     });
 
-    // Watch for auth changes in localStorage (when user logs in/out on website)
-    const originalSetItem = localStorage.setItem;
-    localStorage.setItem = function (key, value) {
-        originalSetItem.apply(this, arguments);
-
-        // Check if this is a Supabase auth token update
-        if (key.startsWith('sb-') && key.endsWith('-auth-token')) {
-            try {
-                const sessionData = JSON.parse(value);
-                if (sessionData && sessionData.access_token && sessionData.user) {
-                    // Only sync if not already synced in this session
-                    if (canSync()) {
-                        // Notify extension of new session
-                        chrome.runtime.sendMessage({
-                            type: 'WEBSITE_LOGIN',
-                            data: {
-                                session: sessionData,
-                                user: sessionData.user,
-                                accessToken: sessionData.access_token,
-                                skipNotification: hasAlreadySyncedInSession() // Tell background to skip notification
-                            }
-                        }).then(() => {
-                            markAsSynced();
-                        }).catch(() => { });
-                    }
-                }
-            } catch (e) {
-                // Not valid JSON, ignore
-            }
-        }
+    const isAuthStorageKey = (key) => {
+        if (!key || typeof key !== 'string') return false;
+        return key === 'cashly_web_session_bridge'
+            || key === 'expense_tracker_session'
+            || (key.startsWith('sb-') && key.endsWith('-auth-token'))
+            || (key.includes('firebase') && key.includes('auth'));
     };
 
-    // Watch for localStorage removal (logout)
-    const originalRemoveItem = localStorage.removeItem;
-    localStorage.removeItem = function (key) {
-        if (key.startsWith('sb-') && key.endsWith('-auth-token')) {
+    const triggerImmediateLogout = async () => {
+        try {
             sessionStorage.removeItem(SESSION_SYNC_KEY);
             localStorage.removeItem(LAST_SYNC_KEY);
-            chrome.runtime.sendMessage({
-                type: 'USER_LOGGED_OUT'
-            }).catch(() => { });
-        }
-        originalRemoveItem.apply(this, arguments);
+            await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
+            await setExtensionFlag();
+        } catch (e) { }
     };
 
-    // Check if website already has a session on load (only sync once per session)
-    setTimeout(() => {
-        // Skip if already synced in this session
-        if (hasAlreadySyncedInSession()) {
-            return;
-        }
-
-        try {
-            const supabaseKey = Object.keys(localStorage).find(key =>
-                key.startsWith('sb-') && key.endsWith('-auth-token')
-            );
-
-            if (supabaseKey) {
-                const sessionData = JSON.parse(localStorage.getItem(supabaseKey));
-                if (sessionData && sessionData.access_token && sessionData.user) {
-                    // Auto-sync on page load if website is logged in (silent - no notification)
+    // ─── AUTH SNIFFING HOOKS ───
+    const originalLocalStorageSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+        originalLocalStorageSetItem.apply(this, arguments);
+        const isSupabase = key.startsWith('sb-') && key.endsWith('-auth-token');
+        const isFirebase = key.includes('firebase') && key.includes('auth');
+        
+        if (isSupabase || isFirebase) {
+            try {
+                const data = JSON.parse(value);
+                let session = null;
+                if (isSupabase && data?.access_token) {
+                    session = data;
+                } else if (isFirebase) {
+                    // Handle Firebase auth data
+                    if (data?.stsTokenManager?.accessToken) {
+                        session = {
+                            access_token: data.stsTokenManager.accessToken,
+                            refresh_token: data.stsTokenManager.refreshToken,
+                            user: { id: data.uid, email: data.email, user_metadata: { full_name: data.displayName, avatar_url: data.photoURL } }
+                        };
+                    } else if (data?.access_token && typeof data.access_token === 'string') {
+                        session = {
+                            access_token: data.access_token,
+                            refresh_token: data.refresh_token,
+                            user: { id: data.uid, email: data.email, user_metadata: { full_name: data.displayName, avatar_url: data.photoURL } }
+                        };
+                    }
+                }
+                
+                if (session && canSync()) {
+                    console.log('🔐 Auth detected, syncing with extension...');
                     chrome.runtime.sendMessage({
                         type: 'WEBSITE_LOGIN',
-                        data: {
-                            session: sessionData,
-                            user: sessionData.user,
-                            accessToken: sessionData.access_token,
-                            skipNotification: true // IMPORTANT: Skip notification on page load
-                        }
-                    }).then(() => {
-                        markAsSynced();
-                    }).catch(() => { });
+                        data: { session, user: session.user, accessToken: session.access_token, skipNotification: false }
+                    }).then(() => markAsSynced()).catch(() => { });
+                } else if (isAuthStorageKey(key)) {
+                    triggerImmediateLogout();
+                }
+            } catch (e) { 
+                if (isAuthStorageKey(key)) {
+                    triggerImmediateLogout();
+                } else {
+                    console.error('Auth sync error:', e);
                 }
             }
-        } catch (e) {
-            // Ignore errors
         }
-    }, 1000);
+    };
+
+    const originalLocalStorageRemoveItem = localStorage.removeItem;
+    localStorage.removeItem = function (key) {
+        originalLocalStorageRemoveItem.apply(this, arguments);
+        if (isAuthStorageKey(key)) {
+            triggerImmediateLogout();
+        }
+    };
+
+    // Auto-sync on load - improved Firebase detection
+    setTimeout(() => {
+        try {
+            console.log('🔍 Auto-syncing: checking for active session...');
+            
+            // Check Supabase first
+            const supabaseKey = Object.keys(localStorage).find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+            let session = null;
+
+            const tryBridge = (key) => {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (!raw) return null;
+                    const parsed = JSON.parse(raw);
+                    const token = parsed.access_token || parsed.accessToken;
+                    if (!token || typeof token !== 'string') return null;
+                    const u = parsed.user || {};
+                    return {
+                        access_token: token,
+                        refresh_token: parsed.refresh_token,
+                        user: {
+                            id: u.id || parsed.userId,
+                            email: u.email || parsed.email,
+                            user_metadata: u.user_metadata || { full_name: u.name, avatar_url: u.avatar_url },
+                        },
+                    };
+                } catch {
+                    return null;
+                }
+            };
+            
+            if (supabaseKey) {
+                session = JSON.parse(localStorage.getItem(supabaseKey));
+                console.log('✅ Found Supabase session');
+            } else if ((session = tryBridge('cashly_web_session_bridge'))) {
+                console.log('✅ Found Cashly web session bridge');
+            } else if ((session = tryBridge('expense_tracker_session'))) {
+                console.log('✅ Found expense_tracker_session bridge');
+            } else {
+                // Check for any Firebase auth key
+                const firebaseKeys = Object.keys(localStorage).filter(k => k.toLowerCase().includes('firebase') && k.toLowerCase().includes('auth'));
+                console.log('Firebase auth keys:', firebaseKeys);
+                
+                for (const firebaseKey of firebaseKeys) {
+                    try {
+                        const d = JSON.parse(localStorage.getItem(firebaseKey));
+                        if (d) {
+                            console.log('Checking Firebase key:', firebaseKey);
+                            if (d?.stsTokenManager?.accessToken) {
+                                session = {
+                                    access_token: d.stsTokenManager.accessToken,
+                                    refresh_token: d.stsTokenManager.refreshToken,
+                                    user: { id: d.uid, email: d.email, user_metadata: { full_name: d.displayName, avatar_url: d.photoURL } }
+                                };
+                                console.log('✅ Found Firebase session (stsTokenManager)');
+                                break;
+                            } else if (d?.access_token && typeof d.access_token === 'string') {
+                                session = {
+                                    access_token: d.access_token,
+                                    refresh_token: d.refresh_token,
+                                    user: { id: d.uid, email: d.email, user_metadata: { full_name: d.displayName, avatar_url: d.photoURL } }
+                                };
+                                console.log('✅ Found Firebase session (direct access_token)');
+                                break;
+                            }
+                        }
+                    } catch (parseErr) {
+                        console.warn('Firebase parse error:', parseErr);
+                    }
+                }
+            }
+            
+            if (session?.access_token && canSync()) {
+                console.log('🔄 Proactive auto-syncing session...');
+                chrome.runtime.sendMessage({
+                    type: 'WEBSITE_LOGIN',
+                    data: { session, user: session.user, accessToken: session.access_token, skipNotification: true }
+                }).then(() => markAsSynced()).catch(() => { });
+            } else {
+                console.log('❌ No active session found yet or sync on cooldown');
+            }
+        } catch (e) { 
+            console.error('Auto-sync error:', e);
+        }
+    }, 2000);
 
 })();
