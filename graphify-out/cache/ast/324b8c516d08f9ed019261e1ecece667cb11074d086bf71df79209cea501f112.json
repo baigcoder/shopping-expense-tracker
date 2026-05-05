@@ -1,0 +1,999 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "label": "settingsService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_settingsservice_asrows",
+      "label": "asRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L51"
+    },
+    {
+      "id": "services_settingsservice_getsettingsuserid",
+      "label": "getSettingsUserId()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "services_settingsservice_tocamelsettings",
+      "label": "toCamelSettings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L54"
+    },
+    {
+      "id": "services_settingsservice_tosettingsrow",
+      "label": "toSettingsRow()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "services_settingsservice_getfirebaseprofile",
+      "label": "getFirebaseProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L89"
+    },
+    {
+      "id": "services_settingsservice_getstoredprofile",
+      "label": "getStoredProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L108"
+    },
+    {
+      "id": "services_settingsservice_getusersettings",
+      "label": "getUserSettings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L140"
+    },
+    {
+      "id": "services_settingsservice_saveusersettings",
+      "label": "saveUserSettings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L160"
+    },
+    {
+      "id": "services_settingsservice_getsettingsdashboard",
+      "label": "getSettingsDashboard()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L173"
+    },
+    {
+      "id": "services_settingsservice_updatesettingsprofile",
+      "label": "updateSettingsProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L209"
+    },
+    {
+      "id": "services_settingsservice_normalizepreferenceinput",
+      "label": "normalizePreferenceInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L265"
+    },
+    {
+      "id": "services_settingsservice_normalizeaiinput",
+      "label": "normalizeAIInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L279"
+    },
+    {
+      "id": "services_settingsservice_updatesettingspreferences",
+      "label": "updateSettingsPreferences()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L288"
+    },
+    {
+      "id": "services_settingsservice_updatesettingsai",
+      "label": "updateSettingsAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L306"
+    },
+    {
+      "id": "services_settingsservice_refreshsettingsai",
+      "label": "refreshSettingsAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L315"
+    },
+    {
+      "id": "services_settingsservice_testsettingsai",
+      "label": "testSettingsAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L325"
+    },
+    {
+      "id": "services_settingsservice_requestpasswordreset",
+      "label": "requestPasswordReset()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L370"
+    },
+    {
+      "id": "services_settingsservice_getsessionmetadata",
+      "label": "getSessionMetadata()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L398"
+    },
+    {
+      "id": "services_settingsservice_invalidateuseraicacheifenabled",
+      "label": "invalidateUserAICacheIfEnabled()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L413"
+    },
+    {
+      "id": "services_settingsservice_listpendingcandidatesforcontext",
+      "label": "listPendingCandidatesForContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L420"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "firebase_admin",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_prisma_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_validators_schemas_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_asrows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getsettingsuserid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_tocamelsettings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_tosettingsrow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getfirebaseprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getstoredprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getusersettings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_saveusersettings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getsettingsdashboard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_updatesettingsprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_normalizepreferenceinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_normalizeaiinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L279",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_updatesettingspreferences",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L288",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_updatesettingsai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L306",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_refreshsettingsai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L315",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_testsettingsai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L325",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_requestpasswordreset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L370",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_getsessionmetadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L398",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_invalidateuseraicacheifenabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L413",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_settingsservice_ts",
+      "target": "services_settingsservice_listpendingcandidatesforcontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L420",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getstoredprofile",
+      "target": "services_settingsservice_getfirebaseprofile",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getusersettings",
+      "target": "services_settingsservice_tocamelsettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getusersettings",
+      "target": "services_settingsservice_tosettingsrow",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_saveusersettings",
+      "target": "services_settingsservice_getusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L161",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_saveusersettings",
+      "target": "services_settingsservice_tosettingsrow",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L165",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_saveusersettings",
+      "target": "services_settingsservice_tocamelsettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getsettingsdashboard",
+      "target": "services_settingsservice_getsettingsuserid",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L174",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getsettingsdashboard",
+      "target": "services_settingsservice_getstoredprofile",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_getsettingsdashboard",
+      "target": "services_settingsservice_getusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingsprofile",
+      "target": "services_settingsservice_getfirebaseprofile",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L254",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingspreferences",
+      "target": "services_settingsservice_getsettingsuserid",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L289",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingspreferences",
+      "target": "services_settingsservice_saveusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L290",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingspreferences",
+      "target": "services_settingsservice_normalizepreferenceinput",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L290",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingsai",
+      "target": "services_settingsservice_saveusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L307",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_updatesettingsai",
+      "target": "services_settingsservice_normalizeaiinput",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L307",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_testsettingsai",
+      "target": "services_settingsservice_getusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L326",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_invalidateuseraicacheifenabled",
+      "target": "services_settingsservice_getusersettings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L414",
+      "weight": 1.0
+    },
+    {
+      "source": "services_settingsservice_listpendingcandidatesforcontext",
+      "target": "services_settingsservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L430",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_settingsservice_asrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "services_settingsservice_tocamelsettings",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "services_settingsservice_tocamelsettings",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "services_settingsservice_tocamelsettings",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "services_settingsservice_tosettingsrow",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "services_settingsservice_tosettingsrow",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "services_settingsservice_getfirebaseprofile",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_settingsservice_getfirebaseprofile",
+      "callee": "auth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_settingsservice_getstoredprofile",
+      "callee": "findFirst",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "services_settingsservice_getstoredprofile",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "upsert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_settingsservice_getusersettings",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_settingsservice_saveusersettings",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "services_settingsservice_saveusersettings",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "services_settingsservice_saveusersettings",
+      "callee": "upsert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "services_settingsservice_saveusersettings",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L175"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "getCacheStats",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "isConfigured",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "isConfigured",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L194"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "getConfigurationError",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "getModelMap",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsettingsdashboard",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L204"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "updateUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L215"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "auth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L215"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L220"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "findFirst",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L236"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsprofile",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L253"
+    },
+    {
+      "caller_nid": "services_settingsservice_normalizepreferenceinput",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L275"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingspreferences",
+      "callee": "updateMany",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L294"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingspreferences",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L296"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingspreferences",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L299"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsai",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L308"
+    },
+    {
+      "caller_nid": "services_settingsservice_updatesettingsai",
+      "callee": "clearChatHistory",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L310"
+    },
+    {
+      "caller_nid": "services_settingsservice_refreshsettingsai",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L316"
+    },
+    {
+      "caller_nid": "services_settingsservice_refreshsettingsai",
+      "callee": "import",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L317"
+    },
+    {
+      "caller_nid": "services_settingsservice_refreshsettingsai",
+      "callee": "getFinancialSummary",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L318"
+    },
+    {
+      "caller_nid": "services_settingsservice_refreshsettingsai",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L320"
+    },
+    {
+      "caller_nid": "services_settingsservice_testsettingsai",
+      "callee": "isConfigured",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L336"
+    },
+    {
+      "caller_nid": "services_settingsservice_testsettingsai",
+      "callee": "getConfigurationError",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L341"
+    },
+    {
+      "caller_nid": "services_settingsservice_testsettingsai",
+      "callee": "chatCompletion",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_settingsservice_testsettingsai",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L365"
+    },
+    {
+      "caller_nid": "services_settingsservice_requestpasswordreset",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L379"
+    },
+    {
+      "caller_nid": "services_settingsservice_requestpasswordreset",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L382"
+    },
+    {
+      "caller_nid": "services_settingsservice_requestpasswordreset",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L385"
+    },
+    {
+      "caller_nid": "services_settingsservice_requestpasswordreset",
+      "callee": "generatePasswordResetLink",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L390"
+    },
+    {
+      "caller_nid": "services_settingsservice_requestpasswordreset",
+      "callee": "auth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L390"
+    },
+    {
+      "caller_nid": "services_settingsservice_getsessionmetadata",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L407"
+    },
+    {
+      "caller_nid": "services_settingsservice_invalidateuseraicacheifenabled",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L416"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "services_settingsservice_listpendingcandidatesforcontext",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\settingsService.ts",
+      "source_location": "L421"
+    }
+  ]
+}

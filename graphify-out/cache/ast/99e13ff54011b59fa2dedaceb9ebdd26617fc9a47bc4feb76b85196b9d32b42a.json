@@ -1,0 +1,1017 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "label": "popup.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "extension_chrome_popup_showview",
+      "label": "showView()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L73"
+    },
+    {
+      "id": "extension_chrome_popup_tryautologinfromwebsite",
+      "label": "tryAutoLoginFromWebsite()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L99"
+    },
+    {
+      "id": "extension_chrome_popup_checkauthandshowview",
+      "label": "checkAuthAndShowView()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L131"
+    },
+    {
+      "id": "extension_chrome_popup_injectsyncflagtowebsite",
+      "label": "injectSyncFlagToWebsite()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L222"
+    },
+    {
+      "id": "extension_chrome_popup_loadsettings",
+      "label": "loadSettings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L404"
+    },
+    {
+      "id": "extension_chrome_popup_savetransaction",
+      "label": "saveTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L447"
+    },
+    {
+      "id": "extension_chrome_popup_loadstats",
+      "label": "loadStats()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L490"
+    },
+    {
+      "id": "extension_chrome_popup_loadrecenttransactions",
+      "label": "loadRecentTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L521"
+    },
+    {
+      "id": "extension_chrome_popup_loadcategories",
+      "label": "loadCategories()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L546"
+    },
+    {
+      "id": "extension_chrome_popup_checkbudgetalerts",
+      "label": "checkBudgetAlerts()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L583"
+    },
+    {
+      "id": "extension_chrome_popup_rendertransactions",
+      "label": "renderTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L664"
+    },
+    {
+      "id": "extension_chrome_popup_rendercategories",
+      "label": "renderCategories()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L689"
+    },
+    {
+      "id": "extension_chrome_popup_showerror",
+      "label": "showError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L731"
+    },
+    {
+      "id": "extension_chrome_popup_showactionfeedback",
+      "label": "showActionFeedback()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L736"
+    },
+    {
+      "id": "extension_chrome_popup_formatdate",
+      "label": "formatDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L749"
+    },
+    {
+      "id": "extension_chrome_popup_getcategoryicon",
+      "label": "getCategoryIcon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L760"
+    },
+    {
+      "id": "extension_chrome_popup_getcategoryfromstore",
+      "label": "getCategoryFromStore()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L772"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_showview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_tryautologinfromwebsite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_checkauthandshowview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_injectsyncflagtowebsite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L222",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_loadsettings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L404",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_savetransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L447",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_loadstats",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L490",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_loadrecenttransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L521",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_loadcategories",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L546",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_checkbudgetalerts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L583",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_rendertransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L664",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_rendercategories",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L689",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_showerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L731",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_showactionfeedback",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L736",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_formatdate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L749",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_getcategoryicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L760",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_chrome_popup_js",
+      "target": "extension_chrome_popup_getcategoryfromstore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L772",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_tryautologinfromwebsite",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_showview",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_loadstats",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_loadrecenttransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_loadcategories",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_checkauthandshowview",
+      "target": "extension_chrome_popup_checkbudgetalerts",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_loadrecenttransactions",
+      "target": "extension_chrome_popup_rendertransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L539",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_chrome_popup_loadcategories",
+      "target": "extension_chrome_popup_rendercategories",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L576",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "query",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_tryautologinfromwebsite",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L122"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkauthandshowview",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkauthandshowview",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "query",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "executeScript",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L267"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_injectsyncflagtowebsite",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L271"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadsettings",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L405"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadsettings",
+      "callee": "add",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L414"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L448"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L454"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L462"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L469"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L469"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L474"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L479"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L481"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_savetransaction",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L487"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L492"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L496"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L497"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L499"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L500"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L500"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L510"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L511"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L512"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadstats",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L517"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadrecenttransactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L523"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadrecenttransactions",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L527"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadrecenttransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L538"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadrecenttransactions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L542"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L548"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L553"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L555"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L556"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L556"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L566"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L570"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_loadcategories",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L579"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L585"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L586"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L594"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L606"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L614"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L616"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L617"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L617"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L628"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L630"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L642"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "getElementById",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L649"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_checkbudgetalerts",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L655"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendertransactions",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L677"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendertransactions",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L677"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendercategories",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L692"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendercategories",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L692"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendercategories",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L692"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendercategories",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L710"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_rendercategories",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L710"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_showactionfeedback",
+      "callee": "querySelector",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L737"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_showactionfeedback",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L743"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_formatdate",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L755"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_formatdate",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L756"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_formatdate",
+      "callee": "toLocaleDateString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L757"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L761"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L762"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L762"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L763"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L764"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L765"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L766"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L766"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L767"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L768"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L773"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L774"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L774"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L774"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L775"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L775"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L775"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L776"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L776"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L777"
+    },
+    {
+      "caller_nid": "extension_chrome_popup_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension-chrome\\popup.js",
+      "source_location": "L777"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "label": "featureExpansionApi.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L1"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_api",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": []
+}

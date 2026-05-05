@@ -1,0 +1,244 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "label": "TransactionDialog.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_transactiondialog_handlesave",
+      "label": "handleSave()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L56"
+    },
+    {
+      "id": "components_transactiondialog_handledelete",
+      "label": "handleDelete()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L72"
+    },
+    {
+      "id": "components_transactiondialog_getcategoryemoji",
+      "label": "getCategoryEmoji()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L85"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "date_fns",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_badge",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "components_transactiondialog_handlesave",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "components_transactiondialog_handledelete",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "components_transactiondialog_getcategoryemoji",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_transactiondialog_tsx",
+      "target": "components_transactiondialog_getcategoryemoji",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L332",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "onSave",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "onClose",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L64"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handlesave",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "onDelete",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "onClose",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L79"
+    },
+    {
+      "caller_nid": "components_transactiondialog_handledelete",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "components_transactiondialog_getcategoryemoji",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\TransactionDialog.tsx",
+      "source_location": "L86"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "label": "transactionController.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "controllers_transactioncontroller_getcanonicaluserid",
+      "label": "getCanonicalUserId()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "controllers_transactioncontroller_mapcreateinput",
+      "label": "mapCreateInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L17"
+    },
+    {
+      "id": "controllers_transactioncontroller_mapupdateinput",
+      "label": "mapUpdateInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L37"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_errorhandler_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_validators_schemas_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "controllers_transactioncontroller_getcanonicaluserid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "controllers_transactioncontroller_mapcreateinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller_ts",
+      "target": "controllers_transactioncontroller_mapupdateinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "controllers_transactioncontroller_mapcreateinput",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L18"
+    },
+    {
+      "caller_nid": "controllers_transactioncontroller_mapcreateinput",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L19"
+    },
+    {
+      "caller_nid": "controllers_transactioncontroller_mapcreateinput",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L23"
+    },
+    {
+      "caller_nid": "controllers_transactioncontroller_mapupdateinput",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "controllers_transactioncontroller_mapupdateinput",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\transactionController.ts",
+      "source_location": "L39"
+    }
+  ]
+}

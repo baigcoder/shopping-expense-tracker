@@ -1,0 +1,84 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "label": "featureExpansion.routes.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "routes_featureexpansion_routes_getuserid",
+      "label": "getUserId()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L19"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_errorhandler_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_validate_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_validators_schemas_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_featureexpansionservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_featureexpansion_routes_ts",
+      "target": "routes_featureexpansion_routes_getuserid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\featureExpansion.routes.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": []
+}

@@ -1,0 +1,534 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "label": "popup.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "vibetracker_chrome_popup_checkauthandshowview",
+      "label": "checkAuthAndShowView()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L156"
+    },
+    {
+      "id": "vibetracker_chrome_popup_showerror",
+      "label": "showError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L177"
+    },
+    {
+      "id": "vibetracker_chrome_popup_saveandsynctransaction",
+      "label": "saveAndSyncTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L182"
+    },
+    {
+      "id": "vibetracker_chrome_popup_loadstats",
+      "label": "loadStats()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L266"
+    },
+    {
+      "id": "vibetracker_chrome_popup_loadrecenttransactions",
+      "label": "loadRecentTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L301"
+    },
+    {
+      "id": "vibetracker_chrome_popup_rendertransactions",
+      "label": "renderTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L346"
+    },
+    {
+      "id": "vibetracker_chrome_popup_getcategoryicon",
+      "label": "getCategoryIcon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L368"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_checkauthandshowview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L156",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_showerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_saveandsynctransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_loadstats",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L266",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_loadrecenttransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L301",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_rendertransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L346",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_vibetracker_chrome_popup_js",
+      "target": "vibetracker_chrome_popup_getcategoryicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L368",
+      "weight": 1.0
+    },
+    {
+      "source": "vibetracker_chrome_popup_checkauthandshowview",
+      "target": "vibetracker_chrome_popup_loadstats",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "vibetracker_chrome_popup_checkauthandshowview",
+      "target": "vibetracker_chrome_popup_loadrecenttransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "vibetracker_chrome_popup_saveandsynctransaction",
+      "target": "vibetracker_chrome_popup_getcategoryicon",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "vibetracker_chrome_popup_loadrecenttransactions",
+      "target": "vibetracker_chrome_popup_rendertransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L340",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "vibetracker_chrome_popup_checkauthandshowview",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L193"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "unshift",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L204"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L207"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L218"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L224"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L233"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L240"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L249"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L254"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_saveandsynctransaction",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L261"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L268"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L288"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L293"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L294"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadstats",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L297"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L303"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L316"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L318"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L330"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L336"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L340"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_loadrecenttransactions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L342"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_rendertransactions",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L353"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L369"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L370"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L373"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L373"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L373"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L375"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L375"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L377"
+    },
+    {
+      "caller_nid": "vibetracker_chrome_popup_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\vibetracker-chrome\\popup.js",
+      "source_location": "L377"
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "label": "useOptimizedFetch.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "label": "useOptimizedFetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L25"
+    },
+    {
+      "id": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "label": "useDebouncedSearch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L141"
+    },
+    {
+      "id": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "label": "usePaginatedFetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L189"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "target": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "target": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useoptimizedfetch_ts",
+      "target": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L42"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useRef",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useRef",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_useoptimizedfetch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "debounce",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usedebouncedsearch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L193"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L194"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L199"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L231"
+    },
+    {
+      "caller_nid": "hooks_useoptimizedfetch_usepaginatedfetch",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useOptimizedFetch.ts",
+      "source_location": "L236"
+    }
+  ]
+}

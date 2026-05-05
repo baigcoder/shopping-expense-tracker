@@ -1,0 +1,149 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usemobile_ts",
+      "label": "useMobile.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "hooks_usemobile_usemobile",
+      "label": "useMobile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "hooks_usemobile_useismobile",
+      "label": "useIsMobile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L66"
+    },
+    {
+      "id": "hooks_usemobile_usehapticfeedback",
+      "label": "useHapticFeedback()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L83"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usemobile_ts",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usemobile_ts",
+      "target": "hooks_usemobile_usemobile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usemobile_ts",
+      "target": "hooks_usemobile_useismobile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usemobile_ts",
+      "target": "hooks_usemobile_usehapticfeedback",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L83",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "hooks_usemobile_usemobile",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usemobile",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L32"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usemobile",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "hooks_usemobile_useismobile",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "hooks_usemobile_useismobile",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "hooks_usemobile_usehapticfeedback",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useMobile.ts",
+      "source_location": "L94"
+    }
+  ]
+}

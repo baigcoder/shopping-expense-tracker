@@ -1,0 +1,452 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "label": "plaidService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_plaidservice_isplaidconfigured",
+      "label": "isPlaidConfigured()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "services_plaidservice_createlinktoken",
+      "label": "createLinkToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L51"
+    },
+    {
+      "id": "services_plaidservice_exchangepublictoken",
+      "label": "exchangePublicToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L72"
+    },
+    {
+      "id": "services_plaidservice_getlinkedaccounts",
+      "label": "getLinkedAccounts()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L90"
+    },
+    {
+      "id": "services_plaidservice_synctransactions",
+      "label": "syncTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L109"
+    },
+    {
+      "id": "services_plaidservice_importplaidtransactions",
+      "label": "importPlaidTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L126"
+    },
+    {
+      "id": "services_plaidservice_disconnectaccount",
+      "label": "disconnectAccount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L165"
+    },
+    {
+      "id": "services_plaidservice_refreshbalances",
+      "label": "refreshBalances()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L187"
+    },
+    {
+      "id": "services_plaidservice_gettotalbalance",
+      "label": "getTotalBalance()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L213"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_isplaidconfigured",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_createlinktoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_exchangepublictoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_getlinkedaccounts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_synctransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_importplaidtransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_disconnectaccount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L165",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_refreshbalances",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_plaidservice_ts",
+      "target": "services_plaidservice_gettotalbalance",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L213",
+      "weight": 1.0
+    },
+    {
+      "source": "services_plaidservice_refreshbalances",
+      "target": "services_plaidservice_getlinkedaccounts",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "services_plaidservice_gettotalbalance",
+      "target": "services_plaidservice_getlinkedaccounts",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L214",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_plaidservice_createlinktoken",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_plaidservice_createlinktoken",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "services_plaidservice_createlinktoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "services_plaidservice_createlinktoken",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L65"
+    },
+    {
+      "caller_nid": "services_plaidservice_exchangepublictoken",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_plaidservice_exchangepublictoken",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "services_plaidservice_exchangepublictoken",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "services_plaidservice_getlinkedaccounts",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_plaidservice_synctransactions",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "services_plaidservice_synctransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_plaidservice_synctransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "services_plaidservice_importplaidtransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "services_plaidservice_disconnectaccount",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_plaidservice_disconnectaccount",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_plaidservice_disconnectaccount",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_plaidservice_disconnectaccount",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_plaidservice_disconnectaccount",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L192"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L194"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "services_plaidservice_refreshbalances",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L207"
+    },
+    {
+      "caller_nid": "services_plaidservice_gettotalbalance",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\plaidService.ts",
+      "source_location": "L215"
+    }
+  ]
+}

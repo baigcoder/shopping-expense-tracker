@@ -1,0 +1,648 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "label": "DocumentImportModal.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_documentimportmodal_handlefileselect",
+      "label": "handleFileSelect()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L83"
+    },
+    {
+      "id": "components_documentimportmodal_processdocument",
+      "label": "processDocument()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L97"
+    },
+    {
+      "id": "components_documentimportmodal_toggletransaction",
+      "label": "toggleTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L199"
+    },
+    {
+      "id": "components_documentimportmodal_selectall",
+      "label": "selectAll()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L209"
+    },
+    {
+      "id": "components_documentimportmodal_deselectall",
+      "label": "deselectAll()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L216"
+    },
+    {
+      "id": "components_documentimportmodal_importtransactions",
+      "label": "importTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L223"
+    },
+    {
+      "id": "components_documentimportmodal_handleclose",
+      "label": "handleClose()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L270"
+    },
+    {
+      "id": "components_documentimportmodal_getfileicon",
+      "label": "getFileIcon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L279"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "react_dom",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_badge",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_handlefileselect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_processdocument",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_toggletransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_selectall",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_deselectall",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L216",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_importtransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L223",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_handleclose",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L270",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_documentimportmodal_tsx",
+      "target": "components_documentimportmodal_getfileicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L279",
+      "weight": 1.0
+    },
+    {
+      "source": "components_documentimportmodal_handlefileselect",
+      "target": "components_documentimportmodal_processdocument",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L94",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "pop",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L88"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "setFile",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handlefileselect",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setRawText",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setTransactions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setDetectedPeriod",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "indexOf",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setSelectedMonth",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setSelectedYear",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "info",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L137"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_processdocument",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_toggletransaction",
+      "callee": "indexOf",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L201"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_toggletransaction",
+      "callee": "setTransactions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_selectall",
+      "callee": "setTransactions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L211"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_deselectall",
+      "callee": "setTransactions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L218"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L224"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "warning",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "setImporting",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "padStart",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L233"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L233"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L235"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "createSession",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L248"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "endsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L250"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L250"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "commitSession",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L253"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L255"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L256"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_importtransactions",
+      "callee": "setImporting",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L266"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L271"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "setFile",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L272"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "setTransactions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "setRawText",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L275"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_handleclose",
+      "callee": "onClose",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L276"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_getfileicon",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L281"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_getfileicon",
+      "callee": "pop",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L281"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_getfileicon",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L281"
+    },
+    {
+      "caller_nid": "components_documentimportmodal_getfileicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\DocumentImportModal.tsx",
+      "source_location": "L282"
+    }
+  ]
+}

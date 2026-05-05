@@ -1,0 +1,123 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_config_js",
+      "label": "config.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "extension_config_get",
+      "label": "get()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L45"
+    },
+    {
+      "id": "extension_config_loadconfigfromstorage",
+      "label": "loadConfigFromStorage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L57"
+    },
+    {
+      "id": "extension_config_saveconfigtostorage",
+      "label": "saveConfigToStorage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L81"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_config_js",
+      "target": "extension_config_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_config_js",
+      "target": "extension_config_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_config_js",
+      "target": "extension_config_loadconfigfromstorage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_config_js",
+      "target": "extension_config_saveconfigtostorage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_config_loadconfigfromstorage",
+      "target": "extension_config_get",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L60",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "extension_config_get",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "extension_config_loadconfigfromstorage",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "extension_config_loadconfigfromstorage",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "extension_config_saveconfigtostorage",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "extension_config_saveconfigtostorage",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "extension_config_saveconfigtostorage",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\config.js",
+      "source_location": "L94"
+    }
+  ]
+}

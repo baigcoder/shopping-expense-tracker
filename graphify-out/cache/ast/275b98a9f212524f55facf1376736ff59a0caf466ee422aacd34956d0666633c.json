@@ -1,0 +1,100 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_errorboundary_tsx",
+      "label": "ErrorBoundary.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_errorboundary_constructor",
+      "label": "constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L18"
+    },
+    {
+      "id": "components_errorboundary_getderivedstatefromerror",
+      "label": "getDerivedStateFromError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "components_errorboundary_componentdidcatch",
+      "label": "componentDidCatch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L27"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_errorboundary_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_errorboundary_tsx",
+      "target": "components_errorboundary_constructor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_errorboundary_tsx",
+      "target": "components_errorboundary_getderivedstatefromerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_errorboundary_tsx",
+      "target": "components_errorboundary_componentdidcatch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L27",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_errorboundary_constructor",
+      "callee": "super",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L19"
+    },
+    {
+      "caller_nid": "components_errorboundary_componentdidcatch",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L28"
+    },
+    {
+      "caller_nid": "components_errorboundary_componentdidcatch",
+      "callee": "onError",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L32"
+    },
+    {
+      "caller_nid": "components_errorboundary_componentdidcatch",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ErrorBoundary.tsx",
+      "source_location": "L37"
+    }
+  ]
+}

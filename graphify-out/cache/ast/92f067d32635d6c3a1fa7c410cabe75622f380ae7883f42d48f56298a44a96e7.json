@@ -1,0 +1,299 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "label": "errors.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_errors_apperror",
+      "label": "AppError",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L57"
+    },
+    {
+      "id": "utils_errors_apperror_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "utils_errors_apperror_getusermessage",
+      "label": ".getUserMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L67"
+    },
+    {
+      "id": "utils_errors_validationerror",
+      "label": "ValidationError",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L72"
+    },
+    {
+      "id": "utils_errors_validationerror_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L73"
+    },
+    {
+      "id": "utils_errors_validationerror_getfirsterror",
+      "label": ".getFirstError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L81"
+    },
+    {
+      "id": "utils_errors_networkerror",
+      "label": "NetworkError",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L87"
+    },
+    {
+      "id": "utils_errors_networkerror_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L88"
+    },
+    {
+      "id": "utils_errors_parseerror",
+      "label": "parseError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L101"
+    },
+    {
+      "id": "utils_errors_isaxioserror",
+      "label": "isAxiosError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L159"
+    },
+    {
+      "id": "utils_errors_geterrormessage",
+      "label": "getErrorMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L174"
+    },
+    {
+      "id": "utils_errors_logerror",
+      "label": "logError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L182"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_apperror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_apperror",
+      "target": "utils_errors_apperror_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_apperror",
+      "target": "utils_errors_apperror_getusermessage",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_validationerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_validationerror",
+      "target": "utils_errors_validationerror_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_validationerror",
+      "target": "utils_errors_validationerror_getfirsterror",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_networkerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_networkerror",
+      "target": "utils_errors_networkerror_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_parseerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_isaxioserror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L159",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_geterrormessage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L174",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_errors_ts",
+      "target": "utils_errors_logerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_parseerror",
+      "target": "utils_errors_isaxioserror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_geterrormessage",
+      "target": "utils_errors_parseerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_geterrormessage",
+      "target": "utils_errors_apperror_getusermessage",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_errors_logerror",
+      "target": "utils_errors_parseerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L183",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "utils_errors_apperror_constructor",
+      "callee": "super",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "utils_errors_validationerror_constructor",
+      "callee": "super",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "utils_errors_validationerror_getfirsterror",
+      "callee": "values",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "utils_errors_networkerror_constructor",
+      "callee": "super",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "utils_errors_parseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "utils_errors_parseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "utils_errors_logerror",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "utils_errors_logerror",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\errors.ts",
+      "source_location": "L194"
+    }
+  ]
+}

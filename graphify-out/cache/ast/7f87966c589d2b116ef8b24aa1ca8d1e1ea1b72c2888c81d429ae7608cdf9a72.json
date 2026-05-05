@@ -1,0 +1,109 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "label": "useRealtimeTransactions.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "hooks_userealtimetransactions_userealtimetransactions",
+      "label": "useRealtimeTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L17"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "target": "canvas_confetti",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_userealtimetransactions_ts",
+      "target": "hooks_userealtimetransactions_userealtimetransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L18"
+    },
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L19"
+    },
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L20"
+    },
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useCallback",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "hooks_userealtimetransactions_userealtimetransactions",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useRealtimeTransactions.ts",
+      "source_location": "L64"
+    }
+  ]
+}

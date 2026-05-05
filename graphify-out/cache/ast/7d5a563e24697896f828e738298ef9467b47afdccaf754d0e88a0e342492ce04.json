@@ -1,0 +1,212 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "label": "AvatarUploadModal.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_avataruploadmodal_onfilechange",
+      "label": "onFileChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "components_avataruploadmodal_handlesave",
+      "label": "handleSave()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L38"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "react_easy_crop",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasestorageservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_genztoast",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "components_avataruploadmodal_onfilechange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_avataruploadmodal_tsx",
+      "target": "components_avataruploadmodal_handlesave",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L38",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_avataruploadmodal_onfilechange",
+      "callee": "addEventListener",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_onfilechange",
+      "callee": "readAsDataURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L34"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "setUploading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "getCroppedImg",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "uploadAvatar",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "updateUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "onUploadSuccess",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "onClose",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "components_avataruploadmodal_handlesave",
+      "callee": "setUploading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AvatarUploadModal.tsx",
+      "source_location": "L62"
+    }
+  ]
+}

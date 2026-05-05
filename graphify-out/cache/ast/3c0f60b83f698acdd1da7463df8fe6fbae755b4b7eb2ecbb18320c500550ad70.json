@@ -1,0 +1,659 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "label": "cardController.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "controllers_cardcontroller_getcards",
+      "label": "getCards()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "controllers_cardcontroller_getcardbyid",
+      "label": "getCardById()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "controllers_cardcontroller_createcard",
+      "label": "createCard()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L94"
+    },
+    {
+      "id": "controllers_cardcontroller_updatecard",
+      "label": "updateCard()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L156"
+    },
+    {
+      "id": "controllers_cardcontroller_deletecard",
+      "label": "deleteCard()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L225"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "controllers_cardcontroller_getcards",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "controllers_cardcontroller_getcardbyid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "controllers_cardcontroller_createcard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "controllers_cardcontroller_updatecard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L156",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_cardcontroller_ts",
+      "target": "controllers_cardcontroller_deletecard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L225",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L11"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L11"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L25"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L25"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L32"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcards",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_getcardbyid",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_createcard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L162"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L162"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L216"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L217"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_updatecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L217"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L231"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L231"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L244"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L252"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L257"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "controllers_cardcontroller_deletecard",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\cardController.ts",
+      "source_location": "L258"
+    }
+  ]
+}

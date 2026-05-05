@@ -1,0 +1,2012 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "label": "main.py",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "ai_server_main_transaction",
+      "label": "Transaction",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L70"
+    },
+    {
+      "id": "basemodel",
+      "label": "BaseModel",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "ai_server_main_parseddocument",
+      "label": "ParsedDocument",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L78"
+    },
+    {
+      "id": "ai_server_main_extract_tables_from_pdf",
+      "label": "extract_tables_from_pdf()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L85"
+    },
+    {
+      "id": "ai_server_main_is_valid_description",
+      "label": "is_valid_description()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L110"
+    },
+    {
+      "id": "ai_server_main_parse_table_transactions",
+      "label": "parse_table_transactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L176"
+    },
+    {
+      "id": "ai_server_main_extract_text_from_pdf",
+      "label": "extract_text_from_pdf()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L397"
+    },
+    {
+      "id": "ai_server_main_extract_text_from_csv",
+      "label": "extract_text_from_csv()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L464"
+    },
+    {
+      "id": "ai_server_main_parse_transactions_with_ai",
+      "label": "parse_transactions_with_ai()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L472"
+    },
+    {
+      "id": "ai_server_main_parse_transactions_regex",
+      "label": "parse_transactions_regex()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L539"
+    },
+    {
+      "id": "ai_server_main_root",
+      "label": "root()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L656"
+    },
+    {
+      "id": "ai_server_main_health",
+      "label": "health()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L661"
+    },
+    {
+      "id": "ai_server_main_parse_document",
+      "label": "parse_document()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L666"
+    },
+    {
+      "id": "ai_server_main_ttsrequest",
+      "label": "TTSRequest",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L750"
+    },
+    {
+      "id": "ai_server_main_list_voices",
+      "label": "list_voices()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L758"
+    },
+    {
+      "id": "ai_server_main_text_to_speech",
+      "label": "text_to_speech()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L773"
+    },
+    {
+      "id": "ai_server_main_tts_stream",
+      "label": "tts_stream()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L826"
+    },
+    {
+      "id": "ai_server_main_rationale_1",
+      "label": "AI Document Parser Server FastAPI server for extracting text and transactions f",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "ai_server_main_rationale_86",
+      "label": "Extract tables from PDF using pdfplumber     Best for structured bank statement",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L86"
+    },
+    {
+      "id": "ai_server_main_rationale_111",
+      "label": "Validate that a description is meaningful, not a fragment     Rejects: ': PM',",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L111"
+    },
+    {
+      "id": "ai_server_main_rationale_177",
+      "label": "Enhanced transaction parsing from extracted table rows     - Properly extracts",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L177"
+    },
+    {
+      "id": "ai_server_main_rationale_398",
+      "label": "Extract text AND tables from PDF - supports multiple pages     Returns: (text,",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L398"
+    },
+    {
+      "id": "ai_server_main_rationale_465",
+      "label": "Extract text from CSV file",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L465"
+    },
+    {
+      "id": "ai_server_main_rationale_473",
+      "label": "Use Groq AI to extract transactions from text",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L473"
+    },
+    {
+      "id": "ai_server_main_rationale_540",
+      "label": "Improved regex-based transaction parsing     Extracts: name, date, amount, send",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L540"
+    },
+    {
+      "id": "ai_server_main_rationale_667",
+      "label": "Parse a document (PDF, image, or CSV) and extract transactions",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L667"
+    },
+    {
+      "id": "ai_server_main_rationale_759",
+      "label": "List available TTS voices",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L759"
+    },
+    {
+      "id": "ai_server_main_rationale_774",
+      "label": "Convert text to speech using Microsoft's FREE neural voices     Returns MP3 aud",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L774"
+    },
+    {
+      "id": "ai_server_main_rationale_827",
+      "label": "Stream TTS audio (for direct <audio> src)",
+      "file_type": "rationale",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L827"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "os",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "re",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "json",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "asyncio",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "tempfile",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "datetime",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "typing",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "fastapi",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "fastapi_middleware_cors",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "fastapi_responses",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "pydantic",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "io",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "pdfplumber",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "fitz",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "edge_tts",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "groq",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_transaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_transaction",
+      "target": "basemodel",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_parseddocument",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parseddocument",
+      "target": "basemodel",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_extract_tables_from_pdf",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_is_valid_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_parse_table_transactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_extract_text_from_pdf",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L397",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_extract_text_from_csv",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L464",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_parse_transactions_with_ai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L472",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_parse_transactions_regex",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L539",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_root",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L656",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_health",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L661",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_parse_document",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L666",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_ttsrequest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L750",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_ttsrequest",
+      "target": "basemodel",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L750",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_list_voices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L758",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_text_to_speech",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L773",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "ai_server_main_tts_stream",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L826",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "target": "uvicorn",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L843",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_table_transactions",
+      "target": "ai_server_main_is_valid_description",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L352",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_extract_text_from_pdf",
+      "target": "ai_server_main_extract_tables_from_pdf",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L407",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_extract_text_from_pdf",
+      "target": "ai_server_main_parse_table_transactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L409",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_transactions_with_ai",
+      "target": "ai_server_main_parse_transactions_regex",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L489",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_document",
+      "target": "ai_server_main_extract_text_from_pdf",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L687",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_document",
+      "target": "ai_server_main_extract_text_from_csv",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L690",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_document",
+      "target": "ai_server_main_parse_transactions_with_ai",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L711",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_parse_document",
+      "target": "ai_server_main_parseddocument",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L715",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_1",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_ai_server_main_py",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_86",
+      "target": "ai_server_main_extract_tables_from_pdf",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_111",
+      "target": "ai_server_main_is_valid_description",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_177",
+      "target": "ai_server_main_parse_table_transactions",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_398",
+      "target": "ai_server_main_extract_text_from_pdf",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L398",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_465",
+      "target": "ai_server_main_extract_text_from_csv",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L465",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_473",
+      "target": "ai_server_main_parse_transactions_with_ai",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L473",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_540",
+      "target": "ai_server_main_parse_transactions_regex",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L540",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_667",
+      "target": "ai_server_main_parse_document",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L667",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_759",
+      "target": "ai_server_main_list_voices",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L759",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_774",
+      "target": "ai_server_main_text_to_speech",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L774",
+      "weight": 1.0
+    },
+    {
+      "source": "ai_server_main_rationale_827",
+      "target": "ai_server_main_tts_stream",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L827",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "open",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L96"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "enumerate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "extract_tables",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "extend",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_tables_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "search",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L130"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "findall",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L167"
+    },
+    {
+      "caller_nid": "ai_server_main_is_valid_description",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "set",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "isinstance",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L243"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L243"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "str",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L243"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "enumerate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "str",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L255"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "isinstance",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L261"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "str",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L266"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L266"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L271"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L275"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "find_date_in_row",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "enumerate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L283"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "is_amount",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L284"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L286"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "is_text_cell",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L289"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L293"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L294"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "extend",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L325"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L327"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L334"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L335"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L343"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L344"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L344"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L349"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L354"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L357"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "add",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L365"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L368"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L370"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L378"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L382"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L385"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L388"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L389"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L393"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_table_transactions",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L393"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L411"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L411"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "open",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L416"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L417"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L418"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "enumerate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L420"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "get_text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L421"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L422"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L426"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L426"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "close",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L428"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L430"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L433"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "open",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L438"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L439"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "enumerate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L440"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "extract_text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L441"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L447"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L450"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "str",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L450"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L453"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_pdf",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L458"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_csv",
+      "callee": "decode",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L467"
+    },
+    {
+      "caller_nid": "ai_server_main_extract_text_from_csv",
+      "callee": "decode",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L469"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "getenv",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L476"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L479"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "dirname",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L479"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "exists",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L480"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "open",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L481"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "startswith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L483"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L484"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L484"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "Groq",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L492"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L517"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "search",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L527"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "loads",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L529"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "group",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L529"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_with_ai",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L535"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "set",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L545"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L547"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L550"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L551"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L557"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L557"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "findall",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L562"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "float",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L574"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L574"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L576"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L584"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L584"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "search",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L587"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "group",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L591"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L597"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L599"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L602"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L603"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L603"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "sub",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L604"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L607"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "search",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L607"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L619"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L620"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L622"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "add",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L629"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L633"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L634"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L636"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L638"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "any",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L640"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "append",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L643"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L651"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_transactions_regex",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L651"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L671"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L673"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "read",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L674"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "NamedTemporaryFile",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L677"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "splitext",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L677"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "write",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L678"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "endswith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L686"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L688"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L688"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L688"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "endswith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L689"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "endswith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L691"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L693"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L698"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L700"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L701"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L706"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "len",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L706"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L712"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L713"
+    },
+    {
+      "caller_nid": "ai_server_main_parse_document",
+      "callee": "unlink",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L725"
+    },
+    {
+      "caller_nid": "ai_server_main_list_voices",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L765"
+    },
+    {
+      "caller_nid": "ai_server_main_list_voices",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L765"
+    },
+    {
+      "caller_nid": "ai_server_main_list_voices",
+      "callee": "items",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L766"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L779"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L785"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L785"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "strip",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L790"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L791"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L793"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "Communicate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L797"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "BytesIO",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L805"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "stream",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L806"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "write",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L808"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "seek",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L810"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "StreamingResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L812"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "print",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L821"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L822"
+    },
+    {
+      "caller_nid": "ai_server_main_text_to_speech",
+      "callee": "str",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L822"
+    },
+    {
+      "caller_nid": "ai_server_main_tts_stream",
+      "callee": "HTTPException",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L829"
+    },
+    {
+      "caller_nid": "ai_server_main_tts_stream",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L831"
+    },
+    {
+      "caller_nid": "ai_server_main_tts_stream",
+      "callee": "lower",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L831"
+    },
+    {
+      "caller_nid": "ai_server_main_tts_stream",
+      "callee": "StreamingResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L839"
+    },
+    {
+      "caller_nid": "ai_server_main_tts_stream",
+      "callee": "generate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\ai-server\\main.py",
+      "source_location": "L839"
+    }
+  ]
+}

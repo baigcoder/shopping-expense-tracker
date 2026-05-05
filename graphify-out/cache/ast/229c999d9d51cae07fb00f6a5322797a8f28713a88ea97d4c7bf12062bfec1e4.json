@@ -1,0 +1,1314 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "label": "parallelUniverseService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice",
+      "label": "ParallelUniverseService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L64"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_getalluniverses",
+      "label": ".getAllUniverses()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L70"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "label": ".getUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L89"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "label": ".perfectBudgetUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L119"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "label": ".noImpulseUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L194"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "label": ".investorUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L262"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "label": ".subscriptionFreeUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L321"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "label": ".saverUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L391"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "label": ".frugalUniverse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L449"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "label": ".groupByMonth()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L502"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "label": ".formatMonth()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L511"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "label": ".getTotalIncome()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L517"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "label": ".isImpulsePurchase()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L523"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "label": ".calculateInvestmentGrowth()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L549"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "label": ".generateInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L555"
+    },
+    {
+      "id": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "label": ".generateActionItems()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L586"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_budgetservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice_ts",
+      "target": "services_paralleluniverseservice_paralleluniverseservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_getalluniverses",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L262",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L321",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L391",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L449",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L502",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L511",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L517",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L523",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L549",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L555",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L586",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L179",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L196",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L238",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L247",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L256",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L257",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L271",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L315",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L316",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L340",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L343",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L368",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L403",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L425",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L443",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L444",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L456",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L476",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L485",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L494",
+      "weight": 1.0
+    },
+    {
+      "source": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "target": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L495",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getalluniverses",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getalluniverses",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getalluniverses",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_getuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L132"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L132"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L132"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_perfectbudgetuniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L190"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L203"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_noimpulseuniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L266"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L267"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L277"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L277"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L277"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_investoruniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L317"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L326"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L329"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L329"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L362"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L378"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L379"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_subscriptionfreeuniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L387"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L392"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L393"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L395"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L396"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L406"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L406"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L406"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L425"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L428"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L436"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L437"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_saveruniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L445"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L450"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L451"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L479"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_frugaluniverse",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L496"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_groupbymonth",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L504"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L512"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L513"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L513"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_formatmonth",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L514"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L518"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_gettotalincome",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L518"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L524"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L525"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "some",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L528"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L530"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "some",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L534"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "getDay",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L539"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L540"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_isimpulsepurchase",
+      "callee": "some",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L541"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L552"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_calculateinvestmentgrowth",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L552"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L557"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L560"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L560"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L561"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L566"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L569"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L572"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L576"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L578"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L590"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L590"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L595"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L596"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L599"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L600"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L601"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L604"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L605"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L608"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L609"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L612"
+    },
+    {
+      "caller_nid": "services_paralleluniverseservice_paralleluniverseservice_generateactionitems",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\parallelUniverseService.ts",
+      "source_location": "L613"
+    }
+  ]
+}

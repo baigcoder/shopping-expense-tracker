@@ -1,0 +1,770 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "label": "content-website.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "extension_content_website_hasalreadysyncedinsession",
+      "label": "hasAlreadySyncedInSession()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L33"
+    },
+    {
+      "id": "extension_content_website_cansync",
+      "label": "canSync()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L35"
+    },
+    {
+      "id": "extension_content_website_markassynced",
+      "label": "markAsSynced()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L42"
+    },
+    {
+      "id": "extension_content_website_generatemessageid",
+      "label": "generateMessageId()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48"
+    },
+    {
+      "id": "extension_content_website_sendtobackground",
+      "label": "sendToBackground()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L53"
+    },
+    {
+      "id": "extension_content_website_updateconnectionstatus",
+      "label": "updateConnectionStatus()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L100"
+    },
+    {
+      "id": "extension_content_website_handleconnectionerror",
+      "label": "handleConnectionError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L125"
+    },
+    {
+      "id": "extension_content_website_attemptreconnect",
+      "label": "attemptReconnect()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L132"
+    },
+    {
+      "id": "extension_content_website_processmessagequeue",
+      "label": "processMessageQueue()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L174"
+    },
+    {
+      "id": "extension_content_website_startheartbeat",
+      "label": "startHeartbeat()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L197"
+    },
+    {
+      "id": "extension_content_website_setextensionflag",
+      "label": "setExtensionFlag()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L217"
+    },
+    {
+      "id": "extension_content_website_syncsitevisitstolocalstorage",
+      "label": "syncSiteVisitsToLocalStorage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L297"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_hasalreadysyncedinsession",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_cansync",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_markassynced",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_generatemessageid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_sendtobackground",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_updateconnectionstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_handleconnectionerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_attemptreconnect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_processmessagequeue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L174",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_startheartbeat",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_setextensionflag",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L217",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_content_website_js",
+      "target": "extension_content_website_syncsitevisitstolocalstorage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L297",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_cansync",
+      "target": "extension_content_website_hasalreadysyncedinsession",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_sendtobackground",
+      "target": "extension_content_website_generatemessageid",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_sendtobackground",
+      "target": "extension_content_website_updateconnectionstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_sendtobackground",
+      "target": "extension_content_website_handleconnectionerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_handleconnectionerror",
+      "target": "extension_content_website_updateconnectionstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L128",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_handleconnectionerror",
+      "target": "extension_content_website_attemptreconnect",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_attemptreconnect",
+      "target": "extension_content_website_updateconnectionstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_attemptreconnect",
+      "target": "extension_content_website_processmessagequeue",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_setextensionflag",
+      "target": "extension_content_website_hasalreadysyncedinsession",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L254",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_setextensionflag",
+      "target": "extension_content_website_markassynced",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_setextensionflag",
+      "target": "extension_content_website_updateconnectionstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L266",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_content_website_setextensionflag",
+      "target": "extension_content_website_handleconnectionerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L284",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "extension_content_website_hasalreadysyncedinsession",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "extension_content_website_cansync",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "extension_content_website_cansync",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "extension_content_website_cansync",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "extension_content_website_markassynced",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "extension_content_website_markassynced",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "extension_content_website_markassynced",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "extension_content_website_markassynced",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "extension_content_website_generatemessageid",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "extension_content_website_generatemessageid",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "extension_content_website_generatemessageid",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "extension_content_website_generatemessageid",
+      "callee": "random",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "extension_content_website_sendtobackground",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "extension_content_website_updateconnectionstatus",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "extension_content_website_updateconnectionstatus",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "extension_content_website_updateconnectionstatus",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "extension_content_website_updateconnectionstatus",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "extension_content_website_updateconnectionstatus",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "random",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L154"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L154"
+    },
+    {
+      "caller_nid": "extension_content_website_attemptreconnect",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "extension_content_website_processmessagequeue",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L177"
+    },
+    {
+      "caller_nid": "extension_content_website_processmessagequeue",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "extension_content_website_processmessagequeue",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "extension_content_website_processmessagequeue",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "extension_content_website_startheartbeat",
+      "callee": "setInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "getManifest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L221"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L222"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L233"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L236"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L242"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L248"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L248"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L251"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L255"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L256"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L257"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L270"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L270"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "extension_content_website_setextensionflag",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "extension_content_website_syncsitevisitstolocalstorage",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L299"
+    },
+    {
+      "caller_nid": "extension_content_website_syncsitevisitstolocalstorage",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "extension_content_website_syncsitevisitstolocalstorage",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L301"
+    },
+    {
+      "caller_nid": "extension_content_website_syncsitevisitstolocalstorage",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\content-website.js",
+      "source_location": "L301"
+    }
+  ]
+}

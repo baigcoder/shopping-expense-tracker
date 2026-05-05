@@ -1,0 +1,384 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "middleware_auth_torequestuser",
+      "label": "toRequestUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "middleware_auth_tofallbackrequestuser",
+      "label": "toFallbackRequestUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L22"
+    },
+    {
+      "id": "middleware_auth_shouldsyncauthdatabase",
+      "label": "shouldSyncAuthDatabase()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L30"
+    },
+    {
+      "id": "middleware_auth_logauthdatabaseerror",
+      "label": "logAuthDatabaseError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "middleware_auth_findorcreateappuser",
+      "label": "findOrCreateAppUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "middleware_auth_authmiddleware",
+      "label": "authMiddleware()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L86"
+    },
+    {
+      "id": "middleware_auth_optionalauth",
+      "label": "optionalAuth()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L131"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_prisma",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_torequestuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_tofallbackrequestuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_shouldsyncauthdatabase",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_logauthdatabaseerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_findorcreateappuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_authmiddleware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "target": "middleware_auth_optionalauth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_authmiddleware",
+      "target": "middleware_auth_tofallbackrequestuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_authmiddleware",
+      "target": "middleware_auth_shouldsyncauthdatabase",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_authmiddleware",
+      "target": "middleware_auth_findorcreateappuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_authmiddleware",
+      "target": "middleware_auth_torequestuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_authmiddleware",
+      "target": "middleware_auth_logauthdatabaseerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_optionalauth",
+      "target": "middleware_auth_tofallbackrequestuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_optionalauth",
+      "target": "middleware_auth_shouldsyncauthdatabase",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_optionalauth",
+      "target": "middleware_auth_findorcreateappuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_optionalauth",
+      "target": "middleware_auth_torequestuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_auth_optionalauth",
+      "target": "middleware_auth_logauthdatabaseerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L150",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "middleware_auth_shouldsyncauthdatabase",
+      "callee": "some",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L34"
+    },
+    {
+      "caller_nid": "middleware_auth_logauthdatabaseerror",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L42"
+    },
+    {
+      "caller_nid": "middleware_auth_logauthdatabaseerror",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "middleware_auth_findorcreateappuser",
+      "callee": "findUnique",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "middleware_auth_findorcreateappuser",
+      "callee": "findUnique",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "middleware_auth_findorcreateappuser",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "middleware_auth_findorcreateappuser",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "verifyToken",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L122"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "middleware_auth_authmiddleware",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "middleware_auth_optionalauth",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "middleware_auth_optionalauth",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "middleware_auth_optionalauth",
+      "callee": "verifyToken",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "middleware_auth_optionalauth",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\auth.ts",
+      "source_location": "L158"
+    }
+  ]
+}

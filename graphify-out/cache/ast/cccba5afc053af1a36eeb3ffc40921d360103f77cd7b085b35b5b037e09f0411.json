@@ -1,0 +1,806 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "label": "reminderService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_reminderservice_requestnotificationpermission",
+      "label": "requestNotificationPermission()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L37"
+    },
+    {
+      "id": "services_reminderservice_sendpushnotification",
+      "label": "sendPushNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "services_reminderservice_getreminders",
+      "label": "getReminders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L67"
+    },
+    {
+      "id": "services_reminderservice_getremindersduesoon",
+      "label": "getRemindersDueSoon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L86"
+    },
+    {
+      "id": "services_reminderservice_getoverduereminders",
+      "label": "getOverdueReminders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L99"
+    },
+    {
+      "id": "services_reminderservice_createreminder",
+      "label": "createReminder()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L111"
+    },
+    {
+      "id": "services_reminderservice_updatereminder",
+      "label": "updateReminder()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L143"
+    },
+    {
+      "id": "services_reminderservice_markaspaid",
+      "label": "markAsPaid()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L163"
+    },
+    {
+      "id": "services_reminderservice_deletereminder",
+      "label": "deleteReminder()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L190"
+    },
+    {
+      "id": "services_reminderservice_checkandnotify",
+      "label": "checkAndNotify()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L205"
+    },
+    {
+      "id": "services_reminderservice_generatecalendarevent",
+      "label": "generateCalendarEvent()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L244"
+    },
+    {
+      "id": "services_reminderservice_downloadcalendarevent",
+      "label": "downloadCalendarEvent()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L271"
+    },
+    {
+      "id": "services_reminderservice_calculatenextduedate",
+      "label": "calculateNextDueDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L286"
+    },
+    {
+      "id": "services_reminderservice_formaticsdate",
+      "label": "formatICSDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L313"
+    },
+    {
+      "id": "services_reminderservice_startnotificationscheduler",
+      "label": "startNotificationScheduler()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L320"
+    },
+    {
+      "id": "services_reminderservice_stopnotificationscheduler",
+      "label": "stopNotificationScheduler()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L330"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_requestnotificationpermission",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_sendpushnotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_getreminders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_getremindersduesoon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_getoverduereminders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_createreminder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_updatereminder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_markaspaid",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_deletereminder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_checkandnotify",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_generatecalendarevent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L244",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_downloadcalendarevent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L271",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_calculatenextduedate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L286",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_formaticsdate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L313",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_startnotificationscheduler",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L320",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_reminderservice_ts",
+      "target": "services_reminderservice_stopnotificationscheduler",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L330",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_getremindersduesoon",
+      "target": "services_reminderservice_getreminders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_getoverduereminders",
+      "target": "services_reminderservice_getreminders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_markaspaid",
+      "target": "services_reminderservice_updatereminder",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_markaspaid",
+      "target": "services_reminderservice_calculatenextduedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_markaspaid",
+      "target": "services_reminderservice_createreminder",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L172",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_checkandnotify",
+      "target": "services_reminderservice_getreminders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L206",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_checkandnotify",
+      "target": "services_reminderservice_sendpushnotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L218",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_checkandnotify",
+      "target": "services_reminderservice_getoverduereminders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_generatecalendarevent",
+      "target": "services_reminderservice_formaticsdate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L246",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_downloadcalendarevent",
+      "target": "services_reminderservice_generatecalendarevent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L272",
+      "weight": 1.0
+    },
+    {
+      "source": "services_reminderservice_startnotificationscheduler",
+      "target": "services_reminderservice_checkandnotify",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L324",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_reminderservice_requestnotificationpermission",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "services_reminderservice_requestnotificationpermission",
+      "callee": "requestPermission",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_reminderservice_getreminders",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "services_reminderservice_getremindersduesoon",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "services_reminderservice_getremindersduesoon",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_reminderservice_getoverduereminders",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "services_reminderservice_createreminder",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "services_reminderservice_updatereminder",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L155"
+    },
+    {
+      "caller_nid": "services_reminderservice_deletereminder",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "services_reminderservice_deletereminder",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "services_reminderservice_deletereminder",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "services_reminderservice_deletereminder",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L213"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L216"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L216"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L216"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L221"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L235"
+    },
+    {
+      "caller_nid": "services_reminderservice_checkandnotify",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L235"
+    },
+    {
+      "caller_nid": "services_reminderservice_generatecalendarevent",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L247"
+    },
+    {
+      "caller_nid": "services_reminderservice_generatecalendarevent",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "createObjectURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "createElement",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L276"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L278"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "appendChild",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "click",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "removeChild",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L281"
+    },
+    {
+      "caller_nid": "services_reminderservice_downloadcalendarevent",
+      "callee": "revokeObjectURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L291"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L291"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L294"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L294"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L297"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L297"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "setFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L303"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L303"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "services_reminderservice_calculatenextduedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "services_reminderservice_formaticsdate",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L314"
+    },
+    {
+      "caller_nid": "services_reminderservice_formaticsdate",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L314"
+    },
+    {
+      "caller_nid": "services_reminderservice_formaticsdate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L314"
+    },
+    {
+      "caller_nid": "services_reminderservice_startnotificationscheduler",
+      "callee": "setInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L327"
+    },
+    {
+      "caller_nid": "services_reminderservice_stopnotificationscheduler",
+      "callee": "clearInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\reminderService.ts",
+      "source_location": "L332"
+    }
+  ]
+}

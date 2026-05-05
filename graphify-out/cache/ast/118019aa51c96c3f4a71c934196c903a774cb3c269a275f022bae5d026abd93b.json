@@ -1,0 +1,436 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "label": "PDFAnalyzer.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_pdfanalyzer_handledragover",
+      "label": "handleDragOver()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L34"
+    },
+    {
+      "id": "components_pdfanalyzer_handledragleave",
+      "label": "handleDragLeave()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L39"
+    },
+    {
+      "id": "components_pdfanalyzer_handledrop",
+      "label": "handleDrop()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L44"
+    },
+    {
+      "id": "components_pdfanalyzer_handlefileselect",
+      "label": "handleFileSelect()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L53"
+    },
+    {
+      "id": "components_pdfanalyzer_processfile",
+      "label": "processFile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L60"
+    },
+    {
+      "id": "components_pdfanalyzer_handlesavetoaccount",
+      "label": "handleSaveToAccount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L113"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_pdfanalyzerservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_badge",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_handledragover",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_handledragleave",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_handledrop",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_handlefileselect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_processfile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_pdfanalyzer_tsx",
+      "target": "components_pdfanalyzer_handlesavetoaccount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "components_pdfanalyzer_handledrop",
+      "target": "components_pdfanalyzer_processfile",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "components_pdfanalyzer_handlefileselect",
+      "target": "components_pdfanalyzer_processfile",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L56",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_pdfanalyzer_handledragover",
+      "callee": "preventDefault",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L35"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handledragover",
+      "callee": "setIsDragging",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L36"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handledragleave",
+      "callee": "preventDefault",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handledragleave",
+      "callee": "setIsDragging",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handledrop",
+      "callee": "preventDefault",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handledrop",
+      "callee": "setIsDragging",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "endsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setFileName",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setProgress",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "processBankStatementPDF",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "clearInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setProgress",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setResult",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "clearInterval",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L106"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_processfile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handlesavetoaccount",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handlesavetoaccount",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handlesavetoaccount",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "components_pdfanalyzer_handlesavetoaccount",
+      "callee": "onComplete",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\PDFAnalyzer.tsx",
+      "source_location": "L120"
+    }
+  ]
+}

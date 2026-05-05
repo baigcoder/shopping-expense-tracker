@@ -1,0 +1,290 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "label": "emailService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_emailservice_initializeemailtransporter",
+      "label": "initializeEmailTransporter()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "services_emailservice_generateotp",
+      "label": "generateOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L38"
+    },
+    {
+      "id": "services_emailservice_getotpexpiry",
+      "label": "getOTPExpiry()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "services_emailservice_sendotpemail",
+      "label": "sendOTPEmail()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "services_emailservice_sendresetotpemail",
+      "label": "sendResetOTPEmail()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L166"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "nodemailer",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "nodemailer",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "smtp_transport",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "services_emailservice_initializeemailtransporter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "services_emailservice_generateotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "services_emailservice_getotpexpiry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "services_emailservice_sendotpemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "target": "services_emailservice_sendresetotpemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L166",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_emailservice_initializeemailtransporter",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "services_emailservice_initializeemailtransporter",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L18"
+    },
+    {
+      "caller_nid": "services_emailservice_initializeemailtransporter",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L19"
+    },
+    {
+      "caller_nid": "services_emailservice_initializeemailtransporter",
+      "callee": "createTransport",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L23"
+    },
+    {
+      "caller_nid": "services_emailservice_initializeemailtransporter",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "services_emailservice_generateotp",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "services_emailservice_generateotp",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "services_emailservice_generateotp",
+      "callee": "random",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "services_emailservice_getotpexpiry",
+      "callee": "setMinutes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "services_emailservice_getotpexpiry",
+      "callee": "getMinutes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "services_emailservice_sendotpemail",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "services_emailservice_sendotpemail",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "services_emailservice_sendotpemail",
+      "callee": "sendMail",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "services_emailservice_sendotpemail",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "services_emailservice_sendotpemail",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L172"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "charAt",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L222"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "sendMail",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L244"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L252"
+    },
+    {
+      "caller_nid": "services_emailservice_sendresetotpemail",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\emailService.ts",
+      "source_location": "L255"
+    }
+  ]
+}

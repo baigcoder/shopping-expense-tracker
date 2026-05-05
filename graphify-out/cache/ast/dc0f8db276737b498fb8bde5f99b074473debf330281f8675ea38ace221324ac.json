@@ -1,0 +1,247 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "label": "UpcomingBills.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_upcomingbills_fetchupcoming",
+      "label": "fetchUpcoming()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L31"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_recurringservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_billservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_notificationservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_upcomingbills_tsx",
+      "target": "components_upcomingbills_fetchupcoming",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "getUpcoming",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "getUpcoming",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "setUpcomingItems",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "setTotalDue",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "components_upcomingbills_fetchupcoming",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\UpcomingBills.tsx",
+      "source_location": "L170"
+    }
+  ]
+}

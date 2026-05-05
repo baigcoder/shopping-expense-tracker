@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_vite_config_ts_timestamp_1766849515418_fcd384af09109_mjs",
+      "label": "vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "source_location": "L1"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_vite_config_ts_timestamp_1766849515418_fcd384af09109_mjs",
+      "target": "index_js",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_vite_config_ts_timestamp_1766849515418_fcd384af09109_mjs",
+      "target": "index_js",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_vite_config_ts_timestamp_1766849515418_fcd384af09109_mjs",
+      "target": "index_mjs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_vite_config_ts_timestamp_1766849515418_fcd384af09109_mjs",
+      "target": "path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\vite.config.ts.timestamp-1766849515418-fcd384af09109.mjs",
+      "source_location": "L5",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": []
+}

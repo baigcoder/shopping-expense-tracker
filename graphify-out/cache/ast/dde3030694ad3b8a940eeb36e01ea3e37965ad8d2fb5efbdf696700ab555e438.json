@@ -1,0 +1,520 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "label": "background-firefox.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "extension_background_firefox_handlemessage",
+      "label": "handleMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "extension_background_firefox_handlepurchasedetected",
+      "label": "handlePurchaseDetected()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L45"
+    },
+    {
+      "id": "extension_background_firefox_syncpendingtransactions",
+      "label": "syncPendingTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L119"
+    },
+    {
+      "id": "extension_background_firefox_shownotification",
+      "label": "showNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L177"
+    },
+    {
+      "id": "extension_background_firefox_getcategoryicon",
+      "label": "getCategoryIcon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L195"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "target": "extension_background_firefox_handlemessage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "target": "extension_background_firefox_handlepurchasedetected",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "target": "extension_background_firefox_syncpendingtransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "target": "extension_background_firefox_shownotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_background_firefox_js",
+      "target": "extension_background_firefox_getcategoryicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_handlemessage",
+      "target": "extension_background_firefox_handlepurchasedetected",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_handlemessage",
+      "target": "extension_background_firefox_shownotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_handlemessage",
+      "target": "extension_background_firefox_syncpendingtransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_handlepurchasedetected",
+      "target": "extension_background_firefox_getcategoryicon",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_handlepurchasedetected",
+      "target": "extension_background_firefox_shownotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "extension_background_firefox_syncpendingtransactions",
+      "target": "extension_background_firefox_shownotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L164",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "extension_background_firefox_handlemessage",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlemessage",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "unshift",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "extension_background_firefox_handlepurchasedetected",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "extension_background_firefox_syncpendingtransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L172"
+    },
+    {
+      "caller_nid": "extension_background_firefox_shownotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "extension_background_firefox_shownotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "extension_background_firefox_shownotification",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "extension_background_firefox_shownotification",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "extension_background_firefox_shownotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L189"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L199"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L199"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L201"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L201"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "extension_background_firefox_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\background-firefox.js",
+      "source_location": "L202"
+    }
+  ]
+}

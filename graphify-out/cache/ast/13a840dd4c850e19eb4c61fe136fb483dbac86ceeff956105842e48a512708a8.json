@@ -1,0 +1,1670 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "label": "transactionInboxService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_transactioninboxservice_asrows",
+      "label": "asRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L57"
+    },
+    {
+      "id": "services_transactioninboxservice_normalizedate",
+      "label": "normalizeDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "services_transactioninboxservice_normalizeamount",
+      "label": "normalizeAmount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "services_transactioninboxservice_compact",
+      "label": "compact()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L70"
+    },
+    {
+      "id": "services_transactioninboxservice_normalizehash",
+      "label": "normalizeHash()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L73"
+    },
+    {
+      "id": "services_transactioninboxservice_buildcandidatehash",
+      "label": "buildCandidateHash()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L79"
+    },
+    {
+      "id": "services_transactioninboxservice_rulescore",
+      "label": "ruleScore()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "services_transactioninboxservice_rulematches",
+      "label": "ruleMatches()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L102"
+    },
+    {
+      "id": "services_transactioninboxservice_listmerchantrules",
+      "label": "listMerchantRules()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L117"
+    },
+    {
+      "id": "services_transactioninboxservice_findmatchingrule",
+      "label": "findMatchingRule()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L129"
+    },
+    {
+      "id": "services_transactioninboxservice_findduplicatetransaction",
+      "label": "findDuplicateTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L142"
+    },
+    {
+      "id": "services_transactioninboxservice_createtransactioncandidate",
+      "label": "createTransactionCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L187"
+    },
+    {
+      "id": "services_transactioninboxservice_createdetectedcandidate",
+      "label": "createDetectedCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L244"
+    },
+    {
+      "id": "services_transactioninboxservice_listtransactioncandidates",
+      "label": "listTransactionCandidates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L263"
+    },
+    {
+      "id": "services_transactioninboxservice_getpendingcandidate",
+      "label": "getPendingCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L301"
+    },
+    {
+      "id": "services_transactioninboxservice_approvecandidate",
+      "label": "approveCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L313"
+    },
+    {
+      "id": "services_transactioninboxservice_rejectcandidate",
+      "label": "rejectCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L355"
+    },
+    {
+      "id": "services_transactioninboxservice_mergecandidate",
+      "label": "mergeCandidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L370"
+    },
+    {
+      "id": "services_transactioninboxservice_bulkcandidates",
+      "label": "bulkCandidates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L393"
+    },
+    {
+      "id": "services_transactioninboxservice_createmerchantrule",
+      "label": "createMerchantRule()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L424"
+    },
+    {
+      "id": "services_transactioninboxservice_updatemerchantrule",
+      "label": "updateMerchantRule()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L448"
+    },
+    {
+      "id": "services_transactioninboxservice_deletemerchantrule",
+      "label": "deleteMerchantRule()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L472"
+    },
+    {
+      "id": "services_transactioninboxservice_updateapprovedtransaction",
+      "label": "updateApprovedTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L483"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "crypto",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_validators_schemas_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_asrows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_normalizedate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_normalizeamount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_compact",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_normalizehash",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_buildcandidatehash",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_rulescore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_rulematches",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_listmerchantrules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_findmatchingrule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_findduplicatetransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_createtransactioncandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_createdetectedcandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L244",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_listtransactioncandidates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L263",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_getpendingcandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L301",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_approvecandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L313",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_rejectcandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L355",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_mergecandidate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L370",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_bulkcandidates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L393",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_createmerchantrule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L424",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_updatemerchantrule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L448",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_deletemerchantrule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L472",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactioninboxservice_ts",
+      "target": "services_transactioninboxservice_updateapprovedtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L483",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_listmerchantrules",
+      "target": "services_transactioninboxservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_findmatchingrule",
+      "target": "services_transactioninboxservice_listmerchantrules",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_findduplicatetransaction",
+      "target": "services_transactioninboxservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L158",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_normalizeamount",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_compact",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L193",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_findmatchingrule",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L196",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_normalizehash",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_buildcandidatehash",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createtransactioncandidate",
+      "target": "services_transactioninboxservice_findduplicatetransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L201",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createdetectedcandidate",
+      "target": "services_transactioninboxservice_compact",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L245",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_createdetectedcandidate",
+      "target": "services_transactioninboxservice_createtransactioncandidate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L249",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_listtransactioncandidates",
+      "target": "services_transactioninboxservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L277",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_listtransactioncandidates",
+      "target": "services_transactioninboxservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L291",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_approvecandidate",
+      "target": "services_transactioninboxservice_getpendingcandidate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L314",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_approvecandidate",
+      "target": "services_transactioninboxservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L325",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_bulkcandidates",
+      "target": "services_transactioninboxservice_approvecandidate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L397",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_bulkcandidates",
+      "target": "services_transactioninboxservice_rejectcandidate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L398",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactioninboxservice_bulkcandidates",
+      "target": "services_transactioninboxservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L403",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_transactioninboxservice_asrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "isNaN",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizeamount",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizeamount",
+      "callee": "isFinite",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizeamount",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_compact",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_compact",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizehash",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizehash",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_normalizehash",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "digest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "createHash",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_buildcandidatehash",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rulematches",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L113"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listmerchantrules",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listmerchantrules",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listmerchantrules",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listmerchantrules",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listmerchantrules",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findmatchingrule",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L130"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findmatchingrule",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findmatchingrule",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "ilike",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "lte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "gte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L179"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_findduplicatetransaction",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L192"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L193"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createtransactioncandidate",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L234"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L269"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L269"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L269"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L275"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "not",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L276"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "gte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L277"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "lte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L278"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "or",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L281"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "range",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L284"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L284"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_listtransactioncandidates",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L296"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_getpendingcandidate",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_getpendingcandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_getpendingcandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_getpendingcandidate",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_getpendingcandidate",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "getMoneyTransaction",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L317"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "createMoneyTransaction",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L323"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L343"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_approvecandidate",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L351"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L356"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L358"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_rejectcandidate",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L366"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "getMoneyTransaction",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L374"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L380"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_mergecandidate",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L389"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L397"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L398"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L400"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L413"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L416"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L416"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_bulkcandidates",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L420"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createmerchantrule",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L437"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createmerchantrule",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L437"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createmerchantrule",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L437"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createmerchantrule",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L437"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_createmerchantrule",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L444"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L449"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "maybeSingle",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L459"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updatemerchantrule",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L468"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_deletemerchantrule",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_deletemerchantrule",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_deletemerchantrule",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_deletemerchantrule",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_deletemerchantrule",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L480"
+    },
+    {
+      "caller_nid": "services_transactioninboxservice_updateapprovedtransaction",
+      "callee": "updateMoneyTransaction",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionInboxService.ts",
+      "source_location": "L484"
+    }
+  ]
+}

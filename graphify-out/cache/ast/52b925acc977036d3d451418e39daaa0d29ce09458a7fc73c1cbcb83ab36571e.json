@@ -1,0 +1,944 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "label": "SettingsPage.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "pages_settingspage_loadsettings",
+      "label": "loadSettings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L66"
+    },
+    {
+      "id": "pages_settingspage_savepreferences",
+      "label": "savePreferences()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L93"
+    },
+    {
+      "id": "pages_settingspage_saveai",
+      "label": "saveAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L118"
+    },
+    {
+      "id": "pages_settingspage_handleupdateprofile",
+      "label": "handleUpdateProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L135"
+    },
+    {
+      "id": "pages_settingspage_handlelogout",
+      "label": "handleLogout()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L157"
+    },
+    {
+      "id": "pages_settingspage_handlepasswordreset",
+      "label": "handlePasswordReset()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L168"
+    },
+    {
+      "id": "pages_settingspage_handlesessionrefresh",
+      "label": "handleSessionRefresh()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L178"
+    },
+    {
+      "id": "pages_settingspage_handledatareset",
+      "label": "handleDataReset()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L187"
+    },
+    {
+      "id": "pages_settingspage_handlerefreshai",
+      "label": "handleRefreshAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L204"
+    },
+    {
+      "id": "pages_settingspage_handleclearchat",
+      "label": "handleClearChat()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L216"
+    },
+    {
+      "id": "pages_settingspage_handletestai",
+      "label": "handleTestAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L225"
+    },
+    {
+      "id": "pages_settingspage_gotofeature",
+      "label": "goToFeature()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L237"
+    },
+    {
+      "id": "pages_settingspage_sectionheader",
+      "label": "SectionHeader()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L241"
+    },
+    {
+      "id": "pages_settingspage_togglerow",
+      "label": "ToggleRow()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L258"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_switch",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "react_router_dom",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usesound",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_settingsapi",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_loadsettings",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_savepreferences",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_saveai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L118",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handleupdateprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handlelogout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handlepasswordreset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handlesessionrefresh",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L178",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handledatareset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handlerefreshai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L204",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handleclearchat",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L216",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_handletestai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L225",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_gotofeature",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L237",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_sectionheader",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L241",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_settingspage_tsx",
+      "target": "pages_settingspage_togglerow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L258",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setDashboard",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setName",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setEmail",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setEnabled",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setVolume",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setCurrency",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setStoreCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setTheme",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setName",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setEmail",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L83"
+    },
+    {
+      "caller_nid": "pages_settingspage_loadsettings",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L96"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "updatePreferences",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setEnabled",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setVolume",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setCurrency",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setStoreCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setUser",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L105"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setTheme",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "pages_settingspage_savepreferences",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "updateAI",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "setPreferences",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "pages_settingspage_saveai",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L136"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "updateProfile",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "setUser",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "playSuccess",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleupdateprofile",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlelogout",
+      "callee": "logout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L159"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlelogout",
+      "callee": "info",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlelogout",
+      "callee": "navigate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlelogout",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlelogout",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlepasswordreset",
+      "callee": "requestPasswordReset",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlepasswordreset",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L171"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlepasswordreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlepasswordreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlesessionrefresh",
+      "callee": "getSessions",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlesessionrefresh",
+      "callee": "info",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlesessionrefresh",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "prompt",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "requestResetOtp",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L192"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "prompt",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L193"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "confirmReset",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "refreshAI",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L199"
+    },
+    {
+      "caller_nid": "pages_settingspage_handledatareset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlerefreshai",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L205"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlerefreshai",
+      "callee": "refreshAI",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L207"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlerefreshai",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlerefreshai",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "pages_settingspage_handlerefreshai",
+      "callee": "setIsSaving",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L212"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleclearchat",
+      "callee": "clearChatMemory",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L218"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleclearchat",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "pages_settingspage_handleclearchat",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L221"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "setAiTest",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "testAI",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L228"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "setAiTest",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L229"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "warning",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "setAiTest",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L232"
+    },
+    {
+      "caller_nid": "pages_settingspage_handletestai",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L233"
+    },
+    {
+      "caller_nid": "pages_settingspage_gotofeature",
+      "callee": "navigate",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SettingsPage.tsx",
+      "source_location": "L238"
+    }
+  ]
+}

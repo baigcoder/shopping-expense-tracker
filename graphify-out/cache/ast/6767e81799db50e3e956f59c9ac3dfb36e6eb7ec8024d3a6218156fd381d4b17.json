@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice_ts",
+      "label": "supabaseTransactionService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_supabasetransactionservice_invalidatetransactioncache",
+      "label": "invalidateTransactionCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L24"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_financialdataevents",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice_ts",
+      "target": "services_supabasetransactionservice_invalidatetransactioncache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L24",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_supabasetransactionservice_invalidatetransactioncache",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L26"
+    },
+    {
+      "caller_nid": "services_supabasetransactionservice_invalidatetransactioncache",
+      "callee": "clear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\supabaseTransactionService.ts",
+      "source_location": "L30"
+    }
+  ]
+}

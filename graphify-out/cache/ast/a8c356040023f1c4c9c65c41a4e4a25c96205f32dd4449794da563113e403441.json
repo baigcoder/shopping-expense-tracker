@@ -1,0 +1,155 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "label": "transactionController.test.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_transactioncontroller_test_constructor",
+      "label": "constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L72"
+    },
+    {
+      "id": "tests_transactioncontroller_test_createmockrequest",
+      "label": "createMockRequest()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L77"
+    },
+    {
+      "id": "tests_transactioncontroller_test_createmockresponse",
+      "label": "createMockResponse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L85"
+    },
+    {
+      "id": "tests_transactioncontroller_test_createmocknext",
+      "label": "createMockNext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L93"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "tests_transactioncontroller_test_constructor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "tests_transactioncontroller_test_createmockrequest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "tests_transactioncontroller_test_createmockresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "tests_transactioncontroller_test_createmocknext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_tests_transactioncontroller_test_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_transactioncontroller",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L96",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L88"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L88"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "tests_transactioncontroller_test_createmocknext",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\__tests__\\transactionController.test.ts",
+      "source_location": "L93"
+    }
+  ]
+}

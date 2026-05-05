@@ -1,0 +1,255 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_cloudflare_worker_js",
+      "label": "cloudflare-worker.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "label": "fetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L15"
+    },
+    {
+      "id": "shopping_expense_tracker_cloudflare_worker_getcacheduration",
+      "label": "getCacheDuration()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L115"
+    },
+    {
+      "id": "shopping_expense_tracker_cloudflare_worker_corsheaders",
+      "label": "corsHeaders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L125"
+    },
+    {
+      "id": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "label": "addCorsHeaders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L137"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_cloudflare_worker_js",
+      "target": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_cloudflare_worker_js",
+      "target": "shopping_expense_tracker_cloudflare_worker_getcacheduration",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_cloudflare_worker_js",
+      "target": "shopping_expense_tracker_cloudflare_worker_corsheaders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_cloudflare_worker_js",
+      "target": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "target": "shopping_expense_tracker_cloudflare_worker_corsheaders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "target": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "target": "shopping_expense_tracker_cloudflare_worker_getcacheduration",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "target": "shopping_expense_tracker_cloudflare_worker_corsheaders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L138",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L28"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "fromEntries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L65"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "clone",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "waitUntil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "put",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_fetch",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_getcacheduration",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L116"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_getcacheduration",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_corsheaders",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "shopping_expense_tracker_cloudflare_worker_addcorsheaders",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\cloudflare-worker.js",
+      "source_location": "L140"
+    }
+  ]
+}

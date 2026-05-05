@@ -1,0 +1,737 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "label": "transactionDomainService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_transactiondomainservice_asrows",
+      "label": "asRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "services_transactiondomainservice_tofiniteamount",
+      "label": "toFiniteAmount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "services_transactiondomainservice_normalizedate",
+      "label": "normalizeDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L54"
+    },
+    {
+      "id": "services_transactiondomainservice_compact",
+      "label": "compact()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "services_transactiondomainservice_totransactiontype",
+      "label": "toTransactionType()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "services_transactiondomainservice_normalizeidempotencykey",
+      "label": "normalizeIdempotencyKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L68"
+    },
+    {
+      "id": "services_transactiondomainservice_buildserverdetectedhash",
+      "label": "buildServerDetectedHash()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L74"
+    },
+    {
+      "id": "services_transactiondomainservice_withdetectedhashmarker",
+      "label": "withDetectedHashMarker()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L99"
+    },
+    {
+      "id": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "label": "findExistingDetectedTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L107"
+    },
+    {
+      "id": "services_transactiondomainservice_invalidateuserderiveddata",
+      "label": "invalidateUserDerivedData()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L125"
+    },
+    {
+      "id": "services_transactiondomainservice_listusertransactions",
+      "label": "listUserTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L129"
+    },
+    {
+      "id": "services_transactiondomainservice_createmoneytransaction",
+      "label": "createMoneyTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L153"
+    },
+    {
+      "id": "services_transactiondomainservice_createdetectedtransaction",
+      "label": "createDetectedTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L177"
+    },
+    {
+      "id": "services_transactiondomainservice_deletemoneytransaction",
+      "label": "deleteMoneyTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L229"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_validators_schemas_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "crypto",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_asrows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_tofiniteamount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_normalizedate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_compact",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_totransactiontype",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_normalizeidempotencykey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_buildserverdetectedhash",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_withdetectedhashmarker",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_invalidateuserderiveddata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_listusertransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_createmoneytransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L153",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_createdetectedtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_transactiondomainservice_ts",
+      "target": "services_transactiondomainservice_deletemoneytransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L229",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "target": "services_transactiondomainservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_listusertransactions",
+      "target": "services_transactiondomainservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createmoneytransaction",
+      "target": "services_transactiondomainservice_totransactiontype",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L159",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createmoneytransaction",
+      "target": "services_transactiondomainservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createmoneytransaction",
+      "target": "services_transactiondomainservice_invalidateuserderiveddata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_tofiniteamount",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_compact",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_normalizedate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_normalizeidempotencykey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_buildserverdetectedhash",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_createmoneytransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_createdetectedtransaction",
+      "target": "services_transactiondomainservice_withdetectedhashmarker",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L219",
+      "weight": 1.0
+    },
+    {
+      "source": "services_transactiondomainservice_deletemoneytransaction",
+      "target": "services_transactiondomainservice_invalidateuserderiveddata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L237",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_transactiondomainservice_asrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_tofiniteamount",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_tofiniteamount",
+      "callee": "isFinite",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizedate",
+      "callee": "isNaN",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizedate",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizedate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_compact",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_compact",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizeidempotencykey",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizeidempotencykey",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_normalizeidempotencykey",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "digest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "createHash",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_buildserverdetectedhash",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_withdetectedhashmarker",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_withdetectedhashmarker",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "ilike",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_findexistingdetectedtransaction",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_invalidateuserderiveddata",
+      "callee": "invalidateUserCache",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "gte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_listusertransactions",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_createmoneytransaction",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_deletemoneytransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_deletemoneytransaction",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_deletemoneytransaction",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "services_transactiondomainservice_deletemoneytransaction",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\transactionDomainService.ts",
+      "source_location": "L230"
+    }
+  ]
+}

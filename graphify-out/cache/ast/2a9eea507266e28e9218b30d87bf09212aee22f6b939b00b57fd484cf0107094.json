@@ -1,0 +1,607 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "label": "dashboardService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_dashboardservice_asrows",
+      "label": "asRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "services_dashboardservice_saferows",
+      "label": "safeRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "services_dashboardservice_safevalue",
+      "label": "safeValue()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L28"
+    },
+    {
+      "id": "services_dashboardservice_todatekey",
+      "label": "toDateKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L37"
+    },
+    {
+      "id": "services_dashboardservice_monthkey",
+      "label": "monthKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L38"
+    },
+    {
+      "id": "services_dashboardservice_normalizeamount",
+      "label": "normalizeAmount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "services_dashboardservice_merchantname",
+      "label": "merchantName()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L48"
+    },
+    {
+      "id": "services_dashboardservice_getdashboardsummary",
+      "label": "getDashboardSummary()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L51"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_featureexpansionservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_asrows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_saferows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_safevalue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_todatekey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_monthkey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_normalizeamount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_merchantname",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_dashboardservice_ts",
+      "target": "services_dashboardservice_getdashboardsummary",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_saferows",
+      "target": "services_dashboardservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_getdashboardsummary",
+      "target": "services_dashboardservice_monthkey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_getdashboardsummary",
+      "target": "services_dashboardservice_todatekey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_getdashboardsummary",
+      "target": "services_dashboardservice_saferows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_getdashboardsummary",
+      "target": "services_dashboardservice_safevalue",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "services_dashboardservice_getdashboardsummary",
+      "target": "services_dashboardservice_asrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L176",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_dashboardservice_asrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L10"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "services_dashboardservice_saferows",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L21"
+    },
+    {
+      "caller_nid": "services_dashboardservice_safevalue",
+      "callee": "getter",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_dashboardservice_safevalue",
+      "callee": "warn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L32"
+    },
+    {
+      "caller_nid": "services_dashboardservice_todatekey",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "services_dashboardservice_todatekey",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "services_dashboardservice_monthkey",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "services_dashboardservice_monthkey",
+      "callee": "padStart",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "services_dashboardservice_monthkey",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "services_dashboardservice_monthkey",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "services_dashboardservice_normalizeamount",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "services_dashboardservice_normalizeamount",
+      "callee": "isFinite",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "services_dashboardservice_normalizeamount",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "services_dashboardservice_merchantname",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "services_dashboardservice_merchantname",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "services_dashboardservice_merchantname",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L112"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L113"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L113"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "groupAmounts",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "groupAmounts",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L160"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L167"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L176"
+    },
+    {
+      "caller_nid": "services_dashboardservice_getdashboardsummary",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\dashboardService.ts",
+      "source_location": "L192"
+    }
+  ]
+}

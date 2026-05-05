@@ -1,0 +1,224 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "label": "sentry.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "config_sentry_initsentry",
+      "label": "initSentry()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "config_sentry_noopmiddleware",
+      "label": "noopMiddleware()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L42"
+    },
+    {
+      "id": "config_sentry_sentryrequesthandler",
+      "label": "sentryRequestHandler()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "config_sentry_sentrytracinghandler",
+      "label": "sentryTracingHandler()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "config_sentry_sentryerrorhandler",
+      "label": "sentryErrorHandler()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "config_sentry_captureerror",
+      "label": "captureError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L75"
+    },
+    {
+      "id": "config_sentry_setusercontext",
+      "label": "setUserContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L86"
+    },
+    {
+      "id": "config_sentry_clearusercontext",
+      "label": "clearUserContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L94"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "node",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_initsentry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_noopmiddleware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_sentryrequesthandler",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_sentrytracinghandler",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_sentryerrorhandler",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_captureerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_setusercontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_sentry_ts",
+      "target": "config_sentry_clearusercontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "config_sentry_initsentry",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L11"
+    },
+    {
+      "caller_nid": "config_sentry_initsentry",
+      "callee": "init",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "config_sentry_initsentry",
+      "callee": "setupExpressErrorHandler",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L36"
+    },
+    {
+      "caller_nid": "config_sentry_initsentry",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "config_sentry_noopmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L42"
+    },
+    {
+      "caller_nid": "config_sentry_captureerror",
+      "callee": "captureException",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "config_sentry_captureerror",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "config_sentry_setusercontext",
+      "callee": "setUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "config_sentry_clearusercontext",
+      "callee": "setUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\config\\sentry.ts",
+      "source_location": "L95"
+    }
+  ]
+}

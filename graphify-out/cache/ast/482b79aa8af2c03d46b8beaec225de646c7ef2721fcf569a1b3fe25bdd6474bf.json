@@ -1,0 +1,196 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice_ts",
+      "label": "subscriptionService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_subscriptionservice_calculatetrialinfo",
+      "label": "calculateTrialInfo()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L328"
+    },
+    {
+      "id": "services_subscriptionservice_calculatenextpaymentdate",
+      "label": "calculateNextPaymentDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L361"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice_ts",
+      "target": "services_subscriptionservice_calculatetrialinfo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L328",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice_ts",
+      "target": "services_subscriptionservice_calculatenextpaymentdate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L361",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L339"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L342"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L345"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L350"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L350"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatetrialinfo",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L354"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L366"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L366"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L369"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L369"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "setFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "services_subscriptionservice_calculatenextpaymentdate",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\subscriptionService.ts",
+      "source_location": "L376"
+    }
+  ]
+}

@@ -1,0 +1,798 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aidatacacheservice_ts",
+      "label": "aiDataCacheService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice",
+      "label": "AIDataCacheService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "label": ".getCachedData()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_refreshcache",
+      "label": ".refreshCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L74"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_invalidate",
+      "label": ".invalidate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L83"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_subscribe",
+      "label": ".subscribe()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L92"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_notifylisteners",
+      "label": ".notifyListeners()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "label": ".setupRealtime()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L104"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_cleanup",
+      "label": ".cleanup()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L162"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "label": ".loadFreshData()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L177"
+    },
+    {
+      "id": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "label": ".buildContextString()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L295"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aidatacacheservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aidatacacheservice_ts",
+      "target": "supabase_js",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aidatacacheservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_financialdataevents",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aidatacacheservice_ts",
+      "target": "services_aidatacacheservice_aidatacacheservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_refreshcache",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_invalidate",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_subscribe",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_notifylisteners",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_cleanup",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice",
+      "target": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L295",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "target": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice_refreshcache",
+      "target": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice_refreshcache",
+      "target": "services_aidatacacheservice_aidatacacheservice_notifylisteners",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "target": "services_aidatacacheservice_aidatacacheservice_subscribe",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L130",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_getcacheddata",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_refreshcache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_subscribe",
+      "callee": "add",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_notifylisteners",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "callee": "unsubscribe",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "callee": "localCleanup",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "callee": "channel",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_setuprealtime",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_cleanup",
+      "callee": "unsubscribe",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_cleanup",
+      "callee": "localCleanup",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L179"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L185"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L185"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L202"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "lte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "gte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L223"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L224"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L237"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L238"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L239"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L242"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L251"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L251"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L256"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L257"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L262"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L267"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_loadfreshdata",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L283"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L299"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L299"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L299"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L304"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L304"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L311"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L311"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L319"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L319"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L319"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L326"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L326"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L326"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L332"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L332"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L332"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L332"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L332"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L344"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L345"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L349"
+    },
+    {
+      "caller_nid": "services_aidatacacheservice_aidatacacheservice_buildcontextstring",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiDataCacheService.ts",
+      "source_location": "L349"
+    }
+  ]
+}

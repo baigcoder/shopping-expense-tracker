@@ -1,0 +1,726 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "label": "plaid.controller.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "controllers_plaid_controller_createlinktoken",
+      "label": "createLinkToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L26"
+    },
+    {
+      "id": "controllers_plaid_controller_exchangepublictoken",
+      "label": "exchangePublicToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "controllers_plaid_controller_getlinkedaccounts",
+      "label": "getLinkedAccounts()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L118"
+    },
+    {
+      "id": "controllers_plaid_controller_synctransactions",
+      "label": "syncTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L155"
+    },
+    {
+      "id": "controllers_plaid_controller_disconnectaccount",
+      "label": "disconnectAccount()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L235"
+    },
+    {
+      "id": "controllers_plaid_controller_refreshbalances",
+      "label": "refreshBalances()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L269"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "plaid",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "supabase_js",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_createlinktoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_exchangepublictoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_getlinkedaccounts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L118",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_synctransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_disconnectaccount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L235",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_plaid_controller_ts",
+      "target": "controllers_plaid_controller_refreshbalances",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L269",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "linkTokenCreate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L34"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L42"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_createlinktoken",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "itemPublicTokenExchange",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "accountsGet",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "upsert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L96"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_exchangepublictoken",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_getlinkedaccounts",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L173"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "transactionsGet",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L176"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L179"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L179"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L197"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L213"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L213"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L213"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L215"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L218"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_synctransactions",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L240"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L240"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L240"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L240"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "itemRemove",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L248"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L254"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L254"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L254"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L261"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_disconnectaccount",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L280"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "accountsBalanceGet",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L283"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L290"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L290"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L290"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L295"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L306"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L307"
+    },
+    {
+      "caller_nid": "controllers_plaid_controller_refreshbalances",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\plaid.controller.ts",
+      "source_location": "L307"
+    }
+  ]
+}

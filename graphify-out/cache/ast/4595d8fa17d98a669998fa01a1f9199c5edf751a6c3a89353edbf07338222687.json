@@ -1,0 +1,406 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "label": "exchangeRateService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_exchangerateservice_getcachedrates",
+      "label": "getCachedRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L38"
+    },
+    {
+      "id": "services_exchangerateservice_cacherates",
+      "label": "cacheRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "services_exchangerateservice_fetchexchangerates",
+      "label": "fetchExchangeRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L77"
+    },
+    {
+      "id": "services_exchangerateservice_formatrates",
+      "label": "formatRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L123"
+    },
+    {
+      "id": "services_exchangerateservice_getrandomchange",
+      "label": "getRandomChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L152"
+    },
+    {
+      "id": "services_exchangerateservice_getfallbackrates",
+      "label": "getFallbackRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L160"
+    },
+    {
+      "id": "services_exchangerateservice_getlastupdatetime",
+      "label": "getLastUpdateTime()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L174"
+    },
+    {
+      "id": "services_exchangerateservice_forcerefreshrates",
+      "label": "forceRefreshRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L190"
+    },
+    {
+      "id": "services_exchangerateservice_getusercurrencysymbol",
+      "label": "getUserCurrencySymbol()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L198"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_getcachedrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_cacherates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_fetchexchangerates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_formatrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_getrandomchange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_getfallbackrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_getlastupdatetime",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L174",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_forcerefreshrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_exchangerateservice_ts",
+      "target": "services_exchangerateservice_getusercurrencysymbol",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_fetchexchangerates",
+      "target": "services_exchangerateservice_getcachedrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_fetchexchangerates",
+      "target": "services_exchangerateservice_formatrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_fetchexchangerates",
+      "target": "services_exchangerateservice_cacherates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_fetchexchangerates",
+      "target": "services_exchangerateservice_getfallbackrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_formatrates",
+      "target": "services_exchangerateservice_getrandomchange",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_getlastupdatetime",
+      "target": "services_exchangerateservice_getcachedrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "services_exchangerateservice_forcerefreshrates",
+      "target": "services_exchangerateservice_fetchexchangerates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L192",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_exchangerateservice_getcachedrates",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getcachedrates",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getcachedrates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getcachedrates",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_cacherates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L64"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_cacherates",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_cacherates",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_cacherates",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_cacherates",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "getCurrencyCode",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L83"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_fetchexchangerates",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_formatrates",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L136"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_formatrates",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getrandomchange",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getrandomchange",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getrandomchange",
+      "callee": "random",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getlastupdatetime",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getlastupdatetime",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L179"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getlastupdatetime",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_forcerefreshrates",
+      "callee": "removeItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "services_exchangerateservice_getusercurrencysymbol",
+      "callee": "getCurrencyInfo",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\exchangeRateService.ts",
+      "source_location": "L199"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_expense_tracker_chrome_v2_content_website_js",
+      "label": "content-website.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "label": "setExtensionFlag()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L10"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_content_website_showsynctoast",
+      "label": "showSyncToast()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L182"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_expense_tracker_chrome_v2_content_website_js",
+      "target": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_public_extension_expense_tracker_chrome_v2_content_website_js",
+      "target": "expense_tracker_chrome_v2_content_website_showsynctoast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L182",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "getManifest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L14"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L20"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_content_website_setextensionflag",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\public\\extension\\expense-tracker-chrome-v2\\content-website.js",
+      "source_location": "L24"
+    }
+  ]
+}

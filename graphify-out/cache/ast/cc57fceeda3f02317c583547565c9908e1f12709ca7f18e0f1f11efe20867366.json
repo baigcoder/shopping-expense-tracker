@@ -1,0 +1,126 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_otpservice_ts",
+      "label": "otpService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_otpservice_sendsignupotp",
+      "label": "sendSignupOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "services_otpservice_verifyotp",
+      "label": "verifyOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "services_otpservice_resendotp",
+      "label": "resendOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L71"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_otpservice_ts",
+      "target": "services_otpservice_sendsignupotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_otpservice_ts",
+      "target": "services_otpservice_verifyotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_otpservice_ts",
+      "target": "services_otpservice_resendotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_otpservice_sendsignupotp",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L25"
+    },
+    {
+      "caller_nid": "services_otpservice_sendsignupotp",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_otpservice_sendsignupotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "services_otpservice_verifyotp",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "services_otpservice_verifyotp",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_otpservice_verifyotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "services_otpservice_resendotp",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "services_otpservice_resendotp",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "services_otpservice_resendotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\otpService.ts",
+      "source_location": "L81"
+    }
+  ]
+}

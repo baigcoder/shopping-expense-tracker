@@ -1,0 +1,685 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "label": "aiTipCacheService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_aitipcacheservice_safecallai",
+      "label": "safeCallAI()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "services_aitipcacheservice_hashdata",
+      "label": "hashData()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "services_aitipcacheservice_generatelocaltip",
+      "label": "generateLocalTip()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L47"
+    },
+    {
+      "id": "services_aitipcacheservice_getcachedaitip",
+      "label": "getCachedAiTip()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L96"
+    },
+    {
+      "id": "services_aitipcacheservice_isaitipfetching",
+      "label": "isAiTipFetching()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L111"
+    },
+    {
+      "id": "services_aitipcacheservice_fetchaitipinbackground",
+      "label": "fetchAiTipInBackground()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L117"
+    },
+    {
+      "id": "services_aitipcacheservice_forcerefreshaitip",
+      "label": "forceRefreshAiTip()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L193"
+    },
+    {
+      "id": "services_aitipcacheservice_getimmediatetip",
+      "label": "getImmediateTip()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L241"
+    },
+    {
+      "id": "services_aitipcacheservice_clearaitipcache",
+      "label": "clearAiTipCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L257"
+    },
+    {
+      "id": "services_aitipcacheservice_notifydatachanged",
+      "label": "notifyDataChanged()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L265"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_api",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_safecallai",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_hashdata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_generatelocaltip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_getcachedaitip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_isaitipfetching",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_fetchaitipinbackground",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_forcerefreshaitip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L193",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_getimmediatetip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L241",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_clearaitipcache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L257",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_aitipcacheservice_ts",
+      "target": "services_aitipcacheservice_notifydatachanged",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_fetchaitipinbackground",
+      "target": "services_aitipcacheservice_hashdata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_fetchaitipinbackground",
+      "target": "services_aitipcacheservice_safecallai",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_fetchaitipinbackground",
+      "target": "services_aitipcacheservice_generatelocaltip",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L159",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_forcerefreshaitip",
+      "target": "services_aitipcacheservice_safecallai",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_forcerefreshaitip",
+      "target": "services_aitipcacheservice_hashdata",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L210",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_forcerefreshaitip",
+      "target": "services_aitipcacheservice_generatelocaltip",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L223",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_getimmediatetip",
+      "target": "services_aitipcacheservice_getcachedaitip",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L247",
+      "weight": 1.0
+    },
+    {
+      "source": "services_aitipcacheservice_getimmediatetip",
+      "target": "services_aitipcacheservice_generatelocaltip",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L251",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_aitipcacheservice_safecallai",
+      "callee": "post",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L12"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_safecallai",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L18"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_hashdata",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_hashdata",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "getCurrencyInfo",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L54"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_generatelocaltip",
+      "callee": "random",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L90"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_getcachedaitip",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "getCurrencyInfo",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L162"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_fetchaitipinbackground",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L201"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "getCurrencyInfo",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L205"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L207"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L207"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L215"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L219"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_forcerefreshaitip",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L230"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_clearaitipcache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L259"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_notifydatachanged",
+      "callee": "dispatchEvent",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L270"
+    },
+    {
+      "caller_nid": "services_aitipcacheservice_notifydatachanged",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\aiTipCacheService.ts",
+      "source_location": "L271"
+    }
+  ]
+}

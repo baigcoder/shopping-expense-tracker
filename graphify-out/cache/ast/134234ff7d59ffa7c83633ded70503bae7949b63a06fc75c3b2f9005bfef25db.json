@@ -1,0 +1,267 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "label": "authController.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "controllers_authcontroller_registerorgetuser",
+      "label": "registerOrGetUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "controllers_authcontroller_getprofile",
+      "label": "getProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L70"
+    },
+    {
+      "id": "controllers_authcontroller_updateprofile",
+      "label": "updateProfile()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L106"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_prisma",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_types",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "controllers_authcontroller_registerorgetuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "controllers_authcontroller_getprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_authcontroller_ts",
+      "target": "controllers_authcontroller_updateprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L106",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "findUnique",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L21"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L27"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "createMany",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_registerorgetuser",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "findUnique",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_getprofile",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "update",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "controllers_authcontroller_updateprofile",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\authController.ts",
+      "source_location": "L129"
+    }
+  ]
+}

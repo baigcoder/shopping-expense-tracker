@@ -1,0 +1,604 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "label": "openRouterService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_openrouterservice_getapikey",
+      "label": "getApiKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L86"
+    },
+    {
+      "id": "services_openrouterservice_isplaceholderapikey",
+      "label": "isPlaceholderApiKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L90"
+    },
+    {
+      "id": "services_openrouterservice_getheaders",
+      "label": "getHeaders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "services_openrouterservice_isconfigured",
+      "label": "isConfigured()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L112"
+    },
+    {
+      "id": "services_openrouterservice_getconfigurationerror",
+      "label": "getConfigurationError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L117"
+    },
+    {
+      "id": "services_openrouterservice_getmodelname",
+      "label": "getModelName()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L127"
+    },
+    {
+      "id": "services_openrouterservice_getmodelmap",
+      "label": "getModelMap()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L133"
+    },
+    {
+      "id": "services_openrouterservice_chatcompletion",
+      "label": "chatCompletion()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L145"
+    },
+    {
+      "id": "services_openrouterservice_parsejsonpayload",
+      "label": "parseJsonPayload()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L204"
+    },
+    {
+      "id": "services_openrouterservice_generateinsights",
+      "label": "generateInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L214"
+    },
+    {
+      "id": "services_openrouterservice_generateforecast",
+      "label": "generateForecast()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L251"
+    },
+    {
+      "id": "services_openrouterservice_generateriskalerts",
+      "label": "generateRiskAlerts()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L280"
+    },
+    {
+      "id": "services_openrouterservice_getdefaultinsights",
+      "label": "getDefaultInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L314"
+    },
+    {
+      "id": "services_openrouterservice_getdefaultforecast",
+      "label": "getDefaultForecast()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L350"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getapikey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_isplaceholderapikey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getheaders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_isconfigured",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getconfigurationerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getmodelname",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getmodelmap",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L133",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_chatcompletion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_parsejsonpayload",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L204",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_generateinsights",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L214",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_generateforecast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L251",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_generateriskalerts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L280",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getdefaultinsights",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L314",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_openrouterservice_ts",
+      "target": "services_openrouterservice_getdefaultforecast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L350",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_getheaders",
+      "target": "services_openrouterservice_getapikey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_isconfigured",
+      "target": "services_openrouterservice_getapikey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_isconfigured",
+      "target": "services_openrouterservice_isplaceholderapikey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_getconfigurationerror",
+      "target": "services_openrouterservice_getapikey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_getconfigurationerror",
+      "target": "services_openrouterservice_isplaceholderapikey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_getmodelmap",
+      "target": "services_openrouterservice_getmodelname",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_chatcompletion",
+      "target": "services_openrouterservice_isconfigured",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_chatcompletion",
+      "target": "services_openrouterservice_getconfigurationerror",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_chatcompletion",
+      "target": "services_openrouterservice_getheaders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_chatcompletion",
+      "target": "services_openrouterservice_getmodelname",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateinsights",
+      "target": "services_openrouterservice_chatcompletion",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateinsights",
+      "target": "services_openrouterservice_parsejsonpayload",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L238",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateinsights",
+      "target": "services_openrouterservice_getdefaultinsights",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L247",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateforecast",
+      "target": "services_openrouterservice_chatcompletion",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L264",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateforecast",
+      "target": "services_openrouterservice_parsejsonpayload",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L272",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateforecast",
+      "target": "services_openrouterservice_getdefaultforecast",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L276",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateriskalerts",
+      "target": "services_openrouterservice_chatcompletion",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L292",
+      "weight": 1.0
+    },
+    {
+      "source": "services_openrouterservice_generateriskalerts",
+      "target": "services_openrouterservice_parsejsonpayload",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L300",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_openrouterservice_getapikey",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "services_openrouterservice_isplaceholderapikey",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "services_openrouterservice_isplaceholderapikey",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "services_openrouterservice_isplaceholderapikey",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L154"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L162"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "clearTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L177"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "services_openrouterservice_chatcompletion",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "services_openrouterservice_parsejsonpayload",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "services_openrouterservice_parsejsonpayload",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "services_openrouterservice_parsejsonpayload",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateinsights",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L239"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateinsights",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateinsights",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateforecast",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L273"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateforecast",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L275"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateriskalerts",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L301"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateriskalerts",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L303"
+    },
+    {
+      "caller_nid": "services_openrouterservice_generateriskalerts",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L318"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L323"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L328"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L333"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L338"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultinsights",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L343"
+    },
+    {
+      "caller_nid": "services_openrouterservice_getdefaultforecast",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\openRouterService.ts",
+      "source_location": "L352"
+    }
+  ]
+}

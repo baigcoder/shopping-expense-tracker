@@ -1,0 +1,302 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "label": "security.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_security_sanitizeaiinput",
+      "label": "sanitizeAIInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "utils_security_sanitizecontext",
+      "label": "sanitizeContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "utils_security_sanitizechatmessage",
+      "label": "sanitizeChatMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L73"
+    },
+    {
+      "id": "utils_security_getairatelimitkey",
+      "label": "getAIRateLimitKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L102"
+    },
+    {
+      "id": "utils_security_escapehtml",
+      "label": "escapeHtml()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L109"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "target": "utils_security_sanitizeaiinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "target": "utils_security_sanitizecontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "target": "utils_security_sanitizechatmessage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "target": "utils_security_getairatelimitkey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security_ts",
+      "target": "utils_security_escapehtml",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_security_sanitizecontext",
+      "target": "utils_security_sanitizeaiinput",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_security_sanitizechatmessage",
+      "target": "utils_security_sanitizeaiinput",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizeaiinput",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L13"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L48"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "utils_security_sanitizecontext",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "utils_security_sanitizechatmessage",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "utils_security_escapehtml",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\utils\\security.ts",
+      "source_location": "L121"
+    }
+  ]
+}

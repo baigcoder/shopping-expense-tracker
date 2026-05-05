@@ -1,0 +1,287 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "label": "ai.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "routes_ai_buildusercontext",
+      "label": "buildUserContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L36"
+    },
+    {
+      "id": "routes_ai_calculatehealthscore",
+      "label": "calculateHealthScore()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L88"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "supabase_js",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "express_rate_limit",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_groqservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_auth_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_utils_security",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "routes_ai_buildusercontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_routes_ai_ts",
+      "target": "routes_ai_calculatehealthscore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "routes_ai_buildusercontext",
+      "target": "routes_ai_calculatehealthscore",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "getCachedUserContext",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "gte",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L54"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L63"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "routes_ai_buildusercontext",
+      "callee": "setCachedUserContext",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "routes_ai_calculatehealthscore",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "routes_ai_calculatehealthscore",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\routes\\ai.ts",
+      "source_location": "L100"
+    }
+  ]
+}

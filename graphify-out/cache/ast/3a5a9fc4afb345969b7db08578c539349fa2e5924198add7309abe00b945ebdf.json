@@ -1,0 +1,220 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "label": "csrf.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "middleware_csrf_generatetoken",
+      "label": "generateToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "middleware_csrf_csrftokenmiddleware",
+      "label": "csrfTokenMiddleware()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L22"
+    },
+    {
+      "id": "middleware_csrf_csrfvalidationmiddleware",
+      "label": "csrfValidationMiddleware()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "middleware_csrf_csrfprotection",
+      "label": "csrfProtection()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L95"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "crypto",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "middleware_csrf_generatetoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "middleware_csrf_csrftokenmiddleware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "middleware_csrf_csrfvalidationmiddleware",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_csrf_ts",
+      "target": "middleware_csrf_csrfprotection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_csrf_csrftokenmiddleware",
+      "target": "middleware_csrf_generatetoken",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "middleware_csrf_csrfprotection",
+      "target": "middleware_csrf_csrftokenmiddleware",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L96",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "middleware_csrf_generatetoken",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "middleware_csrf_generatetoken",
+      "callee": "randomBytes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrftokenmiddleware",
+      "callee": "cookie",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L29"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrftokenmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L50"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "timingSafeEqual",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "middleware_csrf_csrfvalidationmiddleware",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\csrf.ts",
+      "source_location": "L88"
+    }
+  ]
+}

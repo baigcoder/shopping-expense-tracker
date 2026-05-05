@@ -1,0 +1,234 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage_ts",
+      "label": "cropImage.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_cropimage_createimage",
+      "label": "createImage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_cropimage_getradianangle",
+      "label": "getRadianAngle()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "utils_cropimage_rotatesize",
+      "label": "rotateSize()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L17"
+    },
+    {
+      "id": "utils_cropimage_getcroppedimg",
+      "label": "getCroppedImg()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L31"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage_ts",
+      "target": "utils_cropimage_createimage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage_ts",
+      "target": "utils_cropimage_getradianangle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage_ts",
+      "target": "utils_cropimage_rotatesize",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_cropimage_ts",
+      "target": "utils_cropimage_getcroppedimg",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_cropimage_rotatesize",
+      "target": "utils_cropimage_getradianangle",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_cropimage_getcroppedimg",
+      "target": "utils_cropimage_createimage",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_cropimage_getcroppedimg",
+      "target": "utils_cropimage_getradianangle",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_cropimage_getcroppedimg",
+      "target": "utils_cropimage_rotatesize",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L48",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "cos",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "sin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "sin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_cropimage_rotatesize",
+      "callee": "cos",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "createElement",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "getContext",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "translate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "rotate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "scale",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L61"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "translate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "drawImage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L65"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "getImageData",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "utils_cropimage_getcroppedimg",
+      "callee": "putImageData",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\cropImage.ts",
+      "source_location": "L81"
+    }
+  ]
+}

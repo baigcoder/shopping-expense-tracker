@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_validation_schemas_ts",
+      "label": "schemas.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "validation_schemas_validateform",
+      "label": "validateForm()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L162"
+    },
+    {
+      "id": "validation_schemas_getfirsterror",
+      "label": "getFirstError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L189"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_validation_schemas_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_validation_schemas_ts",
+      "target": "validation_schemas_validateform",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_validation_schemas_ts",
+      "target": "validation_schemas_getfirsterror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "validation_schemas_validateform",
+      "callee": "safeParse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "validation_schemas_validateform",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L175"
+    },
+    {
+      "caller_nid": "validation_schemas_getfirsterror",
+      "callee": "safeParse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\validation\\schemas.ts",
+      "source_location": "L193"
+    }
+  ]
+}

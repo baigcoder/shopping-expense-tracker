@@ -1,0 +1,293 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_sounds_ts",
+      "label": "sounds.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_sounds_soundmanager",
+      "label": "SoundManager",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "lib_sounds_soundmanager_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "lib_sounds_soundmanager_loadsounds",
+      "label": ".loadSounds()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "lib_sounds_soundmanager_play",
+      "label": ".play()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L42"
+    },
+    {
+      "id": "lib_sounds_soundmanager_setenabled",
+      "label": ".setEnabled()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "lib_sounds_soundmanager_isenabled",
+      "label": ".isEnabled()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "lib_sounds_soundmanager_setvolume",
+      "label": ".setVolume()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "lib_sounds_soundmanager_getvolume",
+      "label": ".getVolume()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L74"
+    },
+    {
+      "id": "lib_sounds_soundmanager_loadpreferences",
+      "label": ".loadPreferences()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L81"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_sounds_ts",
+      "target": "howler",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_sounds_ts",
+      "target": "lib_sounds_soundmanager",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_loadsounds",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_play",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_setenabled",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_isenabled",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_setvolume",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_getvolume",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager",
+      "target": "lib_sounds_soundmanager_loadpreferences",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager_constructor",
+      "target": "lib_sounds_soundmanager_loadsounds",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager_constructor",
+      "target": "lib_sounds_soundmanager_loadpreferences",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_sounds_soundmanager_loadpreferences",
+      "target": "lib_sounds_soundmanager_setvolume",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L90",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadsounds",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadsounds",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_play",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setenabled",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setenabled",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setvolume",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setvolume",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setvolume",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setvolume",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_setvolume",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadpreferences",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadpreferences",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L83"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadpreferences",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "lib_sounds_soundmanager_loadpreferences",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\lib\\sounds.ts",
+      "source_location": "L90"
+    }
+  ]
+}

@@ -1,0 +1,637 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "label": "smartInsightsService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_smartinsightsservice_calculatecategoryspending",
+      "label": "calculateCategorySpending()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L39"
+    },
+    {
+      "id": "services_smartinsightsservice_analyzespendingpatterns",
+      "label": "analyzeSpendingPatterns()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L94"
+    },
+    {
+      "id": "services_smartinsightsservice_generatesmartinsights",
+      "label": "generateSmartInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L136"
+    },
+    {
+      "id": "services_smartinsightsservice_getlocalfallbacktip",
+      "label": "getLocalFallbackTip()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L453"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_supabasetransactionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_budgetservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "services_smartinsightsservice_calculatecategoryspending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "services_smartinsightsservice_analyzespendingpatterns",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "services_smartinsightsservice_generatesmartinsights",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_smartinsightsservice_ts",
+      "target": "services_smartinsightsservice_getlocalfallbacktip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L453",
+      "weight": 1.0
+    },
+    {
+      "source": "services_smartinsightsservice_generatesmartinsights",
+      "target": "services_smartinsightsservice_calculatecategoryspending",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "services_smartinsightsservice_generatesmartinsights",
+      "target": "services_smartinsightsservice_analyzespendingpatterns",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L153",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L42"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "values",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_calculatecategoryspending",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L74"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L96"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_analyzespendingpatterns",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L148"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L175"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L175"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L185"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L192"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L226"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L232"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L245"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L260"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L265"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L289"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L300"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L301"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L306"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L306"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L306"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L306"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L316"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L321"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L321"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L333"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L346"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L361"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L364"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L367"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L372"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L383"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L383"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L388"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L389"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L394"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L394"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L408"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L409"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L412"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L412"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_generatesmartinsights",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L426"
+    },
+    {
+      "caller_nid": "services_smartinsightsservice_getlocalfallbacktip",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\smartInsightsService.ts",
+      "source_location": "L458"
+    }
+  ]
+}

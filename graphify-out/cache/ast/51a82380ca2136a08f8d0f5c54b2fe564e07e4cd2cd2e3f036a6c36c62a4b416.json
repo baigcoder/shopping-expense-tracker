@@ -1,0 +1,336 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_merchantcategorizationservice_ts",
+      "label": "merchantCategorizationService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "label": "MerchantCategorizationService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "label": ".categorizeMerchant()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "label": ".saveUserCorrection()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L71"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "label": ".getUserMappings()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L94"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "label": ".smartCategorize()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L109"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "label": ".analyzeTransactionPatterns()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L140"
+    },
+    {
+      "id": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "label": ".getCategorySuggestions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L177"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_merchantcategorizationservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_merchantcategorizationservice_ts",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "target": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L131",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_categorizemerchant",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L58"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "callee": "upsert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L83"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_saveusercorrection",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L89"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getusermappings",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_smartcategorize",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "limit",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "not",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L150"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_analyzetransactionpatterns",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L178"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L185"
+    },
+    {
+      "caller_nid": "services_merchantcategorizationservice_merchantcategorizationservice_getcategorysuggestions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\merchantCategorizationService.ts",
+      "source_location": "L186"
+    }
+  ]
+}

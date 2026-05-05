@@ -1,0 +1,298 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_emailnotificationservice_ts",
+      "label": "emailNotificationService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice",
+      "label": "EmailNotificationService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "label": ".getPreferences()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "label": ".savePreferences()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L123"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice_updatepreference",
+      "label": ".updatePreference()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L168"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice_resettodefaults",
+      "label": ".resetToDefaults()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L179"
+    },
+    {
+      "id": "services_emailnotificationservice_emailnotificationservice_clearcache",
+      "label": ".clearCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L190"
+    },
+    {
+      "id": "services_emailnotificationservice_isnotificationenabled",
+      "label": "isNotificationEnabled()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L198"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_emailnotificationservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_emailnotificationservice_ts",
+      "target": "services_emailnotificationservice_emailnotificationservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice",
+      "target": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice",
+      "target": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice",
+      "target": "services_emailnotificationservice_emailnotificationservice_updatepreference",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice",
+      "target": "services_emailnotificationservice_emailnotificationservice_resettodefaults",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L179",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice",
+      "target": "services_emailnotificationservice_emailnotificationservice_clearcache",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_emailnotificationservice_ts",
+      "target": "services_emailnotificationservice_isnotificationenabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice_updatepreference",
+      "target": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice_updatepreference",
+      "target": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_emailnotificationservice_resettodefaults",
+      "target": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L185",
+      "weight": 1.0
+    },
+    {
+      "source": "services_emailnotificationservice_isnotificationenabled",
+      "target": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L202",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_getpreferences",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "upsert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_savepreferences",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L162"
+    },
+    {
+      "caller_nid": "services_emailnotificationservice_emailnotificationservice_resettodefaults",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\emailNotificationService.ts",
+      "source_location": "L183"
+    }
+  ]
+}

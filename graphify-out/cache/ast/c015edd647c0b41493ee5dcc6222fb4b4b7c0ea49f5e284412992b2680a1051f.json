@@ -1,0 +1,1503 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "label": "supabase.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "config_supabase_waitforinitialauth",
+      "label": "waitForInitialAuth()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "config_supabase_tosupabaseuser",
+      "label": "toSupabaseUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L72"
+    },
+    {
+      "id": "config_supabase_tosession",
+      "label": "toSession()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L87"
+    },
+    {
+      "id": "config_supabase_cleanrecord",
+      "label": "cleanRecord()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L97"
+    },
+    {
+      "id": "config_supabase_tablestoragekey",
+      "label": "tableStorageKey()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L108"
+    },
+    {
+      "id": "config_supabase_readtablerows",
+      "label": "readTableRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L110"
+    },
+    {
+      "id": "config_supabase_writetablerows",
+      "label": "writeTableRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L122"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder",
+      "label": "FirebaseQueryBuilder",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L133"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L148"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_select",
+      "label": ".select()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L150"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_insert",
+      "label": ".insert()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L158"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_update",
+      "label": ".update()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L164"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_delete",
+      "label": ".delete()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L170"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_upsert",
+      "label": ".upsert()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L175"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_eq",
+      "label": ".eq()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L181"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_neq",
+      "label": ".neq()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L182"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_gte",
+      "label": ".gte()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L183"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_lte",
+      "label": ".lte()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L184"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_lt",
+      "label": ".lt()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L185"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_gt",
+      "label": ".gt()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L186"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_in",
+      "label": ".in()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L187"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_is",
+      "label": ".is()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L188"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_not",
+      "label": ".not()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L189"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_or",
+      "label": ".or()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L190"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_order",
+      "label": ".order()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L192"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_limit",
+      "label": ".limit()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L198"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_range",
+      "label": ".range()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L203"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_single",
+      "label": ".single()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L209"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_maybesingle",
+      "label": ".maybeSingle()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L214"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_then",
+      "label": ".then()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L219"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_execute",
+      "label": ".execute()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L226"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_insertrows",
+      "label": ".insertRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L240"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_upsertrows",
+      "label": ".upsertRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L257"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_updaterows",
+      "label": ".updateRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L281"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_deleterows",
+      "label": ".deleteRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L299"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_getmatchingrows",
+      "label": ".getMatchingRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L308"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_applyquery",
+      "label": ".applyQuery()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L312"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_matchesfilter",
+      "label": ".matchesFilter()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L337"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_formatrows",
+      "label": ".formatRows()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L353"
+    },
+    {
+      "id": "config_supabase_firebasequerybuilder_project",
+      "label": ".project()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L368"
+    },
+    {
+      "id": "config_supabase_signupwithemail",
+      "label": "signUpWithEmail()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L473"
+    },
+    {
+      "id": "config_supabase_signinwithemail",
+      "label": "signInWithEmail()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L483"
+    },
+    {
+      "id": "config_supabase_signinwithgoogle",
+      "label": "signInWithGoogle()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L489"
+    },
+    {
+      "id": "config_supabase_logout",
+      "label": "logout()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L495"
+    },
+    {
+      "id": "config_supabase_getcurrentuser",
+      "label": "getCurrentUser()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L509"
+    },
+    {
+      "id": "config_supabase_getsession",
+      "label": "getSession()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L515"
+    },
+    {
+      "id": "config_supabase_onauthstatechange",
+      "label": "onAuthStateChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L521"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "app",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "analytics",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "auth",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "storage",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_waitforinitialauth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_tosupabaseuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_tosession",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_cleanrecord",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_tablestoragekey",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_readtablerows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_writetablerows",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_firebasequerybuilder",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L133",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_select",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_insert",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L158",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_update",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_delete",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_upsert",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_eq",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_neq",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_gte",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L183",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_lte",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L184",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_lt",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L185",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_gt",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L186",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_in",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_is",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_not",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_or",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_order",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_limit",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_range",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L203",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_single",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_maybesingle",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L214",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_then",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L219",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_execute",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_insertrows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L240",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_upsertrows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L257",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_updaterows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L281",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_deleterows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L299",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_getmatchingrows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L308",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_applyquery",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L312",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_matchesfilter",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L337",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_formatrows",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L353",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder",
+      "target": "config_supabase_firebasequerybuilder_project",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L368",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_signupwithemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L473",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_signinwithemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L483",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_signinwithgoogle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L489",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_logout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L495",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_getcurrentuser",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L509",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_getsession",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L515",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase_ts",
+      "target": "config_supabase_onauthstatechange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L521",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_tosession",
+      "target": "config_supabase_tosupabaseuser",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_readtablerows",
+      "target": "config_supabase_tablestoragekey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_writetablerows",
+      "target": "config_supabase_tablestoragekey",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_then",
+      "target": "config_supabase_firebasequerybuilder_execute",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L223",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_insertrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L228",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_upsertrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L229",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_updaterows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_deleterows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_getmatchingrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L233",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_execute",
+      "target": "config_supabase_firebasequerybuilder_formatrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L234",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_insertrows",
+      "target": "config_supabase_readtablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L242",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_insertrows",
+      "target": "config_supabase_cleanrecord",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L248",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_insertrows",
+      "target": "config_supabase_writetablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L253",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_insertrows",
+      "target": "config_supabase_firebasequerybuilder_formatrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L254",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_upsertrows",
+      "target": "config_supabase_readtablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_upsertrows",
+      "target": "config_supabase_cleanrecord",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_upsertrows",
+      "target": "config_supabase_writetablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L277",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_upsertrows",
+      "target": "config_supabase_firebasequerybuilder_formatrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L278",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_updaterows",
+      "target": "config_supabase_readtablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L282",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_updaterows",
+      "target": "config_supabase_firebasequerybuilder_applyquery",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L283",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_updaterows",
+      "target": "config_supabase_cleanrecord",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L285",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_updaterows",
+      "target": "config_supabase_writetablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L295",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_updaterows",
+      "target": "config_supabase_firebasequerybuilder_formatrows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L296",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_deleterows",
+      "target": "config_supabase_readtablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L300",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_deleterows",
+      "target": "config_supabase_firebasequerybuilder_applyquery",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L301",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_deleterows",
+      "target": "config_supabase_writetablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L303",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_getmatchingrows",
+      "target": "config_supabase_firebasequerybuilder_applyquery",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L309",
+      "weight": 1.0
+    },
+    {
+      "source": "config_supabase_firebasequerybuilder_getmatchingrows",
+      "target": "config_supabase_readtablerows",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L309",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "config_supabase_tosupabaseuser",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "config_supabase_tosession",
+      "callee": "getIdToken",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "fromEntries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "config_supabase_cleanrecord",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "config_supabase_readtablerows",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "config_supabase_readtablerows",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "config_supabase_readtablerows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L116"
+    },
+    {
+      "caller_nid": "config_supabase_writetablerows",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "config_supabase_writetablerows",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_eq",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_neq",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_gte",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_lte",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L184"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_lt",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L185"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_gt",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_in",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L187"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_is",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_not",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L189"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_insertrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_insertrows",
+      "callee": "randomUUID",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_insertrows",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L247"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_insertrows",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L249"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_insertrows",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L250"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "isArray",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "randomUUID",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L263"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "findIndex",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L266"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L271"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_upsertrows",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_updaterows",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L285"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_updaterows",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L286"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_updaterows",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L288"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_deleterows",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L302"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_deleterows",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L303"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_applyquery",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L314"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_applyquery",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L317"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_applyquery",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L327"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_applyquery",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L331"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_matchesfilter",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_formatrows",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L354"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_project",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_project",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_project",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L371"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_project",
+      "callee": "fromEntries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "config_supabase_firebasequerybuilder_project",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L376"
+    },
+    {
+      "caller_nid": "config_supabase_signupwithemail",
+      "callee": "signUp",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L474"
+    },
+    {
+      "caller_nid": "config_supabase_signinwithemail",
+      "callee": "signInWithPassword",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L484"
+    },
+    {
+      "caller_nid": "config_supabase_signinwithgoogle",
+      "callee": "signInWithOAuth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L490"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L496"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "signOut",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L497"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "key",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L501"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L502"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L502"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L502"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L502"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L503"
+    },
+    {
+      "caller_nid": "config_supabase_logout",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L506"
+    },
+    {
+      "caller_nid": "config_supabase_getcurrentuser",
+      "callee": "getUser",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\config\\supabase.ts",
+      "source_location": "L510"
+    }
+  ]
+}

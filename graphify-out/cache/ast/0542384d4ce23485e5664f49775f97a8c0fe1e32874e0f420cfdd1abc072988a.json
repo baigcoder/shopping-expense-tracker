@@ -1,0 +1,521 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_billservice_ts",
+      "label": "billService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_billservice_billservice",
+      "label": "BillService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L27"
+    },
+    {
+      "id": "services_billservice_billservice_create",
+      "label": ".create()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "services_billservice_billservice_getall",
+      "label": ".getAll()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "services_billservice_billservice_getupcoming",
+      "label": ".getUpcoming()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "services_billservice_billservice_getbillsneedingreminders",
+      "label": ".getBillsNeedingReminders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L73"
+    },
+    {
+      "id": "services_billservice_billservice_getnextduedate",
+      "label": ".getNextDueDate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L99"
+    },
+    {
+      "id": "services_billservice_billservice_markaspaid",
+      "label": ".markAsPaid()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L132"
+    },
+    {
+      "id": "services_billservice_billservice_update",
+      "label": ".update()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L163"
+    },
+    {
+      "id": "services_billservice_billservice_delete",
+      "label": ".delete()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L179"
+    },
+    {
+      "id": "services_billservice_billservice_getupcomingtotal",
+      "label": ".getUpcomingTotal()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L189"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_billservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_config_supabase",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_billservice_ts",
+      "target": "services_billservice_billservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_create",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_getall",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_getupcoming",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_getbillsneedingreminders",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_getnextduedate",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_markaspaid",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_update",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_delete",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L179",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice",
+      "target": "services_billservice_billservice_getupcomingtotal",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice_getupcoming",
+      "target": "services_billservice_billservice_getall",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice_getbillsneedingreminders",
+      "target": "services_billservice_billservice_getall",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice_markaspaid",
+      "target": "services_billservice_billservice_update",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L133",
+      "weight": 1.0
+    },
+    {
+      "source": "services_billservice_billservice_getupcomingtotal",
+      "target": "services_billservice_billservice_getupcoming",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L190",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "insert",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L35"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_create",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L36"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getall",
+      "callee": "order",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getall",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getall",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getall",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getupcoming",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getupcoming",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getupcoming",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L64"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getbillsneedingreminders",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getbillsneedingreminders",
+      "callee": "sort",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L108"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L109"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "setFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getnextduedate",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L137"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_markaspaid",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_update",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_update",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_update",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_update",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_update",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_delete",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_delete",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_billservice_billservice_getupcomingtotal",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\billService.ts",
+      "source_location": "L191"
+    }
+  ]
+}

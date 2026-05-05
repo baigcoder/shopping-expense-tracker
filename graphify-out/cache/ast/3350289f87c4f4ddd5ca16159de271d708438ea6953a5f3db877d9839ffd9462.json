@@ -1,0 +1,398 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "label": "LiveExtensionStats.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_liveextensionstats_fetchsitevisits",
+      "label": "fetchSiteVisits()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L33"
+    },
+    {
+      "id": "components_liveextensionstats_checkstatus",
+      "label": "checkStatus()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L82"
+    },
+    {
+      "id": "components_liveextensionstats_handlenewtransaction",
+      "label": "handleNewTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L140"
+    },
+    {
+      "id": "components_liveextensionstats_handlesitevisit",
+      "label": "handleSiteVisit()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L150"
+    },
+    {
+      "id": "components_liveextensionstats_handlestoragechange",
+      "label": "handleStorageChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L162"
+    },
+    {
+      "id": "components_liveextensionstats_formatlastsync",
+      "label": "formatLastSync()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L183"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "react_router_dom",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_fetchsitevisits",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_checkstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_handlenewtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_handlesitevisit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_handlestoragechange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_liveextensionstats_tsx",
+      "target": "components_liveextensionstats_formatlastsync",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L183",
+      "weight": 1.0
+    },
+    {
+      "source": "components_liveextensionstats_checkstatus",
+      "target": "components_liveextensionstats_fetchsitevisits",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "components_liveextensionstats_handlestoragechange",
+      "target": "components_liveextensionstats_fetchsitevisits",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L164",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L35"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L37"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "setHours",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "values",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "setStats",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_fetchsitevisits",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L86"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L94"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "setStats",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_checkstatus",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L126"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_handlenewtransaction",
+      "callee": "setStats",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L141"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_handlesitevisit",
+      "callee": "setStats",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_handlesitevisit",
+      "callee": "setShowSitePopup",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_handlesitevisit",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_formatlastsync",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_formatlastsync",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L186"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_formatlastsync",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L188"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_formatlastsync",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L189"
+    },
+    {
+      "caller_nid": "components_liveextensionstats_formatlastsync",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\LiveExtensionStats.tsx",
+      "source_location": "L190"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_tests_setup_ts",
+      "label": "setup.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_setup_createmockrequest",
+      "label": "createMockRequest()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L108"
+    },
+    {
+      "id": "tests_setup_createmockresponse",
+      "label": "createMockResponse()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L117"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_tests_setup_ts",
+      "target": "vitest",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_tests_setup_ts",
+      "target": "tests_setup_createmockrequest",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_tests_setup_ts",
+      "target": "tests_setup_createmockresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L120"
+    },
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "mockReturnValue",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "tests_setup_createmockresponse",
+      "callee": "fn",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\__tests__\\setup.ts",
+      "source_location": "L121"
+    }
+  ]
+}

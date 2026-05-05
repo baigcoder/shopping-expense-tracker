@@ -1,0 +1,331 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "label": "validationUtils.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_validationutils_isvalidemail",
+      "label": "isValidEmail()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "utils_validationutils_checkpasswordstrength",
+      "label": "checkPasswordStrength()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L41"
+    },
+    {
+      "id": "utils_validationutils_getvalidationmessage",
+      "label": "getValidationMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L89"
+    },
+    {
+      "id": "utils_validationutils_validatefield",
+      "label": "validateField()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L120"
+    },
+    {
+      "id": "utils_validationutils_validateform",
+      "label": "validateForm()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L166"
+    },
+    {
+      "id": "utils_validationutils_dopasswordsmatch",
+      "label": "doPasswordsMatch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L188"
+    },
+    {
+      "id": "utils_validationutils_sanitizeinput",
+      "label": "sanitizeInput()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L195"
+    },
+    {
+      "id": "utils_validationutils_formatsupabaseerror",
+      "label": "formatSupabaseError()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L207"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_isvalidemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_checkpasswordstrength",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_getvalidationmessage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_validatefield",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_validateform",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L166",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_dopasswordsmatch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_sanitizeinput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_validationutils_ts",
+      "target": "utils_validationutils_formatsupabaseerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L207",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_validationutils_validatefield",
+      "target": "utils_validationutils_getvalidationmessage",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_validationutils_validatefield",
+      "target": "utils_validationutils_isvalidemail",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_validationutils_formatsupabaseerror",
+      "target": "utils_validationutils_getvalidationmessage",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L223",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "utils_validationutils_isvalidemail",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L9"
+    },
+    {
+      "caller_nid": "utils_validationutils_isvalidemail",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L9"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "utils_validationutils_checkpasswordstrength",
+      "callee": "values",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "utils_validationutils_validatefield",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "utils_validationutils_validatefield",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "utils_validationutils_validateform",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L172"
+    },
+    {
+      "caller_nid": "utils_validationutils_validateform",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L172"
+    },
+    {
+      "caller_nid": "utils_validationutils_sanitizeinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "utils_validationutils_sanitizeinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "utils_validationutils_sanitizeinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "utils_validationutils_sanitizeinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "utils_validationutils_sanitizeinput",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L214"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L218"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L222"
+    },
+    {
+      "caller_nid": "utils_validationutils_formatsupabaseerror",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\validationUtils.ts",
+      "source_location": "L226"
+    }
+  ]
+}

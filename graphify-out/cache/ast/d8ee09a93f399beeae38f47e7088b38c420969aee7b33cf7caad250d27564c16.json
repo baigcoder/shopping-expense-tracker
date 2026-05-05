@@ -1,0 +1,412 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "label": "MoneyTwinPage.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "pages_moneytwinpage_loadmoneytwin",
+      "label": "loadMoneyTwin()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L68"
+    },
+    {
+      "id": "pages_moneytwinpage_loadsubscriptions",
+      "label": "loadSubscriptions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L81"
+    },
+    {
+      "id": "pages_moneytwinpage_loaduniverses",
+      "label": "loadUniverses()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L91"
+    },
+    {
+      "id": "pages_moneytwinpage_runscenario",
+      "label": "runScenario()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L119"
+    },
+    {
+      "id": "pages_moneytwinpage_gethealthcolor",
+      "label": "getHealthColor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L151"
+    },
+    {
+      "id": "pages_moneytwinpage_getseveritycolor",
+      "label": "getSeverityColor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L158"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_moneytwinservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_paralleluniverseservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_usedatarealtime",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_genztoast",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_loadingskeleton",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_loadmoneytwin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_loadsubscriptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_loaduniverses",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_runscenario",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_gethealthcolor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_moneytwinpage_tsx",
+      "target": "pages_moneytwinpage_getseveritycolor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L158",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "getMoneyTwin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "setTwinState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadmoneytwin",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadsubscriptions",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadsubscriptions",
+      "callee": "setSubscriptions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loadsubscriptions",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "setLoadingUniverses",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "getAllUniverses",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L95"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "setUniverses",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L96"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "setSelectedUniverse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L99"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_loaduniverses",
+      "callee": "setLoadingUniverses",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "setRunningScenario",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L136"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "setScenarioResult",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L144"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "pages_moneytwinpage_runscenario",
+      "callee": "setRunningScenario",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\MoneyTwinPage.tsx",
+      "source_location": "L148"
+    }
+  ]
+}

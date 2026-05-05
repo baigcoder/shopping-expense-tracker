@@ -1,0 +1,606 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "label": "redisCacheService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_rediscacheservice_getcache",
+      "label": "getCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "services_rediscacheservice_setcache",
+      "label": "setCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "services_rediscacheservice_deletecache",
+      "label": "deleteCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L78"
+    },
+    {
+      "id": "services_rediscacheservice_invalidateusercache",
+      "label": "invalidateUserCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L92"
+    },
+    {
+      "id": "services_rediscacheservice_getcachedinsights",
+      "label": "getCachedInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L110"
+    },
+    {
+      "id": "services_rediscacheservice_setcachedinsights",
+      "label": "setCachedInsights()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L114"
+    },
+    {
+      "id": "services_rediscacheservice_getcachedforecast",
+      "label": "getCachedForecast()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L120"
+    },
+    {
+      "id": "services_rediscacheservice_setcachedforecast",
+      "label": "setCachedForecast()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L124"
+    },
+    {
+      "id": "services_rediscacheservice_getcachedrisks",
+      "label": "getCachedRisks()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L130"
+    },
+    {
+      "id": "services_rediscacheservice_setcachedrisks",
+      "label": "setCachedRisks()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L134"
+    },
+    {
+      "id": "services_rediscacheservice_getcachedusercontext",
+      "label": "getCachedUserContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L140"
+    },
+    {
+      "id": "services_rediscacheservice_setcachedusercontext",
+      "label": "setCachedUserContext()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L144"
+    },
+    {
+      "id": "services_rediscacheservice_getcachedusersnapshot",
+      "label": "getCachedUserSnapshot()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L148"
+    },
+    {
+      "id": "services_rediscacheservice_setcachedusersnapshot",
+      "label": "setCachedUserSnapshot()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L152"
+    },
+    {
+      "id": "services_rediscacheservice_getchathistory",
+      "label": "getChatHistory()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L158"
+    },
+    {
+      "id": "services_rediscacheservice_appendchathistory",
+      "label": "appendChatHistory()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L163"
+    },
+    {
+      "id": "services_rediscacheservice_clearchathistory",
+      "label": "clearChatHistory()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L173"
+    },
+    {
+      "id": "services_rediscacheservice_checkconnection",
+      "label": "checkConnection()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L180"
+    },
+    {
+      "id": "services_rediscacheservice_getcachestats",
+      "label": "getCacheStats()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L192"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "ioredis",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_deletecache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_invalidateusercache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachedinsights",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcachedinsights",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachedforecast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcachedforecast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachedrisks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcachedrisks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachedusercontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcachedusercontext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachedusersnapshot",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_setcachedusersnapshot",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getchathistory",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L158",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_appendchathistory",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_clearchathistory",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_checkconnection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L180",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_rediscacheservice_ts",
+      "target": "services_rediscacheservice_getcachestats",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_getcachedinsights",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_setcachedinsights",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_getcachedforecast",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_setcachedforecast",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_getcachedrisks",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_setcachedrisks",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_getcachedusercontext",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_setcachedusercontext",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_getcachedusersnapshot",
+      "target": "services_rediscacheservice_getcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_setcachedusersnapshot",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L153",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_appendchathistory",
+      "target": "services_rediscacheservice_getchathistory",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_appendchathistory",
+      "target": "services_rediscacheservice_setcache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "services_rediscacheservice_clearchathistory",
+      "target": "services_rediscacheservice_deletecache",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L174",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_rediscacheservice_getcache",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L47"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcache",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L50"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcache",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_setcache",
+      "callee": "setex",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_setcache",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_setcache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_setcache",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_deletecache",
+      "callee": "del",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L80"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_deletecache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_deletecache",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L84"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_invalidateusercache",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_invalidateusercache",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_invalidateusercache",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L102"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_invalidateusercache",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getchathistory",
+      "callee": "await getCache",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L159"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_appendchathistory",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L165"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_appendchathistory",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_checkconnection",
+      "callee": "ping",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcachestats",
+      "callee": "info",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L194"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcachestats",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L195"
+    },
+    {
+      "caller_nid": "services_rediscacheservice_getcachestats",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\services\\redisCacheService.ts",
+      "source_location": "L198"
+    }
+  ]
+}

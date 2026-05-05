@@ -1,0 +1,162 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "label": "useAnalytics.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "hooks_useanalytics_useanalyticssummary",
+      "label": "useAnalyticsSummary()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "hooks_useanalytics_usemonthlyspending",
+      "label": "useMonthlySpending()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L17"
+    },
+    {
+      "id": "hooks_useanalytics_usecategoryspending",
+      "label": "useCategorySpending()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L28"
+    },
+    {
+      "id": "hooks_useanalytics_usestorespending",
+      "label": "useStoreSpending()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L39"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "react_query",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_analyticsservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "hooks_useanalytics_useanalyticssummary",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "hooks_useanalytics_usemonthlyspending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "hooks_useanalytics_usecategoryspending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useanalytics_ts",
+      "target": "hooks_useanalytics_usestorespending",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L39",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "hooks_useanalytics_useanalyticssummary",
+      "callee": "useAuthStore",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L7"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_useanalyticssummary",
+      "callee": "useQuery",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L9"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usemonthlyspending",
+      "callee": "useAuthStore",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L18"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usemonthlyspending",
+      "callee": "useQuery",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L20"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usecategoryspending",
+      "callee": "useAuthStore",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L29"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usecategoryspending",
+      "callee": "useQuery",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usestorespending",
+      "callee": "useAuthStore",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "hooks_useanalytics_usestorespending",
+      "callee": "useQuery",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\hooks\\useAnalytics.ts",
+      "source_location": "L42"
+    }
+  ]
+}

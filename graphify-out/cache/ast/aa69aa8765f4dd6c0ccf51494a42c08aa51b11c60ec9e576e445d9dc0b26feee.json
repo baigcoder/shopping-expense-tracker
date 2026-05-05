@@ -1,0 +1,220 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "label": "ExtensionGate.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_extensiongate_ismobiledevice",
+      "label": "isMobileDevice()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L11"
+    },
+    {
+      "id": "components_extensiongate_ispreviouslysynced",
+      "label": "isPreviouslySynced()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "components_extensiongate_clearsyncflag",
+      "label": "clearSyncFlag()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L39"
+    },
+    {
+      "id": "components_extensiongate_extensiongate",
+      "label": "ExtensionGate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L51"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useextensionsync",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensionrequiredmodal",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_loadingskeleton",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "components_extensiongate_ismobiledevice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "components_extensiongate_ispreviouslysynced",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "components_extensiongate_clearsyncflag",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_extensiongate_tsx",
+      "target": "components_extensiongate_extensiongate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L51",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_extensiongate_ismobiledevice",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L20"
+    },
+    {
+      "caller_nid": "components_extensiongate_ispreviouslysynced",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L25"
+    },
+    {
+      "caller_nid": "components_extensiongate_ispreviouslysynced",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L27"
+    },
+    {
+      "caller_nid": "components_extensiongate_ispreviouslysynced",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "components_extensiongate_clearsyncflag",
+      "callee": "removeItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L41"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useExtensionSync",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L53"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L54"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L57"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useState",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L64"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L71"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L93"
+    },
+    {
+      "caller_nid": "components_extensiongate_extensiongate",
+      "callee": "useEffect",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ExtensionGate.tsx",
+      "source_location": "L121"
+    }
+  ]
+}

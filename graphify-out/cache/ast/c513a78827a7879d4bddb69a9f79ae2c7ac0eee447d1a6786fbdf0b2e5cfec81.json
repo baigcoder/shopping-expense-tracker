@@ -1,0 +1,529 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "label": "SubscriptionsPage.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "pages_subscriptionspage_fetchsubscriptions",
+      "label": "fetchSubscriptions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L63"
+    },
+    {
+      "id": "pages_subscriptionspage_handlesubscriptionchange",
+      "label": "handleSubscriptionChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L87"
+    },
+    {
+      "id": "pages_subscriptionspage_handleadd",
+      "label": "handleAdd()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L110"
+    },
+    {
+      "id": "pages_subscriptionspage_handlecancel",
+      "label": "handleCancel()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L142"
+    },
+    {
+      "id": "pages_subscriptionspage_getdaysuntil",
+      "label": "getDaysUntil()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L153"
+    },
+    {
+      "id": "pages_subscriptionspage_daysuntil",
+      "label": "daysUntil()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L398"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_dialog",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_input",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_label",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_select",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_switch",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_ui_button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_module_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_loadingskeleton",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_fetchsubscriptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_handlesubscriptionchange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_handleadd",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_handlecancel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_getdaysuntil",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L153",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_pages_subscriptionspage_tsx",
+      "target": "pages_subscriptionspage_daysuntil",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L398",
+      "weight": 1.0
+    },
+    {
+      "source": "pages_subscriptionspage_handlesubscriptionchange",
+      "target": "pages_subscriptionspage_fetchsubscriptions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "pages_subscriptionspage_handleadd",
+      "target": "pages_subscriptionspage_fetchsubscriptions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "pages_subscriptionspage_handlecancel",
+      "target": "pages_subscriptionspage_fetchsubscriptions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L147",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L65"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "checkAndUpdateExpired",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "all",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L68"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "subscriptionCommandCenter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "setSubscriptions",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L72"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "setCommandCenter",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L73"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_fetchsubscriptions",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L77"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handlesubscriptionchange",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L88"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "startTrial",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "parseInt",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "setShowAddModal",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handleadd",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handlecancel",
+      "callee": "confirm",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handlecancel",
+      "callee": "cancel",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L145"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handlecancel",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L146"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_handlecancel",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L149"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_getdaysuntil",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L155"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_getdaysuntil",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L155"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_getdaysuntil",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_getdaysuntil",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L156"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_daysuntil",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L400"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_daysuntil",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L400"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_daysuntil",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L401"
+    },
+    {
+      "caller_nid": "pages_subscriptionspage_daysuntil",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\pages\\SubscriptionsPage.tsx",
+      "source_location": "L401"
+    }
+  ]
+}

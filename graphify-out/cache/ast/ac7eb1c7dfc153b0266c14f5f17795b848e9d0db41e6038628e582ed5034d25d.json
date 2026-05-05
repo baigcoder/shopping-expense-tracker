@@ -1,0 +1,147 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "label": "featureExpansionApi.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_featureexpansionapi_cachedread",
+      "label": "cachedRead()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "services_featureexpansionapi_clearreadcache",
+      "label": "clearReadCache()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L26"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_api",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "target": "services_featureexpansionapi_cachedread",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_featureexpansionapi_ts",
+      "target": "services_featureexpansionapi_clearreadcache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L26",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L9"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L10"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L12"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "finally",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "then",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "request",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L15"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_cachedread",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "clear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L28"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "clear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L29"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L33"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "forEach",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L36"
+    },
+    {
+      "caller_nid": "services_featureexpansionapi_clearreadcache",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\featureExpansionApi.ts",
+      "source_location": "L36"
+    }
+  ]
+}

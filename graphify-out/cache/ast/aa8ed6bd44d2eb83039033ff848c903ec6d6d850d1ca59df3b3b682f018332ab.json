@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_cache_ts",
+      "label": "cache.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "middleware_cache_cachecontrol",
+      "label": "cacheControl()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "middleware_cache_etagsupport",
+      "label": "etagSupport()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L38"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_cache_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_cache_ts",
+      "target": "middleware_cache_cachecontrol",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_middleware_cache_ts",
+      "target": "middleware_cache_etagsupport",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "setHeader",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "getHeader",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L43"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "end",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L46"
+    },
+    {
+      "caller_nid": "middleware_cache_etagsupport",
+      "callee": "next",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\middleware\\cache.ts",
+      "source_location": "L50"
+    }
+  ]
+}

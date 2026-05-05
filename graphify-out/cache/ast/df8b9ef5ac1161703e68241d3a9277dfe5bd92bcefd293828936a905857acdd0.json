@@ -1,0 +1,399 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "label": "AIChatbot.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_aichatbot_scrolltobottom",
+      "label": "scrollToBottom()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L54"
+    },
+    {
+      "id": "components_aichatbot_fetchvoiceprefs",
+      "label": "fetchVoicePrefs()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L108"
+    },
+    {
+      "id": "components_aichatbot_handlevoiceclick",
+      "label": "handleVoiceClick()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L127"
+    },
+    {
+      "id": "components_aichatbot_handlevoicesetupcomplete",
+      "label": "handleVoiceSetupComplete()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L136"
+    },
+    {
+      "id": "components_aichatbot_handlesend",
+      "label": "handleSend()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L142"
+    },
+    {
+      "id": "components_aichatbot_handlekeypress",
+      "label": "handleKeyPress()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L180"
+    },
+    {
+      "id": "components_aichatbot_handleclearchat",
+      "label": "handleClearChat()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L187"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_store_usestore",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_hooks_useairealtime",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_voicesetupmodal",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_voicecallmodal",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_api",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_scrolltobottom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_fetchvoiceprefs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_handlevoiceclick",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_handlevoicesetupcomplete",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_handlesend",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_handlekeypress",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L180",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_aichatbot_tsx",
+      "target": "components_aichatbot_handleclearchat",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L187",
+      "weight": 1.0
+    },
+    {
+      "source": "components_aichatbot_handlekeypress",
+      "target": "components_aichatbot_handlesend",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L183",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_aichatbot_scrolltobottom",
+      "callee": "scrollIntoView",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "components_aichatbot_fetchvoiceprefs",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L111"
+    },
+    {
+      "caller_nid": "components_aichatbot_fetchvoiceprefs",
+      "callee": "setVoicePrefs",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L114"
+    },
+    {
+      "caller_nid": "components_aichatbot_fetchvoiceprefs",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlevoiceclick",
+      "callee": "setShowVoiceCall",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L129"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlevoiceclick",
+      "callee": "setShowVoiceSetup",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L131"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlevoicesetupcomplete",
+      "callee": "setVoicePrefs",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L137"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlevoicesetupcomplete",
+      "callee": "setShowVoiceSetup",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L138"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlevoicesetupcomplete",
+      "callee": "setShowVoiceCall",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "trim",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L143"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setMessages",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setInput",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L154"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L155"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "import",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "getAIResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L159"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setMessages",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L166"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L169"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L169"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setMessages",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L174"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlesend",
+      "callee": "setIsLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L176"
+    },
+    {
+      "caller_nid": "components_aichatbot_handlekeypress",
+      "callee": "preventDefault",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "components_aichatbot_handleclearchat",
+      "callee": "setMessages",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\AIChatbot.tsx",
+      "source_location": "L188"
+    }
+  ]
+}

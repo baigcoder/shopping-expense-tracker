@@ -1,0 +1,674 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "label": "currencyService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_currencyservice_fetchexchangerates",
+      "label": "fetchExchangeRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L101"
+    },
+    {
+      "id": "services_currencyservice_getcachedrates",
+      "label": "getCachedRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L138"
+    },
+    {
+      "id": "services_currencyservice_getfallbackrates",
+      "label": "getFallbackRates()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L149"
+    },
+    {
+      "id": "services_currencyservice_convertcurrency",
+      "label": "convertCurrency()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L172"
+    },
+    {
+      "id": "services_currencyservice_convertcurrencysync",
+      "label": "convertCurrencySync()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L200"
+    },
+    {
+      "id": "services_currencyservice_getexchangerate",
+      "label": "getExchangeRate()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L220"
+    },
+    {
+      "id": "services_currencyservice_detectcurrencyfromstring",
+      "label": "detectCurrencyFromString()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L231"
+    },
+    {
+      "id": "services_currencyservice_autoconverttransaction",
+      "label": "autoConvertTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L255"
+    },
+    {
+      "id": "services_currencyservice_detectusercountry",
+      "label": "detectUserCountry()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L280"
+    },
+    {
+      "id": "services_currencyservice_getusercurrency",
+      "label": "getUserCurrency()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L331"
+    },
+    {
+      "id": "services_currencyservice_formatcurrency",
+      "label": "formatCurrency()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L342"
+    },
+    {
+      "id": "services_currencyservice_formatcompact",
+      "label": "formatCompact()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L360"
+    },
+    {
+      "id": "services_currencyservice_getcurrencysymbol",
+      "label": "getCurrencySymbol()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L373"
+    },
+    {
+      "id": "services_currencyservice_getcurrencycode",
+      "label": "getCurrencyCode()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L382"
+    },
+    {
+      "id": "services_currencyservice_getcurrencyinfo",
+      "label": "getCurrencyInfo()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L387"
+    },
+    {
+      "id": "services_currencyservice_setcurrency",
+      "label": "setCurrency()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L392"
+    },
+    {
+      "id": "services_currencyservice_loadsavedcurrency",
+      "label": "loadSavedCurrency()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L403"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_fetchexchangerates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getcachedrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getfallbackrates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L149",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_convertcurrency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L172",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_convertcurrencysync",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getexchangerate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L220",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_detectcurrencyfromstring",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_autoconverttransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L255",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_detectusercountry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L280",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L331",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_formatcurrency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L342",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_formatcompact",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L360",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getcurrencysymbol",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L373",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getcurrencycode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L382",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_getcurrencyinfo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L387",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_setcurrency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L392",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice_ts",
+      "target": "services_currencyservice_loadsavedcurrency",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L403",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_fetchexchangerates",
+      "target": "services_currencyservice_getcachedrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_fetchexchangerates",
+      "target": "services_currencyservice_getfallbackrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L133",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_convertcurrency",
+      "target": "services_currencyservice_fetchexchangerates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_convertcurrencysync",
+      "target": "services_currencyservice_getcachedrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L207",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_convertcurrencysync",
+      "target": "services_currencyservice_getfallbackrates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L207",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_getexchangerate",
+      "target": "services_currencyservice_fetchexchangerates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_autoconverttransaction",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_autoconverttransaction",
+      "target": "services_currencyservice_getexchangerate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_getusercurrency",
+      "target": "services_currencyservice_detectusercountry",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L334",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_formatcurrency",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L344",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_formatcompact",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L361",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_getcurrencysymbol",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L378",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_getcurrencycode",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L383",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_getcurrencyinfo",
+      "target": "services_currencyservice_getusercurrency",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L388",
+      "weight": 1.0
+    },
+    {
+      "source": "services_currencyservice_setcurrency",
+      "target": "services_currencyservice_fetchexchangerates",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L398",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L118"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L123"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "services_currencyservice_fetchexchangerates",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L132"
+    },
+    {
+      "caller_nid": "services_currencyservice_getcachedrates",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "services_currencyservice_getcachedrates",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "services_currencyservice_getfallbackrates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L157"
+    },
+    {
+      "caller_nid": "services_currencyservice_getfallbackrates",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L163"
+    },
+    {
+      "caller_nid": "services_currencyservice_getfallbackrates",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectcurrencyfromstring",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L241"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectcurrencyfromstring",
+      "callee": "match",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L242"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectcurrencyfromstring",
+      "callee": "parseFloat",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectcurrencyfromstring",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L246"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "resolvedOptions",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "DateTimeFormat",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L308"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L309"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "toUpperCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L315"
+    },
+    {
+      "caller_nid": "services_currencyservice_detectusercountry",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L315"
+    },
+    {
+      "caller_nid": "services_currencyservice_getusercurrency",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L337"
+    },
+    {
+      "caller_nid": "services_currencyservice_formatcurrency",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L344"
+    },
+    {
+      "caller_nid": "services_currencyservice_formatcurrency",
+      "callee": "format",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "services_currencyservice_formatcurrency",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L355"
+    },
+    {
+      "caller_nid": "services_currencyservice_formatcompact",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L364"
+    },
+    {
+      "caller_nid": "services_currencyservice_formatcompact",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L367"
+    },
+    {
+      "caller_nid": "services_currencyservice_getcurrencysymbol",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L375"
+    },
+    {
+      "caller_nid": "services_currencyservice_setcurrency",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L393"
+    },
+    {
+      "caller_nid": "services_currencyservice_setcurrency",
+      "callee": "setItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L396"
+    },
+    {
+      "caller_nid": "services_currencyservice_loadsavedcurrency",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_currencyservice_loadsavedcurrency",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\currencyService.ts",
+      "source_location": "L406"
+    }
+  ]
+}

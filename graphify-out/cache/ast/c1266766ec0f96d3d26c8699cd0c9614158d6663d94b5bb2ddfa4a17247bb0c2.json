@@ -1,0 +1,3112 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "label": "background.js",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_log",
+      "label": "log()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L15"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_warn",
+      "label": "warn()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_error",
+      "label": "error()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L17"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "label": "fetchWithTimeout()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L26"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "label": "updateTransactionSyncStatus()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L42"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "label": "postExtensionHealthEvent()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L53"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "label": "normalizeDetectedTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L69"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "label": "syncDetectedTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L96"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter",
+      "label": "RateLimiter",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L751"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L752"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "label": ".canMakeRequest()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L759"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "label": ".recordRequest()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L771"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "label": ".throttledFetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L780"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimiter_getremainingrequests",
+      "label": ".getRemainingRequests()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L812"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_offlinequeue",
+      "label": "OfflineQueue",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L832"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_offlinequeue_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L833"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_offlinequeue_checkonline",
+      "label": ".checkOnline()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L841"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "label": ".queue()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L852"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "label": ".processQueue()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L870"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_ratelimitedfetch",
+      "label": "rateLimitedFetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L953"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "label": "handleSessionSync()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1161"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "label": "handleExtensionStatusCheck()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1195"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "label": "handleWebsiteLogin()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1215"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "label": "handleUserLoggedIn()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1267"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "label": "handleUserLoggedOut()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1283"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "label": "handleBehaviorTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1310"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "label": "showBehaviorNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1438"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "label": "broadcastTransaction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1464"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "label": "handleSubscriptionDetected()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1495"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "label": "showSubscriptionNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1670"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "label": "scheduleTrialReminders()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1703"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "label": "showTrialReminderNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1794"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "label": "notifyWebsiteTabs()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1833"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_safesendmessage",
+      "label": "safeSendMessage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1860"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "label": "handleCancellationDetected()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1881"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "label": "handlePurchaseDetected()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1919"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "label": "syncPendingTransactions()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2002"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_shownotification",
+      "label": "showNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2111"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "label": "showSyncNotification()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2133"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "label": "getCategoryIcon()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2156"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "label": "getCategoryFromStore()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2167"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_savesitevisit",
+      "label": "saveSiteVisit()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2278"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_getsitevisits",
+      "label": "getSiteVisits()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2334"
+    },
+    {
+      "id": "expense_tracker_chrome_v2_background_categorizesite",
+      "label": "categorizeSite()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2345"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_warn",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L751",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L752",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L759",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L771",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L780",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_getremainingrequests",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L812",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L832",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L833",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_checkonline",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L841",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L852",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L870",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_ratelimitedfetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L953",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1161",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1195",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1215",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1267",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1283",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1310",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1438",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1464",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1495",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1670",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1703",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1794",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1833",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_safesendmessage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1860",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1881",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1919",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2002",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_shownotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2111",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2133",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2156",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2167",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_savesitevisit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2278",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_getsitevisits",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2334",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_extension_expense_tracker_chrome_v2_background_js",
+      "target": "expense_tracker_chrome_v2_background_categorizesite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2345",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "target": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "target": "expense_tracker_chrome_v2_background_warn",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "target": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "target": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L98",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "target": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "target": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "target": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L783",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "target": "expense_tracker_chrome_v2_background_warn",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L784",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L788",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "target": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L802",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L863",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L866",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "target": "expense_tracker_chrome_v2_background_offlinequeue_checkonline",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L872",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L874",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "target": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L901",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L912",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_ratelimitedfetch",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L954",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1174",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "target": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1177",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "target": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1180",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1190",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1222",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1224",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "target": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1245",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "target": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1251",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1263",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1268",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "target": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1271",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1274",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedin",
+      "target": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1280",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1284",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1292",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1311",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1325",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1353",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1374",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1381",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1391",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1394",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1425",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1457",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1483",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1496",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1510",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1542",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1547",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1548",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1663",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "target": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1693",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1696",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1732",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1826",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1882",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1920",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1933",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1963",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_shownotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1974",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1978",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1984",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2009",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "target": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2027",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "target": "expense_tracker_chrome_v2_background_shownotification",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2047",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "target": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2054",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2058",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_shownotification",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2129",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2149",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_savesitevisit",
+      "target": "expense_tracker_chrome_v2_background_log",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2279",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_savesitevisit",
+      "target": "expense_tracker_chrome_v2_background_warn",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2286",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_savesitevisit",
+      "target": "expense_tracker_chrome_v2_background_categorizesite",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2313",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_savesitevisit",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2329",
+      "weight": 1.0
+    },
+    {
+      "source": "expense_tracker_chrome_v2_background_getsitevisits",
+      "target": "expense_tracker_chrome_v2_background_error",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2339",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L28"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_fetchwithtimeout",
+      "callee": "clearTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L45"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_updatetransactionsyncstatus",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_postextensionhealthevent",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L62"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "callee": "Number",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L70"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "callee": "isFinite",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "callee": "isFinite",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_normalizedetectedtransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L85"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L116"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L121"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncdetectedtransaction",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L137"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L760"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L761"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L763"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L764"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L765"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_canmakerequest",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L767"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L772"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L773"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L775"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L776"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_recordrequest",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L777"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "record",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L785"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "signRequest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L792"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L800"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "record",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L803"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "record",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L804"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L804"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_throttledfetch",
+      "callee": "record",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L807"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_getremainingrequests",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L813"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_getremainingrequests",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L814"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_ratelimiter_getremainingrequests",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L815"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_checkonline",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L843"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L853"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L856"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L858"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_queue",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L862"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L879"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L886"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L887"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L910"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L920"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L929"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L933"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_offlinequeue_processqueue",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L935"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1164"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1169"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1171"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1183"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "sendResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1185"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "sendResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1187"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesessionsync",
+      "callee": "sendResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1191"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1197"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "callee": "sendResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1199"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "callee": "getManifest",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1201"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleextensionstatuscheck",
+      "callee": "sendResponse",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1207"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1220"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1231"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1236"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1238"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlewebsitelogin",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1254"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "callee": "remove",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1286"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1296"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handleuserloggedout",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1296"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1313"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1317"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1319"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1321"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1324"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1341"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1341"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1344"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1344"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1359"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1364"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1419"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlebehaviortransaction",
+      "callee": "String",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1431"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1439"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1445"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1447"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1449"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showbehaviornotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1453"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1467"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_broadcasttransaction",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1473"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1498"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1503"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1505"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1507"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1509"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1537"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1566"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "encodeURIComponent",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1567"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1577"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1594"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1594"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1596"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1596"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1597"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1597"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "setFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1608"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1608"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1610"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1610"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "setMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1612"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1612"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1614"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1614"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1631"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1631"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1636"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1644"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1648"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlesubscriptiondetected",
+      "callee": "text",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1662"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1671"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1677"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1679"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsubscriptionnotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1687"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1706"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1706"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1709"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1709"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1709"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1712"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1717"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1720"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1725"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1725"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1726"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1726"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1729"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1730"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "toDateString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1732"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "setDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1739"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getDate",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1739"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1740"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1740"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1743"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1744"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "toDateString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1746"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1751"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1752"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_scheduletrialreminders",
+      "callee": "toDateString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1754"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1795"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1810"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1812"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showtrialremindernotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1821"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1836"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "callee": "query",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1837"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1843"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "callee": "then",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1843"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_notifywebsitetabs",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1843"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_safesendmessage",
+      "callee": "resolve",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1861"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1884"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1888"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1893"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1895"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlecancellationdetected",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1906"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1923"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "toString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1926"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1926"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1931"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1937"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "unshift",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1941"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1943"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1944"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1952"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1958"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1965"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1965"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1970"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1975"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1980"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1981"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1985"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1986"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1989"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_handlepurchasedetected",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L1990"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2004"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2016"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2022"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2029"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "split",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2029"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2029"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2034"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2036"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2039"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_syncpendingtransactions",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2043"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2112"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2115"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2117"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "toFixed",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2121"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "slice",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2121"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_shownotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2125"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2134"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "callee": "create",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2137"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "callee": "getURL",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2139"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_showsyncnotification",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2145"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2157"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2158"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2158"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2159"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2159"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2159"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2160"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2160"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2161"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2161"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2161"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2162"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2162"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2163"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryicon",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2163"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2168"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2169"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2169"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2169"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2170"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2170"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2170"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2171"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2171"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2172"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getcategoryfromstore",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2172"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2291"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2293"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2293"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2300"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2310"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2311"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2318"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2319"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2322"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "sendMessage",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2322"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_savesitevisit",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2324"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_getsitevisits",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2336"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "toLowerCase",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2346"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2349"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2353"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2357"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2361"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2365"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2369"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2373"
+    },
+    {
+      "caller_nid": "expense_tracker_chrome_v2_background_categorizesite",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\extension\\expense-tracker-chrome-v2\\background.js",
+      "source_location": "L2377"
+    }
+  ]
+}

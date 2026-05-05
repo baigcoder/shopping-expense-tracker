@@ -1,0 +1,568 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "label": "performance.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_performance_memorycache",
+      "label": "MemoryCache",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "utils_performance_memorycache_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L17"
+    },
+    {
+      "id": "utils_performance_memorycache_set",
+      "label": ".set()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "utils_performance_memorycache_get",
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L34"
+    },
+    {
+      "id": "utils_performance_memorycache_has",
+      "label": ".has()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L46"
+    },
+    {
+      "id": "utils_performance_memorycache_delete",
+      "label": ".delete()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L56"
+    },
+    {
+      "id": "utils_performance_memorycache_clear",
+      "label": ".clear()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L60"
+    },
+    {
+      "id": "utils_performance_memorycache_cleanup",
+      "label": ".cleanup()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "utils_performance_dedupedfetch",
+      "label": "dedupedFetch()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L83"
+    },
+    {
+      "id": "utils_performance_debounce",
+      "label": "debounce()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L117"
+    },
+    {
+      "id": "utils_performance_throttle",
+      "label": "throttle()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L129"
+    },
+    {
+      "id": "utils_performance_lazywithretry",
+      "label": "lazyWithRetry()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L148"
+    },
+    {
+      "id": "utils_performance_preloadcomponent",
+      "label": "preloadComponent()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L167"
+    },
+    {
+      "id": "utils_performance_getoptimizedimageurl",
+      "label": "getOptimizedImageUrl()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L177"
+    },
+    {
+      "id": "utils_performance_lazyloadimage",
+      "label": "lazyLoadImage()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L193"
+    },
+    {
+      "id": "utils_performance_measurerendertime",
+      "label": "measureRenderTime()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L216"
+    },
+    {
+      "id": "utils_performance_reportwebvitals",
+      "label": "reportWebVitals()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L230"
+    },
+    {
+      "id": "utils_performance_getnetworkstatus",
+      "label": "getNetworkStatus()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L265"
+    },
+    {
+      "id": "utils_performance_onnetworkchange",
+      "label": "onNetworkChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L280"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_memorycache",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_set",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_get",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_has",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_delete",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_clear",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache",
+      "target": "utils_performance_memorycache_cleanup",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_dedupedfetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_debounce",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_throttle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_lazywithretry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_preloadcomponent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_getoptimizedimageurl",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L177",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_lazyloadimage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L193",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_measurerendertime",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L216",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_reportwebvitals",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_getnetworkstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L265",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "utils_performance_onnetworkchange",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L280",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_utils_performance_ts",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L293",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache_set",
+      "target": "utils_performance_memorycache_delete",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache_get",
+      "target": "utils_performance_memorycache_delete",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache_has",
+      "target": "utils_performance_memorycache_get",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache_has",
+      "target": "utils_performance_memorycache_delete",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_memorycache_cleanup",
+      "target": "utils_performance_memorycache_delete",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_dedupedfetch",
+      "target": "utils_performance_memorycache_get",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_dedupedfetch",
+      "target": "utils_performance_memorycache_has",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_performance_dedupedfetch",
+      "target": "utils_performance_memorycache_set",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "utils_performance_memorycache_set",
+      "callee": "next",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_set",
+      "callee": "keys",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_set",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_get",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_has",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L49"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_cleanup",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "utils_performance_memorycache_cleanup",
+      "callee": "entries",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L67"
+    },
+    {
+      "caller_nid": "utils_performance_dedupedfetch",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "utils_performance_dedupedfetch",
+      "callee": "then",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "utils_performance_dedupedfetch",
+      "callee": "fetchFn",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L98"
+    },
+    {
+      "caller_nid": "utils_performance_debounce",
+      "callee": "clearTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "utils_performance_debounce",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "utils_performance_throttle",
+      "callee": "fn",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L137"
+    },
+    {
+      "caller_nid": "utils_performance_throttle",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L139"
+    },
+    {
+      "caller_nid": "utils_performance_lazywithretry",
+      "callee": "lazy",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L153"
+    },
+    {
+      "caller_nid": "utils_performance_preloadcomponent",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "utils_performance_preloadcomponent",
+      "callee": "importFn",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L170"
+    },
+    {
+      "caller_nid": "utils_performance_getoptimizedimageurl",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "utils_performance_getoptimizedimageurl",
+      "callee": "startsWith",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L183"
+    },
+    {
+      "caller_nid": "utils_performance_lazyloadimage",
+      "callee": "observe",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "utils_performance_measurerendertime",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L217"
+    },
+    {
+      "caller_nid": "utils_performance_reportwebvitals",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L232"
+    },
+    {
+      "caller_nid": "utils_performance_onnetworkchange",
+      "callee": "addEventListener",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L284"
+    },
+    {
+      "caller_nid": "utils_performance_onnetworkchange",
+      "callee": "addEventListener",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\utils\\performance.ts",
+      "source_location": "L285"
+    }
+  ]
+}

@@ -1,0 +1,1167 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "label": "whatIfService.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "services_whatifservice_whatifservice",
+      "label": "WhatIfService",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L90"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_runscenario",
+      "label": ".runScenario()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L94"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "label": ".simulateCancelSubscription()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L146"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "label": ".simulateAddSubscription()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L173"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "label": ".simulateBudgetChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L189"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulateincomechange",
+      "label": ".simulateIncomeChange()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L217"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "label": ".simulateSavingsGoal()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L234"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "label": ".simulateMajorPurchase()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L297"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "label": ".simulateCategoryReduction()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L362"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_calculateresults",
+      "label": ".calculateResults()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L388"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_monthssincecreated",
+      "label": ".monthsSinceCreated()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L455"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_getrecommendation",
+      "label": ".getRecommendation()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L461"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_generatesummary",
+      "label": ".generateSummary()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L469"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_generatepros",
+      "label": ".generatePros()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L477"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_generatecons",
+      "label": ".generateCons()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L487"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_emptyresults",
+      "label": ".emptyResults()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L497"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_cancelalltrials",
+      "label": ".cancelAllTrials()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L518"
+    },
+    {
+      "id": "services_whatifservice_whatifservice_cuttopcategory",
+      "label": ".cutTopCategory()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L527"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_subscriptionservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_budgetservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_goalservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_moneytwinservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_currencyservice",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_services_whatifservice_ts",
+      "target": "services_whatifservice_whatifservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_runscenario",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L146",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L173",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulateincomechange",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L217",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L234",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L297",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L362",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L388",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_monthssincecreated",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L455",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_getrecommendation",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L461",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_generatesummary",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L469",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_generatepros",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L477",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_generatecons",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L487",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_emptyresults",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L497",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_cancelalltrials",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L518",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice",
+      "target": "services_whatifservice_whatifservice_cuttopcategory",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L527",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulateincomechange",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_runscenario",
+      "target": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "target": "services_whatifservice_whatifservice_emptyresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "target": "services_whatifservice_whatifservice_emptyresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L210",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulateincomechange",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L227",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "target": "services_whatifservice_whatifservice_emptyresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L372",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "target": "services_whatifservice_whatifservice_calculateresults",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L381",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_calculateresults",
+      "target": "services_whatifservice_whatifservice_getrecommendation",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L440",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_calculateresults",
+      "target": "services_whatifservice_whatifservice_generatesummary",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L448",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_calculateresults",
+      "target": "services_whatifservice_whatifservice_generatepros",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L450",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_calculateresults",
+      "target": "services_whatifservice_whatifservice_generatecons",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L451",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_cancelalltrials",
+      "target": "services_whatifservice_whatifservice_runscenario",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L521",
+      "weight": 1.0
+    },
+    {
+      "source": "services_whatifservice_whatifservice_cuttopcategory",
+      "target": "services_whatifservice_whatifservice_runscenario",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L530",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "services_whatifservice_whatifservice_runscenario",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L100"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_runscenario",
+      "callee": "toISOString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L140"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L152"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "reduce",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L158"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "join",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L164"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecancelsubscription",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L168"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L180"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateaddsubscription",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L182"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "getMoneyTwin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L194"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L208"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatebudgetchange",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L210"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L224"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L224"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L225"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulateincomechange",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L227"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L242"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L243"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L243"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L251"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L251"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L252"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L256"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L258"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L264"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "ceil",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L268"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L274"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L278"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L279"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L282"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L283"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatesavingsgoal",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L287"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L312"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L313"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L317"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L318"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "min",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L325"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L327"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L327"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L328"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L330"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L347"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L348"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L352"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatemajorpurchase",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L353"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "callee": "getMoneyTwin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L367"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "callee": "find",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L369"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "callee": "catch",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L381"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_simulatecategoryreduction",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L381"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "getFullYear",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L401"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "getMonth",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L401"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "toLocaleString",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L402"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "pow",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L404"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L407"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L413"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "round",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L419"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_calculateresults",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L423"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_monthssincecreated",
+      "callee": "now",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L456"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_monthssincecreated",
+      "callee": "max",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L458"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_monthssincecreated",
+      "callee": "floor",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L458"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_monthssincecreated",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L458"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_monthssincecreated",
+      "callee": "getTime",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L458"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatesummary",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L471"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatesummary",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L471"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatesummary",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatesummary",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L473"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L480"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L480"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L481"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L481"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L482"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatepros",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L482"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatecons",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L490"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatecons",
+      "callee": "push",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L492"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatecons",
+      "callee": "formatCurrency",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L492"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_generatecons",
+      "callee": "abs",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L492"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_cancelalltrials",
+      "callee": "getAll",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L519"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_cancelalltrials",
+      "callee": "filter",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L520"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_cancelalltrials",
+      "callee": "map",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L522"
+    },
+    {
+      "caller_nid": "services_whatifservice_whatifservice_cuttopcategory",
+      "callee": "getMoneyTwin",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\services\\whatIfService.ts",
+      "source_location": "L528"
+    }
+  ]
+}

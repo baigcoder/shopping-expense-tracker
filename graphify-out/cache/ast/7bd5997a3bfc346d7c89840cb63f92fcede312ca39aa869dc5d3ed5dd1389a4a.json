@@ -1,0 +1,564 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "label": "resetController.ts",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "controllers_resetcontroller_requestresetotp",
+      "label": "requestResetOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L20"
+    },
+    {
+      "id": "controllers_resetcontroller_confirmreset",
+      "label": "confirmReset()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L71"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "target": "express",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_config_supabase_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_services_emailservice_ts",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "target": "controllers_resetcontroller_requestresetotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_backend_src_controllers_resetcontroller_ts",
+      "target": "controllers_resetcontroller_confirmreset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L71",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L24"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "includes",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L30"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "generateOTP",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L39"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "getOTPExpiry",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "set",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L44"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "sendResetOTPEmail",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L52"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L55"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L59"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L65"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_requestresetotp",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L82"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "get",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L88"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L103"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L104"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "single",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L115"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L122"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L128"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L135"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L142"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L147"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L151"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L161"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L171"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L171"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L171"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L171"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "select",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "eq",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L181"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L190"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L191"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "delete",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L196"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "log",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L198"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L200"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L205"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L206"
+    },
+    {
+      "caller_nid": "controllers_resetcontroller_confirmreset",
+      "callee": "status",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\backend\\src\\controllers\\resetController.ts",
+      "source_location": "L206"
+    }
+  ]
+}

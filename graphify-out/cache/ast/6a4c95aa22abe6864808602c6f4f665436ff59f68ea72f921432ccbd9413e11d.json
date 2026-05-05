@@ -1,0 +1,366 @@
+{
+  "nodes": [
+    {
+      "id": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "label": "ResetConfirmModal.tsx",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_resetconfirmmodal_getauthtoken",
+      "label": "getAuthToken()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L28"
+    },
+    {
+      "id": "components_resetconfirmmodal_requestotp",
+      "label": "requestOTP()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L49"
+    },
+    {
+      "id": "components_resetconfirmmodal_confirmreset",
+      "label": "confirmReset()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L85"
+    },
+    {
+      "id": "components_resetconfirmmodal_handleclose",
+      "label": "handleClose()",
+      "file_type": "code",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L131"
+    }
+  ],
+  "edges": [
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "framer_motion",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_lib_utils",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "sonner",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "components_resetconfirmmodal_getauthtoken",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "components_resetconfirmmodal_requestotp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "components_resetconfirmmodal_confirmreset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "d_bsse_projects_cashly_shopping_expense_tracker_frontend_src_components_resetconfirmmodal_tsx",
+      "target": "components_resetconfirmmodal_handleclose",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "components_resetconfirmmodal_requestotp",
+      "target": "components_resetconfirmmodal_getauthtoken",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "components_resetconfirmmodal_confirmreset",
+      "target": "components_resetconfirmmodal_getauthtoken",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L95",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "components_resetconfirmmodal_getauthtoken",
+      "callee": "import",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L31"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_getauthtoken",
+      "callee": "getSession",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L32"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_getauthtoken",
+      "callee": "getItem",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L38"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_getauthtoken",
+      "callee": "parse",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L40"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L50"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L51"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L56"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L60"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L66"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L69"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L75"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L76"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L78"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L79"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_requestotp",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L81"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L87"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L91"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L92"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L97"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "fetch",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L101"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "stringify",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L107"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "json",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L110"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L116"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "success",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L117"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setTimeout",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L119"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L124"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "error",
+      "is_member_call": true,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L125"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_confirmreset",
+      "callee": "setLoading",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L127"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_handleclose",
+      "callee": "setStep",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L132"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_handleclose",
+      "callee": "setOtp",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L133"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_handleclose",
+      "callee": "setError",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L134"
+    },
+    {
+      "caller_nid": "components_resetconfirmmodal_handleclose",
+      "callee": "onClose",
+      "is_member_call": false,
+      "source_file": "D:\\BSSE\\Projects\\CASHLY\\shopping-expense-tracker\\frontend\\src\\components\\ResetConfirmModal.tsx",
+      "source_location": "L135"
+    }
+  ]
+}
