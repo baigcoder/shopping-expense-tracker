@@ -568,7 +568,9 @@ export const signInWithEmail = async (email: string, password: string) => {
 export const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
     if (error) throw error;
-    return data;
+    // Return user+session so callers can eagerly hydrate the auth store
+    // before navigating (avoids race condition with onAuthStateChanged).
+    return data as { user: any; session: any } | null;
 };
 
 /** Process the result of a Google OAuth redirect (after user returns from Google). */

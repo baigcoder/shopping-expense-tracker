@@ -51,7 +51,20 @@ const LoginPage = () => {
         soundManager.play('click');
         setIsLoading(true);
         try {
-            await signInWithGoogle();
+            const result = await signInWithGoogle();
+            // Eagerly hydrate auth store before navigating so the route guard
+            // sees isAuthenticated=true immediately (fixes race with onAuthStateChanged).
+            if (result?.user) {
+                const { useAuthStore } = await import('../store/useStore');
+                useAuthStore.getState().setUser({
+                    id: result.user.id,
+                    email: result.user.email!,
+                    name: result.user.user_metadata?.full_name || result.user.user_metadata?.name || result.user.email?.split('@')[0] || 'User',
+                    avatarUrl: result.user.user_metadata?.avatar_url,
+                    currency: 'USD',
+                    createdAt: result.user.created_at || new Date().toISOString(),
+                });
+            }
             soundManager.play('success');
             navigate('/dashboard');
         } catch (error: any) {
