@@ -656,7 +656,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const websiteTabs = tabs.filter(tab =>
                 tab.url && (
                     tab.url.includes('localhost:5173') ||
+                    tab.url.includes('localhost:5174') ||
                     tab.url.includes('127.0.0.1:5173') ||
+                    tab.url.includes('127.0.0.1:5174') ||
                     tab.url.includes('cashly') ||
                     tab.url.includes('vercel.app')
                 )
@@ -687,6 +689,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             console.log('✅ Cashly Extension sync flag injected!');
                             // Dispatch event to notify React
                             window.dispatchEvent(new CustomEvent('cashly-extension-synced', {
+                                detail: { email: userEmail }
+                            }));
+                            window.dispatchEvent(new CustomEvent('extension-synced', {
                                 detail: { email: userEmail }
                             }));
                         },
@@ -858,7 +863,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Try to get theme from website localStorage via content script
         try {
-            const [tab] = await chrome.tabs.query({ url: '*://localhost:5173/*' });
+            const tabs = [
+                ...(await chrome.tabs.query({ url: '*://localhost:5173/*' })),
+                ...(await chrome.tabs.query({ url: '*://localhost:5174/*' })),
+                ...(await chrome.tabs.query({ url: '*://127.0.0.1:5173/*' })),
+                ...(await chrome.tabs.query({ url: '*://127.0.0.1:5174/*' })),
+            ];
+            const [tab] = tabs;
             if (tab) {
                 const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_THEME_PREFERENCE' });
                 if (response && response.theme === 'dark') {
@@ -901,23 +912,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('change', () => {
-            const isDark = darkModeToggle.checked;
-            chrome.storage.local.set({ darkMode: isDark });
-            document.body.classList.toggle('dark-mode', isDark);
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', () => {
+                const isDark = darkModeToggle.checked;
+                chrome.storage.local.set({ darkMode: isDark });
+                document.body.classList.toggle('dark-mode', isDark);
 
-            // Also try to sync theme to website
-            chrome.tabs.query({ url: '*://localhost:5173/*' }).then(tabs => {
-                tabs.forEach(tab => {
-                    chrome.tabs.sendMessage(tab.id, {
-                        type: 'SET_THEME_PREFERENCE',
-                        theme: isDark ? 'dark' : 'light'
-                    }).catch(() => { });
+                // Also try to sync theme to website
+            Promise.all([
+                chrome.tabs.query({ url: '*://localhost:5173/*' }),
+                chrome.tabs.query({ url: '*://localhost:5174/*' }),
+                chrome.tabs.query({ url: '*://127.0.0.1:5173/*' }),
+                chrome.tabs.query({ url: '*://127.0.0.1:5174/*' }),
+            ]).then(tabGroups => {
+                tabGroups.flat().forEach(tab => {
+                        chrome.tabs.sendMessage(tab.id, {
+                            type: 'SET_THEME_PREFERENCE',
+                            theme: isDark ? 'dark' : 'light'
+                        }).catch(() => { });
+                    });
                 });
             });
-        });
-    }
+        }
 
     // ================================
     // DATA FUNCTIONS

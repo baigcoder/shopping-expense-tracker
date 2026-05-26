@@ -18,6 +18,22 @@ const sameEmail = (a?: string | null, b?: string | null) => {
     return (a || '').trim().toLowerCase() === expected;
 };
 
+const readStoredExtensionEmail = () => {
+    const keys = ['cashly_extension_auth', 'cashly_extension_synced'];
+    for (const key of keys) {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(key) || 'null');
+            const email = parsed?.email;
+            if ((parsed?.loggedIn || parsed?.synced) && email) return String(email);
+        } catch {
+            // Ignore corrupt extension cache and keep checking other signals.
+        }
+    }
+    return null;
+};
+
+const wait = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
 /**
  * Desktop-only: blocks dashboard until Cashly extension is present and session-synced.
  * Mobile/tablet: no wall (extensions not used the same way).
@@ -46,9 +62,11 @@ const ExtensionWall = () => {
         const handleRemoved = () => setSyncedNow(false);
 
         window.addEventListener('extension-synced', handleSynced);
+        window.addEventListener('cashly-extension-synced', handleSynced);
         window.addEventListener('extension-removed', handleRemoved);
         return () => {
             window.removeEventListener('extension-synced', handleSynced);
+            window.removeEventListener('cashly-extension-synced', handleSynced);
             window.removeEventListener('extension-removed', handleRemoved);
         };
     }, [user?.email]);
@@ -71,12 +89,21 @@ const ExtensionWall = () => {
             }
             // Also send CHECK_STATUS for good measure
             window.postMessage({ type: 'WEBSITE_TO_EXTENSION', action: 'CHECK_STATUS' }, '*');
-            await new Promise((r) => setTimeout(r, 500));
-            await checkExtension();
+            for (let attempt = 0; attempt < 12; attempt += 1) {
+                await wait(200);
+                const storedEmail = readStoredExtensionEmail();
+                if (storedEmail && sameEmail(storedEmail, user?.email)) {
+                    setSyncedNow(true);
+                    return;
+                }
+            }
+
+            const isSynced = await checkExtension();
+            if (isSynced) setSyncedNow(true);
         } finally {
             setBusy(false);
         }
-    }, [checkExtension, syncSession]);
+    }, [checkExtension, syncSession, user?.email]);
 
     const handleSignOut = useCallback(async () => {
         setBusy(true);

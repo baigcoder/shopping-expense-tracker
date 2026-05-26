@@ -267,6 +267,7 @@ const ExtensionAlert = () => {
         };
 
         window.addEventListener('extension-synced', handleExtensionSynced as EventListener);
+        window.addEventListener('cashly-extension-synced', handleExtensionSynced as EventListener);
         window.addEventListener('extension-removed', handleExtensionRemoved as EventListener);
         window.addEventListener('storage', handleStorageChange);
 
@@ -290,6 +291,7 @@ const ExtensionAlert = () => {
 
         return () => {
             window.removeEventListener('extension-synced', handleExtensionSynced as EventListener);
+            window.removeEventListener('cashly-extension-synced', handleExtensionSynced as EventListener);
             window.removeEventListener('extension-removed', handleExtensionRemoved as EventListener);
             window.removeEventListener('storage', handleStorageChange);
             clearInterval(pollStorageInterval);

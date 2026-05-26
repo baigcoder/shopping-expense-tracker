@@ -572,6 +572,7 @@ export const useExtensionSync = () => {
 
         window.addEventListener('cashly-extension-ready', handleExtensionReady as EventListener);
         window.addEventListener('extension-synced', handleExtensionSynced as EventListener);
+        window.addEventListener('cashly-extension-synced', handleExtensionSynced as EventListener);
         window.addEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
         window.addEventListener('cashly-connection-change', handleConnectionChange as EventListener);
         window.addEventListener('message', handleBehaviorTransaction);
@@ -579,7 +580,7 @@ export const useExtensionSync = () => {
 
         // Listen for storage changes from other tabs/windows
         const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === 'cashly_extension_synced' || e.key === 'cashly_extension_auth') {
+            if (e.key === 'cashly_extension_synced' || e.key === 'cashly_extension_auth' || e.key === EXTENSION_PRESENCE_KEY) {
                 checkExtension();
             }
             // Also check for connection state changes
@@ -601,6 +602,7 @@ export const useExtensionSync = () => {
         return () => {
             window.removeEventListener('cashly-extension-ready', handleExtensionReady as EventListener);
             window.removeEventListener('extension-synced', handleExtensionSynced as EventListener);
+            window.removeEventListener('cashly-extension-synced', handleExtensionSynced as EventListener);
             window.removeEventListener('extension-logged-out', handleExtensionLoggedOut as EventListener);
             window.removeEventListener('cashly-connection-change', handleConnectionChange as EventListener);
             window.removeEventListener('message', handleBehaviorTransaction);

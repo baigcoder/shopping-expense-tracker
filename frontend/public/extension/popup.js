@@ -2,6 +2,12 @@
     const CONFIG_DATA = window.CONFIG || {};
     const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
     const WEBSITE_URL = CONFIG_DATA.WEBSITE_URL || 'http://localhost:5173';
+    const WEBSITE_ORIGINS = CONFIG_DATA.WEBSITE_ORIGINS || [
+        WEBSITE_URL,
+        'http://localhost:5174',
+        'http://127.0.0.1:5173',
+        'http://127.0.0.1:5174',
+    ];
 
     const routes = {
         dashboard: '/dashboard',
@@ -47,6 +53,25 @@
         return null;
     };
 
+    const findWebsiteTab = async () => {
+        for (const origin of WEBSITE_ORIGINS) {
+            const baseOrigin = String(origin).replace(/\/$/, '');
+            const [tab] = await chrome.tabs.query({ url: `${baseOrigin}/*` });
+            if (tab?.id) return tab;
+        }
+
+        const tabs = await chrome.tabs.query({});
+        return tabs.find((tab) => {
+            if (!tab.url) return false;
+            try {
+                const { hostname, port } = new URL(tab.url);
+                return (hostname === 'localhost' || hostname === '127.0.0.1') && (port === '5173' || port === '5174');
+            } catch {
+                return false;
+            }
+        });
+    };
+
     const apiFetch = async (path, options = {}) => {
         if (!authData?.accessToken) throw new Error('Extension is not synced with Cashly.');
         const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -67,7 +92,7 @@
         $('loginError').hidden = true;
 
         try {
-            const [tab] = await chrome.tabs.query({ url: `${WEBSITE_URL}/*` });
+            const tab = await findWebsiteTab();
             if (!tab?.id) {
                 openWeb(routes.login);
                 throw new Error('Cashly is opening. Sign in there, then click sync again.');
