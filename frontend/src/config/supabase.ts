@@ -461,7 +461,8 @@ const auth = {
                 return { data: null, error: null };
             }
             if (code === 'auth/unauthorized-domain') {
-                return { data: null, error: { message: 'This domain is not authorized for Google sign-in. Add it in Firebase Console > Authentication > Settings.', code } };
+                await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
+                return { data: null, error: null };
             }
             if (code === 'auth/network-request-failed') {
                 return { data: null, error: { message: 'Network error. Please check your connection and try again.', code } };
