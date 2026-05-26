@@ -4,11 +4,13 @@ import { initializeApp } from 'firebase/app';
 import {
     createUserWithEmailAndPassword,
     getAuth,
+    getRedirectResult,
     GoogleAuthProvider,
     onAuthStateChanged,
     onIdTokenChanged,
     signInWithEmailAndPassword,
     signInWithPopup,
+    signInWithRedirect,
     signOut as firebaseSignOut,
     updateProfile,
     type User as FirebaseUser,
@@ -448,16 +450,18 @@ const auth = {
             const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
             return { data: { user: await toSupabaseUser(credential.user), session: await toSession(credential.user) }, error: null };
         } catch (err: any) {
-            // Map Firebase auth errors to user-friendly messages
             const code = err?.code || '';
+            // User closed popup — silently ignore
             if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
                 return { data: null, error: { message: 'Sign-in was cancelled', code } };
             }
+            // Popup blocked — seamlessly fall back to redirect
+            if (code === 'auth/popup-blocked') {
+                await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
+                return { data: null, error: null };
+            }
             if (code === 'auth/unauthorized-domain') {
                 return { data: null, error: { message: 'This domain is not authorized for Google sign-in. Add it in Firebase Console > Authentication > Settings.', code } };
-            }
-            if (code === 'auth/popup-blocked') {
-                return { data: null, error: { message: 'Popup was blocked by the browser. Please allow popups and try again.', code } };
             }
             if (code === 'auth/network-request-failed') {
                 return { data: null, error: { message: 'Network error. Please check your connection and try again.', code } };
@@ -565,6 +569,20 @@ export const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
     if (error) throw error;
     return data;
+};
+
+/** Process the result of a Google OAuth redirect (after user returns from Google). */
+export const handleGoogleRedirect = async () => {
+    try {
+        const credential = await getRedirectResult(firebaseAuth);
+        if (!credential) return null;
+        return {
+            user: await toSupabaseUser(credential.user),
+            session: await toSession(credential.user),
+        };
+    } catch {
+        return null;
+    }
 };
 
 export const logout = async () => {

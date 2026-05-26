@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuthStore, useUIStore } from '../store/useStore';
-import { supabase } from '../config/supabase';
+import { supabase, handleGoogleRedirect } from '../config/supabase';
 import { setCurrency as setCurrencyService } from '../services/currencyService';
 
 let lastExtensionSyncKey: string | null = null;
@@ -98,6 +98,18 @@ export const useAuth = () => {
 
         const checkSession = async () => {
             try {
+                // Check for OAuth redirect result first (handles popup-blocked fallback)
+                const redirectResult = await handleGoogleRedirect();
+                if (redirectResult?.user) {
+                    await hydrateUser(redirectResult.user);
+                    notifyExtension('LOGIN', {
+                        session: redirectResult.session,
+                        user: redirectResult.user,
+                    });
+                    setLoading(false);
+                    return;
+                }
+
                 const { data: { session }, error } = await supabase.auth.getSession();
 
                 if (error) {
