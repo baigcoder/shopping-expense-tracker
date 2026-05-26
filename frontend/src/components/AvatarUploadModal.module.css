@@ -233,3 +233,35 @@
         transform: rotate(360deg);
     }
 }
+
+@media (max-width: 640px) {
+    .modalOverlay {
+        align-items: flex-end;
+        padding: 0.75rem;
+    }
+
+    .modal {
+        width: 100%;
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+    }
+
+    .modalHeader,
+    .modalBody,
+    .modalFooter {
+        padding: 1.25rem;
+    }
+
+    .modalFooter {
+        flex-direction: column-reverse;
+    }
+
+    .cancelBtn,
+    .saveBtn {
+        width: 100%;
+    }
+
+    .uploadTrigger {
+        padding: 2rem 1rem;
+    }
+}

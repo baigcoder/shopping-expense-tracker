@@ -13,7 +13,7 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
     return (
-        <div className="h-screen flex overflow-hidden">
+        <div className="min-h-screen flex overflow-y-auto lg:h-screen lg:overflow-hidden">
             {/* Visual Side (Left) */}
             <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 overflow-hidden">
                 {/* Background Effects */}
@@ -97,7 +97,7 @@ const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
             </div>
 
             {/* Form Side (Right) */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-background">
                 <div className="w-full max-w-md">
                     {/* Mobile Logo */}
                     <Link to="/" className="lg:hidden flex items-center gap-3 mb-10">
@@ -115,7 +115,7 @@ const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
                         <h1 className="text-3xl md:text-4xl font-bold font-display tracking-tight mb-2">
                             {title}
                         </h1>
-                        <p className="text-muted-foreground text-lg mb-8">
+                        <p className="text-muted-foreground text-base sm:text-lg mb-8">
                             {subtitle}
                         </p>
 

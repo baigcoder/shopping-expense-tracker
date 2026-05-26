@@ -359,3 +359,36 @@
         padding: 1.5rem;
     }
 }
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem 2rem;
+    }
+
+    .profileCard,
+    .formSection,
+    .statCard {
+        padding: 1.25rem;
+    }
+
+    .header h1,
+    .username {
+        font-size: clamp(1.6rem, 10vw, 2.1rem);
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+    }
+
+    .avatar {
+        width: 110px;
+        height: 110px;
+    }
+
+    .statCard {
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .statValue {
+        overflow-wrap: anywhere;
+    }
+}

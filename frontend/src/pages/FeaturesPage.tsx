@@ -141,24 +141,25 @@ const FeaturesPage = () => {
     return (
         <div className="min-h-screen bg-background text-foreground">
             <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
-                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
+                    <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-3 px-4 md:px-6">
                     <Link to="/" className="flex items-center gap-2.5">
                         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
                             <Sparkles className="h-5 w-5" />
                         </div>
-                        <span className="font-display text-xl font-bold tracking-tight">{BRAND.name}</span>
+                        <span className="hidden font-display text-lg font-bold tracking-tight sm:inline sm:text-xl">{BRAND.name}</span>
                     </Link>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         <Link to="/">
-                            <Button variant="ghost" size="sm" className="gap-2">
+                            <Button variant="ghost" size="sm" className="gap-2 px-2 sm:px-3">
                                 <ArrowLeft className="h-4 w-4" />
-                                Home
+                                <span className="hidden sm:inline">Home</span>
                             </Button>
                         </Link>
                         <Link to="/signup">
-                            <Button size="sm" className="gap-2 bg-emerald-600 text-white hover:bg-emerald-700">
-                                Create account
-                                <ArrowRight className="h-4 w-4" />
+                            <Button size="sm" className="gap-1.5 bg-emerald-600 px-2 sm:gap-2 sm:px-3 text-white hover:bg-emerald-700">
+                                <span className="hidden min-[430px]:inline">Create account</span>
+                                <span className="min-[430px]:hidden">Join</span>
+                                <ArrowRight className="hidden h-4 w-4 sm:block" />
                             </Button>
                         </Link>
                     </div>
@@ -167,16 +168,16 @@ const FeaturesPage = () => {
 
             <main>
                 <section className="border-b bg-slate-950 text-white">
-                    <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-20">
+                    <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:py-16 md:grid-cols-[1.05fr_0.95fr] md:px-6 md:py-20">
                         <div className="flex flex-col justify-center">
                             <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-sm font-medium text-emerald-100">
                                 <CheckCircle2 className="h-4 w-4" />
                                 Backend-owned finance workflows
                             </div>
-                            <h1 className="font-display text-4xl font-bold tracking-tight md:text-6xl">
+                            <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
                                 Cashly Features
                             </h1>
-                            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+                            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:text-lg sm:leading-8 break-words" style={{ overflowWrap: 'anywhere' }}>
                                 Cashly is built around review-first automation: detected data enters an inbox, rules make repeated decisions predictable, and AI works from refreshed financial context.
                             </p>
                             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -194,8 +195,8 @@ const FeaturesPage = () => {
                             </div>
                         </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-2xl">
-                            <div className="rounded-xl bg-white p-5 text-slate-950">
+                        <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5 shadow-2xl">
+                            <div className="min-w-0 rounded-xl bg-white p-4 sm:p-5 text-slate-950">
                                 <div className="mb-4 flex items-center justify-between">
                                     <div>
                                         <p className="text-sm font-medium text-slate-500">Review queue</p>
@@ -209,12 +210,12 @@ const FeaturesPage = () => {
                                         ['Netflix', 'Subscription alert', 'Price check'],
                                         ['CSV import row 42', 'Duplicate warning', 'Needs review'],
                                     ].map(([title, meta, status]) => (
-                                        <div key={title} className="flex items-center justify-between rounded-lg border border-slate-200 p-3">
-                                            <div>
+                                        <div key={title} className="flex flex-col gap-3 rounded-lg border border-slate-200 p-3 sm:flex-row sm:items-center sm:justify-between">
+                                            <div className="min-w-0">
                                                 <p className="font-semibold">{title}</p>
                                                 <p className="text-sm text-slate-500">{meta}</p>
                                             </div>
-                                            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                            <span className="w-fit rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 break-words">
                                                 {status}
                                             </span>
                                         </div>
@@ -247,7 +248,7 @@ const FeaturesPage = () => {
                                 <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl">{group.title}</h2>
                                 <p className="mt-3 text-muted-foreground">{group.description}</p>
                             </div>
-                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                 {group.features.map((feature) => (
                                     <article key={feature.title} className="rounded-lg border bg-card p-5 shadow-sm">
                                         <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
@@ -263,7 +264,7 @@ const FeaturesPage = () => {
                 ))}
 
                 <section className="bg-slate-950 text-white">
-                    <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 md:flex-row md:items-center md:px-6">
+                    <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-12 sm:py-14 md:flex-row md:items-center md:px-6">
                         <div>
                             <h2 className="font-display text-3xl font-bold tracking-tight">Start with the review inbox.</h2>
                             <p className="mt-2 max-w-2xl text-slate-300">

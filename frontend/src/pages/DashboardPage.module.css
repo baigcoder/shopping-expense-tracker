@@ -76,6 +76,13 @@
   margin-bottom: 4rem;
 }
 
+.mainLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.8fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
 .statCard {
   background: #FFFFFF;
   border: 4px solid #000000;
@@ -315,15 +322,103 @@
 /* Mobile Responsive */
 @media (max-width: 1024px) {
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .mainLayout { grid-template-columns: 1fr; }
   .container { padding: 2rem; }
 }
 
 @media (max-width: 640px) {
-  .container { padding: 1.5rem; }
-  .header { padding: 2rem; margin-bottom: 2rem; }
-  .welcomeText h1 { font-size: 1.75rem; }
-  .statsGrid { gap: 1rem; }
-  .statCard { padding: 1.5rem; }
-  .value { font-size: 2rem; }
-  .whiteCard { padding: 2rem; }
+  .container { padding: 1rem; }
+  .header {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-width: 3px;
+    box-shadow: 5px 5px 0 #000000;
+  }
+  .welcomeText h1 {
+    font-size: clamp(1.35rem, 8vw, 1.75rem);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+  .welcomeText p {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .statCard {
+    padding: 1.25rem;
+    border-width: 3px;
+    box-shadow: 5px 5px 0 #000000;
+  }
+  .iconBox {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1.25rem;
+  }
+  .value {
+    font-size: clamp(1.65rem, 10vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+  .whiteCard {
+    padding: 1.25rem;
+    border-width: 3px;
+    box-shadow: 5px 5px 0 #000000;
+    margin-bottom: 1rem;
+  }
+  .cardHeader {
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .sectionTitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+  }
+  .quickActionGrid { grid-template-columns: 1fr; }
+  .actionBtn {
+    padding: 1.25rem;
+    border-width: 3px;
+    box-shadow: 5px 5px 0 #000000;
+  }
+  .txRow {
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .txAmount {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+  .healthGauge {
+    width: 150px;
+    height: 150px;
+  }
+  .healthGauge svg {
+    transform-origin: center;
+    scale: 0.84;
+  }
+}
+
+@media (max-width: 380px) {
+  .container { padding: 0.75rem; }
+  .whiteCard,
+  .statCard,
+  .header { box-shadow: 4px 4px 0 #000000; }
+
+  .actionLabel {
+    letter-spacing: 0.12em;
+  }
+
+  .txRow {
+    flex-wrap: wrap;
+  }
+
+  .txAmount {
+    width: 100%;
+    text-align: left;
+  }
 }

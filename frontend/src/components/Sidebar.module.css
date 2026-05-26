@@ -107,6 +107,7 @@
     transition: all 0.1s;
     margin-bottom: 4px;
     border: 2px solid transparent;
+    min-width: 0;
 }
 
 .navItem:hover {
@@ -140,6 +141,8 @@
 .navLabel {
     font-size: 0.7rem;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Bottom Section */
@@ -228,4 +231,28 @@
     background: #E11D48;
     color: white;
     transform: scale(1.1);
+}
+
+@media (max-width: 1023px) {
+    .navItem {
+        gap: 1rem;
+        padding: 0.85rem 1rem;
+    }
+
+    .bottom {
+        padding: 1rem 0.75rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .navItem {
+        padding: 0.75rem;
+        letter-spacing: 0.06em;
+    }
+
+    .logoIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
 }

@@ -418,3 +418,33 @@
     .statsRow { grid-template-columns: 1fr; }
     .aiSummaryCard { flex-direction: column; text-align: center; }
 }
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .aiSummaryCard,
+    .glassCard,
+    .actionBtn {
+        padding: 1.25rem;
+    }
+
+    .header h1,
+    .pageTitle {
+        font-size: clamp(1.6rem, 10vw, 2.2rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .actionBtn {
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .refreshCircle {
+        width: 3rem;
+        height: 3rem;
+    }
+}

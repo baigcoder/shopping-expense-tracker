@@ -275,3 +275,80 @@
     border: 4px dashed #000000;
     background: #f8fafc;
 }
+
+@media (max-width: 1024px) {
+    .mainContent {
+        padding: 1.5rem;
+    }
+
+    .overviewGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .budgetGrid {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .headerTitle,
+    .cardTop,
+    .burnRate {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header {
+        margin-bottom: 1.75rem;
+    }
+
+    .headerIcon {
+        width: 3.25rem;
+        height: 3.25rem;
+    }
+
+    .headerInfo h1 {
+        font-size: clamp(1.75rem, 10vw, 2.35rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .overviewGrid,
+    .budgetGrid,
+    .quickAmounts {
+        grid-template-columns: 1fr;
+    }
+
+    .premiumStatCard,
+    .premiumBudgetCard,
+    .emptyStateCard {
+        padding: 1.25rem;
+        box-shadow: 5px 5px 0px #000000;
+    }
+
+    .statValue {
+        font-size: clamp(1.8rem, 11vw, 2.25rem);
+        overflow-wrap: anywhere;
+    }
+
+    .budgetInfo h3 {
+        font-size: 1.2rem;
+        overflow-wrap: anywhere;
+    }
+
+    .glassDialog {
+        width: calc(100vw - 1.5rem) !important;
+        max-height: calc(100dvh - 1.5rem) !important;
+        overflow-y: auto !important;
+    }
+
+    .modalHeader {
+        padding: 1.25rem;
+    }
+}

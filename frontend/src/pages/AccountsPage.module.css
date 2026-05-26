@@ -478,3 +478,118 @@
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0px #E11D48;
 }
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .header,
+    .netWorthCard,
+    .netWorthBreakdown {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+
+    .accountsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem 0.75rem;
+    }
+
+    .header {
+        margin-bottom: 1.5rem;
+    }
+
+    .titleSection h1 {
+        font-size: clamp(1.8rem, 10vw, 2.35rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .titleSection p {
+        font-size: 0.72rem;
+        line-height: 1.5;
+    }
+
+    .headerActions {
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .addBtn {
+        flex: 1;
+        justify-content: center;
+        padding: 0 1rem;
+        font-size: 0.85rem;
+    }
+
+    .netWorthCard {
+        padding: 1.25rem;
+        margin-bottom: 2rem;
+        box-shadow: 6px 6px 0px #000000;
+    }
+
+    .netWorthMain {
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .netWorthValue {
+        font-size: clamp(2rem, 12vw, 2.75rem);
+        overflow-wrap: anywhere;
+    }
+
+    .breakdownItem,
+    .accountCard,
+    .cardBalance {
+        padding: 1rem;
+    }
+
+    .accountCard {
+        box-shadow: 4px 4px 0px #000000;
+    }
+
+    .cardHeader,
+    .cardFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .cardActions {
+        margin-left: 0;
+    }
+
+    .balanceValue {
+        font-size: 1.5rem;
+        overflow-wrap: anywhere;
+    }
+
+    .modalOverlay {
+        align-items: flex-end;
+        padding: 0.75rem;
+    }
+
+    .modal {
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+        box-shadow: 8px 8px 0px #E11D48;
+    }
+
+    .modalHeader,
+    .form {
+        padding: 1.25rem;
+    }
+
+    .formRow,
+    .formActions {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+}

@@ -131,7 +131,7 @@ const MobileBottomNav = () => {
         <>
             {/* Bottom Navigation Bar */}
             <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t-4 border-black">
-                <div className="flex items-center justify-around h-16 px-1 safe-area-pb">
+                <div className="flex items-center justify-around min-h-16 px-1 safe-area-pb">
                     {mainNavItems.map((item) => {
                         const isActive = location.pathname === item.path;
                         const badge = item.badgeKey ? badges[item.badgeKey] : 0;
@@ -145,7 +145,7 @@ const MobileBottomNav = () => {
                                 <motion.div
                                     className={cn(
                                         "flex flex-col items-center justify-center gap-0.5",
-                                        "transition-all duration-200 w-full"
+                                        "transition-all duration-200 w-full min-w-0"
                                     )}
                                     whileTap={{ scale: 0.9 }}
                                 >
@@ -163,7 +163,7 @@ const MobileBottomNav = () => {
                                         )}
                                     </div>
                                     <span className={cn(
-                                        "text-[9px] font-black uppercase tracking-widest mt-1",
+                                        "text-[8px] min-[360px]:text-[9px] font-black uppercase tracking-wider min-[360px]:tracking-widest mt-1 max-w-full truncate",
                                         isActive ? "text-[#E11D48]" : "text-black"
                                     )}>
                                         {item.label}
@@ -191,7 +191,7 @@ const MobileBottomNav = () => {
                             {isMenuOpen ? <X size={22} strokeWidth={3} /> : <Menu size={22} strokeWidth={2.5} />}
                         </div>
                         <span className={cn(
-                            "text-[9px] font-black uppercase tracking-widest mt-1",
+                            "text-[8px] min-[360px]:text-[9px] font-black uppercase tracking-wider min-[360px]:tracking-widest mt-1 max-w-full truncate",
                             isMenuOpen || isMenuItemActive ? "text-[#E11D48]" : "text-black"
                         )}>
                             More
@@ -219,7 +219,7 @@ const MobileBottomNav = () => {
                             animate={{ y: 0 }}
                             exit={{ y: "100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                            className="lg:hidden fixed bottom-16 left-0 right-0 z-[99] bg-white border-t-4 border-black overflow-hidden max-h-[80vh] overflow-y-auto"
+                            className="lg:hidden fixed bottom-[calc(4rem+env(safe-area-inset-bottom))] left-0 right-0 z-[99] bg-white border-t-4 border-black overflow-hidden max-h-[calc(80vh-env(safe-area-inset-bottom))] overflow-y-auto"
                         >
                             {/* Handle */}
                             <div className="flex justify-center pt-4 pb-2 border-b-4 border-black mb-4">
@@ -227,7 +227,7 @@ const MobileBottomNav = () => {
                             </div>
 
                             {/* Menu Items */}
-                            <div className="grid grid-cols-3 gap-3 px-4 pb-8">
+                            <div className="grid grid-cols-2 min-[390px]:grid-cols-3 gap-3 px-3 min-[390px]:px-4 pb-8">
                                 {menuItems.map((item, index) => {
                                     const isActive = location.pathname === item.path;
                                     const badge = item.badgeKey ? badges[item.badgeKey] : 0;
@@ -242,7 +242,7 @@ const MobileBottomNav = () => {
                                                 to={item.path}
                                                 onClick={handleNavClick}
                                                 className={cn(
-                                                    "relative flex flex-col items-center justify-center gap-2 p-4 h-24 border-4 transition-all duration-200",
+                                                    "relative flex flex-col items-center justify-center gap-2 p-3 min-[390px]:p-4 h-24 border-4 transition-all duration-200 min-w-0",
                                                     isActive
                                                         ? "bg-[#E11D48] border-black text-white shadow-[4px_4px_0px_#000000] -translate-y-1 -translate-x-1"
                                                         : "bg-white border-black text-black shadow-[4px_4px_0px_#000000] active:translate-x-0 active:translate-y-0 active:shadow-none"
@@ -255,7 +255,7 @@ const MobileBottomNav = () => {
                                                 )}
                                                 <item.icon size={24} strokeWidth={isActive ? 3 : 2.5} />
                                                 <span className={cn(
-                                                    "text-[11px] font-black uppercase tracking-widest text-center",
+                                                    "text-[10px] min-[390px]:text-[11px] font-black uppercase tracking-wider min-[390px]:tracking-widest text-center leading-tight break-words",
                                                     isActive ? "text-[#E11D48]" : "text-black"
                                                 )}>
                                                     {item.label}

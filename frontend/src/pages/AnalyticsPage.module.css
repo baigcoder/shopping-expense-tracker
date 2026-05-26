@@ -420,3 +420,42 @@
     .cardTop { flex-direction: column; gap: 24px; }
     .premiumTabs { width: 100%; overflow-x: auto; }
 }
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .glassCard,
+    .chartCard,
+    .merchantTile {
+        padding: 1rem;
+    }
+
+    .header {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .header h1,
+    .pageTitle {
+        font-size: clamp(1.65rem, 10vw, 2.25rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .headerActions {
+        gap: 0.75rem;
+    }
+
+    .refreshCircle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .mAmount,
+    .statValue {
+        overflow-wrap: anywhere;
+    }
+}

@@ -1,7 +1,7 @@
 {
-    "name": "Finzen",
-    "short_name": "Finzen",
-    "description": "Track Money Without Thinking - The Zen way to manage finances.",
+    "name": "Cashly",
+    "short_name": "Cashly",
+    "description": "Smart expense tracking with transaction review, budgets, reports, and AI-powered financial insights.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#09090B",
@@ -12,13 +12,13 @@
         {
             "src": "/favicon.svg",
             "sizes": "192x192",
-            "type": "image/png",
+            "type": "image/svg+xml",
             "purpose": "any maskable"
         },
         {
             "src": "/favicon.svg",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/svg+xml",
             "purpose": "any maskable"
         }
     ],

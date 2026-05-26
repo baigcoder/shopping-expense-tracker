@@ -369,3 +369,31 @@
     .statsRow div:last-child { grid-column: span 1; }
     .reportsGrid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .chartCard,
+    .reportGlassCard {
+        padding: 1.25rem;
+    }
+
+    .header h1,
+    .sectionTitle {
+        font-size: clamp(1.5rem, 9vw, 2rem);
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+    }
+
+    .reportName {
+        font-size: 1rem;
+        overflow-wrap: anywhere;
+    }
+
+    .downloadButton {
+        padding: 0.9rem;
+    }
+}

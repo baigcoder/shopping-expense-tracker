@@ -118,3 +118,34 @@
   letter-spacing: 0.05em;
   margin-top: 0.25rem;
 }
+
+@media (max-width: 480px) {
+  .premiumCard {
+    box-shadow: 5px 5px 0px #000000;
+  }
+
+  .cardContent {
+    padding: 1.25rem;
+  }
+
+  .cardTop {
+    gap: 1rem;
+  }
+
+  .labelSmall,
+  .labelMain,
+  .infoLabel,
+  .infoText {
+    letter-spacing: 0.08em;
+  }
+
+  .cardChip {
+    width: 3rem;
+    height: 2.1rem;
+  }
+
+  .cardNumbers {
+    font-size: clamp(1rem, 6vw, 1.25rem);
+    letter-spacing: 0.08em;
+  }
+}

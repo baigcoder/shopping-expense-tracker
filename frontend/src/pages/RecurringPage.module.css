@@ -458,3 +458,45 @@
         justify-content: flex-end;
     }
 }
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .item,
+    .modal,
+    .formActions {
+        padding: 1.25rem;
+    }
+
+    .header h1,
+    .modal h2 {
+        font-size: clamp(1.55rem, 10vw, 2.1rem);
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+    }
+
+    .itemInfo {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .itemDue,
+    .itemAmount {
+        width: 100%;
+    }
+
+    .formRow,
+    .formActions {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .cancelBtn,
+    .submitBtn {
+        width: 100%;
+    }
+}

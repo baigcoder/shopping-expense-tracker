@@ -927,3 +927,44 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 640px) {
+    .container,
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .heroCard,
+    .statCard,
+    .detailCard,
+    .modal {
+        padding: 1.25rem;
+    }
+
+    .header,
+    .cardHeader,
+    .detailRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header h1,
+    .heroTitle,
+    .modal h2 {
+        font-size: clamp(1.6rem, 10vw, 2.2rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .modalOverlay {
+        padding: 0.75rem;
+        align-items: flex-end;
+    }
+
+    .modal {
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+    }
+}

@@ -96,12 +96,12 @@ const LandingPage = () => {
     <div className="min-h-screen bg-white text-black font-bold selection:bg-black selection:text-white">
       {/* ── HEADER ── */}
       <header className="sticky top-0 z-50 bg-white border-b-4 border-black">
-        <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-8">
+        <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-4 sm:px-8">
           <Link to="/" className="flex items-center gap-4 group" onClick={playClick}>
             <div className="w-12 h-12 bg-black text-white border-4 border-black flex items-center justify-center font-black text-xl italic tracking-tighter group-hover:bg-[#E11D48] transition-colors">
               C
             </div>
-            <span className="text-2xl font-black italic tracking-tighter uppercase">{BRAND.name}</span>
+            <span className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase">{BRAND.name}</span>
           </Link>
 
           <nav className="hidden items-center gap-12 lg:flex">
@@ -132,7 +132,7 @@ const LandingPage = () => {
             </Link>
           </nav>
 
-          <button className="lg:hidden p-2 border-4 border-black" onClick={() => { setMobileOpen(!mobileOpen); playClick(); }}>
+          <button className="lg:hidden p-2 border-4 border-black shrink-0" onClick={() => { setMobileOpen(!mobileOpen); playClick(); }}>
             {mobileOpen ? <X size={24} strokeWidth={4} /> : <Menu size={24} strokeWidth={4} />}
           </button>
         </div>
@@ -162,15 +162,15 @@ const LandingPage = () => {
             <div className="h-full w-full" style={{ backgroundImage: 'radial-gradient(#000000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
           </div>
 
-          <div className="mx-auto max-w-[1600px] grid lg:grid-cols-[1.1fr_0.9fr] min-h-[calc(100vh-80px)]">
-            <div className="p-8 md:p-16 lg:p-24 flex flex-col justify-center border-r-4 border-black relative">
+          <div className="mx-auto max-w-[1600px] grid lg:grid-cols-[1.1fr_0.9fr] lg:min-h-[calc(100vh-80px)]">
+            <div className="p-5 sm:p-8 md:p-16 lg:p-24 flex flex-col justify-center lg:border-r-4 border-black relative">
               <div className="inline-block bg-[#E11D48] text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-8 border-2 border-[#E11D48]">
                 SMART_FINANCE_v2.0
               </div>
-              <h1 className="text-[5rem] md:text-[8rem] lg:text-[10rem] font-black italic uppercase tracking-tighter leading-[0.85] mb-12">
+              <h1 className="text-[3.25rem] sm:text-[4.5rem] md:text-[8rem] lg:text-[10rem] font-black italic uppercase tracking-tighter leading-[0.88] mb-8 sm:mb-12 break-words">
                 FINANCE<br />SIMPLIFIED
               </h1>
-              <p className="text-xl md:text-2xl font-black uppercase tracking-tighter max-w-2xl leading-[1.1] mb-16">
+              <p className="text-[0.82rem] sm:text-xl md:text-2xl font-black uppercase tracking-[-0.04em] sm:tracking-tighter max-w-2xl leading-[1.25] sm:leading-[1.15] mb-10 sm:mb-16 break-words" style={{ overflowWrap: 'anywhere' }}>
                 AUTO_SYNC. SMART_INBOX. AI_INSIGHTS.<br />
                 <span className="text-black/40">THE_END_OF_UNAUTHORIZED_CHARGES.</span>
               </p>
@@ -178,39 +178,39 @@ const LandingPage = () => {
               <div className="flex flex-col sm:flex-row gap-6">
                 <Link 
                   to="/signup" 
-                  className="h-20 px-12 bg-black text-white flex items-center justify-center text-lg font-black uppercase tracking-widest shadow-[10px_10px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
+                  className="min-h-16 sm:h-20 px-5 sm:px-12 bg-black text-white flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#E11D48] sm:shadow-[10px_10px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                   onClick={playClick}
                 >
                   GET_STARTED
-                  <ArrowRight size={24} strokeWidth={4} className="ml-4" />
+                  <ArrowRight size={22} strokeWidth={4} className="hidden sm:block sm:ml-4" />
                 </Link>
                 <a 
                   href="/cashly-extension.zip"
-                  className="h-20 px-12 border-4 border-black bg-white text-black flex items-center justify-center text-lg font-black uppercase tracking-widest shadow-[10px_10px_0px_#000000] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
+                  className="min-h-16 sm:h-20 px-5 sm:px-12 border-4 border-black bg-white text-black flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#000000] sm:shadow-[10px_10px_0px_#000000] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                   onClick={playClick}
                 >
                   GET_EXTENSION
-                  <Chrome size={24} strokeWidth={3} className="ml-4" />
+                  <Chrome size={22} strokeWidth={3} className="hidden sm:block sm:ml-4" />
                 </a>
               </div>
 
-              <div className="mt-24 grid grid-cols-3 gap-8 border-t-4 border-black pt-12">
+              <div className="mt-14 sm:mt-24 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8 border-t-4 border-black pt-8 sm:pt-12">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">SYSTEM_LATENCY</p>
-                  <p className="text-3xl font-black italic tracking-tighter">0.02ms</p>
+                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">0.02ms</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">AUTH_STATUS</p>
-                  <p className="text-3xl font-black italic tracking-tighter text-[#E11D48]">STABLE</p>
+                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter text-[#E11D48]">STABLE</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">NODES_SYNCED</p>
-                  <p className="text-3xl font-black italic tracking-tighter">12.8k</p>
+                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">12.8k</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-black text-white p-8 md:p-16 flex items-center justify-center relative overflow-hidden">
+            <div className="bg-black text-white p-5 sm:p-8 md:p-16 flex items-center justify-center relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 flex gap-4">
                 <div className="w-4 h-4 bg-[#E11D48]" />
                 <div className="w-4 h-4 bg-white" />
@@ -218,11 +218,11 @@ const LandingPage = () => {
               </div>
               
               <div className="w-full max-w-md space-y-12 relative z-10">
-                <div className="border-8 border-white p-10 bg-black shadow-[20px_20px_0px_#E11D48]">
+                <div className="border-4 sm:border-8 border-white p-5 sm:p-10 bg-black shadow-[10px_10px_0px_#E11D48] sm:shadow-[20px_20px_0px_#E11D48]">
                    <header className="mb-12 flex items-center justify-between">
                      <div>
                        <p className="text-[10px] font-black uppercase tracking-widest text-[#E11D48] mb-2">DASHBOARD_PREVIEW</p>
-                       <h2 className="text-4xl font-black italic uppercase tracking-tighter">AUDIT_LOG</h2>
+                       <h2 className="text-3xl sm:text-4xl font-black italic uppercase tracking-tighter">AUDIT_LOG</h2>
                      </div>
                      <Shield size={48} strokeWidth={3} className="text-white" />
                    </header>
@@ -268,25 +268,25 @@ const LandingPage = () => {
         </section>
 
         {/* ── FEATURES MATRIX ── */}
-        <section id="features" className="py-32 border-b-8 border-black">
-          <div className="mx-auto max-w-[1600px] px-8">
-            <header className="mb-24 flex flex-col md:flex-row items-end justify-between gap-12">
+        <section id="features" className="py-20 sm:py-32 border-b-8 border-black">
+          <div className="mx-auto max-w-[1600px] px-5 sm:px-8">
+            <header className="mb-14 sm:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 sm:gap-12">
               <div className="max-w-3xl">
                 <div className="inline-block bg-black text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-6 border-2 border-black">
                   CORE_PROTOCOLS
                 </div>
-                <h2 className="text-[4rem] md:text-[6rem] font-black italic uppercase tracking-tighter leading-[0.85]">
+                <h2 className="text-[2.6rem] sm:text-[4rem] md:text-[6rem] font-black italic uppercase tracking-tighter leading-[0.9] break-words">
                   ENGINEERED_FOR_TRUST
                 </h2>
               </div>
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-black/40 max-w-sm text-right leading-relaxed">
+              <p className="text-xs sm:text-sm font-black uppercase tracking-[0.16em] sm:tracking-[0.2em] text-black/40 max-w-sm md:text-right leading-relaxed">
                 WE_DO_NOT_POST_SILENTLY. WE_DO_NOT_ASSUME. WE_ONLY_SYNC_WHEN_AUTHORIZED.
               </p>
             </header>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {FEATURES.map((f) => (
-                <div key={f.title} className="border-4 border-black p-10 bg-white shadow-[12px_12px_0px_#000000] hover:shadow-none hover:translate-x-[12px] hover:translate-y-[12px] transition-all group relative overflow-hidden">
+                <div key={f.title} className="border-4 border-black p-6 sm:p-10 bg-white shadow-[8px_8px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] hover:shadow-none hover:translate-x-[12px] hover:translate-y-[12px] transition-all group relative overflow-hidden">
                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                       <f.icon size={120} strokeWidth={4} />
                    </div>
@@ -307,15 +307,15 @@ const LandingPage = () => {
         </section>
 
         {/* ── WORKFLOW SEQUENCE ── */}
-        <section id="workflow" className="bg-black text-white py-32 border-b-8 border-black overflow-hidden relative">
+        <section id="workflow" className="bg-black text-white py-20 sm:py-32 border-b-8 border-black overflow-hidden relative">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-[#E11D48] opacity-10 blur-[120px] pointer-events-none" />
           
-          <div className="mx-auto max-w-[1600px] px-8 grid lg:grid-cols-2 gap-24 relative z-10">
+          <div className="mx-auto max-w-[1600px] px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-24 relative z-10">
              <div>
                 <div className="inline-block bg-white text-black text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-6 border-2 border-white">
                   HOW_IT_WORKS
                 </div>
-                <h2 className="text-[4rem] md:text-[6rem] font-black italic uppercase tracking-tighter leading-[0.85] mb-12">
+                <h2 className="text-[2.8rem] sm:text-[4rem] md:text-[6rem] font-black italic uppercase tracking-tighter leading-[0.9] mb-8 sm:mb-12 break-words">
                   FROM_DATA<br />TO_INSIGHT
                 </h2>
                 <p className="text-lg font-black uppercase tracking-[0.1em] text-white/40 max-w-lg mb-12 leading-relaxed">
@@ -323,7 +323,7 @@ const LandingPage = () => {
                 </p>
                 <Link 
                   to="/signup" 
-                  className="inline-flex h-20 px-12 bg-white text-black items-center justify-center text-lg font-black uppercase tracking-widest shadow-[10px_10px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
+                  className="inline-flex min-h-16 sm:h-20 px-5 sm:px-12 bg-white text-black items-center justify-center text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#E11D48] sm:shadow-[10px_10px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                   onClick={playClick}
                 >
                   GET_STARTED
@@ -333,8 +333,8 @@ const LandingPage = () => {
 
              <div className="space-y-4">
                 {WORKFLOW.map((item, i) => (
-                  <div key={item.step} className="border-4 border-white p-8 bg-white/5 flex items-center gap-12 group hover:bg-white/10 transition-colors">
-                     <span className="text-6xl font-black italic text-white/10 group-hover:text-[#E11D48] transition-colors">0{i+1}</span>
+                  <div key={item.step} className="border-4 border-white p-5 sm:p-8 bg-white/5 flex items-start sm:items-center gap-5 sm:gap-12 group hover:bg-white/10 transition-colors">
+                     <span className="text-4xl sm:text-6xl font-black italic text-white/10 group-hover:text-[#E11D48] transition-colors">0{i+1}</span>
                      <div>
                         <h4 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{item.step}</h4>
                         <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
@@ -348,15 +348,15 @@ const LandingPage = () => {
         </section>
 
         {/* ── EXTENSION NODE ── */}
-        <section id="extension" className="py-32 border-b-8 border-black">
-           <div className="mx-auto max-w-[1400px] px-8">
-              <div className="border-8 border-black p-16 bg-white shadow-[24px_24px_0px_#000000] relative group">
-                 <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#E11D48] border-8 border-black flex items-center justify-center text-white shadow-[8px_8px_0px_#000000]">
-                    <Chrome size={64} strokeWidth={3} />
+        <section id="extension" className="py-20 sm:py-32 border-b-8 border-black">
+           <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
+              <div className="border-4 sm:border-8 border-black p-6 sm:p-16 bg-white shadow-[10px_10px_0px_#000000] sm:shadow-[24px_24px_0px_#000000] relative group">
+                 <div className="mb-8 sm:mb-0 sm:absolute sm:-top-12 sm:-right-12 w-20 h-20 sm:w-32 sm:h-32 bg-[#E11D48] border-4 sm:border-8 border-black flex items-center justify-center text-white shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
+                    <Chrome size={44} strokeWidth={3} />
                  </div>
                  
                  <div className="max-w-3xl">
-                    <h2 className="text-6xl font-black italic uppercase tracking-tighter mb-8 leading-[0.9]">
+                    <h2 className="text-[2.5rem] sm:text-6xl font-black italic uppercase tracking-tighter mb-8 leading-[0.9] break-words">
                        AUTOMATE_EVERYTHING<br />WITH_CASHLY
                     </h2>
                     <p className="text-lg font-black uppercase tracking-widest text-black/40 mb-12 leading-relaxed">
@@ -365,7 +365,7 @@ const LandingPage = () => {
                     <div className="flex flex-col sm:flex-row gap-6">
                        <a 
                          href="/cashly-extension.zip"
-                         className="h-20 px-12 bg-black text-white flex items-center justify-center text-lg font-black uppercase tracking-widest shadow-[8px_8px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
+                         className="min-h-16 sm:h-20 px-5 sm:px-12 bg-black text-white flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                          onClick={playClick}
                        >
                          GET_EXTENSION
@@ -373,7 +373,7 @@ const LandingPage = () => {
                        </a>
                        <Link 
                          to="/features" 
-                         className="h-20 px-12 border-4 border-black flex items-center justify-center text-lg font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+                         className="min-h-16 sm:h-20 px-5 sm:px-12 border-4 border-black flex items-center justify-center text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest hover:bg-black hover:text-white transition-colors"
                          onClick={playClick}
                        >
                          LEARN_MORE
@@ -387,7 +387,7 @@ const LandingPage = () => {
 
       {/* ── FOOTER ── */}
       <footer className="bg-black text-white border-t-8 border-black">
-        <div className="mx-auto max-w-[1600px] px-8 py-20 flex flex-col md:flex-row items-start justify-between gap-16">
+        <div className="mx-auto max-w-[1600px] px-5 sm:px-8 py-14 sm:py-20 flex flex-col md:flex-row items-start justify-between gap-12 md:gap-16">
           <div className="space-y-8">
              <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-white text-black border-4 border-white flex items-center justify-center font-black text-2xl italic tracking-tighter">
@@ -403,7 +403,7 @@ const LandingPage = () => {
              </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-24">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-16 lg:gap-24">
              <div className="space-y-6">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E11D48]">NAVIGATION</h5>
                 <ul className="space-y-4">
@@ -431,7 +431,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1600px] px-8 py-8 border-t-4 border-white/10 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.5em] text-white/10">
+        <div className="mx-auto max-w-[1600px] px-5 sm:px-8 py-8 border-t-4 border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] text-white/10">
            <span>SYSTEM_STATUS: OPTIMAL</span>
            <span>STABLE_v2.0.4</span>
         </div>

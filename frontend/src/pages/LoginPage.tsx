@@ -66,49 +66,49 @@ const LoginPage = () => {
     const pwError    = touched.password && !password;
 
     return (
-        <div className="h-screen overflow-y-auto lg:overflow-hidden bg-white text-black font-bold selection:bg-black selection:text-white">
-            <div className="mx-auto grid h-full lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="min-h-screen overflow-y-auto lg:overflow-hidden bg-white text-black font-bold selection:bg-black selection:text-white">
+            <div className="mx-auto grid min-h-screen lg:h-screen lg:grid-cols-[0.9fr_1.1fr]">
                 
                 {/* ── LEFT PANEL (TERMINAL FORM) ── */}
-                <div className="flex flex-col items-center justify-center p-8 md:p-16 lg:p-12 xl:p-20 bg-white relative border-r-8 border-black h-full overflow-y-auto scrollbar-hide">
-                    <div className="absolute top-0 left-0 p-8">
+                <div className="flex min-w-0 flex-col items-center justify-start lg:justify-center px-4 py-28 sm:p-8 md:p-16 lg:p-12 xl:p-20 bg-white relative border-black lg:border-r-8 min-h-screen lg:h-full overflow-y-auto scrollbar-hide">
+                    <div className="absolute top-0 left-0 p-4 sm:p-8">
                         <Link to="/" className="flex items-center gap-4 group">
                             <div className="w-12 h-12 bg-black text-white border-4 border-black flex items-center justify-center font-black text-xl italic tracking-tighter group-hover:bg-[#E11D48] transition-colors">
                                 C
                             </div>
-                            <span className="text-2xl font-black italic tracking-tighter uppercase">{BRAND.name}</span>
+                            <span className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase">{BRAND.name}</span>
                         </Link>
                     </div>
 
                     <motion.div
                         initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                        className="w-full max-w-[440px] space-y-10"
+                        className="w-full max-w-[440px] min-w-0 space-y-8 sm:space-y-10"
                     >
                         <header className="space-y-4">
                             <div className="inline-flex items-center gap-3 border-4 border-black px-4 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest">
                                 <ShieldCheck size={16} strokeWidth={3} />
                                 USER_LOGIN
                             </div>
-                            <h2 className="text-5xl font-black italic uppercase tracking-tighter leading-none">LOG_IN</h2>
-                            <p className="text-sm font-black text-black/40 uppercase tracking-widest">
+                            <h2 className="text-4xl sm:text-5xl font-black italic uppercase tracking-tighter leading-none">LOG_IN</h2>
+                            <p className="text-xs sm:text-sm font-black text-black/40 uppercase tracking-[0.12em] sm:tracking-widest leading-relaxed break-words">
                                 Access your secure finance node.
                             </p>
                         </header>
 
-                        <div className="border-8 border-black p-10 bg-white shadow-[16px_16px_0px_#000000] relative">
-                            <div className="absolute -top-6 -right-6 bg-[#E11D48] text-white p-4 border-4 border-black shadow-[4px_4px_0px_#000000]">
+                        <div className="max-w-full overflow-hidden border-4 sm:border-8 border-black p-4 sm:p-10 bg-white shadow-[5px_5px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative">
+                            <div className="absolute -top-4 right-2 sm:-top-6 sm:-right-6 bg-[#E11D48] text-white p-3 sm:p-4 border-4 border-black shadow-[4px_4px_0px_#000000]">
                                 <Lock size={24} strokeWidth={3} />
                             </div>
 
-                            <form onSubmit={handleEmail} className="space-y-8">
+                            <form onSubmit={handleEmail} className="space-y-7 sm:space-y-8">
                                 <div className="space-y-3">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Email_Address</label>
                                     <div className="relative">
-                                        <Mail className="absolute left-6 top-6 text-black/20" size={24} />
+                                        <Mail className="absolute left-4 sm:left-6 top-5 sm:top-6 text-black/20" size={22} />
                                         <input
                                             type="email"
                                             className={cn(
-                                                "w-full h-18 border-4 border-black bg-white pl-16 pr-8 font-black uppercase text-sm focus:bg-black focus:text-white transition-all outline-none",
+                                                "w-full h-16 sm:h-18 border-4 border-black bg-white pl-12 sm:pl-16 pr-4 sm:pr-8 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-all outline-none",
                                                 emailError && "border-[#E11D48] text-[#E11D48]"
                                             )}
                                             placeholder="ENTER_YOUR_EMAIL"
@@ -128,11 +128,11 @@ const LoginPage = () => {
                                         </Link>
                                     </div>
                                     <div className="relative">
-                                        <Lock className="absolute left-6 top-6 text-black/20" size={24} />
+                                        <Lock className="absolute left-4 sm:left-6 top-5 sm:top-6 text-black/20" size={22} />
                                         <input
                                             type={showPw ? 'text' : 'password'}
                                             className={cn(
-                                                "w-full h-18 border-4 border-black bg-white pl-16 pr-20 font-black uppercase text-sm focus:bg-black focus:text-white transition-all outline-none",
+                                                "w-full h-16 sm:h-18 border-4 border-black bg-white pl-12 sm:pl-16 pr-14 sm:pr-20 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-all outline-none",
                                                 pwError && "border-[#E11D48] text-[#E11D48]"
                                             )}
                                             placeholder="ENTER_PASSWORD"
@@ -143,7 +143,7 @@ const LoginPage = () => {
                                         <button 
                                             type="button" 
                                             onClick={() => setShowPw(v => !v)}
-                                            className="absolute right-6 top-6 text-black/40 hover:text-black"
+                                            className="absolute right-4 sm:right-6 top-5 sm:top-6 text-black/40 hover:text-black"
                                         >
                                             {showPw ? <EyeOff size={24} strokeWidth={3} /> : <Eye size={24} strokeWidth={3} />}
                                         </button>
@@ -153,7 +153,7 @@ const LoginPage = () => {
                                 <button 
                                     type="submit" 
                                     disabled={isLoading}
-                                    className="w-full h-18 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors shadow-[8px_8px_0px_#E11D48] disabled:opacity-50 flex items-center justify-center gap-4 group"
+                                    className="w-full h-16 sm:h-18 bg-black text-white font-black uppercase text-xs sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[5px_5px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] disabled:opacity-50 flex items-center justify-center gap-3 sm:gap-4 group"
                                 >
                                     {isLoading ? (
                                         <Loader2 className="animate-spin" size={24} strokeWidth={3} />
@@ -171,7 +171,7 @@ const LoginPage = () => {
                                     <div className="w-full border-t-4 border-black" />
                                 </div>
                                 <div className="relative flex justify-center">
-                                    <span className="px-6 bg-white text-[10px] font-black uppercase tracking-[0.3em] text-black/40">OR_CONTINUE_WITH</span>
+                                    <span className="px-3 sm:px-6 bg-white text-[9px] sm:text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-[0.3em] text-black/40">OR_CONTINUE_WITH</span>
                                 </div>
                             </div>
 
@@ -179,7 +179,7 @@ const LoginPage = () => {
                                 type="button" 
                                 onClick={handleGoogle} 
                                 disabled={isLoading}
-                                className="w-full h-16 border-4 border-black bg-white hover:bg-black hover:text-white transition-all font-black uppercase text-[10px] flex items-center justify-center gap-4"
+                                className="w-full min-h-16 border-4 border-black bg-white hover:bg-black hover:text-white transition-all font-black uppercase text-[9px] min-[380px]:text-[10px] tracking-[0.08em] flex items-center justify-center gap-3 px-3"
                             >
                                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
@@ -187,15 +187,17 @@ const LoginPage = () => {
                                     <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"/>
                                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"/>
                                 </svg>
-                                LOG_IN_WITH_GOOGLE
+                                <span className="sm:hidden">GOOGLE</span>
+                                <span className="hidden sm:inline">LOG_IN_WITH_GOOGLE</span>
                             </button>
                         </div>
 
                         <div className="text-center">
-                            <p className="text-xs font-black uppercase tracking-widest text-black/40">
+                            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.08em] sm:tracking-widest text-black/40">
                                 NEW_HERE\?{' '}
                                 <Link to="/signup" className="text-black hover:text-[#E11D48] underline decoration-4 underline-offset-4">
-                                    CREATE_ACCOUNT
+                                    <span className="sm:hidden">CREATE</span>
+                                    <span className="hidden sm:inline">CREATE_ACCOUNT</span>
                                 </Link>
                             </p>
                         </div>

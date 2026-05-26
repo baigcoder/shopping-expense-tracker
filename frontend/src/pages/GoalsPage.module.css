@@ -421,3 +421,46 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .headerTitle,
+    .goalCard,
+    .cardTop,
+    .modalHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header h1,
+    .modalTitle h2 {
+        font-size: clamp(1.6rem, 10vw, 2.2rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .goalGrid,
+    .gridSelection {
+        grid-template-columns: 1fr;
+    }
+
+    .premiumGoalCard,
+    .goalCard,
+    .statCard,
+    .modalBody,
+    .modalHeader {
+        padding: 1.25rem;
+    }
+
+    .glassDialog {
+        width: calc(100vw - 1.5rem) !important;
+        max-height: calc(100dvh - 1.5rem) !important;
+        overflow-y: auto !important;
+        box-shadow: 8px 8px 0px rgba(0,0,0,0.2) !important;
+    }
+}

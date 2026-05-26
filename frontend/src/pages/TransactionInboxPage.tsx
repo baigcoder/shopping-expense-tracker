@@ -80,32 +80,32 @@ const TransactionInboxPage = () => {
     };
 
     return (
-        <div className="p-10 min-h-screen bg-white text-black font-sans">
-            <header className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between border-4 border-black p-8 bg-white shadow-[8px_8px_0px_#000000] mb-10 relative z-20">
-                <div className="flex items-center gap-6">
-                    <div className="h-16 w-16 bg-black text-white flex items-center justify-center border-4 border-black shadow-[6px_6px_0px_#E11D48]">
+        <div className="min-h-screen bg-white p-4 text-black sm:p-6 lg:p-10 font-sans overflow-x-hidden">
+            <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between border-4 border-black p-5 sm:p-8 bg-white shadow-[5px_5px_0px_#000000] sm:shadow-[8px_8px_0px_#000000] mb-6 sm:mb-10 relative z-20">
+                <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center gap-5 sm:gap-6">
+                    <div className="h-14 w-14 sm:h-16 sm:w-16 bg-black text-white flex items-center justify-center border-4 border-black shadow-[5px_5px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] shrink-0">
                         <Inbox size={32} strokeWidth={3} />
                     </div>
-                    <div>
-                        <h1 className="text-3xl font-black uppercase italic text-black m-0 tracking-tight">TRANSACTION INBOX</h1>
-                        <p className="text-sm font-bold uppercase tracking-widest text-[#E11D48] mt-1">Review & authorize incoming Intel</p>
+                    <div className="min-w-0">
+                        <h1 className="text-2xl sm:text-3xl font-black uppercase italic text-black m-0 tracking-tight break-words">TRANSACTION INBOX</h1>
+                        <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E11D48] mt-1 leading-relaxed">Review & authorize incoming Intel</p>
                     </div>
                 </div>
-                <button onClick={load} className="h-14 px-8 border-4 border-black bg-white flex items-center justify-center gap-3 font-black uppercase tracking-widest shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all">
+                <button onClick={load} className="min-h-12 sm:h-14 px-5 sm:px-8 border-4 border-black bg-white flex items-center justify-center gap-3 font-black uppercase tracking-widest shadow-[5px_5px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all text-xs sm:text-sm">
                     <RefreshCw size={20} strokeWidth={3} /> Sync Inbox
                 </button>
             </header>
 
-            <section className="grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-10">
+            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-6 lg:gap-10">
                 <div className="bg-white border-4 border-black shadow-[12px_12px_0px_#000000] overflow-hidden">
-                    <div className="p-6 border-b-4 border-black flex flex-wrap items-center gap-6 justify-between bg-yellow-400">
-                        <div className="flex flex-wrap items-center gap-4">
-                            <div className="flex items-center gap-2 p-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000000]">
+                    <div className="p-4 sm:p-6 border-b-4 border-black flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-between bg-yellow-400">
+                        <div className="flex min-w-0 flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4">
+                            <div className="flex w-full sm:w-auto overflow-x-auto items-center gap-2 p-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000000]">
                                 {['pending', 'approved', 'rejected', 'merged'].map(value => (
                                     <button
                                         key={value}
                                         onClick={() => setStatus(value)}
-                                        className={`px-5 py-2 text-xs font-black uppercase tracking-widest transition-all ${status === value ? 'bg-black text-white shadow-[2px_2px_0px_#E11D48]' : 'hover:bg-gray-100 text-black'}`}
+                                        className={`px-4 sm:px-5 py-2 text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${status === value ? 'bg-black text-white shadow-[2px_2px_0px_#E11D48]' : 'hover:bg-gray-100 text-black'}`}
                                     >
                                         {value}
                                     </button>
@@ -122,18 +122,18 @@ const TransactionInboxPage = () => {
                                 <option value="amount">Sort: Amount</option>
                             </select>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex flex-col min-[420px]:flex-row gap-3 sm:gap-4">
                             <button 
                                 onClick={() => bulk('approve')} 
                                 disabled={!selected.length} 
-                                className="h-12 px-6 border-4 border-black bg-[#10b981] text-black text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                                className="min-h-12 px-4 sm:px-6 border-4 border-black bg-[#10b981] text-black text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
                             >
                                 Approve ({selected.length})
                             </button>
                             <button 
                                 onClick={() => bulk('reject')} 
                                 disabled={!selected.length} 
-                                className="h-12 px-6 border-4 border-black bg-[#E11D48] text-white text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                                className="min-h-12 px-4 sm:px-6 border-4 border-black bg-[#E11D48] text-white text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
                             >
                                 Reject ({selected.length})
                             </button>
@@ -141,12 +141,12 @@ const TransactionInboxPage = () => {
                     </div>
 
                     {loading ? (
-                        <div className="p-16 text-center font-black uppercase tracking-widest text-xl flex flex-col items-center gap-4">
+                        <div className="p-8 sm:p-16 text-center font-black uppercase tracking-widest text-base sm:text-xl flex flex-col items-center gap-4">
                             <RefreshCw size={32} strokeWidth={3} className="animate-spin" />
                             Loading Inbox...
                         </div>
                     ) : items.length === 0 ? (
-                        <div className="p-24 text-center">
+                        <div className="p-10 sm:p-24 text-center">
                             <div className="w-24 h-24 mx-auto mb-6 border-4 border-black flex items-center justify-center bg-gray-100 shadow-[6px_6px_0px_#000000]">
                                 <Inbox size={40} strokeWidth={3} className="text-black" />
                             </div>
@@ -244,8 +244,8 @@ const TransactionInboxPage = () => {
                     )}
                 </div>
 
-                <aside className="space-y-8">
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_#000000]">
+                <aside className="space-y-6 sm:space-y-8 min-w-0">
+                    <div className="bg-white border-4 border-black p-5 sm:p-8 shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
                         <div className="flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
                             <Wand2 size={24} strokeWidth={3} className="text-rose-600" />
                             <h2 className="font-black text-xl uppercase italic">Smart Merchant Rule</h2>
@@ -265,14 +265,14 @@ const TransactionInboxPage = () => {
                         </div>
                     </div>
                     
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_#000000]">
+                    <div className="bg-white border-4 border-black p-5 sm:p-8 shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
                         <div className="flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
                             <Settings2 size={24} strokeWidth={3} className="text-black" />
                             <h2 className="font-black text-xl uppercase italic">Active Rules</h2>
                         </div>
                         <div className="space-y-4 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
                             {rules.map(rule => (
-                                <div key={rule.id} className="flex items-center justify-between p-4 border-4 border-black bg-white shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E11D48] transition-all group">
+                                <div key={rule.id} className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-4 p-4 border-4 border-black bg-white shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E11D48] transition-all group">
                                     <div>
                                         <div className="font-black text-base uppercase text-black">{rule.merchant_pattern}</div>
                                         <div className="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-widest">{rule.match_type} • <span className="text-[#E11D48]">{rule.category}</span></div>

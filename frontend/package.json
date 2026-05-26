@@ -2,7 +2,7 @@
     "name": "spendsync-frontend",
     "private": true,
     "version": "1.0.0",
-    "description": "SpendSync - Every transaction, perfectly tracked",
+    "description": "Cashly - Smart expense tracking and AI-powered financial insights",
     "type": "module",
     "scripts": {
         "dev": "vite",

@@ -380,3 +380,38 @@
         padding: 4rem;
     }
 }
+
+@media (max-width: 640px) {
+    .modalOverlay {
+        align-items: flex-end;
+        padding: 0.75rem;
+    }
+
+    .expandedModal,
+    .splitLayout,
+    .modal {
+        width: 100%;
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+    }
+
+    .leftColumn,
+    .rightColumn,
+    .modalHeader,
+    .form {
+        padding: 1.25rem;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .cardNumberBig {
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+    }
+
+    .submitBtnBig {
+        min-height: 3.25rem;
+    }
+}

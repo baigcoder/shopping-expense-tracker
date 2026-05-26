@@ -437,3 +437,48 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 480px) {
+    .mainContent,
+    .contentArea {
+        padding: 1rem 0.75rem;
+    }
+
+    .topBar,
+    .heroSection,
+    .billCard,
+    .modalBody,
+    .modalFooter {
+        padding: 1.25rem;
+    }
+
+    .modalHeader {
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    .modalHeader h2,
+    .heroTitle,
+    .topBar h1 {
+        font-size: clamp(1.5rem, 9vw, 2rem);
+        line-height: 1.05;
+        overflow-wrap: anywhere;
+    }
+
+    .modalFooter,
+    .cardActions {
+        flex-direction: column;
+    }
+
+    .saveBtn,
+    .cancelBtn {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .modal {
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+        box-shadow: 8px 8px 0px rgba(225, 29, 72, 0.3);
+    }
+}

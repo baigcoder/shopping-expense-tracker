@@ -183,3 +183,32 @@
     font-weight: 700;
     color: #059669;
 }
+
+@media (max-width: 480px) {
+    .container,
+    .healthSection,
+    .quickStat,
+    .riskAlert {
+        padding: 1rem;
+    }
+
+    .header,
+    .quickStats {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .quickStats {
+        display: grid;
+    }
+
+    .healthScore,
+    .statValue {
+        overflow-wrap: anywhere;
+    }
+}

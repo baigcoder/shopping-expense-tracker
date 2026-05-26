@@ -604,3 +604,43 @@
     .tabContent { padding: 32px; }
     .forecastGrid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 480px) {
+    .container,
+    .mainContent {
+        padding: 1rem 0.75rem;
+    }
+
+    .header,
+    .tabContent,
+    .universeDetails,
+    .comparisonStats,
+    .recommendation {
+        padding: 1.25rem;
+    }
+
+    .header h1,
+    .pageTitle {
+        font-size: clamp(1.65rem, 10vw, 2.25rem);
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
+
+    .quickStats,
+    .resultStats,
+    .universeGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparisonStats,
+    .recommendation {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .resultValue {
+        font-size: 1.75rem;
+        overflow-wrap: anywhere;
+    }
+}
