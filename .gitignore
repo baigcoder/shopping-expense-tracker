@@ -35,6 +35,18 @@ Thumbs.db
 coverage/
 .nyc_output
 
+# Python
+__pycache__/
+*.pyc
+.venv/
+
 # Misc
 *.pem
 .cache/
+
+# Graphify
+.graphify*
+graphify-out/
+
+# Codex
+.codex-logs/
