@@ -64,8 +64,7 @@ const SignupPage = () => {
         setIsLoading(true);
         try {
             const result = await signInWithGoogle();
-            // Eagerly hydrate auth store before navigating so the route guard
-            // sees isAuthenticated=true immediately (fixes race with onAuthStateChanged).
+            console.log('[Cashly Signup] signInWithGoogle result:', result);
             if (result?.user) {
                 const { useAuthStore } = await import('../store/useStore');
                 useAuthStore.getState().setUser({
@@ -76,11 +75,15 @@ const SignupPage = () => {
                     currency: 'USD',
                     createdAt: result.user.created_at || new Date().toISOString(),
                 });
+                soundManager.play('success');
+                navigate('/dashboard');
+            } else {
+                console.warn('[Cashly Signup] Google sign-in returned no user data');
+                setIsLoading(false);
             }
-            soundManager.play('success');
-            navigate('/dashboard');
         } catch (error: any) {
             soundManager.play('error');
+            console.error('[Cashly Signup] Google sign-in error:', error);
             const msg = error?.message || error?.code || 'Google sign-in failed. Please try again.';
             toast.error(msg);
             setIsLoading(false);

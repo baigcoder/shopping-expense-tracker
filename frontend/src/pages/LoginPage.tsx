@@ -52,6 +52,7 @@ const LoginPage = () => {
         setIsLoading(true);
         try {
             const result = await signInWithGoogle();
+            console.log('[Cashly Login] signInWithGoogle result:', result);
             // Eagerly hydrate auth store before navigating so the route guard
             // sees isAuthenticated=true immediately (fixes race with onAuthStateChanged).
             if (result?.user) {
@@ -64,11 +65,16 @@ const LoginPage = () => {
                     currency: 'USD',
                     createdAt: result.user.created_at || new Date().toISOString(),
                 });
+                soundManager.play('success');
+                navigate('/dashboard');
+            } else {
+                // Sign-in returned no user (e.g. cancelled) — don't navigate
+                console.warn('[Cashly Login] Google sign-in returned no user data');
+                setIsLoading(false);
             }
-            soundManager.play('success');
-            navigate('/dashboard');
         } catch (error: any) {
             soundManager.play('error');
+            console.error('[Cashly Login] Google sign-in error:', error);
             const msg = error?.message || error?.code || 'Google sign-in failed. Please try again.';
             toast.error(msg);
             setIsLoading(false);

@@ -447,22 +447,27 @@ const auth = {
     async signInWithOAuth({ provider }: any) {
         if (provider !== 'google') throw new Error(`Unsupported provider: ${provider}`);
         try {
-            const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
+            const googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({ prompt: 'select_account' });
+            console.log('[Cashly Auth] Starting Google signInWithPopup…');
+            const credential = await signInWithPopup(firebaseAuth, googleProvider);
+            console.log('[Cashly Auth] signInWithPopup succeeded, uid:', credential.user.uid);
             return { data: { user: await toSupabaseUser(credential.user), session: await toSession(credential.user) }, error: null };
         } catch (err: any) {
             const code = err?.code || '';
+            console.error('[Cashly Auth] signInWithPopup error:', code, err?.message);
             // User closed popup — silently ignore
             if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
                 return { data: null, error: { message: 'Sign-in was cancelled', code } };
             }
             // Popup blocked — seamlessly fall back to redirect
             if (code === 'auth/popup-blocked') {
+                console.log('[Cashly Auth] Popup blocked, falling back to redirect…');
                 await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
                 return { data: null, error: null };
             }
             if (code === 'auth/unauthorized-domain') {
-                await signInWithRedirect(firebaseAuth, new GoogleAuthProvider());
-                return { data: null, error: null };
+                return { data: null, error: { message: `This domain is not authorized for Google sign-in. Please add "${window.location.hostname}" in Firebase Console → Authentication → Settings → Authorized domains.`, code } };
             }
             if (code === 'auth/network-request-failed') {
                 return { data: null, error: { message: 'Network error. Please check your connection and try again.', code } };
