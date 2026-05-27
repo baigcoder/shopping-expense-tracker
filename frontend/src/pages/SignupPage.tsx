@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Eye, EyeOff, Inbox, Loader2, Lock, Mail, Settings, ShieldCheck, Sparkles, User, Target, Activity, Zap, Cpu, Globe, BarChart3, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { signInWithGoogle, signUpWithEmail } from '../config/supabase';
+import { signInWithGoogle } from '../config/supabase';
+import { sendSignupOTP } from '../services/otpService';
 import { toast } from 'sonner';
 import { formatSupabaseError, isValidEmail } from '../utils/validationUtils';
 import { cn } from '@/lib/utils';
@@ -48,9 +49,9 @@ const SignupPage = () => {
         if (password !== confirm) { toast.error('PASSPHRASE_MISMATCH'); soundManager.play('error'); return; }
         setIsLoading(true);
         try {
-            await signUpWithEmail(email, password, name);
+            await sendSignupOTP(email, password, name);
             soundManager.play('success');
-            toast.success('IDENTITY_CREATED // CHECK_EMAIL');
+            toast.success('OTP_SENT_TO_YOUR_EMAIL');
             navigate('/verify-email', { state: { email } });
         } catch (error) {
             soundManager.play('error');
@@ -63,24 +64,8 @@ const SignupPage = () => {
         soundManager.play('click');
         setIsLoading(true);
         try {
-            const result = await signInWithGoogle();
-            console.log('[Cashly Signup] signInWithGoogle result:', result);
-            if (result?.user) {
-                const { useAuthStore } = await import('../store/useStore');
-                useAuthStore.getState().setUser({
-                    id: result.user.id,
-                    email: result.user.email!,
-                    name: result.user.user_metadata?.full_name || result.user.user_metadata?.name || result.user.email?.split('@')[0] || 'User',
-                    avatarUrl: result.user.user_metadata?.avatar_url,
-                    currency: 'USD',
-                    createdAt: result.user.created_at || new Date().toISOString(),
-                });
-                soundManager.play('success');
-                navigate('/dashboard');
-            } else {
-                console.warn('[Cashly Signup] Google sign-in returned no user data');
-                setIsLoading(false);
-            }
+            // Redirect-based OAuth — the page navigates to Google, then back to /dashboard
+            await signInWithGoogle();
         } catch (error: any) {
             soundManager.play('error');
             console.error('[Cashly Signup] Google sign-in error:', error);

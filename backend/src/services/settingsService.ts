@@ -1,4 +1,3 @@
-import admin from 'firebase-admin';
 import prisma from '../config/prisma.js';
 import { supabase } from '../config/supabase.js';
 import cacheService from './redisCacheService.js';
@@ -86,25 +85,6 @@ const toSettingsRow = (userId: string, settings: Partial<UserSettings> = {}) => 
     updated_at: new Date().toISOString(),
 });
 
-async function getFirebaseProfile(user: SettingsUser) {
-    try {
-        const firebaseUser = await admin.auth().getUser(user.supabaseId || user.id);
-        return {
-            id: firebaseUser.uid,
-            email: firebaseUser.email || user.email,
-            name: firebaseUser.displayName || null,
-            avatarUrl: firebaseUser.photoURL || null,
-        };
-    } catch {
-        return {
-            id: user.supabaseId || user.id,
-            email: user.email,
-            name: null,
-            avatarUrl: null,
-        };
-    }
-}
-
 async function getStoredProfile(user: SettingsUser) {
     try {
         const dbUser = await prisma.user.findFirst({
@@ -129,9 +109,11 @@ async function getStoredProfile(user: SettingsUser) {
         console.warn('Settings profile database lookup failed:', error instanceof Error ? error.message : error);
     }
 
-    const firebaseProfile = await getFirebaseProfile(user);
     return {
-        ...firebaseProfile,
+        id: user.supabaseId || user.id,
+        email: user.email,
+        name: null,
+        avatarUrl: null,
         currency: DEFAULT_USER_SETTINGS.currency,
         createdAt: null,
     };
@@ -210,17 +192,6 @@ export async function updateSettingsProfile(user: SettingsUser, input: SettingsP
     const name = input.name?.trim() || null;
     const avatarUrl = input.avatarUrl || input.avatar_url || null;
 
-    if (user.supabaseId) {
-        try {
-            await admin.auth().updateUser(user.supabaseId, {
-                ...(name !== undefined ? { displayName: name || undefined } : {}),
-                ...(avatarUrl ? { photoURL: avatarUrl } : {}),
-            });
-        } catch (error) {
-            console.warn('Firebase profile update failed:', error instanceof Error ? error.message : error);
-        }
-    }
-
     try {
         const existing = await prisma.user.findFirst({
             where: {
@@ -251,11 +222,11 @@ export async function updateSettingsProfile(user: SettingsUser, input: SettingsP
         return saved;
     } catch (error) {
         console.warn('Settings profile persistence failed:', error instanceof Error ? error.message : error);
-        const firebaseProfile = await getFirebaseProfile(user);
         return {
-            ...firebaseProfile,
-            name: name || firebaseProfile.name,
-            avatarUrl: avatarUrl || firebaseProfile.avatarUrl,
+            id: user.supabaseId || user.id,
+            email: user.email,
+            name: name || null,
+            avatarUrl: avatarUrl || null,
             currency: DEFAULT_USER_SETTINGS.currency,
             createdAt: null,
         };
@@ -371,28 +342,16 @@ export async function requestPasswordReset(user: SettingsUser) {
     const email = user.email;
     if (!email) throw new Error('No email address is available for this account.');
 
-    const apiKey = process.env.FIREBASE_API_KEY
-        || process.env.FIREBASE_WEB_API_KEY
-        || process.env.VITE_FIREBASE_API_KEY
-        || 'AIzaSyAbveJm46vlt1CKqEdYQE-c21QbZBrNpEY';
-    if (apiKey) {
-        const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ requestType: 'PASSWORD_RESET', email }),
-        });
-        if (!response.ok) {
-            throw new Error(await response.text());
-        }
-        return { delivery: 'email_sent', email };
+    const redirectTo = process.env.CLIENT_URL || 'http://localhost:5173/login';
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${redirectTo}?reset=true`,
+    });
+
+    if (error) {
+        throw new Error(error.message);
     }
 
-    await admin.auth().generatePasswordResetLink(email);
-    return {
-        delivery: 'link_generated',
-        email,
-        message: 'Password reset link generated. Configure FIREBASE_API_KEY on the backend to send the email automatically.',
-    };
+    return { delivery: 'email_sent', email, message: 'Password reset email sent.' };
 }
 
 export async function getSessionMetadata(user: SettingsUser, requestInfo: { ip?: string; userAgent?: string }) {

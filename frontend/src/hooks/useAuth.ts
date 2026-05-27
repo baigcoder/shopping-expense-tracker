@@ -147,23 +147,8 @@ export const useAuth = () => {
             }
         });
 
-        const handleStorageChange = (event: StorageEvent) => {
-            if (event.key?.startsWith('firebase:authUser:')) {
-                supabase.auth.getSession().then(({ data: { session } }) => {
-                    if (session?.user) {
-                        hydrateUser(session.user);
-                    } else {
-                        setUser(null);
-                    }
-                });
-            }
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-
         return () => {
             subscription.unsubscribe();
-            window.removeEventListener('storage', handleStorageChange);
         };
     }, [setUser, setLoading, setCurrency, setTheme]);
 

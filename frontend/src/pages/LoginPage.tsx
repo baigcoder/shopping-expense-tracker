@@ -51,27 +51,8 @@ const LoginPage = () => {
         soundManager.play('click');
         setIsLoading(true);
         try {
-            const result = await signInWithGoogle();
-            console.log('[Cashly Login] signInWithGoogle result:', result);
-            // Eagerly hydrate auth store before navigating so the route guard
-            // sees isAuthenticated=true immediately (fixes race with onAuthStateChanged).
-            if (result?.user) {
-                const { useAuthStore } = await import('../store/useStore');
-                useAuthStore.getState().setUser({
-                    id: result.user.id,
-                    email: result.user.email!,
-                    name: result.user.user_metadata?.full_name || result.user.user_metadata?.name || result.user.email?.split('@')[0] || 'User',
-                    avatarUrl: result.user.user_metadata?.avatar_url,
-                    currency: 'USD',
-                    createdAt: result.user.created_at || new Date().toISOString(),
-                });
-                soundManager.play('success');
-                navigate('/dashboard');
-            } else {
-                // Sign-in returned no user (e.g. cancelled) — don't navigate
-                console.warn('[Cashly Login] Google sign-in returned no user data');
-                setIsLoading(false);
-            }
+            // Redirect-based OAuth — the page navigates to Google, then back to /dashboard
+            await signInWithGoogle();
         } catch (error: any) {
             soundManager.play('error');
             console.error('[Cashly Login] Google sign-in error:', error);

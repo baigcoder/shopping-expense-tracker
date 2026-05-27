@@ -47,16 +47,6 @@ if (typeof window !== 'undefined') {
 
 // ─── Auth helpers (same export names as before) ──────────────────────────────
 
-export const signUpWithEmail = async (email: string, password: string, name?: string) => {
-    const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { name: name || '', full_name: name || '' } },
-    });
-    if (error) throw error;
-    return data;
-};
-
 export const signInWithEmail = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
@@ -118,4 +108,11 @@ export const getSession = async () => {
 
 export const onAuthStateChange = (callback: (event: string, session: any) => void) => {
     return supabase.auth.onAuthStateChange(callback);
+};
+
+// Handle OAuth redirect result (used by useAuth.ts after redirect back from Google)
+export const handleGoogleRedirect = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error || !data.session) return null;
+    return { user: data.session.user, session: data.session };
 };

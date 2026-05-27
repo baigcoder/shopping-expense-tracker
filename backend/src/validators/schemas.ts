@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 // Auth Schemas
 export const registerSchema = z.object({
-    firebaseUid: z.string().min(1, 'Firebase UID is required'),
+    supabaseId: z.string().min(1, 'Supabase ID is required'),
     email: z.string().email('Invalid email address'),
     name: z.string().optional(),
     avatarUrl: z.string().url().optional(),
