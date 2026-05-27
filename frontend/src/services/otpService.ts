@@ -1,5 +1,6 @@
 // OTP Service - API calls for email OTP verification
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const raw = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_URL = raw ? (raw.endsWith('/api') ? raw : `${raw}/api`) : '/api';
 
 interface OTPResponse {
     success: boolean;

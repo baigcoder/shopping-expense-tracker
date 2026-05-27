@@ -3,7 +3,8 @@
 
 import { supabase } from '@/config/supabase';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const raw = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = raw ? (raw.endsWith('/api') ? raw : `${raw}/api`) : '/api';
 
 // Plaid environment types
 type PlaidEnvironment = 'sandbox' | 'development' | 'production';
