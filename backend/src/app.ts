@@ -13,19 +13,49 @@ import { csrfTokenMiddleware } from './middleware/csrf.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Frontend origin for CORS and CSP
-const frontendOrigin = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, '');
+// Frontend origins for CORS and CSP. Production can have a stable alias plus
+// Vercel preview URLs, so do not lock the API to a single origin.
+const parseOriginList = (value?: string) =>
+    (value || '')
+        .split(',')
+        .map((origin) => origin.trim().replace(/\/+$/, ''))
+        .filter(Boolean);
+
+const frontendOrigins = Array.from(new Set([
+    ...parseOriginList(process.env.FRONTEND_URLS),
+    ...parseOriginList(process.env.ALLOWED_ORIGINS),
+    ...parseOriginList(process.env.FRONTEND_URL),
+    ...parseOriginList(process.env.CLIENT_URL),
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://shopping-expense-tracker.vercel.app',
+    'https://shopping-expense-trackerfrontend.vercel.app',
+]));
+
+if (process.env.VERCEL_URL) {
+    frontendOrigins.push(`https://${process.env.VERCEL_URL.replace(/\/+$/, '')}`);
+}
+
+const isAllowedOrigin = (origin?: string) => {
+    if (!origin) return true;
+    const normalized = origin.replace(/\/+$/, '');
+
+    if (frontendOrigins.includes(normalized)) return true;
+
+    return /^https:\/\/shopping-expense-tracker[a-z0-9-]*\.vercel\.app$/i.test(normalized) ||
+        /^https:\/\/shopping-expense-trackerfrontend[a-z0-9-]*\.vercel\.app$/i.test(normalized);
+};
 
 // Security middleware with Content Security Policy
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", frontendOrigin],
+            scriptSrc: ["'self'", "'unsafe-inline'", ...frontendOrigins],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
-            connectSrc: ["'self'", frontendOrigin, "https://*.supabase.co", "https://openrouter.ai"],
+            connectSrc: ["'self'", ...frontendOrigins, "https://*.supabase.co", "https://openrouter.ai"],
             frameSrc: ["'none'"],
             objectSrc: ["'none'"],
             baseUri: ["'self'"],
@@ -42,7 +72,14 @@ app.use(cookieParser());
 
 // CORS configuration
 app.use(cors({
-    origin: frontendOrigin,
+    origin: (origin, callback) => {
+        if (isAllowedOrigin(origin)) {
+            callback(null, true);
+            return;
+        }
+
+        callback(new Error(`CORS origin not allowed: ${origin}`));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token', 'x-user-id']

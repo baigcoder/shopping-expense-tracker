@@ -342,9 +342,12 @@ export async function requestPasswordReset(user: SettingsUser) {
     const email = user.email;
     if (!email) throw new Error('No email address is available for this account.');
 
-    const redirectTo = process.env.CLIENT_URL || 'http://localhost:5173/login';
+    const redirectTo =
+        process.env.CLIENT_URL ||
+        process.env.FRONTEND_URL ||
+        'http://localhost:5173';
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${redirectTo}?reset=true`,
+        redirectTo: `${redirectTo.replace(/\/+$/, '')}/auth/callback?next=/login%3Freset%3Dtrue`,
     });
 
     if (error) {

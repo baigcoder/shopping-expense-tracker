@@ -76,6 +76,35 @@ const AuthCallback = () => {
                 const accessToken = hashParams.get('access_token');
                 const refreshToken = hashParams.get('refresh_token');
                 const type = hashParams.get('type');
+                const searchParams = new URLSearchParams(location.search);
+                const code = searchParams.get('code');
+                const next = searchParams.get('next');
+
+                const navigateAfterAuth = (fallback = '/dashboard') => {
+                    const target = next && next.startsWith('/') && !next.startsWith('//')
+                        ? next
+                        : fallback;
+                    navigate(target, { replace: true });
+                };
+
+                if (code) {
+                    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
+
+                    if (error) throw error;
+
+                    if (session?.user) {
+                        setUser({
+                            id: session.user.id,
+                            email: session.user.email!,
+                            name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
+                            avatarUrl: session.user.user_metadata.avatar_url,
+                            currency: 'USD',
+                            createdAt: new Date().toISOString()
+                        });
+                        navigateAfterAuth();
+                        return;
+                    }
+                }
 
                 // If we have tokens in the URL, set the session
                 if (accessToken && refreshToken) {
@@ -90,7 +119,7 @@ const AuthCallback = () => {
                         // Check if this was an email confirmation (signup type)
                         if (type === 'signup' || type === 'email') {
                             // Email was just confirmed - show success page
-                            navigate('/verify-email', { state: { verified: true } });
+                            navigate('/verify-email', { state: { verified: true }, replace: true });
                             return;
                         }
 
@@ -103,7 +132,7 @@ const AuthCallback = () => {
                             currency: 'USD',
                             createdAt: new Date().toISOString()
                         });
-                        navigate('/dashboard');
+                        navigateAfterAuth();
                         return;
                     }
                 }
@@ -122,13 +151,13 @@ const AuthCallback = () => {
                         currency: 'USD',
                         createdAt: new Date().toISOString()
                     });
-                    navigate('/dashboard');
+                    navigateAfterAuth();
                 } else {
-                    navigate('/login');
+                    navigate('/login', { replace: true });
                 }
             } catch (error) {
                 console.error('Auth Callback Error:', error);
-                navigate('/login');
+                navigate('/login', { replace: true });
             } finally {
                 setLoading(false);
             }

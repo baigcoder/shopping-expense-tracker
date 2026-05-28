@@ -3,16 +3,26 @@ import { Mail, ArrowLeft, CheckCircle, ShieldQuestion } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { sendPasswordResetEmail } from '../config/supabase';
 
 const ForgotPasswordPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [sent, setSent] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSent(true);
-        toast.success('RESET_LINK_SENT');
+        setIsLoading(true);
+        try {
+            await sendPasswordResetEmail(email);
+            setSent(true);
+            toast.success('RESET_LINK_SENT');
+        } catch (error: any) {
+            toast.error(error?.message || 'RESET_LINK_FAILED');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -55,9 +65,10 @@ const ForgotPasswordPage = () => {
                             <div className="space-y-4">
                                 <button 
                                     type="submit" 
+                                    disabled={isLoading}
                                     className="w-full min-h-16 sm:h-20 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-[#E11D48] transition-colors border-4 border-black shadow-[6px_6px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] hover:shadow-none hover:translate-x-2 hover:translate-y-2"
                                 >
-                                    SEND_RESET_LINK
+                                    {isLoading ? 'SENDING...' : 'SEND_RESET_LINK'}
                                 </button>
 
                                 <button

@@ -7,7 +7,33 @@ const supabaseAnonKey =
     import.meta.env.VITE_SUPABASE_ANON_KEY ||
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtdHRxZWZjeXFheGhsZ2hjZnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4MTMwMDYsImV4cCI6MjA5NTM4OTAwNn0.fQXoRZNV8AuwaqWQ-1xgkWGlSzLNTSOZ9o-pCRkEiqI';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce',
+        persistSession: true,
+    },
+});
+
+const getSiteOrigin = () => {
+    if (typeof window !== 'undefined' && window.location?.origin) {
+        return window.location.origin;
+    }
+
+    return import.meta.env.VITE_PUBLIC_SITE_URL || 'http://localhost:5173';
+};
+
+export const getAuthRedirectUrl = (next = '/dashboard') => {
+    const origin = getSiteOrigin().replace(/\/+$/, '');
+    const url = new URL('/auth/callback', origin);
+
+    if (next && next.startsWith('/')) {
+        url.searchParams.set('next', next);
+    }
+
+    return url.toString();
+};
 
 // ─── Extension session bridge ────────────────────────────────────────────────
 const CASHLY_WEB_SESSION_BRIDGE_KEY = 'cashly_web_session_bridge';
@@ -57,12 +83,21 @@ export const signInWithGoogle = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: `${window.location.origin}/dashboard`,
+            redirectTo: getAuthRedirectUrl('/dashboard'),
         },
     });
     if (error) throw error;
     // This triggers a full-page redirect to Google.
     // After auth Google → Supabase callback → redirectTo.
+    return data;
+};
+
+export const sendPasswordResetEmail = async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: getAuthRedirectUrl('/login?reset=true'),
+    });
+
+    if (error) throw error;
     return data;
 };
 
