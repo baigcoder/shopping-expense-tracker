@@ -3,8 +3,8 @@
 // chrome.storage.sync CASHLY_CONFIG (API_BASE_URL, WEBSITE_URL, Supabase keys).
 
 const DEFAULT_CONFIG = {
-    SUPABASE_URL: 'https://gmttqefcyqaxhlghcfpo.supabase.co',
-    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtdHRxZWZjeXFheGhsZ2hjZnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4MTMwMDYsImV4cCI6MjA5NTM4OTAwNn0.fQXoRZNV8AuwaqWQ-1xgkWGlSzLNTSOZ9o-pCRkEiqI',
+    SUPABASE_URL: 'https://ynmvjnsdygimhjxcjvzp.supabase.co',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubXZqbnNkeWdpbWhqeGNqdnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMzIwMzgsImV4cCI6MjA4MDcwODAzOH0.yzygIuk3wWRKPNVHCze3HegdeMVHZPj2caNdqZ9O_vY',
     API_BASE_URL: 'https://shopping-expense-tracker.vercel.app/api',
 
     WEBSITE_ORIGINS: [
