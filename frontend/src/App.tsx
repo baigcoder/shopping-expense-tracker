@@ -1,5 +1,5 @@
 // Main App with Routing
-import React, { useEffect, lazy, Suspense, useState } from 'react';
+import React, { useEffect, lazy, Suspense, useState, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './store/useStore';
@@ -67,11 +67,25 @@ const AuthCallback = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { setUser, setLoading } = useAuthStore();
+    const handledRef = useRef(false);
 
     useEffect(() => {
+        if (handledRef.current) return;
+        handledRef.current = true;
+
+        const hydrateFromSession = (session: NonNullable<Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']>) => {
+            setUser({
+                id: session.user.id,
+                email: session.user.email!,
+                name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
+                avatarUrl: session.user.user_metadata.avatar_url,
+                currency: 'USD',
+                createdAt: new Date().toISOString(),
+            });
+        };
+
         const handleAuthCallback = async () => {
             try {
-                // Check URL hash for tokens (Supabase adds these after email confirmation or OAuth)
                 const hashParams = new URLSearchParams(location.hash.substring(1));
                 const accessToken = hashParams.get('access_token');
                 const refreshToken = hashParams.get('refresh_token');
@@ -80,6 +94,16 @@ const AuthCallback = () => {
                 const code = searchParams.get('code');
                 const next = searchParams.get('next');
 
+                const oauthError =
+                    searchParams.get('error_description')
+                    || searchParams.get('error')
+                    || hashParams.get('error_description')
+                    || hashParams.get('error');
+
+                if (oauthError) {
+                    throw new Error(decodeURIComponent(oauthError.replace(/\+/g, ' ')));
+                }
+
                 const navigateAfterAuth = (fallback = '/dashboard') => {
                     const target = next && next.startsWith('/') && !next.startsWith('//')
                         ? next
@@ -87,77 +111,62 @@ const AuthCallback = () => {
                     navigate(target, { replace: true });
                 };
 
+                // PKCE OAuth — exchange once (React StrictMode safe: reuse existing session)
                 if (code) {
-                    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
+                    const { data: { session: existingSession } } = await supabase.auth.getSession();
+                    if (existingSession?.user) {
+                        hydrateFromSession(existingSession);
+                        navigateAfterAuth();
+                        return;
+                    }
 
+                    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
                     if (error) throw error;
 
                     if (session?.user) {
-                        setUser({
-                            id: session.user.id,
-                            email: session.user.email!,
-                            name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                            avatarUrl: session.user.user_metadata.avatar_url,
-                            currency: 'USD',
-                            createdAt: new Date().toISOString()
-                        });
+                        hydrateFromSession(session);
                         navigateAfterAuth();
                         return;
                     }
                 }
 
-                // If we have tokens in the URL, set the session
+                // Hash tokens (email confirmation / legacy implicit OAuth)
                 if (accessToken && refreshToken) {
                     const { data: { session }, error } = await supabase.auth.setSession({
                         access_token: accessToken,
-                        refresh_token: refreshToken
+                        refresh_token: refreshToken,
                     });
 
                     if (error) throw error;
 
                     if (session) {
-                        // Check if this was an email confirmation (signup type)
                         if (type === 'signup' || type === 'email') {
-                            // Email was just confirmed - show success page
                             navigate('/verify-email', { state: { verified: true }, replace: true });
                             return;
                         }
 
-                        // Normal OAuth or already confirmed - go to dashboard
-                        setUser({
-                            id: session.user.id,
-                            email: session.user.email!,
-                            name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                            avatarUrl: session.user.user_metadata.avatar_url,
-                            currency: 'USD',
-                            createdAt: new Date().toISOString()
-                        });
+                        hydrateFromSession(session);
                         navigateAfterAuth();
                         return;
                     }
                 }
 
-                // Fallback: check for existing session
                 const { data: { session }, error } = await supabase.auth.getSession();
-
                 if (error) throw error;
 
                 if (session) {
-                    setUser({
-                        id: session.user.id,
-                        email: session.user.email!,
-                        name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                        avatarUrl: session.user.user_metadata.avatar_url,
-                        currency: 'USD',
-                        createdAt: new Date().toISOString()
-                    });
+                    hydrateFromSession(session);
                     navigateAfterAuth();
                 } else {
-                    navigate('/login', { replace: true });
+                    navigate('/login', {
+                        replace: true,
+                        state: { authError: 'Google sign-in did not complete. Try again or use email login.' },
+                    });
                 }
             } catch (error) {
                 console.error('Auth Callback Error:', error);
-                navigate('/login', { replace: true });
+                const message = error instanceof Error ? error.message : 'Google sign-in failed';
+                navigate('/login', { replace: true, state: { authError: message } });
             } finally {
                 setLoading(false);
             }

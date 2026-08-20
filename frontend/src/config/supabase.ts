@@ -10,11 +10,20 @@ const supabaseAnonKey =
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
         autoRefreshToken: true,
-        detectSessionInUrl: true,
+        // Custom /auth/callback route exchanges the PKCE code explicitly.
+        detectSessionInUrl: false,
         flowType: 'pkce',
         persistSession: true,
     },
 });
+
+/** Required in Supabase Dashboard → Authentication → URL Configuration */
+export const SUPABASE_AUTH_REDIRECT_URLS = [
+    'http://localhost:5173/auth/callback',
+    'http://localhost:5174/auth/callback',
+    'http://127.0.0.1:5173/auth/callback',
+    'https://shopping-expense-tracker.vercel.app/auth/callback',
+] as const;
 
 const getSiteOrigin = () => {
     if (typeof window !== 'undefined' && window.location?.origin) {
@@ -84,11 +93,14 @@ export const signInWithGoogle = async () => {
         provider: 'google',
         options: {
             redirectTo: getAuthRedirectUrl('/dashboard'),
+            queryParams: {
+                access_type: 'offline',
+                prompt: 'select_account',
+            },
         },
     });
     if (error) throw error;
-    // This triggers a full-page redirect to Google.
-    // After auth Google → Supabase callback → redirectTo.
+    // Triggers a full-page redirect to Google → Supabase → /auth/callback.
     return data;
 };
 

@@ -1,6 +1,6 @@
 // LoginPage - Stark Gen Z Professional Terminal Authentication
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, Inbox, Loader2, Lock, Mail, ShieldCheck, Sparkles, Activity, Zap, Target, Shield, Cpu, Globe, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { signInWithEmail, signInWithGoogle } from '../config/supabase';
@@ -17,10 +17,18 @@ const LoginPage = () => {
     const [isLoading, setIsLoading]   = useState(false);
     const [touched, setTouched]       = useState({ email: false, password: false });
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         document.documentElement.classList.remove('dark');
     }, []);
+
+    useEffect(() => {
+        const authError = (location.state as { authError?: string } | null)?.authError;
+        if (!authError) return;
+        toast.error(authError);
+        navigate('/login', { replace: true, state: null });
+    }, [location.state, navigate]);
 
     const handleEmail = async (e: React.FormEvent) => {
         e.preventDefault();
