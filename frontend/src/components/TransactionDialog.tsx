@@ -89,40 +89,37 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
 
     return (
         <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
         >
             <motion.div
-                className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl shadow-slate-900/20 overflow-hidden relative border-2 border-slate-50"
+                className="bg-white w-full max-w-lg border-4 border-black shadow-[10px_10px_0_#E11D48] overflow-hidden relative"
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="relative p-8 pb-12 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-700" />
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -mr-24 -mt-24" />
-
+                <div className="relative p-6 pb-6 overflow-hidden bg-black border-b-4 border-black">
                     <div className="relative flex items-center justify-between text-white">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 bg-white/20 backdrop-blur-md rounded-2xl ring-1 ring-white/30 border border-white/20">
+                            <div className="p-3 bg-[#E11D48] border-2 border-white">
                                 {mode === 'delete' ? <Trash2 className="h-6 w-6" /> : <Receipt className="h-6 w-6" />}
                             </div>
                             <div>
-                                <h2 className="text-2xl font-black tracking-tight font-display">
+                                <h2 className="text-2xl font-black tracking-tight uppercase font-display">
                                     {mode === 'delete' ? 'Remove Entry' : mode === 'edit' ? 'Alter Records' : 'Ledger Details'}
                                 </h2>
-                                <p className="text-blue-100 text-xs font-black uppercase tracking-widest mt-0.5">
+                                <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-0.5">
                                     {mode === 'delete' ? 'Cautionary Action' : 'Financial Statement'}
                                 </p>
                             </div>
                         </div>
                         <button
-                            className="p-2 hover:bg-white/20 rounded-xl transition-colors ring-1 ring-transparent hover:ring-white/30 border border-transparent hover:border-white/20"
+                            className="p-2 border-2 border-white hover:bg-[#E11D48] transition-colors"
                             onClick={onClose}
                         >
                             <X size={20} />
@@ -130,7 +127,7 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                     </div>
                 </div>
 
-                <div className="p-8 -mt-6 bg-white rounded-t-[2.5rem] relative">
+                <div className="p-6 bg-white relative">
                     {/* Delete Confirmation */}
                     {mode === 'delete' && (
                         <motion.div
@@ -138,21 +135,21 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                             animate={{ opacity: 1, y: 0 }}
                             className="space-y-8"
                         >
-                            <div className="bg-amber-50 border-2 border-amber-100/50 rounded-[2rem] p-6 flex items-start gap-4">
-                                <div className="p-3 bg-amber-100 text-amber-600 rounded-2xl">
-                                    <AlertTriangle size={24} />
+                            <div className="bg-[#FFF7ED] border-[3px] border-black p-5 flex items-start gap-4 shadow-[4px_4px_0_#F59E0B]">
+                                <div className="p-2 bg-[#F59E0B] text-black border-2 border-black">
+                                    <AlertTriangle size={22} />
                                 </div>
                                 <div>
-                                    <h3 className="font-black text-slate-800 text-lg">Irreversible Action</h3>
-                                    <p className="text-slate-500 text-sm font-medium leading-relaxed">This record will be permanently purged from your financial history. It cannot be recovered.</p>
+                                    <h3 className="font-black text-black text-lg uppercase">Irreversible Action</h3>
+                                    <p className="text-zinc-600 text-sm font-medium leading-relaxed">This record will be permanently purged from your financial history. It cannot be recovered.</p>
                                 </div>
                             </div>
 
-                            <div className="bg-slate-50 border-2 border-slate-100/50 rounded-[2rem] p-8 text-center space-y-2">
-                                <span className="text-3xl font-black text-slate-800 tracking-tighter block">
+                            <div className="bg-zinc-50 border-[3px] border-black p-6 text-center space-y-2 shadow-[4px_4px_0_#09090B]">
+                                <span className="text-3xl font-black text-black tracking-tighter block">
                                     {formData.type === 'expense' ? '-' : '+'}{formatCurrency(formData.amount)}
                                 </span>
-                                <span className="text-xs font-black text-slate-400 uppercase tracking-widest block">
+                                <span className="text-xs font-black text-zinc-500 uppercase tracking-widest block">
                                     {formData.description}
                                 </span>
                             </div>
@@ -160,14 +157,15 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                             <div className="flex gap-3">
                                 <Button
                                     variant="outline"
-                                    className="flex-1 h-14 rounded-2xl border-2 border-slate-100 font-black text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-50"
+                                    className="flex-1 h-14"
                                     onClick={() => setMode('view')}
                                     disabled={isLoading}
                                 >
                                     Abort
                                 </Button>
                                 <Button
-                                    className="flex-1 h-14 rounded-2xl bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-200"
+                                    variant="destructive"
+                                    className="flex-1 h-14"
                                     onClick={handleDelete}
                                     disabled={isLoading}
                                 >
@@ -184,13 +182,13 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                             {/* Amount Section */}
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Financial Magnitude</h4>
+                                    <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Financial Magnitude</h4>
                                     {mode === 'edit' && (
-                                        <div className="flex p-1 bg-slate-100 rounded-xl">
+                                        <div className="flex border-2 border-black">
                                             <button
                                                 className={cn(
-                                                    "px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all",
-                                                    formData.type === 'expense' ? "bg-white text-slate-800 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                                                    "px-4 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all",
+                                                    formData.type === 'expense' ? "bg-black text-white" : "bg-white text-zinc-400 hover:text-black"
                                                 )}
                                                 onClick={() => setFormData({ ...formData, type: 'expense' })}
                                             >
@@ -198,8 +196,8 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                             </button>
                                             <button
                                                 className={cn(
-                                                    "px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all",
-                                                    formData.type === 'income' ? "bg-white text-blue-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                                                    "px-4 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all border-l-2 border-black",
+                                                    formData.type === 'income' ? "bg-[#E11D48] text-white" : "bg-white text-zinc-400 hover:text-black"
                                                 )}
                                                 onClick={() => setFormData({ ...formData, type: 'income' })}
                                             >
@@ -211,21 +209,21 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
 
                                 {mode === 'edit' ? (
                                     <div className="relative group">
-                                        <div className="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-black text-slate-300 group-focus-within:text-blue-500 transition-colors">
+                                        <div className="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-black text-zinc-300 group-focus-within:text-[#E11D48] transition-colors">
                                             {getCurrencySymbol()}
                                         </div>
                                         <input
                                             type="number"
                                             value={formData.amount}
                                             onChange={e => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
-                                            className="w-full h-24 pl-14 pr-8 text-5xl font-black text-slate-800 tracking-tighter bg-slate-50/50 border-4 border-slate-50 rounded-[2rem] focus:bg-white focus:border-blue-100 focus:ring-8 focus:ring-blue-50 transition-all outline-none"
+                                            className="w-full h-20 pl-14 pr-8 text-4xl font-black text-black tracking-tighter bg-white border-[3px] border-black focus:border-[#E11D48] focus:shadow-[4px_4px_0_#E11D48] transition-all outline-none"
                                             step="0.01"
                                         />
                                     </div>
                                 ) : (
                                     <div className={cn(
-                                        "h-24 flex items-center justify-center text-5xl font-black tracking-tighter rounded-[2rem] bg-slate-50/50 border-2 border-slate-50",
-                                        formData.type === 'expense' ? "text-slate-800" : "text-blue-600"
+                                        "h-20 flex items-center justify-center text-4xl font-black tracking-tighter bg-zinc-50 border-[3px] border-black shadow-[4px_4px_0_#09090B]",
+                                        formData.type === 'expense' ? "text-black" : "text-[#E11D48]"
                                     )}>
                                         {formData.type === 'expense' ? '-' : '+'}{formatCurrency(formData.amount)}
                                     </div>
@@ -236,8 +234,8 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                             <div className="grid gap-6">
                                 {/* Description */}
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                        <FileText size={12} className="text-blue-500" />
+                                    <label className="flex items-center gap-2 text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                                        <FileText size={12} className="text-[#E11D48]" />
                                         Nomenclature
                                     </label>
                                     {mode === 'edit' ? (
@@ -245,11 +243,11 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                             type="text"
                                             value={formData.description}
                                             onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                            className="w-full h-14 px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 focus:bg-white focus:border-blue-100 transition-all font-bold text-slate-700 outline-none"
+                                            className="w-full h-14 px-6 border-2 border-black bg-white focus:border-[#E11D48] focus:shadow-[3px_3px_0_#E11D48] transition-all font-bold text-black outline-none"
                                             placeholder="What was this for?"
                                         />
                                     ) : (
-                                        <div className="h-14 flex items-center px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 text-slate-700 font-bold">
+                                        <div className="h-14 flex items-center px-6 border-2 border-black bg-white text-black font-bold">
                                             {formData.description}
                                         </div>
                                     )}
@@ -258,8 +256,8 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Date */}
                                     <div className="space-y-2">
-                                        <label className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                            <Calendar size={12} className="text-indigo-500" />
+                                        <label className="flex items-center gap-2 text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                                            <Calendar size={12} className="text-[#E11D48]" />
                                             Timestamp
                                         </label>
                                         {mode === 'edit' ? (
@@ -267,10 +265,10 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                                 type="date"
                                                 value={formData.date}
                                                 onChange={e => setFormData({ ...formData, date: e.target.value })}
-                                                className="w-full h-14 px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 focus:bg-white focus:border-blue-100 transition-all font-bold text-slate-700 outline-none"
+                                                className="w-full h-14 px-6 border-2 border-black bg-white focus:border-[#E11D48] focus:shadow-[3px_3px_0_#E11D48] transition-all font-bold text-black outline-none"
                                             />
                                         ) : (
-                                            <div className="h-14 flex items-center px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 text-slate-700 font-bold">
+                                            <div className="h-14 flex items-center px-6 border-2 border-black bg-white text-black font-bold">
                                                 {format(new Date(formData.date), 'MMM dd, yyyy')}
                                             </div>
                                         )}
@@ -278,27 +276,27 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
 
                                     {/* Category */}
                                     <div className="space-y-2">
-                                        <label className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                            <Tag size={12} className="text-emerald-500" />
+                                        <label className="flex items-center gap-2 text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                                            <Tag size={12} className="text-[#E11D48]" />
                                             Classification
                                         </label>
                                         {mode === 'edit' ? (
                                             <div className="relative">
                                                 <button
-                                                    className="w-full h-14 px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 hover:bg-slate-100 focus:bg-white focus:border-blue-100 transition-all flex items-center justify-between outline-none group"
+                                                    className="w-full h-14 px-6 border-2 border-black bg-white hover:bg-zinc-50 focus:border-[#E11D48] transition-all flex items-center justify-between outline-none group"
                                                     onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                                                 >
-                                                    <div className="flex items-center gap-2 font-bold text-slate-700">
+                                                    <div className="flex items-center gap-2 font-bold text-black">
                                                         <span>{getCategoryEmoji(formData.category)}</span>
                                                         <span>{formData.category}</span>
                                                     </div>
-                                                    <ChevronDown size={16} className={cn("text-slate-400 transition-transform", showCategoryDropdown && "rotate-180")} />
+                                                    <ChevronDown size={16} className={cn("text-zinc-400 transition-transform", showCategoryDropdown && "rotate-180")} />
                                                 </button>
 
                                                 <AnimatePresence>
                                                     {showCategoryDropdown && (
                                                         <motion.div
-                                                            className="absolute bottom-full mb-2 left-0 right-0 z-[110] bg-white border-2 border-slate-50 rounded-[2rem] shadow-2xl overflow-hidden p-2"
+                                                            className="absolute bottom-full mb-2 left-0 right-0 z-[110] bg-white border-[3px] border-black shadow-[6px_6px_0_#E11D48] overflow-hidden p-2"
                                                             initial={{ opacity: 0, scale: 0.95 }}
                                                             animate={{ opacity: 1, scale: 1 }}
                                                             exit={{ opacity: 0, scale: 0.95 }}
@@ -308,8 +306,8 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                                                     <button
                                                                         key={cat.name}
                                                                         className={cn(
-                                                                            "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors mb-1 last:mb-0",
-                                                                            formData.category === cat.name ? "bg-blue-50 text-blue-700" : "hover:bg-slate-50 text-slate-600"
+                                                                            "w-full flex items-center gap-3 px-4 py-3 transition-colors mb-1 last:mb-0 border-2",
+                                                                            formData.category === cat.name ? "bg-black text-white border-black" : "border-transparent hover:bg-zinc-100 text-zinc-700"
                                                                         )}
                                                                         onClick={() => {
                                                                             setFormData({ ...formData, category: cat.name });
@@ -318,7 +316,7 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                                                     >
                                                                         <span className="text-xl">{cat.emoji}</span>
                                                                         <span className="font-black text-xs uppercase tracking-widest">{cat.name}</span>
-                                                                        {formData.category === cat.name && <Check size={14} className="ml-auto" />}
+                                                                        {formData.category === cat.name && <Check size={14} className="ml-auto text-[#E11D48]" />}
                                                                     </button>
                                                                 ))}
                                                             </div>
@@ -327,8 +325,8 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                                 </AnimatePresence>
                                             </div>
                                         ) : (
-                                            <div className="h-14 flex items-center px-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50">
-                                                <Badge className="bg-white text-slate-600 border-none font-black text-[10px] uppercase tracking-tighter">
+                                            <div className="h-14 flex items-center px-6 border-2 border-black bg-white">
+                                                <Badge className="bg-black text-white border-none font-black text-[10px] uppercase tracking-tighter rounded-none">
                                                     {getCategoryEmoji(formData.category)} {formData.category}
                                                 </Badge>
                                             </div>
@@ -339,11 +337,11 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
 
                             {/* Source Info */}
                             {transaction.source && (
-                                <div className="p-4 bg-slate-50 rounded-2xl flex items-center gap-3 border-2 border-slate-100/50">
-                                    <div className="p-2 bg-white rounded-xl text-slate-400">
+                                <div className="p-4 bg-zinc-50 flex items-center gap-3 border-2 border-black shadow-[3px_3px_0_#09090B]">
+                                    <div className="p-2 bg-black text-[#E11D48]">
                                         <FileText size={16} />
                                     </div>
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">
                                         Origin: {transaction.source.replace('_', ' ')}
                                     </span>
                                 </div>
@@ -355,14 +353,14 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                     <>
                                         <Button
                                             variant="ghost"
-                                            className="flex-1 h-14 rounded-2xl text-red-500 hover:bg-red-50 hover:text-red-600 font-black text-xs uppercase tracking-widest"
+                                            className="flex-1 h-14 text-[#E11D48] hover:bg-[#E11D48] hover:text-white"
                                             onClick={() => setMode('delete')}
                                         >
                                             <Trash2 size={16} className="mr-2" />
                                             Purge
                                         </Button>
                                         <Button
-                                            className="flex-1 h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-100"
+                                            className="flex-1 h-14"
                                             onClick={() => setMode('edit')}
                                         >
                                             <Edit2 size={16} className="mr-2" />
@@ -373,14 +371,14 @@ const TransactionDialog = ({ transaction, onSave, onDelete, onClose }: Transacti
                                     <>
                                         <Button
                                             variant="outline"
-                                            className="flex-1 h-14 rounded-2xl border-2 border-slate-100 font-black text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-50"
+                                            className="flex-1 h-14"
                                             onClick={() => setMode('view')}
                                             disabled={isLoading}
                                         >
                                             Cancel
                                         </Button>
                                         <Button
-                                            className="flex-1 h-14 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-100"
+                                            className="flex-1 h-14"
                                             onClick={handleSave}
                                             disabled={isLoading}
                                         >

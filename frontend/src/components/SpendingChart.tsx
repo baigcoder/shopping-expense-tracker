@@ -1,82 +1,82 @@
-// Spending Chart Component - Optimized with React.memo
-import { memo, useMemo } from 'react';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { MonthlySpending } from '../types';
-import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
+// Memoized spending chart. Recharts is heavy; this component re-renders only
+// when `chartData` reference changes. Animation is disabled on the dashboard
+// preview (kept only on the dedicated Analytics page).
+import { memo } from 'react';
+import {
+    AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
+    CartesianGrid
+} from 'recharts';
 
-interface SpendingChartProps {
-    data: MonthlySpending[];
+export interface ChartDatum {
+    day: string;
+    income: number;
+    expense: number;
 }
 
-const SpendingChart = memo(({ data }: SpendingChartProps) => {
-    // Memoize data transformation to prevent recalculation on re-renders
-    const formattedData = useMemo(() => data.map(item => ({
-        ...item,
-        monthLabel: new Date(item.month + '-01').toLocaleDateString('en-US', {
-            month: 'short'
-        })
-    })), [data]);
+interface Props {
+    data: ChartDatum[];
+}
 
-    const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div style={{
-                    background: 'var(--bg-elevated)',
-                    border: '1px solid var(--border-default)',
-                    borderRadius: '12px',
-                    padding: '12px 16px',
-                    boxShadow: 'var(--shadow-lg)'
-                }}>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginBottom: '4px' }}>
-                        {label}
-                    </p>
-                    <p style={{ color: 'var(--text-primary)', fontSize: '1rem', fontWeight: 600 }}>
-                        {formatCurrency(payload[0].value)}
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
-
+const ChartTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }) => {
+    if (!active || !payload || payload.length === 0) return null;
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={formattedData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <defs>
-                    <linearGradient id="colorSpending" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                    </linearGradient>
-                </defs>
-                <XAxis
-                    dataKey="monthLabel"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
-                    dy={10}
-                />
-                <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
-                    tickFormatter={(value) => `${getCurrencySymbol()}${value}`}
-                    width={60}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Area
-                    type="monotone"
-                    dataKey="total"
-                    stroke="#6366f1"
-                    strokeWidth={3}
-                    fillOpacity={1}
-                    fill="url(#colorSpending)"
-                />
-            </AreaChart>
-        </ResponsiveContainer>
+        <div className="bg-white border-[3px] border-black p-4 shadow-[6px_6px_0px_#000000]">
+            <p className="text-[10px] font-black text-black uppercase tracking-widest mb-2 border-b-2 border-black pb-1">
+                {payload[0].payload.day}
+            </p>
+            {payload.map((entry, idx) => (
+                <div key={idx} className="flex items-center gap-3 mt-1">
+                    <div className="w-3 h-3 border-2 border-black" style={{ backgroundColor: entry.color }} />
+                    <span className="text-[10px] font-black text-black uppercase tracking-tighter">{entry.name}:</span>
+                    <span className="text-sm font-black text-black">Rs{entry.value}</span>
+                </div>
+            ))}
+        </div>
     );
-});
+};
 
+const SpendingChartBase = ({ data }: Props) => (
+    <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="0" stroke="#e5e7eb" vertical={true} />
+            <XAxis
+                dataKey="day"
+                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
+                tickLine={false}
+                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
+                dy={10}
+            />
+            <YAxis
+                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
+                tickLine={false}
+                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
+                tickFormatter={(v: number) => `Rs${v}`}
+            />
+            <Tooltip content={<ChartTooltip />} />
+            <Area
+                type="stepAfter"
+                dataKey="income"
+                stroke="#000000"
+                strokeWidth={4}
+                fill="#000000"
+                fillOpacity={0.1}
+                name="Inflow"
+                isAnimationActive={false}
+                activeDot={{ r: 8, strokeWidth: 3, stroke: '#000000', fill: '#FFFFFF' }}
+            />
+            <Area
+                type="stepAfter"
+                dataKey="expense"
+                stroke="#E11D48"
+                strokeWidth={4}
+                fill="#E11D48"
+                fillOpacity={0.1}
+                name="Outflow"
+                isAnimationActive={false}
+            />
+        </AreaChart>
+    </ResponsiveContainer>
+);
+
+export const SpendingChart = memo(SpendingChartBase);
 SpendingChart.displayName = 'SpendingChart';
-
-export default SpendingChart;
-

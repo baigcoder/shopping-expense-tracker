@@ -317,6 +317,8 @@ const ReceiptScanner = ({ isOpen, onClose, onConfirm }: ReceiptScannerProps) => 
                                         src={image}
                                         alt="Receipt"
                                         className="w-full max-h-64 object-contain bg-muted"
+                                        loading="lazy"
+                                        decoding="async"
                                     />
                                     <Button
                                         variant="ghost"

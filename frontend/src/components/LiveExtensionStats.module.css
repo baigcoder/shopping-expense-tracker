@@ -3,9 +3,9 @@
 .container {
     background: #fff;
     border: 3px solid #000;
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: 6px 6px 0 #000;
 }
 
 .header {
@@ -58,7 +58,7 @@
     padding: 1.25rem;
     background: #F3F4F6;
     border: 3px solid #000;
-    border-radius: 16px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 4px 4px 0 #000;
@@ -66,13 +66,13 @@
 
 .stat:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #000;
+    box-shadow: 6px 6px 0 #E11D48;
 }
 
 .statIcon {
     width: 50px;
     height: 50px;
-    border-radius: 12px;
+    border-radius: 8px;
     border: 3px solid #000;
     display: flex;
     align-items: center;
@@ -268,13 +268,13 @@
     text-decoration: none;
     text-transform: uppercase;
     transition: all 0.2s;
-    box-shadow: 4px 4px 0px #F59E0B;
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .seeMore:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #F59E0B;
-    color: #F59E0B;
+    box-shadow: 6px 6px 0px #E11D48;
+    color: #E11D48;
 }
 
 .seeMore svg:last-child {

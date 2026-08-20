@@ -1,90 +1,105 @@
 /* ============================================================
-   CASHLY — "Luminous Finance" Design System v5.0
-   Premium Light-first, Sophisticated, Linear Aesthetics.
+   CASHLY — "Stark Finance" Design System v6.0
+   White canvas, black ink, rose #E11D48, square corners.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  /* Premium Light Mode is Default */
+  /* CASHLY Stark — white canvas, black ink, rose accent */
   color-scheme: light;
 
-  --bg-page:       #F8FAFC;
+  --bg-page:       #FFFFFF;
   --bg-card:       #FFFFFF;
-  --bg-card-hover: #F1F5F9;
+  --bg-card-hover: #F4F4F5;
   --bg-sidebar:    #FFFFFF;
-  --bg-header:     rgba(255, 255, 255, 0.85);
-  --bg-input:      #F1F5F9;
+  --bg-header:     rgba(255, 255, 255, 0.95);
+  --bg-input:      #FFFFFF;
   --bg-input-focus:#FFFFFF;
-  --bg-subtle:     #F8FAFC;
-  --bg-overlay:    rgba(0, 0, 0, 0.4);
+  --bg-subtle:     #F4F4F5;
+  --bg-overlay:    rgba(9, 9, 11, 0.72);
 
-  /* Borders — Soft & Professional (No thick black) */
-  --border:        #E2E8F0;
-  --border-strong: #CBD5E1;
-  --border-focus:  #3b82f6;
+  /* Borders — hard black */
+  --border:        #09090B;
+  --border-strong: #09090B;
+  --border-focus:  #E11D48;
 
-  /* Text — Deep Indigo & Gray */
-  --text-primary:  #0F172A;
-  --text-secondary:#475569;
-  --text-muted:    #94A3B8;
+  /* Text — Ink & muted */
+  --text-primary:  #09090B;
+  --text-secondary:#3F3F46;
+  --text-muted:    #71717A;
   --text-inverse:  #FFFFFF;
-  --text-link:     #3b82f6;
+  --text-link:     #E11D48;
 
-  /* Brand — Modern Blue */
-  --brand:         #3b82f6;
-  --brand-hover:   #2563eb;
-  --brand-light:   rgba(59, 130, 246, 0.08);
-  --brand-muted:   rgba(59, 130, 246, 0.04);
-  --brand-glow:    rgba(59, 130, 246, 0.2);
+  /* Brand — Stark rose */
+  --brand:         #E11D48;
+  --brand-hover:   #BE123C;
+  --brand-light:   rgba(225, 29, 72, 0.1);
+  --brand-muted:   rgba(225, 29, 72, 0.05);
+  --brand-glow:    rgba(225, 29, 72, 0.22);
 
   /* Semantic */
   --success:       #10b981;
   --success-light: rgba(16, 185, 129, 0.1);
   --warning:       #f59e0b;
   --warning-light: rgba(245, 158, 11, 0.1);
-  --danger:        #ef4444;
-  --danger-light:  rgba(239, 68, 68, 0.1);
+  --danger:        #E11D48;
+  --danger-light:  rgba(225, 29, 72, 0.1);
 
-  /* Radius — Apple Style */
-  --r-sm:  10px;
-  --r-md:  14px;
-  --r-lg:  20px;
-  --r-xl:  28px;
-  --r-2xl: 36px;
+  /* Radius — Stark (square) */
+  --r-sm:  0px;
+  --r-md:  0px;
+  --r-lg:  0px;
+  --r-xl:  0px;
+  --r-2xl: 0px;
 
-  /* Shadows — Soft Multi-layer */
-  --shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md:     0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg:     0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-  --shadow-xl:     0 25px 50px -12px rgba(0, 0, 0, 0.1);
-  --shadow-premium: 0 10px 40px -10px rgba(59, 130, 246, 0.15);
+  /* Shadows — hard offset blocks */
+  --shadow-sm:     2px 2px 0 #09090B;
+  --shadow-md:     4px 4px 0 #09090B;
+  --shadow-lg:     6px 6px 0 #09090B;
+  --shadow-xl:     8px 8px 0 #09090B;
+  --shadow-premium: 6px 6px 0 #E11D48;
 
   /* Tailwind compat */
-  --background:             210 40% 98%;
-  --foreground:             222 47% 11%;
+  --background:             0 0% 100%;
+  --foreground:             240 6% 4%;
   --card:                   0 0% 100%;
-  --card-foreground:        222 47% 11%;
-  --primary:                217 91% 60%;
-  --radius:                 1.25rem;
+  --card-foreground:        240 6% 4%;
+  --primary:                240 6% 4%;
+  --primary-foreground:     0 0% 100%;
+  --radius:                 0;
+
+  --cashly-ink: #09090B;
+  --cashly-accent: #E11D48;
+  --cashly-muted: #71717A;
+  --cashly-border: #09090B;
+  --cashly-surface: #FFFFFF;
+  --cashly-soft: #F4F4F5;
+  --cashly-shadow: 6px 6px 0 #09090B;
+  --cashly-shadow-accent: 6px 6px 0 #E11D48;
+  --cashly-focus: 0 0 0 3px rgba(225, 29, 72, 0.22);
+  --content-max: 1536px;
 }
 
 /* Dark mode fallback — Obsidian */
 [data-theme='dark'], .dark {
   color-scheme: dark;
   --bg-page:       #050505;
-  --bg-card:       #0f111a;
-  --bg-card-hover: #161924;
-  --bg-sidebar:    #0a0a0a;
-  --bg-header:     rgba(5, 5, 5, 0.8);
-  --bg-input:      rgba(255, 255, 255, 0.03);
-  --bg-input-focus:rgba(255, 255, 255, 0.06);
-  --border:        rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.12);
+  --bg-card:       #09090B;
+  --bg-card-hover: #16181D;
+  --bg-sidebar:    #050505;
+  --bg-header:     rgba(5, 5, 5, 0.85);
+  --bg-input:      #09090B;
+  --bg-input-focus:#0F0F12;
+  --bg-subtle:     #0F0F12;
+  --bg-overlay:    rgba(0, 0, 0, 0.8);
+  --border:        #FFFFFF;
+  --border-strong: #FFFFFF;
   --text-primary:  #FFFFFF;
-  --text-secondary:rgba(255, 255, 255, 0.6);
-  --text-muted:    rgba(255, 255, 255, 0.3);
+  --text-secondary:#A1A1AA;
+  --text-muted:    #71717A;
+  --text-inverse:  #09090B;
 }
 
 /* ============================================================
@@ -100,6 +115,7 @@ body {
   min-height: 100vh;
   margin: 0;
   transition: background-color 0.4s ease, color 0.4s ease;
+  text-rendering: optimizeLegibility;
 }
 
 html,
@@ -118,6 +134,11 @@ video {
   max-width: 100%;
 }
 
+canvas,
+svg {
+  height: auto;
+}
+
 button,
 input,
 select,
@@ -129,6 +150,11 @@ textarea {
 table {
   width: 100%;
   border-collapse: collapse;
+}
+
+th,
+td {
+  overflow-wrap: anywhere;
 }
 
 a,
@@ -157,22 +183,67 @@ h6 {
   display: none;
 }
 
+:focus-visible {
+  outline: 3px solid var(--cashly-accent);
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  box-shadow: var(--cashly-focus);
+}
+
+.cashly-page,
+[class*="Page_"],
+[class*="page_"] {
+  width: 100%;
+  min-width: 0;
+}
+
+.cashly-scroll-x,
+[class*="tableWrap"],
+[class*="TableWrap"],
+[class*="tableContainer"],
+[class*="TableContainer"] {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cashly-scroll-x > table,
+[class*="tableWrap"] > table,
+[class*="TableWrap"] > table,
+[class*="tableContainer"] table,
+[class*="TableContainer"] table {
+  min-width: 680px;
+}
+
+.recharts-responsive-container {
+  min-width: 0;
+}
+
+.recharts-wrapper {
+  max-width: 100% !important;
+}
+
 /* ============================================================
    PREMIUM CARD SYSTEM
    ============================================================ */
 .card {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
+  border: 3px solid var(--border);
+  border-radius: 0;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-md);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-premium);
 }
 
 /* Decoupled resets to allow component-specific styling */
@@ -185,27 +256,29 @@ h6 {
    ============================================================ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--r-md);
-  transition: all 0.2s; cursor: pointer; border: none;
+  font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.75rem 1.5rem; border-radius: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease; cursor: pointer;
+  border: 2px solid var(--cashly-ink);
 }
 .btn-primary {
-  background: var(--brand);
-  color: white;
-  box-shadow: var(--shadow-premium);
+  background: var(--cashly-ink);
+  color: #fff;
+  box-shadow: var(--shadow-md);
 }
 .btn-primary:hover {
-  background: var(--brand-hover);
-  transform: scale(1.02);
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+  background: var(--cashly-accent);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--cashly-accent);
 }
 
 /* ============================================================
    SCROLLBAR
    ============================================================ */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.1); }
+::-webkit-scrollbar-thumb { background: #09090B; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #E11D48; }
 
 /* ============================================================
    MOBILE RESPONSIVE SAFETY NET
@@ -267,6 +340,18 @@ h6 {
     right: 0.75rem !important;
     width: auto !important;
   }
+
+  [class*="shadow-[16px_16px"],
+  [class*="shadow-[20px_20px"],
+  [class*="shadow-[24px_24px"] {
+    box-shadow: 6px 6px 0 var(--cashly-ink) !important;
+  }
+
+  [class*="tracking-[0.3em"],
+  [class*="tracking-[0.4em"],
+  [class*="tracking-[0.5em"] {
+    letter-spacing: 0.16em !important;
+  }
 }
 
 @media (max-width: 640px) {
@@ -300,5 +385,84 @@ h6 {
   textarea,
   select {
     font-size: 16px;
+  }
+}
+
+/* ============================================================
+   Performance: GPU-friendly keyframes (replace framer-motion infinite loops)
+   These run on the compositor; no React re-renders, no per-frame React work.
+   ============================================================ */
+
+.cf-anim {
+  will-change: transform, opacity;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* 3s scale wobble — replaces the 3 stat-card icon loops */
+[data-anim="pulse-soft"] {
+  animation: cf-pulse-soft 3s ease-in-out infinite;
+}
+[data-anim="bob-up"] {
+  animation: cf-bob-up 4s ease-in-out infinite;
+}
+[data-anim="bob-down"] {
+  animation: cf-bob-down 3.5s ease-in-out infinite;
+}
+[data-anim="wobble"] {
+  animation: cf-wobble 5s ease-in-out infinite;
+}
+[data-anim="ping-soft"] {
+  animation: cf-ping-soft 1.5s ease-in-out infinite;
+}
+[data-anim="ping-strong"] {
+  animation: cf-ping-strong 2s linear infinite;
+}
+[data-anim="ripple"] {
+  animation: cf-ripple 3s ease-out infinite;
+}
+
+@keyframes cf-pulse-soft {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+@keyframes cf-bob-up {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes cf-bob-down {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(3px) scale(1.05); }
+}
+@keyframes cf-wobble {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25%      { transform: rotate(8deg) scale(1.05); }
+  75%      { transform: rotate(-8deg) scale(1.05); }
+}
+@keyframes cf-ping-soft {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.2); opacity: 0.5; }
+}
+@keyframes cf-ping-strong {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.3); opacity: 0; }
+}
+@keyframes cf-ripple {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-anim] {
+    animation: none !important;
   }
 }

@@ -11,7 +11,7 @@
     flex-direction: row;
     background: var(--bg-page);
     overflow-x: hidden;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.25s ease;
 }
 
 .contentWrapper {
@@ -21,7 +21,7 @@
     min-width: 0;
     max-width: 100%;
     margin: 0;
-    padding: 1.5rem 2rem;
+    padding: clamp(1rem, 2vw, 1.75rem);
     padding-bottom: calc(2rem + 24px);
     overflow-x: hidden;
     background: var(--bg-page);
@@ -41,6 +41,7 @@
 @media (max-width: 1024px) {
     .contentWrapper {
         padding: 1rem;
+        padding-bottom: calc(6rem + env(safe-area-inset-bottom));
     }
 
     .appContainer.withSidebar {
@@ -55,7 +56,7 @@
     }
 
     .contentWrapper {
-        padding: 1rem 0.75rem calc(5.5rem + env(safe-area-inset-bottom));
+        padding: 0.9rem 0.75rem calc(6.25rem + env(safe-area-inset-bottom));
         max-width: 100vw;
         min-height: 100dvh;
     }
@@ -63,6 +64,6 @@
 
 @media (max-width: 480px) {
     .contentWrapper {
-        padding: 0.75rem 0.5rem calc(5.5rem + env(safe-area-inset-bottom));
+        padding: 0.75rem 0.55rem calc(6.5rem + env(safe-area-inset-bottom));
     }
 }

@@ -122,6 +122,8 @@
                 },
             }).catch(() => undefined);
 
+            await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
+
             authData = await getAuth();
             await loadMain();
         } catch (error) {
@@ -170,6 +172,7 @@
 
     const loadMain = async () => {
         authData = await getAuth();
+        await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
         if (!authData) {
             showView('login');
             return;
@@ -292,15 +295,17 @@
     };
 
     const logout = async () => {
-        await chrome.storage.local.remove([
-            'supabaseSession',
-            'accessToken',
-            'userId',
-            'userEmail',
-            'userAvatar',
-            'syncedFromWebsite',
-            'lastSync',
-        ]);
+        await chrome.runtime.sendMessage({ type: 'LOGOUT_EXTENSION' }).catch(async () => {
+            await chrome.storage.local.remove([
+                'supabaseSession',
+                'accessToken',
+                'userId',
+                'userEmail',
+                'userAvatar',
+                'syncedFromWebsite',
+                'lastSync',
+            ]);
+        });
         authData = null;
         showView('login');
     };
@@ -333,5 +338,16 @@
         bind();
         await loadSettings();
         await loadMain();
+
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            if (message.type === 'SESSION_UPDATED') {
+                loadMain();
+                sendResponse({ received: true });
+            } else if (message.type === 'WEBSITE_LOGGED_OUT') {
+                authData = null;
+                showView('login');
+                sendResponse({ received: true });
+            }
+        });
     });
 })();

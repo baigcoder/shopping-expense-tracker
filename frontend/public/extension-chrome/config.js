@@ -1,14 +1,12 @@
 // Extension Configuration
-// Centralized config for Supabase and other settings
-// Uses chrome.storage.sync for secure credential storage when available
+// Production defaults match the live Cashly site. Override locally via
+// chrome.storage.sync CASHLY_CONFIG (API_BASE_URL, WEBSITE_URL, Supabase keys).
 
-// Default config (fallback values - can be overridden via storage)
 const DEFAULT_CONFIG = {
-    SUPABASE_URL: 'https://ebfolvhqjvavrwrfcbhn.supabase.co',
-    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViZm9sdmhxanZhdnJ3cmZjYmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM2NjI0NDgsImV4cCI6MjA0OTIzODQ0OH0.RC7d0vMx1F4Z2J2Ovl9m2hZV8HCmZ2f6pBWSN-GJ3O0',
-    API_BASE_URL: 'http://localhost:5000/api',
+    SUPABASE_URL: 'https://gmttqefcyqaxhlghcfpo.supabase.co',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtdHRxZWZjeXFheGhsZ2hjZnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4MTMwMDYsImV4cCI6MjA5NTM4OTAwNn0.fQXoRZNV8AuwaqWQ-1xgkWGlSzLNTSOZ9o-pCRkEiqI',
+    API_BASE_URL: 'https://shopping-expense-tracker.vercel.app/api',
 
-    // Website URLs
     WEBSITE_ORIGINS: [
         'http://localhost:5173',
         'http://localhost:5174',
@@ -20,19 +18,16 @@ const DEFAULT_CONFIG = {
         'https://shopping-expense-tracker.vercel.app'
     ],
 
-    WEBSITE_URL: 'http://localhost:5173',
+    WEBSITE_URL: 'https://shopping-expense-tracker.vercel.app',
 
-    // Extension settings
-    VERSION: '5.0.0',
+    VERSION: '9.0.1',
 
-    // Feature flags
     FEATURES: {
         BEHAVIOR_TRACKING: true,
         REALTIME_SYNC: true,
         NOTIFICATIONS: true
     },
 
-    // Rate limiting settings
     RATE_LIMIT: {
         MAX_REQUESTS_PER_MINUTE: 60,
         MAX_TRANSACTIONS_PER_MINUTE: 10,
@@ -40,10 +35,8 @@ const DEFAULT_CONFIG = {
     }
 };
 
-// Create a reactive config object
 const CONFIG = { ...DEFAULT_CONFIG };
 
-// Computed properties
 Object.defineProperties(CONFIG, {
     API_URL: {
         get() {
@@ -57,13 +50,11 @@ Object.defineProperties(CONFIG, {
     }
 });
 
-// Load config from storage (async - will update CONFIG when ready)
 async function loadConfigFromStorage() {
     try {
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
             const stored = await chrome.storage.sync.get(['CASHLY_CONFIG']);
             if (stored.CASHLY_CONFIG) {
-                // Only override specific keys for security
                 if (stored.CASHLY_CONFIG.SUPABASE_URL) {
                     CONFIG.SUPABASE_URL = stored.CASHLY_CONFIG.SUPABASE_URL;
                 }
@@ -84,7 +75,6 @@ async function loadConfigFromStorage() {
     }
 }
 
-// Save config to storage
 async function saveConfigToStorage(newConfig) {
     try {
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
@@ -103,17 +93,14 @@ async function saveConfigToStorage(newConfig) {
     }
 }
 
-// Initialize config on load
 loadConfigFromStorage();
 
-// For service worker (background.js) - self is the global
 if (typeof self !== 'undefined') {
     self.CONFIG = CONFIG;
     self.loadConfigFromStorage = loadConfigFromStorage;
     self.saveConfigToStorage = saveConfigToStorage;
 }
 
-// For content scripts and popup
 if (typeof window !== 'undefined') {
     window.CONFIG = CONFIG;
     window.loadConfigFromStorage = loadConfigFromStorage;

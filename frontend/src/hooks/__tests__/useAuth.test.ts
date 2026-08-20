@@ -31,6 +31,10 @@ vi.mock('../../store/useStore', () => ({
         setUser: mockSetUser,
         setLoading: mockSetLoading,
     }),
+    useUIStore: () => ({
+        setCurrency: vi.fn(),
+        setTheme: vi.fn(),
+    }),
 }))
 
 // Import after mocks are set up

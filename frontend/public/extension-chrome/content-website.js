@@ -5,6 +5,11 @@
 (function () {
     'use strict';
 
+    if (window.__cashlyWebsiteBridgeInitialized) {
+        return;
+    }
+    window.__cashlyWebsiteBridgeInitialized = true;
+
     // ================================
     // CONNECTION STATE MANAGEMENT
     // ================================
@@ -294,6 +299,7 @@
             );
 
             console.log('[Cashly Extension] Checking for login... Found auth keys:', authRelatedKeys.length);
+            let foundSession = false;
 
             // Check Firebase (most common)
             for (const key of authRelatedKeys) {
@@ -301,6 +307,7 @@
                     try {
                         const data = JSON.parse(localStorage.getItem(key));
                         if (data?.stsTokenManager?.accessToken) {
+                            foundSession = true;
                             console.log('[Cashly Extension] ✅ Detected Firebase login, syncing...');
                             
                             const session = {
@@ -340,6 +347,7 @@
                 try {
                     const session = JSON.parse(localStorage.getItem(supabaseKey));
                     if (session?.access_token) {
+                        foundSession = true;
                         console.log('[Cashly Extension] ✅ Detected Supabase login, syncing...');
                         
                         const response = await sendToBackground({
@@ -360,6 +368,44 @@
                     console.log('[Cashly Extension] Supabase parse error:', e.message);
                 }
             }
+
+            if (!foundSession) {
+                const bridgeRaw = localStorage.getItem('cashly_web_session_bridge');
+                if (bridgeRaw) {
+                    try {
+                        const bridgeSession = JSON.parse(bridgeRaw);
+                        if (bridgeSession?.access_token && bridgeSession?.user) {
+                            foundSession = true;
+                            console.log('[Cashly Extension] ✅ Detected bridge login, syncing...');
+                            const response = await sendToBackground({
+                                type: 'WEBSITE_LOGIN',
+                                data: {
+                                    session: bridgeSession,
+                                    user: bridgeSession.user,
+                                    accessToken: bridgeSession.access_token,
+                                    autoSync: true,
+                                    timestamp: Date.now()
+                                }
+                            });
+                            console.log('[Cashly Extension] Bridge auto-sync response:', response);
+                            markAsSynced();
+                        }
+                    } catch (e) {
+                        console.log('[Cashly Extension] Bridge parse error:', e.message);
+                    }
+                }
+            }
+
+            if (!foundSession) {
+                const currentAuth = await chrome.storage.local.get(['accessToken', 'userEmail']);
+                if (currentAuth.accessToken || currentAuth.userEmail) {
+                    console.log('[Cashly Extension] ⚠️ Website session missing, logging extension out');
+                    sessionStorage.removeItem(SESSION_SYNC_KEY);
+                    localStorage.removeItem(LAST_SYNC_KEY);
+                    await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' }).catch(() => undefined);
+                    await setExtensionFlag();
+                }
+            }
         } catch (e) {
             console.error('[Cashly Extension] Auto-sync error:', e);
         }
@@ -370,10 +416,10 @@
     setTimeout(autoSyncSessionIfLoggedIn, 2000);
 
     // Monitor localStorage changes for login
-    const originalSetItem = Storage.prototype.setItem;
+    const originalStorageSetItem = Storage.prototype.setItem;
     Storage.prototype.setItem = function(key, value) {
         const oldValue = this.getItem(key);
-        originalSetItem.call(this, key, value);
+        originalStorageSetItem.call(this, key, value);
 
         // Detect login via localStorage changes
         if ((key.includes('firebase') || key.includes('supabase') || key.includes('auth')) && oldValue !== value) {
@@ -447,6 +493,25 @@
                 dispatchTransaction(message.data, 'extension');
                 sendResponse({ received: true });
                 break;
+            case 'TRANSACTION_CANDIDATE_ADDED':
+            case 'BEHAVIOR_TRANSACTION_ADDED':
+            case 'CASHLY_DATA_UPDATED':
+            case 'SUBSCRIPTION_ADDED':
+            case 'TRANSACTION_SYNC_STATUS':
+            case 'SITE_VISIT_TRACKED': {
+                const eventName = message.type === 'TRANSACTION_CANDIDATE_ADDED'
+                    ? 'transaction-candidate-added'
+                    : message.type === 'SUBSCRIPTION_ADDED'
+                        ? 'subscription-changed'
+                        : 'cashly-data-updated';
+                window.dispatchEvent(new CustomEvent(eventName, { detail: message.data || {} }));
+                window.dispatchEvent(new CustomEvent('cashly-data-updated', {
+                    detail: { type: message.type, ...(message.data || {}) }
+                }));
+                window.postMessage({ source: 'cashly-extension', type: message.type, data: message.data }, '*');
+                sendResponse({ received: true });
+                break;
+            }
         }
         return true;
     });
@@ -474,10 +539,27 @@
         }
     });
 
+    const isAuthStorageKey = (key) => {
+        if (!key || typeof key !== 'string') return false;
+        return key === 'cashly_web_session_bridge'
+            || key === 'expense_tracker_session'
+            || (key.startsWith('sb-') && key.endsWith('-auth-token'))
+            || (key.includes('firebase') && key.includes('auth'));
+    };
+
+    const triggerImmediateLogout = async () => {
+        try {
+            sessionStorage.removeItem(SESSION_SYNC_KEY);
+            localStorage.removeItem(LAST_SYNC_KEY);
+            await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
+            await setExtensionFlag();
+        } catch (e) { }
+    };
+
     // ─── AUTH SNIFFING HOOKS ───
-    const originalSetItem = localStorage.setItem;
+    const originalLocalStorageSetItem = localStorage.setItem;
     localStorage.setItem = function (key, value) {
-        originalSetItem.apply(this, arguments);
+        originalLocalStorageSetItem.apply(this, arguments);
         const isSupabase = key.startsWith('sb-') && key.endsWith('-auth-token');
         const isFirebase = key.includes('firebase') && key.includes('auth');
         
@@ -510,10 +592,24 @@
                         type: 'WEBSITE_LOGIN',
                         data: { session, user: session.user, accessToken: session.access_token, skipNotification: false }
                     }).then(() => markAsSynced()).catch(() => { });
+                } else if (isAuthStorageKey(key)) {
+                    triggerImmediateLogout();
                 }
             } catch (e) { 
-                console.error('Auth sync error:', e);
+                if (isAuthStorageKey(key)) {
+                    triggerImmediateLogout();
+                } else {
+                    console.error('Auth sync error:', e);
+                }
             }
+        }
+    };
+
+    const originalLocalStorageRemoveItem = localStorage.removeItem;
+    localStorage.removeItem = function (key) {
+        originalLocalStorageRemoveItem.apply(this, arguments);
+        if (isAuthStorageKey(key)) {
+            triggerImmediateLogout();
         }
     };
 

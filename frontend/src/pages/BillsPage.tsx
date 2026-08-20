@@ -292,10 +292,12 @@ const BillsPage = () => {
                         DEPLOY BILL
                     </button>
                     {user && (user as any)?.user_metadata?.avatar_url && (
-                        <img 
-                            src={(user as any).user_metadata.avatar_url} 
-                            className="w-12 h-12 border-4 border-black object-cover" 
-                            alt="Profile" 
+                        <img
+                            src={(user as any).user_metadata.avatar_url}
+                            className="w-12 h-12 border-4 border-black object-cover"
+                            alt="Profile"
+                            loading="lazy"
+                            decoding="async"
                         />
                     )}
                 </div>
@@ -507,8 +509,8 @@ const BillsPage = () => {
                     </div>
 
                     <DialogFooter className="mt-4 gap-2">
-                        <Button variant="outline" className="rounded-xl border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white" onClick={() => setDialogOpen(false)}>Cancel</Button>
-                        <Button className="rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20" onClick={() => void handleCreateBill()} disabled={saving}>
+                        <Button variant="outline" className="rounded-none border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                        <Button className="rounded-none bg-black text-white border-2 border-black shadow-[3px_3px_0_#E11D48] hover:bg-[#E11D48]" onClick={() => void handleCreateBill()} disabled={saving}>
                             {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
                             Save bill
                         </Button>

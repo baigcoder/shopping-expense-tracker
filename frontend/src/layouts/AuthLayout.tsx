@@ -13,7 +13,7 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
     return (
-        <div className="min-h-screen flex overflow-y-auto lg:h-screen lg:overflow-hidden">
+        <div className="min-h-dvh flex overflow-y-auto lg:h-dvh lg:overflow-hidden">
             {/* Visual Side (Left) */}
             <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 overflow-hidden">
                 {/* Background Effects */}

@@ -70,6 +70,78 @@ const normalizeAmount = (value: unknown) => {
 const compact = (...values: Array<string | null | undefined>) =>
     values.map((value) => value?.trim()).find(Boolean);
 
+type DetectedSubscriptionInput = DetectedTransactionInput & {
+    merchant_name?: string;
+    is_trial?: boolean;
+    is_subscription?: boolean;
+    trial_days?: number;
+    source_url?: string;
+};
+
+export async function upsertDetectedSubscription(userId: string, data: DetectedSubscriptionInput) {
+    const isTrial = !!(data.isTrial || data.is_trial || data.type === 'trial');
+    const isSubscription = !!(
+        data.isSubscription
+        || data.is_subscription
+        || data.type === 'subscription'
+        || data.type === 'trial'
+        || isTrial
+    );
+    if (!isSubscription) return null;
+
+    const name = compact(data.merchantName, data.merchant_name, data.storeName, data.name, data.serviceName, data.hostname, 'Detected Subscription')!;
+    const trialDays = Number(data.trialDays || data.trial_days || (isTrial ? 7 : 0)) || (isTrial ? 7 : 0);
+    const today = new Date();
+    const trialEnd = new Date(today);
+    trialEnd.setDate(trialEnd.getDate() + trialDays);
+    const cycle = data.billingCycle === 'yearly' || data.billingCycle === 'weekly' ? data.billingCycle : 'monthly';
+    const todayIso = today.toISOString().slice(0, 10);
+
+    const row = {
+        user_id: userId,
+        name,
+        logo: '📦',
+        category: data.category || 'Subscriptions',
+        price: Number(data.amount ?? data.price ?? 0) || 0,
+        cycle,
+        is_active: true,
+        is_trial: isTrial,
+        status: isTrial ? 'trial' : 'active',
+        trial_days: isTrial ? trialDays : 0,
+        trial_start_date: isTrial ? todayIso : null,
+        trial_end_date: isTrial ? trialEnd.toISOString().slice(0, 10) : null,
+        start_date: todayIso,
+        source_url: data.sourceUrl || data.source_url || data.storeUrl || null,
+        detected_at: new Date().toISOString(),
+    };
+
+    const { data: existing } = await supabase
+        .from('subscriptions')
+        .select('id')
+        .eq('user_id', userId)
+        .ilike('name', name)
+        .maybeSingle();
+
+    if (existing?.id) {
+        const { data: updated, error } = await supabase
+            .from('subscriptions')
+            .update(row)
+            .eq('id', existing.id)
+            .select()
+            .single();
+        if (error) throw error;
+        return updated;
+    }
+
+    const { data: inserted, error } = await supabase
+        .from('subscriptions')
+        .insert(row)
+        .select()
+        .single();
+    if (error) throw error;
+    return inserted;
+}
+
 const normalizeHash = (value?: string | null) => {
     const key = value?.trim();
     if (!key) return null;
@@ -248,7 +320,7 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
     const isRecurring = data.isSubscription || data.type === 'subscription' || data.type === 'trial';
     const confidence = data.confidence ?? data.detectionConfidence ?? (data.amount || data.price ? 0.9 : 0.6);
 
-    return createTransactionCandidate(userId, {
+    const result = await createTransactionCandidate(userId, {
         source: 'extension',
         description,
         amount: data.amount ?? data.price ?? 0,
@@ -265,6 +337,16 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
         confidence,
         transactionHash: data.transactionHash || data.idempotencyKey,
     });
+
+    if (isRecurring || data.isTrial) {
+        try {
+            await upsertDetectedSubscription(userId, data);
+        } catch (error) {
+            console.warn('Detected subscription upsert failed:', error);
+        }
+    }
+
+    return result;
 }
 
 export async function listTransactionCandidates(userId: string, options: Record<string, any> = {}) {
@@ -356,6 +438,21 @@ export async function approveCandidate(userId: string, id: string, updates: Appr
 
     if (error) throw error;
     await invalidateUserAICacheIfEnabled(userId);
+
+    const payload = (candidate.raw_payload || {}) as DetectedSubscriptionInput;
+    if (payload.isTrial || payload.is_trial || payload.isSubscription || payload.is_subscription || payload.type === 'trial' || payload.type === 'subscription') {
+        try {
+            await upsertDetectedSubscription(userId, {
+                ...payload,
+                merchantName: candidate.merchant_name || payload.merchantName,
+                amount: candidate.amount,
+                category: candidate.category,
+            });
+        } catch (subscriptionError) {
+            console.warn('Approved candidate subscription upsert failed:', subscriptionError);
+        }
+    }
+
     return { candidate: data as TransactionCandidate, transaction, alreadyProcessed: false };
 }
 

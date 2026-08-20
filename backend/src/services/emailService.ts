@@ -6,18 +6,41 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 // Create reusable transporter
 let transporter: Transporter<SMTPTransport.SentMessageInfo>;
 
+const normalizeSmtpPassword = (password: string) => password.trim().replace(/\s+/g, '');
+
+const logEmailError = (context: string, error: unknown) => {
+    const smtpError = error as {
+        code?: string;
+        responseCode?: number;
+        command?: string;
+        message?: string;
+    };
+
+    console.error(context, {
+        code: smtpError.code,
+        responseCode: smtpError.responseCode,
+        command: smtpError.command,
+        message: smtpError.message,
+    });
+};
+
 // Initialize transporter based on environment
 export const initializeEmailTransporter = () => {
     // Check for required environment variables
-    const emailUser = process.env.SMTP_USER;
-    const emailPass = process.env.SMTP_PASS;
-    const emailHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const emailUser = process.env.SMTP_USER?.trim();
+    const rawEmailPass = process.env.SMTP_PASS;
+    const emailPass = rawEmailPass ? normalizeSmtpPassword(rawEmailPass) : '';
+    const emailHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
     const emailPort = parseInt(process.env.SMTP_PORT || '587');
 
     if (!emailUser || !emailPass) {
         console.warn('⚠️ SMTP credentials not configured. Email sending will fail.');
         console.warn('Set SMTP_USER and SMTP_PASS environment variables.');
         return null;
+    }
+
+    if (rawEmailPass && rawEmailPass !== emailPass) {
+        console.warn('SMTP_PASS contained whitespace; using normalized app-password value for SMTP auth.');
     }
 
     transporter = nodemailer.createTransport({
@@ -32,6 +55,22 @@ export const initializeEmailTransporter = () => {
 
     console.log('✅ Email transporter initialized');
     return transporter;
+};
+
+export const verifyEmailTransporter = async (): Promise<boolean> => {
+    if (!transporter) {
+        console.warn('Email transporter not initialized; skipping SMTP verification.');
+        return false;
+    }
+
+    try {
+        await transporter.verify();
+        console.log('✅ Email SMTP credentials verified');
+        return true;
+    } catch (error) {
+        logEmailError('❌ Email SMTP verification failed:', error);
+        return false;
+    }
 };
 
 // Generate 6-digit OTP
@@ -157,7 +196,7 @@ If you didn't request this, please ignore this email.
         console.log(`✅ OTP email sent to ${email}`);
         return true;
     } catch (error) {
-        console.error('❌ Failed to send OTP email:', error);
+        logEmailError('❌ Failed to send OTP email:', error);
         return false;
     }
 };
@@ -252,7 +291,7 @@ export const sendResetOTPEmail = async (email: string, otp: string, category: st
         console.log(`✅ Reset OTP email sent to ${email} for ${category}`);
         return true;
     } catch (error) {
-        console.error('❌ Failed to send reset OTP email:', error);
+        logEmailError('❌ Failed to send reset OTP email:', error);
         return false;
     }
 };

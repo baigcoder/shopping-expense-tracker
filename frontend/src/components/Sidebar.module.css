@@ -22,8 +22,8 @@
 .logoIcon {
     width: 44px;
     height: 44px;
-    border-radius: 8px;
-    background: #3b82f6;
+    border-radius: 0;
+    background: #09090B;
     color: white;
     display: flex;
     align-items: center;
@@ -32,14 +32,14 @@
     font-weight: 950;
     font-size: 1.5rem;
     border: 3px solid #000000;
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: 4px 4px 0px #E11D48;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .logoIcon:hover {
     transform: translate(-2px, -2px) rotate(-3deg);
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: 6px 6px 0px #E11D48;
 }
 
 .logoIcon:active {
@@ -61,7 +61,7 @@
     background: #000000;
     color: #FFFFFF;
     border: 3px solid #000000;
-    border-radius: 8px;
+    border-radius: 0;
     height: 48px;
     width: 48px;
     display: flex;
@@ -73,7 +73,7 @@
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 4px 4px 0px #3b82f6;
+    box-shadow: 4px 4px 0px #E11D48;
     overflow: hidden;
 }
 
@@ -84,12 +84,12 @@
 
 .addButton:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #3b82f6;
+    box-shadow: 6px 6px 0px #E11D48;
 }
 
 .addButton:active {
     transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0px #3b82f6;
+    box-shadow: 2px 2px 0px #09090B;
 }
 
 /* Navigation */
@@ -98,13 +98,13 @@
     align-items: center;
     gap: 1.25rem;
     padding: 0.75rem 1rem;
-    border-radius: 8px;
+    border-radius: 0;
     color: #64748B;
     text-decoration: none;
     font-weight: 950;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: all 0.1s;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
     margin-bottom: 4px;
     border: 2px solid transparent;
     min-width: 0;
@@ -114,12 +114,12 @@
     background: #000000 !important;
     color: #FFFFFF !important;
     border-color: #000000;
-    box-shadow: 6px 6px 0px #3b82f6;
-    transform: translate(-3px, -3px);
+    box-shadow: 4px 4px 0px #E11D48;
+    transform: translate(-2px, -2px);
 }
 
 .navItem:hover .navIcon {
-    color: #3b82f6;
+    color: #E11D48;
     transform: scale(1.1) rotate(5deg);
 }
 
@@ -127,7 +127,7 @@
     background: #000000;
     color: #FFFFFF !important;
     border-color: #000000;
-    box-shadow: 6px 6px 0px #3b82f6;
+    box-shadow: 4px 4px 0px #E11D48;
 }
 
 .navIcon {
@@ -159,10 +159,10 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.6rem;
-    border-radius: 8px;
+    border-radius: 0;
     background: #FFFFFF;
     border: 3px solid #000000;
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: 4px 4px 0px #E11D48;
     text-decoration: none;
     transition: all 0.1s;
     width: 100%;
@@ -171,13 +171,13 @@
 
 .userProfile:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: 6px 6px 0px #E11D48;
 }
 
 .avatar {
     width: 36px;
     height: 36px;
-    border-radius: 6px;
+    border-radius: 0;
     background: #000000;
     color: white;
     display: flex;
@@ -185,7 +185,7 @@
     justify-content: center;
     font-weight: 950;
     flex-shrink: 0;
-    border: 2px solid #3b82f6;
+    border: 2px solid #E11D48;
 }
 
 .userInfo {
@@ -224,7 +224,7 @@
     border: 2px solid #000000;
     cursor: pointer;
     transition: all 0.1s;
-    border-radius: 6px;
+    border-radius: 0;
 }
 
 .logoutBtn:hover {
@@ -234,6 +234,10 @@
 }
 
 @media (max-width: 1023px) {
+    .sidebar {
+        max-width: min(88vw, 320px);
+    }
+
     .navItem {
         gap: 1rem;
         padding: 0.85rem 1rem;

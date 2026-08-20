@@ -66,49 +66,50 @@ const LoginPage = () => {
     const pwError    = touched.password && !password;
 
     return (
-        <div className="min-h-screen overflow-y-auto lg:overflow-hidden bg-white text-black font-bold selection:bg-black selection:text-white">
-            <div className="mx-auto grid min-h-screen lg:h-screen lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="min-h-dvh overflow-y-auto lg:h-dvh lg:overflow-hidden bg-white text-black font-bold selection:bg-black selection:text-white">
+            <div className="mx-auto grid min-h-dvh lg:h-dvh lg:grid-cols-[minmax(420px,0.88fr)_minmax(0,1.12fr)]">
                 
                 {/* ── LEFT PANEL (TERMINAL FORM) ── */}
-                <div className="flex min-w-0 flex-col items-center justify-start lg:justify-center px-4 py-28 sm:p-8 md:p-16 lg:p-12 xl:p-20 bg-white relative border-black lg:border-r-8 min-h-screen lg:h-full overflow-y-auto scrollbar-hide">
-                    <div className="absolute top-0 left-0 p-4 sm:p-8">
+                <div className="flex min-w-0 flex-col items-center justify-start lg:justify-center px-4 py-24 sm:p-8 md:p-12 lg:px-10 lg:py-6 xl:px-16 bg-white relative border-black lg:border-r-8 min-h-dvh lg:h-full overflow-y-auto lg:overflow-hidden scrollbar-hide">
+                    <div className="absolute top-0 left-0 p-3 sm:p-8 lg:hidden xl:block xl:p-8">
                         <Link to="/" className="flex items-center gap-4 group">
-                            <div className="w-12 h-12 bg-black text-white border-4 border-black flex items-center justify-center font-black text-xl italic tracking-tighter group-hover:bg-[#E11D48] transition-colors">
+                            <div className="w-12 h-12 lg:w-10 lg:h-10 xl:w-12 xl:h-12 bg-black text-white border-4 border-black flex items-center justify-center font-black text-xl italic tracking-tighter group-hover:bg-[#E11D48] transition-colors">
                                 C
                             </div>
-                            <span className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase">{BRAND.name}</span>
+                            <span className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase lg:hidden xl:inline">{BRAND.name}</span>
                         </Link>
                     </div>
 
                     <motion.div
                         initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                        className="w-full max-w-[440px] min-w-0 space-y-8 sm:space-y-10"
+                        style={{ width: 'min(420px, calc(100vw - 4rem))', maxWidth: '100%' }}
+                        className="min-w-0 space-y-6 lg:space-y-5 xl:space-y-7"
                     >
-                        <header className="space-y-4">
-                            <div className="inline-flex items-center gap-3 border-4 border-black px-4 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest">
+                        <header className="space-y-3">
+                            <div className="inline-flex lg:hidden xl:inline-flex items-center gap-3 border-4 border-black px-4 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest">
                                 <ShieldCheck size={16} strokeWidth={3} />
                                 USER_LOGIN
                             </div>
-                            <h2 className="text-4xl sm:text-5xl font-black italic uppercase tracking-tighter leading-none">LOG_IN</h2>
+                            <h2 className="text-4xl lg:text-[2.7rem] xl:text-5xl font-black italic uppercase tracking-tighter leading-none">LOG_IN</h2>
                             <p className="text-xs sm:text-sm font-black text-black/40 uppercase tracking-[0.12em] sm:tracking-widest leading-relaxed break-words">
                                 Access your secure finance node.
                             </p>
                         </header>
 
-                        <div className="max-w-full overflow-hidden border-4 sm:border-8 border-black p-4 sm:p-10 bg-white shadow-[5px_5px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative">
+                        <div className="max-w-full overflow-hidden border-4 sm:border-8 border-black p-4 sm:p-8 lg:p-6 xl:p-8 bg-white shadow-[3px_3px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] relative">
                             <div className="absolute -top-4 right-2 sm:-top-6 sm:-right-6 bg-[#E11D48] text-white p-3 sm:p-4 border-4 border-black shadow-[4px_4px_0px_#000000]">
                                 <Lock size={24} strokeWidth={3} />
                             </div>
 
-                            <form onSubmit={handleEmail} className="space-y-7 sm:space-y-8">
-                                <div className="space-y-3">
+                            <form onSubmit={handleEmail} className="space-y-5">
+                                <div className="space-y-2">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Email_Address</label>
                                     <div className="relative">
-                                        <Mail className="absolute left-4 sm:left-6 top-5 sm:top-6 text-black/20" size={22} />
+                                        <Mail className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-black/20" size={20} />
                                         <input
                                             type="email"
                                             className={cn(
-                                                "w-full h-16 sm:h-18 border-4 border-black bg-white pl-12 sm:pl-16 pr-4 sm:pr-8 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-all outline-none",
+                                                "w-full h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-4 sm:pr-6 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
                                                 emailError && "border-[#E11D48] text-[#E11D48]"
                                             )}
                                             placeholder="ENTER_YOUR_EMAIL"
@@ -120,7 +121,7 @@ const LoginPage = () => {
                                     {emailError && <p className="text-[10px] font-black text-[#E11D48] uppercase tracking-widest ml-1">INVALID_EMAIL</p>}
                                 </div>
 
-                                <div className="space-y-3">
+                                <div className="space-y-2">
                                     <div className="flex items-center justify-between px-1">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-black/40">Password</label>
                                         <Link to="/forgot-password" className="text-[10px] font-black uppercase tracking-widest text-[#E11D48] hover:underline">
@@ -128,11 +129,11 @@ const LoginPage = () => {
                                         </Link>
                                     </div>
                                     <div className="relative">
-                                        <Lock className="absolute left-4 sm:left-6 top-5 sm:top-6 text-black/20" size={22} />
+                                        <Lock className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-black/20" size={20} />
                                         <input
                                             type={showPw ? 'text' : 'password'}
                                             className={cn(
-                                                "w-full h-16 sm:h-18 border-4 border-black bg-white pl-12 sm:pl-16 pr-14 sm:pr-20 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-all outline-none",
+                                                "w-full h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-14 sm:pr-16 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
                                                 pwError && "border-[#E11D48] text-[#E11D48]"
                                             )}
                                             placeholder="ENTER_PASSWORD"
@@ -143,7 +144,7 @@ const LoginPage = () => {
                                         <button 
                                             type="button" 
                                             onClick={() => setShowPw(v => !v)}
-                                            className="absolute right-4 sm:right-6 top-5 sm:top-6 text-black/40 hover:text-black"
+                                            className="absolute right-4 sm:right-5 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
                                         >
                                             {showPw ? <EyeOff size={24} strokeWidth={3} /> : <Eye size={24} strokeWidth={3} />}
                                         </button>
@@ -153,7 +154,7 @@ const LoginPage = () => {
                                 <button 
                                     type="submit" 
                                     disabled={isLoading}
-                                    className="w-full h-16 sm:h-18 bg-black text-white font-black uppercase text-xs sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[5px_5px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] disabled:opacity-50 flex items-center justify-center gap-3 sm:gap-4 group"
+                                    className="w-full h-14 bg-black text-white font-black uppercase text-xs sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[5px_5px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] disabled:opacity-50 flex items-center justify-center gap-3 sm:gap-4 group"
                                 >
                                     {isLoading ? (
                                         <Loader2 className="animate-spin" size={24} strokeWidth={3} />
@@ -166,7 +167,7 @@ const LoginPage = () => {
                                 </button>
                             </form>
 
-                            <div className="relative my-10">
+                            <div className="relative my-7">
                                 <div className="absolute inset-0 flex items-center">
                                     <div className="w-full border-t-4 border-black" />
                                 </div>
@@ -179,7 +180,7 @@ const LoginPage = () => {
                                 type="button" 
                                 onClick={handleGoogle} 
                                 disabled={isLoading}
-                                className="w-full min-h-16 border-4 border-black bg-white hover:bg-black hover:text-white transition-all font-black uppercase text-[9px] min-[380px]:text-[10px] tracking-[0.08em] flex items-center justify-center gap-3 px-3"
+                                className="w-full h-14 border-4 border-black bg-white hover:bg-black hover:text-white transition-all font-black uppercase text-[9px] min-[380px]:text-[10px] tracking-[0.08em] flex items-center justify-center gap-3 px-3"
                             >
                                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
@@ -205,7 +206,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* ── RIGHT PANEL (FEATURE SHOWCASE) ── */}
-                <div className="hidden lg:flex flex-col bg-black text-white p-12 xl:p-20 relative h-full overflow-y-auto scrollbar-hide">
+                <div className="hidden lg:flex flex-col bg-black text-white p-10 xl:p-14 relative h-full overflow-hidden scrollbar-hide">
                     <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                         <div className="h-full w-full" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
                     </div>
@@ -214,7 +215,7 @@ const LoginPage = () => {
                         <div className="inline-block bg-[#E11D48] text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-6 border-2 border-[#E11D48]">
                             KEY_HIGHLIGHTS
                         </div>
-                        <h1 className="text-7xl font-black italic uppercase tracking-tighter leading-[0.9] mb-10">
+                        <h1 className="text-6xl xl:text-7xl font-black italic uppercase tracking-tighter leading-[0.9] mb-8">
                             OUR<br />FEATURES
                         </h1>
                         <p className="text-sm font-black text-white/40 uppercase tracking-[0.2em] max-w-lg leading-relaxed">
@@ -222,46 +223,46 @@ const LoginPage = () => {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 relative z-10 my-auto">
-                        <div className="border-4 border-white p-8 bg-white/5 hover:bg-white/10 transition-colors group">
+                    <div className="grid grid-cols-2 gap-5 xl:gap-6 relative z-10 my-auto">
+                        <div className="border-4 border-white p-6 xl:p-7 bg-white/5 hover:bg-white/10 transition-colors group">
                             <div className="flex items-center justify-between mb-6">
                                 <Inbox size={32} strokeWidth={3} className="text-[#E11D48] group-hover:scale-110 transition-transform" />
                                 <span className="text-[10px] font-black text-white/20">01</span>
                             </div>
-                            <h3 className="text-lg font-black uppercase tracking-widest mb-3">SMART_INBOX</h3>
+                            <h3 className="text-base xl:text-lg font-black uppercase tracking-[0.12em] break-words leading-tight mb-3">SMART_INBOX</h3>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
                                 Stop unexpected charges before they hit your ledger. All automated entries stay in staging until you authorize.
                             </p>
                         </div>
 
-                        <div className="border-4 border-white p-8 bg-white/5 hover:bg-white/10 transition-colors group">
+                        <div className="border-4 border-white p-6 xl:p-7 bg-white/5 hover:bg-white/10 transition-colors group">
                             <div className="flex items-center justify-between mb-6">
                                 <Cpu size={32} strokeWidth={3} className="text-white group-hover:scale-110 transition-transform" />
                                 <span className="text-[10px] font-black text-white/20">02</span>
                             </div>
-                            <h3 className="text-lg font-black uppercase tracking-widest mb-3">AI_INSIGHTS</h3>
+                            <h3 className="text-base xl:text-lg font-black uppercase tracking-[0.12em] break-words leading-tight mb-3">AI_INSIGHTS</h3>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
                                 Advanced AI analyzes your telemetry to detect anomalies, predict renewal peaks, and optimize your capital flow.
                             </p>
                         </div>
 
-                        <div className="border-4 border-white p-8 bg-white/5 hover:bg-white/10 transition-colors group">
+                        <div className="border-4 border-white p-6 xl:p-7 bg-white/5 hover:bg-white/10 transition-colors group">
                             <div className="flex items-center justify-between mb-6">
                                 <Globe size={32} strokeWidth={3} className="text-white group-hover:scale-110 transition-transform" />
                                 <span className="text-[10px] font-black text-white/20">03</span>
                             </div>
-                            <h3 className="text-lg font-black uppercase tracking-widest mb-3">AUTO_SYNC</h3>
+                            <h3 className="text-base xl:text-lg font-black uppercase tracking-[0.12em] break-words leading-tight mb-3">AUTO_SYNC</h3>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
                                 Seamlessly integrate your browser extension, receipt captures, and bank nodes for a unified mission-state view.
                             </p>
                         </div>
 
-                        <div className="border-4 border-white p-8 bg-white/5 hover:bg-white/10 transition-colors group">
+                        <div className="border-4 border-white p-6 xl:p-7 bg-white/5 hover:bg-white/10 transition-colors group">
                             <div className="flex items-center justify-between mb-6">
                                 <BarChart3 size={32} strokeWidth={3} className="text-[#E11D48] group-hover:scale-110 transition-transform" />
                                 <span className="text-[10px] font-black text-white/20">04</span>
                             </div>
-                            <h3 className="text-lg font-black uppercase tracking-widest mb-3">DETAILED_REPORTS</h3>
+                            <h3 className="text-base xl:text-lg font-black uppercase tracking-[0.12em] break-words leading-tight mb-3">DETAILED_REPORTS</h3>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
                                 Professional-grade analytics and pixel-perfect PDF exports for your monthly financial post-mortem and goal tracking.
                             </p>

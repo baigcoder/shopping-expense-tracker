@@ -26,16 +26,16 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden">
+        <div className="min-h-dvh bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden lg:overflow-hidden">
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
             
             <motion.div 
                 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-12 shadow-[8px_8px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative z-10"
+                className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-10 shadow-[6px_6px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] relative z-10"
             >
                 {!sent ? (
                     <>
-                        <header className="mb-8 sm:mb-12 space-y-4">
+                        <header className="mb-7 sm:mb-9 space-y-4">
                             <div className="inline-flex items-center gap-3 border-4 border-black px-4 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest">
                                 <ShieldQuestion size={16} strokeWidth={3} />
                                 ACCOUNT_RECOVERY
@@ -46,14 +46,14 @@ const ForgotPasswordPage = () => {
                             </p>
                         </header>
 
-                        <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
+                        <form onSubmit={handleSubmit} className="space-y-7">
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Email_Address</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-6 top-6 text-black/20" size={24} />
+                                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-black/20" size={22} />
                                     <input
                                         type="email"
-                                        className="w-full h-16 sm:h-18 border-4 border-black bg-white pl-14 sm:pl-16 pr-4 sm:pr-8 font-black uppercase text-sm focus:bg-black focus:text-white transition-all outline-none"
+                                        className="w-full h-14 sm:h-16 border-4 border-black bg-white pl-14 sm:pl-16 pr-4 sm:pr-8 font-black uppercase text-sm focus:bg-black focus:text-white transition-all outline-none"
                                         placeholder="ENTER_YOUR_EMAIL"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +66,7 @@ const ForgotPasswordPage = () => {
                                 <button 
                                     type="submit" 
                                     disabled={isLoading}
-                                    className="w-full min-h-16 sm:h-20 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-[#E11D48] transition-colors border-4 border-black shadow-[6px_6px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] hover:shadow-none hover:translate-x-2 hover:translate-y-2"
+                                    className="w-full min-h-14 sm:h-16 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-[#E11D48] transition-colors border-4 border-black shadow-[5px_5px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                                 >
                                     {isLoading ? 'SENDING...' : 'SEND_RESET_LINK'}
                                 </button>

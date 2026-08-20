@@ -160,27 +160,24 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
                     transition={{ type: 'spring', duration: 0.5 }}
-                    className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-rose-100"
+                    className="relative w-full max-w-md bg-white border-4 border-black shadow-[10px_10px_0_#E11D48] overflow-hidden"
                 >
                     {/* Danger Header */}
-                    <div className="bg-gradient-to-br from-rose-500 to-red-600 p-6 text-white relative overflow-hidden">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-                        <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl" />
-
+                    <div className="bg-black p-6 text-white relative border-b-4 border-[#E11D48]">
                         <button
                             onClick={handleClose}
-                            className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+                            className="absolute top-4 right-4 p-2 border-2 border-white hover:bg-[#E11D48] transition-colors"
                         >
                             <X size={20} />
                         </button>
 
                         <div className="relative z-10 flex items-center gap-4">
-                            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+                            <div className="p-3 bg-[#E11D48] border-2 border-white">
                                 <AlertTriangle size={28} />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black">Reset {categoryLabel}</h2>
-                                <p className="text-sm opacity-80 font-medium">This action cannot be undone</p>
+                                <h2 className="text-xl font-black uppercase tracking-wide">Reset {categoryLabel}</h2>
+                                <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest">This action cannot be undone</p>
                             </div>
                         </div>
                     </div>
@@ -193,35 +190,35 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                 animate={{ opacity: 1, y: 0 }}
                                 className="space-y-6"
                             >
-                                <div className="bg-rose-50 border-2 border-rose-100 rounded-2xl p-4">
-                                    <p className="text-sm text-rose-800 font-medium">
+                                <div className="bg-[#FFF1F2] border-[3px] border-black p-4 shadow-[4px_4px_0_#E11D48]">
+                                    <p className="text-sm text-black font-bold uppercase tracking-wide">
                                         ⚠️ You are about to permanently delete all your <strong>{categoryLabel.toLowerCase()}</strong> data.
                                         This action is irreversible.
                                     </p>
                                 </div>
 
-                                <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border-2 border-slate-100">
-                                    <Mail size={20} className="text-slate-400" />
-                                    <p className="text-sm text-slate-600">
+                                <div className="flex items-center gap-3 p-4 bg-white border-[3px] border-black shadow-[4px_4px_0_#09090B]">
+                                    <Mail size={20} className="text-[#E11D48]" />
+                                    <p className="text-sm text-zinc-700 font-bold uppercase tracking-wide">
                                         A verification code will be sent to your email
                                     </p>
                                 </div>
 
                                 {error && (
-                                    <p className="text-sm text-rose-500 font-medium text-center">{error}</p>
+                                    <p className="text-sm text-[#E11D48] font-black uppercase text-center">{error}</p>
                                 )}
 
                                 <div className="flex gap-3">
                                     <button
                                         onClick={handleClose}
-                                        className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold text-slate-600 transition-colors"
+                                        className="flex-1 py-3 px-4 bg-white border-2 border-black font-black uppercase text-xs tracking-widest text-black hover:bg-zinc-100 transition-colors"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={requestOTP}
                                         disabled={loading}
-                                        className="flex-1 py-3 px-4 bg-rose-500 hover:bg-rose-600 rounded-xl font-bold text-white transition-colors flex items-center justify-center gap-2"
+                                        className="flex-1 py-3 px-4 bg-[#E11D48] border-2 border-black shadow-[3px_3px_0_#09090B] font-black uppercase text-xs tracking-widest text-white hover:bg-[#BE123C] transition-colors flex items-center justify-center gap-2"
                                     >
                                         {loading ? (
                                             <Loader2 size={18} className="animate-spin" />
@@ -254,17 +251,17 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                                     placeholder="000000"
-                                    className="w-full text-center text-3xl font-black tracking-[0.5em] py-4 px-6 bg-slate-50 border-3 border-slate-200 rounded-2xl focus:border-rose-400 focus:outline-none transition-colors"
+                                    className="w-full text-center text-3xl font-black tracking-[0.5em] py-4 px-6 bg-white border-[3px] border-black focus:border-[#E11D48] focus:shadow-[4px_4px_0_#E11D48] focus:outline-none transition-all"
                                 />
 
                                 {error && (
-                                    <p className="text-sm text-rose-500 font-medium text-center">{error}</p>
+                                    <p className="text-sm text-[#E11D48] font-black uppercase text-center">{error}</p>
                                 )}
 
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => setStep('confirm')}
-                                        className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 rounded-xl font-bold text-slate-600 transition-colors"
+                                        className="flex-1 py-3 px-4 bg-white border-2 border-black font-black uppercase text-xs tracking-widest text-black hover:bg-zinc-100 transition-colors"
                                     >
                                         Back
                                     </button>
@@ -272,10 +269,10 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                         onClick={confirmReset}
                                         disabled={loading || otp.length !== 6}
                                         className={cn(
-                                            "flex-1 py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2",
+                                            "flex-1 py-3 px-4 border-2 border-black font-black uppercase text-xs tracking-widest transition-colors flex items-center justify-center gap-2",
                                             otp.length === 6
-                                                ? "bg-rose-500 hover:bg-rose-600 text-white"
-                                                : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                                                ? "bg-[#E11D48] text-white shadow-[3px_3px_0_#09090B] hover:bg-[#BE123C]"
+                                                : "bg-zinc-100 text-zinc-400 border-zinc-300 cursor-not-allowed"
                                         )}
                                     >
                                         {loading ? (
@@ -301,12 +298,12 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: 'spring', delay: 0.2 }}
-                                    className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto"
+                                    className="w-20 h-20 bg-black border-2 border-black shadow-[6px_6px_0_#E11D48] flex items-center justify-center mx-auto"
                                 >
-                                    <CheckCircle size={40} className="text-green-500" />
+                                    <CheckCircle size={40} className="text-[#E11D48]" />
                                 </motion.div>
-                                <h3 className="text-xl font-black text-slate-800">Data Reset Complete</h3>
-                                <p className="text-sm text-slate-500">
+                                <h3 className="text-xl font-black uppercase tracking-wide text-black">Data Reset Complete</h3>
+                                <p className="text-sm text-zinc-500 font-medium">
                                     Your {categoryLabel.toLowerCase()} data has been permanently deleted.
                                 </p>
                             </motion.div>

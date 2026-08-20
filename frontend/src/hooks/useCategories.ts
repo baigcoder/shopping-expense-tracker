@@ -1,7 +1,7 @@
 // React Query Hooks for Categories
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoryService } from '../services/categoryService';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const useCategories = () => {
     return useQuery({

@@ -50,29 +50,29 @@ const ExtensionGate = ({ children }: ExtensionGateProps) => {
         <>
             {children}
             {shouldShowGuidance && (
-                <div className="fixed bottom-5 right-5 z-[80] w-[min(380px,calc(100vw-2rem))] rounded-2xl border border-blue-200 bg-white p-4 shadow-2xl shadow-slate-900/10">
+                <div className="fixed bottom-5 right-5 z-[80] w-[min(380px,calc(100vw-2rem))] border-[3px] border-black bg-white p-4 shadow-[8px_8px_0_#E11D48]">
                     <div className="flex items-start gap-3">
-                        <div className="rounded-xl bg-blue-50 p-2 text-blue-700">
+                        <div className="border-2 border-black bg-[#E11D48] p-2 text-white">
                             <Chrome className="h-5 w-5" />
                         </div>
                         <div className="min-w-0 flex-1">
                             <div className="flex items-start justify-between gap-3">
                                 <div>
-                                    <h2 className="text-sm font-black text-slate-950">Extension on mobile</h2>
-                                    <p className="mt-1 text-xs leading-5 text-slate-600">
+                                    <h2 className="text-sm font-black uppercase tracking-wider text-black">Extension on mobile</h2>
+                                    <p className="mt-1 text-xs leading-5 font-medium text-zinc-600">
                                         Install Cashly on desktop Chrome for auto-tracking. On mobile you can use the app without the extension.
                                     </p>
                                 </div>
-                                <button onClick={dismiss} className="rounded-lg p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700" aria-label="Dismiss extension guidance">
+                                <button onClick={dismiss} className="border-2 border-black p-1 text-black transition hover:bg-[#E11D48] hover:text-white" aria-label="Dismiss extension guidance">
                                     <X className="h-4 w-4" />
                                 </button>
                             </div>
                             <div className="mt-3 flex flex-wrap gap-2">
-                                <Link to="/extension-health" className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white">
+                                <Link to="/extension-health" className="inline-flex items-center gap-2 border-2 border-black bg-black px-3 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#E11D48]">
                                     <Activity className="h-3.5 w-3.5" />
                                     Open health
                                 </Link>
-                                <a href="/cashly-extension.zip" className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700">
+                                <a href="/cashly-extension.zip" className="inline-flex items-center gap-2 border-2 border-black bg-white px-3 py-2 text-xs font-black uppercase tracking-wider text-black transition hover:bg-[#E11D48] hover:text-white">
                                     Download
                                 </a>
                             </div>

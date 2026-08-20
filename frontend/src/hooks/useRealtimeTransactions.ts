@@ -1,8 +1,8 @@
-// Real-time Transactions Hook - Listens for extension updates
+// Real-time Transactions Hook - Listens for extension updates.
+// Performance: toasts and confetti are coalesced via realtimeToasts so that
+// bulk syncs (30+ events) don't freeze the main thread.
 import { useState, useEffect, useCallback } from 'react';
-import { toast } from 'sonner';
-import confetti from 'canvas-confetti';
-import { formatCurrency } from '../services/currencyService';
+import { queueRealtimeToast, queueBulkSyncedToast } from '../lib/realtimeToasts';
 
 interface Transaction {
     id: string;
@@ -19,52 +19,42 @@ export const useRealtimeTransactions = (initialTransactions: Transaction[] = [])
     const [monthlySpent, setMonthlySpent] = useState(0);
     const [todayCount, setTodayCount] = useState(0);
 
-    // Trigger confetti animation
-    const triggerConfetti = () => {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#FBBF24', '#10B981', '#3B82F6', '#8B5CF6']
-        });
-    };
-
     // Handle new transaction from extension
-    const handleNewTransaction = useCallback((event: CustomEvent) => {
-        const { transaction } = event.detail;
+    const handleNewTransaction = useCallback((event: Event) => {
+        const detail = (event as CustomEvent).detail;
+        const transaction = detail?.transaction ?? detail;
+        if (!transaction || typeof transaction.amount !== 'number') return;
 
         console.log('🔥 Real-time transaction received:', transaction);
 
-        // Add to list
-        setTransactions(prev => [transaction, ...prev]);
+        setTransactions((prev) => [transaction, ...prev]);
 
-        // Update stats
         if (transaction.type === 'expense') {
-            setMonthlySpent(prev => prev + Math.abs(transaction.amount));
+            setMonthlySpent((prev) => prev + Math.abs(transaction.amount));
         }
-        setTodayCount(prev => prev + 1);
+        setTodayCount((prev) => prev + 1);
 
-        // Show toast notification
-        toast.success(
-            `💸 ${transaction.description} - ${formatCurrency(transaction.amount)} tracked!`
-        );
-
-        // Trigger celebration
-        triggerConfetti();
+        // Coalesced toast + throttled confetti (see lib/realtimeToasts.ts)
+        queueRealtimeToast({
+            description: transaction.description || 'Transaction',
+            amount: transaction.amount,
+            type: transaction.type
+        });
     }, []);
 
     // Handle bulk sync
-    const handleTransactionsSynced = useCallback((event: CustomEvent) => {
-        const { count } = event.detail;
-
-        toast.info(`✅ ${count} transaction(s) synced from extension!`);
+    const handleTransactionsSynced = useCallback((event: Event) => {
+        const { count } = (event as CustomEvent).detail || {};
+        if (typeof count === 'number' && count > 0) {
+            queueBulkSyncedToast(count);
+        }
     }, []);
 
     // Listen for real-time events
     useEffect(() => {
-        window.addEventListener('new-transaction', handleNewTransaction as EventListener);
-        window.addEventListener('transaction-added-realtime', handleNewTransaction as EventListener);
-        window.addEventListener('transactions-synced', handleTransactionsSynced as EventListener);
+        window.addEventListener('new-transaction', handleNewTransaction as EventListener, { passive: true });
+        window.addEventListener('transaction-added-realtime', handleNewTransaction as EventListener, { passive: true });
+        window.addEventListener('transactions-synced', handleTransactionsSynced as EventListener, { passive: true });
 
         return () => {
             window.removeEventListener('new-transaction', handleNewTransaction as EventListener);

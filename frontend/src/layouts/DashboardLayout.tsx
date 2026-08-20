@@ -8,13 +8,15 @@ import AddCardModal from '../components/AddCardModal';
 import TransactionModal from '../components/TransactionModal';
 import ExtensionWall from '../components/ExtensionWall';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { useUIStore } from '../store/useStore';
+import { useUIStore, useModalStore } from '../store/useStore';
 import styles from './DashboardLayout.module.css';
 
 const AIChatbot = lazy(() => import('../components/AIChatbot'));
 
 const DashboardLayout = () => {
     const { sidebarOpen, sidebarHovered } = useUIStore();
+    const isAddCardOpen = useModalStore((s) => s.isAddCardOpen);
+    const isAddTransactionOpen = useModalStore((s) => s.isAddTransactionOpen);
     const [assistantReady, setAssistantReady] = useState(false);
 
     useEffect(() => {
@@ -47,8 +49,10 @@ const DashboardLayout = () => {
             {/* Mobile Bottom Navigation */}
             <MobileBottomNav />
 
-            <AddCardModal />
-            <TransactionModal />
+            {/* Mount modals only when their open state is true to avoid
+                keeping portals, focus traps and global listeners alive on idle. */}
+            {isAddCardOpen && <AddCardModal />}
+            {isAddTransactionOpen && <TransactionModal />}
             <MobileHelpButton />
             {assistantReady && (
                 <Suspense fallback={null}>

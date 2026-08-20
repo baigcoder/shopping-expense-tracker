@@ -10,6 +10,7 @@
     align-items: center;
     justify-content: center;
     padding: 1.25rem;
+    overflow-y: auto;
 }
 
 .panel {
@@ -17,8 +18,10 @@
     max-width: 420px;
     background: #fff;
     border: 4px solid #000;
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: 6px 6px 0 #e11d48;
     padding: 1.75rem 1.5rem;
+    max-height: calc(100dvh - 2.5rem);
+    overflow-y: auto;
 }
 
 .title {
@@ -88,6 +91,12 @@
     color: #09090b;
     border: 3px solid #000;
     cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.secondary:hover {
+    background: #09090b;
+    color: #fff;
 }
 
 .secondary:disabled {

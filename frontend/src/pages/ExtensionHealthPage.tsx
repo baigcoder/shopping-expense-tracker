@@ -29,9 +29,9 @@ const ExtensionHealthPage = () => {
     ];
 
     return (
-        <div className="p-4 sm:p-8 lg:p-12 max-w-7xl mx-auto space-y-8 sm:space-y-12 bg-white min-h-screen text-black overflow-x-hidden">
+        <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto space-y-7 sm:space-y-10 bg-white min-h-screen text-black overflow-x-hidden">
             {/* Brutalist Header */}
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8 border-4 border-black p-5 sm:p-10 bg-white shadow-[6px_6px_0px_#000000] sm:shadow-[10px_10px_0px_#000000]">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8 border-4 border-black p-5 sm:p-8 bg-white shadow-[5px_5px_0px_#000000] sm:shadow-[8px_8px_0px_#E11D48]">
                 <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center gap-5 sm:gap-6">
                     <div className="h-14 w-14 sm:h-16 sm:w-16 bg-black text-white flex items-center justify-center border-4 border-black shrink-0">
                         <Activity size={32} strokeWidth={3} />
@@ -43,7 +43,7 @@ const ExtensionHealthPage = () => {
                 </div>
                 <button
                     onClick={load} 
-                    className="min-h-12 sm:h-14 px-5 sm:px-8 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors flex items-center justify-center gap-3"
+                    className="min-h-12 sm:h-14 px-5 sm:px-8 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors flex items-center justify-center gap-3 border-4 border-black shadow-[4px_4px_0px_#E11D48] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                 >
                     <RefreshCw size={18} strokeWidth={3} className={cn(loading && "animate-spin")} />
                     REINITIALIZE_SYNC
@@ -59,7 +59,7 @@ const ExtensionHealthPage = () => {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-8">
                         {stats.map(stat => (
-                            <div key={stat.label} className="bg-white border-4 border-black p-5 sm:p-8 shadow-[5px_5px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] hover:shadow-[8px_8px_0px_#E11D48] transition-all hover:-translate-y-1 min-w-0">
+                            <div key={stat.label} className="bg-white border-4 border-black p-5 sm:p-7 shadow-[5px_5px_0px_#000000] hover:shadow-[7px_7px_0px_#E11D48] transition-all hover:-translate-y-0.5 min-w-0">
                                 <div className="w-12 h-12 bg-black text-white flex items-center justify-center border-2 border-black mb-6">
                                     <stat.icon size={24} strokeWidth={3} />
                                 </div>
@@ -72,7 +72,7 @@ const ExtensionHealthPage = () => {
                     </div>
 
                     {/* Events Section */}
-                    <section className="bg-white border-4 border-black p-5 sm:p-10 shadow-[6px_6px_0px_#000000] sm:shadow-[10px_10px_0px_#000000]">
+                    <section className="bg-white border-4 border-black p-5 sm:p-8 shadow-[5px_5px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
                         <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-4 mb-8 sm:mb-10 pb-6 border-b-4 border-black">
                             <h2 className="text-xl sm:text-2xl font-black italic uppercase italic flex items-center gap-4 break-words">
                                 <Target size={28} strokeWidth={3} />

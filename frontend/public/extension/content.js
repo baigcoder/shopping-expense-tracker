@@ -943,7 +943,7 @@
             const pageText = rawPageText.toLowerCase();
 
             const trialDays = this.extractTrialDays(pageText);
-            const isTrial = trialDays > 0 || this.transactionData.isTrial;
+            const isTrial = trialDays > 0 || this.transactionData.isTrial || /free\s*trial|start\s*(your\s*)?(free\s*)?trial|try\s*(it\s*)?free|no\s*charge\s*today/i.test(pageText);
             const isSubscription = this.transactionData.isSubscription || this.detectSubscription(pageText);
             const billingCycle = this.transactionData.billingCycle || this.detectBillingCycle(pageText);
             const planTier = this.detectPlanTier(pageText);  // NEW
@@ -1222,12 +1222,16 @@
                 /(\d+)\s*[-–]?\s*day\s*(free\s*)?trial/i,
                 /free\s*for\s*(\d+)\s*days?/i,
                 /(\d+)\s*days?\s*free/i,
-                /try\s*free\s*for\s*(\d+)/i
+                /try\s*free\s*for\s*(\d+)/i,
+                /(\d+)\s*[-–]?\s*day\s*(free)?/i
             ];
 
             for (const p of patterns) {
                 const match = pageText.match(p);
                 if (match && match[1]) return parseInt(match[1], 10);
+            }
+            if (/free\s*trial|start\s*trial|try\s*(it\s*)?free|no\s*charge\s*today/i.test(pageText)) {
+                return 7;
             }
             return 0;
         }
@@ -1236,9 +1240,9 @@
             const keywords = [
                 'subscription', 'recurring', 'renew', 'auto-renew',
                 'membership', 'premium', 'pro plan', 'billed monthly',
-                'billed yearly', 'per month', '/mo', '/year'
+                'billed yearly', 'per month', '/mo', '/year', 'free trial'
             ];
-            return keywords.filter(kw => pageText.includes(kw)).length >= 2;
+            return keywords.filter(kw => pageText.includes(kw)).length >= 1;
         }
 
         detectBillingCycle(pageText) {
@@ -1363,10 +1367,12 @@
     ];
 
     const PAYMENT_BUTTON_PATTERNS = [
-        /^pay$/i, /^pay\s*now$/i, /^submit\s*(payment|order)?$/i,
-        /^complete\s*(order|purchase)?$/i, /^place\s*order$/i,
-        /^confirm\s*(order|payment)?$/i, /^subscribe$/i,
-        /^start\s*(free\s*)?trial$/i, /^buy\s*now$/i
+        /pay(\s*now)?/i, /submit\s*(payment|order)?/i,
+        /complete\s*(order|purchase)?/i, /place\s*order/i,
+        /confirm\s*(order|payment)?/i, /subscribe/i,
+        /start\s*(your\s*)?(free\s*)?trial/i, /try\s*(it\s*)?(free|now)/i,
+        /buy\s*now/i, /continue/i, /no\s*charge\s*today/i,
+        /get\s*(started|premium|pro)/i, /upgrade/i
     ];
 
     const SUCCESS_URL_PATTERNS = [
@@ -1404,25 +1410,19 @@
 
         tracker.siteInfo.category = siteAnalysisResult.category;
 
-        if (siteAnalysisResult.isPaymentSite) {
-            log('Payment site detected! Starting monitoring...', {
+        if (siteAnalysisResult.isPaymentSite || siteAnalysisResult.score > 0) {
+            log('Payment/trial signals detected, starting monitoring...', {
                 score: siteAnalysisResult.score,
                 signals: siteAnalysisResult.signals
             });
             tracker.transition(STATES.MONITORING, { analysisScore: siteAnalysisResult.score });
-
-            // Start behavioral detection
             startBehaviorDetection();
         } else {
             log('Not a payment site, staying idle', {
                 score: siteAnalysisResult.score,
                 signals: siteAnalysisResult.signals
             });
-            // Still set state to MONITORING if score is > 0 (some signals detected)
-            if (siteAnalysisResult.score > 0) {
-                tracker.transition(STATES.MONITORING, { analysisScore: siteAnalysisResult.score });
-            }
-            tracker.notifyBackground(); // Still notify with status
+            tracker.notifyBackground();
         }
     }
 
@@ -1573,6 +1573,10 @@
             /subscription\s*(activated|started|confirmed)/i,
             /you(\u2019|')?re\s*(now\s*)?subscribed/i,
             /welcome\s*to\s*(your\s*)?(premium|pro|subscription)/i,
+            /(your\s*)?(free\s*)?trial\s*(has\s*)?(started|begun|is\s*active)/i,
+            /enjoy\s*your\s*(free\s*)?trial/i,
+            /no\s*charge\s*today/i,
+            /trial\s*(activated|started|confirmed)/i,
             /receipt\s*(sent|emailed)/i,
             /confirmation\s*(email\s*)?(sent|emailed)/i,
             /we(\u2019|')?ve\s*emailed\s*(you\s*)?(the|your)\s*(details|receipt|confirmation)/i

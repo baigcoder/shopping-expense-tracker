@@ -134,7 +134,7 @@ const Header = () => {
                     onClick={() => navigate('/profile')}
                     className="ml-2 h-10 w-10 overflow-hidden border-3 border-black shadow-[3px_3px_0px_#000000] transition-all hover:scale-105"
                 >
-                    <img src={avatarUrl} alt={user?.name || 'Profile'} className="h-full w-full object-cover" />
+                    <img src={avatarUrl} alt={user?.name || 'Profile'} className="h-full w-full object-cover" loading="lazy" decoding="async" />
                 </button>
             </div>
         </header>

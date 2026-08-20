@@ -167,8 +167,8 @@ const AuthCallback = () => {
     }, [navigate, setUser, setLoading, location]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50">
-            <Spinner size={40} color="#2563eb" />
+        <div className="min-h-screen flex items-center justify-center bg-white">
+            <Spinner size={40} color="#E11D48" />
         </div>
     );
 };
@@ -198,8 +198,8 @@ function App() {
     // Wait for BOTH hydration AND session check to complete
     if (!hasHydrated || isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
-                <Spinner size={40} color="#2563eb" />
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <Spinner size={40} color="#E11D48" />
             </div>
         );
     }
@@ -210,26 +210,28 @@ function App() {
                 <OfflineIndicator />
                 <Toaster
                     position="top-right"
-                    richColors
                     duration={4000}
                     closeButton
                     toastOptions={{
                         style: {
-                            background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)',
-                            border: 'none',
-                            borderRadius: '16px',
-                            color: 'white',
-                            fontWeight: 600,
-                            boxShadow: '0 10px 40px rgba(37, 99, 235, 0.3)'
+                            background: '#FFFFFF',
+                            border: '3px solid #09090B',
+                            borderRadius: '0',
+                            color: '#09090B',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            fontSize: '0.8rem',
+                            boxShadow: '6px 6px 0 #E11D48'
                         }
                     }}
                 />
                 <Suspense fallback={
                     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-                        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white font-black text-2xl shadow-xl shadow-blue-200 mb-6 animate-pulse">
+                        <div className="w-14 h-14 bg-[#09090B] border-[3px] border-black flex items-center justify-center text-white font-black text-2xl shadow-[6px_6px_0_#E11D48] mb-6 animate-pulse">
                             C
                         </div>
-                        <Spinner size={32} color="#2563eb" />
+                        <Spinner size={32} color="#E11D48" />
                     </div>
                 }>
                     <Routes>

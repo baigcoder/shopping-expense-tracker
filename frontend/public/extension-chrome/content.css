@@ -25,11 +25,10 @@
     align-items: center;
     gap: 16px;
     padding: 16px 20px;
-    background: #2563EB;
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 18px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    background: #09090B;
+    border: 3px solid #FFFFFF;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 #E11D48;
     color: #FFFFFF;
     min-width: 320px;
 }
@@ -40,13 +39,12 @@
     justify-content: center;
     width: 42px;
     height: 42px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
+    background: #E11D48;
+    border: 2px solid #FFFFFF;
+    border-radius: 0;
     font-size: 1.25rem;
     flex-shrink: 0;
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .et-content {
@@ -57,15 +55,19 @@
 }
 
 .et-content strong {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: #FFFFFF;
 }
 
 .et-content span {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .et-close {
@@ -74,16 +76,16 @@
     justify-content: center;
     width: 28px;
     height: 28px;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.6);
+    background: transparent;
+    border: 2px solid #FFFFFF;
+    border-radius: 0;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 20px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
 }
 
 .et-close:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #E11D48;
     color: #FFFFFF;
 }

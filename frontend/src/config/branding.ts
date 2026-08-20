@@ -3,9 +3,9 @@
 
 export const BRAND = {
     name: "Cashly",
-    tagline: "Your Money, Simplified",
-    slogan: "Track smarter. Save effortlessly.",
-    description: "Automated expense tracking with real-time insights and AI-powered financial intelligence",
+    tagline: "Finance, reviewed first",
+    slogan: "Track smarter. Approve confidently.",
+    description: "Review-first expense tracking with browser-extension sync, real-time insights, and AI-powered financial intelligence",
 
     logo: {
         light: "/logo-light.svg",
@@ -13,14 +13,14 @@ export const BRAND = {
     },
 
     colors: {
-        // Midnight Coral Theme - Teal + Coral/Orange
-        primary: "#14B8A6",       // Teal 500
-        primaryDark: "#0D9488",   // Teal 600
-        primaryLight: "#CCFBF1",  // Teal 100
+        // Cashly Hybrid Polish - stark core with controlled accent
+        primary: "#09090B",
+        primaryDark: "#000000",
+        primaryLight: "#F4F4F5",
 
-        accent: "#FB7A47",        // Coral/Orange
-        accentDark: "#EA5F2C",    // Coral Dark
-        accentLight: "#FFF7ED",   // Orange 50
+        accent: "#E11D48",
+        accentDark: "#BE123C",
+        accentLight: "#FFE4E6",
 
         success: "#22C55E",       // Green 500
         warning: "#F59E0B",       // Amber 500

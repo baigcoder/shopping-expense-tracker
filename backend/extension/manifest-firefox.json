@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "Finzen",
+    "name": "Cashly - Smart Expense Tracker",
     "version": "2.2.0",
-    "description": "Auto-track your online purchases & subscriptions! Get real-time spending alerts, sync with your dashboard, and stay on top of your finances.",
-    "short_name": "Finzen",
-    "author": "Finzen Team",
-    "homepage_url": "https://finzen-expense.vercel.app",
+    "description": "Review online purchases in Cashly before they reach your finance ledger.",
+    "short_name": "Cashly",
+    "author": "Cashly",
+    "homepage_url": "https://cashly.app",
     "permissions": [
         "storage",
         "activeTab",
@@ -31,7 +31,7 @@
     ],
     "action": {
         "default_popup": "popup.html",
-        "default_title": "Finzen - Track Your Spending 💸",
+        "default_title": "Cashly - Review-First Finance",
         "default_icon": {
             "16": "icons/icon16.png",
             "32": "icons/icon32.png",

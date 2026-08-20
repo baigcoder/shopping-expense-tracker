@@ -1,7 +1,7 @@
 (() => {
     const CONFIG_DATA = window.CONFIG || {};
-    const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
-    const WEBSITE_URL = CONFIG_DATA.WEBSITE_URL || 'http://localhost:5173';
+    const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'https://shopping-expense-tracker.vercel.app/api').replace(/\/$/, '');
+    const WEBSITE_URL = CONFIG_DATA.WEBSITE_URL || 'https://shopping-expense-tracker.vercel.app';
     const WEBSITE_ORIGINS = CONFIG_DATA.WEBSITE_ORIGINS || [
         WEBSITE_URL,
         'http://localhost:5174',
@@ -46,6 +46,42 @@
     };
 
     const openWeb = (path) => chrome.tabs.create({ url: `${WEBSITE_URL}${path}` });
+
+    const ensureCapturePermission = async () => {
+        try {
+            const origin = 'https://*/*';
+            const already = await chrome.permissions.contains({ origins: [origin] });
+            if (already) {
+                await registerAllUrlCapture();
+                return;
+            }
+            const granted = await chrome.permissions.request({ origins: [origin] });
+            if (granted) await registerAllUrlCapture();
+        } catch (error) {
+            console.warn('Capture permission request failed:', error);
+        }
+    };
+
+    const registerAllUrlCapture = async () => {
+        if (!chrome.scripting?.registerContentScripts) return;
+        try {
+            await chrome.scripting.unregisterContentScripts({ ids: ['cashly-capture-all'] }).catch(() => undefined);
+            await chrome.scripting.registerContentScripts([{
+                id: 'cashly-capture-all',
+                matches: ['https://*/*'],
+                excludeMatches: [
+                    'http://localhost/*',
+                    'http://127.0.0.1/*',
+                    'https://*.vercel.app/*',
+                ],
+                js: ['content.js'],
+                css: ['content.css'],
+                runAt: 'document_idle',
+            }]);
+        } catch (error) {
+            console.warn('Could not register all-URL capture:', error);
+        }
+    };
 
     const getAuth = async () => {
         const data = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'supabaseSession']);
@@ -122,6 +158,8 @@
                 },
             }).catch(() => undefined);
 
+            await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
+
             authData = await getAuth();
             await loadMain();
         } catch (error) {
@@ -170,6 +208,7 @@
 
     const loadMain = async () => {
         authData = await getAuth();
+        await chrome.runtime.sendMessage({ type: 'SYNC_WEBSITE_BRIDGE' }).catch(() => undefined);
         if (!authData) {
             showView('login');
             return;
@@ -292,15 +331,17 @@
     };
 
     const logout = async () => {
-        await chrome.storage.local.remove([
-            'supabaseSession',
-            'accessToken',
-            'userId',
-            'userEmail',
-            'userAvatar',
-            'syncedFromWebsite',
-            'lastSync',
-        ]);
+        await chrome.runtime.sendMessage({ type: 'LOGOUT_EXTENSION' }).catch(async () => {
+            await chrome.storage.local.remove([
+                'supabaseSession',
+                'accessToken',
+                'userId',
+                'userEmail',
+                'userAvatar',
+                'syncedFromWebsite',
+                'lastSync',
+            ]);
+        });
         authData = null;
         showView('login');
     };
@@ -331,7 +372,19 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
         bind();
+        await ensureCapturePermission();
         await loadSettings();
         await loadMain();
+
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            if (message.type === 'SESSION_UPDATED') {
+                loadMain();
+                sendResponse({ received: true });
+            } else if (message.type === 'WEBSITE_LOGGED_OUT') {
+                authData = null;
+                showView('login');
+                sendResponse({ received: true });
+            }
+        });
     });
 })();

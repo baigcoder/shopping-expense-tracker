@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Vibe Tracker - Expense Tracker",
+    "name": "Cashly - Smart Expense Tracker",
     "version": "2.0.1",
-    "description": "Auto-track online purchases. Sync with your Vibe Tracker account. Get notified on every purchase.",
+    "description": "Review online purchases in Cashly before they reach your finance ledger.",
     "permissions": [
         "storage",
         "activeTab",
@@ -20,7 +20,7 @@
     ],
     "browser_action": {
         "default_popup": "popup.html",
-        "default_title": "Vibe Tracker",
+        "default_title": "Cashly - Review-First Finance",
         "default_icon": {
             "16": "icons/icon16.png",
             "48": "icons/icon48.png",

@@ -16,12 +16,42 @@ const log = (...args) => DEBUG && console.log('ðŸ’¸ BG:', ...args);
 const warn = (...args) => console.warn('ðŸ’¸ BG:', ...args);
 const error = (...args) => console.error('ðŸ’¸ BG:', ...args);
 
-// Use config values (set by config.js on self)
-const SUPABASE_URL = self.CONFIG?.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = self.CONFIG?.SUPABASE_ANON_KEY || '';
-const API_BASE_URL = (self.CONFIG?.API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+const getSupabaseUrl = () => self.CONFIG?.SUPABASE_URL || '';
+const getSupabaseAnonKey = () => self.CONFIG?.SUPABASE_ANON_KEY || '';
+const getApiBaseUrl = () => (self.CONFIG?.API_BASE_URL || 'https://shopping-expense-tracker.vercel.app/api').replace(/\/$/, '');
 const WEBSITE_ORIGINS = self.CONFIG?.WEBSITE_ORIGINS || [];
 const TRANSACTION_SYNC_TIMEOUT_MS = 10000;
+
+function persistSessionFields(session = {}, user = {}) {
+    const accessToken = session.access_token || '';
+    const refreshToken = session.refresh_token || '';
+    const expiresAt = session.expires_at
+        ? Number(session.expires_at) * 1000
+        : (Date.now() + 55 * 60 * 1000);
+    const email = user.email || '';
+    return {
+        supabaseSession: session,
+        accessToken,
+        refreshToken,
+        tokenExpiry: expiresAt,
+        userId: user.id || null,
+        userEmail: email,
+        userName: user.user_metadata?.name || user.user_metadata?.full_name || (email.includes('@') ? email.split('@')[0] : 'User'),
+        syncedFromWebsite: true,
+        lastSync: Date.now()
+    };
+}
+
+async function getValidAccessToken() {
+    const data = await chrome.storage.local.get(['accessToken', 'refreshToken', 'tokenExpiry', 'supabaseSession']);
+    const token = data.accessToken;
+    const expiry = Number(data.tokenExpiry || 0);
+    if (token && expiry && Date.now() < expiry - 60_000) return token;
+    const refresh = data.refreshToken || data.supabaseSession?.refresh_token;
+    if (!refresh) return token || null;
+    const session = await Security.refreshToken(refresh);
+    return session?.access_token || token || null;
+}
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = TRANSACTION_SYNC_TIMEOUT_MS) {
     const controller = new AbortController();
@@ -53,7 +83,7 @@ async function updateTransactionSyncStatus(status, detail = {}) {
 async function postExtensionHealthEvent(authData = {}, payload = {}) {
     if (!authData?.accessToken) return;
     try {
-        await fetchWithTimeout(`${API_BASE_URL}/extension-health/events`, {
+        await fetchWithTimeout(`${getApiBaseUrl()}/extension-health/events`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,10 +133,12 @@ function normalizeDetectedTransaction(data = {}, source = 'extension') {
 }
 
 async function syncDetectedTransaction(data, authData, source = 'extension') {
-    if (!authData?.accessToken) {
+    const accessToken = authData?.accessToken || await getValidAccessToken();
+    if (!accessToken) {
         await updateTransactionSyncStatus('pending', { reason: 'not_authenticated' });
         return { success: false, pending: true, error: 'Not authenticated' };
     }
+    authData = { ...authData, accessToken };
 
     const payload = normalizeDetectedTransaction(data, source);
     await updateTransactionSyncStatus('syncing', {
@@ -116,7 +148,7 @@ async function syncDetectedTransaction(data, authData, source = 'extension') {
 
     let response;
     try {
-        response = await fetchWithTimeout(`${API_BASE_URL}/transactions/detected`, {
+        response = await fetchWithTimeout(`${getApiBaseUrl()}/transactions/detected`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -270,9 +302,36 @@ const Security = {
     },
 
     async refreshToken(refreshToken) {
-        // Firebase ID tokens are refreshed by the website and re-synced through
-        // content-website.js. The extension should not call Supabase auth.
-        return false;
+        const supabaseUrl = getSupabaseUrl();
+        const anonKey = getSupabaseAnonKey();
+        if (!refreshToken || !supabaseUrl || !anonKey) return false;
+
+        try {
+            const response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    apikey: anonKey,
+                },
+                body: JSON.stringify({ refresh_token: refreshToken }),
+            });
+            if (!response.ok) return false;
+
+            const session = await response.json();
+            if (!session?.access_token) return false;
+
+            const existing = await chrome.storage.local.get(['userId', 'userEmail', 'userName']);
+            await chrome.storage.local.set({
+                supabaseSession: { ...session, user: session.user || { id: existing.userId, email: existing.userEmail } },
+                accessToken: session.access_token,
+                refreshToken: session.refresh_token || refreshToken,
+                tokenExpiry: session.expires_at ? Number(session.expires_at) * 1000 : Date.now() + 55 * 60 * 1000,
+            });
+            return session;
+        } catch (err) {
+            console.warn('Token refresh failed:', err?.message || err);
+            return false;
+        }
     }
 };
 
@@ -855,7 +914,7 @@ class OfflineQueue {
     // Check network status
     async checkOnline() {
         try {
-            const response = await fetch(`${API_BASE_URL}/health`, { method: 'GET' });
+            const response = await fetch(`${getApiBaseUrl()}/health`, { method: 'GET' });
             this.isOnline = response.ok;
         } catch {
             this.isOnline = false;
@@ -1150,13 +1209,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             })();
             return true;
 
+        case 'SYNC_WEBSITE_BRIDGE':
+            syncWebsiteBridgeState().then(() => {
+                sendResponse({ success: true });
+            }).catch((bridgeError) => {
+                sendResponse({ success: false, error: bridgeError?.message || 'Bridge sync failed' });
+            });
+            return true;
+
         case 'LOGOUT_EXTENSION':
             chrome.storage.local.remove([
-                'supabaseSession', 'accessToken', 'userId', 'userEmail',
+                'supabaseSession', 'accessToken', 'refreshToken', 'tokenExpiry', 'userId', 'userEmail',
                 'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
             ]).then(() => {
                 notifyWebsiteTabs('EXTENSION_LOGGED_OUT', {});
+                return syncWebsiteBridgeState({ clear: true });
+            }).then(() => {
                 sendResponse({ success: true });
+            }).catch((logoutError) => {
+                sendResponse({ success: false, error: logoutError?.message || 'Logout failed' });
             });
             return true;
 
@@ -1243,13 +1314,8 @@ async function handleSessionSync(data, sendResponse) {
         const userName = data.user.user_metadata?.name || (email.includes('@') ? email.split('@')[0] : 'User');
 
         await chrome.storage.local.set({
-            supabaseSession: data.session,
-            accessToken: data.session.access_token,
-            userId: data.user.id,
-            userEmail: email,
+            ...persistSessionFields(data.session, data.user),
             userName,
-            syncedFromWebsite: true,
-            lastSync: Date.now()
         });
 
         console.log('Session synced from website:', email || data.user.id);
@@ -1261,6 +1327,11 @@ async function handleSessionSync(data, sendResponse) {
 
         // Reply immediately so the popup is not left on "Syncing..." if the SW suspends (MV3).
         respond({ success: true, message: 'Session synced', email: email || undefined });
+
+        syncWebsiteBridgeState({
+            loggedIn: !!email,
+            userEmail: email || null
+        }).catch(() => { });
 
         showSyncNotification(email);
         syncPendingTransactions().catch(() => { });
@@ -1313,13 +1384,8 @@ async function handleWebsiteLogin(data) {
         }
 
         await chrome.storage.local.set({
-            supabaseSession: data.session,
-            accessToken: data.session?.access_token || data.accessToken,
-            userId: data.user?.id || data.userId,
-            userEmail: incomingEmail,
+            ...persistSessionFields(data.session || { access_token: incomingToken, refresh_token: data.session?.refresh_token }, data.user || { id: data.userId, email: incomingEmail }),
             userName: data.user?.user_metadata?.name || data.name || incomingEmail?.split('@')[0],
-            syncedFromWebsite: true,
-            lastSync: Date.now()
         });
 
         console.log('âœ… Auto-logged in from website');
@@ -1343,6 +1409,11 @@ async function handleWebsiteLogin(data) {
             userId: data.user?.id || data.userId
         });
 
+        await syncWebsiteBridgeState({
+            loggedIn: !!incomingEmail,
+            userEmail: incomingEmail || null
+        });
+
     } catch (error) {
         console.error('Website login sync error:', error);
     }
@@ -1360,6 +1431,11 @@ async function handleUserLoggedIn(data) {
         userId: data.userId
     });
 
+    await syncWebsiteBridgeState({
+        loggedIn: !!data.email,
+        userEmail: data.email || null
+    });
+
     // Show notification
     showSyncNotification(data.email);
 }
@@ -1368,12 +1444,13 @@ async function handleUserLoggedOut() {
     console.log('User logged out');
 
     await chrome.storage.local.remove([
-        'supabaseSession', 'accessToken', 'userId', 'userEmail',
+        'supabaseSession', 'accessToken', 'refreshToken', 'tokenExpiry', 'userId', 'userEmail',
         'userName', 'syncedFromWebsite', 'lastSync', 'userAvatar'
     ]);
 
     // Notify website tabs first
     notifyWebsiteTabs('EXTENSION_LOGGED_OUT', {});
+    await syncWebsiteBridgeState({ clear: true });
 
     // Also broadcast to popup (in case it's open)
     try {
@@ -1397,6 +1474,83 @@ function notifyWebsiteTabs(type, data) {
             }
         });
     });
+}
+
+async function syncWebsiteBridgeState(options = {}) {
+    const storage = await chrome.storage.local.get(['accessToken', 'userEmail']);
+    const timestamp = Date.now();
+    const loggedIn = options.loggedIn ?? !!(storage.accessToken && storage.userEmail);
+    const userEmail = options.userEmail ?? storage.userEmail ?? null;
+    const clear = options.clear === true;
+
+    const payload = {
+        clear,
+        extensionData: clear ? null : {
+            installed: true,
+            version: chrome.runtime.getManifest().version,
+            timestamp,
+            connectionStatus: loggedIn ? 'connected' : 'disconnected'
+        },
+        authData: clear ? null : {
+            loggedIn,
+            email: userEmail,
+            timestamp,
+            connectionStatus: loggedIn ? 'connected' : 'disconnected'
+        },
+        syncedData: (!clear && loggedIn && userEmail) ? {
+            synced: true,
+            email: userEmail,
+            timestamp
+        } : null
+    };
+
+    const tabs = await chrome.tabs.query({});
+    const websiteTabs = tabs.filter((tab) =>
+        tab.id && tab.url && WEBSITE_ORIGINS.some((origin) => tab.url.includes(origin))
+    );
+
+    await Promise.all(websiteTabs.map(async (tab) => {
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                func: (bridgePayload) => {
+                    const EXTENSION_PRESENCE_KEY = 'cashly_extension';
+                    const EXTENSION_AUTH_KEY = 'cashly_extension_auth';
+                    const EXTENSION_SYNCED_KEY = 'cashly_extension_synced';
+
+                    if (bridgePayload.clear) {
+                        localStorage.removeItem(EXTENSION_PRESENCE_KEY);
+                        localStorage.removeItem(EXTENSION_AUTH_KEY);
+                        localStorage.removeItem(EXTENSION_SYNCED_KEY);
+                        window.dispatchEvent(new CustomEvent('extension-logged-out'));
+                        return;
+                    }
+
+                    localStorage.setItem(EXTENSION_PRESENCE_KEY, JSON.stringify(bridgePayload.extensionData));
+                    localStorage.setItem(EXTENSION_AUTH_KEY, JSON.stringify(bridgePayload.authData));
+
+                    if (bridgePayload.syncedData) {
+                        localStorage.setItem(EXTENSION_SYNCED_KEY, JSON.stringify(bridgePayload.syncedData));
+                        window.dispatchEvent(new CustomEvent('extension-synced', {
+                            detail: {
+                                email: bridgePayload.syncedData.email,
+                                timestamp: bridgePayload.syncedData.timestamp
+                            }
+                        }));
+                    } else {
+                        localStorage.removeItem(EXTENSION_SYNCED_KEY);
+                    }
+
+                    window.dispatchEvent(new CustomEvent('cashly-extension-ready', {
+                        detail: { version: bridgePayload.extensionData.version }
+                    }));
+                },
+                args: [payload]
+            });
+        } catch (e) {
+            // Tab may still be loading or no longer reachable.
+        }
+    }));
 }
 
 async function getSiteVisits() {
@@ -1426,8 +1580,26 @@ async function showSyncNotification(email) {
 }
 
 async function syncPendingTransactions() {
-    // Placeholder for pending transaction sync logic
-    console.log('Checking for pending transactions to sync...');
+    const stored = await chrome.storage.local.get(['pendingTransactions', 'accessToken', 'userId', 'userEmail']);
+    const queued = Array.isArray(stored.pendingTransactions) ? stored.pendingTransactions : [];
+    if (!queued.length) return;
+
+    const accessToken = stored.accessToken || await getValidAccessToken();
+    if (!accessToken || !stored.userId) return;
+
+    const remaining = [];
+    for (const item of queued) {
+        try {
+            const isSub = item.source === 'subscription-detection' || item.type === 'trial' || item.type === 'subscription' || item.isTrial || item.is_trial;
+            const result = isSub
+                ? await handleSubscriptionDetected(item)
+                : await handleBehaviorTransaction(item);
+            if (!result?.success && result?.pending) remaining.push(item);
+        } catch {
+            remaining.push(item);
+        }
+    }
+    await chrome.storage.local.set({ pendingTransactions: remaining });
 }
 
 function getCategoryIcon(category) {
@@ -1444,9 +1616,72 @@ function getCategoryIcon(category) {
 }
 
 // ================================
-// PURCHASE DETECTION HANDLER
+// PURCHASE / SUBSCRIPTION / CANCELLATION HANDLERS
 // ================================
+async function handlePurchaseDetected(data) {
+    return handleBehaviorTransaction({ ...data, type: data?.type || 'purchase' });
+}
 
+async function handleSubscriptionDetected(data = {}) {
+    const payload = {
+        ...data,
+        type: data.isTrial || data.is_trial ? 'trial' : 'subscription',
+        isTrial: !!(data.isTrial || data.is_trial),
+        isSubscription: true,
+        trialDays: data.trialDays || data.trial_days || (data.isTrial || data.is_trial ? 7 : 0),
+    };
+
+    const accessToken = await getValidAccessToken();
+    if (!accessToken) {
+        const pending = await chrome.storage.local.get(['pendingTransactions']);
+        const queued = pending.pendingTransactions || [];
+        queued.push({ ...payload, timestamp: Date.now(), source: 'subscription-detection' });
+        await chrome.storage.local.set({ pendingTransactions: queued });
+        return { success: false, pending: true };
+    }
+
+    try {
+        const response = await fetchWithTimeout(`${getApiBaseUrl()}/subscriptions/detected`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(payload),
+        }, 8000);
+        if (response.ok) {
+            notifyWebsiteTabs('SUBSCRIPTION_ADDED', {
+                name: payload.name || payload.serviceName,
+                isTrial: payload.isTrial,
+                trialDays: payload.trialDays,
+            });
+            notifyWebsiteTabs('CASHLY_DATA_UPDATED', { area: 'subscriptions', subscription: payload });
+            return { success: true };
+        }
+        return { success: false, error: await response.text() };
+    } catch (err) {
+        console.warn('Subscription upsert failed:', err?.message || err);
+        return { success: false, error: err?.message || String(err) };
+    }
+}
+
+async function handleCancellationDetected(data = {}) {
+    notifyWebsiteTabs('CASHLY_DATA_UPDATED', {
+        area: 'subscriptions',
+        cancellation: data,
+    });
+    try {
+        chrome.notifications.create(`cancel-${Date.now()}`, {
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL('icons/icon128.png'),
+            title: 'Cancellation detected',
+            message: `${data.name || data.hostname || 'A subscription'} looks cancelled. Review it in Cashly.`,
+            priority: 1
+        });
+    } catch {
+        // Notifications may be unavailable.
+    }
+}
 
 // ================================
 // BEHAVIOR-BASED TRANSACTION HANDLER (v4.0)
@@ -1455,6 +1690,8 @@ async function handleBehaviorTransaction(data) {
     console.log('ðŸŽ¯ Behavior-based transaction detected:', data);
 
     const authData = await chrome.storage.local.get(['accessToken', 'userId', 'userEmail']);
+    const accessToken = authData.accessToken || await getValidAccessToken();
+    authData.accessToken = accessToken;
 
     if (!authData.accessToken || !authData.userId) {
         console.log('Not logged in, storing for later sync');
@@ -1514,7 +1751,7 @@ async function handleBehaviorTransaction(data) {
         });
 
         // Use rate limiter to prevent API abuse
-        const response = await transactionRateLimiter.throttledFetch(`${API_BASE_URL}/transactions/detected`, {
+        const response = await transactionRateLimiter.throttledFetch(`${getApiBaseUrl()}/transactions/detected`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1608,13 +1845,17 @@ async function handleBehaviorTransaction(data) {
 function showBehaviorNotification(data, pendingReview = false) {
     const notificationId = `behavior-${Date.now()}`;
     const amount = data.price || data.amount || 0;
+    const isTrial = !!(data.isTrial || data.is_trial || data.type === 'trial');
+    const isSubscription = !!(data.isSubscription || data.type === 'subscription');
+    const typeIcon = isTrial ? '🎁' : (isSubscription ? '💳' : '🛒');
+    const typeLabel = isTrial ? 'Trial' : (isSubscription ? 'Subscription' : 'Purchase');
     const notificationMessage = pendingReview
         ? `${data.name || 'Transaction'} ${amount > 0 ? `- $${amount.toFixed(2)}` : ''}\nSaved to Transaction Inbox`
         : `${data.name || 'Transaction'} ${amount > 0 ? `- $${amount.toFixed(2)}` : ''}\nDetection ready`;
     try {
         chrome.notifications.create(notificationId, {
             type: 'basic',
-            iconUrl: chrome.runtime.getURL('icons/logo.png'),
+            iconUrl: chrome.runtime.getURL('icons/icon128.png'),
             title: pendingReview ? `${typeIcon} ${typeLabel} queued for review` : `${typeIcon} ${typeLabel} Detected!`,
             message: notificationMessage,
             priority: 2
@@ -1634,11 +1875,11 @@ function showBehaviorNotification(data, pendingReview = false) {
 async function broadcastTransaction(userId, transaction) {
     try {
         // Use Supabase Realtime broadcast for instant updates (< 100ms)
-        const response = await fetch(`${SUPABASE_URL}/realtime/v1/api/broadcast`, {
+        const response = await fetch(`${getSupabaseUrl()}/realtime/v1/api/broadcast`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'apikey': SUPABASE_ANON_KEY
+                'apikey': getSupabaseAnonKey()
             },
             body: JSON.stringify({
                 messages: [{

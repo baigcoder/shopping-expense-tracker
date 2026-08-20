@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { transactionService } from '../services/transactionService';
 import { TransactionFormData } from '../types';
 import { useAuthStore } from '../store/useStore';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const useTransactions = (filters: {
     page?: number;

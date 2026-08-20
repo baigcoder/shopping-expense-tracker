@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
-import { extensionHealthEventSchema, generateReportSchema } from '../validators/schemas.js';
+import { extensionHealthEventSchema, generateReportSchema, detectedTransactionSchema } from '../validators/schemas.js';
 import {
     generateReport,
     generateWeeklyCoachPlan,
@@ -14,11 +14,17 @@ import {
     recordExtensionHealthEvent,
     updateCoachAction,
 } from '../services/featureExpansionService.js';
+import { upsertDetectedSubscription } from '../services/transactionInboxService.js';
 
 const router = Router();
 const getUserId = (req: any) => req.user!.supabaseId || req.user!.id;
 
 router.use(authMiddleware);
+
+router.post('/subscriptions/detected', validate(detectedTransactionSchema), asyncHandler(async (req, res) => {
+    const subscription = await upsertDetectedSubscription(getUserId(req), req.body);
+    res.status(201).json({ success: true, data: subscription });
+}));
 
 router.get('/cashflow-calendar', asyncHandler(async (req, res) => {
     res.json({ success: true, data: await getCashflowCalendar(getUserId(req)) });

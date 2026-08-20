@@ -16,10 +16,10 @@
     align-items: center;
     gap: 1rem;
     background: #FFFFFF;
-    border: 2px solid #E2E8F0;
-    border-radius: 20px;
+    border: 3px solid #09090B;
+    border-radius: 8px;
     padding: 1rem 1.25rem;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 5px 5px 0 #09090B;
     position: relative;
     color: #1E293B;
 }
@@ -79,8 +79,8 @@
     align-items: stretch;
     gap: 1rem;
     background: #FFFFFF;
-    border-color: #3B82F6;
-    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.15);
+    border-color: #09090B;
+    box-shadow: 6px 6px 0 #E11D48;
     padding: 1.25rem 1.5rem;
     max-width: 420px;
 }
@@ -96,7 +96,7 @@
     height: 48px;
     background: #F1F5F9;
     border: 1px solid #E2E8F0;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .alertContent {
@@ -132,22 +132,22 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    background: #09090B;
     color: #FFFFFF;
-    border: none;
-    border-radius: 10px;
+    border: 2px solid #09090B;
+    border-radius: 8px;
     padding: 0.6rem 1rem;
     font-weight: 700;
     font-size: 0.8rem;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    box-shadow: 4px 4px 0 #E11D48;
 }
 
 .installBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #E11D48;
 }
 
 .syncBtn {
@@ -157,7 +157,7 @@
     background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     color: #FFFFFF;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 0.6rem 1rem;
     font-weight: 700;
     font-size: 0.8rem;
@@ -179,7 +179,7 @@
     background: #F1F5F9;
     color: #475569;
     border: 1px solid #E2E8F0;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 0.5rem 0.85rem;
     font-weight: 600;
     font-size: 0.8rem;
@@ -355,14 +355,14 @@
     gap: 0.75rem;
     padding: 0.6rem 0.75rem;
     background: #F8FAFC;
-    border-radius: 10px;
-    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    border: 2px solid #09090B;
 }
 
 .stepNumber {
     width: 22px;
     height: 22px;
-    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    background: #09090B;
     color: #FFFFFF;
     border-radius: 50%;
     display: flex;
@@ -401,7 +401,7 @@
     background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     color: #FFFFFF;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 0.65rem 1.25rem;
     font-weight: 600;
     font-size: 0.85rem;
@@ -455,8 +455,13 @@
 
     .alertActions {
         width: 100%;
-        justify-content: flex-end;
+        justify-content: stretch;
         margin-top: 0.25rem;
+    }
+
+    .alertActions > * {
+        flex: 1;
+        justify-content: center;
     }
 
     .stepsActions {

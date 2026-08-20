@@ -9,7 +9,7 @@ import styles from './LoadingSkeleton.module.css';
 export const Skeleton = ({
     width = '100%',
     height = '20px',
-    borderRadius = '12px',
+    borderRadius = '0px',
     className = '',
 }: {
     width?: string;
@@ -33,13 +33,13 @@ export const StatSkeleton = ({ height = '120px', width = '100%' }: { height?: st
 
 // Transaction row skeleton
 export const TransactionSkeleton = () => (
-    <div className={styles.transactionSkeleton}>
-        <Skeleton width="40px" height="40px" borderRadius="12px" />
+        <div className={styles.transactionSkeleton}>
+        <Skeleton width="40px" height="40px" borderRadius="0px" />
         <div className={styles.txDetails}>
             <Skeleton width="150px" height="16px" />
             <Skeleton width="80px" height="12px" />
         </div>
-        <Skeleton width="70px" height="24px" borderRadius="8px" />
+        <Skeleton width="70px" height="24px" borderRadius="0px" />
     </div>
 );
 
@@ -347,7 +347,7 @@ export const BillRemindersSkeleton = () => (
             <Skeleton width="200px" height="28px" className="mb-6" />
             <div className="space-y-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="flex justify-between items-center p-4 border-2 border-slate-50 rounded-2xl">
+                        <div key={i} className="flex justify-between items-center p-4 border-[3px] border-black shadow-[4px_4px_0_#E11D48]">
                         <div className="flex gap-4 items-center">
                             <Skeleton width="48px" height="48px" borderRadius="16px" />
                             <div className="space-y-2">

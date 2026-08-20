@@ -35,6 +35,7 @@ const decryptPassword = (text: string): string => {
 export const sendSignupOTP = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, name } = req.body;
+        const normalizedEmail = typeof email === 'string' ? email.toLowerCase() : '';
 
         if (!email || !password) {
             res.status(400).json({
@@ -47,7 +48,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         // Check if email is already registered in Supabase
         const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
         const emailExists = existingUsers?.users?.some(
-            (user: any) => user.email?.toLowerCase() === email.toLowerCase()
+            (user: any) => user.email?.toLowerCase() === normalizedEmail
         );
 
         if (emailExists) {
@@ -61,7 +62,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         // Check for recent OTP requests (rate limiting)
         const recentOTP = await prisma.emailOTP.findFirst({
             where: {
-                email: email.toLowerCase(),
+                email: normalizedEmail,
                 createdAt: {
                     gte: new Date(Date.now() - OTP_COOLDOWN_MINUTES * 60 * 1000),
                 },
@@ -97,7 +98,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         // Delete any existing unverified OTPs for this email
         await prisma.emailOTP.deleteMany({
             where: {
-                email: email.toLowerCase(),
+                email: normalizedEmail,
                 verified: false,
             },
         });
@@ -105,7 +106,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         // Create new OTP record
         await prisma.emailOTP.create({
             data: {
-                email: email.toLowerCase(),
+                email: normalizedEmail,
                 otp,
                 expiresAt,
                 metadata,
@@ -116,6 +117,13 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         const emailSent = await sendOTPEmail(email, otp, name);
 
         if (!emailSent) {
+            await prisma.emailOTP.deleteMany({
+                where: {
+                    email: normalizedEmail,
+                    verified: false,
+                },
+            });
+
             res.status(500).json({
                 success: false,
                 error: 'Failed to send verification email. Please check your email settings.',
@@ -126,7 +134,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         res.status(200).json({
             success: true,
             message: 'Verification code sent to your email',
-            email: email.toLowerCase(),
+            email: normalizedEmail,
         });
     } catch (error: any) {
         console.error('Send signup OTP error:', error);

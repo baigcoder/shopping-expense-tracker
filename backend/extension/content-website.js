@@ -493,6 +493,25 @@
                 dispatchTransaction(message.data, 'extension');
                 sendResponse({ received: true });
                 break;
+            case 'TRANSACTION_CANDIDATE_ADDED':
+            case 'BEHAVIOR_TRANSACTION_ADDED':
+            case 'CASHLY_DATA_UPDATED':
+            case 'SUBSCRIPTION_ADDED':
+            case 'TRANSACTION_SYNC_STATUS':
+            case 'SITE_VISIT_TRACKED': {
+                const eventName = message.type === 'TRANSACTION_CANDIDATE_ADDED'
+                    ? 'transaction-candidate-added'
+                    : message.type === 'SUBSCRIPTION_ADDED'
+                        ? 'subscription-changed'
+                        : 'cashly-data-updated';
+                window.dispatchEvent(new CustomEvent(eventName, { detail: message.data || {} }));
+                window.dispatchEvent(new CustomEvent('cashly-data-updated', {
+                    detail: { type: message.type, ...(message.data || {}) }
+                }));
+                window.postMessage({ source: 'cashly-extension', type: message.type, data: message.data }, '*');
+                sendResponse({ received: true });
+                break;
+            }
         }
         return true;
     });

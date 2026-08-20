@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { supabase } from '../config/supabase';
 import { useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export const useRealtime = () => {
     const queryClient = useQueryClient();
@@ -32,19 +32,9 @@ export const useRealtime = () => {
                         currency: 'USD',
                     }).format(amount);
 
-                    toast.success(
-                        `New Transaction Detected!\n${store}: ${formattedAmount}`,
-                        {
-                            duration: 5000,
-                            position: 'top-right',
-                            icon: '🔔',
-                            style: {
-                                background: '#333',
-                                color: '#fff',
-                                borderRadius: '12px',
-                            },
-                        }
-                    );
+                    toast.success(`🔔 New Transaction: ${store} - ${formattedAmount}`, {
+                        duration: 5000,
+                    });
                 }
             )
             .subscribe();

@@ -186,7 +186,7 @@ export const useExtensionSync = () => {
                     const data = JSON.parse(extensionData);
                     // Extension must have updated within last 10 seconds to be considered active
                     // This ensures fast detection when extension is removed
-                    extensionIsActive = Date.now() - data.timestamp < 10000;
+                    extensionIsActive = Date.now() - data.timestamp < 60000;
                 } catch (e) {
                     extensionIsActive = false;
                 }

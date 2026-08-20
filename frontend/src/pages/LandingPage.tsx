@@ -1,33 +1,22 @@
 // LandingPage - Stark Gen Z Mission-Audit Gateway
 import { Link } from 'react-router-dom';
 import {
-  Activity,
   ArrowRight,
-  BarChart3,
   Brain,
-  CalendarDays,
-  CheckCircle2,
   Chrome,
-  ClipboardList,
   FileText,
   Inbox,
   Menu,
-  ReceiptText,
-  Settings,
   ShieldCheck,
-  Sparkles,
   Target,
   X,
-  Cpu,
-  Globe,
   Zap,
   Shield,
   Terminal,
   ChevronRight
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import BRAND from '@/config/branding';
 import { soundManager } from '@/lib/sounds';
 
@@ -83,8 +72,22 @@ const WORKFLOW = [
   { step: 'FINALIZE_LEDGER', desc: 'View reports and get AI insights.' },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const stagger = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+};
+
 const LandingPage = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const motionEnabled = !prefersReducedMotion;
 
   useEffect(() => {
     document.documentElement.classList.remove('dark');
@@ -93,7 +96,7 @@ const LandingPage = () => {
   const playClick = () => soundManager.play('click');
 
   return (
-    <div className="min-h-screen bg-white text-black font-bold selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-white text-black font-bold selection:bg-black selection:text-white overflow-x-hidden">
       {/* ── HEADER ── */}
       <header className="sticky top-0 z-50 bg-white border-b-4 border-black">
         <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between px-4 sm:px-8">
@@ -163,19 +166,24 @@ const LandingPage = () => {
           </div>
 
           <div className="mx-auto max-w-[1600px] grid lg:grid-cols-[1.1fr_0.9fr] lg:min-h-[calc(100vh-80px)]">
-            <div className="p-5 sm:p-8 md:p-16 lg:p-24 flex flex-col justify-center lg:border-r-4 border-black relative">
-              <div className="inline-block bg-[#E11D48] text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-8 border-2 border-[#E11D48]">
+            <motion.div
+              className="p-5 sm:p-8 md:p-16 lg:p-20 xl:p-24 flex flex-col justify-center lg:border-r-4 border-black relative"
+              variants={stagger}
+              initial={motionEnabled ? 'hidden' : false}
+              animate="visible"
+            >
+              <motion.div variants={fadeUp} className="inline-block bg-[#E11D48] text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-6 sm:mb-8 border-2 border-[#E11D48] w-fit">
                 SMART_FINANCE_v2.0
-              </div>
-              <h1 className="text-[3.25rem] sm:text-[4.5rem] md:text-[8rem] lg:text-[10rem] font-black italic uppercase tracking-tighter leading-[0.88] mb-8 sm:mb-12 break-words">
+              </motion.div>
+              <motion.h1 variants={fadeUp} className="text-[2.6rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] font-black italic uppercase tracking-tighter leading-[0.88] mb-7 sm:mb-10 break-words">
                 FINANCE<br />SIMPLIFIED
-              </h1>
-              <p className="text-[0.82rem] sm:text-xl md:text-2xl font-black uppercase tracking-[-0.04em] sm:tracking-tighter max-w-2xl leading-[1.25] sm:leading-[1.15] mb-10 sm:mb-16 break-words" style={{ overflowWrap: 'anywhere' }}>
+              </motion.h1>
+              <motion.p variants={fadeUp} className="text-[0.82rem] sm:text-xl md:text-2xl font-black uppercase tracking-normal max-w-2xl leading-[1.3] sm:leading-[1.15] mb-9 sm:mb-14 break-words" style={{ overflowWrap: 'anywhere' }}>
                 AUTO_SYNC. SMART_INBOX. AI_INSIGHTS.<br />
                 <span className="text-black/40">THE_END_OF_UNAUTHORIZED_CHARGES.</span>
-              </p>
+              </motion.p>
 
-              <div className="flex flex-col sm:flex-row gap-6">
+              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-5 sm:gap-6">
                 <Link 
                   to="/signup" 
                   className="min-h-16 sm:h-20 px-5 sm:px-12 bg-black text-white flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#E11D48] sm:shadow-[10px_10px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
@@ -185,30 +193,30 @@ const LandingPage = () => {
                   <ArrowRight size={22} strokeWidth={4} className="hidden sm:block sm:ml-4" />
                 </Link>
                 <a 
-                  href="/cashly-extension.zip"
+                  href="#extension"
                   className="min-h-16 sm:h-20 px-5 sm:px-12 border-4 border-black bg-white text-black flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#000000] sm:shadow-[10px_10px_0px_#000000] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                   onClick={playClick}
                 >
                   GET_EXTENSION
                   <Chrome size={22} strokeWidth={3} className="hidden sm:block sm:ml-4" />
                 </a>
-              </div>
+              </motion.div>
 
-              <div className="mt-14 sm:mt-24 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8 border-t-4 border-black pt-8 sm:pt-12">
+              <motion.div variants={fadeUp} className="mt-12 sm:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8 border-t-4 border-black pt-8 sm:pt-10">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">SYSTEM_LATENCY</p>
-                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">0.02ms</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">CAPTURE_MODE</p>
+                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">REVIEW_FIRST</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">AUTH_STATUS</p>
                   <p className="text-2xl sm:text-3xl font-black italic tracking-tighter text-[#E11D48]">STABLE</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">NODES_SYNCED</p>
-                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">12.8k</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">SYNC_PATH</p>
+                  <p className="text-2xl sm:text-3xl font-black italic tracking-tighter">INBOX</p>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             <div className="bg-black text-white p-5 sm:p-8 md:p-16 flex items-center justify-center relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 flex gap-4">
@@ -217,8 +225,17 @@ const LandingPage = () => {
                 <div className="w-4 h-4 bg-white/20" />
               </div>
               
-              <div className="w-full max-w-md space-y-12 relative z-10">
-                <div className="border-4 sm:border-8 border-white p-5 sm:p-10 bg-black shadow-[10px_10px_0px_#E11D48] sm:shadow-[20px_20px_0px_#E11D48]">
+              <motion.div
+                className="w-full max-w-md space-y-8 sm:space-y-12 relative z-10"
+                initial={motionEnabled ? { opacity: 0, x: 36, rotate: 1 } : false}
+                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+              >
+                <motion.div
+                  className="border-4 sm:border-8 border-white p-5 sm:p-10 bg-black shadow-[8px_8px_0px_#E11D48] sm:shadow-[16px_16px_0px_#E11D48]"
+                  animate={motionEnabled ? { y: [0, -6, 0] } : undefined}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                >
                    <header className="mb-12 flex items-center justify-between">
                      <div>
                        <p className="text-[10px] font-black uppercase tracking-widest text-[#E11D48] mb-2">DASHBOARD_PREVIEW</p>
@@ -252,7 +269,7 @@ const LandingPage = () => {
                         AUTHORIZE_TRANSACTION
                      </div>
                    </div>
-                </div>
+                </motion.div>
 
                 <div className="flex items-center gap-6 px-4">
                    <div className="w-12 h-12 border-4 border-white flex items-center justify-center shrink-0">
@@ -262,7 +279,7 @@ const LandingPage = () => {
                       SYSTEM_MESSAGE: DETECTED_SUBSCRIPTION_RENEWAL. AUTHORIZATION_REQUIRED_BY_USER_PROTOCOL.
                    </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -285,8 +302,15 @@ const LandingPage = () => {
             </header>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {FEATURES.map((f) => (
-                <div key={f.title} className="border-4 border-black p-6 sm:p-10 bg-white shadow-[8px_8px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] hover:shadow-none hover:translate-x-[12px] hover:translate-y-[12px] transition-all group relative overflow-hidden">
+              {FEATURES.map((f, index) => (
+                <motion.div
+                  key={f.title}
+                  initial={motionEnabled ? { opacity: 0, y: 28 } : false}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.45, delay: index * 0.04 }}
+                  className="border-4 border-black p-6 sm:p-9 bg-white shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000] hover:shadow-[4px_4px_0px_#E11D48] hover:-translate-x-1 hover:-translate-y-1 transition-all group relative overflow-hidden"
+                >
                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                       <f.icon size={120} strokeWidth={4} />
                    </div>
@@ -300,7 +324,7 @@ const LandingPage = () => {
                    <p className="text-xs font-black uppercase tracking-widest text-black/40 leading-relaxed relative z-10">
                       {f.desc}
                    </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -333,7 +357,14 @@ const LandingPage = () => {
 
              <div className="space-y-4">
                 {WORKFLOW.map((item, i) => (
-                  <div key={item.step} className="border-4 border-white p-5 sm:p-8 bg-white/5 flex items-start sm:items-center gap-5 sm:gap-12 group hover:bg-white/10 transition-colors">
+                  <motion.div
+                    key={item.step}
+                    initial={motionEnabled ? { opacity: 0, x: 24 } : false}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.45, delay: i * 0.05 }}
+                    className="border-4 border-white p-5 sm:p-8 bg-white/5 flex items-start sm:items-center gap-5 sm:gap-12 group hover:bg-white/10 transition-colors"
+                  >
                      <span className="text-4xl sm:text-6xl font-black italic text-white/10 group-hover:text-[#E11D48] transition-colors">0{i+1}</span>
                      <div>
                         <h4 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{item.step}</h4>
@@ -341,7 +372,7 @@ const LandingPage = () => {
                            {item.desc}
                         </p>
                      </div>
-                  </div>
+                  </motion.div>
                 ))}
              </div>
           </div>
@@ -350,8 +381,14 @@ const LandingPage = () => {
         {/* ── EXTENSION NODE ── */}
         <section id="extension" className="py-20 sm:py-32 border-b-8 border-black">
            <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-              <div className="border-4 sm:border-8 border-black p-6 sm:p-16 bg-white shadow-[10px_10px_0px_#000000] sm:shadow-[24px_24px_0px_#000000] relative group">
-                 <div className="mb-8 sm:mb-0 sm:absolute sm:-top-12 sm:-right-12 w-20 h-20 sm:w-32 sm:h-32 bg-[#E11D48] border-4 sm:border-8 border-black flex items-center justify-center text-white shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
+              <motion.div
+                initial={motionEnabled ? { opacity: 0, y: 28 } : false}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.5 }}
+                className="border-4 sm:border-8 border-black p-6 sm:p-14 bg-white shadow-[8px_8px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative group"
+              >
+                 <div className="mb-8 w-20 h-20 sm:w-24 sm:h-24 bg-[#E11D48] border-4 border-black flex items-center justify-center text-white shadow-[6px_6px_0px_#000000]">
                     <Chrome size={44} strokeWidth={3} />
                  </div>
                  
@@ -359,16 +396,22 @@ const LandingPage = () => {
                     <h2 className="text-[2.5rem] sm:text-6xl font-black italic uppercase tracking-tighter mb-8 leading-[0.9] break-words">
                        AUTOMATE_EVERYTHING<br />WITH_CASHLY
                     </h2>
-                    <p className="text-lg font-black uppercase tracking-widest text-black/40 mb-12 leading-relaxed">
-                       The extension watches checkout signals, trial confirmations, and subscription success triggers. It saves a structured candidate with precision health metrics so your ledger remains current.
+                    <p className="text-lg font-black uppercase tracking-widest text-black/40 mb-8 leading-relaxed">
+                       The extension watches checkout signals, trial confirmations, and subscription success triggers. It saves a structured candidate so your ledger stays under your control.
                     </p>
+                    <ol className="mb-10 space-y-3 text-xs sm:text-sm font-black uppercase tracking-widest text-black/70">
+                       <li>1. Download the zip and unzip it.</li>
+                       <li>2. Open chrome://extensions and turn on Developer mode.</li>
+                       <li>3. Click Load unpacked and select the unzipped folder.</li>
+                       <li>4. Sign in on Cashly so the extension can sync your session.</li>
+                    </ol>
                     <div className="flex flex-col sm:flex-row gap-6">
                        <a 
                          href="/cashly-extension.zip"
                          className="min-h-16 sm:h-20 px-5 sm:px-12 bg-black text-white flex items-center justify-center gap-3 text-xs min-[380px]:text-sm sm:text-lg font-black uppercase tracking-[0.14em] sm:tracking-widest shadow-[6px_6px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all"
                          onClick={playClick}
                        >
-                         GET_EXTENSION
+                         DOWNLOAD_ZIP
                          <Zap size={24} strokeWidth={4} className="ml-4" />
                        </a>
                        <Link 
@@ -380,7 +423,7 @@ const LandingPage = () => {
                        </Link>
                     </div>
                  </div>
-              </div>
+              </motion.div>
            </div>
         </section>
       </main>
@@ -407,7 +450,7 @@ const LandingPage = () => {
              <div className="space-y-6">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E11D48]">NAVIGATION</h5>
                 <ul className="space-y-4">
-                   {['FEATURES', 'WORKFLOW', 'EXTENSION', 'ROADMAP'].map(link => (
+                   {['FEATURES', 'WORKFLOW', 'EXTENSION'].map(link => (
                      <li key={link}><a href={`#${link.toLowerCase()}`} className="text-sm font-black uppercase tracking-widest hover:text-[#E11D48] transition-colors">{link}</a></li>
                    ))}
                 </ul>
@@ -415,7 +458,7 @@ const LandingPage = () => {
              <div className="space-y-6">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E11D48]">LEGAL</h5>
                 <ul className="space-y-4">
-                   {['PRIVACY', 'TERMS', 'SECURITY', 'COOKIE_NODES'].map(link => (
+                   {['PRIVACY', 'TERMS'].map(link => (
                      <li key={link}><Link to={`/${link.toLowerCase()}`} className="text-sm font-black uppercase tracking-widest hover:text-[#E11D48] transition-colors">{link}</Link></li>
                    ))}
                 </ul>
@@ -423,8 +466,8 @@ const LandingPage = () => {
              <div className="space-y-6">
                 <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#E11D48]">SUPPORT</h5>
                 <ul className="space-y-4">
-                   {['FAQ', 'CONTACT', 'DOC_MANIFEST', 'API_DOCS'].map(link => (
-                     <li key={link}><Link to={`/${link.toLowerCase().replace('_', '-')}`} className="text-sm font-black uppercase tracking-widest hover:text-[#E11D48] transition-colors">{link}</Link></li>
+                   {['FAQ', 'CONTACT'].map(link => (
+                     <li key={link}><Link to={`/${link.toLowerCase()}`} className="text-sm font-black uppercase tracking-widest hover:text-[#E11D48] transition-colors">{link}</Link></li>
                    ))}
                 </ul>
              </div>

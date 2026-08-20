@@ -1,11 +1,11 @@
 {
     "name": "Cashly",
     "short_name": "Cashly",
-    "description": "Smart expense tracking with transaction review, budgets, reports, and AI-powered financial insights.",
+    "description": "Review-first finance automation with expense tracking, browser-extension sync, budgets, reports, and AI-powered insights.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#09090B",
-    "theme_color": "#000000",
+    "background_color": "#FFFFFF",
+    "theme_color": "#09090B",
     "orientation": "portrait-primary",
     "scope": "/",
     "icons": [
@@ -34,7 +34,7 @@
         {
             "name": "Dashboard",
             "short_name": "Dashboard",
-            "description": "View your expense dashboard",
+            "description": "View your Cashly finance dashboard",
             "url": "/dashboard",
             "icons": [
                 {
@@ -46,7 +46,7 @@
         {
             "name": "Add Expense",
             "short_name": "Add",
-            "description": "Add a new expense",
+            "description": "Add a new Cashly expense",
             "url": "/expenses",
             "icons": [
                 {

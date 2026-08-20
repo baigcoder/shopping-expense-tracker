@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Cashly - Smart Expense Tracker",
-  "version": "9.0.0",
-  "description": "Automatically track expenses as you shop online. Your money, autopilot.",
+  "version": "9.0.1",
+  "description": "Review online purchases in Cashly before they reach your finance ledger.",
   "short_name": "Cashly",
   "author": "BaigCoder",
-  "homepage_url": "https://spendsync-expense.vercel.app",
+  "homepage_url": "https://cashly.app",
   "permissions": [
     "storage",
     "activeTab",
@@ -54,6 +54,8 @@
     "https://*.bookme.pk/*",
     "https://*.clickticket.pk/*",
     "https://*.vercel.com/*",
+    "https://*.vercel.app/*",
+    "https://*.supabase.co/*",
     "https://*.railway.app/*",
     "https://*.heroku.com/*",
     "https://*.digitalocean.com/*",
@@ -63,7 +65,23 @@
     "https://*.supabase.com/*",
     "https://*.planetscale.com/*",
     "https://*.aws.amazon.com/*",
+    "https://*.netflix.com/*",
+    "https://*.spotify.com/*",
+    "https://*.youtube.com/*",
+    "https://*.disneyplus.com/*",
+    "https://*.hulu.com/*",
+    "https://*.max.com/*",
+    "https://*.adobe.com/*",
+    "https://*.canva.com/*",
+    "https://*.openai.com/*",
+    "https://*.chatgpt.com/*",
+    "https://*.notion.so/*",
+    "https://*.github.com/*",
+    "https://*.paddle.com/*",
     "http://localhost:*/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*"
   ],
   "externally_connectable": {
     "matches": [
@@ -75,7 +93,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Cashly - Smart Expense Tracker 💸",
+    "default_title": "Cashly - Review-First Finance",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -124,7 +142,21 @@
         "https://*.jazzcash.com.pk/*",
         "https://*.easypaisa.com.pk/*",
         "https://*.sadapay.pk/*",
-        "https://*.bookme.pk/*"
+        "https://*.bookme.pk/*",
+        "https://*.netflix.com/*",
+        "https://*.spotify.com/*",
+        "https://*.youtube.com/*",
+        "https://*.disneyplus.com/*",
+        "https://*.hulu.com/*",
+        "https://*.max.com/*",
+        "https://*.adobe.com/*",
+        "https://*.canva.com/*",
+        "https://*.openai.com/*",
+        "https://*.chatgpt.com/*",
+        "https://*.notion.so/*",
+        "https://*.github.com/*",
+        "https://*.paddle.com/*",
+        "https://*.shopify.com/*"
       ],
       "js": [
         "content.js"
@@ -155,32 +187,7 @@
       "matches": [
         "http://localhost:*/*",
         "http://127.0.0.1:*/*",
-        "https://*.vercel.app/*",
-        "https://*.amazon.com/*",
-        "https://*.ebay.com/*",
-        "https://*.walmart.com/*",
-        "https://*.bestbuy.com/*",
-        "https://*.target.com/*",
-        "https://*.etsy.com/*",
-        "https://*.aliexpress.com/*",
-        "https://*.buymeacoffee.com/*",
-        "https://*.gumroad.com/*",
-        "https://*.stripe.com/*",
-        "https://*.paypal.com/*",
-        "https://*.daraz.pk/*",
-        "https://*.foodpanda.pk/*",
-        "https://*.carrefour.pk/*",
-        "https://*.metro.pk/*",
-        "https://*.alfatah.pk/*",
-        "https://*.imtiaz.com.pk/*",
-        "https://*.naheed.pk/*",
-        "https://*.priceoye.pk/*",
-        "https://*.telemart.pk/*",
-        "https://*.cheetay.pk/*",
-        "https://*.jazzcash.com.pk/*",
-        "https://*.easypaisa.com.pk/*",
-        "https://*.sadapay.pk/*",
-        "https://*.bookme.pk/*"
+        "https://*/*"
       ]
     }
   ]

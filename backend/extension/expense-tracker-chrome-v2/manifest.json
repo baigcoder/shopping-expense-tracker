@@ -2,10 +2,10 @@
   "manifest_version": 3,
   "name": "Cashly - Smart Expense Tracker",
   "version": "9.0.0",
-  "description": "Automatically track expenses as you shop online. Your money, autopilot.",
+  "description": "Review online purchases in Cashly before they reach your finance ledger.",
   "short_name": "Cashly",
   "author": "BaigCoder",
-  "homepage_url": "https://spendsync-expense.vercel.app",
+  "homepage_url": "https://cashly.app",
   "permissions": [
     "storage",
     "activeTab",
@@ -75,7 +75,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Cashly - Smart Expense Tracker 💸",
+    "default_title": "Cashly - Review-First Finance",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

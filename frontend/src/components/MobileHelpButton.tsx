@@ -27,12 +27,12 @@ const MobileHelpButton = () => {
                 onClick={() => setIsOpen(true)}
                 className={cn(
                     "fixed bottom-20 left-4 z-[90]",
-                    "w-10 h-10 rounded-xl",
-                    "bg-white border-2 border-slate-200",
-                    "shadow-lg shadow-slate-200/50",
+                    "w-10 h-10",
+                    "bg-white border-2 border-black",
+                    "shadow-[3px_3px_0_#E11D48]",
                     "flex items-center justify-center",
-                    "text-slate-500 hover:text-blue-600",
-                    "transition-all duration-200"
+                    "text-black hover:bg-black hover:text-white",
+                    "transition-all duration-150"
                 )}
                 whileTap={{ scale: 0.9 }}
             >
@@ -57,16 +57,16 @@ const MobileHelpButton = () => {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 50 }}
-                            className="fixed bottom-0 left-0 right-0 z-[101] bg-white rounded-t-3xl shadow-2xl overflow-hidden max-h-[85vh] overflow-y-auto"
+                            className="fixed bottom-0 left-0 right-0 z-[101] bg-white border-t-4 border-black overflow-hidden max-h-[85vh] overflow-y-auto"
                         >
                             {/* Header */}
-                            <div className="sticky top-0 bg-white border-b border-slate-100 p-4 flex items-center justify-between">
-                                <h2 className="text-lg font-bold text-slate-800">Mobile vs Desktop</h2>
+                            <div className="sticky top-0 bg-black text-white border-b-4 border-[#E11D48] p-4 flex items-center justify-between">
+                                <h2 className="text-sm font-black uppercase tracking-widest">Mobile vs Desktop</h2>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
+                                    className="p-1.5 border-2 border-white hover:bg-[#E11D48] transition-colors"
                                 >
-                                    <X size={20} className="text-slate-400" />
+                                    <X size={18} />
                                 </button>
                             </div>
 
@@ -74,10 +74,10 @@ const MobileHelpButton = () => {
                                 {/* Mobile Section */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-4">
-                                        <div className="p-2 bg-blue-100 rounded-xl">
-                                            <Smartphone size={18} className="text-blue-600" />
+                                        <div className="p-2 bg-black border-2 border-black">
+                                            <Smartphone size={18} className="text-[#E11D48]" />
                                         </div>
-                                        <h3 className="font-bold text-slate-800">On Mobile</h3>
+                                        <h3 className="font-black uppercase tracking-widest text-black">On Mobile</h3>
                                     </div>
 
                                     <div className="space-y-3">
@@ -93,10 +93,10 @@ const MobileHelpButton = () => {
                                 {/* Not Available Section */}
                                 <div>
                                     <div className="flex items-center gap-2 mb-4">
-                                        <div className="p-2 bg-amber-100 rounded-xl">
-                                            <AlertCircle size={18} className="text-amber-600" />
+                                        <div className="p-2 bg-[#F59E0B] border-2 border-black">
+                                            <AlertCircle size={18} className="text-black" />
                                         </div>
-                                        <h3 className="font-bold text-slate-800">Desktop Only</h3>
+                                        <h3 className="font-black uppercase tracking-widest text-black">Desktop Only</h3>
                                     </div>
 
                                     <div className="space-y-3">
@@ -110,9 +110,9 @@ const MobileHelpButton = () => {
                                 </div>
 
                                 {/* Tips Section */}
-                                <div className="bg-blue-50 rounded-2xl p-4">
-                                    <h4 className="font-bold text-blue-800 mb-3">💡 Tips for Mobile</h4>
-                                    <div className="space-y-2 text-sm text-blue-700">
+                                <div className="bg-white border-[3px] border-black shadow-[4px_4px_0_#E11D48] p-4">
+                                    <h4 className="font-black uppercase tracking-widest text-black mb-3">💡 Tips for Mobile</h4>
+                                    <div className="space-y-2 text-sm text-zinc-700 font-medium">
                                         <div className="flex items-start gap-2">
                                             <FileText size={16} className="mt-0.5 flex-shrink-0" />
                                             <p>Upload bank statements (PDF) to import transactions</p>
@@ -129,12 +129,12 @@ const MobileHelpButton = () => {
                                 </div>
 
                                 {/* Desktop Promo */}
-                                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 text-white">
+                                <div className="bg-black border-2 border-black p-4 text-white shadow-[6px_6px_0_#E11D48]">
                                     <div className="flex items-center gap-3 mb-2">
-                                        <Monitor size={20} />
-                                        <span className="font-bold">Want auto-tracking?</span>
+                                        <Monitor size={20} className="text-[#E11D48]" />
+                                        <span className="font-black uppercase tracking-widest">Want auto-tracking?</span>
                                     </div>
-                                    <p className="text-sm text-slate-300">
+                                    <p className="text-sm text-zinc-300 font-medium">
                                         Open Cashly on a desktop browser to install our extension and automatically capture online purchases!
                                     </p>
                                 </div>
@@ -160,24 +160,24 @@ const FeatureItem = ({
     reason?: string;
 }) => (
     <div className={cn(
-        "flex items-start gap-3 p-3 rounded-xl",
-        available ? "bg-green-50" : "bg-slate-50"
+        "flex items-start gap-3 p-3 border-2",
+        available ? "bg-[#ECFDF5] border-black" : "bg-zinc-50 border-zinc-300"
     )}>
         <div className={cn(
-            "p-1 rounded-lg flex-shrink-0",
-            available ? "bg-green-200 text-green-700" : "bg-slate-200 text-slate-500"
+            "p-1 border-2 flex-shrink-0",
+            available ? "bg-black border-black text-white" : "bg-white border-zinc-300 text-zinc-400"
         )}>
             {icon}
         </div>
         <div>
             <p className={cn(
-                "font-semibold text-sm",
-                available ? "text-green-800" : "text-slate-600"
+                "font-bold text-sm",
+                available ? "text-black" : "text-zinc-500"
             )}>
                 {text}
             </p>
             {reason && (
-                <p className="text-xs text-slate-400 mt-0.5">{reason}</p>
+                <p className="text-xs text-zinc-400 mt-0.5">{reason}</p>
             )}
         </div>
     </div>

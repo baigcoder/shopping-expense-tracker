@@ -1,6 +1,6 @@
 
 import app from './app.js';
-import { initializeEmailTransporter } from './services/emailService.js';
+import { initializeEmailTransporter, verifyEmailTransporter } from './services/emailService.js';
 import cacheService from './services/redisCacheService.js';
 import openRouterService from './services/openRouterService.js';
 
@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
   // Initialize email transporter
-  initializeEmailTransporter();
+  const emailTransporter = initializeEmailTransporter();
+  if (emailTransporter) {
+    await verifyEmailTransporter();
+  }
 
   // Check AI and Redis connections
   const redisConnected = await cacheService.checkConnection();

@@ -1,17 +1,14 @@
 // Cashly Dashboard - Premium Modern SaaS Finance Dashboard
 // Midnight Coral Theme - Light Mode
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, TrendingUp, TrendingDown, ShoppingCart, Store, Heart, Wallet, Activity, Eye, EyeOff, Zap, X, Trash2, Copy, Shield, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, TrendingUp, TrendingDown, ShoppingCart, Store, Heart, Wallet, Eye, EyeOff, X, Trash2, Copy, Shield, Check, Inbox } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import PremiumCard from '../components/PremiumCard';
 import MoneyTwinPulse from '../components/dashboard/MoneyTwinPulse';
 import ExtensionStatsCard from '../components/ExtensionStatsCard';
-import {
-    AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
-    CartesianGrid
-} from 'recharts';
+import { SpendingChart } from '../components/SpendingChart';
 import { useAuthStore, useCardStore, useModalStore } from '../store/useStore';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { budgetService } from '../services/budgetService';
@@ -19,7 +16,9 @@ import { streakService } from '../services/streakService';
 import { cardService, getBrandGradient, CardData } from '../services/cardService';
 import { useRealtimeTransactions } from '../hooks/useRealtimeTransactions';
 import { formatCurrency } from '../services/currencyService';
+import { transactionInboxApi } from '../services/featureExpansionApi';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '../lib/motion';
 import { soundManager } from '@/lib/sounds';
 import styles from './DashboardPage.module.css';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
@@ -47,6 +46,7 @@ const DashboardPage = () => {
     const { initializeCards } = useCardStore();
     const { openAddCard } = useModalStore();
     useRealtimeTransactions();
+    const reduceMotion = usePrefersReducedMotion();
 
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [loading, setLoading] = useState(true);
@@ -71,6 +71,7 @@ const DashboardPage = () => {
     const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
     const [isCardPreviewOpen, setIsCardPreviewOpen] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [pendingInboxCount, setPendingInboxCount] = useState(0);
     const { removeCard } = useCardStore();
     const navigate = useNavigate();
 
@@ -103,6 +104,26 @@ const DashboardPage = () => {
     };
 
     // Fetch data
+    useEffect(() => {
+        const fetchInbox = async () => {
+            try {
+                const result = await transactionInboxApi.list({ status: 'pending', limit: 1 });
+                setPendingInboxCount(result?.pagination?.total || result?.data?.length || 0);
+            } catch {
+                setPendingInboxCount(0);
+            }
+        };
+
+        fetchInbox();
+        const onInboxUpdate = () => { void fetchInbox(); };
+        window.addEventListener('transaction-candidate-added', onInboxUpdate);
+        window.addEventListener('cashly-data-updated', onInboxUpdate);
+        return () => {
+            window.removeEventListener('transaction-candidate-added', onInboxUpdate);
+            window.removeEventListener('cashly-data-updated', onInboxUpdate);
+        };
+    }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             if (!user?.id) return;
@@ -303,6 +324,28 @@ const DashboardPage = () => {
                     </div>
                 </motion.header>
 
+                {pendingInboxCount > 0 && (
+                    <motion.div variants={itemVariants}>
+                        <Link
+                            to="/transaction-inbox"
+                            className="flex items-center justify-between gap-4 border-4 border-black bg-white px-5 py-4 shadow-[6px_6px_0px_#E11D48] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                        >
+                            <div className="flex items-center gap-3 min-w-0">
+                                <div className="w-10 h-10 bg-[#E11D48] text-white flex items-center justify-center border-2 border-black shrink-0">
+                                    <Inbox size={18} strokeWidth={2.5} />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-[#E11D48]">Extension capture</p>
+                                    <p className="text-sm font-black uppercase tracking-tight truncate">
+                                        {pendingInboxCount} detection{pendingInboxCount === 1 ? '' : 's'} waiting in inbox
+                                    </p>
+                                </div>
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest shrink-0">Review</span>
+                        </Link>
+                    </motion.div>
+                )}
+
                 {/* Stats Grid */}
                 <div className={styles.statsGrid}>
                     <motion.div
@@ -311,16 +354,12 @@ const DashboardPage = () => {
                         whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxGlass)}>
-                            <motion.div
-                                animate={{
-                                    scale: [1, 1.15, 1],
-                                    rotate: [0, 10, -10, 0],
-                                    filter: ["drop-shadow(0 0 0px #3b82f6)", "drop-shadow(0 0 8px #3b82f6)", "drop-shadow(0 0 0px #3b82f6)"]
-                                }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            <div
+                                data-anim={reduceMotion ? undefined : 'pulse-soft'}
+                                className="text-blue-400"
                             >
-                                <Wallet size={20} className="text-blue-400" />
-                            </motion.div>
+                                <Wallet size={20} />
+                            </div>
                         </div>
                         <div className="flex justify-between items-start">
                             <div>
@@ -344,15 +383,12 @@ const DashboardPage = () => {
                         whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxBlue)}>
-                            <motion.div
-                                animate={{
-                                    y: [0, -5, 0],
-                                    filter: ["drop-shadow(0 0 0px #10b981)", "drop-shadow(0 0 8px #10b981)", "drop-shadow(0 0 0px #10b981)"]
-                                }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            <div
+                                data-anim={reduceMotion ? undefined : 'bob-up'}
+                                className="text-emerald-400"
                             >
-                                <TrendingUp size={20} className="text-emerald-400" />
-                            </motion.div>
+                                <TrendingUp size={20} />
+                            </div>
                         </div>
                         <p className={styles.statTitle}>Money In</p>
                         <h2 className={styles.value}>{formatCurrency(stats.monthlyIncome)}</h2>
@@ -365,15 +401,9 @@ const DashboardPage = () => {
                         whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxRose)}>
-                            <motion.div
-                                animate={{
-                                    y: [0, 3, 0],
-                                    scale: [1, 1.05, 1],
-                                    transition: { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-                                }}
-                            >
+                            <div data-anim={reduceMotion ? undefined : 'bob-down'}>
                                 <TrendingDown size={20} />
-                            </motion.div>
+                            </div>
                         </div>
                         <p className={styles.statTitle}>Money Out</p>
                         <h2 className={styles.value}>{formatCurrency(stats.monthlyExpense)}</h2>
@@ -389,15 +419,12 @@ const DashboardPage = () => {
                         whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxIndigo)}>
-                            <motion.div
-                                animate={{
-                                    rotate: [0, 15, -15, 0],
-                                    scale: [1, 1.1, 1]
-                                }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                            <div
+                                data-anim={reduceMotion ? undefined : 'wobble'}
+                                className="text-purple-400"
                             >
-                                <Target size={20} className="text-purple-400" />
-                            </motion.div>
+                                <Target size={20} />
+                            </div>
                         </div>
                         <p className={styles.statTitle}>Your Streak</p>
                         <h2 className={styles.value}>{stats.streakDays} Days 🔥</h2>
@@ -417,66 +444,7 @@ const DashboardPage = () => {
                                 </Link>
                             </div>
                             <div className="h-[300px]">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                                        <CartesianGrid strokeDasharray="0" stroke="#e5e7eb" vertical={true} />
-                                        <XAxis
-                                            dataKey="day"
-                                            axisLine={{ stroke: '#000000', strokeWidth: 3 }}
-                                            tickLine={false}
-                                            tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
-                                            dy={10}
-                                        />
-                                        <YAxis
-                                            axisLine={{ stroke: '#000000', strokeWidth: 3 }}
-                                            tickLine={false}
-                                            tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
-                                            tickFormatter={(v) => `Rs${v}`}
-                                        />
-                                        <Tooltip
-                                            content={({ active, payload }) => {
-                                                if (active && payload && payload.length) {
-                                                    return (
-                                                        <div className="bg-white border-[3px] border-black p-4 shadow-[6px_6px_0px_#000000]">
-                                                            <p className="text-[10px] font-black text-black uppercase tracking-widest mb-2 border-b-2 border-black pb-1">
-                                                                {payload[0].payload.day}
-                                                            </p>
-                                                            {payload.map((entry, idx) => (
-                                                                <div key={idx} className="flex items-center gap-3 mt-1">
-                                                                    <div className="w-3 h-3 border-2 border-black" style={{ backgroundColor: entry.color }} />
-                                                                    <span className="text-[10px] font-black text-black uppercase tracking-tighter">{entry.name}:</span>
-                                                                    <span className="text-sm font-black text-black">Rs{entry.value}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                }
-                                                return null;
-                                            }}
-                                        />
-                                        <Area
-                                            type="stepAfter"
-                                            dataKey="income"
-                                            stroke="#000000"
-                                            strokeWidth={4}
-                                            fill="#000000"
-                                            fillOpacity={0.1}
-                                            name="Inflow"
-                                            animationDuration={1000}
-                                            activeDot={{ r: 8, strokeWidth: 3, stroke: '#000000', fill: '#FFFFFF' }}
-                                        />
-                                        <Area
-                                            type="stepAfter"
-                                            dataKey="expense"
-                                            stroke="#E11D48"
-                                            strokeWidth={4}
-                                            fill="#E11D48"
-                                            fillOpacity={0.1}
-                                            name="Outflow"
-                                            animationDuration={1500}
-                                        />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                <SpendingChart data={chartData} />
                             </div>
                         </motion.div>
 
@@ -526,29 +494,23 @@ const DashboardPage = () => {
                                             </div>
                                         </motion.div>
                                     )) : (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
+                                        <div
                                             className="text-center py-12 w-full relative"
                                         >
                                             <div className="relative mb-10 flex justify-center">
-                                                <motion.div
+                                                <span
+                                                    data-anim={reduceMotion ? undefined : 'ripple'}
                                                     className="absolute w-24 h-24 bg-slate-100 rounded-lg border-2 border-black/5"
-                                                    animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
-                                                    transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
                                                 />
-                                                <motion.div
-                                                    animate={{
-                                                        y: [0, -10, 0],
-                                                        transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                                                    }}
+                                                <div
+                                                    data-anim={reduceMotion ? undefined : 'bob-up'}
                                                     className="relative z-10 p-6 bg-white border-3 border-black shadow-[8px_8px_0px_#000000]"
                                                 >
                                                     <ShoppingCart size={48} className="text-slate-200" />
-                                                </motion.div>
+                                                </div>
                                             </div>
                                             <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">NO_EXPENSE_DATA_STREAM</p>
-                                        </motion.div>
+                                        </div>
                                     )}
                                 </motion.div>
                             </motion.div>
@@ -585,49 +547,35 @@ const DashboardPage = () => {
                                             </p>
                                         </>
                                     ) : (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
+                                        <div
                                             className="text-center py-6 w-full relative"
                                         >
                                             {/* Premium Ripple Animation */}
                                             <div className="relative mb-10 flex justify-center">
-                                                <motion.div
+                                                <span
+                                                    data-anim={reduceMotion ? undefined : 'ripple'}
                                                     className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
-                                                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                                                    transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
                                                 />
-                                                <motion.div
+                                                <span
+                                                    data-anim={reduceMotion ? undefined : 'ripple'}
                                                     className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
-                                                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                                                    transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1.5 }}
+                                                    style={reduceMotion ? undefined : { animationDelay: '1.5s' }}
                                                 />
-                                                <motion.div
-                                                    animate={{
-                                                        y: [0, -8, 0],
-                                                        scale: [1, 1.05, 1],
-                                                        transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                                                    }}
+                                                <div
+                                                    data-anim={reduceMotion ? undefined : 'bob-up'}
                                                     className="relative z-10 p-5 bg-white/50 backdrop-blur-sm rounded-none border-2 border-slate-100/50 shadow-[8px_8px_0px_#000000]"
                                                 >
                                                     <Target size={44} className="text-rose-600/40" />
-                                                </motion.div>
+                                                </div>
                                             </div>
 
-                                            <motion.p
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 0.4 }}
-                                                transition={{ delay: 0.3 }}
+                                            <p
                                                 className="text-xs font-black uppercase tracking-[0.2em] mb-6 text-slate-500"
                                             >
                                                 No Active Budget
-                                            </motion.p>
+                                            </p>
 
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: 0.5 }}
-                                            >
+                                            <div>
                                                 <Link
                                                     to="/budgets"
                                                     className="inline-flex items-center gap-3 px-8 py-4 bg-black text-white border-2 border-black font-black tracking-widest hover:translate-x-[-4px] hover:translate-y-[-4px] shadow-[6px_6px_0px_#E11D48] transition-all"
@@ -635,8 +583,8 @@ const DashboardPage = () => {
                                                     SET LIMIT
                                                     <Plus size={18} />
                                                 </Link>
-                                            </motion.div>
-                                        </motion.div>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             </motion.div>
@@ -649,12 +597,8 @@ const DashboardPage = () => {
                                     <h3 className={styles.sectionTitle}>Financial Health</h3>
                                     <div className="flex items-center gap-3">
                                         <div className="relative">
-                                            <motion.div
-                                                animate={{
-                                                    scale: [1, 1.2, 1],
-                                                    opacity: [1, 0.5, 1],
-                                                }}
-                                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                            <span
+                                                data-anim={reduceMotion ? undefined : 'ping-soft'}
                                                 className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full"
                                             />
                                             <Heart size={20} className="text-rose-500" strokeWidth={2.5} />
@@ -695,12 +639,8 @@ const DashboardPage = () => {
                                     <h3 className={styles.sectionTitle}>Top Merchants</h3>
                                     <div className="flex items-center gap-3">
                                         <div className="relative">
-                                            <motion.div
-                                                animate={{
-                                                    scale: [1, 1.3, 1],
-                                                    opacity: [1, 0, 1],
-                                                }}
-                                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                            <span
+                                                data-anim={reduceMotion ? undefined : 'ping-strong'}
                                                 className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 rounded-full"
                                             />
                                             <Store size={20} className="text-indigo-500" strokeWidth={2.5} />

@@ -103,11 +103,11 @@ const VerifyEmailPage = () => {
 
     if (status === 'VERIFIED_SUCCESSFULLY') {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden">
+            <div className="min-h-dvh bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden lg:overflow-hidden">
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-12 shadow-[8px_8px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative z-10"
+                    className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-10 shadow-[6px_6px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] relative z-10"
                 >
                     <div className="text-center space-y-10">
                         <div className="w-20 h-20 sm:w-24 sm:h-24 border-4 sm:border-8 border-black flex items-center justify-center mx-auto bg-[#10b981] text-white">
@@ -121,7 +121,7 @@ const VerifyEmailPage = () => {
                         </div>
                         <button
                             onClick={() => navigate('/login')}
-                            className="w-full min-h-16 sm:h-20 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-[#10b981] transition-colors border-4 border-black shadow-[6px_6px_0px_#10b981] sm:shadow-[8px_8px_0px_#10b981] hover:shadow-none hover:translate-x-2 hover:translate-y-2"
+                            className="w-full min-h-14 sm:h-16 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-[#10b981] transition-colors border-4 border-black shadow-[5px_5px_0px_#10b981] sm:shadow-[6px_6px_0px_#10b981] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                         >
                             GO_TO_LOGIN
                         </button>
@@ -132,14 +132,14 @@ const VerifyEmailPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden">
+        <div className="min-h-dvh bg-white flex items-center justify-center p-4 sm:p-8 font-bold selection:bg-black selection:text-white overflow-x-hidden lg:overflow-hidden">
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '32px 32px' }} />
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-12 shadow-[8px_8px_0px_#000000] sm:shadow-[16px_16px_0px_#000000] relative z-10"
+                className="w-full max-w-md border-4 sm:border-8 border-black bg-white p-6 sm:p-10 shadow-[6px_6px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] relative z-10"
             >
-                <div className="text-center space-y-8">
+                <div className="text-center space-y-7">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 border-4 sm:border-8 border-black flex items-center justify-center mx-auto bg-black text-white">
                         <Mail className="h-12 w-12" strokeWidth={4} />
                     </div>
@@ -151,7 +151,7 @@ const VerifyEmailPage = () => {
                         </p>
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 sm:gap-3" onPaste={handlePaste}>
+                    <div className="flex items-center justify-center gap-1.5 sm:gap-3" onPaste={handlePaste}>
                         {otp.map((digit, i) => (
                             <input
                                 key={i}
@@ -162,7 +162,7 @@ const VerifyEmailPage = () => {
                                 value={digit}
                                 onChange={(e) => handleChange(i, e.target.value)}
                                 onKeyDown={(e) => handleKeyDown(i, e)}
-                                className="w-10 h-12 sm:w-12 sm:h-14 border-4 border-black text-center font-black text-lg sm:text-xl focus:bg-black focus:text-white transition-all outline-none"
+                                className="w-9 h-12 min-[360px]:w-10 sm:w-12 sm:h-14 border-4 border-black text-center font-black text-lg sm:text-xl focus:bg-black focus:text-white transition-all outline-none"
                                 disabled={status === 'verifying'}
                                 autoFocus={i === 0}
                             />

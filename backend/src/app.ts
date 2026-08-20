@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import routes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
-import { initializeEmailTransporter } from './services/emailService.js';
 import { csrfTokenMiddleware } from './middleware/csrf.js';
 
 const app = express();
@@ -39,6 +38,10 @@ if (process.env.VERCEL_URL) {
 const isAllowedOrigin = (origin?: string) => {
     if (!origin) return true;
     const normalized = origin.replace(/\/+$/, '');
+
+    if (normalized.startsWith('chrome-extension://') || normalized.startsWith('moz-extension://')) {
+        return true;
+    }
 
     if (frontendOrigins.includes(normalized)) return true;
 
