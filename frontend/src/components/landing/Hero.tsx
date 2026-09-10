@@ -14,9 +14,9 @@ export default function Hero() {
                     </h1>
                     <p className="mt-5 max-w-xl text-base leading-relaxed text-[#57534E] sm:text-lg">
                         Cashly captures checkouts from your browser, holds them in a quiet inbox, and only posts what you approve.
-                        No surprise ledger entries. No shouting UI.
+                        Then budgets, Analytics, Money Twin, and AI all read the same numbers.
                     </p>
-                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                         <Button asChild size="lg">
                             <Link to="/signup">
                                 Create a free account
@@ -24,9 +24,13 @@ export default function Hero() {
                             </Link>
                         </Button>
                         <Button asChild size="lg" variant="outline">
-                            <a href="/cashly-extension.zip">Download the extension</a>
+                            <a href="/#features">See every feature</a>
                         </Button>
                     </div>
+                    <p className="mt-4 text-sm text-[#78716C]">
+                        <a href="/cashly-extension.zip" className="font-medium text-[#E11D48] hover:underline">Download the extension</a>
+                        {' '}when you are ready to capture checkouts.
+                    </p>
                 </div>
 
                 <div className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-lg)]">

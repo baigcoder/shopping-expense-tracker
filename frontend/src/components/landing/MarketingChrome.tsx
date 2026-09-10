@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 
 const links = [
     { href: '/#how-it-works', label: 'How it works' },
-    { href: '/features', label: 'Features' },
+    { href: '/#features', label: 'Features' },
+    { href: '/#analyze', label: 'Analyze' },
     { href: '/#extension', label: 'Extension' },
 ];
 
@@ -81,6 +82,7 @@ export function MarketingFooter() {
                 </div>
                 <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#57534E]">
                     <Link to="/features" className="hover:text-[#1C1917]">Features</Link>
+                    <a href="/#analyze" className="hover:text-[#1C1917]">Analyze</a>
                     <Link to="/faq" className="hover:text-[#1C1917]">FAQ</Link>
                     <Link to="/privacy" className="hover:text-[#1C1917]">Privacy</Link>
                     <Link to="/terms" className="hover:text-[#1C1917]">Terms</Link>

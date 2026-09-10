@@ -1,77 +1,9 @@
 import { Link } from 'react-router-dom';
-import {
-    Activity,
-    ArrowRight,
-    Bell,
-    Brain,
-    CalendarDays,
-    CheckCircle2,
-    Chrome,
-    ClipboardList,
-    FileText,
-    Inbox,
-    ReceiptText,
-    Repeat,
-    Settings,
-    ShieldCheck,
-    Sparkles,
-    Target,
-    UploadCloud,
-    WalletCards,
-} from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MarketingFooter, MarketingNav } from '@/components/landing/MarketingChrome';
+import { FEATURE_GROUPS, HOW_IT_WORKS } from '@/components/landing/featureCatalog';
 import BRAND from '@/config/branding';
-
-const featureGroups = [
-    {
-        title: 'Capture and review',
-        description: 'Detections land in a review layer first, so you stay in control before anything becomes final.',
-        features: [
-            { icon: Inbox, title: 'Transaction inbox', description: 'Approve, reject, edit, or merge detected purchases before they enter the ledger.' },
-            { icon: UploadCloud, title: 'Import review', description: 'Review parsed CSV, Excel, and PDF rows with confidence, errors, and duplicate warnings.' },
-            { icon: Chrome, title: 'Extension capture', description: 'Browser detections queue into the inbox while Extension Health tracks sync issues.' },
-            { icon: ReceiptText, title: 'Manual entries', description: 'Add a transaction yourself when you want something posted right away.' },
-        ],
-    },
-    {
-        title: 'Planning',
-        description: 'Upcoming bills, recurring costs, goals, and reminders sit in one calm workspace.',
-        features: [
-            { icon: CalendarDays, title: 'Cashflow calendar', description: 'See income, bills, subscriptions, and predicted spending on one timeline.' },
-            { icon: Repeat, title: 'Subscriptions', description: 'Track recurring spend, trials, price changes, and unused services.' },
-            { icon: Target, title: 'Budgets and goals', description: 'Progress sits next to real transactions, not a separate spreadsheet.' },
-            { icon: Bell, title: 'Bills and reminders', description: 'Keep what is due next visible so cashflow decisions stay honest.' },
-        ],
-    },
-    {
-        title: 'Intelligence',
-        description: 'AI and reports use backend-owned financial context, including approved data and optional pending candidates.',
-        features: [
-            { icon: FileText, title: 'Reports', description: 'Generate tax, category, merchant, and monthly summaries with export history.' },
-            { icon: Brain, title: 'AI coach', description: 'A weekly plan with a few concrete actions for spending, savings, and bills.' },
-            { icon: Sparkles, title: 'Money insights', description: 'Ask questions about spending using refreshed financial context.' },
-            { icon: ClipboardList, title: 'Merchant rules', description: 'Match a store, assign a category, and skip the inbox when you trust it.' },
-        ],
-    },
-    {
-        title: 'System',
-        description: 'Operational views keep the automation understandable and user-controlled.',
-        features: [
-            { icon: Activity, title: 'Extension health', description: 'Tracked sites, queued syncs, failed detections, and recent errors.' },
-            { icon: Settings, title: 'Settings', description: 'Profile, notifications, currency, security, and AI preferences in one place.' },
-            { icon: ShieldCheck, title: 'Server-side AI', description: 'Live AI, memory, and pending-data inclusion without exposing API keys.' },
-            { icon: WalletCards, title: 'Consistent currency', description: 'Your currency preference formats money the same way across the app.' },
-        ],
-    },
-];
-
-const workflowSteps = [
-    'Create an account and choose preferences',
-    'Import, add, or detect transactions',
-    'Review inbox candidates and apply rules',
-    'Use the calendar, reports, and coach',
-];
 
 const FeaturesPage = () => {
     return (
@@ -85,8 +17,8 @@ const FeaturesPage = () => {
                             Review-first workflows
                         </p>
                         <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Everything in Cashly</h1>
-                        <p className="mt-4 max-w-xl text-[#57534E] leading-relaxed">
-                            Detected data enters an inbox, rules make repeated decisions predictable, and AI works from refreshed financial context.
+                        <p className="mt-4 max-w-xl leading-relaxed text-[#57534E]">
+                            Capture waits in Inbox. Rules make repeats predictable. Analytics, Money Twin, and AI only treat approved spend as real.
                         </p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                             <Button asChild size="lg">
@@ -96,7 +28,7 @@ const FeaturesPage = () => {
                                 </Link>
                             </Button>
                             <Button asChild size="lg" variant="outline">
-                                <a href="/cashly-extension.zip">Install extension</a>
+                                <a href="/#analyze">How analysis works</a>
                             </Button>
                         </div>
                     </div>
@@ -122,17 +54,18 @@ const FeaturesPage = () => {
                 </section>
 
                 <section className="border-y border-[#E7E5E4] bg-[#F4F0EB]">
-                    <div className="mx-auto grid max-w-6xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-6 md:grid-cols-4">
-                        {workflowSteps.map((step, index) => (
-                            <div key={step} className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
+                    <div className="mx-auto grid max-w-6xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+                        {HOW_IT_WORKS.map((step, index) => (
+                            <div key={step.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
                                 <p className="text-sm font-medium text-[#E11D48]">{index + 1}</p>
-                                <p className="mt-2 text-sm font-medium leading-snug">{step}</p>
+                                <p className="mt-2 text-sm font-medium leading-snug">{step.title}</p>
+                                <p className="mt-1 text-xs leading-relaxed text-[#78716C]">{step.body}</p>
                             </div>
                         ))}
                     </div>
                 </section>
 
-                {featureGroups.map((group) => (
+                {FEATURE_GROUPS.map((group) => (
                     <section key={group.title} className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
                         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{group.title}</h2>
                         <p className="mt-2 max-w-2xl text-[#57534E]">{group.description}</p>
