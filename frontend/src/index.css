@@ -286,6 +286,21 @@ textarea:focus-visible,
   box-shadow: var(--shadow-md) !important;
 }
 
+.font-black {
+  font-weight: 600 !important;
+}
+
+[class*="uppercase"][class*="tracking-widest"],
+[class*="uppercase"][class*="tracking-tighter"],
+[class*="uppercase"][class*="tracking-[0"] {
+  text-transform: none !important;
+  letter-spacing: -0.02em !important;
+}
+
+[class*="rounded-none"] {
+  border-radius: var(--r-md) !important;
+}
+
 @media (max-width: 768px) {
   body { overscroll-behavior-x: none; }
 

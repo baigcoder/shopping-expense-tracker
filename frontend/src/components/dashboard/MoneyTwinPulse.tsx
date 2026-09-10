@@ -52,12 +52,12 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
 
     if (loading) {
         return (
-            <div className="bg-white border-4 border-black p-6 flex items-center justify-center h-[380px] shadow-[8px_8px_0px_#000000]">
-                <div className="flex flex-col items-center gap-6">
-                    <div className="p-5 border-4 border-black bg-white shadow-[4px_4px_0px_#000000]">
-                        <Loader2 className="h-10 w-10 animate-spin text-black" />
+            <div className="flex h-[380px] items-center justify-center rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-md)]">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-[#FAF8F5] p-4">
+                        <Loader2 className="h-8 w-8 animate-spin text-[var(--brand)]" />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-black">SYNTHESIZING_SPEND_PATTERNS...</p>
+                    <p className="text-sm text-[var(--text-muted)]">Building your forecast…</p>
                 </div>
             </div>
         );
@@ -91,11 +91,11 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                             <Brain size={24} strokeWidth={3} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black uppercase tracking-tight">Money Twin</h3>
-                            <div className="flex items-center gap-2 mt-1">
-                                <div className="w-2 h-2 bg-[#E11D48] animate-pulse" />
-                                <span className="text-[10px] font-black uppercase tracking-widest opacity-70">
-                                    {patterns.length > 0 ? `${patterns.length}_ACTIVE_CLUSTERS` : 'LIVE_FORECASTING'}
+                            <h3 className="font-display text-xl font-semibold tracking-tight">Money Twin</h3>
+                            <div className="mt-1 flex items-center gap-2">
+                                <div className="h-2 w-2 animate-pulse rounded-full bg-[#E11D48]" />
+                                <span className="text-xs text-[var(--text-muted)]">
+                                    {patterns.length > 0 ? `${patterns.length} patterns` : 'Live forecast'}
                                 </span>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                         </button>
                         <div className={styles.healthBadge}>
                             <div className="flex flex-col items-center leading-none">
-                                <span className="text-[8px] font-black uppercase">VELOCITY</span>
+                                <span className="text-[10px] font-medium text-[var(--text-muted)]">Health</span>
                                 <span className="text-2xl font-black mt-1">{healthScore}</span>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
             <div className={styles.statsRow}>
                 <div className={styles.statCell}>
                     <div className={styles.statLabel}>
-                        <Activity size={12} strokeWidth={3} /> DAILY_BURN
+                        <Activity size={12} strokeWidth={2} /> Daily spend
                     </div>
                     <p className={styles.statVal}>{formatCurrency(velocity.dailyRate)}</p>
                     <div className={cn(
@@ -133,24 +133,24 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                 </div>
                 <div className={styles.statCell}>
                     <div className={styles.statLabel}>
-                        <Target size={12} strokeWidth={3} /> EST_INTERVAL
+                        <Target size={12} strokeWidth={2} /> This month
                     </div>
                     <p className={styles.statVal}>{formatCurrency(velocity.monthlyRate)}</p>
-                    <p className="text-[9px] font-black text-slate-400 mt-2 uppercase">PROJECTION_ACTIVE</p>
+                    <p className="mt-2 text-[11px] text-[var(--text-muted)]">Projected</p>
                 </div>
                 <div className={styles.statCell}>
                     <div className={styles.statLabel}>
-                        <Zap size={12} strokeWidth={3} /> EFFICIENCY
+                        <Zap size={12} strokeWidth={2} /> Headroom
                     </div>
                     <p className={cn(
                         styles.statVal,
                         velocity.burnRate > 100 ? "text-rose-600" : "text-emerald-600"
                     )}>{Math.max(0, 100 - velocity.burnRate)}%</p>
-                    <p className="text-[9px] font-black text-slate-400 mt-2 uppercase">SURPLUS_OPTIMAL</p>
+                    <p className="mt-2 text-[11px] text-[var(--text-muted)]">Room to save</p>
                 </div>
             </div>
 
-            <div className="px-6 py-4 border-b-4 border-black bg-slate-50 flex items-center gap-4">
+            <div className="flex items-center gap-4 border-b border-[var(--border)] bg-[#FAF8F5] px-6 py-4">
                 <AnimatePresence mode="wait">
                     {riskAlerts.length > 0 ? (
                         riskAlerts.slice(0, 1).map(alert => (
@@ -161,20 +161,20 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                                 animate={{ opacity: 1 }}
                             >
                                 <AlertTriangle size={14} className="text-rose-600" strokeWidth={3} />
-                                <span>ANOMALY: {alert.title.split(':')[0]}</span>
+                                <span>Watch: {alert.title.split(':')[0]}</span>
                             </motion.div>
                         ))
                     ) : (
-                        <div className="flex items-center gap-3 px-4 py-2 bg-emerald-50 text-emerald-700 border-2 border-emerald-700 text-[10px] font-black uppercase tracking-widest">
-                            <CheckCircle size={14} strokeWidth={3} />
-                            <span>AUDIT: NOMINAL</span>
+                        <div className="flex items-center gap-2 rounded-full border border-[#059669]/20 bg-[#ECFDF5] px-3 py-1.5 text-xs font-medium text-[#059669]">
+                            <CheckCircle size={14} strokeWidth={2} />
+                            <span>Looking steady</span>
                         </div>
                     )}
                 </AnimatePresence>
                 {patterns.length > 0 && (
-                    <div className="flex items-center gap-3 px-4 py-2 bg-black text-white border-2 border-black text-[10px] font-black uppercase tracking-widest">
-                        <Zap size={14} className="text-amber-400" strokeWidth={3} />
-                        <span>FLOW: {patterns[0].category}</span>
+                    <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                        <Zap size={14} className="text-[var(--brand)]" strokeWidth={2} />
+                        <span>{patterns[0].category}</span>
                     </div>
                 )}
             </div>
@@ -183,26 +183,26 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                 <div className="h-[180px]">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                            <CartesianGrid strokeDasharray="0" stroke="#000000" vertical={true} />
+                            <CartesianGrid strokeDasharray="4 6" stroke="#E7E5E4" vertical={false} />
                             <XAxis
                                 dataKey="month"
-                                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
+                                axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
+                                tick={{ fill: '#78716C', fontSize: 11, fontWeight: 500 }}
                             />
                             <YAxis
-                                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
+                                axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
+                                tick={{ fill: '#78716C', fontSize: 11, fontWeight: 500 }}
                                 tickFormatter={(v) => `${currencySymbol}${v}`}
                             />
                             <Tooltip
                                 content={({ active, payload }) => {
                                     if (active && payload && payload.length) {
                                         return (
-                                            <div className="bg-white border-4 border-black p-4 shadow-[6px_6px_0px_#000000]">
-                                                <p className="text-[10px] font-black text-black uppercase tracking-widest mb-3 border-b-2 border-black pb-2">
-                                                    PROBABILITY_MATRIX
+                                            <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-white p-3 shadow-[var(--shadow-md)]">
+                                                <p className="mb-2 border-b border-[var(--border)] pb-2 text-xs font-medium text-[var(--text-muted)]">
+                                                    Forecast
                                                 </p>
                                                 {payload.map((entry, idx) => (
                                                     <div key={idx} className="flex items-center justify-between gap-6 mt-1">
@@ -219,22 +219,22 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                                     return null;
                                 }}
                             />
-                            <Area type="stepAfter" dataKey="expenses" stroke="#000000" strokeWidth={3} fill="#000000" fillOpacity={0.1} strokeDasharray="5 5" name="Baseline" />
-                            <Area type="stepAfter" dataKey="savings" stroke="#E11D48" strokeWidth={4} fill="#E11D48" fillOpacity={0.2} name="Neural_Forecast" activeDot={{ r: 8, strokeWidth: 3, stroke: '#000000', fill: '#E11D48' }} />
+                            <Area type="monotone" dataKey="expenses" stroke="#78716C" strokeWidth={2} fill="#78716C" fillOpacity={0.08} name="Spending" />
+                            <Area type="monotone" dataKey="savings" stroke="#E11D48" strokeWidth={2} fill="#E11D48" fillOpacity={0.12} name="Forecast" activeDot={{ r: 5, strokeWidth: 0, fill: '#E11D48' }} />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
             </div>
 
             <div className={styles.footer}>
-                <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest opacity-60">
+                <div className="flex items-center gap-6 text-xs font-medium text-[var(--text-muted)]">
                     <span className="flex items-center gap-2 text-[#E11D48]">
                         <Activity className="h-3 w-3" /> Live
                     </span>
-                    <span>OPTIMIZED_TRAJECTORY</span>
+                    <span>On track</span>
                 </div>
                 <Link to="/money-twin" className={styles.seeMoreLink}>
-                    <span>SIMULATION_ENGINE</span>
+                    <span>Open Money Twin</span>
                     <ArrowUpRight size={16} strokeWidth={3} />
                 </Link>
             </div>

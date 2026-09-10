@@ -88,7 +88,7 @@ const CardsPage = () => {
         const newFrozen = !viewingCard.is_frozen;
         updateCard(viewingCard.id, { is_frozen: newFrozen });
         setViewingCard({ ...viewingCard, is_frozen: newFrozen });
-        toast.success(newFrozen ? 'CARD_FROZEN' : 'CARD_UNFROZEN');
+        toast.success(newFrozen ? 'Card frozen' : 'Card unfrozen');
         sound.playClick();
     };
 
@@ -102,7 +102,7 @@ const CardsPage = () => {
         });
         updateCard(viewingCard.id, { is_default: true });
         setViewingCard({ ...viewingCard, is_default: true });
-        toast.success('DEFAULT_NODE_SET');
+        toast.success('Default card updated');
         sound.playSuccess();
     };
 
@@ -112,7 +112,7 @@ const CardsPage = () => {
         updateCard(viewingCard.id, { nickname: editedNickname });
         setViewingCard({ ...viewingCard, nickname: editedNickname });
         setIsEditingNickname(false);
-        toast.success('ALIAS_UPDATED');
+        toast.success('Nickname saved');
         sound.playClick();
     };
 
@@ -123,17 +123,17 @@ const CardsPage = () => {
         updateCard(viewingCard.id, { spending_limit: limit });
         setViewingCard({ ...viewingCard, spending_limit: limit });
         setIsEditingLimit(false);
-        toast.success('LIMIT_VERIFIED');
+        toast.success('Limit saved');
         sound.playClick();
     };
 
     // Delete card
     const handleDeleteCard = async () => {
         if (!viewingCard) return;
-        if (confirm('TERMINATE_CARD_CONNECTION?')) {
+        if (confirm('Remove this card?')) {
             removeCard(viewingCard.id);
             setViewingCard(null);
-            toast.success('NODE_DELETED');
+            toast.success('Card removed');
             sound.playSuccess();
         }
     };
@@ -141,7 +141,7 @@ const CardsPage = () => {
     // Copy to clipboard
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
-        toast.success('COPIED_TO_BUFFER');
+        toast.success('Copied');
         sound.playClick();
     };
 
@@ -153,7 +153,7 @@ const CardsPage = () => {
 
     // Format last used
     const formatLastUsed = (date?: string) => {
-        if (!date) return 'NEVER_USED';
+        if (!date) return 'Never used';
         const d = new Date(date);
         const now = new Date();
         const diff = now.getTime() - d.getTime();
@@ -179,11 +179,11 @@ const CardsPage = () => {
     const handleSaveCvvPassword = async () => {
         if (!viewingCard) return;
         if (cvvPassword.length < 4) {
-            toast.error('PASSWORD_MIN_4_CHARS');
+            toast.error('Use at least 4 characters');
             return;
         }
         if (cvvPassword !== confirmCvvPassword) {
-            toast.error('MISMATCH_ERROR');
+            toast.error('Passwords don’t match');
             return;
         }
         updateCard(viewingCard.id, {
@@ -208,10 +208,10 @@ const CardsPage = () => {
             setCvvValue(viewingCard.cvv_encrypted || '***');
             setIsVerifyingCvv(false);
             setCvvPassword('');
-            toast.success('CVV_REVEALED_30S');
+            toast.success('CVV shown for 30 seconds');
             sound.playSuccess();
         } else {
-            toast.error('INVALID_ACCESS_KEY');
+            toast.error('Wrong password');
             sound.playClick();
         }
     };
@@ -249,27 +249,27 @@ const CardsPage = () => {
                         <CreditCard size={32} strokeWidth={3} />
                     </div>
                     <div className={styles.headerInfo}>
-                        <h1>Wallet Audit</h1>
+                        <h1>Cards</h1>
                         <p>
-                            DIGITAL_ASSET_MANAGER
-                            <span className={styles.secureBadge}>AUDIT_SECURE</span>
+                            Saved cards for checkout capture
+                            <span className={styles.secureBadge}>Encrypted</span>
                         </p>
                     </div>
                 </div>
                 <div className={styles.headerActions}>
                     <button
-                        className="h-14 px-8 border-4 border-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors"
+                        className="h-11 rounded-[var(--r-md)] border border-[var(--border)] bg-white px-5 text-sm font-medium hover:bg-[var(--bg-subtle)]"
                         onClick={() => initializeCards(user?.id || '')}
                     >
-                        <Clock className="inline mr-2 h-4 w-4" strokeWidth={3} />
-                        Refresh_Nodes
+                        <Clock className="inline mr-2 h-4 w-4" strokeWidth={2} />
+                        Refresh
                     </button>
                     <button
                         onClick={openAddCard}
-                        className="h-14 px-8 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors"
+                        className="h-11 rounded-[var(--r-md)] bg-[var(--brand)] px-5 text-sm font-semibold text-white hover:bg-[var(--brand-hover)]"
                     >
-                        <Plus className="inline mr-2 h-5 w-5" strokeWidth={3} />
-                        Issue_New_Node
+                        <Plus className="inline mr-2 h-5 w-5" strokeWidth={2} />
+                        Add card
                     </button>
                 </div>
             </motion.header>
@@ -282,16 +282,16 @@ const CardsPage = () => {
                 className={styles.overviewGrid}
             >
                 {[
-                    { icon: <CreditCard size={28} strokeWidth={3} />, label: "ACTIVE_NODES", value: cards.length, sub: "Digital Assets", progress: (cards.length / 5) * 100, color: "#000000" },
-                    { icon: <Shield size={28} strokeWidth={3} />, label: "SECURITY_INTEGRITY", value: "100%", sub: "Encrypted", progress: 100, color: "#000000" },
-                    { icon: <Landmark size={28} strokeWidth={3} />, label: "FINANCIAL_HUB", value: "READY", sub: "Digital Pay", progress: 100, color: "#E11D48" }
+                    { icon: <CreditCard size={24} strokeWidth={2} />, label: "Cards", value: cards.length, sub: "Saved", progress: (cards.length / 5) * 100, color: "#1C1917" },
+                    { icon: <Shield size={24} strokeWidth={2} />, label: "Security", value: "100%", sub: "Encrypted", progress: 100, color: "#1C1917" },
+                    { icon: <Landmark size={24} strokeWidth={2} />, label: "Payments", value: "Ready", sub: "Checkout", progress: 100, color: "#E11D48" }
                 ].map((stat, i) => (
                     <motion.div key={i} variants={itemVariants} className={styles.premiumStatCard}>
                         <div className={styles.statHeader}>
                             <div className={styles.statIconContainer}>
                                 {stat.icon}
                             </div>
-                            <div className={styles.secureBadge}>VERIFIED</div>
+                            <div className={styles.secureBadge}>Verified</div>
                         </div>
                         <div className={styles.statLabel}>{stat.label}</div>
                         <div className={styles.statValueContainer}>
@@ -322,10 +322,10 @@ const CardsPage = () => {
                         <Building2 size={32} strokeWidth={3} />
                     </div>
                     <div className={styles.banksInfo}>
-                        <h3>Linked Institutions</h3>
-                        <p>EXTERNAL_FINANCIAL_NODES_MANIFEST</p>
+                        <h3>Linked accounts</h3>
+                        <p>Banks connected for import</p>
                     </div>
-                    <div className={styles.secureBadge}>ENCRYPTED_FLOW</div>
+                    <div className={styles.secureBadge}>Encrypted</div>
                 </div>
                 <div className={styles.banksContent}>
                     <LinkedAccountsCard />
@@ -336,13 +336,13 @@ const CardsPage = () => {
             <div className={styles.walletSection}>
                 <div className={styles.sectionHeader}>
                     <div className={styles.sectionTitle}>
-                        <h2>Digital Wallet</h2>
+                        <h2>Wallet</h2>
                         <p>Your saved cards</p>
                     </div>
                     <div className={styles.sectionLine} />
                     <div className={styles.encryptedTag}>
                         <Lock size={14} strokeWidth={3} />
-                        BANK_GRADE_ENCRYPTION
+                        Encrypted
                     </div>
                 </div>
 
@@ -356,7 +356,7 @@ const CardsPage = () => {
                         <div className={styles.addCardIcon}>
                             <Plus size={40} strokeWidth={3} />
                         </div>
-                        <span className={styles.addCardText}>Issue_New_Node</span>
+                        <span className={styles.addCardText}>Add a card</span>
                     </motion.div>
 
                     <AnimatePresence mode="popLayout">
@@ -380,12 +380,12 @@ const CardsPage = () => {
                                 <div className="absolute top-8 right-8 flex gap-3">
                                     {viewingCard.is_frozen && (
                                         <Badge className="bg-[#E11D48] text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
-                                            FROZEN
+                                        Frozen
                                         </Badge>
                                     )}
                                     {viewingCard.is_default && (
                                         <Badge className="bg-black text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
-                                            DEFAULT
+                                        Default
                                         </Badge>
                                     )}
                                 </div>
@@ -406,15 +406,15 @@ const CardsPage = () => {
                                         </button>
                                     </div>
                                 ) : (
-                                    <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter flex items-center justify-center gap-4 mt-6">
+                                    <DialogTitle className="mt-6 flex items-center justify-center gap-4 font-display text-2xl font-semibold tracking-tight">
                                         {viewingCard.nickname || `${viewingCard.type.toUpperCase()} •••${viewingCard.last4}`}
                                         <button onClick={() => { setEditedNickname(viewingCard.nickname || ''); setIsEditingNickname(true); }}>
                                             <Pencil size={20} className="text-black/30 hover:text-black" strokeWidth={3} />
                                         </button>
                                     </DialogTitle>
                                 )}
-                                <DialogDescription className="text-black/50 font-black text-xs uppercase tracking-widest mt-2">
-                                    {viewingCard.holder} // EXPIRES_{viewingCard.expiry}
+                                <DialogDescription className="mt-2 text-sm text-[var(--text-muted)]">
+                                    {viewingCard.holder} · expires {viewingCard.expiry}
                                 </DialogDescription>
                             </div>
 
@@ -427,7 +427,7 @@ const CardsPage = () => {
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center gap-3">
                                             <DollarSign size={20} strokeWidth={3} />
-                                            <span className="font-black text-xs uppercase tracking-widest">CYCLE_LIMIT</span>
+                                            <span className="text-xs font-medium">Spending limit</span>
                                         </div>
                                         {isEditingLimit ? (
                                             <div className="flex items-center gap-4">
@@ -446,7 +446,7 @@ const CardsPage = () => {
                                                 className="font-black text-xs uppercase text-[#E11D48] hover:underline"
                                                 onClick={() => { setEditedLimit(viewingCard.spending_limit?.toString() || ''); setIsEditingLimit(true); }}
                                             >
-                                                {viewingCard.spending_limit ? `RS ${viewingCard.spending_limit.toLocaleString()}` : 'SET_LIMIT'}
+                                                {viewingCard.spending_limit ? `RS ${viewingCard.spending_limit.toLocaleString()}` : 'Set a limit'}
                                             </button>
                                         )}
                                     </div>
@@ -460,8 +460,8 @@ const CardsPage = () => {
                                                 />
                                             </div>
                                             <div className="flex justify-between mt-4 font-black text-[10px] uppercase tracking-widest">
-                                                <span>OUTFLOW: RS {(viewingCard.total_spent || 0).toLocaleString()}</span>
-                                                <span>{Math.round(getSpendingProgress(viewingCard))}%_UTILIZED</span>
+                                                <span>Spent: RS {(viewingCard.total_spent || 0).toLocaleString()}</span>
+                                                <span>{Math.round(getSpendingProgress(viewingCard))}% used</span>
                                             </div>
                                         </>
                                     )}
@@ -471,14 +471,14 @@ const CardsPage = () => {
                                     <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
                                         <Calendar size={24} strokeWidth={3} className="text-black/30" />
                                         <div>
-                                            <div className="text-[10px] font-black uppercase text-black/30">LAST_ACTIVE</div>
+                                            <div className="text-xs font-medium text-[var(--text-muted)]">Last used</div>
                                             <div className="font-black text-sm">{formatLastUsed(viewingCard.last_used_at)}</div>
                                         </div>
                                     </div>
                                     <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
                                         <BarChart3 size={24} strokeWidth={3} className="text-black/30" />
                                         <div>
-                                            <div className="text-[10px] font-black uppercase text-black/30">MONTHLY_VOLUME</div>
+                                            <div className="text-xs font-medium text-[var(--text-muted)]">This month</div>
                                             <div className="font-black text-sm">RS {(viewingCard.total_spent || 0).toLocaleString()}</div>
                                         </div>
                                     </div>
@@ -491,7 +491,7 @@ const CardsPage = () => {
                                         onClick={handleToggleFreeze}
                                     >
                                         <Snowflake size={20} strokeWidth={3} />
-                                        {viewingCard.is_frozen ? 'UNFREEZE_NODE' : 'FREEZE_NODE'}
+                                        {viewingCard.is_frozen ? 'Unfreeze card' : 'Freeze card'}
                                     </button>
                                     <button
                                         className={cn(
@@ -502,7 +502,7 @@ const CardsPage = () => {
                                         disabled={viewingCard.is_default}
                                     >
                                         <Star size={20} strokeWidth={3} />
-                                        {viewingCard.is_default ? 'DEFAULT_NODE' : 'SET_DEFAULT'}
+                                        {viewingCard.is_default ? 'Default card' : 'Set as default'}
                                     </button>
                                 </div>
 
@@ -513,7 +513,7 @@ const CardsPage = () => {
                                                 <CreditCard size={24} strokeWidth={3} />
                                             </div>
                                             <div>
-                                                <span className={styles.infoLabel}>NODE_IDENTIFIER</span>
+                                                <span className={styles.infoLabel}>Card number</span>
                                                 <code className="text-sm font-black tracking-widest">
                                                     •••• •••• •••• {viewingCard.last4 || '****'}
                                                 </code>
@@ -529,14 +529,14 @@ const CardsPage = () => {
                                 <div className="bg-[#E11D48] text-white p-8 border-4 border-black mt-8 shadow-[8px_8px_0px_#000000]">
                                     <div className="flex items-center gap-3 mb-6">
                                         <Lock size={20} strokeWidth={3} />
-                                        <span className="font-black text-sm uppercase tracking-widest">CVV_PROTECTION_PROTOCOL</span>
+                                        <span className="text-sm font-medium">CVV lock</span>
                                     </div>
 
                                     {isSettingCvvPassword ? (
                                         <div className="space-y-4">
                                             <Input
                                                 type="password"
-                                                placeholder="CVV (3-4 DIGITS)"
+                                                placeholder="CVV (3–4 digits)"
                                                 value={cvvValue}
                                                 onChange={(e) => setCvvValue(e.target.value.replace(/\D/g, '').slice(0, 4))}
                                                 className="h-12 border-2 border-white bg-black text-white text-center font-black tracking-[1em]"
@@ -544,36 +544,36 @@ const CardsPage = () => {
                                             />
                                             <Input
                                                 type="password"
-                                                placeholder="ACCESS_KEY (MIN_4_CHARS)"
+                                                placeholder="Password (at least 4 characters)"
                                                 value={cvvPassword}
                                                 onChange={(e) => setCvvPassword(e.target.value)}
                                                 className="h-12 border-2 border-white bg-black text-white"
                                             />
                                             <div className="flex gap-4">
                                                 <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleSaveCvvPassword}>Save lock</button>
-                                                <button className="px-6 border-2 border-white font-black uppercase text-xs" onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}>ABORT</button>
+                                                <button className="px-6 border-2 border-white font-medium text-xs" onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}>Cancel</button>
                                             </div>
                                         </div>
                                     ) : isVerifyingCvv ? (
                                         <div className="space-y-4">
                                             <Input
                                                 type="password"
-                                                placeholder="ENTER_ACCESS_KEY"
+                                                placeholder="Enter password"
                                                 value={cvvPassword}
                                                 onChange={(e) => setCvvPassword(e.target.value)}
                                                 className="h-12 border-2 border-white bg-black text-white"
                                                 autoFocus
                                             />
                                             <div className="flex gap-4">
-                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleVerifyCvv}>REVEAL_DATA</button>
-                                                <button className="px-6 border-2 border-white font-black uppercase text-xs" onClick={() => { setIsVerifyingCvv(false); setCvvPassword(''); }}>ABORT</button>
+                                                <button className="flex-1 h-14 bg-white text-black font-semibold text-sm" onClick={handleVerifyCvv}>Show CVV</button>
+                                                <button className="px-6 border-2 border-white font-medium text-xs" onClick={() => { setIsVerifyingCvv(false); setCvvPassword(''); }}>Cancel</button>
                                             </div>
                                         </div>
                                     ) : cvvVerified ? (
                                         <div className="flex items-center justify-between bg-black p-6 border-2 border-white">
                                             <div className="flex items-center gap-6">
                                                 <div className="text-3xl font-black tracking-[0.5em]">{cvvValue}</div>
-                                                <div className="text-[10px] font-black uppercase text-white/50">HIDING_IN_{cvvTimer}S</div>
+                                                <div className="text-xs font-medium text-white/70">Hides in {cvvTimer}s</div>
                                             </div>
                                             <button className="p-2 hover:text-[#E11D48]" onClick={() => handleCopy(cvvValue)}>
                                                 <Copy size={20} strokeWidth={3} />
@@ -599,7 +599,7 @@ const CardsPage = () => {
                                         className="flex-1 h-16 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors"
                                         onClick={() => setViewingCard(null)}
                                     >
-                                        TERMINATE_SESSION
+                                        Close
                                     </button>
                                     <button
                                         className="h-16 w-16 border-4 border-black text-black hover:bg-[#E11D48] hover:text-white transition-colors flex items-center justify-center"

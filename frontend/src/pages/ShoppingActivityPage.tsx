@@ -232,27 +232,27 @@ const ShoppingActivityPage = () => {
                 <motion.header className={styles.header} variants={itemVariants}>
                     <div className={styles.headerLeft}>
                         <h1>
-                            SyncStream Intel
+                            Shopping activity
                             <span className={styles.liveBadge}>
-                                <Activity size={14} strokeWidth={3} className="animate-pulse" />
-                                Live activity
+                                <Activity size={14} strokeWidth={2} className="animate-pulse" />
+                                Live
                             </span>
                         </h1>
-                        <p>REAL-TIME EXTENSION FEED // AUTOMATED NODE ANALYSIS</p>
+                        <p>Sites the extension has seen recently</p>
                     </div>
                     <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
                         <RefreshCw size={20} strokeWidth={3} className={cn(isRefreshing && styles.spinner)} />
-                        <span>{isRefreshing ? 'SYNCING...' : 'INITIALIZE SYNC'}</span>
+                        <span>{isRefreshing ? 'Refreshing…' : 'Refresh'}</span>
                     </button>
                 </motion.header>
 
                 {/* Stats Grid */}
                 <div className={styles.statsGrid}>
                     {[
-                        { icon: <ShoppingCart size={24} strokeWidth={3} />, label: "RETAIL_CLUSTERS", value: stats.shoppingSites },
-                        { icon: <CreditCard size={24} strokeWidth={3} />, label: "PAYMENT_HUBS", value: stats.paymentSites },
-                        { icon: <Target size={24} strokeWidth={3} />, label: "AGGREGATE_HITS", value: stats.totalVisits },
-                        { icon: <Globe size={24} strokeWidth={3} />, label: "NODES_IDENTIFIED", value: stats.totalSites }
+                        { icon: <ShoppingCart size={22} strokeWidth={2} />, label: "Shopping sites", value: stats.shoppingSites },
+                        { icon: <CreditCard size={22} strokeWidth={2} />, label: "Payment sites", value: stats.paymentSites },
+                        { icon: <Target size={22} strokeWidth={2} />, label: "Visits", value: stats.totalVisits },
+                        { icon: <Globe size={22} strokeWidth={2} />, label: "Sites", value: stats.totalSites }
                     ].map((stat, i) => (
                         <motion.div key={i} variants={itemVariants} className={styles.statCard}>
                             <div className={styles.statIcon}>{stat.icon}</div>
@@ -273,7 +273,7 @@ const ShoppingActivityPage = () => {
                             onClick={() => { setActiveFilter(filter); }}
                         >
                             {filter === 'all' && <Zap size={16} strokeWidth={3} />}
-                            {filter.toUpperCase()}
+                            {filter === 'all' ? 'All' : filter.charAt(0).toUpperCase() + filter.slice(1)}
                         </button>
                     ))}
                 </motion.div>
@@ -285,7 +285,7 @@ const ShoppingActivityPage = () => {
                             <motion.div key="empty" className={styles.emptyState} variants={itemVariants}>
                                 <ShoppingBag size={80} strokeWidth={1} className="text-black/10" />
                                 <h3>Quiet for now</h3>
-                                <p>NO_ACTIVE_NODES_DETECTED_IN_INTERVAL</p>
+                                <p>Nothing in this period yet</p>
                             </motion.div>
                         ) : (
                             filteredSites.map((site, index) => {

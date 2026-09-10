@@ -273,30 +273,30 @@ const TransactionInboxPage = () => {
                                 </thead>
                                 <tbody>
                                     {items.map(item => (
-                                        <tr key={item.id} className="border-b-4 border-gray-200 hover:bg-gray-50 transition-colors">
-                                            <td className="p-5">
-                                                <div className="w-6 h-6 relative border-4 border-black bg-white">
+                                        <tr key={item.id} className="border-b border-[var(--border)] hover:bg-[#FAF8F5] transition-colors">
+                                            <td className="p-4">
+                                                <div className="relative h-5 w-5 rounded border border-[#D6D3D1] bg-white">
                                                     <input
                                                         type="checkbox"
-                                                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                                                        className="absolute inset-0 z-10 cursor-pointer opacity-0"
                                                         checked={selected.includes(item.id)}
                                                         onChange={(e) => setSelected(prev => e.target.checked ? [...prev, item.id] : prev.filter(id => id !== item.id))}
                                                     />
-                                                    {selected.includes(item.id) && <Check size={16} strokeWidth={4} className="absolute inset-0 m-auto text-rose-600" />}
+                                                    {selected.includes(item.id) && <Check size={14} className="absolute inset-0 m-auto text-[#E11D48]" />}
                                                 </div>
                                             </td>
-                                            <td className="p-5">
+                                            <td className="p-4">
                                                 {editDrafts[item.id] ? (
-                                                    <div className="space-y-2 min-w-[220px]">
+                                                    <div className="min-w-[220px] space-y-2">
                                                         <input
                                                             value={editDrafts[item.id].description}
                                                             onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
-                                                            className="w-full h-10 px-3 border-4 border-black font-black uppercase text-sm focus:outline-none focus:shadow-[3px_3px_0px_#E11D48]"
+                                                            className="h-10 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none focus:border-[#E11D48]"
                                                         />
                                                         <select
                                                             value={editDrafts[item.id].category}
                                                             onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
-                                                            className="w-full h-10 px-3 border-4 border-black font-bold uppercase text-xs cursor-pointer focus:outline-none"
+                                                            className="h-10 w-full cursor-pointer rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none"
                                                         >
                                                             {categories.map((category) => <option key={category}>{category}</option>)}
                                                             {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
@@ -304,47 +304,47 @@ const TransactionInboxPage = () => {
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <div className="font-black text-black text-lg uppercase flex items-center gap-3">
+                                                        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
                                                             {item.description}
                                                             {item.duplicate_transaction_id && (
-                                                                <span className="px-2 py-1 text-[10px] font-black uppercase tracking-widest border-2 border-rose-600 text-rose-600 bg-white shadow-[2px_2px_0px_#E11D48]">⚠ DUPE</span>
+                                                                <span className="rounded-full border border-[#E11D48]/30 bg-[#FFE4E6] px-2 py-0.5 text-[10px] font-medium text-[#E11D48]">Possible duplicate</span>
                                                             )}
                                                         </div>
-                                                        <div className="text-xs font-bold uppercase tracking-widest text-gray-500 mt-1">{item.date} • {item.category}</div>
+                                                        <div className="mt-1 text-xs text-[var(--text-muted)]">{item.date} · {item.category}</div>
                                                     </>
                                                 )}
                                             </td>
-                                            <td className="p-5">
+                                            <td className="p-4">
                                                 {(() => {
                                                     const srcMap: Record<string, { label: string; bg: string; color: string }> = {
-                                                        pdf:       { label: '📄 PDF',  bg: '#fef3c7', color: '#000' },
-                                                        csv:       { label: '📊 CSV',  bg: '#dbeafe', color: '#000' },
-                                                        extension: { label: '🔌 EXT',  bg: '#ede9fe', color: '#000' },
-                                                        ai:        { label: '🤖 AI',   bg: '#d1fae5', color: '#000' },
+                                                        pdf:       { label: 'PDF', bg: '#F4F0EB', color: '#57534E' },
+                                                        csv:       { label: 'CSV', bg: '#F4F0EB', color: '#57534E' },
+                                                        extension: { label: 'Extension', bg: '#FFE4E6', color: '#E11D48' },
+                                                        ai:        { label: 'AI', bg: '#ECFDF5', color: '#059669' },
                                                     };
-                                                    const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: '#f1f5f9', color: '#000' };
+                                                    const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: '#F4F0EB', color: '#57534E' };
                                                     return (
-                                                        <span style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 900, textTransform: 'uppercase', background: s.bg, color: s.color, border: '3px solid #000000', display: 'inline-block', boxShadow: '2px 2px 0px #000000' }}>
+                                                        <span style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 600, textTransform: 'none', background: s.bg, color: s.color, border: '1px solid #E7E5E4', display: 'inline-block', borderRadius: 999 }}>
                                                             {s.label}
                                                         </span>
                                                     );
                                                 })()}
                                             </td>
-                                            <td className="p-5">
+                                            <td className="p-4">
                                                 {(() => {
                                                     const pct = Math.round((item.confidence || 0) * 100);
-                                                    const color = pct >= 80 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#e11d48';
+                                                    const color = pct >= 80 ? '#059669' : pct >= 50 ? '#D97706' : '#E11D48';
                                                     return (
                                                         <div className="flex items-center gap-2">
-                                                            <span className="font-black text-lg" style={{ color: color }}>{pct}%</span>
-                                                            <div className="w-16 h-3 border-2 border-black bg-white overflow-hidden">
-                                                                <div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
+                                                            <span className="text-sm font-semibold" style={{ color }}>{pct}%</span>
+                                                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#F4F0EB]">
+                                                                <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
                                                             </div>
                                                         </div>
                                                     );
                                                 })()}
                                             </td>
-                                            <td className="p-5 text-right font-black text-xl">
+                                            <td className="p-4 text-right text-sm font-semibold">
                                                 {editDrafts[item.id] ? (
                                                     <input
                                                         type="number"
@@ -352,36 +352,36 @@ const TransactionInboxPage = () => {
                                                         step="0.01"
                                                         value={editDrafts[item.id].amount}
                                                         onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
-                                                        className="w-28 ml-auto h-10 px-3 border-4 border-black font-black text-right focus:outline-none focus:shadow-[3px_3px_0px_#E11D48]"
+                                                        className="ml-auto h-10 w-28 rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-right text-sm outline-none focus:border-[#E11D48]"
                                                     />
                                                 ) : (
                                                     formatCurrency(Number(item.amount || 0))
                                                 )}
                                             </td>
-                                            <td className="p-5">
-                                                <div className="flex justify-end gap-3">
+                                            <td className="p-4">
+                                                <div className="flex justify-end gap-2">
                                                     {status === 'pending' && (
                                                         <>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => editDrafts[item.id] ? cancelEdit(item.id) : startEdit(item)}
                                                                 title={editDrafts[item.id] ? 'Cancel edit' : 'Edit before approve'}
-                                                                className={`h-10 w-10 border-4 border-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all ${editDrafts[item.id] ? 'bg-yellow-300 text-black' : 'bg-white text-black'}`}
+                                                                className={`flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] border border-[#E7E5E4] ${editDrafts[item.id] ? 'bg-[#FEF3C7] text-[#1C1917]' : 'bg-white text-[#1C1917] hover:bg-[#F4F0EB]'}`}
                                                             >
-                                                                <Pencil size={18} strokeWidth={3} />
+                                                                <Pencil size={16} strokeWidth={2} />
                                                             </button>
                                                             {item.duplicate_transaction_id && (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => merge(item)}
                                                                     title="Merge into existing ledger item"
-                                                                    className="h-10 w-10 border-4 border-black bg-yellow-300 text-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all"
+                                                                    className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] border border-[#E7E5E4] bg-[#FEF3C7] text-[#1C1917]"
                                                                 >
-                                                                    <Link2 size={18} strokeWidth={3} />
+                                                                    <Link2 size={16} strokeWidth={2} />
                                                                 </button>
                                                             )}
-                                                            <button type="button" onClick={() => approve(item)} title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'} className="h-10 w-10 border-4 border-black bg-[#10b981] text-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><Check size={20} strokeWidth={3} /></button>
-                                                            <button type="button" onClick={() => reject(item.id)} className="h-10 w-10 border-4 border-black bg-[#E11D48] text-white shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><X size={20} strokeWidth={3} /></button>
+                                                            <button type="button" onClick={() => approve(item)} title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'} className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] bg-[#059669] text-white"><Check size={16} strokeWidth={2} /></button>
+                                                            <button type="button" onClick={() => reject(item.id)} className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] bg-[#E11D48] text-white"><X size={16} strokeWidth={2} /></button>
                                                         </>
                                                     )}
                                                 </div>

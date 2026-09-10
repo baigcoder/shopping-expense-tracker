@@ -181,7 +181,7 @@ const DashboardPage = () => {
                 .map(([name, value], idx) => ({
                     name,
                     value,
-                    color: ['#000000', '#E11D48', '#3F3F46', '#09090B', '#F43F5E', '#18181B'][idx % 6]
+                    color: ['#E11D48', '#78716C', '#A8A29E', '#57534E', '#BE123C', '#1C1917'][idx % 6]
                 }))
                 .sort((a, b) => b.value - a.value)
                 .slice(0, 5);
@@ -334,20 +334,20 @@ const DashboardPage = () => {
                     <motion.div variants={itemVariants}>
                         <Link
                             to="/transaction-inbox"
-                            className="flex items-center justify-between gap-4 border-4 border-black bg-white px-5 py-4 shadow-[6px_6px_0px_#E11D48] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                            className="flex items-center justify-between gap-4 rounded-[var(--r-lg)] border border-[var(--border)] bg-white px-5 py-4 shadow-[var(--shadow-md)] transition-shadow hover:shadow-[var(--shadow-lg)]"
                         >
                             <div className="flex items-center gap-3 min-w-0">
-                                <div className="w-10 h-10 bg-[#E11D48] text-white flex items-center justify-center border-2 border-black shrink-0">
-                                    <Inbox size={18} strokeWidth={2.5} />
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--r-md)] bg-[var(--brand-muted)] text-[var(--brand)]">
+                                    <Inbox size={18} strokeWidth={2} />
                                 </div>
                                 <div className="min-w-0">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-[#E11D48]">Extension capture</p>
-                                    <p className="text-sm font-black uppercase tracking-tight truncate">
-                                        {pendingInboxCount} detection{pendingInboxCount === 1 ? '' : 's'} waiting in inbox
+                                    <p className="text-xs font-medium text-[var(--brand)]">Inbox</p>
+                                    <p className="truncate text-sm font-semibold text-[var(--text-primary)]">
+                                        {pendingInboxCount} payment{pendingInboxCount === 1 ? '' : 's'} waiting to review
                                     </p>
                                 </div>
                             </div>
-                            <span className="text-[10px] font-black uppercase tracking-widest shrink-0">Review</span>
+                            <span className="shrink-0 text-sm font-medium text-[var(--brand)]">Review</span>
                         </Link>
                     </motion.div>
                 )}
@@ -357,13 +357,9 @@ const DashboardPage = () => {
                     <motion.div
                         variants={itemVariants}
                         className={cn(styles.statCard, styles.statCardPrimary)}
-                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxGlass)}>
-                            <div
-                                data-anim={reduceMotion ? undefined : 'pulse-soft'}
-                                className="text-blue-400"
-                            >
+                            <div data-anim={reduceMotion ? undefined : 'pulse-soft'}>
                                 <Wallet size={20} />
                             </div>
                         </div>
@@ -374,7 +370,7 @@ const DashboardPage = () => {
                                     {showBalance ? formatCurrency(Math.abs(stats.totalBalance)) : '••••••'}
                                 </h2>
                             </div>
-                            <button onClick={() => setShowBalance(!showBalance)} className="p-1.5 hover:bg-white/10 rounded-none text-white/80 transition-colors">
+                            <button onClick={() => setShowBalance(!showBalance)} className="rounded-[var(--r-sm)] p-1.5 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-subtle)]">
                                 {showBalance ? <Eye size={16} /> : <EyeOff size={16} />}
                             </button>
                         </div>
@@ -386,13 +382,9 @@ const DashboardPage = () => {
                     <motion.div
                         variants={itemVariants}
                         className={styles.statCard}
-                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxBlue)}>
-                            <div
-                                data-anim={reduceMotion ? undefined : 'bob-up'}
-                                className="text-emerald-400"
-                            >
+                            <div data-anim={reduceMotion ? undefined : 'bob-up'}>
                                 <TrendingUp size={20} />
                             </div>
                         </div>
@@ -404,7 +396,6 @@ const DashboardPage = () => {
                     <motion.div
                         variants={itemVariants}
                         className={styles.statCard}
-                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxRose)}>
                             <div data-anim={reduceMotion ? undefined : 'bob-down'}>
@@ -422,13 +413,9 @@ const DashboardPage = () => {
                     <motion.div
                         variants={itemVariants}
                         className={styles.statCard}
-                        whileHover={{ y: -5, transition: { duration: 0.2 } }}
                     >
                         <div className={cn(styles.iconBox, styles.iconBoxIndigo)}>
-                            <div
-                                data-anim={reduceMotion ? undefined : 'wobble'}
-                                className="text-purple-400"
-                            >
+                            <div data-anim={reduceMotion ? undefined : 'wobble'}>
                                 <Target size={20} />
                             </div>
                         </div>
@@ -445,8 +432,8 @@ const DashboardPage = () => {
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
                                 <h3 className={styles.sectionTitle}>Spending Chart</h3>
-                                <Link to="/analytics" className="text-xs font-black text-rose-600 uppercase tracking-widest hover:underline flex items-center gap-1">
-                                    See More <ArrowRight size={14} />
+                                <Link to="/analytics" className="flex items-center gap-1 text-sm font-medium text-[var(--brand)] hover:underline">
+                                    See more <ArrowRight size={14} />
                                 </Link>
                             </div>
                             <div className="h-[300px]">
@@ -487,7 +474,7 @@ const DashboardPage = () => {
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-end">
                                                     <span className="text-sm font-bold text-slate-700">{cat.name}</span>
-                                                    <span className="text-xs font-black text-slate-400">{formatCurrency(cat.value)}</span>
+                                                    <span className="text-xs font-medium text-[var(--text-muted)]">{formatCurrency(cat.value)}</span>
                                                 </div>
                                                 <div className={styles.progressTrack}>
                                                     <motion.div
@@ -510,12 +497,12 @@ const DashboardPage = () => {
                                                 />
                                                 <div
                                                     data-anim={reduceMotion ? undefined : 'bob-up'}
-                                                    className="relative z-10 p-6 bg-white border-3 border-black shadow-[8px_8px_0px_#000000]"
+                                                    className="relative z-10 rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-md)]"
                                                 >
-                                                    <ShoppingCart size={48} className="text-slate-200" />
+                                                    <ShoppingCart size={48} className="text-[var(--text-muted)]" />
                                                 </div>
                                             </div>
-                                            <p className="text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">NO_EXPENSE_DATA_STREAM</p>
+                                            <p className="text-sm text-[var(--text-muted)]">No spending to show yet</p>
                                         </div>
                                     )}
                                 </motion.div>
@@ -536,7 +523,7 @@ const DashboardPage = () => {
                                                     <circle cx="88" cy="88" r="75" stroke="#f1f5f9" strokeWidth="16" fill="none" />
                                                     <motion.circle
                                                         cx="88" cy="88" r="75"
-                                                        stroke={budgetProgress.percentage > 90 ? '#E11D48' : '#000000'}
+                                                        stroke={budgetProgress.percentage > 90 ? '#E11D48' : '#1C1917'}
                                                         strokeWidth="20" fill="none"
                                                         initial={{ strokeDasharray: "0 471" }}
                                                         animate={{ strokeDasharray: `${(budgetProgress.percentage / 100) * 471} 471` }}
@@ -544,11 +531,11 @@ const DashboardPage = () => {
                                                     />
                                                 </svg>
                                                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                                    <span className="text-4xl font-black text-black">{budgetProgress.percentage}%</span>
-                                                    <span className="text-[10px] font-black text-black uppercase tracking-widest">Spent</span>
+                                                    <span className="text-4xl font-semibold text-[var(--text-primary)]">{budgetProgress.percentage}%</span>
+                                                    <span className="text-xs font-medium text-[var(--text-muted)]">Spent</span>
                                                 </div>
                                             </div>
-                                            <p className="text-xs font-black text-black uppercase tracking-widest">
+                                            <p className="text-sm font-medium text-[var(--text-muted)]">
                                                 {formatCurrency(budgetProgress.used)} / {formatCurrency(budgetProgress.total)}
                                             </p>
                                         </>
@@ -560,34 +547,32 @@ const DashboardPage = () => {
                                             <div className="relative mb-10 flex justify-center">
                                                 <span
                                                     data-anim={reduceMotion ? undefined : 'ripple'}
-                                                    className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
+                                                    className="absolute h-24 w-24 rounded-full bg-[var(--brand-muted)]"
                                                 />
                                                 <span
                                                     data-anim={reduceMotion ? undefined : 'ripple'}
-                                                    className="absolute w-24 h-24 bg-violet-500/10 rounded-none border-2 border-black/10"
+                                                    className="absolute h-24 w-24 rounded-full bg-[var(--brand-muted)]"
                                                     style={reduceMotion ? undefined : { animationDelay: '1.5s' }}
                                                 />
                                                 <div
                                                     data-anim={reduceMotion ? undefined : 'bob-up'}
-                                                    className="relative z-10 p-5 bg-white/50 backdrop-blur-sm rounded-none border-2 border-slate-100/50 shadow-[8px_8px_0px_#000000]"
+                                                    className="relative z-10 rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-md)]"
                                                 >
-                                                    <Target size={44} className="text-rose-600/40" />
+                                                    <Target size={44} className="text-[var(--brand)]/50" />
                                                 </div>
                                             </div>
 
-                                            <p
-                                                className="text-xs font-black uppercase tracking-[0.2em] mb-6 text-slate-500"
-                                            >
-                                                No Active Budget
+                                            <p className="mb-6 text-sm text-[var(--text-muted)]">
+                                                No budget set yet
                                             </p>
 
                                             <div>
                                                 <Link
                                                     to="/budgets"
-                                                    className="inline-flex items-center gap-3 px-8 py-4 bg-black text-white border-2 border-black font-black tracking-widest hover:translate-x-[-4px] hover:translate-y-[-4px] shadow-[6px_6px_0px_#E11D48] transition-all"
+                                                    className="inline-flex items-center gap-2 rounded-[var(--r-md)] bg-[var(--brand)] px-5 py-3 text-sm font-semibold text-white shadow-[var(--shadow-sm)] hover:bg-[var(--brand-hover)]"
                                                 >
-                                                    SET LIMIT
-                                                    <Plus size={18} />
+                                                    Set a budget
+                                                    <Plus size={16} />
                                                 </Link>
                                             </div>
                                         </div>
@@ -617,7 +602,7 @@ const DashboardPage = () => {
                                             <circle cx="90" cy="90" r="75" stroke="#F1F5F9" strokeWidth="12" fill="none" />
                                             <motion.circle
                                                 cx="90" cy="90" r="75"
-                                                stroke="#000000"
+                                                stroke="#E11D48"
                                                 strokeWidth="16" fill="none" strokeLinecap="round"
                                                 initial={{ strokeDasharray: "0 471" }}
                                                 animate={{ strokeDasharray: `${(healthScore / 100) * 471} 471` }}
@@ -625,17 +610,17 @@ const DashboardPage = () => {
                                             />
                                         </svg>
                                         <div className={styles.healthValue}>
-                                            <span className="text-5xl font-black text-black tracking-tighter">{healthScore}</span>
-                                            <span className="text-[10px] font-black text-black uppercase tracking-[0.3em] mt-1">Score</span>
+                                            <span className="text-5xl font-semibold tracking-tight text-[var(--text-primary)]">{healthScore}</span>
+                                            <span className="mt-1 text-xs font-medium text-[var(--text-muted)]">Score</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="mt-8 text-center px-4">
-                                    <p className="text-[11px] font-black uppercase tracking-[0.1em] text-slate-400">
-                                        Current Assessment
+                                    <p className="text-xs font-medium text-[var(--text-muted)]">
+                                        How this month looks
                                     </p>
-                                    <p className="text-sm font-black text-black mt-2 uppercase">
-                                        {healthScore > 80 ? 'Excellent Status • Optimal Flow' : healthScore > 60 ? 'Healthy • Standard Operation' : 'Action Required • Review Strategy'}
+                                    <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
+                                        {healthScore > 80 ? 'You’re in good shape' : healthScore > 60 ? 'Steady — a few tweaks would help' : 'Worth a closer look this week'}
                                     </p>
                                 </div>
                             </motion.div>
@@ -647,9 +632,9 @@ const DashboardPage = () => {
                                         <div className="relative">
                                             <span
                                                 data-anim={reduceMotion ? undefined : 'ping-strong'}
-                                                className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-500 rounded-full"
+                                                className="absolute -top-1 -right-1 w-2 h-2 bg-[var(--brand)] rounded-full"
                                             />
-                                            <Store size={20} className="text-indigo-500" strokeWidth={2.5} />
+                                            <Store size={20} className="text-[var(--brand)]" strokeWidth={2.5} />
                                         </div>
                                     </div>
                                 </div>
@@ -659,16 +644,16 @@ const DashboardPage = () => {
                                             <div className="w-10 h-10 bg-slate-100 flex items-center justify-center rounded-lg text-lg">🏪</div>
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-[13px] font-black uppercase tracking-tight text-slate-800">{m.name}</span>
-                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{m.count} Txs</span>
+                                                    <span className="text-[13px] font-semibold text-[var(--text-primary)]">{m.name}</span>
+                                                    <span className="text-xs font-medium text-[var(--text-muted)]">{m.count} visits</span>
                                                 </div>
-                                                <p className="text-sm font-black text-black mt-1">{formatCurrency(m.amount)}</p>
+                                                <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">{formatCurrency(m.amount)}</p>
                                             </div>
                                         </div>
                                     )) : (
                                         <div className="text-center py-10 opacity-30">
                                             <Store size={40} className="mx-auto mb-3" />
-                                            <p className="text-xs font-black uppercase">Scanning Ecosystem...</p>
+                                            <p className="text-xs text-[var(--text-muted)]">No merchants yet</p>
                                         </div>
                                     )}
                                 </div>
@@ -684,9 +669,9 @@ const DashboardPage = () => {
 
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
-                                <h3 className={styles.sectionTitle}>Digital Vault</h3>
-                                <button onClick={openAddCard} className="w-8 h-8 flex items-center justify-center border-4 border-black bg-white rounded-none hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_#000000]">
-                                    <Plus size={16} strokeWidth={4} />
+                                <h3 className={styles.sectionTitle}>Cards</h3>
+                                <button onClick={openAddCard} className="flex h-8 w-8 items-center justify-center rounded-[var(--r-md)] border border-[var(--border)] bg-white text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]">
+                                    <Plus size={16} strokeWidth={2} />
                                 </button>
                             </div>
                             <div className="flex gap-4 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
@@ -701,13 +686,13 @@ const DashboardPage = () => {
                                         />
                                     </div>
                                 )) : (
-                                    <div className="text-center py-16 w-full border-4 border-black rounded-none bg-white shadow-[8px_8px_0px_#000000]">
+                                    <div className="w-full rounded-[var(--r-lg)] border border-[var(--border)] bg-white py-16 text-center shadow-[var(--shadow-md)]">
                                         <div className="relative mb-6 flex justify-center">
-                                            <CreditCard size={48} className="text-black" />
+                                            <CreditCard size={48} className="text-[var(--text-muted)]" />
                                         </div>
                                         <p className="text-sm font-medium text-[var(--text-muted)]">No cards yet</p>
-                                        <button onClick={openAddCard} className="mt-6 text-[10px] font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border-2 border-black px-4 py-2 transition-all">
-                                            + Initialize New Card
+                                        <button onClick={openAddCard} className="mt-6 rounded-[var(--r-md)] border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]">
+                                            Add a card
                                         </button>
                                     </div>
                                 )}
@@ -716,7 +701,7 @@ const DashboardPage = () => {
 
                         <motion.div variants={itemVariants} className={styles.whiteCard}>
                             <div className={styles.cardHeader}>
-                                <h3 className={styles.sectionTitle}>Recent Pulse</h3>
+                                <h3 className={styles.sectionTitle}>Recent activity</h3>
                                 <Link to="/transactions">
                                     <ArrowRight size={18} className="text-slate-400 hover:text-rose-600" />
                                 </Link>
@@ -726,17 +711,17 @@ const DashboardPage = () => {
                                     <div key={tx.id} className={styles.txRow}>
                                         <div className={styles.txIcon}>{getCategoryIcon(tx.category)}</div>
                                         <div className={styles.txDetails}>
-                                            <p className={styles.txDesc}>{tx.description || 'System Event'}</p>
+                                            <p className={styles.txDesc}>{tx.description || 'Transaction'}</p>
                                             <p className={styles.txCat}>{tx.category}</p>
                                         </div>
-                                        <div className={cn(styles.txAmount, tx.type === 'expense' ? 'text-slate-600' : 'text-violet-500')}>
+                                        <div className={cn(styles.txAmount, tx.type === 'expense' ? 'text-[var(--text-secondary)]' : 'text-[var(--success)]')}>
                                             {tx.type === 'expense' ? '-' : '+'}{formatCurrency(Math.abs(tx.amount))}
                                         </div>
                                     </div>
                                 )) : (
                                     <div className="text-center py-10 opacity-30">
                                         <Receipt size={40} className="mx-auto mb-3" />
-                                        <p className="text-xs font-black uppercase tracking-widest">Quiet Period</p>
+                                        <p className="text-sm text-[var(--text-muted)]">No recent transactions</p>
                                     </div>
                                 )}
                             </div>
@@ -777,12 +762,12 @@ const DashboardPage = () => {
             {/* Card Preview Dialog */}
             <Dialog open={isCardPreviewOpen} onOpenChange={setIsCardPreviewOpen}>
                 <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-                    <DialogHeader className="px-6 pt-6 pb-4 bg-white border-b-2 border-black">
+                    <DialogHeader className="border-b border-[var(--border)] bg-white px-6 pb-4 pt-6">
                         <DialogTitle className="flex items-center gap-3">
-                            <div className="p-2 bg-rose-100 rounded-none">
-                                <CreditCard className="text-rose-600" size={24} />
+                            <div className="rounded-[var(--r-md)] bg-[var(--brand-muted)] p-2">
+                                <CreditCard className="text-[var(--brand)]" size={24} />
                             </div>
-                            <span className="font-bold text-slate-800">Card Details</span>
+                            <span className="font-semibold text-[var(--text-primary)]">Card details</span>
                         </DialogTitle>
                     </DialogHeader>
 
@@ -800,32 +785,32 @@ const DashboardPage = () => {
 
                             {/* Card Info */}
                             <div className="space-y-3">
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
+                                <div className="flex justify-between items-center rounded-[var(--r-md)] bg-[#FAF8F5] p-3">
                                     <span className="text-sm text-slate-500">Card Number</span>
                                     <div className="flex items-center gap-2">
                                         <span className="font-mono font-semibold">**** **** **** {selectedCard.last4}</span>
                                         <button
                                             onClick={() => handleCopy(selectedCard.last4 || '')}
-                                            className="p-1.5 hover:bg-slate-200 rounded-none transition-colors"
+                                            className="rounded-[var(--r-sm)] p-1.5 transition-colors hover:bg-[var(--bg-subtle)]"
                                         >
                                             {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} className="text-slate-400" />}
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
+                                <div className="flex justify-between items-center rounded-[var(--r-md)] bg-[#FAF8F5] p-3">
                                     <span className="text-sm text-slate-500">Card Holder</span>
                                     <span className="font-semibold">{selectedCard.holder}</span>
                                 </div>
 
-                                <div className="flex justify-between items-center p-3 bg-slate-50 rounded-none">
+                                <div className="flex justify-between items-center rounded-[var(--r-md)] bg-[#FAF8F5] p-3">
                                     <span className="text-sm text-slate-500">Expires</span>
                                     <span className="font-semibold">{selectedCard.expiry}</span>
                                 </div>
                             </div>
 
                             {/* Security Notice */}
-                            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-none text-green-700">
+                            <div className="flex items-center gap-2 rounded-[var(--r-md)] bg-[#ECFDF5] p-3 text-[#059669]">
                                 <Shield size={16} />
                                 <span className="text-xs">PCI-DSS compliant • No sensitive data stored</span>
                             </div>
@@ -837,13 +822,13 @@ const DashboardPage = () => {
                                         setIsCardPreviewOpen(false);
                                         navigate('/cards');
                                     }}
-                                    className="flex-1 py-3 px-4 bg-violet-500 text-white font-semibold rounded-none hover:bg-violet-600 transition-colors"
+                                    className="flex-1 rounded-[var(--r-md)] bg-[var(--brand)] px-4 py-3 font-semibold text-white hover:bg-[var(--brand-hover)]"
                                 >
-                                    Manage Cards
+                                    Manage cards
                                 </button>
                                 <button
                                     onClick={handleDeleteCard}
-                                    className="p-3 bg-red-50 text-red-600 rounded-none hover:bg-red-100 transition-colors"
+                                    className="rounded-[var(--r-md)] bg-[#FFE4E6] p-3 text-[var(--brand)] hover:bg-[#FECDD3]"
                                 >
                                     <Trash2 size={20} />
                                 </button>

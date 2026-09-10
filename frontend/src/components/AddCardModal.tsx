@@ -183,8 +183,8 @@ const AddCardModal = () => {
                                         <Wallet className="h-6 w-6 text-white" />
                                     </div>
                                     <div>
-                                        <h2 className="text-3xl font-black uppercase tracking-tight">New Card</h2>
-                                        <p className="text-[#E11D48] font-bold uppercase tracking-widest text-xs mt-1">Configure your digital asset</p>
+                                        <h2 className="font-display text-2xl font-semibold tracking-tight">Add a card</h2>
+                                        <p className="mt-1 text-sm text-[var(--brand)]">Saved for checkout capture</p>
                                     </div>
                                 </div>
 
@@ -204,7 +204,7 @@ const AddCardModal = () => {
 
                                 <div className="mt-12 space-y-4">
                                     <div className="flex justify-between items-center px-1">
-                                        <span className="text-[11px] font-black uppercase tracking-widest text-white/50">Select Card Aura</span>
+                                        <span className="text-xs font-medium text-white/70">Theme</span>
                                         <div className="h-1 w-20 bg-white" />
                                     </div>
                                     <div className="flex flex-wrap gap-4">
@@ -269,7 +269,7 @@ const AddCardModal = () => {
                                         </div>
                                         <Input
                                             className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
-                                            placeholder="NAME ON CARD"
+                                            placeholder="Name on card"
                                             value={cardHolder}
                                             onChange={e => setCardHolder(e.target.value.toUpperCase())}
                                         />

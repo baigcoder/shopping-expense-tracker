@@ -37,7 +37,7 @@ const BillRemindersPage = () => {
             setReminders(remindersData);
             setPredictions(predictionsData);
         } catch (error) {
-            toast.error('SYNC_FAILURE');
+            toast.error('Couldn’t load reminders');
         } finally {
             setLoading(false);
         }
@@ -86,10 +86,10 @@ const BillRemindersPage = () => {
                         <div>
                             <h1 className={styles.title}>
                                 Liability Audit
-                                <div className={styles.liveBadge}>FLOW_ACTIVE</div>
+                                <div className={styles.liveBadge}>Active</div>
                             </h1>
                             <p className="text-black/50 font-black text-xs uppercase tracking-widest mt-1">
-                                MONITORING_{unpaidReminders.length}_UPCOMING_OBLIGATIONS
+                                Watching {unpaidReminders.length} upcoming bills
                             </p>
                         </div>
                     </div>
@@ -120,9 +120,9 @@ const BillRemindersPage = () => {
                     animate="visible"
                 >
                     {[
-                        { icon: <Clock size={28} strokeWidth={3} />, label: "PENDING_BILLS", value: unpaidReminders.length, progress: (unpaidReminders.length / 10) * 100, color: "#000000" },
-                        { icon: <AlertTriangle size={28} strokeWidth={3} />, label: "OVERDUE_MATRIX", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "#E11D48" },
-                        { icon: <DollarSign size={28} strokeWidth={3} />, label: "TOTAL_LIABILITY", value: currencyService.formatCurrency(totalDue), progress: totalDue > 0 ? 60 : 0, color: "#000000" }
+                        { icon: <Clock size={24} strokeWidth={2} />, label: "Pending bills", value: unpaidReminders.length, progress: (unpaidReminders.length / 10) * 100, color: "#1C1917" },
+                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Overdue", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "#E11D48" },
+                        { icon: <DollarSign size={24} strokeWidth={2} />, label: "Total due", value: currencyService.formatCurrency(totalDue), progress: totalDue > 0 ? 60 : 0, color: "#1C1917" }
                     ].map((stat, i) => (
                         <motion.div key={i} className={styles.premiumStatCard} variants={itemVariants}>
                             <div className={styles.statIconBox}>
@@ -149,7 +149,7 @@ const BillRemindersPage = () => {
                         Audit_Pipeline
                     </h2>
                     <div className="h-1 bg-black flex-1 mx-8" />
-                    <div className="bg-black text-white text-[10px] font-black uppercase px-3 py-1">SECURE_SYNC</div>
+                    <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[10px] font-medium text-[#57534E]">In sync</div>
                 </div>
 
                 <motion.div
@@ -164,7 +164,7 @@ const BillRemindersPage = () => {
                             </div>
                             <h3 className={styles.emptyTitle}>Clear Horizon</h3>
                             <p className={styles.emptyText}>
-                                NO_PENDING_LIABILITIES_IN_CURRENT_MATRIX
+                                No bills waiting right now
                             </p>
                             <button
                                 className="h-14 px-10 bg-black text-white font-black text-xs uppercase hover:bg-[#E11D48] transition-colors"
@@ -182,12 +182,12 @@ const BillRemindersPage = () => {
                                     idx={idx}
                                     onPay={() => {
                                         reminderService.markAsPaid(reminder.id);
-                                        toast.success('OBLIGATION_MET');
+                                        toast.success('Marked as paid');
                                         loadData();
                                     }}
                                     onDelete={() => {
                                         reminderService.deleteReminder(reminder.id);
-                                        toast.success('TRACKER_DELETED');
+                                        toast.success('Reminder deleted');
                                         loadData();
                                     }}
                                 />
@@ -211,7 +211,7 @@ const BillRemindersPage = () => {
                                     AI_Predicted_Flow
                                 </h2>
                             </div>
-                            <div className="bg-black text-white text-[10px] font-black uppercase px-3 py-1">ANTICIPATING_CHARGES</div>
+                            <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[10px] font-medium text-[#57534E]">Coming up</div>
                         </div>
 
                         <div className={styles.predictionGrid}>
@@ -223,7 +223,7 @@ const BillRemindersPage = () => {
                                         </div>
                                         <div>
                                             <p className="font-black text-black text-lg leading-tight uppercase italic">{bill.name}</p>
-                                            <p className="text-[10px] font-black text-black/40 uppercase mt-1 tracking-widest">EST_DUE: {new Date(bill.dueDate).toLocaleDateString().toUpperCase()}</p>
+                                            <p className="mt-1 text-xs text-[var(--text-muted)]">Due {new Date(bill.dueDate).toLocaleDateString()}</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
@@ -285,7 +285,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                                 borderColor: 'black'
                             }}
                         >
-                            {isOverdue ? 'OVERDUE' : isDueSoon ? 'DUE_SOON' : `${daysUntil}_DAYS_REMAINING`}
+                            {isOverdue ? 'Overdue' : isDueSoon ? 'Due soon' : `${daysUntil} days left`}
                         </div>
                     </div>
                     <div className={styles.billMeta}>
@@ -342,7 +342,7 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
             });
             onSave();
             onClose();
-            toast.success('TRACKER_DEPLOYED');
+            toast.success('Reminder added');
         } finally {
             setSaving(false);
         }
@@ -408,9 +408,9 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="border-4 border-black rounded-none">
-                                    <SelectItem value="once" className="font-black uppercase">ONE_TIME_NODE</SelectItem>
-                                    <SelectItem value="monthly" className="font-black uppercase">MONTHLY_CYCLE</SelectItem>
-                                    <SelectItem value="yearly" className="font-black uppercase">YEARLY_CYCLE</SelectItem>
+                                    <SelectItem value="once" className="font-medium">One time</SelectItem>
+                                    <SelectItem value="monthly" className="font-medium">Monthly</SelectItem>
+                                    <SelectItem value="yearly" className="font-medium">Yearly</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -440,7 +440,7 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                             className="flex-[2] h-16 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors" 
                             onClick={handleSubmit}
                         >
-                            DEPLOY_TRACKER
+                            Add reminder
                         </button>
                     </div>
                 </div>

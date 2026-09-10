@@ -1,4 +1,4 @@
-// AnalyticsPage - Stark Gen Z Brutalist Intel Manager
+// AnalyticsPage — Calm Finance spending charts
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -19,16 +19,16 @@ import { useSound } from '@/hooks/useSound';
 import styles from './AnalyticsPage.module.css';
 
 const CATEGORY_COLORS: Record<string, string> = {
-    'Food': '#000000',
-    'Food & Dining': '#000000',
+    'Food': '#78716C',
+    'Food & Dining': '#78716C',
     'Shopping': '#E11D48',
-    'Transport': '#000000',
-    'Entertainment': '#E11D48',
-    'Bills & Utilities': '#000000',
+    'Transport': '#57534E',
+    'Entertainment': '#BE123C',
+    'Bills & Utilities': '#A8A29E',
     'Health': '#E11D48',
-    'Travel': '#000000',
-    'Income': '#000000',
-    'Other': '#64748b',
+    'Travel': '#1C1917',
+    'Income': '#059669',
+    'Other': '#A8A29E',
 };
 
 const renderActiveShape = (props: any) => {
@@ -42,8 +42,8 @@ const renderActiveShape = (props: any) => {
             startAngle={startAngle}
             endAngle={endAngle}
             fill={fill}
-            stroke="#000000"
-            strokeWidth={2}
+            stroke="#E7E5E4"
+            strokeWidth={1}
         />
     );
 };
@@ -229,18 +229,17 @@ const AnalyticsPage = () => {
                 initial="hidden"
                 animate="show"
             >
-                {/* Brutalist Header */}
                 <header className={styles.header}>
                     <div className={styles.headerLeft}>
                         <div className={styles.titleIcon}>
-                            <Zap className="h-8 w-8" strokeWidth={3} />
+                            <Zap className="h-6 w-6" strokeWidth={2} />
                         </div>
                         <div>
                             <h1 className={styles.title}>
                                 Analytics
                                 <div className={styles.liveBadge}>
                                     <div className={styles.pulseDot}></div>
-                                    STARK_INTEL
+                                    Live
                                 </div>
                             </h1>
                         </div>
@@ -254,7 +253,7 @@ const AnalyticsPage = () => {
                                     className={cn(styles.tabBtn, timeRange === range && styles.tabActive)}
                                     onClick={() => { setTimeRange(range); sound.playClick(); }}
                                 >
-                                    {range.toUpperCase()}
+                                    {range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
                                 </button>
                             ))}
                         </div>
@@ -276,7 +275,7 @@ const AnalyticsPage = () => {
                             <Target className="h-9 w-9" strokeWidth={3} />
                         </div>
                         <div>
-                            <span className={styles.heroLabel}>Resource Depletion / {timeRange.toUpperCase()}</span>
+                            <span className={styles.heroLabel}>Spent this {timeRange}</span>
                             <div className="flex items-center gap-6">
                                 <h2 className={styles.heroValue}>{formatCurrency(totalSpent)}</h2>
                                 <div className={cn(styles.heroTrend, changePercent >= 0 ? styles.trendDown : styles.trendUp)}>
@@ -289,9 +288,9 @@ const AnalyticsPage = () => {
 
                     <div className={styles.miniStatsContainer}>
                         {[
-                            { label: 'Avg Ticket', value: formatCurrency(avgTicket), icon: <Activity strokeWidth={3} /> },
-                            { label: 'Identified Merchants', value: uniqueStores, icon: <Store strokeWidth={3} /> },
-                            { label: 'Total Events', value: filteredTx.length, icon: <Calendar strokeWidth={3} /> }
+                            { label: 'Average purchase', value: formatCurrency(avgTicket), icon: <Activity strokeWidth={2} /> },
+                            { label: 'Merchants', value: uniqueStores, icon: <Store strokeWidth={2} /> },
+                            { label: 'Purchases', value: filteredTx.length, icon: <Calendar strokeWidth={2} /> }
                         ].map((stat, i) => (
                             <motion.div key={i} className={styles.premiumMiniCard} variants={fadeInUp}>
                                 <div className={styles.miniIconBox}>
@@ -311,57 +310,58 @@ const AnalyticsPage = () => {
                     <motion.div className={cn(styles.visualCard, styles.fullWidth)} variants={fadeInUp}>
                         <div className={styles.cardTop}>
                             <div>
-                                <h3 className={styles.cardH3}>Spending Pulse</h3>
-                                <p className={styles.cardSubtitle}>Online vs Ground Operations</p>
+                                <h3 className={styles.cardH3}>Spending</h3>
+                                <p className={styles.cardSubtitle}>Online vs in store</p>
                             </div>
                             <div className={styles.premiumTabs}>
                                 <button
                                     className={cn(styles.tabBtn, activeChart === 'online' && styles.tabActive)}
                                     onClick={() => setActiveChart('online')}
                                 >
-                                    ONLINE
+                                    Online
                                 </button>
                                 <button
                                     className={cn(styles.tabBtn, activeChart === 'instore' && styles.tabActive)}
                                     onClick={() => setActiveChart('instore')}
                                 >
-                                    GROUND
+                                    In store
                                 </button>
                             </div>
                         </div>
                         <div style={{ height: 400, width: '100%' }}>
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="#e2e8f0" strokeWidth={2} />
+                                    <CartesianGrid strokeDasharray="3 6" vertical={false} stroke="#E7E5E4" strokeWidth={1} />
                                     <XAxis
                                         dataKey="date"
-                                        stroke="#000000"
+                                        stroke="#78716C"
                                         fontSize={12}
-                                        fontWeight={900}
-                                        tickLine={true}
-                                        axisLine={true}
-                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }).toUpperCase()}
+                                        fontWeight={500}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
                                     />
                                     <Tooltip
-                                        cursor={{ stroke: '#000000', strokeWidth: 4 }}
+                                        cursor={{ stroke: '#E11D48', strokeWidth: 1 }}
                                         contentStyle={{
-                                            backgroundColor: '#000000',
-                                            border: '4px solid #000000',
-                                            borderRadius: '0px',
+                                            backgroundColor: '#FFFFFF',
+                                            border: '1px solid #E7E5E4',
+                                            borderRadius: '12px',
                                             padding: '12px',
-                                            color: '#FFFFFF'
+                                            color: '#1C1917',
+                                            boxShadow: '0 8px 24px rgba(28,25,23,0.06)'
                                         }}
-                                        itemStyle={{ color: '#FFFFFF', fontWeight: 900, textTransform: 'uppercase' }}
-                                        formatter={(val: number) => [formatCurrency(val), activeChart.toUpperCase()]}
+                                        itemStyle={{ color: '#1C1917', fontWeight: 600, textTransform: 'none' }}
+                                        formatter={(val: number) => [formatCurrency(val), activeChart === 'online' ? 'Online' : 'In store']}
                                     />
                                     <Area
-                                        type="stepAfter"
+                                        type="monotone"
                                         dataKey={activeChart}
                                         stroke="#E11D48"
-                                        strokeWidth={6}
-                                        fill="#000000"
-                                        fillOpacity={1}
-                                        animationDuration={1000}
+                                        strokeWidth={2}
+                                        fill="#E11D48"
+                                        fillOpacity={0.12}
+                                        animationDuration={800}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
@@ -371,8 +371,8 @@ const AnalyticsPage = () => {
                     <motion.div className={styles.visualCard} variants={fadeInUp}>
                         <div className={styles.cardTop}>
                             <div>
-                                <h3 className={styles.cardH3}>Category Sector</h3>
-                                <p className={styles.cardSubtitle}>Resource Allocation Map</p>
+                                <h3 className={styles.cardH3}>Categories</h3>
+                                <p className={styles.cardSubtitle}>Where the money went</p>
                             </div>
                             <PieIcon size={24} className="text-black" strokeWidth={3} />
                         </div>
@@ -390,8 +390,8 @@ const AnalyticsPage = () => {
                                         dataKey="value"
                                         onMouseEnter={(_, index) => setActiveCategoryIndex(index)}
                                         animationDuration={800}
-                                        stroke="#000000"
-                                        strokeWidth={4}
+                                        stroke="#E7E5E4"
+                                        strokeWidth={1}
                                     >
                                         {categoryData.map((entry, index) => (
                                             <Cell key={index} fill={entry.fill} />
@@ -400,11 +400,11 @@ const AnalyticsPage = () => {
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span className="text-3xl font-black italic">
+                                <span className="text-2xl font-semibold">
                                     {categoryData[activeCategoryIndex] ? formatCurrency(categoryData[activeCategoryIndex].value) : '$0'}
                                 </span>
-                                <span className="text-[10px] font-black bg-black text-white px-2 py-0.5 mt-2 uppercase">
-                                    {categoryData[activeCategoryIndex]?.name || 'UNKNOWN'}
+                                <span className="mt-2 rounded-full bg-[#F4F0EB] px-2.5 py-0.5 text-xs font-medium text-[#57534E]">
+                                    {categoryData[activeCategoryIndex]?.name || 'None'}
                                 </span>
                             </div>
                         </div>
@@ -413,22 +413,22 @@ const AnalyticsPage = () => {
                     <motion.div className={styles.visualCard} variants={fadeInUp}>
                         <div className={styles.cardTop}>
                             <div>
-                                <h3 className={styles.cardH3}>Mission Cycle</h3>
-                                <p className={styles.cardSubtitle}>Weekly Execution Contrast</p>
+                                <h3 className={styles.cardH3}>This week vs last week</h3>
+                                <p className={styles.cardSubtitle}>Weekday comparison</p>
                             </div>
                         </div>
                         <div className="flex-1 min-h-[350px]">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={weeklyData}>
-                                    <CartesianGrid vertical={false} stroke="#e2e8f0" strokeWidth={2} />
-                                    <XAxis dataKey="day" axisLine={true} tickLine={true} tick={{ fontSize: 12, fill: '#000000', fontWeight: 900 }} />
+                                    <CartesianGrid vertical={false} stroke="#E7E5E4" strokeWidth={1} />
+                                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#78716C', fontWeight: 500 }} />
                                     <Tooltip
-                                        cursor={{ fill: '#E11D48', opacity: 0.1 }}
-                                        contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: 0, color: '#FFF' }}
+                                        cursor={{ fill: '#E11D48', opacity: 0.08 }}
+                                        contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E7E5E4', borderRadius: 12, color: '#1C1917' }}
                                         formatter={(val: number) => formatCurrency(val)}
                                     />
-                                    <Bar dataKey="thisWeek" name="Current" fill="#000000" stroke="#000000" strokeWidth={2} radius={0} />
-                                    <Bar dataKey="lastWeek" name="Previous" fill="#E11D48" stroke="#000000" strokeWidth={2} radius={0} />
+                                    <Bar dataKey="thisWeek" name="This week" fill="#1C1917" radius={[6, 6, 0, 0]} />
+                                    <Bar dataKey="lastWeek" name="Last week" fill="#E11D48" radius={[6, 6, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -439,8 +439,8 @@ const AnalyticsPage = () => {
                 <motion.div className={styles.merchantsSection} variants={fadeInUp}>
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h3 className={styles.cardH3}>Priority Merchants</h3>
-                            <p className={styles.cardSubtitle}>High-frequency expenditure nodes</p>
+                            <h3 className={styles.cardH3}>Top merchants</h3>
+                            <p className={styles.cardSubtitle}>Where you spend most</p>
                         </div>
                         <ArrowUpRight size={28} className="text-black" strokeWidth={4} />
                     </div>
@@ -456,14 +456,14 @@ const AnalyticsPage = () => {
                                     <div className={styles.rankCircle}>{i + 1}</div>
                                     <div className={styles.merchantInfo}>
                                         <span className={styles.mName}>{merchant.name}</span>
-                                        <span className={styles.mCount}>{merchant.count} EVENTS</span>
+                                        <span className={styles.mCount}>{merchant.count} purchases</span>
                                     </div>
                                     <div className={styles.mAmount}>{formatCurrency(merchant.amount)}</div>
                                 </motion.div>
                             ))
                         ) : (
-                            <div className="col-span-full py-20 text-center border-4 border-dashed border-black/20 font-black uppercase text-black/20">
-                                Zero Merchant Data Collected
+                            <div className="col-span-full rounded-[var(--r-lg)] border border-dashed border-[var(--border)] py-16 text-center text-sm text-[var(--text-muted)]">
+                                No merchant data yet
                             </div>
                         )}
                     </div>

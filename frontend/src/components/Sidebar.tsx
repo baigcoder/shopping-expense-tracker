@@ -308,7 +308,7 @@ const Sidebar = () => {
                     })}
                 </nav>
 
-                <div className={styles.bottom} style={{ borderBottom: '1px solid #F1F5F9', borderTop: 'none', paddingBottom: '0.5rem' }}>
+                <div className={styles.bottom} style={{ borderBottom: '1px solid var(--border)', borderTop: 'none', paddingBottom: '0.5rem' }}>
                     <NavLink
                         to="/settings"
                         onClick={handleNavClick}

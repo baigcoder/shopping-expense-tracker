@@ -77,7 +77,7 @@ const SettingsPage = () => {
                 setTheme(data.preferences.theme);
             } catch (error) {
                 console.error('Settings load failed:', error);
-                toast.error('BACKEND_OFFLINE_MODE');
+                toast.error('Couldn’t load settings');
                 setName(user?.name || '');
                 setEmail(user?.email || '');
             } finally {
@@ -104,11 +104,11 @@ const SettingsPage = () => {
                 if (user) setUser({ ...user, currency: saved.currency });
             }
             if (updates.theme) setTheme(saved.theme);
-            toast.success('PREFERENCES_SYNCED');
+            toast.success('Settings saved');
         } catch (error) {
             console.error('Preference save failed:', error);
             setPreferences(preferences);
-            toast.error('SYNC_FAILURE');
+            toast.error('Couldn’t save');
         } finally {
             setIsSaving(false);
         }
@@ -121,11 +121,11 @@ const SettingsPage = () => {
         try {
             const saved = await settingsApi.updateAI(updates);
             setPreferences(saved);
-            toast.success('AI_CORE_UPDATED');
+            toast.success('AI settings saved');
         } catch (error) {
             console.error('AI settings save failed:', error);
             setPreferences(preferences);
-            toast.error('AI_SYNC_FAILURE');
+            toast.error('Couldn’t save AI settings');
         } finally {
             setIsSaving(false);
         }
@@ -170,7 +170,7 @@ const SettingsPage = () => {
             toast.success(result.delivery === 'email_sent' ? 'Password reset email sent' : 'Reset started');
         } catch (error: any) {
             console.error('Password reset failed:', error);
-            toast.error('RESET_FAILURE');
+            toast.error('Could not reset password');
         }
     };
 
@@ -251,7 +251,7 @@ const SettingsPage = () => {
                 <h3 className={styles.sectionTitle}>{title}</h3>
                 <p className={styles.sectionSubtitle}>{subtitle}</p>
             </div>
-            <div className="ml-auto bg-black text-white text-[10px] font-black px-2 py-0.5 uppercase tracking-widest">SECURE_NODE</div>
+            <div />
         </div>
     );
 
@@ -312,14 +312,14 @@ const SettingsPage = () => {
                     <div className={styles.headerLeft}>
                         <div className={styles.titleIcon}><Settings size={32} strokeWidth={3} /></div>
                         <div>
-                            <h1 className={styles.title}>System Control</h1>
-                            <p className={styles.subtitle}>{isLoading ? 'SYNCING_NODES...' : 'BACKEND_STABLE_V2.1'}</p>
+                            <h1 className={styles.title}>Settings</h1>
+                            <p className={styles.subtitle}>{isLoading ? 'Loading…' : 'Account, notifications, and AI'}</p>
                         </div>
                     </div>
-                    <div className="hidden md:flex items-center gap-4 px-6 py-3 bg-black text-white border-4 border-black shadow-[6px_6px_0px_#E11D48]">
-                        <Activity size={18} strokeWidth={3} />
-                        <span className="text-[10px] font-black uppercase tracking-widest">
-                            {isSaving ? 'UPLOADING_CHANGES' : 'API_STATUS_CONNECTED'}
+                    <div className="hidden items-center gap-3 rounded-[var(--r-md)] border border-[var(--border)] bg-white px-4 py-2.5 text-[var(--text-muted)] md:flex">
+                        <Activity size={16} strokeWidth={2} />
+                        <span className="text-sm font-medium">
+                            {isSaving ? 'Saving…' : 'Connected'}
                         </span>
                     </div>
                 </motion.header>
@@ -331,29 +331,29 @@ const SettingsPage = () => {
                         <div className={styles.formContainer}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className={styles.formField}>
-                                    <label className={styles.fieldLabel}>Identity Name</label>
-                                    <input className={styles.premiumInput} value={name} onChange={(e) => setName(e.target.value)} placeholder="ENTER_NAME" />
+                                    <label className={styles.fieldLabel}>Name</label>
+                                    <input className={styles.premiumInput} value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
                                 </div>
                                 <div className={styles.formField}>
-                                    <label className={styles.fieldLabel}>Verified Email</label>
+                                    <label className={styles.fieldLabel}>Email</label>
                                     <input className={styles.premiumInput} value={email} disabled />
                                 </div>
                             </div>
                             <div className={styles.formField}>
-                                <label className={styles.fieldLabel}>Functional Currency</label>
+                                <label className={styles.fieldLabel}>Currency</label>
                                 <select
                                     className={styles.premiumInput}
                                     value={preferences.currency}
                                     onChange={(e) => savePreferences({ currency: e.target.value })}
                                 >
                                     {SUPPORTED_CURRENCIES.map((currency) => (
-                                        <option key={currency.code} value={currency.code}>{currency.code} - {currency.name.toUpperCase()}</option>
+                                        <option key={currency.code} value={currency.code}>{currency.code} — {currency.name}</option>
                                     ))}
                                 </select>
                             </div>
                             <button onClick={handleUpdateProfile} className={styles.primaryBtn}>
                                 <Save size={20} strokeWidth={3} />
-                                Reconfigure_Identity
+                                Save profile
                             </button>
                         </div>
                     </motion.div>
@@ -361,13 +361,13 @@ const SettingsPage = () => {
                     {/* Auditory Experience */}
                     <motion.div variants={fadeInUp} className={styles.section}>
                         <SectionHeader icon={Volume2} title="Sound" subtitle="Click and confirmation sounds" colorClass="bg-black" />
-                        <ToggleRow icon={Sparkles} label="UI Sound Feedback" description="Enable auditory interaction cues" checked={preferences.soundEnabled} onChange={(soundEnabled) => savePreferences({ soundEnabled })} />
+                        <ToggleRow icon={Sparkles} label="Click sounds" description="Play sounds when you click" checked={preferences.soundEnabled} onChange={(soundEnabled) => savePreferences({ soundEnabled })} />
                         <AnimatePresence>
                             {preferences.soundEnabled && (
                                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className={styles.sliderBox}>
                                     <div className={styles.sliderHeader}>
-                                        <span className={styles.rowLabel}>Audio Amplitude</span>
-                                        <span className={styles.sliderValue}>{preferences.soundVolume}%_GAIN</span>
+                                        <span className={styles.rowLabel}>Volume</span>
+                                        <span className={styles.sliderValue}>{preferences.soundVolume}%</span>
                                     </div>
                                     <input
                                         type="range"
@@ -384,8 +384,8 @@ const SettingsPage = () => {
                                         className={styles.premiumSlider}
                                     />
                                     <div className={styles.testBtnGroup}>
-                                        <button className={styles.outlineBtn} onClick={() => sound.playClick()}>TEST_CLICK_SIGNAL</button>
-                                        <button className={styles.outlineBtn} onClick={() => sound.playSuccess()}>TEST_SUCCESS_SIGNAL</button>
+                                        <button className={styles.outlineBtn} onClick={() => sound.playClick()}>Test click</button>
+                                        <button className={styles.outlineBtn} onClick={() => sound.playSuccess()}>Test success</button>
                                     </div>
                                 </motion.div>
                             )}
@@ -395,18 +395,18 @@ const SettingsPage = () => {
                     {/* Notification Signal Protocol */}
                     <motion.div variants={fadeInUp} className={styles.section}>
                         <SectionHeader icon={Bell} title="Notifications" subtitle="Email and in-app updates" colorClass="bg-black" />
-                        <ToggleRow icon={Mail} label="Email Manifest" description="Weekly/Monthly finance dispatch" checked={preferences.emailNotifications} onChange={(emailNotifications) => savePreferences({ emailNotifications })} />
-                        <ToggleRow icon={Zap} label="Push Telemetry" description="Real-time browser notifications" checked={preferences.pushNotifications} onChange={(pushNotifications) => savePreferences({ pushNotifications })} />
-                        <ToggleRow icon={PieChart} label="Weekly Report Audit" description="Summary of weekly outflow" checked={preferences.weeklyReport} onChange={(weeklyReport) => savePreferences({ weeklyReport })} />
-                        <ToggleRow icon={CheckCircle2} label="Monthly Cycle Audit" description="Deep dive monthly analytics" checked={preferences.monthlyReport} onChange={(monthlyReport) => savePreferences({ monthlyReport })} />
+                        <ToggleRow icon={Mail} label="Email updates" description="Weekly and monthly summaries" checked={preferences.emailNotifications} onChange={(emailNotifications) => savePreferences({ emailNotifications })} />
+                        <ToggleRow icon={Zap} label="Browser alerts" description="Instant alerts in this browser" checked={preferences.pushNotifications} onChange={(pushNotifications) => savePreferences({ pushNotifications })} />
+                        <ToggleRow icon={PieChart} label="Weekly report" description="How last week went" checked={preferences.weeklyReport} onChange={(weeklyReport) => savePreferences({ weeklyReport })} />
+                        <ToggleRow icon={CheckCircle2} label="Monthly report" description="A fuller picture each month" checked={preferences.monthlyReport} onChange={(monthlyReport) => savePreferences({ monthlyReport })} />
                     </motion.div>
 
                     {/* AI Controls */}
                     <motion.div variants={fadeInUp} className={styles.section}>
                         <SectionHeader icon={Brain} title="AI" subtitle="Live answers, memory, and pending data" colorClass="bg-black" />
-                        <ToggleRow icon={Cpu} label="Neural Provider" description="Activate live AI processing nodes" checked={preferences.aiLiveEnabled} onChange={(aiLiveEnabled) => saveAI({ aiLiveEnabled })} />
-                        <ToggleRow icon={Database} label="Neural Memory" description="Persistent context storage for chat" checked={preferences.aiMemoryEnabled} onChange={(aiMemoryEnabled) => saveAI({ aiMemoryEnabled })} />
-                        <ToggleRow icon={Activity} label="Inbox Contextualization" description="Allow AI to audit pending candidates" checked={preferences.aiIncludePendingCandidates} onChange={(aiIncludePendingCandidates) => saveAI({ aiIncludePendingCandidates })} />
+                        <ToggleRow icon={Cpu} label="Live AI" description="Use live AI answers" checked={preferences.aiLiveEnabled} onChange={(aiLiveEnabled) => saveAI({ aiLiveEnabled })} />
+                        <ToggleRow icon={Database} label="Remember chats" description="Keep conversation context" checked={preferences.aiMemoryEnabled} onChange={(aiMemoryEnabled) => saveAI({ aiMemoryEnabled })} />
+                        <ToggleRow icon={Activity} label="Include inbox" description="Let AI see pending captures" checked={preferences.aiIncludePendingCandidates} onChange={(aiIncludePendingCandidates) => saveAI({ aiIncludePendingCandidates })} />
                         <ToggleRow icon={RefreshCw} label="Auto-refresh" description="Refresh AI context when your data changes" checked={preferences.aiAutoRefresh} onChange={(aiAutoRefresh) => saveAI({ aiAutoRefresh })} />
                         
                         <div className={styles.sliderBox}>
@@ -455,20 +455,20 @@ const SettingsPage = () => {
                     <motion.div variants={fadeInUp} className={styles.section}>
                         <SectionHeader icon={ListChecks} title="Shortcuts" subtitle="Jump to the workflows you use most" colorClass="bg-black" />
                         <div className="grid grid-cols-1 md:grid-cols-2">
-                            <ActionRow icon={Inbox} label="Transaction Inbox" description="Staged detection review" onClick={() => goToFeature('/transaction-inbox')} />
-                            <ActionRow icon={CalendarDays} label="Finance Calendar" description="Upcoming liability view" onClick={() => goToFeature('/cashflow-calendar')} />
-                            <ActionRow icon={ReceiptText} label="Import Pipeline" description="CSV/PDF processing hub" onClick={() => goToFeature('/transactions')} />
-                            <ActionRow icon={Activity} label="Subscription Hub" description="Trials and renewals monitor" onClick={() => goToFeature('/subscriptions')} />
-                            <ActionRow icon={FileBarChart2} label="Audit Reports" description="Generate deep-dive reports" onClick={() => goToFeature('/reports')} />
-                            <ActionRow icon={Database} label="Extension Audit" description="System health and telemetry" onClick={() => goToFeature('/extension-health')} />
+                            <ActionRow icon={Inbox} label="Transaction inbox" description="Review captured payments" onClick={() => goToFeature('/transaction-inbox')} />
+                            <ActionRow icon={CalendarDays} label="Calendar" description="Upcoming money in and out" onClick={() => goToFeature('/cashflow-calendar')} />
+                            <ActionRow icon={ReceiptText} label="Import" description="CSV and PDF statements" onClick={() => goToFeature('/transactions')} />
+                            <ActionRow icon={Activity} label="Subscriptions" description="Trials and renewals" onClick={() => goToFeature('/subscriptions')} />
+                            <ActionRow icon={FileBarChart2} label="Reports" description="Download spending reports" onClick={() => goToFeature('/reports')} />
+                            <ActionRow icon={Database} label="Extension" description="Capture health" onClick={() => goToFeature('/extension-health')} />
                         </div>
                     </motion.div>
 
                     {/* Sentinel Protocol */}
                     <motion.div variants={fadeInUp} className={styles.section}>
                         <SectionHeader icon={ShieldAlert} title="Security" subtitle="Password and session" colorClass="bg-black" />
-                        <ActionRow icon={Key} label="Rotate Passphrase" description="Initiate security reset protocol" onClick={handlePasswordReset} />
-                        <ActionRow icon={Smartphone} label="Network Node Audit" description={dashboard?.session.userAgent || 'ANALYZE_CURRENT_NODE_METADATA'} onClick={handleSessionRefresh} />
+                        <ActionRow icon={Key} label="Change password" description="Send a reset email" onClick={handlePasswordReset} />
+                        <ActionRow icon={Smartphone} label="This device" description={dashboard?.session.userAgent || 'Current browser'} onClick={handleSessionRefresh} />
                     </motion.div>
 
                     {/* Danger Protocol */}
@@ -482,7 +482,7 @@ const SettingsPage = () => {
                         </div>
                         <div className={styles.formContainer}>
                             <div className={styles.formField}>
-                                <label className={styles.fieldLabel}>Purge Target Area</label>
+                                <label className={styles.fieldLabel}>What to delete</label>
                                 <select className={styles.premiumInput} value={resetCategory} onChange={(e) => setResetCategory(e.target.value)}>
                                     <option value="transactions">Transactions</option>
                                     <option value="goals">Goals</option>
@@ -493,8 +493,8 @@ const SettingsPage = () => {
                                 </select>
                             </div>
                         </div>
-                        <ActionRow icon={LogOut} label="Terminate Session" description="Securely exit ecosystem" onClick={handleLogout} danger />
-                        <ActionRow icon={Trash2} label="Purge Selected Nodes" description="Requires identity verification" onClick={handleDataReset} danger />
+                        <ActionRow icon={LogOut} label="Sign out" description="Sign out of Cashly" onClick={handleLogout} danger />
+                        <ActionRow icon={Trash2} label="Delete selected data" description="You’ll confirm before anything is deleted" onClick={handleDataReset} danger />
                     </motion.div>
                 </div>
 

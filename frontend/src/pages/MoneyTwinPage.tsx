@@ -67,7 +67,7 @@ const MoneyTwinPage = () => {
             setTwinState(state);
         } catch (error) {
             console.error('Failed to load Money Twin:', error);
-            if (!silent) genZToast.error('TWIN_SYNC_FAILURE');
+            if (!silent) genZToast.error('Couldn’t load Money Twin');
         }
         if (!silent) setLoading(false);
     };
@@ -135,9 +135,9 @@ const MoneyTwinPage = () => {
             }
             const result = await whatIfService.runScenario(user.id, selectedScenario, params, scenarioMonths);
             setScenarioResult(result);
-            genZToast.success('SIMULATION_COMPLETE');
+            genZToast.success('Simulation finished');
         } catch (error) {
-            genZToast.error('SIMULATION_FAILURE');
+            genZToast.error('Simulation failed');
         }
         setRunningScenario(false);
     };
@@ -171,15 +171,15 @@ const MoneyTwinPage = () => {
                                 whileHover={{ scale: 1.05 }}
                             >
                                 <span className={styles.scoreValue}>{twinState?.healthScore || 0}</span>
-                                <span className={styles.scoreLabel}>INTEL</span>
+                                <span className={styles.scoreLabel}>Health</span>
                             </motion.div>
                         </div>
                         <div className={styles.titleSection}>
                             <h1>Money Twin</h1>
                             <p>
-                                MISSION_FORECAST // ACTIVE_PIPELINE: {activeTab.toUpperCase()}
+                                Forecast · {activeTab}
                                 {(twinState?.pendingCandidateImpact?.count || 0) > 0
-                                    ? ` // PENDING: ${twinState?.pendingCandidateImpact?.count}`
+                                    ? ` · ${twinState?.pendingCandidateImpact?.count} pending in inbox`
                                     : ''}
                             </p>
                         </div>
@@ -193,10 +193,10 @@ const MoneyTwinPage = () => {
                 {/* Quick Stats Bento Grid */}
                 <div className={styles.quickStats}>
                     {[
-                        { icon: <Zap size={24} strokeWidth={3} />, label: "Daily Burn", value: formatCurrency(twinState?.velocity.dailyRate || 0) },
-                        { icon: <TrendingUp size={24} strokeWidth={3} />, label: "Execution Rate", value: `${twinState?.velocity.burnRate || 0}%` },
-                        { icon: <Clock size={24} strokeWidth={3} />, label: "Cash Runway", value: twinState?.velocity.daysUntilBroke ? `${twinState.velocity.daysUntilBroke}D` : 'UNLIMITED' },
-                        { icon: <AlertTriangle size={24} strokeWidth={3} />, label: "Security Risks", value: twinState?.riskAlerts.length || 0 }
+                        { icon: <Zap size={24} strokeWidth={2} />, label: "Daily spend", value: formatCurrency(twinState?.velocity.dailyRate || 0) },
+                        { icon: <TrendingUp size={24} strokeWidth={2} />, label: "Burn rate", value: `${twinState?.velocity.burnRate || 0}%` },
+                        { icon: <Clock size={24} strokeWidth={2} />, label: "Runway", value: twinState?.velocity.daysUntilBroke ? `${twinState.velocity.daysUntilBroke}d` : 'Open' },
+                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Alerts", value: twinState?.riskAlerts.length || 0 }
                     ].map((stat, i) => (
                         <motion.div key={stat.label} className={styles.statCard} variants={itemVariants} whileHover={{ y: -5 }}>
                             <div className={styles.statIcon}>
@@ -248,19 +248,19 @@ const MoneyTwinPage = () => {
                                         <motion.div key={forecast.month} className={cn(styles.forecastCard, styles[forecast.riskLevel])} variants={itemVariants}>
                                             <div className={styles.forecastHeader}>
                                                 <span className={styles.forecastMonth}>{forecast.month}</span>
-                                                <span className={styles.riskBadge}>{forecast.riskLevel} MISSION_RISK</span>
+                                                <span className={styles.riskBadge}>{forecast.riskLevel} risk</span>
                                             </div>
                                             <div className={styles.forecastStats}>
                                                 <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><TrendingDown size={20} strokeWidth={3} /><span>ESTIMATED_DEPLETION</span></div>
+                                                    <div className={styles.statLabelGroup}><TrendingDown size={20} strokeWidth={2} /><span>Predicted spend</span></div>
                                                     <strong>{formatCurrency(forecast.predictedExpenses)}</strong>
                                                 </div>
                                                 <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><TrendingUp size={20} strokeWidth={3} /><span>PROJECTED_INFLOW</span></div>
+                                                    <div className={styles.statLabelGroup}><TrendingUp size={20} strokeWidth={2} /><span>Predicted income</span></div>
                                                     <strong>{formatCurrency(forecast.predictedIncome)}</strong>
                                                 </div>
                                                 <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><Shield size={20} strokeWidth={3} /><span>NET_ACCUMULATION</span></div>
+                                                    <div className={styles.statLabelGroup}><Shield size={20} strokeWidth={2} /><span>Net change</span></div>
                                                     <strong className={forecast.predictedSavings < 0 ? styles.negative : styles.positive}>{formatCurrency(forecast.predictedSavings)}</strong>
                                                 </div>
                                             </div>
@@ -329,9 +329,9 @@ const MoneyTwinPage = () => {
                                     <motion.div className={styles.scenarioResult} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                         <h3 className="text-2xl font-black italic uppercase mb-6">{scenarioResult.name}</h3>
                                         <div className={styles.resultStats}>
-                                            <div><span className={styles.resultLabel}>NET_IMPACT</span><div className={cn(styles.resultValue, scenarioResult.results.totalSavings >= 0 ? styles.positive : styles.negative)}>{formatCurrency(scenarioResult.results.totalSavings)}</div></div>
-                                            <div><span className={styles.resultLabel}>CYCLE_CHANGE</span><div className={styles.resultValue}>{formatCurrency(scenarioResult.results.monthlyImpact)}/MO</div></div>
-                                            <div><span className={styles.resultLabel}>GROWTH_POTENTIAL</span><div className={cn(styles.resultValue, styles.positive)}>+{formatCurrency(scenarioResult.results.compoundGrowth)}</div></div>
+                                            <div><span className={styles.resultLabel}>Net impact</span><div className={cn(styles.resultValue, scenarioResult.results.totalSavings >= 0 ? styles.positive : styles.negative)}>{formatCurrency(scenarioResult.results.totalSavings)}</div></div>
+                                            <div><span className={styles.resultLabel}>Monthly change</span><div className={styles.resultValue}>{formatCurrency(scenarioResult.results.monthlyImpact)}/mo</div></div>
+                                            <div><span className={styles.resultLabel}>Growth</span><div className={cn(styles.resultValue, styles.positive)}>+{formatCurrency(scenarioResult.results.compoundGrowth)}</div></div>
                                         </div>
                                         <div className={cn(styles.recommendation, (scenarioResult.results.recommendation === 'highly_recommended' || scenarioResult.results.recommendation === 'recommended') ? styles.positive : styles.negative)}>
                                             <Sparkles size={28} strokeWidth={3} /><span>{scenarioResult.results.summary.toUpperCase()}</span>
@@ -345,7 +345,7 @@ const MoneyTwinPage = () => {
                             <>
                                 <h2>Timeline Comparison</h2>
                                 <p className={styles.subtitle}>Analyze alternative trajectories against mission history</p>
-                                {loadingUniverses ? <div className={styles.loading}>SYNCING_TIMELINES...</div> : (
+                                {loadingUniverses ? <div className={styles.loading}>Loading timelines…</div> : (
                                     <div className={styles.universeGrid}>
                                         {universes.map((uni) => (
                                             <motion.div key={uni.id} className={cn(styles.universeCard, selectedUniverse?.id === uni.id && styles.selected)} onClick={() => setSelectedUniverse(uni)} whileHover={{ y: -5 }}>
@@ -359,7 +359,7 @@ const MoneyTwinPage = () => {
                                     <motion.div className={styles.universeDetails} initial={{ opacity: 0 }} layout animate={{ opacity: 1 }}>
                                         <div className={styles.comparisonStats}>
                                             <div style={{ textAlign: 'center' }}>
-                                                <span className={styles.resultLabel}>CURRENT_TIMELINE</span>
+                                                <span className={styles.resultLabel}>Current path</span>
                                                 <div className={styles.resultValue}>{formatCurrency(selectedUniverse.comparison.actualSpent)}</div>
                                             </div>
                                             <div className={styles.vsCircle}>VS</div>
@@ -380,7 +380,7 @@ const MoneyTwinPage = () => {
                                 {!twinState || twinState.riskAlerts.length === 0 ? (
                                     <div className={styles.loading}>
                                         <Shield size={80} className="text-black" strokeWidth={3} />
-                                        <p>MISSION_SECURE: NO RISKS DETECTED</p>
+                                        <p>No risks right now</p>
                                     </div>
                                 ) : (
                                     <div className={styles.forecastGrid}>

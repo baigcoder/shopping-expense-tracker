@@ -15,14 +15,14 @@ const ContactPage = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success('MISSION_DISPATCHED // WE_WILL_RESPOND_SOON');
+        toast.success('Message sent. We’ll reply soon.');
         setFormData({ name: '', email: '', subject: '', message: '' });
     };
 
     return (
         <StaticPageTemplate
-            title="Dispatch Hub"
-            subtitle="DIRECT_COMMUNICATION_LINK_TO_CASHLY_CORE"
+            title="Contact"
+            subtitle="Questions, feedback, or a bug — send a note."
         >
             <div className="grid w-full max-w-full min-w-0 overflow-hidden md:grid-cols-2 gap-6 md:gap-12">
                 {/* Contact Form */}
@@ -31,26 +31,26 @@ const ContactPage = () => {
                         <div className="p-3 bg-black text-white border-2 border-black">
                             <Send size={24} strokeWidth={3} />
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-black italic uppercase tracking-tighter break-words" style={{ overflowWrap: 'anywhere' }}>New_Inbound</h2>
+                        <h2 className="text-xl font-semibold sm:text-2xl">Send a message</h2>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-black/40 ml-1">Identity_Alias</label>
+                            <label className="ml-1 text-xs font-medium text-[var(--text-muted)]">Name</label>
                             <div className="relative">
                                 <User className="absolute left-3 sm:left-5 top-4 sm:top-5 text-black/20" size={22} />
                                 <input
                                     className="w-full h-14 sm:h-16 border-4 border-black bg-white pl-11 sm:pl-14 pr-3 sm:pr-6 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-colors outline-none"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder="ENTER_NAME"
+                                    placeholder="Your name"
                                     required
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-black/40 ml-1">Dispatch_Address</label>
+                            <label className="ml-1 text-xs font-medium text-[var(--text-muted)]">Email</label>
                             <div className="relative">
                                 <Mail className="absolute left-3 sm:left-5 top-4 sm:top-5 text-black/20" size={22} />
                                 <input
@@ -58,30 +58,30 @@ const ContactPage = () => {
                                     className="w-full h-14 sm:h-16 border-4 border-black bg-white pl-11 sm:pl-14 pr-3 sm:pr-6 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-colors outline-none"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    placeholder="ENTER_EMAIL"
+                                    placeholder="you@email.com"
                                     required
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-black/40 ml-1">Subject_Line</label>
+                            <label className="ml-1 text-xs font-medium text-[var(--text-muted)]">Subject</label>
                             <input
                                 className="w-full h-14 sm:h-16 border-4 border-black bg-white px-3 sm:px-6 font-black uppercase text-[10px] min-[380px]:text-xs sm:text-sm focus:bg-black focus:text-white transition-colors outline-none"
                                 value={formData.subject}
                                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                                placeholder="GENERAL_INQUIRY"
+                                placeholder="A question about Cashly"
                                 required
                             />
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-black/40 ml-1">Message_Buffer</label>
+                            <label className="ml-1 text-xs font-medium text-[var(--text-muted)]">Message</label>
                             <textarea
                                 className="w-full min-h-[150px] sm:min-h-[160px] border-4 border-black bg-white p-3 sm:p-6 font-black uppercase text-[11px] sm:text-sm focus:bg-black focus:text-white transition-colors outline-none"
                                 value={formData.message}
                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                placeholder="ENTER_MESSAGE_DETAILS..."
+                                placeholder="How can we help?"
                                 required
                             />
                         </div>
@@ -91,8 +91,8 @@ const ContactPage = () => {
                             className="w-full min-h-14 sm:h-16 bg-black text-white font-black uppercase text-[11px] sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[4px_4px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] hover:translate-x-1 hover:translate-y-1 hover:shadow-none flex items-center justify-center gap-2 sm:gap-4"
                         >
                             <Send size={18} strokeWidth={3} />
-                            <span className="sm:hidden">Dispatch</span>
-                            <span className="hidden sm:inline">Initiate_Dispatch</span>
+                            <span className="sm:hidden">Send</span>
+                            <span className="hidden sm:inline">Send message</span>
                         </button>
                     </form>
                 </div>
@@ -105,10 +105,10 @@ const ContactPage = () => {
                                 <Mail size={32} strokeWidth={3} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-black uppercase italic italic tracking-tighter mb-2">Email_Node</h3>
-                                <p className="font-black text-black text-sm sm:text-lg break-words">SUPPORT@CASHLY.APP</p>
-                                <div className="mt-4 bg-black text-white text-[10px] font-black px-3 py-1 inline-block uppercase tracking-widest">
-                                    RESPONSE_WINDOW: 24H
+                                <h3 className="mb-2 text-xl font-semibold">Email</h3>
+                                <p className="break-words text-sm font-medium sm:text-lg">support@cashly.app</p>
+                                <div className="mt-4 inline-block rounded-full bg-[#F4F0EB] px-3 py-1 text-xs font-medium text-[#57534E]">
+                                    We reply within a day
                                 </div>
                             </div>
                         </div>

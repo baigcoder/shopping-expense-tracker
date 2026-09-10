@@ -42,7 +42,7 @@ const ReportsPage = () => {
             setExportHistory(await featureExpansionApi.reportExports());
         } catch (error) {
             console.error('Failed to fetch transactions:', error);
-            toast.error('SYNC_FAILURE');
+            toast.error('Couldn’t load reports');
         } finally {
             setLoading(false);
         }
@@ -117,7 +117,7 @@ const ReportsPage = () => {
             }
             toast.success(`EXPORT_${type.toUpperCase()}_SUCCESS`);
         } catch (error) {
-            toast.error('EXPORT_FAILURE');
+            toast.error('Couldn’t export');
         } finally {
             setExporting(null);
         }
@@ -135,9 +135,9 @@ const ReportsPage = () => {
             const result = await featureExpansionApi.generateReport(payload);
             setReportPreview(result.summary);
             setExportHistory(await featureExpansionApi.reportExports());
-            toast.success('REPORT_GENERATED');
+            toast.success('Report ready');
         } catch (error) {
-            toast.error('GENERATION_FAILURE');
+            toast.error('Couldn’t generate report');
         } finally {
             setExporting(null);
         }
@@ -177,10 +177,10 @@ const ReportsPage = () => {
                         <div>
                             <h1 className={styles.title}>
                                 Financial Audit
-                                <div className={styles.liveBadge}>LIVE_INTEL</div>
+                                <div className={styles.liveBadge}>Live</div>
                             </h1>
-                            <p className="text-black/60 mt-2 font-black text-xs uppercase tracking-widest">
-                                COMPREHENSIVE_CAPITAL_MOVEMENT_LOG
+                            <p className="mt-2 text-sm text-[var(--text-muted)]">
+                                Spending reports you can download
                             </p>
                         </div>
                     </div>
@@ -192,7 +192,7 @@ const ReportsPage = () => {
                                 onClick={() => setDateRange(range)}
                                 className={cn(styles.rangeBtn, dateRange === range && styles.activeRange)}
                             >
-                                {range.toUpperCase()}
+                                {range.charAt(0).toUpperCase() + range.slice(1)}
                             </button>
                         ))}
                     </div>
@@ -202,8 +202,8 @@ const ReportsPage = () => {
                 <section className="bg-white border-4 border-black p-10 mb-10 shadow-[8px_8px_0px_#000000]">
                     <div className="flex flex-col lg:flex-row gap-8 lg:items-center lg:justify-between mb-8 pb-8 border-b-4 border-black">
                         <div>
-                            <h2 className="text-3xl font-black italic uppercase italic">Audit Engine 2.0</h2>
-                            <p className="text-sm font-bold text-black/50 mt-1 uppercase tracking-wider">Generate mission-critical manifests for tax, sectors, or cycles.</p>
+                            <h2 className="font-display text-2xl font-semibold">Create a report</h2>
+                            <p className="mt-1 text-sm text-[var(--text-muted)]">For taxes, categories, or a month’s recap.</p>
                         </div>
                         <div className="flex flex-wrap gap-4">
                             <select
@@ -211,11 +211,11 @@ const ReportsPage = () => {
                                 onChange={e => setReportType(e.target.value as any)}
                                 className="h-14 px-6 border-4 border-black font-black uppercase text-sm focus:outline-none"
                             >
-                                <option value="monthly_summary">Cycle Summary</option>
-                                <option value="tax">Tax Manifest</option>
-                                <option value="category">Sector Audit</option>
-                                <option value="merchant">Node Analysis</option>
-                                <option value="subscription">Stream Report</option>
+                                <option value="monthly_summary">Monthly summary</option>
+                                <option value="tax">Tax</option>
+                                <option value="category">By category</option>
+                                <option value="merchant">By merchant</option>
+                                <option value="subscription">Subscriptions</option>
                             </select>
                             <button
                                 onClick={handleGenerateReport}
@@ -264,7 +264,7 @@ const ReportsPage = () => {
                             <h3 className={styles.statValue} style={{ color: stat.color }}>{formatCurrency(stat.value as number)}</h3>
                             <div className={styles.statBadge}>
                                 <Zap size={14} fill="currentColor" strokeWidth={0} />
-                                AUDIT_VERIFIED
+                                Verified
                             </div>
                         </motion.div>
                     ))}
@@ -374,7 +374,7 @@ const ReportsPage = () => {
                             <Target size={28} strokeWidth={3} />
                             Data Protocol
                         </h2>
-                        <div className={styles.liveBadge}>ENCRYPTED_INTEL_FLOW</div>
+                        <div className={styles.liveBadge}>Encrypted</div>
                     </div>
 
                     <motion.div
@@ -402,7 +402,7 @@ const ReportsPage = () => {
                                 <p className={styles.reportInfo}>{item.info}</p>
                                 <button className={styles.downloadButton}>
                                     {exporting === item.id ? <RefreshCw className={styles.spinning} size={18} strokeWidth={3} /> : <Zap size={18} strokeWidth={3} />}
-                                    {exporting === item.id ? 'SYNCING...' : 'INITIATE_FLOW'}
+                                    {exporting === item.id ? 'Exporting…' : 'Download'}
                                 </button>
                             </motion.div>
                         ))}
@@ -443,11 +443,11 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
                     source: 'import'
                 });
             }
-            toast.success(`MATRIX_UPDATED: ${result.transactions.length} ENTRIES`);
+            toast.success(`Imported ${result.transactions.length} transactions`);
             onImport();
             onClose();
         } catch (error) {
-            toast.error('MANIFEST_INGESTION_FAILURE');
+            toast.error('Couldn’t import that file');
         } finally {
             setImporting(false);
         }
@@ -475,7 +475,7 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
                             <Upload size={40} strokeWidth={3} />
                         </div>
                         <h2 className="text-4xl font-black italic uppercase tracking-tighter">Data Ingestion</h2>
-                        <p className="text-black/50 font-black text-xs uppercase tracking-widest mt-2">EXTERNAL_STATEMENT_MANIFEST</p>
+                        <p className="mt-2 text-sm text-[var(--text-muted)]">Import a bank statement</p>
                     </div>
 
                     <div
@@ -491,7 +491,7 @@ const ImportModal = ({ isOpen, onClose, onImport }: any) => {
                         />
                         <FileSpreadsheet size={64} strokeWidth={1} className="mx-auto text-black/10 mb-6" />
                         <p className="text-lg font-black uppercase text-black/40">
-                            {file ? file.name : "SELECT_CSV_EXCEL_MATRIX"}
+                            {file ? file.name : "Choose a CSV or Excel file"}
                         </p>
                     </div>
 

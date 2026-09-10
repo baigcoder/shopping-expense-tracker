@@ -10,51 +10,51 @@ const FAQPage = () => {
 
     const faqs = [
         {
-            q: "What is Cashly Core?",
-            a: "Cashly is a mission-critical financial audit engine. It automatically captures and categorizes your shopping telemetry using our browser extension, providing real-time data on your financial outflow."
+            q: "What is Cashly?",
+            a: "Cashly tracks your shopping and spending. The browser extension captures checkouts, then you review them in Inbox before they hit your ledger."
         },
         {
             q: "How does the browser extension work?",
-            a: "Our telemetry node monitors e-commerce sites and automatically logs transactions. It captures merchant data, quantum (amount), and category labels. All data is encrypted using high-fidelity protocols."
+            a: "It watches supported checkout pages and captures merchant, amount, and category. You approve each capture in Inbox unless a merchant rule auto-posts it."
         },
         {
             q: "Is my financial data secure?",
-            a: "Affirmative. We utilize bank-grade AES-256 encryption. We never store credit card details or banking credentials. All telemetry is encrypted in transit and at rest."
+            a: "We never store full card numbers or banking passwords. Data is encrypted in transit and at rest."
         },
         {
-            q: "Free vs. Premium Tiers?",
-            a: "Free tier covers basic telemetry and budgeting. Premium unlocks AI Neural Insights, advanced audit reports, PDF manifests, and priority mission support."
+            q: "Free vs Premium?",
+            a: "Free covers capture, budgets, and the ledger. Premium adds live AI insights, richer reports, PDF import, and priority support."
         },
         {
-            q: "Can I export my data manifest?",
-            a: "Yes. You can export your data in CSV, JSON, or PDF manifests at any time. Navigate to System Control > Security > Export Manifest."
+            q: "Can I export my data?",
+            a: "Yes. Download CSV, JSON, or PDF from Reports whenever you want."
         },
         {
-            q: "How do I terminate my account?",
-            a: "Navigate to System Control > Danger Protocol > Purge Account. This action is permanent and will securely wipe all your telemetry from our nodes."
+            q: "How do I delete my account?",
+            a: "Go to Settings → Danger zone. That permanently deletes your data."
         },
         {
-            q: "Does Cashly work on mobile nodes?",
-            a: "The web interface is fully responsive across all mobile browsers. Dedicated mobile nodes for iOS and Android are currently in development."
+            q: "Does Cashly work on phones?",
+            a: "The website works in mobile browsers. Native iOS and Android apps are not ready yet."
         },
         {
-            q: "Accuracy of categorization?",
-            a: "Our Neural Engine achieves 95%+ accuracy for common merchant nodes. You can manually reconfigure categories to train the system."
+            q: "How accurate is categorization?",
+            a: "Common merchants are usually right. You can change a category any time and add a merchant rule so it sticks."
         },
         {
-            q: "Manual transaction logging?",
-            a: "Yes. Use the 'Issue Transaction' protocol to manually log cash or external expenses that bypass the extension node."
+            q: "Can I add a transaction by hand?",
+            a: "Yes. Use Add in the sidebar for cash or anything the extension missed."
         },
         {
-            q: "Supported browser nodes?",
-            a: "Chrome, Edge, Firefox, and Brave. Safari node deployment is pending."
+            q: "Which browsers are supported?",
+            a: "Chrome, Edge, Firefox, and Brave. Safari is not available yet."
         }
     ];
 
     return (
         <StaticPageTemplate
-            title="System FAQ Matrix"
-            subtitle="EVERYTHING_YOU_NEED_TO_KNOW_ABOUT_CASHLY_CORE_OPERATIONS"
+            title="FAQ"
+            subtitle="How Cashly works, in plain language."
         >
             <div className="w-full max-w-full space-y-4 overflow-hidden">
                 {faqs.map((faq, index) => (

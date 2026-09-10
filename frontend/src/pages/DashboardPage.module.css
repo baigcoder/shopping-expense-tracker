@@ -92,8 +92,8 @@
 }
 
 .statCardPrimary {
-  background: #000000;
-  color: #FFFFFF;
+  background: #FFFFFF;
+  color: var(--text-primary);
   box-shadow: var(--shadow-md);
 }
 
@@ -101,8 +101,8 @@
   box-shadow: var(--shadow-md);
 }
 
-.statCardPrimary .statTitle { color: #FFFFFF; opacity: 0.8; }
-.statCardPrimary .value { color: #FFFFFF; }
+.statCardPrimary .statTitle { color: var(--text-muted); opacity: 1; }
+.statCardPrimary .value { color: var(--text-primary); }
 
 .iconBox {
   width: 3.5rem;
@@ -118,9 +118,9 @@
   transition: all 0.2s;
 }
 
-.iconBoxBlue { background: #3b82f6; color: #FFFFFF; border-color: #000000; }
-.iconBoxRose { background: #E11D48; color: #FFFFFF; border-color: #000000; }
-.iconBoxIndigo { background: #6366f1; color: #FFFFFF; border-color: #000000; }
+.iconBoxBlue { background: var(--bg-subtle); color: var(--success); border-color: var(--border); }
+.iconBoxRose { background: var(--brand-muted); color: var(--brand); border-color: transparent; }
+.iconBoxIndigo { background: var(--bg-subtle); color: var(--text-primary); border-color: var(--border); }
 
 .statTitle {
   font-size: 0.75rem;

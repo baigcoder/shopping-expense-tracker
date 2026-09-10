@@ -243,15 +243,15 @@ const InsightsPage = () => {
                 </motion.header>
 
                 {coachPlan?.actions && (
-                    <section className="bg-white border-4 border-black p-6 mb-6 shadow-[8px_8px_0px_#000000]">
-                        <div className="flex items-center justify-between gap-4 mb-6">
+                    <section className="mb-6 rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-md)]">
+                        <div className="mb-6 flex items-center justify-between gap-4">
                             <div>
-                                <h2 className="font-black text-black uppercase tracking-widest text-xl">AI Financial Coach Plan</h2>
-                                <p className="text-sm text-black font-bold mt-1">{coachPlan.plan?.summary || 'Three actions for this week, tracked against current spending, goals, and subscriptions.'}</p>
+                                <h2 className="font-display text-xl font-semibold text-[var(--text-primary)]">This week’s plan</h2>
+                                <p className="mt-1 text-sm text-[var(--text-muted)]">{coachPlan.plan?.summary || 'Three actions for this week, based on spending, goals, and subscriptions.'}</p>
                             </div>
-                            <Badge className="bg-black text-white border-2 border-white rounded-none font-black uppercase text-xs px-3 py-1 shadow-[4px_4px_0px_#E11D48]">Weekly</Badge>
+                            <Badge className="rounded-full border-0 bg-[#F4F0EB] px-3 py-1 text-xs font-medium text-[#57534E]">Weekly</Badge>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             {coachPlan.actions.map((action: any) => (
                                 <button
                                     key={action.id}
@@ -259,14 +259,14 @@ const InsightsPage = () => {
                                         await featureExpansionApi.updateCoachAction(action.id, action.status === 'done' ? 'pending' : 'done');
                                         setCoachPlan(await featureExpansionApi.currentCoach());
                                     }}
-                                    className="text-left p-5 border-4 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E11D48] group"
+                                    className="group rounded-[var(--r-lg)] border border-[var(--border)] bg-[#FAF8F5] p-5 text-left transition-colors hover:bg-white"
                                 >
-                                    <div className="text-[10px] font-black uppercase text-[#E11D48] mb-3 tracking-widest">{action.action_type}</div>
-                                    <div className="font-black text-lg mb-2">{action.title}</div>
-                                    <p className="text-sm font-bold opacity-80 mt-2">{action.description}</p>
-                                    <div className="mt-4 pt-4 border-t-4 border-black group-hover:border-white text-xs font-black uppercase flex justify-between items-center">
+                                    <div className="mb-3 text-xs font-medium capitalize text-[var(--brand)]">{String(action.action_type || '').replace(/_/g, ' ')}</div>
+                                    <div className="mb-2 text-lg font-semibold">{action.title}</div>
+                                    <p className="mt-2 text-sm text-[var(--text-muted)]">{action.description}</p>
+                                    <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-4 text-xs font-medium">
                                         <span>{action.status === 'done' ? 'Done' : 'Mark done'}</span>
-                                        {action.status === 'done' && <Check size={16} className="text-[#E11D48]" />}
+                                        {action.status === 'done' && <Check size={16} className="text-[var(--brand)]" />}
                                     </div>
                                 </button>
                             ))}
@@ -286,11 +286,11 @@ const InsightsPage = () => {
                         <motion.div
                             {...iconAnim}
                             className={styles.statIconBox}
-                            style={{ background: '#000000', color: '#E11D48', border: '2px solid #E11D48' }}
+                            style={{ background: 'var(--brand-muted)', color: 'var(--brand)', border: 'none' }}
                         >
                             <Activity size={24} />
                         </motion.div>
-                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? '#000000' : '#E11D48' }}>
+                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? 'var(--text-primary)' : 'var(--brand)' }}>
                             {stats.healthScore}<span className="text-xl opacity-50">/100</span>
                         </h3>
                         <p className={styles.statLabel}>Money Health</p>
@@ -299,7 +299,7 @@ const InsightsPage = () => {
                                 className={styles.progressFill}
                                 style={{
                                     width: `${stats.healthScore}%`,
-                                    background: `linear-gradient(90deg, #E11D48, #000000)`
+                                    background: 'var(--brand)'
                                 }}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${stats.healthScore}%` }}
@@ -313,11 +313,11 @@ const InsightsPage = () => {
                         <motion.div
                             {...iconAnim}
                             className={styles.statIconBox}
-                            style={{ background: '#f0fdf4', color: '#10b981' }}
+                            style={{ background: 'var(--success-light)', color: 'var(--success)' }}
                         >
                             <PiggyBank size={24} />
                         </motion.div>
-                        <h3 className={styles.statValue} style={{ color: '#10b981' }}>
+                        <h3 className={styles.statValue} style={{ color: 'var(--success)' }}>
                             {formatCurrency(stats.potentialSavings)}
                         </h3>
                         <p className={styles.statLabel}>You Could Save</p>
@@ -329,11 +329,11 @@ const InsightsPage = () => {
                         <motion.div
                             {...iconAnim}
                             className={styles.statIconBox}
-                            style={{ background: '#eff6ff', color: '#2563eb' }}
+                            style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)' }}
                         >
                             <Lightbulb size={24} />
                         </motion.div>
-                        <h3 className={styles.statValue} style={{ color: '#2563eb' }}>
+                        <h3 className={styles.statValue} style={{ color: 'var(--text-primary)' }}>
                             {stats.activeTips}
                         </h3>
                         <p className={styles.statLabel}>Tips For You</p>
@@ -406,13 +406,13 @@ const InsightsPage = () => {
                     >
                         <div className="flex items-center justify-between mb-6">
                             <h2 className={styles.sectionTitle}>
-                                <div className="p-2 border-4 border-black bg-black text-[#E11D48] shadow-[4px_4px_0px_#E11D48]">
-                                    <Target size={22} strokeWidth={3} />
+                                <div className="rounded-[var(--r-md)] bg-[var(--brand-muted)] p-2 text-[var(--brand)]">
+                                    <Target size={22} strokeWidth={2} />
                                 </div>
-                                Things To Do
+                                Things to do
                             </h2>
-                            <Badge variant="outline" className="h-8 px-4 border-4 border-black bg-white text-black font-black text-[10px] uppercase rounded-none shadow-[4px_4px_0px_#E11D48]">
-                                {insights.length} TIPS
+                            <Badge variant="outline" className="h-8 rounded-full border-[#E7E5E4] bg-white px-4 text-xs font-medium text-[var(--text-muted)]">
+                                {insights.length} tips
                             </Badge>
                         </div>
 
@@ -422,14 +422,14 @@ const InsightsPage = () => {
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        className="text-center py-20 bg-white border-4 border-black border-dashed"
+                                        className="rounded-[var(--r-lg)] border border-dashed border-[var(--border)] bg-white py-16 text-center"
                                     >
-                                        <div className="mx-auto w-20 h-20 bg-black border-4 border-black flex items-center justify-center text-white mb-6 shadow-[6px_6px_0px_#E11D48]">
-                                            <Trophy size={40} />
+                                        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-[var(--r-lg)] bg-[var(--bg-subtle)] text-[var(--text-primary)]">
+                                            <Trophy size={32} />
                                         </div>
-                                        <h3 className="text-xl font-black text-black uppercase tracking-widest">You're Doing Great!</h3>
-                                        <p className="text-black font-bold max-w-xs mx-auto mt-2 opacity-80 uppercase tracking-widest text-[10px]">
-                                            No problems found. Keep tracking your spending!
+                                        <h3 className="font-display text-xl font-semibold">You’re doing well</h3>
+                                        <p className="mx-auto mt-2 max-w-xs text-sm text-[var(--text-muted)]">
+                                            No issues found. Keep tracking your spending.
                                         </p>
                                     </motion.div>
                                 ) : (
@@ -456,17 +456,17 @@ const InsightsPage = () => {
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <h3 className={styles.insightTitle}>{insight.title}</h3>
                                                         {insight.severity === 'high' && (
-                                                            <span className="px-3 py-1 rounded-none bg-rose-100 text-rose-600 text-[10px] font-black uppercase tracking-widest border-2 border-rose-600 shadow-[2px_2px_0px_#e11d48]">
+                                                            <span className="rounded-full border border-[#E11D48]/30 bg-[#FFE4E6] px-3 py-1 text-[10px] font-medium text-[#E11D48]">
                                                                 Urgent
                                                             </span>
                                                         )}
                                                     </div>
                                                     <p className={styles.insightText}>{insight.message}</p>
                                                     {insight.value !== undefined && insight.value > 0 && (
-                                                        <div className="flex items-center gap-2 mt-3 p-2 px-3 bg-white border-2 border-black shadow-[4px_4px_0px_#10b981] w-fit">
-                                                            <Zap size={14} className="text-[#10b981] fill-[#10b981]" />
-                                                            <span className="text-[10px] font-black uppercase text-black tracking-widest">
-                                                                You could save: {formatCurrency(insight.value)}
+                                                        <div className="mt-3 flex w-fit items-center gap-2 rounded-[var(--r-md)] border border-[var(--border)] bg-white px-3 py-2">
+                                                            <Zap size={14} className="text-[var(--success)]" />
+                                                            <span className="text-xs font-medium text-[var(--text-primary)]">
+                                                                You could save {formatCurrency(insight.value)}
                                                             </span>
                                                         </div>
                                                     )}
@@ -490,7 +490,7 @@ const InsightsPage = () => {
                         animate="visible"
                     >
                         <h2 className={cn(styles.sectionTitle, "mb-6")}>
-                            <div className="p-2.5 rounded-xl bg-zinc-900 text-rose-600 border border-rose-600">
+                            <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-[var(--bg-subtle)] p-2.5 text-[var(--brand)]">
                                 <PieChart size={22} />
                             </div>
                             Spending Breakdown
@@ -514,7 +514,7 @@ const InsightsPage = () => {
                                             <motion.div
                                                 className={styles.progressThumb}
                                                 style={{
-                                                    background: `linear-gradient(90deg, #000000, #E11D48)`,
+                                                    background: 'var(--brand)',
                                                     width: `${cat.percentage}%`
                                                 }}
                                                 initial={{ width: 0 }}
@@ -522,7 +522,7 @@ const InsightsPage = () => {
                                                 transition={{ delay: i * 0.1, duration: 1, ease: "circOut" }}
                                             />
                                         </div>
-                                        <p className="text-[11px] text-slate-400 font-black uppercase mt-2 text-right">
+                                        <p className="mt-2 text-right text-xs font-medium text-[var(--text-muted)]">
                                             {formatCurrency(cat.amount)}
                                         </p>
                                     </div>
@@ -538,7 +538,7 @@ const InsightsPage = () => {
                                 className={styles.actionBtn}
                                 onClick={() => navigate('/budgets')}
                             >
-                                <div className={cn(styles.actionBtnIcon, "bg-emerald-50 text-emerald-600")}>
+                                <div className={cn(styles.actionBtnIcon, "bg-[var(--success-light)] text-[var(--success)]")}>
                                     <Target size={20} strokeWidth={2.5} />
                                 </div>
                                 Set a Budget
@@ -548,7 +548,7 @@ const InsightsPage = () => {
                                 className={styles.actionBtn}
                                 onClick={() => navigate('/goals')}
                             >
-                                <div className={cn(styles.actionBtnIcon, "bg-zinc-900 text-rose-600 border border-rose-600")}>
+                                <div className={cn(styles.actionBtnIcon, "bg-[var(--brand-muted)] text-[var(--brand)]")}>
                                     <PiggyBank size={20} strokeWidth={2.5} />
                                 </div>
                                 Save for a Goal
@@ -558,7 +558,7 @@ const InsightsPage = () => {
                                 className={styles.actionBtn}
                                 onClick={() => navigate('/subscriptions')}
                             >
-                                <div className={cn(styles.actionBtnIcon, "bg-amber-50 text-amber-600")}>
+                                <div className={cn(styles.actionBtnIcon, "bg-[var(--warning-light)] text-[var(--warning)]")}>
                                     <CreditCard size={20} strokeWidth={2.5} />
                                 </div>
                                 Manage Subscriptions
