@@ -1,93 +1,25 @@
-import React, { useRef } from 'react'; // Added React imports
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Chrome, CreditCard, Sparkles, ArrowRight } from 'lucide-react';
-import styles from './HowItWorks.module.css';
-
-const steps = [
-    {
-        icon: Chrome,
-        title: "Install Extension",
-        desc: "Add to Chrome in one click. It sits quietly in your browser toolbar."
-    },
-    {
-        icon: CreditCard,
-        title: "Shop Normally",
-        desc: "Browse your favorite stores like Amazon or eBay. We auto-detect checkout."
-    },
-    {
-        icon: Sparkles,
-        title: "Watch the Magic",
-        desc: "Transactions appear instantly in your dashboard. Categories assigned automatically."
-    }
+const STEPS = [
+    { title: 'Install Cashly', body: 'Create an account and add the browser extension. It watches checkouts — not your passwords.' },
+    { title: 'Review the inbox', body: 'New charges wait for you. Approve, edit, merge, or reject before anything hits the ledger.' },
+    { title: 'See the picture', body: 'Budgets, bills, and AI coaching use approved numbers, so advice stays honest.' },
 ];
 
-const HowItWorks = () => {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start center", "end center"]
-    });
-
-    const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
+export default function HowItWorks() {
     return (
-        <section className={styles.section} id="how-it-works" ref={ref}>
-            <div className={styles.container}>
-                <motion.h2
-                    className={styles.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
-                    How It Works
-                </motion.h2>
-                <p className={styles.subtitle}>Start tracking your automated financial life in 3 simple steps.</p>
-
-                <div className={styles.timeline}>
-                    {steps.map((step, index) => (
-                        <StepCard
-                            key={index}
-                            step={step}
-                            index={index}
-                        />
+        <section id="how-it-works" className="border-y border-[#E7E5E4] bg-[#F4F0EB]">
+            <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+                <h2 className="font-display text-3xl font-semibold tracking-tight text-[#1C1917]">How it works</h2>
+                <p className="mt-2 max-w-2xl text-[#57534E]">Three quiet steps. You stay in control of what is real.</p>
+                <div className="mt-10 grid gap-5 md:grid-cols-3">
+                    {STEPS.map((step, index) => (
+                        <article key={step.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-6 shadow-[var(--shadow-sm)]">
+                            <p className="text-sm font-medium text-[#E11D48]">{index + 1}</p>
+                            <h3 className="mt-2 font-display text-lg font-semibold text-[#1C1917]">{step.title}</h3>
+                            <p className="mt-2 text-sm leading-relaxed text-[#57534E]">{step.body}</p>
+                        </article>
                     ))}
                 </div>
             </div>
         </section>
     );
-};
-
-const StepCard = ({ step, index }: { step: any, index: number }) => {
-    return (
-        <motion.div
-            className={styles.step}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.2 }}
-        >
-            <motion.div
-                className={styles.iconWrapper}
-                whileHover={{ scale: 1.1, rotate: 5, backgroundColor: "#FEF2F2", borderColor: "#DC2626" }}
-                animate={{
-                    boxShadow: ["0px 0px 0px rgba(220,38,38,0)", "0px 0px 15px rgba(220,38,38,0.2)", "0px 0px 0px rgba(220,38,38,0)"]
-                }}
-                transition={{
-                    boxShadow: {
-                        duration: 3,
-                        repeat: Infinity,
-                        delay: index * 1
-                    }
-                }}
-            >
-                <step.icon size={40} color={index === 1 ? "#DC2626" : "#64748B"} style={{ transition: 'color 0.3s' }} />
-            </motion.div>
-            <div>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepDesc}>{step.desc}</p>
-            </div>
-        </motion.div>
-    );
 }
-
-export default HowItWorks;

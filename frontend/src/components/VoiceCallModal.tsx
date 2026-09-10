@@ -209,43 +209,40 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                 <motion.div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleEndCall} />
 
                 <motion.div 
-                    className="relative w-full max-w-xl bg-white border-[3px] border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col h-[85vh]"
+                    className="relative flex h-[85vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white shadow-[var(--shadow-lg)]"
                     initial={{ scale: 0.9, y: 30, opacity: 0 }}
                     animate={{ scale: 1, y: 0, opacity: 1 }}
                     transition={{ type: "spring", damping: 25, stiffness: 300 }}
                 >
                     {/* Header */}
-                    <div className="relative p-6 flex justify-between items-center border-b-[3px] border-black bg-white">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-black text-white flex items-center justify-center border-2 border-black shadow-[4px_4px_0px_#3b82f6]">
-                                <Sparkles size={24} />
+                    <div className="flex items-center justify-between border-b border-[#E7E5E4] bg-[#FAF8F5] p-5">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFE4E6] text-[#E11D48]">
+                                <Sparkles size={20} />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black uppercase tracking-tight">AI Voice Assistant</h2>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse" />
-                                    <span className="text-[10px] font-black text-black uppercase tracking-widest">
-                                        {callStatus === 'connecting' ? 'Connecting...' : 'Neural Link Active'}
-                                    </span>
-                                </div>
+                                <h2 className="font-display text-lg font-semibold">Voice</h2>
+                                <span className="text-xs text-[#78716C]">
+                                    {callStatus === 'connecting' ? 'Connecting…' : 'Cashly is ready'}
+                                </span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="hidden sm:block text-right pr-4 border-r-2 border-black">
-                                <p className="text-[10px] text-black/40 uppercase font-black tracking-widest">Duration</p>
-                                <p className="text-sm font-black text-black">{formatDuration(callDuration)}</p>
+                        <div className="flex items-center gap-3">
+                            <div className="hidden text-right sm:block">
+                                <p className="text-xs text-[#78716C]">Duration</p>
+                                <p className="text-sm font-medium tabular-nums">{formatDuration(callDuration)}</p>
                             </div>
                             <button 
                                 onClick={handleEndCall}
-                                className="w-10 h-10 flex items-center justify-center border-2 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0px_#000]"
+                                className="flex h-9 w-9 items-center justify-center rounded-lg text-[#78716C] hover:bg-white"
                             >
-                                <X size={20} strokeWidth={3} />
+                                <X size={18} />
                             </button>
                         </div>
                     </div>
 
                     {/* Main Content */}
-                    <div className="relative flex-1 flex flex-col p-8 overflow-hidden bg-[#F8FAFC]">
+                    <div className="relative flex flex-1 flex-col overflow-hidden bg-[#FAF8F5] p-6">
                         
                         {/* Avatar Section */}
                         <div className="flex flex-col items-center justify-center py-4">
@@ -304,25 +301,25 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                                 </motion.div>
                             </div>
 
-                            <h3 className="mt-8 text-2xl font-black text-black uppercase tracking-tight italic">
+                            <h3 className="mt-6 font-display text-xl font-semibold">
                                 {voiceName}
                             </h3>
                             
-                            <div className="mt-4 px-6 py-2 bg-black border-2 border-black shadow-[4px_4px_0px_#3b82f6]">
-                                <p className="text-[10px] font-black uppercase text-white tracking-[0.2em]">
+                            <div className="mt-3 rounded-full bg-white px-4 py-1.5 text-sm text-[#57534E] shadow-[var(--shadow-sm)]">
+                                <p>
                                     {callStatus === 'connecting'
-                                        ? 'Booting System...'
+                                        ? 'Connecting…'
                                         : isAISpeaking
-                                            ? 'Transmitting...'
+                                            ? 'Speaking…'
                                             : isThinking
-                                                ? 'Calculating...'
+                                                ? 'Thinking…'
                                                 : !micSupported
-                                                    ? 'Type below — mic not supported'
+                                                    ? 'Type a question'
                                                     : micError
                                                         ? micError
                                                         : isMuted
                                                             ? 'Muted'
-                                                            : 'Listening...'}
+                                                            : 'Listening'}
                                 </p>
                             </div>
                         </div>
@@ -330,12 +327,12 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                         {/* Transcript */}
                         <div 
                             ref={transcriptRef}
-                            className="flex-1 mt-8 border-[3px] border-black bg-white p-6 overflow-y-auto space-y-6 shadow-inner scrollbar-none"
+                            className="mt-6 flex-1 space-y-4 overflow-y-auto rounded-2xl border border-[#E7E5E4] bg-white p-4 scrollbar-none"
                         >
                             {transcript.length === 0 ? (
-                                <div className="h-full flex flex-col items-center justify-center opacity-10">
-                                    <Volume2 size={64} strokeWidth={3} />
-                                    <p className="mt-4 text-sm font-black uppercase tracking-[0.3em]">Neural Input Awaited</p>
+                                <div className="flex h-full flex-col items-center justify-center text-[#A8A29E]">
+                                    <Volume2 size={36} />
+                                    <p className="mt-3 text-sm">Waiting for a question</p>
                                 </div>
                             ) : (
                                 transcript.map((msg, idx) => (
@@ -344,14 +341,14 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                                         initial={{ opacity: 0, x: msg.role === 'ai' ? -10 : 10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         className={cn(
-                                            "max-w-[90%] p-4 border-[3px] border-black relative",
+                                            "max-w-[90%] rounded-xl p-3 text-sm",
                                             msg.role === 'ai' 
-                                                ? "bg-white self-start shadow-[6px_6px_0px_#3b82f6]" 
-                                                : "bg-[#000000] text-white self-end shadow-[6px_6px_0px_#3b82f6] ml-auto"
+                                                ? "bg-[#F4F0EB] self-start" 
+                                                : "ml-auto bg-[#E11D48] text-white self-end"
                                         )}
                                     >
-                                        <p className="text-[9px] font-black uppercase tracking-widest mb-2 border-b border-current pb-1">
-                                            {msg.role === 'ai' ? 'Neural Feedback' : 'User Signal'}
+                                        <p className="mb-1 text-[11px] opacity-70">
+                                            {msg.role === 'ai' ? 'Cashly' : 'You'}
                                         </p>
                                         <p className="font-bold text-sm leading-tight">{msg.text}</p>
                                     </motion.div>
@@ -386,7 +383,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                     </div>
 
                     {/* Controls */}
-                    <div className="p-6 bg-white border-t-[3px] border-black flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 border-t border-[#E7E5E4] bg-white p-5">
                         {(!micSupported || micError) && (
                             <form
                                 className="flex gap-3"
@@ -401,10 +398,10 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                                 <input
                                     value={typedMessage}
                                     onChange={(event) => setTypedMessage(event.target.value)}
-                                    placeholder="Mic not supported here — type a question"
-                                    className="flex-1 h-12 px-4 border-[3px] border-black font-bold text-sm focus:outline-none"
+                                    placeholder="Type a question"
+                                    className="h-11 flex-1 rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none focus:border-[#E11D48]"
                                 />
-                                <button type="submit" className="h-12 px-4 border-[3px] border-black bg-black text-white font-black uppercase text-xs">
+                                <button type="submit" className="h-11 rounded-[var(--r-md)] bg-[#E11D48] px-4 text-sm font-medium text-white">
                                     Send
                                 </button>
                             </form>
@@ -438,10 +435,8 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                     </div>
 
                     {/* Status Bar */}
-                    <div className="py-2 px-6 bg-black text-center border-t-[3px] border-black">
-                        <p className="text-[8px] font-black uppercase text-white tracking-[0.5em]">
-                            Cashly Neural Interface — v6.0.4 — Secured
-                        </p>
+                    <div className="border-t border-[#E7E5E4] bg-[#FAF8F5] px-6 py-2 text-center text-xs text-[#78716C]">
+                        Cashly voice
                     </div>
                 </motion.div>
             </motion.div>

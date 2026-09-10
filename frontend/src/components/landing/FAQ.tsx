@@ -1,83 +1,30 @@
-
-import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './FAQ.module.css';
-
-const faqs = [
+const ITEMS = [
     {
-        question: "Is Finzen really free?",
-        answer: "Yes! We offer a generous free plan that includes the browser extension, basic tracking, and monthly summaries. For advanced features like AI predictions, unlimited budgets, and custom goal tracking, we offer a Premium plan."
+        q: 'Does Cashly post charges automatically?',
+        a: 'Only if you approve them, or if you set a trusted merchant rule. Everything else waits in the inbox.',
     },
     {
-        question: "Is my financial data safe?",
-        answer: "Absolutely. We use bank-grade 256-bit encryption to protect your data. Your credentials are never stored on our servers, and we never sell your personal information to third parties."
+        q: 'What does the extension see?',
+        a: 'Checkout pages and amounts — not your banking password. You still sign in to Cashly to sync.',
     },
     {
-        question: "Which browsers does the extension support?",
-        answer: "The Finzen extension is currently available for Google Chrome, Mozilla Firefox, Microsoft Edge, and Brave. Safari support is coming soon!"
+        q: 'Is the AI looking at live data?',
+        a: 'Yes. Coaching uses your approved ledger. Pending inbox items are labeled so they are not treated as spent.',
     },
-    {
-        question: "Can I use Finzen on my phone?",
-        answer: "Yes! While the extension works on your desktop browser, you can access your dashboard, view insights, and manage budgets from any mobile device via our responsive web app."
-    },
-    {
-        question: "How does the auto-tracking work?",
-        answer: "Our extension detects checkout confirmations on supported e-commerce sites. It securely captures the order total, date, and merchant name, then syncs it to your dashboard instantly. No manual entry required!"
-    }
 ];
 
-const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
+export default function FAQ() {
     return (
-        <div className={styles.faqItem} data-open={isOpen}>
-            <button
-                className={styles.question}
-                onClick={() => setIsOpen(!isOpen)}
-                aria-expanded={isOpen}
-            >
-                {question}
-                <ChevronDown className={styles.icon} />
-            </button>
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className={styles.answerWrapper}
-                    >
-                        <div className={styles.answer}>
-                            <p className={styles.answerText}>{answer}</p>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
-    );
-};
-
-const FAQ = () => {
-    return (
-        <section className={styles.faqSection} id="faq">
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <h2 className={styles.title}>Frequently Asked Questions</h2>
-                    <p className={styles.subtitle}>
-                        Everything you need to know about Finzen and how it works.
-                    </p>
-                </div>
-
-                <div className={styles.faqList}>
-                    {faqs.map((faq, index) => (
-                        <FAQItem key={index} {...faq} />
-                    ))}
-                </div>
+        <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+            <h2 className="font-display text-3xl font-semibold tracking-tight text-[#1C1917]">Questions</h2>
+            <div className="mt-8 space-y-4">
+                {ITEMS.map((item) => (
+                    <details key={item.q} className="rounded-2xl border border-[#E7E5E4] bg-white px-5 py-4 shadow-[var(--shadow-sm)]">
+                        <summary className="cursor-pointer font-display font-semibold text-[#1C1917]">{item.q}</summary>
+                        <p className="mt-2 text-sm leading-relaxed text-[#57534E]">{item.a}</p>
+                    </details>
+                ))}
             </div>
         </section>
     );
-};
-
-export default FAQ;
+}

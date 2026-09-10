@@ -1,94 +1,29 @@
-
 import { Link } from 'react-router-dom';
-import { Twitter, Instagram, Linkedin, Github, Send } from 'lucide-react';
-import styles from './Footer.module.css';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-const Footer = () => {
+export default function Footer() {
     return (
-        <footer className={styles.footer}>
-            <div className={styles.container}>
-                <div className={styles.topSection}>
-                    {/* Brand Column */}
-                    <div className={styles.brandCol}>
-                        <Link to="/" className={styles.logo}>
-                            <span style={{ color: '#DC2626', fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>FIN</span>
-                            <span style={{ color: 'white', fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>ZEN</span>
-                        </Link>
-                        <p className={styles.description}>
-                            The smart expense tracker that works in the background.
-                            Master your money without the manual work.
-                        </p>
-                        <div className={styles.newsletter}>
-                            <p style={{ marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: 'white' }}>
-                                Subscribe to our newsletter
-                            </p>
-                            <div className={styles.inputGroup}>
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className={styles.input}
-                                />
-                                <button className={styles.submitBtn}>
-                                    <Send size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Product Column */}
-                    <div>
-                        <h4 className={styles.columnTitle}>Product</h4>
-                        <ul className={styles.linkList}>
-                            <li><a href="#features" className={styles.link}>Features</a></li>
-                            <li><a href="#how-it-works" className={styles.link}>How It Works</a></li>
-                            <li><Link to="/pricing" className={styles.link}>Pricing</Link></li>
-                            <li><a href="#" className={styles.link}>Extension</a></li>
-                            <li><a href="#" className={styles.link}>Changelog</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Resources Column */}
-                    <div>
-                        <h4 className={styles.columnTitle}>Resources</h4>
-                        <ul className={styles.linkList}>
-                            <li><a href="#" className={styles.link}>Blog</a></li>
-                            <li><a href="#" className={styles.link}>Community</a></li>
-                            <li><a href="#" className={styles.link}>Help Center</a></li>
-                            <li><a href="#" className={styles.link}>Privacy Guide</a></li>
-                            <li><a href="#" className={styles.link}>Status</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Company Column */}
-                    <div>
-                        <h4 className={styles.columnTitle}>Company</h4>
-                        <ul className={styles.linkList}>
-                            <li><a href="#" className={styles.link}>About Us</a></li>
-                            <li><a href="#" className={styles.link}>Careers</a></li>
-                            <li><a href="#" className={styles.link}>Legal</a></li>
-                            <li><a href="#" className={styles.link}>Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div className={styles.bottomSection}>
-                    <p className={styles.copyright}>
-                        &copy; {new Date().getFullYear()} Finzen. All rights reserved.
+        <section id="extension" className="border-t border-[#E7E5E4] bg-[#1C1917] text-[#FAF8F5]">
+            <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 py-14 sm:flex-row sm:items-center sm:px-6">
+                <div>
+                    <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Add the extension, then breathe.</h2>
+                    <p className="mt-2 max-w-xl text-sm text-[#A8A29E]">
+                        Capture happens in the background. You decide what is real when you open the inbox.
                     </p>
-                    <div className={styles.socialLinks}>
-                        <a href="#" className={styles.socialLink}><Twitter size={20} /></a>
-                        <a href="#" className={styles.socialLink}><Instagram size={20} /></a>
-                        <a href="#" className={styles.socialLink}><Linkedin size={20} /></a>
-                        <a href="#" className={styles.socialLink}><Github size={20} /></a>
-                    </div>
-                    <div className={styles.bottomLinks}>
-                        <Link to="/privacy" className={styles.link}>Privacy Policy</Link>
-                        <Link to="/terms" className={styles.link}>Terms of Service</Link>
-                    </div>
+                </div>
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+                    <Button asChild>
+                        <Link to="/signup">
+                            Get started
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="border-white/20 bg-transparent text-white hover:bg-white/10">
+                        <a href="/cashly-extension.zip">Download extension</a>
+                    </Button>
                 </div>
             </div>
-        </footer>
+        </section>
     );
-};
-
-export default Footer;
+}

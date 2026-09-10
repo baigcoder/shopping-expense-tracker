@@ -30,8 +30,8 @@
     align-items: center;
     padding: 32px;
     background: #FFFFFF;
-    border: 4px solid #000000;
-    box-shadow: 8px 8px 0px #000000;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 24px;
     z-index: 50;
@@ -49,7 +49,7 @@
     width: 64px;
     height: 64px;
     background: #000000;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,10 +58,10 @@
 
 .title {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     margin: 0;
     letter-spacing: -0.05em;
-    text-transform: uppercase;
+    text-transform: none;
     font-style: italic;
     display: flex;
     align-items: center;
@@ -75,12 +75,12 @@
     gap: 8px;
     padding: 6px 12px;
     background: #E11D48;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 600;
     color: #FFFFFF;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    text-transform: none;
     font-style: normal;
 }
 
@@ -88,7 +88,7 @@
     width: 8px;
     height: 8px;
     background: #FFFFFF;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     animation: stark-pulse 1.5s infinite;
 }
 
@@ -107,7 +107,7 @@
 
 .mainHeroCard {
     background: #E11D48;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 40px;
     color: white;
     position: relative;
@@ -115,14 +115,14 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 240px;
-    box-shadow: 10px 10px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .heroIcon {
     width: 64px;
     height: 64px;
     background: #000000;
-    border: 3px solid #FFFFFF;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,15 +131,15 @@
 
 .heroLabel {
     font-size: 14px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     color: rgba(255, 255, 255, 0.8);
 }
 
 .heroValue {
     font-size: 3.5rem;
-    font-weight: 900;
+    font-weight: 600;
     margin: 12px 0;
     letter-spacing: -0.05em;
     line-height: 1;
@@ -151,9 +151,9 @@
     gap: 8px;
     padding: 8px 16px;
     background: #000000;
-    border: 2px solid #FFFFFF;
+    border: 1px solid var(--border);
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
     color: #FFFFFF;
 }
 
@@ -169,9 +169,9 @@
 
 .premiumMiniCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 32px;
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -179,14 +179,14 @@
 }
 
 .premiumMiniCard:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .miniIconBox {
     width: 52px;
     height: 52px;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,15 +196,15 @@
 
 .miniLabel {
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .miniValueText {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     display: block;
     margin-top: 4px;
@@ -219,9 +219,9 @@
 
 .visualCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 40px;
-    box-shadow: 12px 12px 0px #000000;
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -238,9 +238,9 @@
 
 .cardH3 {
     font-size: 1.75rem;
-    font-weight: 900;
+    font-weight: 600;
     margin: 0;
-    text-transform: uppercase;
+    text-transform: none;
     font-style: italic;
     color: #000000;
 }
@@ -249,8 +249,8 @@
     font-size: 14px;
     color: rgba(0, 0, 0, 0.6);
     margin: 8px 0 0;
-    font-weight: 800;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: 0.05em;
 }
 
@@ -259,7 +259,7 @@
     display: flex;
     background: #000000;
     padding: 6px;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     gap: 6px;
 }
 
@@ -267,13 +267,13 @@
     padding: 10px 20px;
     border: 2px solid transparent;
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.1s;
     color: #FFFFFF;
     background: transparent;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .tabBtn:hover { color: #E11D48; }
@@ -287,9 +287,9 @@
 /* === MERCHANT LISTING === */
 .merchantsSection {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 40px;
-    box-shadow: 8px 8px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .merchantGrid {
@@ -305,15 +305,15 @@
     gap: 20px;
     padding: 24px;
     background: #FFFFFF;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     transition: all 0.1s;
 }
 
 .merchantTile:hover {
     background: #000000;
     color: #FFFFFF;
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .rankCircle {
@@ -321,12 +321,12 @@
     height: 40px;
     background: #000000;
     color: #FFFFFF;
-    border: 2px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 .merchantTile:hover .rankCircle {
@@ -338,8 +338,8 @@
 
 .mName {
     font-size: 16px;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -348,15 +348,15 @@
 
 .mCount {
     font-size: 11px;
-    font-weight: 800;
+    font-weight: 600;
     color: inherit;
     opacity: 0.6;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .mAmount {
     font-size: 18px;
-    font-weight: 900;
+    font-weight: 600;
     color: #E11D48;
 }
 
@@ -375,7 +375,7 @@
     width: 52px;
     height: 52px;
     background: #000000;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;

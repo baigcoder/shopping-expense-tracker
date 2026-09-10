@@ -235,7 +235,7 @@ const ShoppingActivityPage = () => {
                             SyncStream Intel
                             <span className={styles.liveBadge}>
                                 <Activity size={14} strokeWidth={3} className="animate-pulse" />
-                                LIVE_TELEMETRY
+                                Live activity
                             </span>
                         </h1>
                         <p>REAL-TIME EXTENSION FEED // AUTOMATED NODE ANALYSIS</p>
@@ -284,7 +284,7 @@ const ShoppingActivityPage = () => {
                         {filteredSites.length === 0 ? (
                             <motion.div key="empty" className={styles.emptyState} variants={itemVariants}>
                                 <ShoppingBag size={80} strokeWidth={1} className="text-black/10" />
-                                <h3>TELEMETRY_QUIET</h3>
+                                <h3>Quiet for now</h3>
                                 <p>NO_ACTIVE_NODES_DETECTED_IN_INTERVAL</p>
                             </motion.div>
                         ) : (

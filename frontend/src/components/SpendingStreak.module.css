@@ -4,10 +4,10 @@
 .card {
     background: #000;
     color: #fff;
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
     /* Cool dark mesh gradient */
     background: radial-gradient(circle at top right, #1F2937, #000);
     position: relative;
@@ -53,7 +53,7 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 2px;
 }
 
@@ -62,11 +62,11 @@
     color: #000;
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 0.8rem;
-    text-transform: uppercase;
-    border: 2px solid #fff;
-    box-shadow: 3px 3px 0 #fff;
+    text-transform: none;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
     transform: rotate(2deg);
 }
 
@@ -107,7 +107,7 @@
 .number {
     font-family: 'Outfit', sans-serif;
     font-size: 5rem;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 0.9;
     background: linear-gradient(180deg, #fff 0%, #FBBF24 100%);
     -webkit-background-clip: text;
@@ -152,7 +152,7 @@
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 4px;
     color: #6B7280;
 }
@@ -160,7 +160,7 @@
 .streakMessage {
     font-family: 'Outfit', sans-serif;
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #fff;
     margin-top: 1rem;
     text-shadow: 2px 2px 0 #000;
@@ -227,7 +227,7 @@
     font-size: 0.9rem;
     color: #9CA3AF;
     margin-bottom: 0.5rem;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .todayInfo {
@@ -247,9 +247,9 @@
     text-align: center;
     padding: 0.75rem;
     border-radius: 8px;
-    font-weight: 800;
+    font-weight: 600;
     font-family: 'Space Grotesk', sans-serif;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 1px;
     border: 2px solid transparent;
 }
@@ -286,7 +286,7 @@
     font-size: 0.9rem;
     color: #9CA3AF;
     margin-bottom: 0.75rem;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* Best Streak Footer */

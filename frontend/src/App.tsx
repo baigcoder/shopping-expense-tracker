@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './store/useStore';
 import { supabase } from './config/supabase';
-import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import { Spinner } from './components/LoadingSkeleton';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -207,7 +206,7 @@ function App() {
     // Wait for BOTH hydration AND session check to complete
     if (!hasHydrated || isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5]">
                 <Spinner size={40} color="#E11D48" />
             </div>
         );
@@ -224,20 +223,20 @@ function App() {
                     toastOptions={{
                         style: {
                             background: '#FFFFFF',
-                            border: '3px solid #09090B',
-                            borderRadius: '0',
-                            color: '#09090B',
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
-                            fontSize: '0.8rem',
-                            boxShadow: '6px 6px 0 #E11D48'
+                            border: '1px solid #E7E5E4',
+                            borderRadius: '16px',
+                            color: '#1C1917',
+                            fontWeight: 500,
+                            textTransform: 'none',
+                            letterSpacing: '0',
+                            fontSize: '0.9rem',
+                            boxShadow: '0 1px 2px rgba(28,25,23,0.06), 0 8px 24px rgba(28,25,23,0.06)',
                         }
                     }}
                 />
                 <Suspense fallback={
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-                        <div className="w-14 h-14 bg-[#09090B] border-[3px] border-black flex items-center justify-center text-white font-black text-2xl shadow-[6px_6px_0_#E11D48] mb-6 animate-pulse">
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF8F5]">
+                        <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E11D48] font-display text-xl font-semibold text-white shadow-[var(--shadow-md)]">
                             C
                         </div>
                         <Spinner size={32} color="#E11D48" />

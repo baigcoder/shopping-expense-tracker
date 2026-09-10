@@ -32,14 +32,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 4px solid #E11D48;
-    box-shadow: 4px 4px 0px #E11D48;
+    border: 1px solid #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .headerInfo h1 {
     font-size: 2.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: -0.05em;
     margin: 0;
 }
@@ -48,8 +48,8 @@
     font-size: 0.9rem;
     font-weight: 700;
     color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 /* === OVERVIEW GRID === */
@@ -62,29 +62,29 @@
 
 .premiumStatCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 2rem;
-    box-shadow: 8px 8px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .overBudgetCard {
     border-color: #E11D48;
-    box-shadow: 8px 8px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .statLabel {
     font-size: 0.75rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
     display: block;
 }
 
 .statValue {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -93,9 +93,9 @@
 
 .statSubtext {
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #94a3b8;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* === BUDGET GRID === */
@@ -107,9 +107,9 @@
 
 .premiumBudgetCard {
     background: #FFFFFF;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     padding: 2rem;
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: var(--shadow-md);
     transition: all 0.2s;
     display: flex;
     flex-direction: column;
@@ -117,8 +117,8 @@
 }
 
 .premiumBudgetCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #000000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .cardTop {
@@ -131,7 +131,7 @@
     width: 3.5rem;
     height: 3.5rem;
     background: #f8fafc;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,8 +140,8 @@
 
 .budgetInfo h3 {
     font-size: 1.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     margin: 0;
 }
 
@@ -150,7 +150,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #64748b;
 }
 
@@ -165,14 +165,14 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.7rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
 }
 
 .progressBar {
     height: 1.5rem;
     background: #f1f5f9;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
 }
 
 .progressFill {
@@ -184,7 +184,7 @@
 /* === STATUSES === */
 .danger .progressFill { background: #E11D48; }
 .danger .statValue { color: #E11D48; }
-.danger { border-color: #E11D48; box-shadow: 6px 6px 0px #E11D48; }
+.danger { border-color: #E11D48; box-shadow: var(--shadow-md); }
 
 .warning .progressFill { background: #f59e0b; }
 
@@ -194,9 +194,9 @@
     color: #FFFFFF;
     padding: 0.75rem 1rem;
     font-size: 0.7rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -205,15 +205,15 @@
 /* === MODAL === */
 .glassDialog {
     background: #FFFFFF !important;
-    border: 4px solid #000000 !important;
+    border: 1px solid var(--border) !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    box-shadow: 16px 16px 0px #000000 !important;
+    box-shadow: var(--shadow-md) !important;
 }
 
 .modalHeader {
     background: #f8fafc;
-    border-bottom: 4px solid #000000;
+    border-bottom: 1px solid var(--border);
     padding: 2rem;
 }
 
@@ -225,7 +225,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     margin-bottom: 1rem;
 }
 
@@ -236,14 +236,14 @@
 .labelPremium {
     display: block;
     font-size: 0.8rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     margin-bottom: 0.75rem;
 }
 
 .premiumInput {
     height: 3.5rem;
-    border: 3px solid #000000 !important;
+    border: 1px solid var(--border) !important;
     border-radius: 0 !important;
     font-weight: 700;
     background: #FFFFFF !important;
@@ -257,9 +257,9 @@
 
 .amountBtn {
     height: 3rem;
-    border: 2px solid #000000;
+    border: 1px solid var(--border);
     background: #FFFFFF;
-    font-weight: 900;
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -329,7 +329,7 @@
     .premiumBudgetCard,
     .emptyStateCard {
         padding: 1.25rem;
-        box-shadow: 5px 5px 0px #000000;
+        box-shadow: var(--shadow-md);
     }
 
     .statValue {

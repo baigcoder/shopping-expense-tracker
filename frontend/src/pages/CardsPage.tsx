@@ -195,7 +195,7 @@ const CardsPage = () => {
         setCvvPassword('');
         setConfirmCvvPassword('');
         setCvvValue('');
-        toast.success('VAULT_PROTECTED');
+        toast.success('Card locked');
         sound.playSuccess();
     };
 
@@ -337,7 +337,7 @@ const CardsPage = () => {
                 <div className={styles.sectionHeader}>
                     <div className={styles.sectionTitle}>
                         <h2>Digital Wallet</h2>
-                        <p>SECURE_VIRTUAL_ASSET_VAULT</p>
+                        <p>Your saved cards</p>
                     </div>
                     <div className={styles.sectionLine} />
                     <div className={styles.encryptedTag}>
@@ -550,7 +550,7 @@ const CardsPage = () => {
                                                 className="h-12 border-2 border-white bg-black text-white"
                                             />
                                             <div className="flex gap-4">
-                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleSaveCvvPassword}>INITIALIZE_VAULT</button>
+                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleSaveCvvPassword}>Save lock</button>
                                                 <button className="px-6 border-2 border-white font-black uppercase text-xs" onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}>ABORT</button>
                                             </div>
                                         </div>
@@ -582,13 +582,13 @@ const CardsPage = () => {
                                     ) : (
                                         <div className="flex items-center justify-between">
                                             <span className="text-xs font-black uppercase opacity-70">
-                                                {viewingCard.cvv_password ? 'VAULT_ENCRYPTED' : 'VAULT_EMPTY'}
+                                                {viewingCard.cvv_password ? 'Locked' : 'No lock'}
                                             </span>
                                             <button
                                                 className="h-12 px-8 bg-white text-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors"
                                                 onClick={() => viewingCard.cvv_password ? setIsVerifyingCvv(true) : setIsSettingCvvPassword(true)}
                                             >
-                                                {viewingCard.cvv_password ? 'ACCESS_VAULT' : 'INIT_VAULT'}
+                                                {viewingCard.cvv_password ? 'Unlock' : 'Set lock'}
                                             </button>
                                         </div>
                                     )}

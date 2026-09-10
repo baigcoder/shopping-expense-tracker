@@ -15,7 +15,7 @@
     justify-content: space-between;
     padding: 1.5rem 2.5rem;
     background: #FFFFFF;
-    border-bottom: 4px solid #000000;
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -31,28 +31,28 @@
     width: 3rem;
     height: 3rem;
     background: #000000;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 4px 4px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .brandName {
     font-size: 1.5rem;
-    font-weight: 950;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: -0.06em;
     color: #000000;
 }
 
 .brandPage {
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #E11D48;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .addBtn {
@@ -62,17 +62,17 @@
     padding: 1rem 2rem;
     background: #000000;
     color: #FFFFFF;
-    border: 4px solid #000000;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    box-shadow: 6px 6px 0px #E11D48;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
+    box-shadow: var(--shadow-md);
     transition: all 0.1s;
 }
 
 .addBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 /* === CONTENT AREA === */
@@ -91,24 +91,24 @@
 
 .heroCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 2rem;
     display: flex;
     align-items: center;
     gap: 2rem;
-    box-shadow: 8px 8px 0px #000000;
+    box-shadow: var(--shadow-md);
     transition: all 0.2s;
 }
 
 .heroCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .heroIcon {
     width: 4.5rem;
     height: 4.5rem;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,16 +133,16 @@
 
 .heroLabel {
     font-size: 0.8125rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
 }
 
 .heroValue {
     font-size: 2.25rem;
-    font-weight: 950;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.05em;
 }
@@ -154,8 +154,8 @@
     padding: 0.5rem 1rem;
     background: #000000;
     color: #FFFFFF;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     font-size: 0.75rem;
     margin-top: 1rem;
 }
@@ -167,7 +167,7 @@
 
 .tabs {
     display: inline-flex;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 0;
 }
 
@@ -175,11 +175,11 @@
     padding: 1rem 2.5rem;
     background: #FFFFFF;
     border: none;
-    border-right: 4px solid #000000;
+    border-right: 1px solid var(--border);
     font-size: 0.875rem;
-    font-weight: 950;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     color: #000000;
     cursor: pointer;
     transition: all 0.1s;
@@ -207,15 +207,15 @@
 
 .billCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
-    box-shadow: 8px 8px 0px #000000;
+    box-shadow: var(--shadow-md);
     transition: all 0.2s;
 }
 
 .billCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .calendarHeader {
@@ -227,20 +227,20 @@
     align-items: center;
     justify-content: center;
     padding: 2rem 1rem;
-    border-right: 4px solid #000000;
+    border-right: 1px solid var(--border);
 }
 
 .calendarMonth {
     font-size: 0.8125rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
 }
 
 .calendarDay {
     font-size: 3rem;
-    font-weight: 950;
+    font-weight: 600;
     line-height: 1;
 }
 
@@ -258,8 +258,8 @@
 
 .billInfo h4 {
     font-size: 1.5rem;
-    font-weight: 950;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: -0.04em;
     margin: 0 0 0.5rem;
 }
@@ -267,26 +267,26 @@
 .billCategory {
     display: inline-block;
     font-size: 0.75rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     color: #E11D48;
-    border: 2px solid #000000;
+    border: 1px solid var(--border);
     padding: 2px 8px;
     background: #FFFFFF;
-    box-shadow: 2px 2px 0px #000000;
+    box-shadow: var(--shadow-md);
     margin-bottom: 1rem;
 }
 
 .billAmount {
     font-size: 2rem;
-    font-weight: 950;
+    font-weight: 600;
     margin-bottom: 1.5rem;
 }
 
 .countdown {
     font-size: 0.8125rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: 0.05em;
     margin-bottom: 1rem;
     color: #E11D48;
@@ -297,10 +297,10 @@
     padding: 1.25rem;
     background: #000000;
     color: #FFFFFF;
-    border: 3px solid #000000;
-    font-weight: 950;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-top: auto;
     transition: all 0.1s;
 }
@@ -308,7 +308,7 @@
 .payBtn:hover {
     background: #FFFFFF;
     color: #000000;
-    box-shadow: 4px 4px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .paidBadge {
@@ -316,9 +316,9 @@
     padding: 1.25rem;
     background: #f1f5f9;
     color: #000000;
-    border: 3px solid #000000;
-    font-weight: 950;
-    text-transform: uppercase;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
     text-align: center;
     margin-top: auto;
 }
@@ -339,7 +339,7 @@
     border: 6px solid #000000;
     width: 100%;
     max-width: 600px;
-    box-shadow: 24px 24px 0px rgba(225, 29, 72, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .modalHeader {
@@ -353,8 +353,8 @@
 
 .modalHeader h2 {
     font-size: 2rem;
-    font-weight: 950;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: -0.05em;
 }
 
@@ -376,9 +376,9 @@
 .formGroup label {
     display: block;
     font-size: 0.875rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.75rem;
 }
 
@@ -387,21 +387,21 @@
 .formGroup textarea {
     width: 100%;
     padding: 1.25rem;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     background: #f8fafc;
-    font-weight: 900;
+    font-weight: 600;
     font-family: inherit;
 }
 
 .formGroup input:focus {
     background: #FFFFFF;
-    box-shadow: 6px 6px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .modalFooter {
     padding: 2.5rem 3rem;
     background: #f1f5f9;
-    border-top: 4px solid #000000;
+    border-top: 1px solid var(--border);
     display: flex;
     gap: 1.5rem;
 }
@@ -411,19 +411,19 @@
     padding: 1.5rem;
     background: #000000;
     color: #FFFFFF;
-    border: 4px solid #000000;
-    font-weight: 950;
-    text-transform: uppercase;
-    box-shadow: 6px 6px 0px #E11D48;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .cancelBtn {
     flex: 1;
     padding: 1.5rem;
     background: #FFFFFF;
-    border: 4px solid #000000;
-    font-weight: 950;
-    text-transform: uppercase;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
 }
 
 @media (max-width: 768px) {
@@ -479,6 +479,6 @@
     .modal {
         max-height: calc(100dvh - 1.5rem);
         overflow-y: auto;
-        box-shadow: 8px 8px 0px rgba(225, 29, 72, 0.3);
+        box-shadow: var(--shadow-md);
     }
 }

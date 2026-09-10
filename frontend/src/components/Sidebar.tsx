@@ -161,13 +161,13 @@ const Sidebar = () => {
                     isExpanded && 'sidebar-expanded'
                 )}
                 style={{
-                    background: 'var(--bg-card)',
+                    background: 'var(--bg-sidebar)',
                     borderRight: '1px solid var(--border)',
                     boxShadow: isExpanded ? '10px 0 40px -10px rgba(0,0,0,0.06)' : 'none',
                     willChange: 'width',
                 }}
                 initial={false}
-                animate={{ width: isExpanded ? 272 : 76 }}
+                animate={{ width: isExpanded ? 248 : 68 }}
                 transition={SPRING}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={handleMouseEnter}
@@ -191,13 +191,13 @@ const Sidebar = () => {
                                 exit={{ opacity: 0, x: -8 }} transition={FADE}
                                 className="min-w-0 flex-1 overflow-hidden"
                             >
-                                <p className="text-[17px] font-black tracking-tight truncate"
+                                <p className="font-display text-[16px] font-semibold tracking-tight truncate"
                                    style={{ color: 'var(--text-primary)' }}>
                                     Cashly
                                 </p>
-                                <p className="text-[10px] font-bold uppercase tracking-[0.15em] truncate"
-                                   style={{ color: 'var(--brand)' }}>
-                                    AI Finance
+                                <p className="text-[11px] truncate"
+                                   style={{ color: 'var(--text-muted)' }}>
+                                    Review first
                                 </p>
                             </motion.div>
                         )}
@@ -220,7 +220,7 @@ const Sidebar = () => {
                                     exit={{ opacity: 0, width: 0 }}
                                     className="overflow-hidden whitespace-nowrap"
                                 >
-                                    Quick Add
+                                    Add
                                 </motion.span>
                             )}
                         </AnimatePresence>
@@ -245,7 +245,7 @@ const Sidebar = () => {
                                             onClick={() => toggleGroup(group.label)}
                                             className="flex items-center justify-between w-full px-3 pt-4 pb-2 group"
                                         >
-                                            <span className="text-[10px] font-black uppercase tracking-[0.15em]"
+                                            <span className="text-[11px] font-medium"
                                                   style={{ color: 'var(--text-muted)' }}>
                                                 {group.label}
                                             </span>
@@ -281,11 +281,7 @@ const Sidebar = () => {
                                                         isActive && styles.active
                                                     )}
                                                 >
-                                                    <motion.span 
-                                                        className={styles.navIcon}
-                                                        whileHover={{ scale: 1.2, rotate: 5, color: '#3b82f6' }}
-                                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                                    >
+                                                    <motion.span className={styles.navIcon}>
                                                         <item.icon size={20} strokeWidth={2.5} />
                                                     </motion.span>
 

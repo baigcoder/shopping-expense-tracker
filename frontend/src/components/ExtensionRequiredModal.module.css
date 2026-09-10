@@ -15,12 +15,12 @@
 
 .modal {
     background: #FFFFFF;
-    border: 4px solid #09090B;
+    border: 1px solid var(--border);
     border-radius: 10px;
     max-width: 480px;
     width: 100%;
     max-height: 88vh;
-    box-shadow: 8px 8px 0 #E11D48;
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -57,14 +57,14 @@
     width: 72px;
     height: 72px;
     background: #FFFFFF;
-    border: 3px solid #09090B;
+    border: 1px solid var(--border);
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
     color: #09090B;
-    box-shadow: 5px 5px 0 #E11D48;
+    box-shadow: var(--shadow-md);
     font-size: 1.75rem;
     position: relative;
 }
@@ -110,16 +110,16 @@
 
 .statusText {
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #059669;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.08em;
 }
 
 .title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 1.75rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #0F172A;
     margin: 0 0 0.75rem;
     letter-spacing: -0.03em;
@@ -173,8 +173,8 @@
 .feature:hover {
     background: #FFFFFF;
     border-color: #09090B;
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .feature svg {
@@ -202,20 +202,20 @@
     padding: 1.1rem;
     background: #09090B;
     color: #FFFFFF;
-    border: 3px solid #09090B;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-weight: 750;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    box-shadow: 5px 5px 0 #E11D48;
+    box-shadow: var(--shadow-md);
     position: relative;
     overflow: hidden;
 }
 
 .installBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 7px 7px 0 #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .refreshBtn,
@@ -270,8 +270,8 @@
     font-size: 0.75rem;
     font-weight: 850;
     color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -288,7 +288,7 @@
 
 .instructions li::marker {
     color: #2563EB;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .instructions code {
@@ -304,7 +304,7 @@
 
 @media (max-width: 480px) {
     .modal {
-        border-radius: 0;
+        border-radius: var(--r-lg);
         max-height: 100dvh;
         height: 100dvh;
         box-shadow: none;

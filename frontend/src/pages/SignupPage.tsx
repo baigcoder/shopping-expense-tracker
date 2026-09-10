@@ -1,31 +1,24 @@
-// SignupPage - Stark Gen Z Professional Terminal Enrollment
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Eye, EyeOff, Inbox, Loader2, Lock, Mail, Settings, ShieldCheck, Sparkles, User, Target, Activity, Zap, Cpu, Globe, BarChart3, Shield } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
 import { signInWithGoogle } from '../config/supabase';
 import { sendSignupOTP } from '../services/otpService';
 import { toast } from 'sonner';
 import { formatSupabaseError, isValidEmail } from '../utils/validationUtils';
 import { cn } from '@/lib/utils';
-import BRAND from '@/config/branding';
 import { soundManager } from '@/lib/sounds';
-
-const FEATURES = [
-    { icon: Inbox,       label: 'SMART_INBOX', desc: 'Authorize every transaction before it hits your ledger.' },
-    { icon: Cpu,         label: 'AI_INSIGHTS', desc: 'Secure AI processing for deep financial intelligence.' },
-    { icon: Globe,       label: 'AUTO_SYNC', desc: 'Real-time synchronization across all your access nodes.' },
-    { icon: BarChart3,   label: 'DETAILED_REPORTS', desc: 'Pixel-perfect reports for professional-grade auditing.' },
-];
+import AuthLayout from '../layouts/AuthLayout';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const SignupPage = () => {
-    const [name, setName]                   = useState('');
-    const [email, setEmail]                 = useState('');
-    const [password, setPassword]           = useState('');
-    const [confirm, setConfirm]             = useState('');
-    const [showPw, setShowPw]               = useState(false);
-    const [isLoading, setIsLoading]         = useState(false);
-    const [touched, setTouched]             = useState({ name:false, email:false, password:false, confirm:false });
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirm, setConfirm] = useState('');
+    const [showPw, setShowPw] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [touched, setTouched] = useState({ name: false, email: false, password: false, confirm: false });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,16 +35,16 @@ const SignupPage = () => {
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         soundManager.play('click');
-        setTouched({ name:true, email:true, password:true, confirm:true });
-        if (!name || !email || !password || !confirm) { toast.error('FIELDS_EMPTY'); soundManager.play('error'); return; }
-        if (!isValidEmail(email)) { toast.error('INVALID_EMAIL_NODE'); soundManager.play('error'); return; }
-        if (password.length < 6) { toast.error('KEY_TOO_SHORT'); soundManager.play('error'); return; }
-        if (password !== confirm) { toast.error('PASSPHRASE_MISMATCH'); soundManager.play('error'); return; }
+        setTouched({ name: true, email: true, password: true, confirm: true });
+        if (!name || !email || !password || !confirm) { toast.error('Please fill in every field'); soundManager.play('error'); return; }
+        if (!isValidEmail(email)) { toast.error('That email does not look valid'); soundManager.play('error'); return; }
+        if (password.length < 6) { toast.error('Use at least 6 characters'); soundManager.play('error'); return; }
+        if (password !== confirm) { toast.error('Passwords do not match'); soundManager.play('error'); return; }
         setIsLoading(true);
         try {
             await sendSignupOTP(email, password, name);
             soundManager.play('success');
-            toast.success('OTP_SENT_TO_YOUR_EMAIL');
+            toast.success('We sent a code to your email');
             navigate('/verify-email', { state: { email } });
         } catch (error) {
             soundManager.play('error');
@@ -64,250 +57,104 @@ const SignupPage = () => {
         soundManager.play('click');
         setIsLoading(true);
         try {
-            // Redirect-based OAuth — the page navigates to Google, then back to /dashboard
             await signInWithGoogle();
         } catch (error: any) {
             soundManager.play('error');
             console.error('[Cashly Signup] Google sign-in error:', error);
-            const msg = error?.message || error?.code || 'Google sign-in failed. Please try again.';
-            toast.error(msg);
+            toast.error(error?.message || error?.code || 'Google sign-in failed. Please try again.');
             setIsLoading(false);
         }
     };
 
-    const nameError    = touched.name    && !name;
-    const emailError   = touched.email   && !!email && !isValidEmail(email);
-    const pwError      = touched.password && !!password && password.length < 6;
-    const confirmError = touched.confirm  && password !== confirm;
+    const nameError = touched.name && !name;
+    const emailError = touched.email && !!email && !isValidEmail(email);
+    const pwError = touched.password && !!password && password.length < 6;
+    const confirmError = touched.confirm && password !== confirm;
 
     return (
-        <div className="min-h-dvh overflow-y-auto lg:h-dvh lg:overflow-hidden bg-white text-black font-bold selection:bg-black selection:text-white">
-            <div className="mx-auto grid min-h-dvh lg:h-dvh lg:grid-cols-[minmax(420px,0.88fr)_minmax(0,1.12fr)]">
-
-                {/* ── LEFT PANEL (TERMINAL FORM) ── */}
-                <div className="flex min-w-0 flex-col items-center justify-start lg:justify-center px-4 py-24 sm:p-8 md:p-12 lg:px-10 lg:py-6 xl:px-16 bg-white relative border-black lg:border-r-8 min-h-dvh lg:h-full overflow-y-auto lg:overflow-hidden scrollbar-hide">
-                    <div className="absolute top-0 left-0 p-3 sm:p-8 lg:hidden xl:block xl:p-8">
-                        <Link to="/" className="flex items-center gap-4 group">
-                            <div className="w-12 h-12 lg:w-10 lg:h-10 xl:w-12 xl:h-12 bg-black text-white border-4 border-black flex items-center justify-center font-black text-xl italic tracking-tighter group-hover:bg-[#E11D48] transition-colors">
-                                C
-                            </div>
-                            <span className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase lg:hidden xl:inline">{BRAND.name}</span>
-                        </Link>
+        <AuthLayout title="Create your account" subtitle="A few details, then you can start reviewing charges.">
+            <form onSubmit={handleSignup} className="space-y-3.5">
+                <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-[#57534E]">Name</label>
+                    <div className="relative">
+                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                        <Input
+                            className={cn('pl-10', nameError && 'border-[#E11D48]')}
+                            placeholder="Your name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            onBlur={() => setTouched(p => ({ ...p, name: true }))}
+                        />
                     </div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                        style={{ width: 'min(420px, calc(100vw - 4rem))', maxWidth: '100%' }}
-                        className="min-w-0 space-y-5 lg:space-y-4 xl:space-y-6"
-                    >
-                        <header className="space-y-3">
-                            <div className="inline-flex lg:hidden xl:inline-flex items-center gap-3 border-4 border-black px-4 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest">
-                                <Target size={16} strokeWidth={3} />
-                                CREATE_ACCOUNT
-                            </div>
-                            <h2 className="text-4xl lg:text-[2.6rem] xl:text-5xl font-black italic uppercase tracking-tighter leading-none">SIGN_UP</h2>
-                            <p className="text-xs sm:text-sm font-black text-black/40 uppercase tracking-[0.12em] sm:tracking-widest leading-relaxed break-words">
-                                Establish your secure access credentials.
-                            </p>
-                        </header>
-
-                        <div className="max-w-full overflow-hidden border-4 sm:border-8 border-black p-4 sm:p-8 lg:p-5 xl:p-7 bg-white shadow-[3px_3px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] relative">
-                            <div className="absolute -top-4 right-2 sm:-top-6 sm:-right-6 bg-[#E11D48] text-white p-3 sm:p-4 border-4 border-black shadow-[4px_4px_0px_#000000]">
-                                <ShieldCheck size={24} strokeWidth={3} />
-                            </div>
-
-                            <form onSubmit={handleSignup} className="space-y-3 xl:space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Full_Name</label>
-                                    <div className="relative">
-                                        <User className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-black/20" size={20} />
-                                        <input
-                                            className={cn(
-                                                "w-full h-12 xl:h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-4 sm:pr-6 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
-                                                nameError && "border-[#E11D48]"
-                                            )}
-                                            placeholder="ENTER_YOUR_NAME"
-                                            value={name}
-                                            onChange={e => setName(e.target.value)}
-                                            onBlur={() => setTouched(p => ({ ...p, name: true }))}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Email_Address</label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-black/20" size={20} />
-                                        <input
-                                            type="email"
-                                            className={cn(
-                                                "w-full h-12 xl:h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-4 sm:pr-6 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
-                                                emailError && "border-[#E11D48]"
-                                            )}
-                                            placeholder="ENTER_YOUR_EMAIL"
-                                            value={email}
-                                            onChange={e => setEmail(e.target.value)}
-                                            onBlur={() => setTouched(p => ({ ...p, email: true }))}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Password</label>
-                                    <div className="relative">
-                                        <Lock className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-black/20" size={20} />
-                                        <input
-                                            type={showPw ? 'text' : 'password'}
-                                            className={cn(
-                                                "w-full h-12 xl:h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-12 sm:pr-16 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
-                                                pwError && "border-[#E11D48]"
-                                            )}
-                                            placeholder="CREATE_PASSWORD"
-                                            value={password}
-                                            onChange={e => setPassword(e.target.value)}
-                                            onBlur={() => setTouched(p => ({ ...p, password: true }))}
-                                        />
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setShowPw(v => !v)}
-                                            className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
-                                        >
-                                            {showPw ? <EyeOff size={20} strokeWidth={3} /> : <Eye size={20} strokeWidth={3} />}
-                                        </button>
-                                    </div>
-                                    <div className="flex gap-2 px-1">
-                                        {[1, 2, 3, 4].map(i => (
-                                            <div key={i} className={cn(
-                                                "h-1.5 flex-1 border-2 border-black",
-                                                i <= score ? (score === 4 ? "bg-[#E11D48]" : "bg-black") : "bg-white"
-                                            )} />
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Confirm_Password</label>
-                                    <div className="relative">
-                                        <Shield size={20} strokeWidth={3} className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-black/20" />
-                                        <input
-                                            type={showPw ? 'text' : 'password'}
-                                            className={cn(
-                                                "w-full h-12 xl:h-14 border-4 border-black bg-white pl-12 sm:pl-14 pr-4 sm:pr-6 font-black uppercase text-[11px] sm:text-xs focus:bg-black focus:text-white transition-all outline-none",
-                                                confirmError && "border-[#E11D48]"
-                                            )}
-                                            placeholder="CONFIRM_PASSWORD"
-                                            value={confirm}
-                                            onChange={e => setConfirm(e.target.value)}
-                                            onBlur={() => setTouched(p => ({ ...p, confirm: true }))}
-                                        />
-                                    </div>
-                                </div>
-
-                                <button 
-                                    type="submit" 
-                                    disabled={isLoading}
-                                    className="w-full h-14 bg-black text-white font-black uppercase text-xs sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[5px_5px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] disabled:opacity-50 flex items-center justify-center gap-3 sm:gap-4 group mt-3"
-                                >
-                                    {isLoading ? (
-                                        <Loader2 className="animate-spin" size={20} strokeWidth={3} />
-                                    ) : (
-                                        <>
-                                            SIGN_UP_NOW
-                                            <ArrowRight size={20} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" />
-                                        </>
-                                    )}
-                                </button>
-                            </form>
-
-                            <div className="relative my-5 xl:my-6">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t-4 border-black" />
-                                </div>
-                                <div className="relative flex justify-center">
-                                    <span className="px-3 sm:px-6 bg-white text-[9px] sm:text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-[0.3em] text-black/40">EXTERNAL_NODES</span>
-                                </div>
-                            </div>
-
-                            <button 
-                                type="button" 
-                                onClick={handleGoogle} 
-                                disabled={isLoading}
-                                className="w-full h-14 border-4 border-black bg-white hover:bg-black hover:text-white transition-all font-black uppercase text-[9px] min-[380px]:text-[10px] tracking-[0.08em] flex items-center justify-center gap-3 px-3"
-                            >
-                                <svg className="h-5 w-5" viewBox="0 0 24 24">
-                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
-                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="currentColor"/>
-                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"/>
-                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"/>
-                                </svg>
-                                <span className="sm:hidden">GOOGLE</span>
-                                <span className="hidden sm:inline">SIGN_UP_WITH_GOOGLE</span>
-                            </button>
-                        </div>
-
-                        <div className="text-center">
-                            <p className="text-[10px] sm:text-xs font-black uppercase tracking-[0.08em] sm:tracking-widest text-black/40">
-                                ALREADY_REGISTERED\?{' '}
-                                <Link to="/login" className="text-black hover:text-[#E11D48] underline decoration-4 underline-offset-4">
-                                    LOG_IN
-                                </Link>
-                            </p>
-                        </div>
-                    </motion.div>
                 </div>
-
-                {/* ── RIGHT PANEL (FEATURE SHOWCASE) ── */}
-                <div className="hidden lg:flex flex-col bg-black text-white p-10 xl:p-14 relative h-full overflow-hidden scrollbar-hide">
-                    <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                        <div className="h-full w-full" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+                <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-[#57534E]">Email</label>
+                    <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                        <Input
+                            type="email"
+                            className={cn('pl-10', emailError && 'border-[#E11D48]')}
+                            placeholder="you@email.com"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            onBlur={() => setTouched(p => ({ ...p, email: true }))}
+                        />
                     </div>
-
-                    <div className="relative z-10 mb-12">
-                        <div className="inline-block bg-[#E11D48] text-white text-[10px] font-black px-4 py-1 uppercase tracking-widest mb-6 border-2 border-[#E11D48]">
-                            KEY_HIGHLIGHTS
-                        </div>
-                        <h1 className="text-6xl xl:text-7xl font-black italic uppercase tracking-tighter leading-[0.9] mb-8">
-                            JOIN<br />CASHLY
-                        </h1>
-                        <p className="text-sm font-black text-white/40 uppercase tracking-[0.2em] max-w-lg leading-relaxed">
-                            Join the next generation of financial auditing. Deploy your private instance and take control of your telemetry today.
-                        </p>
+                </div>
+                <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-[#57534E]">Password</label>
+                    <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                        <Input
+                            type={showPw ? 'text' : 'password'}
+                            className={cn('pl-10 pr-11', pwError && 'border-[#E11D48]')}
+                            placeholder="At least 6 characters"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            onBlur={() => setTouched(p => ({ ...p, password: true }))}
+                        />
+                        <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#78716C]">
+                            {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-5 xl:gap-6 relative z-10 my-auto">
-                        {FEATURES.map(({ icon: Icon, label, desc }, i) => (
-                            <div key={label} className="border-4 border-white p-6 xl:p-7 bg-white/5 hover:bg-white/10 transition-colors group">
-                                <div className="flex items-center justify-between mb-6">
-                                    <Icon size={32} strokeWidth={3} className={i % 2 === 0 ? "text-[#E11D48]" : "text-white"} />
-                                    <span className="text-[10px] font-black text-white/20">0{i+1}</span>
-                                </div>
-                                <h3 className="text-base xl:text-lg font-black uppercase tracking-[0.12em] break-words leading-tight mb-3">{label}</h3>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">
-                                    {desc}
-                                </p>
-                            </div>
+                    <div className="flex gap-1.5 px-0.5">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className={cn('h-1 flex-1 rounded-full', i <= score ? 'bg-[#E11D48]' : 'bg-[#E7E5E4]')} />
                         ))}
                     </div>
+                </div>
+                <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-[#57534E]">Confirm password</label>
+                    <Input
+                        type={showPw ? 'text' : 'password'}
+                        className={cn(confirmError && 'border-[#E11D48]')}
+                        placeholder="Repeat password"
+                        value={confirm}
+                        onChange={e => setConfirm(e.target.value)}
+                        onBlur={() => setTouched(p => ({ ...p, confirm: true }))}
+                    />
+                </div>
+                <Button type="submit" disabled={isLoading} className="mt-1 h-11 w-full">
+                    {isLoading ? <Loader2 className="animate-spin" size={18} /> : 'Create account'}
+                </Button>
+            </form>
 
-                    <div className="mt-12 space-y-6 relative z-10">
-                        <div className="border-4 border-white p-6 bg-white/5 flex items-center justify-between">
-                            <div className="flex items-center gap-6">
-                                <Activity size={24} strokeWidth={3} className="text-[#E11D48]" />
-                                <span className="text-[10px] font-black uppercase tracking-widest">NETWORK: STABLE</span>
-                            </div>
-                            <div className="flex items-center gap-6">
-                                <Shield size={24} strokeWidth={3} className="text-white" />
-                                <span className="text-[10px] font-black uppercase tracking-widest">SECURE_ENCRYPTION</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-auto relative z-10 text-[10px] font-black uppercase tracking-[0.5em] text-white/20">
-                        CASHLY_SECURE_AUTH_SYSTEM
-                    </div>
+            <div className="relative my-5">
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E7E5E4]" /></div>
+                <div className="relative flex justify-center">
+                    <span className="bg-white px-3 text-xs text-[#78716C]">or</span>
                 </div>
             </div>
-        </div>
+
+            <Button type="button" variant="outline" onClick={handleGoogle} disabled={isLoading} className="h-11 w-full">
+                Continue with Google
+            </Button>
+
+            <p className="mt-6 text-center text-sm text-[#78716C]">
+                Already have an account?{' '}
+                <Link to="/login" className="font-medium text-[#E11D48] hover:underline">Sign in</Link>
+            </p>
+        </AuthLayout>
     );
 };
 

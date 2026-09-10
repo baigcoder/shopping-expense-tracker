@@ -3,23 +3,14 @@
 .dashboardWrapper {
   min-height: 100vh;
   padding: 0;
-  background: #FFFFFF;
-  color: #000000;
+  background: var(--bg-page);
+  color: var(--text-primary);
   position: relative;
   overflow-x: hidden;
 }
 
-/* Precise architectural grid */
 .dashboardWrapper::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: 
-    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .container {
@@ -38,34 +29,35 @@
   margin-bottom: 3rem;
   padding: clamp(1.25rem, 3vw, 2.5rem);
   background: #FFFFFF;
-  border: 4px solid #000000;
-  border-radius: 0;
-  box-shadow: 6px 6px 0px #000000;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
   transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .header:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0px #E11D48;
+  transform: none;
+  box-shadow: var(--shadow-md);
 }
 
 .welcomeText h1 {
-  font-size: 2.25rem;
-  font-weight: 950;
-  color: #000000;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  text-transform: none;
   margin: 0;
-  line-height: 1;
+  line-height: 1.15;
 }
 
 .welcomeText p {
-  font-size: 0.8rem;
-  color: #E11D48;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 0.45rem;
 }
 
 /* === STATS GRID === */
@@ -85,28 +77,28 @@
 
 .statCard {
   background: #FFFFFF;
-  border: 4px solid #000000;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   padding: clamp(1.2rem, 2vw, 2rem);
   transition: all 0.2s;
   position: relative;
   overflow: hidden;
-  box-shadow: 5px 5px 0px #000000;
+  box-shadow: var(--shadow-md);
 }
 
 .statCard:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 7px 7px 0px #E11D48;
+  transform: none;
+  box-shadow: var(--shadow-md);
 }
 
 .statCardPrimary {
   background: #000000;
   color: #FFFFFF;
-  box-shadow: 6px 6px 0px #E11D48;
+  box-shadow: var(--shadow-md);
 }
 
 .statCardPrimary:hover {
-  box-shadow: 10px 10px 0px #000000;
+  box-shadow: var(--shadow-md);
 }
 
 .statCardPrimary .statTitle { color: #FFFFFF; opacity: 0.8; }
@@ -115,8 +107,8 @@
 .iconBox {
   width: 3.5rem;
   height: 3.5rem;
-  border: 4px solid #000000;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,16 +124,16 @@
 
 .statTitle {
   font-size: 0.75rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  text-transform: none;
+  letter-spacing: -0.02em;
   margin-bottom: 0.75rem;
 }
 
 .value {
   font-size: 2.5rem;
-  font-weight: 950;
+  font-weight: 600;
   letter-spacing: -0.05em;
   line-height: 1;
 }
@@ -151,9 +143,9 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;
-  font-weight: 950;
+  font-weight: 600;
   margin-top: 1.5rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
 }
 
@@ -163,25 +155,25 @@
 /* === MAIN SECTION CARDS === */
 .whiteCard {
   background: #FFFFFF;
-  border: 4px solid #000000;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   padding: clamp(1.25rem, 2.4vw, 2.5rem);
-  box-shadow: 6px 6px 0px #000000;
+  box-shadow: var(--shadow-md);
   margin-bottom: 1.75rem;
   transition: all 0.2s;
 }
 
 .whiteCard:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 8px 8px 0px #E11D48;
+  transform: none;
+  box-shadow: var(--shadow-md);
 }
 
 .sectionTitle {
   font-size: 0.85rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
+  text-transform: none;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
@@ -211,7 +203,7 @@
   background: #F8FAFC;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  border-radius: 0;
+  border-radius: var(--r-lg);
   transform: translateX(4px);
 }
 
@@ -219,7 +211,7 @@
   width: 2.5rem;
   height: 2.5rem;
   background: #F1F5F9;
-  border-radius: 0;
+  border-radius: var(--r-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,24 +225,24 @@
 
 .txDesc {
   font-size: 0.85rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
 }
 
 .txCat {
   font-size: 0.7rem;
   color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  text-transform: none;
+  letter-spacing: -0.02em;
   margin-top: 0.25rem;
 }
 
 .txAmount {
   font-size: 0.95rem;
-  font-weight: 950;
+  font-weight: 600;
   letter-spacing: -0.02em;
 }
 
@@ -288,8 +280,8 @@
 
 .actionBtn {
   background: #FFFFFF;
-  border: 4px solid #000000;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   padding: 2rem;
   text-align: center;
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
@@ -299,24 +291,24 @@
   align-items: center;
   gap: 1.25rem;
   text-decoration: none;
-  box-shadow: 8px 8px 0px #000000;
+  box-shadow: var(--shadow-md);
 }
 
 .actionBtn:hover {
   background: #000000;
   color: #FFFFFF;
-  transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0px #E11D48;
+  transform: none;
+  box-shadow: var(--shadow-md);
 }
 
 .actionBtn:hover .actionLabel { color: #FFFFFF; }
 
 .actionLabel {
   font-size: 0.85rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 
 /* Mobile Responsive */
@@ -332,7 +324,7 @@
     padding: 1.25rem;
     margin-bottom: 1.5rem;
     border-width: 3px;
-    box-shadow: 5px 5px 0 #000000;
+    box-shadow: var(--shadow-md);
   }
   .welcomeText h1 {
     font-size: clamp(1.35rem, 8vw, 1.75rem);
@@ -341,7 +333,7 @@
   }
   .welcomeText p {
     font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    letter-spacing: -0.02em;
     line-height: 1.5;
   }
   .statsGrid {
@@ -352,7 +344,7 @@
   .statCard {
     padding: 1.25rem;
     border-width: 3px;
-    box-shadow: 5px 5px 0 #000000;
+    box-shadow: var(--shadow-md);
   }
   .iconBox {
     width: 3rem;
@@ -366,7 +358,7 @@
   .whiteCard {
     padding: 1.25rem;
     border-width: 3px;
-    box-shadow: 5px 5px 0 #000000;
+    box-shadow: var(--shadow-md);
     margin-bottom: 1rem;
   }
   .cardHeader {
@@ -376,14 +368,14 @@
   }
   .sectionTitle {
     font-size: 0.75rem;
-    letter-spacing: 0.16em;
+    letter-spacing: -0.02em;
     line-height: 1.4;
   }
   .quickActionGrid { grid-template-columns: 1fr; }
   .actionBtn {
     padding: 1.25rem;
     border-width: 3px;
-    box-shadow: 5px 5px 0 #000000;
+    box-shadow: var(--shadow-md);
   }
   .txRow {
     align-items: flex-start;
@@ -410,8 +402,8 @@
   margin-bottom: 1.5rem;
   padding: 1rem 1.25rem;
   background: #fff;
-  border: 4px solid #000;
-  box-shadow: 6px 6px 0 #E11D48;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .captureTrailIcon {
@@ -422,7 +414,7 @@
   justify-content: center;
   background: #E11D48;
   color: #fff;
-  border: 2px solid #000;
+  border: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -434,9 +426,9 @@
 .captureTrailLabel {
   margin: 0;
   font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: none;
   color: #E11D48;
   display: flex;
   align-items: center;
@@ -446,14 +438,14 @@
 
 .captureTrailState {
   color: #000;
-  letter-spacing: 0.12em;
+  letter-spacing: -0.02em;
 }
 
 .captureTrailMerchant {
   margin: 0.25rem 0 0;
   font-size: 0.95rem;
-  font-weight: 900;
-  text-transform: uppercase;
+  font-weight: 600;
+  text-transform: none;
   letter-spacing: -0.02em;
 }
 
@@ -462,16 +454,16 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #52525b;
 }
 
 .captureTrailAction {
   font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  border: 2px solid #000;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  border: 1px solid var(--border);
   padding: 0.55rem 0.8rem;
   background: #000;
   color: #fff;
@@ -482,10 +474,10 @@
   .container { padding: 0.75rem; }
   .whiteCard,
   .statCard,
-  .header { box-shadow: 4px 4px 0 #000000; }
+  .header { box-shadow: var(--shadow-md); }
 
   .actionLabel {
-    letter-spacing: 0.12em;
+    letter-spacing: -0.02em;
   }
 
   .txRow {

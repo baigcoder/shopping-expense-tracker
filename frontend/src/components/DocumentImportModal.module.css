@@ -89,7 +89,7 @@
 
 .headerInfo h2 {
     font-size: 1.75rem;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: -0.04em;
     margin: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -179,7 +179,7 @@
 
 .dropzone h3 {
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #1e293b;
     margin: 0;
 }
@@ -210,10 +210,10 @@
 
 .fileTypeBadge span {
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 600;
     color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 /* === REVIEW AREA === */
@@ -313,7 +313,7 @@
     background: #fff;
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #64748b;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -330,7 +330,7 @@
     background: linear-gradient(135deg, #f43f5e, #e11d48);
     border: none;
     border-radius: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;

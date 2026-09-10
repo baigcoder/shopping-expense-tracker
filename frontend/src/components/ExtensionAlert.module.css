@@ -16,10 +16,10 @@
     align-items: center;
     gap: 1rem;
     background: #FFFFFF;
-    border: 3px solid #09090B;
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1rem 1.25rem;
-    box-shadow: 5px 5px 0 #09090B;
+    box-shadow: var(--shadow-md);
     position: relative;
     color: #1E293B;
 }
@@ -80,7 +80,7 @@
     gap: 1rem;
     background: #FFFFFF;
     border-color: #09090B;
-    box-shadow: 6px 6px 0 #E11D48;
+    box-shadow: var(--shadow-md);
     padding: 1.25rem 1.5rem;
     max-width: 420px;
 }
@@ -134,7 +134,7 @@
     gap: 0.4rem;
     background: #09090B;
     color: #FFFFFF;
-    border: 2px solid #09090B;
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0.6rem 1rem;
     font-weight: 700;
@@ -142,12 +142,12 @@
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     transition: all 0.2s ease;
-    box-shadow: 4px 4px 0 #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .installBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .syncBtn {
@@ -356,7 +356,7 @@
     padding: 0.6rem 0.75rem;
     background: #F8FAFC;
     border-radius: 8px;
-    border: 2px solid #09090B;
+    border: 1px solid var(--border);
 }
 
 .stepNumber {

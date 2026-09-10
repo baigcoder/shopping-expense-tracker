@@ -1,11 +1,9 @@
-/* Full-screen gate: extension required on desktop */
-
 .backdrop {
     position: fixed;
     inset: 0;
     z-index: 12000;
-    background: rgba(9, 9, 11, 0.92);
-    backdrop-filter: blur(10px);
+    background: var(--bg-overlay);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,42 +15,42 @@
     width: 100%;
     max-width: 420px;
     background: #fff;
-    border: 4px solid #000;
-    box-shadow: 6px 6px 0 #e11d48;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
     padding: 1.75rem 1.5rem;
     max-height: calc(100dvh - 2.5rem);
     overflow-y: auto;
 }
 
 .title {
-    font-size: 0.7rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #e11d48;
-    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--brand);
+    margin: 0 0 0.4rem;
 }
 
 .headline {
-    font-size: 1.35rem;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    color: #09090b;
-    margin: 0 0 0.75rem;
-    line-height: 1.2;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin: 0 0 0.7rem;
+    line-height: 1.25;
 }
 
 .copy {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     line-height: 1.55;
-    color: #3f3f46;
+    color: var(--text-secondary);
     margin: 0 0 1.25rem;
 }
 
 .actions {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: 0.6rem;
 }
 
 .primary {
@@ -60,44 +58,35 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.85rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    background: #000;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: var(--brand);
     color: #fff;
-    border: 3px solid #000;
+    border: none;
+    border-radius: var(--r-md);
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.primary:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 #e11d48;
-}
+.primary:hover { background: var(--brand-hover); }
 
 .secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     padding: 0.75rem 1rem;
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    font-weight: 550;
     background: #fff;
-    color: #09090b;
-    border: 3px solid #000;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.secondary:hover {
-    background: #09090b;
-    color: #fff;
-}
+.secondary:hover { background: var(--bg-subtle); }
 
 .secondary:disabled {
     opacity: 0.55;
@@ -105,11 +94,11 @@
 }
 
 .ghost {
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
     padding: 0.5rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #71717a;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
     background: none;
     border: none;
     cursor: pointer;
@@ -120,38 +109,31 @@
 .hint {
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 2px dashed #d4d4d8;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #71717a;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
     line-height: 1.5;
 }
 
 .spinner {
     width: 1.75rem;
     height: 1.75rem;
-    border: 3px solid #e4e4e7;
-    border-top-color: #000;
+    border: 2px solid var(--border);
+    border-top-color: var(--brand);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
     margin: 0 auto 1rem;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+    to { transform: rotate(360deg); }
 }
 
 .loadingLabel {
     text-align: center;
-    font-size: 0.65rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #a1a1aa;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
 @media (max-width: 480px) {
@@ -162,18 +144,6 @@
 
     .panel {
         max-height: calc(100dvh - 1.5rem);
-        overflow-y: auto;
         padding: 1.25rem;
-        box-shadow: 5px 5px 0 #000;
-    }
-
-    .headline {
-        font-size: 1.15rem;
-    }
-
-    .primary,
-    .secondary {
-        width: 100%;
-        min-height: 2.75rem;
     }
 }

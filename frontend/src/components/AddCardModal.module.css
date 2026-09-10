@@ -134,7 +134,7 @@
     font-size: 0.85rem;
     font-weight: 600;
     color: #64748b;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.5px;
 }
 
@@ -149,7 +149,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 1px solid var(--border);
     cursor: pointer;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     display: flex;

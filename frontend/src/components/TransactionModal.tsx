@@ -55,7 +55,7 @@ const TransactionModal = () => {
         e.preventDefault();
 
         if (!formData.amount || !formData.description || !user?.id) {
-            toast.error('INPUT_REQUIRED: FIELDS_EMPTY');
+            toast.error('Please fill in the required fields');
             return;
         }
 

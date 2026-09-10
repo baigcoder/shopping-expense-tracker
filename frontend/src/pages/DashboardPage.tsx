@@ -291,13 +291,13 @@ const DashboardPage = () => {
                 <motion.header className={styles.header} variants={itemVariants}>
                     <div className={styles.welcomeText}>
                         <h1>Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user?.name?.split(' ')[0] || 'there'} 👋</h1>
-                        <p>Financial Ecosystem • {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                        <p>Here’s a calm look at this month.</p>
                     </div>
                     <div className="hidden lg:flex items-center gap-6">
                         <div className="flex flex-col items-end">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vault Security</span>
-                            <div className="flex items-center gap-2 mt-1 px-3 py-1 border-2 border-black bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase tracking-tighter">
-                                <Shield size={12} /> SECURED_CHANNEL
+                            <span className="text-xs text-[var(--text-muted)]">Protected session</span>
+                            <div className="mt-1 flex items-center gap-2 rounded-full bg-[#ECFDF5] px-3 py-1 text-xs font-medium text-[#059669]">
+                                <Shield size={12} /> Signed in
                             </div>
                         </div>
                     </div>
@@ -705,7 +705,7 @@ const DashboardPage = () => {
                                         <div className="relative mb-6 flex justify-center">
                                             <CreditCard size={48} className="text-black" />
                                         </div>
-                                        <p className="text-[11px] font-black uppercase tracking-[0.3em] text-black">VAULT_EMPTY</p>
+                                        <p className="text-sm font-medium text-[var(--text-muted)]">No cards yet</p>
                                         <button onClick={openAddCard} className="mt-6 text-[10px] font-black uppercase tracking-widest text-black hover:bg-black hover:text-white border-2 border-black px-4 py-2 transition-all">
                                             + Initialize New Card
                                         </button>

@@ -32,7 +32,7 @@
     font-family: var(--font-display);
     font-size: 2.5rem;
     font-weight: var(--font-black);
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: -1px;
     margin: 0;
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
@@ -57,21 +57,21 @@
 /* Profile Card */
 .profileCard {
     background: var(--bg-card);
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 24px;
     padding: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    box-shadow: 8px 8px 0px #000;
+    box-shadow: var(--shadow-md);
     margin-bottom: 3rem;
     transition: all 0.2s;
 }
 
 .profileCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .avatarWrapper {
@@ -83,7 +83,7 @@
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     object-fit: cover;
     background: #FBBF24;
     display: flex;
@@ -91,12 +91,12 @@
     justify-content: center;
     font-size: 4rem;
     overflow: hidden;
-    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .avatarInitials {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
+    font-weight: 600;
     color: #000;
 }
 
@@ -112,7 +112,7 @@
     right: 5px;
     background: #000;
     color: #fff;
-    border: 3px solid #fff;
+    border: 1px solid var(--border);
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -121,7 +121,7 @@
     justify-content: center;
     cursor: pointer;
     transition: transform 0.2s;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
 }
 
 .editAvatarBtn:hover {
@@ -131,7 +131,7 @@
 
 .username {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -146,7 +146,7 @@
     background: var(--bg-input);
     padding: 0.4rem 1rem;
     border-radius: 50px;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     font-family: 'Space Grotesk', sans-serif;
 }
 
@@ -160,21 +160,21 @@
 /* Form Section */
 .formSection {
     background: var(--bg-card);
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 2.5rem;
-    box-shadow: 8px 8px 0px #000;
+    box-shadow: var(--shadow-md);
     height: fit-content;
 }
 
 .sectionTitle {
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 600;
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    text-transform: uppercase;
+    text-transform: none;
     border-bottom: 4px solid #F472B6;
     padding-bottom: 0.5rem;
     display: inline-flex;
@@ -186,9 +186,9 @@
 
 .label {
     display: block;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 0.75rem;
-    text-transform: uppercase;
+    text-transform: none;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
@@ -196,7 +196,7 @@
 .input {
     width: 100%;
     padding: 1rem 1.25rem;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     border-radius: 12px;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
@@ -209,8 +209,8 @@
 .input:focus {
     outline: none;
     background: var(--bg-card);
-    box-shadow: 4px 4px 0px #000;
-    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+    transform: none;
 }
 
 .input:disabled {
@@ -224,11 +224,11 @@
     color: #fff;
     padding: 1rem 2rem;
     border-radius: 12px;
-    font-weight: 900;
-    border: 3px solid #000;
+    font-weight: 600;
+    border: 1px solid var(--border);
     cursor: pointer;
     box-shadow: 5px 5px 0px #4ECDC4;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.1s;
     font-family: 'Outfit', sans-serif;
     width: 100%;
@@ -242,7 +242,7 @@
 }
 
 .saveBtn:active {
-    transform: translate(2px, 2px);
+    transform: none;
     box-shadow: 2px 2px 0px #4ECDC4;
 }
 
@@ -255,10 +255,10 @@
 
 .statCard {
     background: var(--bg-card);
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 1.25rem;
-    box-shadow: 5px 5px 0px #000;
+    box-shadow: var(--shadow-md);
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -267,7 +267,7 @@
 
 .statCard:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 8px 8px 0px #000;
+    box-shadow: var(--shadow-md);
 }
 
 .statIconBox {
@@ -278,7 +278,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
 }
 
 .statInfo {
@@ -288,13 +288,13 @@
 
 .statValue {
     font-size: 1.4rem;
-    font-weight: 900;
+    font-weight: 600;
     display: block;
     line-height: 1.1;
 }
 
 .statLabel {
-    text-transform: uppercase;
+    text-transform: none;
     font-weight: 700;
     font-size: 0.8rem;
     color: var(--text-secondary);
@@ -322,16 +322,16 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: #000;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 1px;
 }
 
 .loaderCard {
     background: var(--bg-card);
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 24px;
     padding: 2rem;
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 768px) {

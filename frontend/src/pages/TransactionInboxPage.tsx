@@ -5,6 +5,10 @@ import { merchantRulesApi, MerchantRule, transactionInboxApi, TransactionCandida
 import { formatCurrency } from '../services/currencyService';
 import { emitFinancialDataEvent } from '../services/financialDataEvents';
 import { invalidateTransactionCache } from '../services/supabaseTransactionService';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Surface } from '@/components/ui/Surface';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/button';
 
 const categories = ['Food & Dining', 'Shopping', 'Subscriptions', 'Transport', 'Utilities', 'Entertainment', 'Healthcare', 'Other'];
 
@@ -178,32 +182,27 @@ const TransactionInboxPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white p-4 text-black sm:p-6 lg:p-10 font-sans overflow-x-hidden">
-            <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between border-4 border-black p-5 sm:p-8 bg-white shadow-[5px_5px_0px_#000000] sm:shadow-[8px_8px_0px_#000000] mb-6 sm:mb-10 relative z-20">
-                <div className="flex flex-col min-[420px]:flex-row min-[420px]:items-center gap-5 sm:gap-6">
-                    <div className="h-14 w-14 sm:h-16 sm:w-16 bg-black text-white flex items-center justify-center border-4 border-black shadow-[5px_5px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] shrink-0">
-                        <Inbox size={32} strokeWidth={3} />
-                    </div>
-                    <div className="min-w-0">
-                        <h1 className="text-2xl sm:text-3xl font-black uppercase italic text-black m-0 tracking-tight break-words">TRANSACTION INBOX</h1>
-                        <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E11D48] mt-1 leading-relaxed">Review, edit amount or category, then authorize</p>
-                    </div>
-                </div>
-                <button onClick={() => void load()} className="min-h-12 sm:h-14 px-5 sm:px-8 border-4 border-black bg-white flex items-center justify-center gap-3 font-black uppercase tracking-widest shadow-[5px_5px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all text-xs sm:text-sm">
-                    <RefreshCw size={20} strokeWidth={3} /> Sync Inbox
-                </button>
-            </header>
+        <div className="min-h-screen bg-[var(--bg-page)] p-1 text-[var(--text-primary)] sm:p-2">
+            <PageHeader
+                title="Review inbox"
+                description="Approve, edit, merge, or reject captures before they hit your ledger."
+                actions={
+                    <Button variant="outline" onClick={() => void load()}>
+                        <RefreshCw size={16} /> Refresh
+                    </Button>
+                }
+            />
 
             <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-6 lg:gap-10">
-                <div className="bg-white border-4 border-black shadow-[12px_12px_0px_#000000] overflow-hidden">
-                    <div className="p-4 sm:p-6 border-b-4 border-black flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-between bg-yellow-400">
-                        <div className="flex min-w-0 flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4">
-                            <div className="flex w-full sm:w-auto overflow-x-auto items-center gap-2 p-1 bg-white border-4 border-black shadow-[4px_4px_0px_#000000]">
+                <Surface padded={false} className="overflow-hidden">
+                    <div className="flex flex-col gap-4 border-b border-[#E7E5E4] bg-[#F4F0EB] p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-5">
+                        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                            <div className="flex w-full items-center gap-1 overflow-x-auto rounded-xl border border-[#E7E5E4] bg-white p-1 sm:w-auto">
                                 {['pending', 'approved', 'rejected', 'merged'].map(value => (
                                     <button
                                         key={value}
                                         onClick={() => setStatus(value)}
-                                        className={`px-4 sm:px-5 py-2 text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${status === value ? 'bg-black text-white shadow-[2px_2px_0px_#E11D48]' : 'hover:bg-gray-100 text-black'}`}
+                                        className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium capitalize transition-colors ${status === value ? 'bg-[#E11D48] text-white' : 'text-[#57534E] hover:bg-[#F4F0EB]'}`}
                                     >
                                         {value}
                                     </button>
@@ -213,65 +212,63 @@ const TransactionInboxPage = () => {
                             <select 
                                 value={sortBy} 
                                 onChange={(e) => setSortBy(e.target.value as any)}
-                                className="h-12 px-4 text-xs font-black uppercase tracking-widest border-4 border-black bg-white shadow-[4px_4px_0px_#000000] outline-none cursor-pointer hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all"
+                                className="h-10 rounded-[var(--r-md)] border border-[#E7E5E4] bg-white px-3 text-sm outline-none"
                             >
                                 <option value="date">Sort: Date</option>
-                                <option value="confidence">Sort: Review Needed</option>
+                                <option value="confidence">Sort: Review needed</option>
                                 <option value="amount">Sort: Amount</option>
                             </select>
                         </div>
-                        <div className="flex flex-col min-[420px]:flex-row gap-3 sm:gap-4">
-                            <button 
-                                onClick={() => bulk('approve')} 
-                                disabled={!selected.length} 
-                                className="min-h-12 px-4 sm:px-6 border-4 border-black bg-[#10b981] text-black text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                        <div className="flex flex-col gap-2 min-[420px]:flex-row">
+                            <Button
+                                onClick={() => bulk('approve')}
+                                disabled={!selected.length}
+                                className="bg-[#059669] hover:bg-[#047857]"
                             >
                                 Approve ({selected.length})
-                            </button>
-                            <button 
-                                onClick={() => bulk('reject')} 
-                                disabled={!selected.length} 
-                                className="min-h-12 px-4 sm:px-6 border-4 border-black bg-[#E11D48] text-white text-xs font-black uppercase tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                            </Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => bulk('reject')}
+                                disabled={!selected.length}
                             >
                                 Reject ({selected.length})
-                            </button>
+                            </Button>
                         </div>
                     </div>
 
                     {loading ? (
-                        <div className="p-8 sm:p-16 text-center font-black uppercase tracking-widest text-base sm:text-xl flex flex-col items-center gap-4">
-                            <RefreshCw size={32} strokeWidth={3} className="animate-spin" />
-                            Loading Inbox...
+                        <div className="flex flex-col items-center gap-3 p-12 text-sm text-[var(--text-muted)]">
+                            <RefreshCw size={22} className="animate-spin" />
+                            Loading inbox…
                         </div>
                     ) : items.length === 0 ? (
-                        <div className="p-10 sm:p-24 text-center">
-                            <div className="w-24 h-24 mx-auto mb-6 border-4 border-black flex items-center justify-center bg-gray-100 shadow-[6px_6px_0px_#000000]">
-                                <Inbox size={40} strokeWidth={3} className="text-black" />
-                            </div>
-                            <h3 className="font-black uppercase italic text-2xl mb-2">Zero Transactions</h3>
-                            <p className="font-bold opacity-60 uppercase tracking-widest text-sm">No candidates in this queue.</p>
-                        </div>
+                        <EmptyState
+                            icon={<Inbox size={22} />}
+                            title="Nothing waiting"
+                            description="No candidates in this queue."
+                        />
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm border-collapse">
-                                <thead className="bg-black text-white">
+                                <thead className="bg-[#F4F0EB] text-[var(--text-muted)]">
                                     <tr>
-                                        <th className="p-5 text-left w-16 border-b-4 border-black">
-                                            <div className="w-6 h-6 relative border-4 border-white bg-black">
+                                        <th className="w-16 p-4 text-left">
+                                            <div className="relative h-5 w-5 rounded border border-[#D6D3D1] bg-white">
                                                 <input 
                                                     type="checkbox" 
-                                                    className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                                                    className="absolute inset-0 z-10 cursor-pointer opacity-0"
                                                     onChange={(e) => setSelected(e.target.checked ? items.map(i => i.id) : [])}
                                                     checked={selected.length === items.length && items.length > 0}
                                                 />
-                                                {selected.length === items.length && items.length > 0 && <Check size={16} strokeWidth={4} className="absolute inset-0 m-auto text-rose-500" />}
+                                                {selected.length === items.length && items.length > 0 && <Check size={14} className="absolute inset-0 m-auto text-[#E11D48]" />}
                                             </div>
                                         </th>
-                                        <th className="p-5 text-xs font-black uppercase tracking-widest text-left border-b-4 border-black border-r border-white/20">Transaction</th>
-                                        <th className="p-5 text-xs font-black uppercase tracking-widest text-left border-b-4 border-black border-r border-white/20">Source</th>
-                                        <th className="p-5 text-xs font-black uppercase tracking-widest text-left border-b-4 border-black border-r border-white/20">Confidence</th>
-                                        <th className="p-5 text-xs font-black uppercase tracking-widest text-right border-b-4 border-black border-r border-white/20">Amount</th>
-                                        <th className="p-5 text-xs font-black uppercase tracking-widest text-right border-b-4 border-black">Actions</th>
+                                        <th className="p-4 text-left text-xs font-medium">Transaction</th>
+                                        <th className="p-4 text-left text-xs font-medium">Source</th>
+                                        <th className="p-4 text-left text-xs font-medium">Confidence</th>
+                                        <th className="p-4 text-right text-xs font-medium">Amount</th>
+                                        <th className="p-4 text-right text-xs font-medium">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -395,59 +392,57 @@ const TransactionInboxPage = () => {
                             </table>
                         </div>
                     )}
-                </div>
+                </Surface>
 
                 <aside className="space-y-6 sm:space-y-8 min-w-0">
-                    <div className="bg-white border-4 border-black p-5 sm:p-8 shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
-                        <div className="flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
-                            <Wand2 size={24} strokeWidth={3} className="text-rose-600" />
-                            <h2 className="font-black text-xl uppercase italic">Smart Merchant Rule</h2>
+                    <Surface>
+                        <div className="mb-4 flex items-center gap-2">
+                            <Wand2 size={18} className="text-[#E11D48]" />
+                            <h2 className="font-display text-lg font-semibold">Merchant rule</h2>
                         </div>
-                        <div className="space-y-5">
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest">Merchant Pattern</label>
-                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="w-full h-12 px-4 border-4 border-black font-bold uppercase focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all" />
+                        <div className="space-y-4">
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-[#57534E]">Merchant pattern</label>
+                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="h-11 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none focus:border-[#E11D48]" />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-black uppercase tracking-widest">Assign Category</label>
-                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="w-full h-12 px-4 border-4 border-black font-bold uppercase cursor-pointer focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all">
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-[#57534E]">Category</label>
+                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="h-11 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm">
                                     {categories.map(category => <option key={category}>{category}</option>)}
                                 </select>
                             </div>
-                            <button onClick={addRule} className="w-full h-14 mt-4 border-4 border-black bg-[#E11D48] text-white font-black uppercase tracking-widest text-sm shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_#000000]">Create Rule</button>
-                            <p className="text-[11px] font-bold uppercase tracking-widest text-gray-600 leading-relaxed">
+                            <Button onClick={addRule} className="w-full">Create rule</Button>
+                            <p className="text-xs leading-relaxed text-[#78716C]">
                                 Matching extension captures with high confidence auto-post to the ledger. Everything else stays here until you approve.
                             </p>
                         </div>
-                    </div>
+                    </Surface>
                     
-                    <div className="bg-white border-4 border-black p-5 sm:p-8 shadow-[6px_6px_0px_#000000] sm:shadow-[8px_8px_0px_#000000]">
-                        <div className="flex items-center gap-3 mb-6 border-b-4 border-black pb-4">
-                            <Settings2 size={24} strokeWidth={3} className="text-black" />
-                            <h2 className="font-black text-xl uppercase italic">Active Rules</h2>
+                    <Surface>
+                        <div className="mb-4 flex items-center gap-2">
+                            <Settings2 size={18} />
+                            <h2 className="font-display text-lg font-semibold">Active rules</h2>
                         </div>
-                        <div className="space-y-4 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
+                        <div className="custom-scrollbar max-h-[400px] space-y-3 overflow-auto pr-1">
                             {rules.map(rule => (
-                                <div key={rule.id} className="flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-4 p-4 border-4 border-black bg-white shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E11D48] transition-all group">
+                                <div key={rule.id} className="flex flex-col justify-between gap-3 rounded-xl border border-[#E7E5E4] bg-[#FAF8F5] p-3 min-[420px]:flex-row min-[420px]:items-center">
                                     <div>
-                                        <div className="font-black text-base uppercase text-black">{rule.merchant_pattern}</div>
-                                        <div className="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-widest">{rule.match_type} • <span className="text-[#E11D48]">{rule.category}</span></div>
+                                        <div className="text-sm font-medium">{rule.merchant_pattern}</div>
+                                        <div className="mt-0.5 text-xs text-[#78716C]">{rule.match_type} • <span className="text-[#E11D48]">{rule.category}</span></div>
                                     </div>
                                     <button
                                         onClick={async () => { await merchantRulesApi.delete(rule.id); load(); }}
-                                        className="h-10 w-10 flex items-center justify-center border-4 border-black bg-white group-hover:bg-[#E11D48] group-hover:text-white transition-colors shadow-[2px_2px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_#000000]"
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#78716C] hover:bg-[#FFE4E6] hover:text-[#E11D48]"
                                     >
-                                        <Trash2 size={16} strokeWidth={3} />
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             ))}
                             {rules.length === 0 && (
-                                <div className="p-8 text-center border-4 border-dashed border-black">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-black opacity-60">No rules active.</p>
-                                </div>
+                                <p className="py-6 text-center text-sm text-[#78716C]">No rules yet.</p>
                             )}
                         </div>
-                    </div>
+                    </Surface>
                 </aside>
             </section>
         </div>

@@ -2,10 +2,10 @@
 
 .container {
     background: #fff;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 6px 6px 0 #000;
+    box-shadow: var(--shadow-md);
 }
 
 .header {
@@ -19,8 +19,8 @@
     margin: 0;
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.25rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
 }
 
 .status {
@@ -30,9 +30,9 @@
     padding: 0.5rem 1rem;
     border-radius: 100px;
     font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    border: 2px solid #000;
+    font-weight: 600;
+    text-transform: none;
+    border: 1px solid var(--border);
 }
 
 .status.online {
@@ -57,23 +57,23 @@
     gap: 1rem;
     padding: 1.25rem;
     background: #F3F4F6;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 4px 4px 0 #000;
+    box-shadow: var(--shadow-md);
 }
 
 .stat:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .statIcon {
     width: 50px;
     height: 50px;
     border-radius: 8px;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +89,7 @@
 .statInfo strong {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000;
     line-height: 1;
 }
@@ -98,7 +98,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     color: #6B7280;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .pending {
@@ -134,7 +134,7 @@
 .spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
     border-top-color: #000;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -161,7 +161,7 @@
 @media (max-width: 768px) {
     .container {
         padding: 1.25rem;
-        box-shadow: 6px 6px 0 #000;
+        box-shadow: var(--shadow-md);
     }
 
     .header h3 {
@@ -261,19 +261,19 @@
     padding: 0.75rem 1.25rem;
     background: #000;
     color: #fff;
-    border: 3px solid #000;
+    border: 1px solid var(--border);
     border-radius: 12px;
     font-size: 0.9rem;
-    font-weight: 800;
+    font-weight: 600;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.2s;
-    box-shadow: 4px 4px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .seeMore:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
     color: #E11D48;
 }
 

@@ -91,7 +91,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                             <Brain size={24} strokeWidth={3} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black uppercase tracking-tight">AI_NEURAL_PULSE</h3>
+                            <h3 className="text-xl font-black uppercase tracking-tight">Money Twin</h3>
                             <div className="flex items-center gap-2 mt-1">
                                 <div className="w-2 h-2 bg-[#E11D48] animate-pulse" />
                                 <span className="text-[10px] font-black uppercase tracking-widest opacity-70">
@@ -229,7 +229,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
             <div className={styles.footer}>
                 <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest opacity-60">
                     <span className="flex items-center gap-2 text-[#E11D48]">
-                        <Activity className="h-3 w-3" /> LIVE_TELEMETRY
+                        <Activity className="h-3 w-3" /> Live
                     </span>
                     <span>OPTIMIZED_TRAJECTORY</span>
                 </div>

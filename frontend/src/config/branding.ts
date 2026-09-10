@@ -1,11 +1,9 @@
-// Cashly Brand Identity - Premium SaaS Finance App
-// "Midnight Coral" Design System v2.0
-
+// Cashly — Calm Finance
 export const BRAND = {
     name: "Cashly",
-    tagline: "Finance, reviewed first",
-    slogan: "Track smarter. Approve confidently.",
-    description: "Review-first expense tracking with browser-extension sync, real-time insights, and AI-powered financial intelligence",
+    tagline: "See a charge before it hits your ledger",
+    slogan: "Review first. Track with calm.",
+    description: "Review-first expense tracking with browser-extension capture, a quiet inbox, and AI that stays grounded in your real numbers.",
 
     logo: {
         light: "/logo-light.svg",
@@ -13,36 +11,33 @@ export const BRAND = {
     },
 
     colors: {
-        // Cashly Hybrid Polish - stark core with controlled accent
-        primary: "#09090B",
-        primaryDark: "#000000",
-        primaryLight: "#F4F4F5",
+        primary: "#1C1917",
+        primaryDark: "#0C0A09",
+        primaryLight: "#F4F0EB",
 
         accent: "#E11D48",
         accentDark: "#BE123C",
         accentLight: "#FFE4E6",
 
-        success: "#22C55E",       // Green 500
-        warning: "#F59E0B",       // Amber 500
-        danger: "#EF4444",        // Red 500
+        success: "#059669",
+        warning: "#D97706",
+        danger: "#E11D48",
 
-        // Neutral - Warm Stone
-        background: "#FAFAF9",    // Stone 50
-        foreground: "#1C1917",    // Stone 900
-        muted: "#F5F5F4",         // Stone 100
-        border: "#E7E5E4",        // Stone 200
+        background: "#FAF8F5",
+        foreground: "#1C1917",
+        muted: "#F4F0EB",
+        border: "#E7E5E4",
+        card: "#FFFFFF",
+        sidebar: "#F4F0EB",
     },
 
     features: [
-        "Automatic transaction detection via browser extension",
-        "Real-time sync across all devices",
-        "AI-powered spending insights with MoneyTwin",
-        "Multi-card management with custom themes",
-        "Budget tracking and goal setting",
-        "Receipt scanning with OCR",
-        "Advanced analytics and reports",
-        "Dark mode support",
-        "Sound feedback interactions",
+        "Checkout capture waits in your inbox until you approve it",
+        "Real-time sync across the extension and the web app",
+        "AI insights grounded in your approved ledger",
+        "Budgets, bills, and goals in one calm workspace",
+        "Receipt and statement import with review before posting",
+        "Reports you can actually share",
     ],
 
     links: {
@@ -54,7 +49,6 @@ export const BRAND = {
     fonts: {
         display: "Plus Jakarta Sans",
         body: "Inter",
-        mono: "JetBrains Mono",
     },
 }
 

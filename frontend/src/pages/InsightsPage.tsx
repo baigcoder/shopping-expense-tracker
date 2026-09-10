@@ -216,7 +216,7 @@ const InsightsPage = () => {
                                     insightSource === 'local' && styles.liveBadgeLocal
                                 )}>
                                     <Sparkles size={12} className="animate-pulse" />
-                                    {insightSource === 'ai' ? 'AI-POWERED' : insightSource === 'degraded' ? 'LOCAL FALLBACK' : 'LOCAL INSIGHTS'}
+                                    {insightSource === 'ai' ? 'AI-powered' : insightSource === 'degraded' ? 'Local fallback' : 'Local insights'}
                                 </span>
                             </h1>
                             <p className="text-slate-500 mt-1 font-bold">

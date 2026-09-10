@@ -20,29 +20,29 @@
     margin-bottom: 40px;
     padding: 32px;
     background: #FFFFFF;
-    border: 4px solid #000000;
-    box-shadow: 10px 10px 0px #000000;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
 }
 
 .headerLeft h1 {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.05em;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 16px;
-    text-transform: uppercase;
+    text-transform: none;
     font-style: italic;
 }
 
 .headerLeft p {
     font-size: 0.875rem;
     color: rgba(0, 0, 0, 0.5);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-top: 8px;
 }
 
@@ -53,11 +53,11 @@
     background: #E11D48;
     color: #FFFFFF;
     font-size: 11px;
-    font-weight: 900;
+    font-weight: 600;
     padding: 4px 12px;
-    border: 2px solid #000000;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .refreshBtn {
@@ -66,20 +66,20 @@
     gap: 12px;
     background: #000000;
     color: white;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 16px 24px;
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.1s;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .refreshBtn:hover:not(:disabled) {
     background: #E11D48;
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0px #000000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .spinner {
@@ -101,24 +101,24 @@
 
 .statCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 32px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: var(--shadow-md);
     transition: all 0.1s;
 }
 
 .statCard:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .statIcon {
     width: 52px;
     height: 52px;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,7 +128,7 @@
 
 .statValue {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     line-height: 1;
     letter-spacing: -0.05em;
@@ -136,10 +136,10 @@
 
 .statLabel {
     font-size: 11px;
-    font-weight: 900;
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 /* === FILTER TABS === */
@@ -149,7 +149,7 @@
     margin-bottom: 32px;
     padding: 8px;
     background: #000000;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     width: fit-content;
 }
 
@@ -162,10 +162,10 @@
     background: transparent;
     color: #FFFFFF;
     font-size: 13px;
-    font-weight: 900;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.1s;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.05em;
 }
 
@@ -188,18 +188,18 @@
 
 .siteCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     padding: 32px;
     transition: all 0.1s;
     position: relative;
     display: flex;
     flex-direction: column;
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .siteCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 10px 10px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .siteHeader {
@@ -216,23 +216,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 4px solid #000000;
+    border: 1px solid var(--border);
     color: #FFFFFF;
 }
 
 .siteInfo h3 {
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     margin: 0;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .siteHostname {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.4);
-    font-weight: 900;
+    font-weight: 600;
     text-transform: lowercase;
 }
 
@@ -244,7 +244,7 @@
     justify-content: center;
     color: #FFFFFF;
     background: #000000;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     transition: all 0.1s;
     margin-left: auto;
 }
@@ -259,7 +259,7 @@
     align-items: center;
     gap: 24px;
     padding-top: 20px;
-    border-top: 4px solid #000000;
+    border-top: 1px solid var(--border);
     margin-top: auto;
 }
 
@@ -269,9 +269,9 @@
     gap: 8px;
     color: #000000;
     font-size: 11px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .categoryBadge {
@@ -279,13 +279,13 @@
     bottom: 24px;
     right: 24px;
     font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     padding: 4px 12px;
     background: #000000;
     color: #FFFFFF;
-    border: 2px solid #000000;
-    letter-spacing: 0.15em;
+    border: 1px solid var(--border);
+    letter-spacing: -0.02em;
 }
 
 .siteCard.shopping .categoryBadge { background: #E11D48; }
@@ -307,20 +307,20 @@
 
 .emptyState h3 {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     margin: 24px 0 8px;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
+    text-transform: none;
     font-style: italic;
 }
 
 .emptyState p {
     color: rgba(0, 0, 0, 0.5);
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
     max-width: 400px;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* Responsive */

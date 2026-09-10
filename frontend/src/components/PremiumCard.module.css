@@ -4,18 +4,18 @@
   width: 100%;
   aspect-ratio: 1.586 / 1;
   background: #FFFFFF;
-  border: 4px solid #000000;
-  border-radius: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   position: relative;
   overflow: hidden;
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-  box-shadow: 8px 8px 0px #000000;
+  box-shadow: var(--shadow-md);
   cursor: pointer;
 }
 
 .premiumCard:hover {
-  transform: translate(-4px, -4px);
-  box-shadow: 12px 12px 0px #E11D48;
+  transform: none;
+  box-shadow: var(--shadow-md);
 }
 
 .cardContent {
@@ -41,18 +41,18 @@
 
 .labelSmall {
   font-size: 0.65rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 
 .labelMain {
   font-size: 0.85rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  text-transform: none;
+  letter-spacing: -0.02em;
   margin-top: 0.25rem;
 }
 
@@ -64,10 +64,10 @@
   width: 3.5rem;
   height: 2.5rem;
   background: #000000;
-  border-radius: 0;
+  border-radius: var(--r-lg);
   padding: 4px;
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #E11D48;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .chipGrid {
@@ -84,9 +84,9 @@
 
 .cardNumbers {
   font-size: 1.5rem;
-  font-weight: 900;
+  font-weight: 600;
   color: #000000;
-  letter-spacing: 0.15em;
+  letter-spacing: -0.02em;
   font-family: 'JetBrains Mono', monospace;
   margin-bottom: 1rem;
 }
@@ -104,24 +104,24 @@
 
 .infoLabel {
   font-size: 0.65rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 
 .infoText {
   font-size: 0.8rem;
-  font-weight: 950;
+  font-weight: 600;
   color: #000000;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
   margin-top: 0.25rem;
 }
 
 @media (max-width: 480px) {
   .premiumCard {
-    box-shadow: 5px 5px 0px #000000;
+    box-shadow: var(--shadow-md);
   }
 
   .cardContent {

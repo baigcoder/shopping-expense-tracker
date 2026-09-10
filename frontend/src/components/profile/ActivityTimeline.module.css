@@ -1,18 +1,18 @@
 /* ActivityTimeline.module.css */
 .container {
     background: #FFF;
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: var(--shadow-md);
     height: 100%;
 }
 
 .title {
     font-size: 1.2rem;
-    font-weight: 900;
+    font-weight: 600;
     margin: 0 0 1.5rem 0;
-    text-transform: uppercase;
+    text-transform: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -58,9 +58,9 @@
     justify-content: center;
     margin-top: 0;
     z-index: 1;
-    border: 2px solid #000;
+    border: 1px solid var(--border);
     flex-shrink: 0;
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .content {
@@ -78,13 +78,13 @@
 }
 
 .categoryName {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 0.95rem;
     text-transform: capitalize;
 }
 
 .amount {
-    font-weight: 900;
+    font-weight: 600;
     font-family: 'Space Mono', monospace;
     font-size: 0.95rem;
 }
@@ -97,10 +97,10 @@
 
 .emptyState {
     background: #FFF;
-    border: 4px solid #000;
+    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 8px 8px 0 #000;
+    box-shadow: var(--shadow-md);
     text-align: center;
     color: #64748B;
     font-weight: 700;

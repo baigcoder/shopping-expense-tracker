@@ -20,7 +20,7 @@
 
 .titleSection h1 {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--text-primary);
     margin: 0 0 4px;
     letter-spacing: -0.5px;
@@ -123,7 +123,7 @@
 .statValue {
     display: block;
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--text-primary);
     line-height: 1;
 }
@@ -132,7 +132,7 @@
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-secondary);
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .warning {
@@ -306,7 +306,7 @@
 
 .modalHeader h2 {
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--text-primary);
     margin: 0;
 }

@@ -94,13 +94,13 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                 <motion.div className="absolute inset-0 bg-white/80 backdrop-blur-sm" onClick={handleClose} />
                 
                 <motion.div 
-                    className="relative w-full max-w-lg bg-white border-4 border-black shadow-[12px_12px_0px_#000000]"
+                    className="relative w-full max-w-lg rounded-2xl border border-[#E7E5E4] bg-white shadow-[var(--shadow-lg)]"
                     initial={{ scale: 0.9, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: 20 }}
                 >
                     <div className="relative p-8">
-                        <button onClick={handleClose} className="absolute top-4 right-4 p-2 border-4 border-black bg-white hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0px_#000000] active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1">
+                        <button onClick={handleClose} className="absolute right-4 top-4 rounded-lg p-2 text-[#78716C] hover:bg-[#F4F0EB]">
                             <X size={24} strokeWidth={3} />
                         </button>
 
@@ -112,8 +112,8 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                             >
                                 <Mic size={40} className="text-black" strokeWidth={3} />
                             </motion.div>
-                            <h2 className="text-3xl font-black uppercase italic text-black mb-2">MEET YOUR AI</h2>
-                            <p className="text-black font-bold opacity-60 uppercase tracking-widest text-sm">Choose a voice for your mission</p>
+                            <h2 className="mb-2 font-display text-2xl font-semibold">Choose a voice</h2>
+                            <p className="text-sm text-[#78716C]">Pick how Cashly should sound on calls</p>
                         </div>
 
                         {step === 'select' ? (
@@ -193,9 +193,9 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
 
                                 <div className="space-y-4 mb-10 border-4 border-black p-6 bg-gray-50 shadow-[6px_6px_0px_#000000]">
                                     {[
-                                        { icon: <Activity size={20} strokeWidth={3} />, text: 'REAL-TIME FINANCIAL ANALYSIS' },
-                                        { icon: <Music size={20} strokeWidth={3} />, text: 'NATURAL NEURAL ENGINE' },
-                                        { icon: <Sparkles size={20} strokeWidth={3} />, text: 'PERSONALIZED STRATEGIES' }
+                                        { icon: <Activity size={20} />, text: 'Real-time financial answers' },
+                                        { icon: <Music size={20} />, text: 'Natural speech' },
+                                        { icon: <Sparkles size={20} />, text: 'Personalized suggestions' }
                                     ].map((item, idx) => (
                                         <motion.div key={idx} className="flex items-center gap-4 text-black font-black uppercase" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.1 }}>
                                             <div className="w-10 h-10 border-4 border-black bg-blue-100 flex items-center justify-center text-blue-600 shadow-[2px_2px_0px_#000000]">{item.icon}</div>

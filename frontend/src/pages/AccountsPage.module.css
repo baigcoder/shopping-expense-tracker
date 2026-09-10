@@ -21,11 +21,11 @@
 
 .titleSection h1 {
     font-size: 2.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     margin: 0;
     letter-spacing: -0.05em;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .titleSection p {
@@ -33,8 +33,8 @@
     font-weight: 700;
     color: #64748b;
     margin-top: 0.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .headerActions {
@@ -50,17 +50,17 @@
     align-items: center;
     justify-content: center;
     background: #FFFFFF;
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     color: #000000;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .refreshBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .addBtn {
@@ -71,20 +71,20 @@
     height: 3.5rem;
     background: #E11D48;
     color: #FFFFFF;
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     font-size: 1rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: 0.05em;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .addBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0px #000000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .spinning {
@@ -99,14 +99,14 @@
 /* === NET WORTH CARD === */
 .netWorthCard {
     background: #FFFFFF;
-    border: 4px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     padding: 2.5rem;
     margin-bottom: 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 12px 12px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .netWorthMain {
@@ -118,30 +118,30 @@
 .netWorthIconWrap {
     width: 4.5rem;
     height: 4.5rem;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     background: #000000;
     color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 3px solid #E11D48;
-    box-shadow: 4px 4px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .netWorthLabel {
     display: block;
     font-size: 0.8rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
 }
 
 .netWorthValue {
     display: block;
     font-size: 3.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     line-height: 1;
     letter-spacing: -0.05em;
@@ -162,9 +162,9 @@
     gap: 1rem;
     background: #FFFFFF;
     padding: 1rem 1.5rem;
-    border-radius: 0;
-    border: 3px solid #000000;
-    box-shadow: 4px 4px 0px #000000;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
 }
 
 .breakdownIcon {
@@ -173,22 +173,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #000000;
+    border: 1px solid var(--border);
 }
 
 .breakdownItem span {
     display: block;
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: 600;
     color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .breakdownItem strong {
     display: block;
     font-size: 1.25rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.02em;
 }
@@ -210,17 +210,17 @@
 
 .accountCard {
     background: #FFFFFF;
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     padding: 1.75rem;
     transition: all 0.2s;
     position: relative;
-    box-shadow: 6px 6px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .accountCard:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px #000000;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 .cardHeader {
@@ -233,17 +233,17 @@
 .cardIcon {
     width: 3.5rem;
     height: 3.5rem;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #000000;
-    box-shadow: 3px 3px 0px #000000;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
 }
 
 .cardInfo h3 {
     font-size: 1.25rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     margin: 0;
     letter-spacing: -0.02em;
@@ -261,7 +261,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #000000;
+    border: 1px solid var(--border);
     background: #FFFFFF;
     color: #000000;
     cursor: pointer;
@@ -279,8 +279,8 @@
 
 .cardBalance {
     background: #f8fafc;
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     padding: 1.5rem;
     text-align: left;
     margin-bottom: 1.5rem;
@@ -292,17 +292,17 @@
 .balanceLabel {
     display: block;
     font-size: 0.7rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
 }
 
 .balanceValue {
     display: block;
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.04em;
 }
@@ -318,18 +318,18 @@
 .accountType {
     background: #000000;
     padding: 0.25rem 0.75rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #FFFFFF;
     font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: -0.02em;
 }
 
 .lastUpdated {
     font-size: 0.7rem;
     font-weight: 700;
     color: #64748b;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* === MODAL === */
@@ -347,11 +347,11 @@
 
 .modal {
     background: #FFFFFF;
-    border: 4px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     width: 100%;
     max-width: 500px;
-    box-shadow: 16px 16px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .modalHeader {
@@ -359,15 +359,15 @@
     justify-content: space-between;
     align-items: center;
     padding: 2rem;
-    border-bottom: 4px solid #000000;
+    border-bottom: 1px solid var(--border);
     background: #f8fafc;
 }
 
 .modalHeader h2 {
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: -0.02em;
 }
 
@@ -394,10 +394,10 @@
 .formGroup label {
     display: block;
     font-size: 0.8rem;
-    font-weight: 900;
+    font-weight: 600;
     color: #000000;
     margin-bottom: 0.75rem;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.05em;
 }
 
@@ -406,8 +406,8 @@
     width: 100%;
     height: 3.5rem;
     padding: 0 1rem;
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     font-size: 1rem;
     font-weight: 700;
     color: #000000;
@@ -418,7 +418,7 @@
 .formGroup input:focus,
 .formGroup select:focus {
     background: #fff;
-    box-shadow: 4px 4px 0px #000000;
+    box-shadow: var(--shadow-md);
 }
 
 .formRow {
@@ -436,14 +436,14 @@
 .colorOption {
     width: 2rem;
     height: 2rem;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     cursor: pointer;
     transition: all 0.15s;
 }
 
 .colorOption.selected {
-    box-shadow: 4px 4px 0px #000000;
-    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-md);
+    transform: none;
 }
 
 .formActions {
@@ -456,9 +456,9 @@
     flex: 1;
     height: 3.5rem;
     background: #FFFFFF;
-    border: 3px solid #000000;
-    font-weight: 900;
-    text-transform: uppercase;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
     cursor: pointer;
 }
 
@@ -467,16 +467,16 @@
     height: 3.5rem;
     background: #000000;
     color: #FFFFFF;
-    border: 3px solid #000000;
-    font-weight: 900;
-    text-transform: uppercase;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    text-transform: none;
     cursor: pointer;
-    box-shadow: 4px 4px 0px #E11D48;
+    box-shadow: var(--shadow-md);
 }
 
 .submitBtn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #E11D48;
+    transform: none;
+    box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 1024px) {
@@ -532,7 +532,7 @@
     .netWorthCard {
         padding: 1.25rem;
         margin-bottom: 2rem;
-        box-shadow: 6px 6px 0px #000000;
+        box-shadow: var(--shadow-md);
     }
 
     .netWorthMain {
@@ -552,7 +552,7 @@
     }
 
     .accountCard {
-        box-shadow: 4px 4px 0px #000000;
+        box-shadow: var(--shadow-md);
     }
 
     .cardHeader,
@@ -579,7 +579,7 @@
     .modal {
         max-height: calc(100dvh - 1.5rem);
         overflow-y: auto;
-        box-shadow: 8px 8px 0px #E11D48;
+        box-shadow: var(--shadow-md);
     }
 
     .modalHeader,

@@ -80,9 +80,9 @@
     margin: 0;
     font-family: 'Outfit', sans-serif;
     font-size: 1.5rem;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 1.1;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .closeBtn {
@@ -143,7 +143,7 @@
     font-weight: 700;
     font-size: 0.95rem;
     color: #1E293B;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.02em;
 }
 
@@ -189,7 +189,7 @@
 
 .currencySymbol {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 1.5rem;
 }
 
@@ -255,7 +255,7 @@
 
 .confirmAmount {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 2.5rem;
     color: #1E293B;
     margin: 0.25rem 0;

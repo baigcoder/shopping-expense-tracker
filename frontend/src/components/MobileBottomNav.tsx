@@ -130,7 +130,7 @@ const MobileBottomNav = () => {
     return (
         <>
             {/* Bottom Navigation Bar */}
-            <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur border-t-4 border-black shadow-[0_-8px_0px_rgba(0,0,0,0.04)]">
+            <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] border-t border-[#E7E5E4] bg-[#FAF8F5]/95 backdrop-blur">
                 <div className="flex items-center justify-around min-h-[4.4rem] px-1 safe-area-pb">
                     {mainNavItems.map((item) => {
                         const isActive = location.pathname === item.path;
@@ -150,21 +150,21 @@ const MobileBottomNav = () => {
                                     whileTap={{ scale: 0.9 }}
                                 >
                                     <div className={cn(
-                                        "p-1.5 transition-all duration-200 relative border-2",
+                                        "relative rounded-xl p-1.5 transition-colors duration-150",
                                         isActive
-                                            ? "bg-black text-white border-black shadow-[2px_2px_0px_#E11D48] -translate-y-0.5"
-                                            : "bg-transparent text-black border-transparent"
+                                            ? "bg-[#E11D48] text-white"
+                                            : "bg-transparent text-[#57534E]"
                                     )}>
-                                        <item.icon size={22} strokeWidth={isActive ? 3 : 2.5} />
+                                        <item.icon size={22} strokeWidth={isActive ? 2.4 : 2} />
                                         {badge > 0 && (
-                                            <span className="absolute -right-2 -top-2 flex min-w-[18px] items-center justify-center rounded-none border-2 border-black bg-[#E11D48] px-1 text-[10px] font-black text-white shadow-[2px_2px_0px_#000000]">
+                                            <span className="absolute -right-1.5 -top-1.5 flex min-w-[18px] items-center justify-center rounded-full bg-[#E11D48] px-1 text-[10px] font-semibold text-white">
                                                 {formatBadge(badge)}
                                             </span>
                                         )}
                                     </div>
                                     <span className={cn(
-                                        "text-[8px] min-[360px]:text-[9px] font-black uppercase tracking-wider min-[360px]:tracking-widest mt-1 max-w-full truncate leading-none",
-                                        isActive ? "text-[#E11D48]" : "text-black"
+                                        "mt-1 max-w-full truncate text-[10px] font-medium leading-none",
+                                        isActive ? "text-[#E11D48]" : "text-[#57534E]"
                                     )}>
                                         {item.label}
                                     </span>
@@ -183,16 +183,16 @@ const MobileBottomNav = () => {
                         whileTap={{ scale: 0.9 }}
                     >
                         <div className={cn(
-                            "p-1.5 transition-all duration-200 relative border-2",
+                            "relative rounded-xl p-1.5 transition-colors duration-150",
                             isMenuOpen || isMenuItemActive
-                                ? "bg-black text-white border-black shadow-[2px_2px_0px_#E11D48] -translate-y-0.5"
-                                : "bg-transparent text-black border-transparent"
+                                ? "bg-[#E11D48] text-white"
+                                : "bg-transparent text-[#57534E]"
                         )}>
-                            {isMenuOpen ? <X size={22} strokeWidth={3} /> : <Menu size={22} strokeWidth={2.5} />}
+                            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
                         </div>
                         <span className={cn(
-                            "text-[8px] min-[360px]:text-[9px] font-black uppercase tracking-wider min-[360px]:tracking-widest mt-1 max-w-full truncate leading-none",
-                            isMenuOpen || isMenuItemActive ? "text-[#E11D48]" : "text-black"
+                            "mt-1 max-w-full truncate text-[10px] font-medium leading-none",
+                            isMenuOpen || isMenuItemActive ? "text-[#E11D48]" : "text-[#57534E]"
                         )}>
                             More
                         </span>
@@ -219,11 +219,11 @@ const MobileBottomNav = () => {
                             animate={{ y: 0 }}
                             exit={{ y: "100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                            className="lg:hidden fixed bottom-[calc(4.4rem+env(safe-area-inset-bottom))] left-0 right-0 z-[99] bg-white border-t-4 border-black overflow-hidden max-h-[calc(80vh-env(safe-area-inset-bottom))] overflow-y-auto"
+                            className="lg:hidden fixed bottom-[calc(4.4rem+env(safe-area-inset-bottom))] left-0 right-0 z-[99] max-h-[calc(80vh-env(safe-area-inset-bottom))] overflow-hidden overflow-y-auto rounded-t-2xl border-t border-[#E7E5E4] bg-white shadow-[var(--shadow-lg)]"
                         >
                             {/* Handle */}
-                            <div className="flex justify-center pt-4 pb-2 border-b-4 border-black mb-4">
-                                <div className="text-[10px] font-black uppercase tracking-widest text-black">Menu</div>
+                            <div className="mb-3 flex justify-center border-b border-[#E7E5E4] pb-2 pt-4">
+                                <div className="text-sm font-medium text-[#1C1917]">More</div>
                             </div>
 
                             {/* Menu Items */}
@@ -242,21 +242,21 @@ const MobileBottomNav = () => {
                                                 to={item.path}
                                                 onClick={handleNavClick}
                                                 className={cn(
-                                                    "relative flex flex-col items-center justify-center gap-2 p-3 min-[390px]:p-4 h-24 border-4 transition-all duration-200 min-w-0",
+                                                    "relative flex h-24 min-w-0 flex-col items-center justify-center gap-2 rounded-2xl border p-3 transition-colors duration-150 min-[390px]:p-4",
                                                     isActive
-                                                        ? "bg-black border-black text-white shadow-[4px_4px_0px_#E11D48] -translate-y-0.5 -translate-x-0.5"
-                                                        : "bg-white border-black text-black shadow-[4px_4px_0px_#000000] active:translate-x-0 active:translate-y-0 active:shadow-none"
+                                                        ? "border-[#E11D48]/20 bg-[#FFE4E6] text-[#E11D48]"
+                                                        : "border-[#E7E5E4] bg-[#FAF8F5] text-[#1C1917]"
                                                 )}
                                             >
                                                 {badge > 0 && (
-                                                    <span className="absolute -right-2 -top-2 flex min-w-[24px] h-6 items-center justify-center border-2 border-black bg-[#E11D48] text-[12px] font-black text-white shadow-[2px_2px_0px_#000000]">
+                                                    <span className="absolute -right-1.5 -top-1.5 flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#E11D48] text-[12px] font-semibold text-white">
                                                         {formatBadge(badge)}
                                                     </span>
                                                 )}
-                                                <item.icon size={24} strokeWidth={isActive ? 3 : 2.5} />
+                                                <item.icon size={22} strokeWidth={2} />
                                                 <span className={cn(
-                                                    "text-[10px] min-[390px]:text-[11px] font-black uppercase tracking-wider min-[390px]:tracking-widest text-center leading-tight break-words",
-                                                    isActive ? "text-white" : "text-black"
+                                                    "text-center text-[11px] font-medium leading-tight break-words",
+                                                    isActive ? "text-[#E11D48]" : "text-[#1C1917]"
                                                 )}>
                                                     {item.label}
                                                 </span>

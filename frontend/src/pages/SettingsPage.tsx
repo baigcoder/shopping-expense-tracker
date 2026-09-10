@@ -8,7 +8,6 @@ import {
     ReceiptText, FileBarChart2, ListChecks, ClipboardList, Target
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useAuthStore, useUIStore } from '../store/useStore';
 import { useNavigate } from 'react-router-dom';
@@ -144,11 +143,11 @@ const SettingsPage = () => {
                     currency: preferences.currency,
                 });
             }
-            toast.success('IDENTITY_RECONFIGURED');
+            toast.success('Profile saved');
             sound.playSuccess();
         } catch (error) {
             console.error('Profile update error:', error);
-            toast.error('IDENTITY_UPDATE_FAILURE');
+            toast.error('Could not update profile');
         } finally {
             setIsSaving(false);
         }
@@ -157,18 +156,18 @@ const SettingsPage = () => {
     const handleLogout = async () => {
         try {
             await logout();
-            toast.info('SESSION_TERMINATED');
+            toast.info('Signed out');
             navigate('/login');
         } catch (error) {
             console.error('Logout error:', error);
-            toast.error('TERMINATION_FAILURE');
+            toast.error('Could not sign out');
         }
     };
 
     const handlePasswordReset = async () => {
         try {
             const result: any = await settingsApi.requestPasswordReset();
-            toast.success(result.delivery === 'email_sent' ? 'PASSPHRASE_RESET_DISPATCHED' : 'RESET_NODE_INITIALIZED');
+            toast.success(result.delivery === 'email_sent' ? 'Password reset email sent' : 'Reset started');
         } catch (error: any) {
             console.error('Password reset failed:', error);
             toast.error('RESET_FAILURE');
@@ -178,9 +177,9 @@ const SettingsPage = () => {
     const handleSessionRefresh = async () => {
         try {
             const sessions: any = await settingsApi.getSessions();
-            toast.info(`NODE_CHECK: ${sessions.sessions?.[0]?.ip || 'LOCAL_DEVICE'}`);
+            toast.info(`Current session: ${sessions.sessions?.[0]?.ip || 'this device'}`);
         } catch {
-            toast.error('NODE_LOAD_FAILURE');
+            toast.error('Could not load session');
         }
     };
 
@@ -190,14 +189,14 @@ const SettingsPage = () => {
 
         try {
             await settingsApi.requestResetOtp(resetCategory);
-            const otp = window.prompt('ENTER_VERIFICATION_KEY_FROM_EMAIL');
+            const otp = window.prompt('Enter the verification code from your email');
             if (!otp) return;
             await settingsApi.confirmReset(otp);
-            toast.success('PURGE_COMPLETE');
+            toast.success('Data reset complete');
             await settingsApi.refreshAI().catch(() => undefined);
         } catch (error: any) {
             console.error('Data reset failed:', error);
-            toast.error('PURGE_FAILURE');
+            toast.error('Could not reset data');
         }
     };
 
@@ -205,9 +204,9 @@ const SettingsPage = () => {
         setIsSaving(true);
         try {
             await settingsApi.refreshAI();
-            toast.success('NEURAL_CACHE_REFRESHED');
+            toast.success('AI cache refreshed');
         } catch {
-            toast.error('NEURAL_REFRESH_FAILURE');
+            toast.error('Could not refresh AI');
         } finally {
             setIsSaving(false);
         }
@@ -216,21 +215,21 @@ const SettingsPage = () => {
     const handleClearChat = async () => {
         try {
             await settingsApi.clearChatMemory();
-            toast.success('CHAT_BUFFER_CLEARED');
+            toast.success('Chat memory cleared');
         } catch {
-            toast.error('BUFFER_CLEAR_FAILURE');
+            toast.error('Could not clear chat');
         }
     };
 
     const handleTestAI = async () => {
-        setAiTest('TESTING_PROVIDER_PIPELINE...');
+        setAiTest('Testing AI…');
         try {
             const result = await settingsApi.testAI();
-            setAiTest(`${result.status.toUpperCase()}: ${(result.provider || 'ai').toUpperCase()} ${result.model.toUpperCase()}`);
-            result.ok ? toast.success('PROVIDER_READY') : toast.warning('PROVIDER_LATENCY_DETECTED');
+            setAiTest(`${result.status}: ${result.provider || 'ai'} ${result.model}`);
+            result.ok ? toast.success('AI is ready') : toast.warning('AI responded slowly');
         } catch (error: any) {
-            setAiTest('PROVIDER_TEST_FAILED');
-            toast.error('PIPELINE_ERROR');
+            setAiTest('AI test failed');
+            toast.error('Could not reach AI');
         }
     };
 
@@ -328,7 +327,7 @@ const SettingsPage = () => {
                 <div className="space-y-12">
                     {/* Identity Profile */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={User} title="Identity Profile" subtitle="CORE_USER_CREDENTIALS" colorClass="bg-black" />
+                        <SectionHeader icon={User} title="Profile" subtitle="Name, currency, and account details" colorClass="bg-black" />
                         <div className={styles.formContainer}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className={styles.formField}>
@@ -361,7 +360,7 @@ const SettingsPage = () => {
 
                     {/* Auditory Experience */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={Volume2} title="Audio Interface" subtitle="SIGNAL_FEEDBACK_PROTOCOLS" colorClass="bg-black" />
+                        <SectionHeader icon={Volume2} title="Sound" subtitle="Click and confirmation sounds" colorClass="bg-black" />
                         <ToggleRow icon={Sparkles} label="UI Sound Feedback" description="Enable auditory interaction cues" checked={preferences.soundEnabled} onChange={(soundEnabled) => savePreferences({ soundEnabled })} />
                         <AnimatePresence>
                             {preferences.soundEnabled && (
@@ -395,7 +394,7 @@ const SettingsPage = () => {
 
                     {/* Notification Signal Protocol */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={Bell} title="Signal Protocol" subtitle="DATA_DISPATCH_CHANNELS" colorClass="bg-black" />
+                        <SectionHeader icon={Bell} title="Notifications" subtitle="Email and in-app updates" colorClass="bg-black" />
                         <ToggleRow icon={Mail} label="Email Manifest" description="Weekly/Monthly finance dispatch" checked={preferences.emailNotifications} onChange={(emailNotifications) => savePreferences({ emailNotifications })} />
                         <ToggleRow icon={Zap} label="Push Telemetry" description="Real-time browser notifications" checked={preferences.pushNotifications} onChange={(pushNotifications) => savePreferences({ pushNotifications })} />
                         <ToggleRow icon={PieChart} label="Weekly Report Audit" description="Summary of weekly outflow" checked={preferences.weeklyReport} onChange={(weeklyReport) => savePreferences({ weeklyReport })} />
@@ -404,57 +403,57 @@ const SettingsPage = () => {
 
                     {/* AI Controls */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={Brain} title="Neural Controls" subtitle="AI_MEMORY_AND_PIPELINE" colorClass="bg-black" />
+                        <SectionHeader icon={Brain} title="AI" subtitle="Live answers, memory, and pending data" colorClass="bg-black" />
                         <ToggleRow icon={Cpu} label="Neural Provider" description="Activate live AI processing nodes" checked={preferences.aiLiveEnabled} onChange={(aiLiveEnabled) => saveAI({ aiLiveEnabled })} />
                         <ToggleRow icon={Database} label="Neural Memory" description="Persistent context storage for chat" checked={preferences.aiMemoryEnabled} onChange={(aiMemoryEnabled) => saveAI({ aiMemoryEnabled })} />
                         <ToggleRow icon={Activity} label="Inbox Contextualization" description="Allow AI to audit pending candidates" checked={preferences.aiIncludePendingCandidates} onChange={(aiIncludePendingCandidates) => saveAI({ aiIncludePendingCandidates })} />
-                        <ToggleRow icon={RefreshCw} label="Neural Auto-Sync" description="Auto-refresh cache on data change" checked={preferences.aiAutoRefresh} onChange={(aiAutoRefresh) => saveAI({ aiAutoRefresh })} />
+                        <ToggleRow icon={RefreshCw} label="Auto-refresh" description="Refresh AI context when your data changes" checked={preferences.aiAutoRefresh} onChange={(aiAutoRefresh) => saveAI({ aiAutoRefresh })} />
                         
                         <div className={styles.sliderBox}>
                             <div className="grid gap-6 md:grid-cols-2">
                                 <div className="border-4 border-black p-6 bg-white">
                                     <p className={styles.rowLabel}>Groq</p>
                                     <p className={cn(styles.rowDesc, "font-black")}>
-                                        {dashboard?.ai.provider.groq?.configured ? 'FAST_PATH: ONLINE' : 'FAST_PATH: OFFLINE'}
+                                        {dashboard?.ai.provider.groq?.configured ? 'Online' : 'Offline'}
                                     </p>
                                 </div>
                                 <div className="border-4 border-black p-6 bg-white">
                                     <p className={styles.rowLabel}>OpenRouter</p>
                                     <p className={cn(styles.rowDesc, "font-black")}>
-                                        {dashboard?.ai.provider.openrouter?.configured ? 'FALLBACK: ONLINE' : 'FALLBACK: OFFLINE'}
+                                        {dashboard?.ai.provider.openrouter?.configured ? 'Online' : 'Offline'}
                                     </p>
                                 </div>
                                 <div className="border-4 border-black p-6 bg-white">
                                     <p className={styles.rowLabel}>Provider Status</p>
                                     <p className={cn(styles.rowDesc, "font-black")}>
-                                        {dashboard?.ai.provider.configured ? 'STATUS: ONLINE' : 'STATUS: OFFLINE'}
+                                        {dashboard?.ai.provider.configured ? 'Online' : 'Offline'}
                                     </p>
                                 </div>
                                 <div className="border-4 border-black p-6 bg-white">
-                                    <p className={styles.rowLabel}>Neural Cache</p>
+                                    <p className={styles.rowLabel}>AI cache</p>
                                     <p className={cn(styles.rowDesc, "font-black")}>
-                                        {dashboard?.ai.cache.connected ? `CACHE_LOAD: ${dashboard.ai.cache.memory || '0.0MB'}` : 'CACHE: DISCONNECTED'}
+                                        {dashboard?.ai.cache.connected ? dashboard.ai.cache.memory || 'Ready' : 'Disconnected'}
                                     </p>
                                 </div>
                             </div>
                             <div className="mt-6 border-4 border-black p-6 bg-black text-white">
-                                <p className="text-[10px] font-black uppercase tracking-widest opacity-50 mb-2">ACTIVE_MODELS</p>
+                                <p className="mb-2 text-xs text-white/60">Active models</p>
                                 <p className="text-xs font-black tracking-tighter">
-                                    {Object.entries(models).map(([key, value]) => `${key.toUpperCase()}: ${value.toString().toUpperCase()}`).join(' // ') || 'NO_MODEL_MAP_LOADED'}
+                                    {Object.entries(models).map(([key, value]) => `${key}: ${value}`).join(' · ') || 'No models loaded'}
                                 </p>
                             </div>
                             {aiTest && <div className="mt-6 p-4 border-4 border-black bg-[#E11D48] text-white font-black text-xs uppercase tracking-widest">{aiTest}</div>}
                             <div className={styles.testBtnGroup}>
-                                <button className={styles.outlineBtn} onClick={handleRefreshAI} disabled={isSaving}>REFRESH_NEURAL_MEMORY</button>
-                                <button className={styles.outlineBtn} onClick={handleClearChat}>PURGE_CHAT_BUFFER</button>
-                                <button className={styles.primaryBtn} onClick={handleTestAI} style={{ flex: 1 }}>TEST_PROVIDER_PIPELINE</button>
+                                <button className={styles.outlineBtn} onClick={handleRefreshAI} disabled={isSaving}>Refresh AI memory</button>
+                                <button className={styles.outlineBtn} onClick={handleClearChat}>Clear chat memory</button>
+                                <button className={styles.primaryBtn} onClick={handleTestAI} style={{ flex: 1 }}>Test AI</button>
                             </div>
                         </div>
                     </motion.div>
 
                     {/* Feature Command Center */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={ListChecks} title="Command Center" subtitle="DIRECT_WORKFLOW_ACCESS" colorClass="bg-black" />
+                        <SectionHeader icon={ListChecks} title="Shortcuts" subtitle="Jump to the workflows you use most" colorClass="bg-black" />
                         <div className="grid grid-cols-1 md:grid-cols-2">
                             <ActionRow icon={Inbox} label="Transaction Inbox" description="Staged detection review" onClick={() => goToFeature('/transaction-inbox')} />
                             <ActionRow icon={CalendarDays} label="Finance Calendar" description="Upcoming liability view" onClick={() => goToFeature('/cashflow-calendar')} />
@@ -467,7 +466,7 @@ const SettingsPage = () => {
 
                     {/* Sentinel Protocol */}
                     <motion.div variants={fadeInUp} className={styles.section}>
-                        <SectionHeader icon={ShieldAlert} title="Sentinel Protocol" subtitle="SECURITY_VAULT_CONTROLS" colorClass="bg-black" />
+                        <SectionHeader icon={ShieldAlert} title="Security" subtitle="Password and session" colorClass="bg-black" />
                         <ActionRow icon={Key} label="Rotate Passphrase" description="Initiate security reset protocol" onClick={handlePasswordReset} />
                         <ActionRow icon={Smartphone} label="Network Node Audit" description={dashboard?.session.userAgent || 'ANALYZE_CURRENT_NODE_METADATA'} onClick={handleSessionRefresh} />
                     </motion.div>
@@ -477,20 +476,20 @@ const SettingsPage = () => {
                         <div className={cn(styles.sectionHeader, styles.dangerHeader)}>
                             <div className="p-4 bg-[#E11D48] text-white border-4 border-black shadow-[4px_4px_0px_#000000]"><Target size={24} strokeWidth={3} /></div>
                             <div>
-                                <h3 className={cn(styles.sectionTitle, styles.dangerTitle)}>Danger Protocol</h3>
-                                <p className={styles.sectionSubtitle}>DESTRUCTIVE_DATA_OPERATIONS</p>
+                                <h3 className={cn(styles.sectionTitle, styles.dangerTitle)}>Danger zone</h3>
+                                <p className={styles.sectionSubtitle}>These actions cannot be undone</p>
                             </div>
                         </div>
                         <div className={styles.formContainer}>
                             <div className={styles.formField}>
                                 <label className={styles.fieldLabel}>Purge Target Area</label>
                                 <select className={styles.premiumInput} value={resetCategory} onChange={(e) => setResetCategory(e.target.value)}>
-                                    <option value="transactions">TRANSACTIONS_DATABASE</option>
-                                    <option value="goals">GOALS_MANIFEST</option>
-                                    <option value="subscriptions">SUBSCRIPTION_REGISTRY</option>
-                                    <option value="bills">BILL_PIPELINE</option>
-                                    <option value="cards">CARD_VAULT</option>
-                                    <option value="all">COMPLETE_SYSTEM_PURGE</option>
+                                    <option value="transactions">Transactions</option>
+                                    <option value="goals">Goals</option>
+                                    <option value="subscriptions">Subscriptions</option>
+                                    <option value="bills">Bills</option>
+                                    <option value="cards">Cards</option>
+                                    <option value="all">Everything</option>
                                 </select>
                             </div>
                         </div>
@@ -501,7 +500,7 @@ const SettingsPage = () => {
 
                 {/* Footer */}
                 <motion.div variants={fadeInUp} className={styles.footer}>
-                    <p className={styles.footerText}>CASHLY_CORE_V2.1 // SYSTEM_AUDIT_STABLE</p>
+                    <p className={styles.footerText}>Cashly settings</p>
                 </motion.div>
             </motion.div>
         </div>

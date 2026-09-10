@@ -2,24 +2,24 @@
 
 .aiMagicContainer {
     background: #ffffff;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     border-radius: 12px !important;
     overflow: hidden;
     position: relative;
-    box-shadow: 12px 12px 0px #000000;
+    box-shadow: var(--shadow-md);
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     isolation: isolate;
 }
 
 .aiMagicContainer:hover {
-    transform: translate(-4px, -4px);
+    transform: none;
     box-shadow: 16px 16px 0px #3b82f6;
 }
 
 .header {
     background: #000000;
     padding: 1.75rem 2.25rem;
-    border-bottom: 3px solid #000000;
+    border-bottom: 1px solid var(--border);
     color: #ffffff;
     position: relative;
     z-index: 20;
@@ -29,7 +29,7 @@
     width: 3.5rem;
     height: 3.5rem;
     background: #ffffff;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     border-radius: 10px !important;
     display: flex;
     align-items: center;
@@ -43,20 +43,20 @@
     padding: 0.65rem 1.25rem;
     background: #3b82f6;
     color: #ffffff;
-    border: 3px solid #ffffff;
+    border: 1px solid var(--border);
     border-radius: 8px !important;
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    font-weight: 950;
-    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
 }
 
 .statsRow {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background: #ffffff;
-    border-bottom: 3px solid #000000;
+    border-bottom: 1px solid var(--border);
     position: relative;
     z-index: 20;
 }
@@ -64,7 +64,7 @@
 .statCell {
     padding: 1.75rem;
     text-align: left;
-    border-right: 3px solid #000000;
+    border-right: 1px solid var(--border);
     transition: all 0.2s;
 }
 
@@ -78,9 +78,9 @@
 
 .statLabel {
     font-size: 0.75rem;
-    font-weight: 950;
+    font-weight: 600;
     color: #000000;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.15rem;
     margin-bottom: 0.75rem;
     display: flex;
@@ -90,7 +90,7 @@
 
 .statVal {
     font-size: 1.75rem;
-    font-weight: 950;
+    font-weight: 600;
     color: #000000;
     letter-spacing: -0.05em;
     line-height: 1;
@@ -106,7 +106,7 @@
 .footer {
     padding: 1.5rem 2.25rem;
     background: #000000;
-    border-top: 3px solid #000000;
+    border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -117,9 +117,9 @@
 
 .seeMoreLink {
     font-size: 0.8rem;
-    font-weight: 950;
+    font-weight: 600;
     color: #000000;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.15rem;
     display: flex;
     align-items: center;
@@ -128,7 +128,7 @@
     transition: all 0.2s;
     background: #ffffff;
     padding: 0.875rem 1.75rem;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     box-shadow: 4px 4px 0px #3b82f6;
 }
 
@@ -136,7 +136,7 @@
     background: #3b82f6;
     color: #ffffff;
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0px #ffffff;
+    box-shadow: var(--shadow-md);
 }
 
 .riskBadge {
@@ -144,11 +144,11 @@
     align-items: center;
     gap: 0.65rem;
     padding: 0.65rem 1.25rem;
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     font-size: 0.75rem;
-    font-weight: 950;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: 0.1rem;
     background: #ffffff;
-    box-shadow: 5px 5px 0px #000000;
+    box-shadow: var(--shadow-md);
 }

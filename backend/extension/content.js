@@ -1310,46 +1310,34 @@
             const el = document.createElement('div');
             el.id = 'cashly-notification';
             el.innerHTML = `
-                <div style="
-                    position: fixed; top: 20px; right: 20px;
-                    background: linear-gradient(135deg, #10B981 0%, #8B5CF6 100%);
-                    color: white; padding: 16px 20px; border-radius: 16px;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                    z-index: 2147483647; max-width: 320px;
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                    animation: cashlySlide 0.4s ease-out;
-                ">
-                    <style>
-                        @keyframes cashlySlide { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-                    </style>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                        <span style="font-size: 28px;">${data.icon}</span>
-                        <div style="flex: 1;">
-                            <strong style="display: block; font-size: 14px;">Queued in Cashly Inbox</strong>
-                            <span style="font-size: 12px; opacity: 0.9;">${data.label} captured for review</span>
+                <div class="cashly-toast">
+                    <div class="cashly-toast-head">
+                        <span class="cashly-toast-icon">${data.icon || 'C'}</span>
+                        <div>
+                            <strong class="cashly-toast-title">Queued in Cashly inbox</strong>
+                            <span class="cashly-toast-sub">${data.label} captured for review</span>
                         </div>
-                        <button onclick="this.closest('#cashly-notification').remove()" 
-                            style="background: rgba(255,255,255,0.2); border: none; 
-                            width: 24px; height: 24px; border-radius: 50%; cursor: pointer; color: white;">×</button>
+                        <button class="cashly-toast-close" type="button" aria-label="Dismiss">×</button>
                     </div>
-                    <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px; font-size: 13px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                            <span style="opacity: 0.8;">Service</span>
+                    <div class="cashly-toast-body">
+                        <div class="cashly-toast-row">
+                            <span>Service</span>
                             <strong>${data.name}</strong>
                         </div>
                         ${data.amount > 0 ? `
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                            <span style="opacity: 0.8;">Amount</span>
+                        <div class="cashly-toast-row">
+                            <span>Amount</span>
                             <strong>$${data.amount.toFixed(2)}</strong>
                         </div>` : ''}
                         ${data.isTrial ? `
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="opacity: 0.8;">Trial</span>
+                        <div class="cashly-toast-row">
+                            <span>Trial</span>
                             <strong>${data.trialDays} days</strong>
                         </div>` : ''}
                     </div>
                 </div>
             `;
+            el.querySelector('.cashly-toast-close')?.addEventListener('click', () => el.remove());
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 8000);
         }

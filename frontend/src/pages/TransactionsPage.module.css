@@ -44,9 +44,9 @@
     background: var(--bg-header);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 3px solid #000000;
-    border-radius: 0;
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-md);
     position: sticky;
     top: 1rem;
     z-index: 100;
@@ -63,13 +63,13 @@
     width: 3.5rem;
     height: 3.5rem;
     background: #000000;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: 4px 4px 0px rgba(225,29,72,1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
 }
@@ -83,7 +83,7 @@
 
 .title {
     font-size: 1.75rem;
-    font-weight: 900;
+    font-weight: 600;
     color: var(--text-primary);
     letter-spacing: -0.04em;
     margin: 0;
@@ -99,12 +99,12 @@
     padding: 0.4rem 1.25rem;
     background: var(--success-light);
     border: 1px solid var(--success);
-    border-radius: 0;
+    border-radius: var(--r-lg);
     color: var(--success);
     font-size: 0.75rem;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: 0.05em;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .pulseDot {
@@ -144,14 +144,14 @@
     gap: 0.75rem;
     padding: 0.75rem 1.5rem;
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     color: var(--text-secondary);
-    font-weight: 800;
+    font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    box-shadow: var(--shadow-md);
 }
 
 .labelBtn:hover,
@@ -160,19 +160,19 @@
     border-color: var(--border-strong);
     color: var(--text-primary);
     transform: translateY(-3px);
-    box-shadow: 6px 6px 0px rgba(0,0,0,1);
+    box-shadow: var(--shadow-md);
 }
 
 .exportBtn {
     background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    box-shadow: 6px 6px 0px rgba(225,29,72,1);
+    box-shadow: var(--shadow-md);
 }
 
 .exportBtn:hover {
     background: linear-gradient(135deg, var(--brand-hover) 0%, var(--brand) 100%);
-    box-shadow: 6px 6px 0px rgba(225,29,72,1);
+    box-shadow: var(--shadow-md);
     transform: translateY(-3px);
 }
 
@@ -181,7 +181,7 @@
     height: 3.5rem;
     padding: 0;
     justify-content: center;
-    border-radius: 0;
+    border-radius: var(--r-lg);
 }
 
 .spinning {
@@ -202,8 +202,8 @@
 
 .premiumStatCard {
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     padding: 2.25rem;
     position: relative;
     overflow: hidden;
@@ -212,13 +212,13 @@
     flex-direction: column;
     justify-content: center;
     min-height: 200px;
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    box-shadow: var(--shadow-md);
 }
 
 .premiumStatCard:hover {
     transform: translateY(-10px);
     border-color: var(--border-strong);
-    box-shadow: 8px 8px 0px rgba(225,29,72,1);
+    box-shadow: var(--shadow-md);
 }
 
 .statMesh {
@@ -231,20 +231,20 @@
 .statIconBox {
     width: 3.75rem;
     height: 3.75rem;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
     position: relative;
     z-index: 2;
-    border: 3px solid #000000;
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
 }
 
 .statValue {
     font-size: 2.5rem;
-    font-weight: 950;
+    font-weight: 600;
     color: var(--text-primary);
     letter-spacing: -0.04em;
     margin: 0;
@@ -255,10 +255,10 @@
 
 .statLabel {
     font-size: 0.85rem;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-top: 0.75rem;
     position: relative;
     z-index: 2;
@@ -300,13 +300,13 @@
     height: 4rem;
     padding: 0 1.5rem 0 4rem;
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     color: var(--text-primary);
     font-size: 1.125rem;
     font-weight: 700;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    box-shadow: var(--shadow-md);
 }
 
 .searchInput:focus {
@@ -339,11 +339,11 @@
     height: 4rem;
     padding: 0 3.5rem 0 1.5rem;
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     color: var(--text-primary);
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     min-width: 220px;
     cursor: pointer;
     appearance: none;
@@ -367,8 +367,8 @@
     backdrop-filter: blur(16px);
     border-radius: var(--r-3xl);
     padding: 2.5rem;
-    border: 3px solid #000000;
-    box-shadow: 6px 6px 0px rgba(0,0,0,1);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
 }
 
 .listHeader {
@@ -381,7 +381,7 @@
 
 .listTitle {
     font-size: 1.75rem;
-    font-weight: 900;
+    font-weight: 600;
     color: var(--text-primary);
     margin: 0;
     letter-spacing: -0.03em;
@@ -390,29 +390,29 @@
 .listSubtitle {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
     margin-top: 0.35rem;
 }
 
 .transactionCard {
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     padding: 1.5rem 2rem;
     display: flex;
     align-items: center;
     margin-bottom: 1.25rem;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 4px 4px 0px rgba(0,0,0,1);
+    box-shadow: var(--shadow-md);
 }
 
 .transactionCard:hover {
     border-color: var(--border-strong);
     transform: translateX(10px) scale(1.01);
-    box-shadow: 8px 8px 0px rgba(225,29,72,1);
+    box-shadow: var(--shadow-md);
     z-index: 5;
 }
 
@@ -420,14 +420,14 @@
     width: 3.5rem;
     height: 3.5rem;
     background: var(--bg-subtle);
-    border-radius: 0;
+    border-radius: var(--r-lg);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-muted);
     margin-right: 1.75rem;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
 }
 
 .transactionCard:hover .txIcon {
@@ -454,10 +454,10 @@
 
 .txCategoryBadge {
     padding: 0.4rem 1rem;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     font-size: 0.75rem;
-    font-weight: 900;
-    text-transform: uppercase;
+    font-weight: 600;
+    text-transform: none;
     letter-spacing: 0.0625rem;
     background: var(--bg-subtle);
     color: var(--text-secondary);
@@ -473,7 +473,7 @@
 
 .txAmount {
     font-size: 1.5rem;
-    font-weight: 950;
+    font-weight: 600;
     margin-right: 2rem;
     min-width: 160px;
     text-align: right;
@@ -499,9 +499,9 @@
 .actionIconBtn {
     width: 3rem;
     height: 3rem;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     background: var(--bg-subtle);
-    border: 3px solid #000000;
+    border: 1px solid var(--border);
     color: var(--text-muted);
     cursor: pointer;
     display: flex;
@@ -555,10 +555,10 @@
 .pageBtn {
     padding: 0.875rem 2rem;
     background: var(--bg-card);
-    border: 3px solid #000000;
-    border-radius: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
     color: var(--text-secondary);
-    font-weight: 800;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -577,9 +577,9 @@
     padding: 0.875rem 1.75rem;
     background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%);
     color: white;
-    font-weight: 900;
-    border-radius: 0;
-    box-shadow: 6px 6px 0px rgba(225,29,72,1);
+    font-weight: 600;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-md);
 }
 
 /* === EMPTY STATE === */
@@ -594,7 +594,7 @@
     height: 6rem;
     background: var(--bg-subtle);
     border: 3px dashed #000000;
-    border-radius: 0;
+    border-radius: var(--r-lg);
     margin: 0 auto 2.5rem;
     display: flex;
     align-items: center;
@@ -657,7 +657,7 @@
     .header {
         padding: 1.25rem;
         gap: 1.25rem;
-        box-shadow: 5px 5px 0px #000000;
+        box-shadow: var(--shadow-md);
     }
 
     .header h1,

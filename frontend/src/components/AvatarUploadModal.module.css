@@ -134,7 +134,7 @@
     border-radius: 50%;
     background: #2563EB;
     cursor: pointer;
-    border: 2px solid #FFF;
+    border: 1px solid var(--border);
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
@@ -222,7 +222,7 @@
 .loadingSpinner {
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--border);
     border-top-color: #FFF;
     border-radius: 50%;
     animation: spin 1s linear infinite;
