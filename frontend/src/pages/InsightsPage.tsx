@@ -18,9 +18,34 @@ import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import styles from './InsightsPage.module.css';
 import { InsightsSkeleton } from '../components/LoadingSkeleton';
+import { getBackendInsights } from '../services/aiService';
 import { featureExpansionApi } from '../services/featureExpansionApi';
 
 const DEFAULT_INSIGHTS_STATS: InsightsStats = { potentialSavings: 0, activeTips: 0, alerts: 0, healthScore: 50 };
+
+const mapBackendInsight = (insight: { type?: string; title?: string; message?: string }, index: number): SmartInsight => {
+    const kind = insight.type === 'risk' || insight.type === 'warning' ? 'warning'
+        : insight.type === 'forecast' ? 'trend'
+        : 'tip';
+    const high = kind === 'warning';
+    return {
+        id: `ai-${index}-${insight.title || 'insight'}`,
+        type: kind,
+        severity: high ? 'high' : 'medium',
+        title: insight.title || 'Cashly AI',
+        message: insight.message || '',
+        action: high ? 'Review Inbox' : 'View Transactions',
+        actionPath: high ? '/transaction-inbox' : '/transactions',
+        icon: high ? 'AlertTriangle' : insight.type === 'forecast' ? 'TrendingUp' : 'Sparkles',
+        color: high ? 'red' : 'emerald',
+    };
+};
+
+const mergeInsights = (local: SmartInsight[], remote: SmartInsight[]) => {
+    const seen = new Set(local.map((item) => item.title.toLowerCase()));
+    const extras = remote.filter((item) => item.message && !seen.has(item.title.toLowerCase()));
+    return [...local, ...extras].slice(0, 8);
+};
 
 const InsightsPage = () => {
     const { user } = useAuthStore();
@@ -33,14 +58,14 @@ const InsightsPage = () => {
     const [categorySpending, setCategorySpending] = useState<CategorySpending[]>([]);
     const [aiTip, setAiTip] = useState<string | null>(null);
     const [aiLoading, setAiLoading] = useState(false);
-    const [coachPlan, setCoachPlan] = useState<any>(null);
+    const [insightSource, setInsightSource] = useState<'local' | 'ai' | 'degraded'>('local');
 
     // Icon mapping
     const getIcon = (iconName: string) => {
         const icons: Record<string, any> = {
             AlertTriangle, TrendingUp, Target, Scissors, Coffee,
             UtensilsCrossed, CreditCard, PiggyBank, Trophy, Calendar,
-            Lightbulb, Plus, Shield
+            Lightbulb, Plus, Shield, Sparkles
         };
         return icons[iconName] || Lightbulb;
     };
@@ -50,41 +75,32 @@ const InsightsPage = () => {
         if (!user?.id) {
             setInsights([]);
             setCategorySpending([]);
+            setInsightSource('local');
             setLoading(false);
             setRefreshing(false);
             return;
         }
 
         if (showRefresh) setRefreshing(true);
+        else setLoading(true);
 
         try {
-            const result = await Promise.race([
-                generateSmartInsights(user.id),
-                new Promise<{
-                    insights: SmartInsight[];
-                    stats: InsightsStats;
-                    categorySpending: CategorySpending[];
-                }>((resolve) => {
-                    setTimeout(() => resolve({
-                        insights: [{
-                            id: 'loading-fallback',
-                            type: 'tip',
-                            severity: 'low',
-                            title: 'Keep Tracking',
-                            message: 'Your local insights are taking a moment. Keep tracking transactions and Cashly will keep your tips fresh.',
-                            action: 'View Transactions',
-                            actionPath: '/transactions',
-                            icon: 'Lightbulb',
-                            color: 'emerald'
-                        }],
-                        stats: DEFAULT_INSIGHTS_STATS,
-                        categorySpending: []
-                    }), 1200);
-                })
-            ]);
+            const result = await generateSmartInsights(user.id);
             setInsights(result.insights);
             setStats(result.stats);
             setCategorySpending(result.categorySpending);
+            setInsightSource('local');
+
+            void getBackendInsights(user.id).then((backend) => {
+                const remote = (backend.insights || []).map(mapBackendInsight);
+                const live = backend.status === 'ready' && !backend.fromFallback && !backend.aiUnavailable;
+                if (live) setInsightSource('ai');
+                else if (backend.fromFallback || backend.aiUnavailable || backend.status === 'degraded') setInsightSource('degraded');
+                if (remote.length) {
+                    setInsights((current) => mergeInsights(current, remote));
+                    if (live && remote[0]?.message) setAiTip(remote[0].message);
+                }
+            }).catch(() => setInsightSource('degraded'));
 
             const cachedTip = getCachedAiTip();
             if (cachedTip) {
@@ -193,13 +209,21 @@ const InsightsPage = () => {
                         <div>
                             <h1 className={styles.title}>
                                 Smart Insights
-                                <span className={styles.liveBadge}>
+                                <span className={cn(
+                                    styles.liveBadge,
+                                    insightSource === 'degraded' && styles.liveBadgeDegraded,
+                                    insightSource === 'local' && styles.liveBadgeLocal
+                                )}>
                                     <Sparkles size={12} className="animate-pulse" />
-                                    AI-POWERED
+                                    {insightSource === 'ai' ? 'AI-POWERED' : insightSource === 'degraded' ? 'LOCAL FALLBACK' : 'LOCAL INSIGHTS'}
                                 </span>
                             </h1>
                             <p className="text-slate-500 mt-1 font-bold">
-                                AI tips based on how you spend
+                                {insightSource === 'ai'
+                                    ? 'AI tips based on how you spend'
+                                    : insightSource === 'degraded'
+                                        ? 'Showing local tips because live AI is unavailable'
+                                        : 'Tips from your ledger while live AI loads'}
                             </p>
                         </div>
                     </div>
@@ -222,7 +246,7 @@ const InsightsPage = () => {
                         <div className="flex items-center justify-between gap-4 mb-6">
                             <div>
                                 <h2 className="font-black text-black uppercase tracking-widest text-xl">AI Financial Coach Plan</h2>
-                                <p className="text-sm text-black font-bold mt-1">Three actions for this week, tracked against current spending, goals, and subscriptions.</p>
+                                <p className="text-sm text-black font-bold mt-1">{coachPlan.plan?.summary || 'Three actions for this week, tracked against current spending, goals, and subscriptions.'}</p>
                             </div>
                             <Badge className="bg-black text-white border-2 border-white rounded-none font-black uppercase text-xs px-3 py-1 shadow-[4px_4px_0px_#E11D48]">Weekly</Badge>
                         </div>

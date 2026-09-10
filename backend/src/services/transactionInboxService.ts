@@ -1,4 +1,3 @@
-import { createHash } from 'crypto';
 import { supabase } from '../config/supabase.js';
 import { invalidateUserAICacheIfEnabled } from './settingsService.js';
 import {
@@ -15,6 +14,15 @@ import {
     TransactionType,
     updateMoneyTransaction,
 } from './transactionDomainService.js';
+import { broadcastPaymentCapture } from './paymentCaptureBroadcast.js';
+import { AUTO_APPROVE_CONFIDENCE, shouldAutoApproveExtensionCapture } from '../utils/autoApproveCapture.js';
+import {
+    buildCandidateHash,
+    isLikelySameLedgerPurchase,
+    normalizeCandidateHash,
+} from '../utils/candidateDedupe.js';
+
+export { AUTO_APPROVE_CONFIDENCE, shouldAutoApproveExtensionCapture };
 
 export type CandidateStatus = 'pending' | 'approved' | 'rejected' | 'merged';
 export type CandidateSource = 'extension' | 'pdf' | 'csv' | 'excel' | 'plaid' | 'ai' | 'manual_review';
@@ -142,29 +150,7 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
     return inserted;
 }
 
-const normalizeHash = (value?: string | null) => {
-    const key = value?.trim();
-    if (!key) return null;
-    return key.replace(/[^a-zA-Z0-9._:-]/g, '').slice(0, 128) || null;
-};
-
-const buildCandidateHash = (userId: string, candidate: {
-    amount: number;
-    date: string;
-    description: string;
-    merchant_name?: string | null;
-    source: string;
-}) => createHash('sha256')
-    .update(JSON.stringify({
-        userId,
-        amount: candidate.amount,
-        date: candidate.date,
-        merchant: (candidate.merchant_name || '').toLowerCase(),
-        description: candidate.description.toLowerCase(),
-        source: candidate.source,
-    }))
-    .digest('hex')
-    .slice(0, 32);
+const normalizeHash = normalizeCandidateHash;
 
 const ruleScore = (rule: MerchantRule) => {
     const matchScore = rule.match_type === 'exact' ? 0 : rule.match_type === 'starts_with' ? 1 : rule.match_type === 'contains' ? 2 : 3;
@@ -233,9 +219,9 @@ async function findDuplicateTransaction(userId: string, candidate: {
 
     const day = new Date(candidate.date);
     const start = new Date(day);
-    start.setDate(day.getDate() - 3);
+    start.setDate(day.getDate() - 1);
     const end = new Date(day);
-    end.setDate(day.getDate() + 3);
+    end.setDate(day.getDate() + 1);
 
     const { data, error } = await supabase
         .from('transactions')
@@ -248,17 +234,29 @@ async function findDuplicateTransaction(userId: string, candidate: {
 
     if (error) throw error;
 
-    const merchant = (candidate.merchant_name || '').toLowerCase();
-    const description = candidate.description.toLowerCase();
-    return (asRows(data).find((tx) => {
-        const txText = `${tx.description || ''} ${tx.store_name || ''}`.toLowerCase();
-        return (merchant && txText.includes(merchant)) || txText.includes(description.slice(0, 24));
-    }) || null) as MoneyTransaction | null;
+    const merchant = candidate.merchant_name || candidate.description;
+    return (asRows(data).find((tx) => isLikelySameLedgerPurchase(candidate, tx)) || null) as MoneyTransaction | null;
+}
+
+async function findExistingCandidateByHash(userId: string, hash: string | null) {
+    if (!hash) return null;
+    const { data, error } = await supabase
+        .from('transaction_candidates')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('transaction_hash', hash)
+        .in('status', ['pending', 'approved', 'merged'])
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+    if (error) throw error;
+    return (asRows(data)[0] || null) as TransactionCandidate | null;
 }
 
 export async function createTransactionCandidate(
     userId: string,
-    input: TransactionCandidateInput
+    input: TransactionCandidateInput,
+    options: { broadcast?: boolean } = {}
 ) {
     const amount = normalizeAmount(input.amount);
     const description = input.description.trim();
@@ -270,6 +268,19 @@ export async function createTransactionCandidate(
     const type = rule?.transaction_type || input.type || 'expense';
     const transactionHash = normalizeHash(input.transactionHash || input.transaction_hash)
         || buildCandidateHash(userId, { amount, date, description, merchant_name: merchantName, source });
+    const existing = await findExistingCandidateByHash(userId, transactionHash);
+    if (existing) {
+        return {
+            candidate: existing,
+            duplicate: !!existing.duplicate_transaction_id || existing.status === 'approved' || existing.status === 'merged',
+            duplicateTransaction: existing.duplicate_transaction_id || existing.approved_transaction_id
+                ? await getMoneyTransaction(userId, existing.duplicate_transaction_id || existing.approved_transaction_id || '')
+                : null,
+            matchedRule: rule,
+            reused: true,
+        };
+    }
+
     const duplicate = await findDuplicateTransaction(userId, {
         transaction_hash: transactionHash,
         amount,
@@ -302,14 +313,39 @@ export async function createTransactionCandidate(
         .select()
         .single();
 
-    if (error) throw error;
+    if (error) {
+        if (String(error.code) === '23505') {
+            const raced = await findExistingCandidateByHash(userId, transactionHash);
+            if (raced) {
+                return {
+                    candidate: raced,
+                    duplicate: !!raced.duplicate_transaction_id || raced.status !== 'pending',
+                    duplicateTransaction: null,
+                    matchedRule: rule,
+                    reused: true,
+                };
+            }
+        }
+        throw error;
+    }
     await invalidateUserAICacheIfEnabled(userId);
 
+    const candidate = data as TransactionCandidate;
+    if (options.broadcast !== false) {
+        void broadcastPaymentCapture(userId, {
+            ...candidate,
+            name: candidate.merchant_name || candidate.description,
+            pendingReview: true,
+            source: candidate.source || 'extension',
+        });
+    }
+
     return {
-        candidate: data as TransactionCandidate,
+        candidate,
         duplicate: !!duplicate,
         duplicateTransaction: duplicate,
         matchedRule: rule,
+        reused: false,
     };
 }
 
@@ -336,6 +372,59 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
         },
         confidence,
         transactionHash: data.transactionHash || data.idempotencyKey,
+    }, { broadcast: false });
+
+    if (result.reused) {
+        if (result.candidate.status === 'approved' || result.candidate.status === 'merged') {
+            const txId = result.candidate.approved_transaction_id || result.candidate.duplicate_transaction_id;
+            const transaction = txId ? await getMoneyTransaction(userId, txId) : result.duplicateTransaction;
+            return {
+                ...result,
+                transaction,
+                autoApproved: result.candidate.status === 'approved',
+                pendingReview: false,
+            };
+        }
+        return {
+            ...result,
+            transaction: null,
+            autoApproved: false,
+            pendingReview: true,
+        };
+    }
+
+    const isTrial = !!(data.isTrial || data.is_trial || data.type === 'trial');
+    const autoApproved = shouldAutoApproveExtensionCapture({
+        source: 'extension',
+        matchedRule: result.matchedRule,
+        duplicate: result.duplicate,
+        confidence: result.candidate.confidence,
+        amount: result.candidate.amount,
+        isTrial,
+    });
+
+    if (autoApproved) {
+        try {
+            const approved = await approveCandidate(userId, result.candidate.id);
+            if (approved?.transaction) {
+                return {
+                    ...result,
+                    candidate: approved.candidate || result.candidate,
+                    transaction: approved.transaction,
+                    autoApproved: true,
+                    pendingReview: false,
+                };
+            }
+        } catch (error) {
+            console.warn('Trusted auto-approve failed, leaving capture in inbox:', error);
+        }
+    }
+
+    void broadcastPaymentCapture(userId, {
+        ...result.candidate,
+        name: result.candidate.merchant_name || result.candidate.description,
+        pendingReview: true,
+        source: 'extension',
     });
 
     if (isRecurring || data.isTrial) {
@@ -346,7 +435,12 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
         }
     }
 
-    return result;
+    return {
+        ...result,
+        transaction: null,
+        autoApproved: false,
+        pendingReview: true,
+    };
 }
 
 export async function listTransactionCandidates(userId: string, options: Record<string, any> = {}) {
@@ -439,6 +533,13 @@ export async function approveCandidate(userId: string, id: string, updates: Appr
     if (error) throw error;
     await invalidateUserAICacheIfEnabled(userId);
 
+    void broadcastPaymentCapture(userId, {
+        ...transaction,
+        pendingReview: false,
+        source: `${candidate.source}_approved`,
+        approvedFromCandidate: id,
+    });
+
     const payload = (candidate.raw_payload || {}) as DetectedSubscriptionInput;
     if (payload.isTrial || payload.is_trial || payload.isSubscription || payload.is_subscription || payload.type === 'trial' || payload.type === 'subscription') {
         try {
@@ -498,7 +599,18 @@ export async function bulkCandidates(userId: string, input: BulkCandidateInput) 
     const results = [];
     for (const id of input.ids) {
         try {
-            if (input.action === 'approve') results.push({ id, success: true, result: await approveCandidate(userId, id) });
+            if (input.action === 'approve') {
+                const candidate = await getPendingCandidate(userId, id);
+                if (candidate?.duplicate_transaction_id) {
+                    results.push({
+                        id,
+                        success: true,
+                        result: await mergeCandidate(userId, id, candidate.duplicate_transaction_id),
+                    });
+                } else {
+                    results.push({ id, success: true, result: await approveCandidate(userId, id) });
+                }
+            }
             else if (input.action === 'reject') results.push({ id, success: true, result: await rejectCandidate(userId, id) });
             else {
                 const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };

@@ -498,16 +498,23 @@
             case 'CASHLY_DATA_UPDATED':
             case 'SUBSCRIPTION_ADDED':
             case 'TRANSACTION_SYNC_STATUS':
-            case 'SITE_VISIT_TRACKED': {
+            case 'SITE_VISIT_TRACKED':
+            case 'PAYMENT_CAPTURE_PROGRESS': {
                 const eventName = message.type === 'TRANSACTION_CANDIDATE_ADDED'
                     ? 'transaction-candidate-added'
                     : message.type === 'SUBSCRIPTION_ADDED'
                         ? 'subscription-changed'
-                        : 'cashly-data-updated';
+                        : message.type === 'SITE_VISIT_TRACKED'
+                            ? 'site-visit-tracked'
+                            : message.type === 'PAYMENT_CAPTURE_PROGRESS'
+                                ? 'payment-capture-trail'
+                                : 'cashly-data-updated';
                 window.dispatchEvent(new CustomEvent(eventName, { detail: message.data || {} }));
-                window.dispatchEvent(new CustomEvent('cashly-data-updated', {
-                    detail: { type: message.type, ...(message.data || {}) }
-                }));
+                if (eventName !== 'cashly-data-updated') {
+                    window.dispatchEvent(new CustomEvent('cashly-data-updated', {
+                        detail: { type: message.type, ...(message.data || {}) }
+                    }));
+                }
                 window.postMessage({ source: 'cashly-extension', type: message.type, data: message.data }, '*');
                 sendResponse({ received: true });
                 break;

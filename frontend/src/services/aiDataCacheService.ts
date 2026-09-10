@@ -30,6 +30,8 @@ export interface CachedUserData {
 
     // Reminders
     upcomingReminders: any[];
+    pendingCandidates: any[];
+    pendingAmount: number;
 }
 
 class AIDataCacheService {
@@ -127,7 +129,7 @@ class AIDataCacheService {
         this.channel = supabase.channel(`ai-cache-${userId}`);
 
         // Listen to all relevant tables
-        const tables = ['transactions', 'subscriptions', 'goals', 'budgets', 'bills'];
+        const tables = ['transactions', 'subscriptions', 'goals', 'budgets', 'bills', 'transaction_candidates'];
 
         tables.forEach(table => {
             this.channel!.on(
@@ -216,7 +218,8 @@ class AIDataCacheService {
                 transactionsResult,
                 subscriptionsResult,
                 goalsResult,
-                budgetsResult
+                budgetsResult,
+                pendingResult
             ] = await Promise.all([
                 supabase
                     .from('transactions')
@@ -235,7 +238,14 @@ class AIDataCacheService {
                 supabase
                     .from('budgets')
                     .select('*')
+                    .eq('user_id', userId),
+                supabase
+                    .from('transaction_candidates')
+                    .select('description, amount, date, category, merchant_name, status')
                     .eq('user_id', userId)
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false })
+                    .limit(20)
             ]);
 
             // Try to fetch bill_reminders separately (optional table)
@@ -257,6 +267,13 @@ class AIDataCacheService {
             const subscriptions = subscriptionsResult.data || [];
             const goals = goalsResult.data || [];
             const budgets = budgetsResult.data || [];
+            let pendingCandidates: any[] = [];
+            try {
+                pendingCandidates = pendingResult.data || [];
+            } catch {
+                pendingCandidates = [];
+            }
+            const pendingAmount = pendingCandidates.reduce((sum, item) => sum + Math.abs(Number(item.amount) || 0), 0);
 
             // Calculate stats
             const expenses = transactions.filter(t => t.type === 'expense');
@@ -301,7 +318,9 @@ class AIDataCacheService {
                 trialCount,
                 goals,
                 budgets,
-                upcomingReminders: reminders
+                upcomingReminders: reminders,
+                pendingCandidates,
+                pendingAmount
             };
 
             const loadTime = Date.now() - startTime;
@@ -360,12 +379,16 @@ class AIDataCacheService {
             .map(([cat, amt]) => `• ${cat}: Rs ${amt.toLocaleString()}`)
             .join('\n');
 
+        const pendingList = (data.pendingCandidates || []).slice(0, 8).map((item) =>
+            `• ${item.description || item.merchant_name || 'Pending'}: Rs ${Math.abs(Number(item.amount) || 0).toLocaleString()} (${item.category || 'Uncategorized'}, NOT in ledger yet)`
+        ).join('\n');
+
         return `
 ═══════════════════════════════════════════════════════════
                     USER'S REAL FINANCIAL DATA
 ═══════════════════════════════════════════════════════════
 
-📊 SPENDING OVERVIEW:
+📊 SPENDING OVERVIEW (approved ledger only):
 • This Month: Rs ${data.monthlySpent.toLocaleString()}
 • This Week: Rs ${data.weeklySpent.toLocaleString()}
 • Top Category: ${data.topCategory} (Rs ${data.topCategoryAmount.toLocaleString()})
@@ -384,8 +407,12 @@ ${budgetsList || '• No budgets set yet'}
 📅 UPCOMING BILLS (Next 7 days):
 ${upcomingBills || '• No bills due soon'}
 
-📝 RECENT TRANSACTIONS:
+📝 RECENT APPROVED TRANSACTIONS:
 ${recentTx || '• No recent transactions'}
+
+PENDING INBOX (not spent until approved):
+${pendingList || '• No pending candidates'}
+${data.pendingAmount ? `• Pending total waiting review: Rs ${Math.round(data.pendingAmount).toLocaleString()}` : ''}
 
 CATEGORY SPENDING BREAKDOWN THIS MONTH:
 ${categoryList || '• No spending data'}

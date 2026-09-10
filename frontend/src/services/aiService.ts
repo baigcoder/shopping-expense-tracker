@@ -464,13 +464,16 @@ export interface BackendAIForecast {
 export async function getBackendInsights(userId: string): Promise<{
     insights: BackendAIInsight[];
     fromCache: boolean;
+    status?: string;
+    fromFallback?: boolean;
+    aiUnavailable?: boolean;
 }> {
     try {
         const response = await api.get('/ai/insights', { timeout: AI_REQUEST_TIMEOUT_MS });
         return response.data;
     } catch (error) {
         console.error('Backend AI insights error:', error);
-        return { insights: [], fromCache: false };
+        return { insights: [], fromCache: false, status: 'degraded', fromFallback: true, aiUnavailable: true };
     }
 }
 
@@ -515,6 +518,7 @@ export async function refreshBackendAI(userId: string): Promise<{
 }
 
 export async function getAIServiceStatus(): Promise<{
+    groq?: { status: string; model: string; error?: string | null };
     openrouter: { status: string; model: string; error?: string | null; models?: Record<string, string> };
     redis: { connected: boolean; memory?: string };
 }> {
@@ -523,6 +527,7 @@ export async function getAIServiceStatus(): Promise<{
         return response.data;
     } catch (error) {
         return {
+            groq: { status: 'error', model: 'unknown' },
             openrouter: { status: 'error', model: 'unknown' },
             redis: { connected: false }
         };

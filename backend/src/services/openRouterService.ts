@@ -1,6 +1,15 @@
 // OpenRouter AI Service - provider-neutral LLM calls for Cashly AI
 // With automatic model fallback chains for reliability
 
+import { getDefaultForecast, normalizeForecasts, normalizeInsights, formatMoneyAmount } from '../utils/aiGrounding.js';
+import {
+    groqChatCompletion,
+    isGroqConfigured,
+    getGroqConfigurationError,
+    getGroqModel,
+    prefersGroqFirst,
+} from './groqService.js';
+
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const APP_NAME = process.env.OPENROUTER_APP_NAME || 'Cashly';
 const DEFAULT_TIMEOUT_MS = Number(process.env.OPENROUTER_TIMEOUT_MS || 15000);
@@ -95,6 +104,10 @@ export interface FinancialContext {
     healthScore?: number;
     subscriptionCount?: number;
     monthlySubCost?: number;
+    pendingCount?: number;
+    pendingAmount?: number;
+    overBudgetCount?: number;
+    currency?: string;
 }
 
 export interface AIInsight {
@@ -125,6 +138,7 @@ export interface ChatCompletionOptions {
 export interface ChatCompletionResult {
     content: string;
     model: string;
+    provider?: 'groq' | 'openrouter';
 }
 
 function getApiKey(): string {
@@ -141,9 +155,7 @@ function isPlaceholderApiKey(apiKey: string): boolean {
 function getHeaders(): Record<string, string> {
     const apiKey = getApiKey();
     if (!apiKey) {
-        console.error('❌ OpenRouter API Key is MISSING in environment variables');
-    } else {
-        console.log(`🔑 Using OpenRouter API Key: ${apiKey.slice(0, 7)}...${apiKey.slice(-4)}`);
+        console.error('OpenRouter API key is missing');
     }
 
     const headers: Record<string, string> = {
@@ -160,19 +172,26 @@ function getHeaders(): Record<string, string> {
     return headers;
 }
 
-export function isConfigured(): boolean {
+export function isOpenRouterConfigured(): boolean {
     const apiKey = getApiKey();
     return !providerDisabledReason && !isPlaceholderApiKey(apiKey);
 }
 
-export function getConfigurationError(): string | null {
-    if (providerDisabledReason) return providerDisabledReason;
+export function isConfigured(): boolean {
+    return isOpenRouterConfigured() || isGroqConfigured();
+}
 
+export function getOpenRouterConfigurationError(): string | null {
+    if (providerDisabledReason) return providerDisabledReason;
     const apiKey = getApiKey();
     if (!apiKey) return 'OPENROUTER_API_KEY is not configured';
     if (isPlaceholderApiKey(apiKey)) return 'OPENROUTER_API_KEY is still a placeholder';
-
     return null;
+}
+
+export function getConfigurationError(): string | null {
+    if (isConfigured()) return null;
+    return getGroqConfigurationError() || getOpenRouterConfigurationError() || 'No AI provider is configured';
 }
 
 export function getModelName(useCase: OpenRouterUseCase = 'chat'): string {
@@ -251,7 +270,7 @@ async function attemptCompletion(
         throw new Error('Empty response from model');
     }
 
-    return { content, model: data.model || model };
+    return { content, model: data.model || model, provider: 'openrouter' };
 }
 
 // Main chat completion with automatic fallback chain
@@ -260,41 +279,62 @@ export async function chatCompletion(
     options: ChatCompletionOptions = {}
 ): Promise<ChatCompletionResult> {
     if (!isConfigured()) {
-        throw new Error(getConfigurationError() || 'OPENROUTER_API_KEY is not configured');
+        throw new Error(getConfigurationError() || 'No AI provider is configured');
     }
 
     const useCase = options.useCase || 'chat';
-
-    // Build the model list
-    const models: string[] = [];
-    if (options.model) models.push(options.model);
-    for (const m of MODEL_CHAINS[useCase]) {
-        if (!models.includes(m)) models.push(m);
-    }
-
     const errors: string[] = [];
-    const now = Date.now();
+    const groqFirst = prefersGroqFirst(useCase);
 
-    for (const model of models) {
-        // Skip blacklisted models
-        const blacklistExpiry = blacklistedModels.get(model);
-        if (blacklistExpiry && blacklistExpiry > now) {
-            console.log(`🚫 Skipping blacklisted model: ${model}`);
-            continue;
-        }
+    const tryGroq = async () => groqChatCompletion(messages, {
+        useCase,
+        temperature: options.temperature,
+        maxTokens: options.maxTokens,
+        responseFormat: options.responseFormat,
+        user: options.user,
+    });
 
+    if (groqFirst && isGroqConfigured()) {
         try {
-            return await attemptCompletion(model, messages, options, DEFAULT_TIMEOUT_MS);
+            return await tryGroq();
         } catch (error: any) {
-            const msg = error?.message || String(error);
-            console.warn(`⚠️ Model ${model} failed: ${msg.slice(0, 100)}`);
-            errors.push(`${model}: ${msg.slice(0, 50)}`);
-
-            if (msg.includes('invalid_api_key') || msg.includes('401')) break;
+            errors.push(`groq: ${(error?.message || String(error)).slice(0, 80)}`);
         }
     }
 
-    throw new Error(`All models failed. Tried: ${errors.join(' | ')}`);
+    if (isOpenRouterConfigured()) {
+        const models: string[] = [];
+        if (options.model) models.push(options.model);
+        for (const model of MODEL_CHAINS[useCase]) {
+            if (!models.includes(model)) models.push(model);
+        }
+
+        const now = Date.now();
+        for (const model of models) {
+            const blacklistExpiry = blacklistedModels.get(model);
+            if (blacklistExpiry && blacklistExpiry > now) {
+                continue;
+            }
+
+            try {
+                return await attemptCompletion(model, messages, options, DEFAULT_TIMEOUT_MS);
+            } catch (error: any) {
+                const msg = error?.message || String(error);
+                errors.push(`${model}: ${msg.slice(0, 50)}`);
+                if (msg.includes('invalid_api_key') || msg.includes('401')) break;
+            }
+        }
+    }
+
+    if (!groqFirst && isGroqConfigured()) {
+        try {
+            return await tryGroq();
+        } catch (error: any) {
+            errors.push(`groq: ${(error?.message || String(error)).slice(0, 80)}`);
+        }
+    }
+
+    throw new Error(`All models failed. Tried: ${errors.join(' | ') || 'no providers'}`);
 }
 
 function parseJsonPayload(content: string): any {
@@ -308,19 +348,22 @@ function parseJsonPayload(content: string): any {
 }
 
 export async function generateInsights(context: FinancialContext): Promise<AIInsight[]> {
-    const systemPrompt = `You are a financial advisor AI. Analyze the user's spending data and provide 3 actionable insights.
+    const systemPrompt = `You are a financial advisor AI. Use ONLY the numbers provided. Do not invent merchants or extra totals.
 Return ONLY valid JSON in this shape:
 {"insights":[{"type":"tip|warning|forecast|risk","title":"Short title","message":"Actionable advice","confidence":0.0}]}`;
 
-    const userPrompt = `User's financial data:
-- Monthly spending: Rs ${context.monthlySpent}
-- Weekly spending: Rs ${context.weeklySpent}
-- Top category: ${context.topCategory} (Rs ${context.topCategoryAmount})
+    const money = (value?: number) => formatMoneyAmount(Number(value) || 0, context.currency);
+    const userPrompt = `User's approved ledger:
+- Monthly spending: ${money(context.monthlySpent)}
+- Weekly spending: ${money(context.weeklySpent)}
+- Top category: ${context.topCategory} (${money(context.topCategoryAmount)})
 - Transactions: ${context.transactionCount}
 - Health score: ${context.healthScore || 'N/A'}/100
-${context.subscriptionCount ? `- Subscriptions: ${context.subscriptionCount} (Rs ${context.monthlySubCost}/month)` : ''}
+${context.subscriptionCount ? `- Subscriptions: ${context.subscriptionCount} (${money(context.monthlySubCost)}/month)` : ''}
+${context.pendingCount ? `- Pending inbox (not in ledger): ${context.pendingCount} items totaling ${money(context.pendingAmount)}` : ''}
+${context.overBudgetCount ? `- Categories over budget: ${context.overBudgetCount}` : ''}
 
-Provide 3 specific, actionable insights based on this data.`;
+Amounts are in ${context.currency || 'USD'}. Provide 3 specific, actionable insights based only on this data.`;
 
     try {
         const response = await chatCompletion(
@@ -328,16 +371,12 @@ Provide 3 specific, actionable insights based on this data.`;
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
             ],
-            { useCase: 'analysis', temperature: 0.5, maxTokens: 500, responseFormat: { type: 'json_object' }, user: context.userId }
+            { useCase: 'analysis', temperature: 0.4, maxTokens: 500, responseFormat: { type: 'json_object' }, user: context.userId }
         );
 
         const parsed = parseJsonPayload(response.content);
-        const insights = Array.isArray(parsed) ? parsed : (parsed.insights || []);
-
-        return insights.map((insight: AIInsight) => ({
-            ...insight,
-            generatedAt: new Date().toISOString()
-        }));
+        const insights = normalizeInsights(parsed);
+        return insights.length ? insights : getDefaultInsights(context);
     } catch (error: any) {
         console.error('OpenRouter insights error:', error.message);
         return getDefaultInsights(context);
@@ -345,16 +384,16 @@ Provide 3 specific, actionable insights based on this data.`;
 }
 
 export async function generateForecast(context: FinancialContext): Promise<AIForecast[]> {
-    const systemPrompt = `You are a financial forecasting AI. Predict the user's spending for the next 2 months.
+    const systemPrompt = `You are a financial forecasting AI. Base the next 2 months on the provided monthly spend only. Do not invent income.
 Return ONLY valid JSON in this shape:
 {"forecasts":[{"month":"Month Year","predictedExpenses":0,"predictedIncome":0,"riskLevel":"low|medium|high","insights":["insight"]}]}`;
 
-    const userPrompt = `User's current spending:
-- Monthly: Rs ${context.monthlySpent}
-- Weekly: Rs ${context.weeklySpent}
+    const userPrompt = `User's current approved spending:
+- Monthly: ${formatMoneyAmount(context.monthlySpent, context.currency)}
+- Weekly: ${formatMoneyAmount(context.weeklySpent, context.currency)}
 - Top category: ${context.topCategory}
 
-Forecast the next 2 months based on current patterns.`;
+Amounts are in ${context.currency || 'USD'}. Forecast the next 2 months. Keep predicted expenses near the current monthly amount.`;
 
     try {
         const response = await chatCompletion(
@@ -362,27 +401,31 @@ Forecast the next 2 months based on current patterns.`;
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
             ],
-            { useCase: 'forecast', temperature: 0.3, maxTokens: 400, responseFormat: { type: 'json_object' }, user: context.userId }
+            { useCase: 'forecast', temperature: 0.2, maxTokens: 400, responseFormat: { type: 'json_object' }, user: context.userId }
         );
 
         const parsed = parseJsonPayload(response.content);
-        return Array.isArray(parsed) ? parsed : (parsed.forecasts || []);
+        const forecasts = normalizeForecasts(parsed, context.monthlySpent, context.currency);
+        return forecasts.length ? forecasts : getDefaultForecast(context.monthlySpent, context.currency);
     } catch (error: any) {
         console.error('OpenRouter forecast error:', error.message);
-        return getDefaultForecast(context);
+        return getDefaultForecast(context.monthlySpent, context.currency);
     }
 }
 
 export async function generateRiskAlerts(context: FinancialContext): Promise<AIInsight[]> {
-    const systemPrompt = `You are a financial risk detection AI. Identify potential risks in the user's spending.
+    const systemPrompt = `You are a financial risk detection AI. Identify risks only from the provided numbers.
 Return ONLY valid JSON in this shape:
 {"risks":[{"type":"risk","title":"Risk title","message":"Risk description and prevention tip","confidence":0.0}]}
 If no risks are detected, return {"risks":[]}.`;
 
     const userPrompt = `Analyze for risks:
-- Monthly: Rs ${context.monthlySpent}
-- Top category: ${context.topCategory} (Rs ${context.topCategoryAmount})
-- Health score: ${context.healthScore || 50}/100`;
+- Monthly: ${formatMoneyAmount(context.monthlySpent, context.currency)}
+- Top category: ${context.topCategory} (${formatMoneyAmount(context.topCategoryAmount, context.currency)})
+- Health score: ${context.healthScore || 50}/100
+${context.pendingCount ? `- Pending inbox items: ${context.pendingCount}` : ''}
+${context.overBudgetCount ? `- Over-budget categories: ${context.overBudgetCount}` : ''}
+Amounts are in ${context.currency || 'USD'}.`;
 
     try {
         const response = await chatCompletion(
@@ -390,16 +433,13 @@ If no risks are detected, return {"risks":[]}.`;
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
             ],
-            { useCase: 'risk', temperature: 0.4, maxTokens: 300, responseFormat: { type: 'json_object' }, user: context.userId }
+            { useCase: 'risk', temperature: 0.3, maxTokens: 300, responseFormat: { type: 'json_object' }, user: context.userId }
         );
 
         const parsed = parseJsonPayload(response.content);
-        const risks = Array.isArray(parsed) ? parsed : (parsed.risks || []);
-
-        return risks.map((risk: AIInsight) => ({
+        return normalizeInsights(Array.isArray(parsed) ? parsed : parsed.risks || []).map((risk) => ({
             ...risk,
             type: 'risk' as const,
-            generatedAt: new Date().toISOString()
         }));
     } catch (error: any) {
         console.error('OpenRouter risk analysis error:', error.message);
@@ -443,19 +483,7 @@ function getDefaultInsights(context: FinancialContext): AIInsight[] {
     return insights;
 }
 
-function getDefaultForecast(context: FinancialContext): AIForecast[] {
-    const now = new Date();
-    return [1, 2].map(i => {
-        const date = new Date(now.getFullYear(), now.getMonth() + i, 1);
-        return {
-            month: date.toLocaleString('default', { month: 'short', year: 'numeric' }),
-            predictedExpenses: Math.round(context.monthlySpent * (1 + (Math.random() * 0.1 - 0.05))),
-            predictedIncome: 0,
-            riskLevel: (context.monthlySpent > 50000 ? 'high' : 'medium') as 'high' | 'medium',
-            insights: ['Based on your current spending patterns']
-        };
-    });
-}
+export { getDefaultForecast };
 
 export default {
     chatCompletion,
@@ -465,5 +493,7 @@ export default {
     getModelName,
     getModelMap,
     getConfigurationError,
-    isConfigured
+    getOpenRouterConfigurationError,
+    isConfigured,
+    isOpenRouterConfigured,
 };

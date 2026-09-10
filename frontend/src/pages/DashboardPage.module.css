@@ -403,6 +403,81 @@
   }
 }
 
+.captureTrail {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #E11D48;
+}
+
+.captureTrailIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E11D48;
+  color: #fff;
+  border: 2px solid #000;
+  flex-shrink: 0;
+}
+
+.captureTrailBody {
+  min-width: 0;
+  flex: 1;
+}
+
+.captureTrailLabel {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E11D48;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.captureTrailState {
+  color: #000;
+  letter-spacing: 0.12em;
+}
+
+.captureTrailMerchant {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.captureTrailFlow {
+  margin: 0.2rem 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #52525b;
+}
+
+.captureTrailAction {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  padding: 0.55rem 0.8rem;
+  background: #000;
+  color: #fff;
+  flex-shrink: 0;
+}
+
 @media (max-width: 380px) {
   .container { padding: 0.75rem; }
   .whiteCard,

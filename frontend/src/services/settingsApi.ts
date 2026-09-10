@@ -36,6 +36,8 @@ export interface SettingsDashboard {
         provider: {
             configured: boolean;
             error?: string | null;
+            groq?: { configured: boolean; model: string; error?: string | null };
+            openrouter?: { configured: boolean; model: string; error?: string | null };
             models: Record<string, string>;
         };
         cache: {
@@ -100,7 +102,7 @@ export const settingsApi = {
         return unwrap<UserSettingsPreferences>(await api.patch('/settings/ai', payload));
     },
     refreshAI: async () => unwrap(await api.post('/settings/ai/refresh')),
-    testAI: async () => unwrap<{ ok: boolean; status: string; model: string; message?: string }>(await api.post('/settings/ai/test')),
+    testAI: async () => unwrap<{ ok: boolean; status: string; model: string; provider?: string; message?: string }>(await api.post('/settings/ai/test')),
     clearChatMemory: async () => (await api.post('/ai/chat/clear')).data,
     requestPasswordReset: async () => unwrap(await api.post('/settings/security/password-reset')),
     getSessions: async () => unwrap(await api.get('/settings/security/sessions')),

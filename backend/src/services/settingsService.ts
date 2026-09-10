@@ -2,6 +2,7 @@ import prisma from '../config/prisma.js';
 import { supabase } from '../config/supabase.js';
 import cacheService from './redisCacheService.js';
 import openRouterService from './openRouterService.js';
+import { getGroqConfigurationError, getGroqModel, isGroqConfigured } from './groqService.js';
 import {
     SettingsAIInput,
     SettingsPreferencesInput,
@@ -175,7 +176,21 @@ export async function getSettingsDashboard(user: SettingsUser, requestInfo: { ip
             provider: {
                 configured: openRouterService.isConfigured(),
                 error: openRouterService.getConfigurationError(),
-                models: openRouterService.getModelMap(),
+                groq: {
+                    configured: isGroqConfigured(),
+                    model: getGroqModel('fastChat'),
+                    error: getGroqConfigurationError(),
+                },
+                openrouter: {
+                    configured: openRouterService.isOpenRouterConfigured(),
+                    model: openRouterService.getModelName('chat'),
+                    error: openRouterService.getOpenRouterConfigurationError(),
+                },
+                models: {
+                    groqFast: getGroqModel('fastChat'),
+                    groqChat: getGroqModel('chat'),
+                    ...openRouterService.getModelMap(),
+                },
             },
             cache: cacheStats,
         },
@@ -326,6 +341,7 @@ export async function testSettingsAI(userId: string) {
             ok: true,
             status: 'ready',
             model: response.model,
+            provider: response.provider || 'openrouter',
             message: response.content,
         };
     } catch (error) {

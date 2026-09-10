@@ -5,14 +5,13 @@ import { X, Mic, User, Sparkles, Check, Volume2, Loader2, Music, Activity } from
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import api from '../services/api';
+import { fetchCashlyVoiceAudio } from '../services/voiceTts';
 
 interface VoiceSetupModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSetupComplete: (voiceId: string, voiceName: string) => void;
 }
-
-const AI_SERVER_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
 
 const VOICE_OPTIONS = [
     { id: 'jenny', name: 'Jenny', gender: 'female', description: 'Professional & warm', color: 'bg-pink-400' },
@@ -58,18 +57,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
         setIsPreviewing(true);
         try {
             const shortPreview = `Hi! I'm ${selectedVoice.name}, your AI Financial Assistant. Ready to help you manage your finances!`;
-            const response = await fetch(`${AI_SERVER_URL}/tts`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    text: shortPreview,
-                    voice: selectedVoice.id,
-                    rate: '+0%',
-                    pitch: selectedVoice.gender === 'male' ? '-5Hz' : '+0Hz'
-                })
-            });
-            if (!response.ok) { speakWithWebSpeech(shortPreview, selectedVoice.gender === 'male'); return; }
-            const audioBlob = await response.blob();
+            const audioBlob = await fetchCashlyVoiceAudio(shortPreview, selectedVoice.id);
             const audioUrl = URL.createObjectURL(audioBlob);
             audioRef.current = new Audio(audioUrl);
             audioRef.current.onended = () => { setIsPreviewing(false); URL.revokeObjectURL(audioUrl); };

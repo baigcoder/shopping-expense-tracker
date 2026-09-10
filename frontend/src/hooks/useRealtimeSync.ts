@@ -6,6 +6,7 @@ import { formatCurrency } from '../services/currencyService';
 import genZToast from '../services/genZToast';
 import confetti from 'canvas-confetti';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { claimCaptureToast } from '../lib/captureToastGuard';
 
 type EventHandler = (payload: any) => void;
 
@@ -31,12 +32,13 @@ const triggerCelebration = () => {
     });
 };
 
-// Main real-time sync hook with enhanced performance
 export const useRealtimeSync = (config: RealtimeConfig = {}) => {
     const { user } = useAuthStore();
     const channelRef = useRef<RealtimeChannel | null>(null);
     const isSubscribed = useRef(false);
     const retryCountRef = useRef(0); // Track reconnection attempts for exponential backoff
+    const configRef = useRef(config);
+    configRef.current = config;
     // Use state for connectionStatus so components re-render on status change
     const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
 
@@ -63,28 +65,36 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
         // BROADCAST CHANNEL - For instant extension updates
         // ================================
         channel.on('broadcast', { event: 'extension-transaction' }, (payload) => {
-
-
-            const tx = payload.payload;
+            const tx = payload.payload || {};
             const amount = tx.amount || 0;
             const description = tx.name || tx.description || 'Transaction';
+            const toastKey = String(tx.id || tx.transaction_hash || `${description}-${amount}`);
 
-            // Show toast immediately
-            genZToast.cash(`⚡ ${description} • ${formatCurrency(Math.abs(amount))} tracked!`);
-
-            // Celebration for purchases
-            if (Math.abs(amount) >= 10) {
-                triggerCelebration();
+            if (tx.pendingReview) {
+                window.dispatchEvent(new CustomEvent('transaction-candidate-added', {
+                    detail: { candidate: tx, source: 'broadcast' }
+                }));
+                window.dispatchEvent(new CustomEvent('payment-capture-trail', { detail: tx }));
+                if (claimCaptureToast(`inbox-${toastKey}`)) {
+                    genZToast.info(`${description} is waiting in your inbox`);
+                }
+                configRef.current.onAnyChange?.();
+                return;
             }
 
-            // Dispatch custom event for components
+            if (claimCaptureToast(`ledger-${toastKey}`)) {
+                genZToast.cash(`⚡ ${description} • ${formatCurrency(Math.abs(amount))} tracked!`);
+                if (Math.abs(amount) >= 10) {
+                    triggerCelebration();
+                }
+            }
+
             window.dispatchEvent(new CustomEvent('transaction-added-realtime', {
                 detail: { transaction: tx, source: 'broadcast' }
             }));
 
-            // Call handlers
-            config.onTransactionInsert?.({ new: tx });
-            config.onAnyChange?.();
+            configRef.current.onTransactionInsert?.({ new: tx });
+            configRef.current.onAnyChange?.();
         });
 
         // ================================
@@ -149,23 +159,21 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 const tx = payload.new as any;
                 const amount = tx.amount || 0;
                 const description = tx.description || tx.category || 'Transaction';
+                const toastKey = String(tx.id || `${description}-${amount}`);
 
-                // Show toast notification
-                genZToast.cash(`${description} • ${formatCurrency(Math.abs(amount))} tracked! 💸`);
-
-                // Celebration for purchases
-                if (Math.abs(amount) >= 10) {
-                    triggerCelebration();
+                if (claimCaptureToast(`ledger-${toastKey}`)) {
+                    genZToast.cash(`${description} • ${formatCurrency(Math.abs(amount))} tracked! 💸`);
+                    if (Math.abs(amount) >= 10) {
+                        triggerCelebration();
+                    }
                 }
 
-                // Dispatch custom event for components
                 window.dispatchEvent(new CustomEvent('transaction-added-realtime', {
                     detail: { transaction: tx, source: 'postgres' }
                 }));
 
-                // Call handler
-                config.onTransactionInsert?.(payload);
-                config.onAnyChange?.();
+                configRef.current.onTransactionInsert?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -178,9 +186,11 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-
-                config.onTransactionUpdate?.(payload);
-                config.onAnyChange?.();
+                window.dispatchEvent(new CustomEvent('transaction-updated-realtime', {
+                    detail: payload.new
+                }));
+                configRef.current.onTransactionUpdate?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -193,9 +203,11 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 filter: `user_id=eq.${user.id}`
             },
             (payload) => {
-
-                config.onTransactionDelete?.(payload);
-                config.onAnyChange?.();
+                window.dispatchEvent(new CustomEvent('transaction-deleted-realtime', {
+                    detail: payload.old
+                }));
+                configRef.current.onTransactionDelete?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -214,8 +226,8 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                 const sub = payload.new as any;
                 genZToast.success(`New subscription: ${sub.name || 'Service'} added! 💳`);
 
-                config.onSubscriptionInsert?.(payload);
-                config.onAnyChange?.();
+                configRef.current.onSubscriptionInsert?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -230,8 +242,8 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
             },
             (payload) => {
 
-                config.onGoalUpdate?.(payload);
-                config.onAnyChange?.();
+                configRef.current.onGoalUpdate?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -258,8 +270,8 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                     }
                 }
 
-                config.onBudgetUpdate?.(payload);
-                config.onAnyChange?.();
+                configRef.current.onBudgetUpdate?.(payload);
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -285,7 +297,47 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
                     detail: { insight, source: 'postgres' }
                 }));
 
-                config.onAnyChange?.();
+                configRef.current.onAnyChange?.();
+            }
+        );
+
+        channel.on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'transaction_candidates',
+                filter: `user_id=eq.${user.id}`
+            },
+            (payload) => {
+                const candidate = payload.new as any;
+                const toastKey = String(candidate.id || candidate.transaction_hash || candidate.description);
+                window.dispatchEvent(new CustomEvent('transaction-candidate-added', {
+                    detail: { candidate, source: 'postgres' }
+                }));
+                window.dispatchEvent(new CustomEvent('payment-capture-trail', {
+                    detail: { ...candidate, pendingReview: true, state: 'queued' }
+                }));
+                if (claimCaptureToast(`inbox-${toastKey}`)) {
+                    genZToast.info(`${candidate.description || 'Payment'} is waiting in your inbox`);
+                }
+                configRef.current.onAnyChange?.();
+            }
+        );
+
+        channel.on(
+            'postgres_changes',
+            {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'transaction_candidates',
+                filter: `user_id=eq.${user.id}`
+            },
+            (payload) => {
+                window.dispatchEvent(new CustomEvent('cashly-data-updated', {
+                    detail: { type: 'TRANSACTION_CANDIDATE_UPDATED', candidate: payload.new }
+                }));
+                configRef.current.onAnyChange?.();
             }
         );
 
@@ -319,8 +371,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
         channel.on('broadcast', { event: 'data-sync' }, (payload) => {
 
 
-            // Refresh all data when another device makes changes
-            config.onAnyChange?.();
+            configRef.current.onAnyChange?.();
 
             genZToast.info('📱 Synced from another device!');
         });
@@ -359,7 +410,7 @@ export const useRealtimeSync = (config: RealtimeConfig = {}) => {
         });
 
         channelRef.current = channel;
-    }, [user?.id, config]);
+    }, [user?.id]);
 
     // Cleanup function
     const cleanup = useCallback(() => {
@@ -410,28 +461,34 @@ export const useTransactionRealtime = (handlers: {
         const handleExtensionTransaction = (event: Event) => {
             const detail = (event as CustomEvent).detail;
             const tx = detail?.transaction || detail;
-            if (tx) {
-                const key = tx.id || `${tx.description || tx.name}-${tx.amount}-${tx.date || tx.created_at}`;
-                if (key && seen.has(key)) return;
-                if (key) {
-                    seen.add(key);
-                    setTimeout(() => seen.delete(key), 5000);
-                }
-                onInsert?.(tx);
+            if (!tx || tx.pendingReview) return;
+            const key = tx.id || `${tx.description || tx.name}-${tx.amount}-${tx.date || tx.created_at}`;
+            if (key && seen.has(key)) return;
+            if (key) {
+                seen.add(key);
+                setTimeout(() => seen.delete(key), 5000);
             }
+            onInsert?.(tx);
+        };
+
+        const handleUpdate = (event: Event) => {
+            const tx = (event as CustomEvent).detail;
+            if (tx) onUpdate?.(tx);
+        };
+        const handleDelete = (event: Event) => {
+            const tx = (event as CustomEvent).detail;
+            onDelete?.(tx?.id || tx);
         };
 
         window.addEventListener('new-transaction', handleExtensionTransaction);
         window.addEventListener('transaction-added-realtime', handleExtensionTransaction);
+        window.addEventListener('transaction-updated-realtime', handleUpdate);
+        window.addEventListener('transaction-deleted-realtime', handleDelete);
         return () => {
             window.removeEventListener('new-transaction', handleExtensionTransaction);
             window.removeEventListener('transaction-added-realtime', handleExtensionTransaction);
+            window.removeEventListener('transaction-updated-realtime', handleUpdate);
+            window.removeEventListener('transaction-deleted-realtime', handleDelete);
         };
-    }, [onInsert]);
-
-    return useRealtimeSync({
-        onTransactionInsert: (payload) => onInsert?.(payload.new),
-        onTransactionUpdate: (payload) => onUpdate?.(payload.new),
-        onTransactionDelete: (payload) => onDelete?.(payload.old?.id)
-    });
+    }, [onInsert, onUpdate, onDelete]);
 };

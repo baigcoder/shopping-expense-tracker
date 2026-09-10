@@ -22,6 +22,30 @@ import io
 
 # Load environment variables
 load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', 'backend', '.env'), override=False)
+
+
+def read_secret(name: str) -> str:
+    value = (os.getenv(name) or '').strip()
+    if value:
+        return value
+    backend_env = os.path.join(os.path.dirname(__file__), '..', 'backend', '.env')
+    if os.path.exists(backend_env):
+        with open(backend_env, 'r') as handle:
+            for line in handle:
+                if line.startswith(f'{name}='):
+                    return line.split('=', 1)[1].strip()
+    return ''
+
+
+def is_groq_configured() -> bool:
+    key = read_secret('GROQ_API_KEY')
+    return key.startswith('gsk_') and len(key) > 20 and 'your_groq' not in key
+
+
+def is_openrouter_configured() -> bool:
+    key = read_secret('OPENROUTER_API_KEY')
+    return bool(key) and 'xxxxx' not in key and 'your_openrouter' not in key
 
 # PDF Libraries - try multiple options
 pdfplumber = None
@@ -466,27 +490,42 @@ def extract_text_from_csv(file_content: bytes) -> str:
         return file_content.decode('latin-1')
 
 
-def parse_transactions_with_ai(text: str) -> dict:
-    """Use OpenRouter AI to extract transactions from text"""
-    
-    # Get API key from environment
-    api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
-        # Try to read from backend .env
-        backend_env = os.path.join(os.path.dirname(__file__), '..', 'backend', '.env')
-        if os.path.exists(backend_env):
-            with open(backend_env, 'r') as f:
-                for line in f:
-                    if line.startswith('OPENROUTER_API_KEY='):
-                        api_key = line.split('=', 1)[1].strip()
-                        break
-    
-    if not api_key:
-        # Fallback: simple regex-based parsing
-        return parse_transactions_regex(text)
-    
+def chat_completion(url: str, api_key: str, model: str, prompt: str, extra_headers: Optional[dict] = None) -> dict:
+    def request_once(use_json_object: bool) -> dict:
+        body = {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.1,
+            "max_tokens": 4000,
+        }
+        if use_json_object:
+            body["response_format"] = {"type": "json_object"}
+        payload = json.dumps(body).encode("utf-8")
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        }
+        if extra_headers:
+            headers.update(extra_headers)
+        request = urllib.request.Request(url, data=payload, headers=headers, method="POST")
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as error:
+            detail = error.read().decode("utf-8", errors="ignore")[:180]
+            raise RuntimeError(f"HTTP {error.code}: {detail}") from error
+
     try:
-        prompt = f"""Analyze this bank statement text and extract all transactions.
+        return request_once(True)
+    except RuntimeError as error:
+        if "400" not in str(error):
+            raise
+        return request_once(False)
+
+
+def parse_transactions_with_ai(text: str) -> dict:
+    """Use Groq first, then OpenRouter, then regex."""
+    prompt = f"""Analyze this bank statement text and extract all transactions.
 
 For each transaction, identify:
 1. Description (merchant/payee name)
@@ -507,43 +546,43 @@ Return ONLY valid JSON in this exact format:
 }}
 
 Bank Statement Text:
-{text[:8000]}"""  # Limit text length
+{text[:8000]}"""
 
-        payload = json.dumps({
-            "model": os.getenv("OPENROUTER_DOCUMENT_MODEL") or os.getenv("OPENROUTER_MODEL", "inclusionai/ling-2.6-1t:free"),
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.1,
-            "max_tokens": 4000,
-            "response_format": {"type": "json_object"},
-        }).encode("utf-8")
-
-        request = urllib.request.Request(
+    providers = []
+    groq_key = read_secret("GROQ_API_KEY")
+    if is_groq_configured():
+        providers.append((
+            "https://api.groq.com/openai/v1/chat/completions",
+            groq_key,
+            os.getenv("GROQ_DOCUMENT_MODEL") or os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile",
+            None,
+        ))
+    openrouter_key = read_secret("OPENROUTER_API_KEY")
+    if is_openrouter_configured():
+        providers.append((
             "https://openrouter.ai/api/v1/chat/completions",
-            data=payload,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-                "X-OpenRouter-Title": os.getenv("OPENROUTER_APP_NAME", "Cashly"),
-            },
-            method="POST",
-        )
+            openrouter_key,
+            os.getenv("OPENROUTER_DOCUMENT_MODEL") or os.getenv("OPENROUTER_MODEL", "inclusionai/ling-2.6-1t:free"),
+            {"X-OpenRouter-Title": os.getenv("OPENROUTER_APP_NAME", "Cashly")},
+        ))
 
-        with urllib.request.urlopen(request, timeout=60) as response:
-            data = json.loads(response.read().decode("utf-8"))
-        
-        content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
-        
-        # Extract JSON from response
-        json_match = re.search(r'\{[\s\S]*\}', content)
-        if json_match:
-            result = json.loads(json_match.group())
-            return result
-        else:
-            return {"transactions": [], "detected_period": None}
-            
-    except Exception as e:
-        print(f"AI parsing error: {e}")
+    if not providers:
         return parse_transactions_regex(text)
+
+    for url, api_key, model, extra_headers in providers:
+        try:
+            data = chat_completion(url, api_key, model, prompt, extra_headers)
+            content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+            json_match = re.search(r"\{[\s\S]*\}", content)
+            if not json_match:
+                continue
+            result = json.loads(json_match.group())
+            if isinstance(result, dict):
+                return result
+        except Exception as error:
+            print(f"AI parsing error ({model}): {error}")
+
+    return parse_transactions_regex(text)
 
 
 def parse_transactions_regex(text: str) -> dict:
@@ -669,7 +708,11 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy"}
+    return {
+        "status": "healthy",
+        "groq": is_groq_configured(),
+        "openrouter": is_openrouter_configured(),
+    }
 
 
 @app.post("/parse-document", response_model=ParsedDocument)

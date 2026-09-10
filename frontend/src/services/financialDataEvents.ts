@@ -6,6 +6,8 @@ export const FINANCIAL_DATA_EVENTS = [
     'cashly-data-updated',
     'new-transaction',
     'transactions-synced',
+    'payment-capture-trail',
+    'site-visit-tracked',
     'budget-changed',
     'subscription-changed',
     'subscription-added',
@@ -50,6 +52,9 @@ function setupInboundBroadcastListener() {
 }
 
 export function getFinancialDataEventSource(eventName: string): string {
+    if (eventName === 'site-visit-tracked' || eventName === 'payment-capture-trail') {
+        return 'payment-capture';
+    }
     if (eventName.startsWith('transaction') || eventName === 'new-transaction' || eventName === 'transactions-synced') {
         return 'transaction';
     }

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Check, Filter, Inbox, RefreshCw, Settings2, Trash2, Wand2, X } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { Check, Inbox, Link2, Pencil, RefreshCw, Settings2, Trash2, Wand2, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { merchantRulesApi, MerchantRule, transactionInboxApi, TransactionCandidate } from '../services/featureExpansionApi';
+import { merchantRulesApi, MerchantRule, transactionInboxApi, TransactionCandidate, invalidateInboxCache } from '../services/featureExpansionApi';
 import { formatCurrency } from '../services/currencyService';
+import { emitFinancialDataEvent } from '../services/financialDataEvents';
+import { invalidateTransactionCache } from '../services/supabaseTransactionService';
 
 const categories = ['Food & Dining', 'Shopping', 'Subscriptions', 'Transport', 'Utilities', 'Entertainment', 'Healthcare', 'Other'];
 
@@ -14,10 +16,12 @@ const TransactionInboxPage = () => {
     const [selected, setSelected] = useState<string[]>([]);
     const [ruleForm, setRuleForm] = useState({ merchantPattern: '', category: 'Shopping', matchType: 'contains' });
     const [sortBy, setSortBy] = useState<'date' | 'confidence' | 'amount'>('date');
+    const [editDrafts, setEditDrafts] = useState<Record<string, { description: string; amount: string; category: string }>>({});
 
-    const load = async () => {
-        setLoading(true);
+    const load = useCallback(async (silent = false) => {
+        if (!silent) setLoading(true);
         try {
+            invalidateInboxCache();
             const [inboxResult, ruleResult] = await Promise.all([
                 transactionInboxApi.list({ status, limit: 100 }),
                 merchantRulesApi.list(),
@@ -38,30 +42,124 @@ const TransactionInboxPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [status, sortBy]);
 
     useEffect(() => {
         load();
-    }, [status, sortBy]);
+    }, [load]);
+
+    useEffect(() => {
+        const onInboxUpdate = (event: Event) => {
+            const detail = (event as CustomEvent).detail || {};
+            if (event.type === 'cashly-data-updated') {
+                const type = String(detail.type || detail.area || '');
+                if (!type.includes('inbox') && type !== 'TRANSACTION_CANDIDATE_ADDED' && type !== 'TRANSACTION_CANDIDATE_UPDATED' && !detail.pendingReview) {
+                    return;
+                }
+            }
+            void load(true);
+        };
+        window.addEventListener('transaction-candidate-added', onInboxUpdate);
+        window.addEventListener('cashly-data-updated', onInboxUpdate);
+        return () => {
+            window.removeEventListener('transaction-candidate-added', onInboxUpdate);
+            window.removeEventListener('cashly-data-updated', onInboxUpdate);
+        };
+    }, [load]);
+
+    const startEdit = (item: TransactionCandidate) => {
+        setEditDrafts((prev) => ({
+            ...prev,
+            [item.id]: {
+                description: item.description,
+                amount: String(item.amount ?? 0),
+                category: item.category || 'Shopping',
+            },
+        }));
+    };
+
+    const cancelEdit = (id: string) => {
+        setEditDrafts((prev) => {
+            const next = { ...prev };
+            delete next[id];
+            return next;
+        });
+    };
+
+    const updateDraft = (id: string, field: 'description' | 'amount' | 'category', value: string) => {
+        setEditDrafts((prev) => ({
+            ...prev,
+            [id]: {
+                ...(prev[id] || { description: '', amount: '0', category: 'Shopping' }),
+                [field]: value,
+            },
+        }));
+    };
 
     const approve = async (item: TransactionCandidate) => {
-        await transactionInboxApi.approve(item.id);
-        toast.success('Transaction approved');
-        load();
+        const draft = editDrafts[item.id];
+        const updates: Partial<TransactionCandidate> = {};
+        if (draft) {
+            const amount = Number(draft.amount);
+            if (draft.amount.trim() === '' || !Number.isFinite(amount) || amount < 0) {
+                toast.error('Enter a valid amount before approving');
+                return;
+            }
+            updates.description = draft.description.trim() || item.description;
+            updates.amount = amount;
+            updates.category = draft.category || item.category;
+        }
+        try {
+            const result = await transactionInboxApi.approve(item.id, updates);
+            invalidateTransactionCache();
+            emitFinancialDataEvent('transaction-added', result?.transaction || result?.data);
+            emitFinancialDataEvent('cashly-data-updated', { area: 'transactions', source: 'inbox-approve' });
+            cancelEdit(item.id);
+            toast.success('Transaction approved');
+            load(true);
+        } catch {
+            toast.error('Approve failed');
+        }
+    };
+
+    const merge = async (item: TransactionCandidate) => {
+        if (!item.duplicate_transaction_id) return;
+        try {
+            await transactionInboxApi.merge(item.id, item.duplicate_transaction_id);
+            emitFinancialDataEvent('cashly-data-updated', { area: 'inbox', source: 'inbox-merge' });
+            toast.success('Merged into existing ledger item');
+            load(true);
+        } catch {
+            toast.error('Merge failed');
+        }
     };
 
     const reject = async (id: string) => {
-        await transactionInboxApi.reject(id);
-        toast.success('Candidate rejected');
-        load();
+        try {
+            await transactionInboxApi.reject(id);
+            cancelEdit(id);
+            toast.success('Candidate rejected');
+            load();
+        } catch {
+            toast.error('Reject failed');
+        }
     };
 
     const bulk = async (action: 'approve' | 'reject') => {
         if (!selected.length) return;
-        await transactionInboxApi.bulk(selected, action);
-        toast.success(`Bulk ${action} complete`);
-        setSelected([]);
-        load();
+        try {
+            await transactionInboxApi.bulk(selected, action);
+            if (action === 'approve') {
+                invalidateTransactionCache();
+                emitFinancialDataEvent('transaction-added', { count: selected.length });
+                emitFinancialDataEvent('cashly-data-updated', { area: 'transactions', source: 'inbox-bulk-approve' });
+            }
+            toast.success(action === 'approve' ? 'Bulk complete — duplicates were merged' : 'Bulk reject complete');
+            setSelected([]);
+            load();
+        } catch {
+            toast.error(`Bulk ${action} failed`);
+        }
     };
 
     const addRule = async () => {
@@ -88,10 +186,10 @@ const TransactionInboxPage = () => {
                     </div>
                     <div className="min-w-0">
                         <h1 className="text-2xl sm:text-3xl font-black uppercase italic text-black m-0 tracking-tight break-words">TRANSACTION INBOX</h1>
-                        <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E11D48] mt-1 leading-relaxed">Review & authorize incoming Intel</p>
+                        <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E11D48] mt-1 leading-relaxed">Review, edit amount or category, then authorize</p>
                     </div>
                 </div>
-                <button onClick={load} className="min-h-12 sm:h-14 px-5 sm:px-8 border-4 border-black bg-white flex items-center justify-center gap-3 font-black uppercase tracking-widest shadow-[5px_5px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all text-xs sm:text-sm">
+                <button onClick={() => void load()} className="min-h-12 sm:h-14 px-5 sm:px-8 border-4 border-black bg-white flex items-center justify-center gap-3 font-black uppercase tracking-widest shadow-[5px_5px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all text-xs sm:text-sm">
                     <RefreshCw size={20} strokeWidth={3} /> Sync Inbox
                 </button>
             </header>
@@ -191,13 +289,33 @@ const TransactionInboxPage = () => {
                                                 </div>
                                             </td>
                                             <td className="p-5">
-                                                <div className="font-black text-black text-lg uppercase flex items-center gap-3">
-                                                    {item.description}
-                                                    {item.duplicate_transaction_id && (
-                                                        <span className="px-2 py-1 text-[10px] font-black uppercase tracking-widest border-2 border-rose-600 text-rose-600 bg-white shadow-[2px_2px_0px_#E11D48]">⚠ DUPE</span>
-                                                    )}
-                                                </div>
-                                                <div className="text-xs font-bold uppercase tracking-widest text-gray-500 mt-1">{item.date} • {item.category}</div>
+                                                {editDrafts[item.id] ? (
+                                                    <div className="space-y-2 min-w-[220px]">
+                                                        <input
+                                                            value={editDrafts[item.id].description}
+                                                            onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
+                                                            className="w-full h-10 px-3 border-4 border-black font-black uppercase text-sm focus:outline-none focus:shadow-[3px_3px_0px_#E11D48]"
+                                                        />
+                                                        <select
+                                                            value={editDrafts[item.id].category}
+                                                            onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
+                                                            className="w-full h-10 px-3 border-4 border-black font-bold uppercase text-xs cursor-pointer focus:outline-none"
+                                                        >
+                                                            {categories.map((category) => <option key={category}>{category}</option>)}
+                                                            {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
+                                                        </select>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        <div className="font-black text-black text-lg uppercase flex items-center gap-3">
+                                                            {item.description}
+                                                            {item.duplicate_transaction_id && (
+                                                                <span className="px-2 py-1 text-[10px] font-black uppercase tracking-widest border-2 border-rose-600 text-rose-600 bg-white shadow-[2px_2px_0px_#E11D48]">⚠ DUPE</span>
+                                                            )}
+                                                        </div>
+                                                        <div className="text-xs font-bold uppercase tracking-widest text-gray-500 mt-1">{item.date} • {item.category}</div>
+                                                    </>
+                                                )}
                                             </td>
                                             <td className="p-5">
                                                 {(() => {
@@ -229,11 +347,46 @@ const TransactionInboxPage = () => {
                                                     );
                                                 })()}
                                             </td>
-                                            <td className="p-5 text-right font-black text-xl">{formatCurrency(Number(item.amount || 0))}</td>
+                                            <td className="p-5 text-right font-black text-xl">
+                                                {editDrafts[item.id] ? (
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        step="0.01"
+                                                        value={editDrafts[item.id].amount}
+                                                        onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
+                                                        className="w-28 ml-auto h-10 px-3 border-4 border-black font-black text-right focus:outline-none focus:shadow-[3px_3px_0px_#E11D48]"
+                                                    />
+                                                ) : (
+                                                    formatCurrency(Number(item.amount || 0))
+                                                )}
+                                            </td>
                                             <td className="p-5">
                                                 <div className="flex justify-end gap-3">
-                                                    <button onClick={() => approve(item)} className="h-10 w-10 border-4 border-black bg-[#10b981] text-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><Check size={20} strokeWidth={3} /></button>
-                                                    <button onClick={() => reject(item.id)} className="h-10 w-10 border-4 border-black bg-[#E11D48] text-white shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><X size={20} strokeWidth={3} /></button>
+                                                    {status === 'pending' && (
+                                                        <>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => editDrafts[item.id] ? cancelEdit(item.id) : startEdit(item)}
+                                                                title={editDrafts[item.id] ? 'Cancel edit' : 'Edit before approve'}
+                                                                className={`h-10 w-10 border-4 border-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all ${editDrafts[item.id] ? 'bg-yellow-300 text-black' : 'bg-white text-black'}`}
+                                                            >
+                                                                <Pencil size={18} strokeWidth={3} />
+                                                            </button>
+                                                            {item.duplicate_transaction_id && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => merge(item)}
+                                                                    title="Merge into existing ledger item"
+                                                                    className="h-10 w-10 border-4 border-black bg-yellow-300 text-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all"
+                                                                >
+                                                                    <Link2 size={18} strokeWidth={3} />
+                                                                </button>
+                                                            )}
+                                                            <button type="button" onClick={() => approve(item)} title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'} className="h-10 w-10 border-4 border-black bg-[#10b981] text-black shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><Check size={20} strokeWidth={3} /></button>
+                                                            <button type="button" onClick={() => reject(item.id)} className="h-10 w-10 border-4 border-black bg-[#E11D48] text-white shadow-[4px_4px_0px_#000000] flex items-center justify-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all active:shadow-[0px_0px_0px_#000000] active:translate-x-1 active:translate-y-1"><X size={20} strokeWidth={3} /></button>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>
@@ -262,6 +415,9 @@ const TransactionInboxPage = () => {
                                 </select>
                             </div>
                             <button onClick={addRule} className="w-full h-14 mt-4 border-4 border-black bg-[#E11D48] text-white font-black uppercase tracking-widest text-sm shadow-[6px_6px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000000] transition-all active:translate-x-1 active:translate-y-1 active:shadow-[0px_0px_0px_#000000]">Create Rule</button>
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-gray-600 leading-relaxed">
+                                Matching extension captures with high confidence auto-post to the ledger. Everything else stays here until you approve.
+                            </p>
                         </div>
                     </div>
                     

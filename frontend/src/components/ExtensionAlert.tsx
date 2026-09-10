@@ -30,7 +30,7 @@ const CONFIG = {
     // Redirect delay after successful sync
     redirectDelayMs: 2000,
     // Current extension version
-    extensionVersion: '6.0.0',
+    extensionVersion: '9.1.2',
 };
 
 // Mobile detection

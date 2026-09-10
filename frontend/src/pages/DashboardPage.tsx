@@ -1,9 +1,9 @@
 // Cashly Dashboard - Premium Modern SaaS Finance Dashboard
 // Midnight Coral Theme - Light Mode
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, TrendingUp, TrendingDown, ShoppingCart, Store, Heart, Wallet, Eye, EyeOff, X, Trash2, Copy, Shield, Check, Inbox } from 'lucide-react';
+import { Plus, CreditCard, Receipt, BarChart3, Target, Calendar, PiggyBank, ArrowRight, TrendingUp, TrendingDown, ShoppingCart, Store, Heart, Wallet, Eye, EyeOff, X, Trash2, Copy, Shield, Check, Inbox, Zap } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import PremiumCard from '../components/PremiumCard';
 import MoneyTwinPulse from '../components/dashboard/MoneyTwinPulse';
@@ -14,7 +14,8 @@ import { supabaseTransactionService, SupabaseTransaction } from '../services/sup
 import { budgetService } from '../services/budgetService';
 import { streakService } from '../services/streakService';
 import { cardService, getBrandGradient, CardData } from '../services/cardService';
-import { useRealtimeTransactions } from '../hooks/useRealtimeTransactions';
+import { usePaymentCaptureSync } from '../hooks/usePaymentCaptureSync';
+import { formatBehaviorFlow, formatCaptureState } from '../utils/paymentCaptureTrail';
 import { formatCurrency } from '../services/currencyService';
 import { transactionInboxApi } from '../services/featureExpansionApi';
 import { cn } from '@/lib/utils';
@@ -45,7 +46,6 @@ const DashboardPage = () => {
     const { user } = useAuthStore();
     const { initializeCards } = useCardStore();
     const { openAddCard } = useModalStore();
-    useRealtimeTransactions();
     const reduceMotion = usePrefersReducedMotion();
 
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
@@ -103,179 +103,158 @@ const DashboardPage = () => {
         }
     };
 
-    // Fetch data
-    useEffect(() => {
-        const fetchInbox = async () => {
-            try {
-                const result = await transactionInboxApi.list({ status: 'pending', limit: 1 });
-                setPendingInboxCount(result?.pagination?.total || result?.data?.length || 0);
-            } catch {
-                setPendingInboxCount(0);
-            }
-        };
-
-        fetchInbox();
-        const onInboxUpdate = () => { void fetchInbox(); };
-        window.addEventListener('transaction-candidate-added', onInboxUpdate);
-        window.addEventListener('cashly-data-updated', onInboxUpdate);
-        return () => {
-            window.removeEventListener('transaction-candidate-added', onInboxUpdate);
-            window.removeEventListener('cashly-data-updated', onInboxUpdate);
-        };
+    const fetchInbox = useCallback(async () => {
+        try {
+            const result = await transactionInboxApi.list({ status: 'pending', limit: 1 });
+            setPendingInboxCount(result?.pagination?.total || result?.data?.length || 0);
+        } catch {
+            setPendingInboxCount(0);
+        }
     }, []);
 
+    const fetchDashboard = useCallback(async (silent = false) => {
+        if (!user?.id) return;
+
+        try {
+            const [allTxs, streakData, budgets, fetchedCards] = await Promise.all([
+                supabaseTransactionService.getAll(user.id, { force: true }),
+                streakService.getStreakData(user.id),
+                budgetService.getAll(user.id),
+                cardService.getAll(user.id)
+            ]);
+
+            setTransactions(allTxs);
+            setUserCards(fetchedCards);
+            setRecentTransactions(allTxs.slice(0, 5));
+
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === currentMonth);
+
+            const totalIncome = allTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+            const totalExpense = allTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+            const monthlyIncome = currentMonthTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+            const monthlyExpense = currentMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+
+            const todayDate = new Date().toISOString().split('T')[0];
+            const todayTxs = allTxs.filter(tx => tx.date.startsWith(todayDate));
+
+            const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const lastMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === lastMonth);
+            const lastMonthExpense = lastMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+            const expenseTrend = lastMonthExpense > 0 ? ((monthlyExpense - lastMonthExpense) / lastMonthExpense) * 100 : 0;
+
+            setStats({
+                totalBalance: totalIncome - totalExpense,
+                monthlyIncome,
+                monthlyExpense,
+                transactionsToday: todayTxs.length,
+                streakDays: streakData.currentStreak,
+                totalSaving: Math.max(0, totalIncome - totalExpense),
+                balanceTrend: totalIncome > 0 ? Math.round((totalIncome - totalExpense) / totalIncome * 100) : 0,
+                expenseTrend: Math.round(expenseTrend * 10) / 10,
+            });
+
+            const last14Days = Array.from({ length: 14 }, (_, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() - (13 - i));
+                return date.toISOString().split('T')[0];
+            });
+
+            const chartDataCalc = last14Days.map(date => {
+                const dayTxs = allTxs.filter(tx => tx.date.startsWith(date));
+                return {
+                    day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+                    income: dayTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0),
+                    expense: Math.abs(dayTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + tx.amount, 0))
+                };
+            });
+            setChartData(chartDataCalc);
+
+            const categoryMap = new Map<string, number>();
+            allTxs.filter(tx => tx.type === 'expense').forEach(tx => {
+                const current = categoryMap.get(tx.category) || 0;
+                categoryMap.set(tx.category, current + Math.abs(tx.amount));
+            });
+
+            const categoryArr = Array.from(categoryMap.entries())
+                .map(([name, value], idx) => ({
+                    name,
+                    value,
+                    color: ['#000000', '#E11D48', '#3F3F46', '#09090B', '#F43F5E', '#18181B'][idx % 6]
+                }))
+                .sort((a, b) => b.value - a.value)
+                .slice(0, 5);
+            setCategoryData(categoryArr);
+
+            const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
+            const budgetPercentage = totalBudget > 0 ? Math.min(100, Math.round((monthlyExpense / totalBudget) * 100)) : 0;
+            setBudgetProgress({
+                used: monthlyExpense,
+                total: totalBudget,
+                percentage: budgetPercentage
+            });
+
+            let score = 0;
+            const streakPoints = Math.min(100, streakData.currentStreak * 12);
+            score += streakPoints * 0.20;
+            const budgetAdherence = totalBudget > 0
+                ? Math.max(0, 100 - budgetPercentage)
+                : 50;
+            score += budgetAdherence * 0.25;
+            const savingsRateCalc = totalIncome > 0
+                ? Math.max(0, Math.min(100, ((totalIncome - totalExpense) / totalIncome) * 100))
+                : 50;
+            score += savingsRateCalc * 0.25;
+            const activityPoints = Math.min(100, allTxs.length * 5);
+            score += activityPoints * 0.15;
+            const uniqueCategories = new Set(allTxs.map(t => t.category)).size;
+            const diversificationPoints = Math.min(100, uniqueCategories * 15);
+            score += diversificationPoints * 0.15;
+            const finalScore = Math.max(0, Math.min(100, Math.round(score)));
+            setHealthScore(allTxs.length > 0 ? finalScore : 50);
+
+            const merchantMap = new Map<string, { amount: number; count: number }>();
+            allTxs.filter(tx => tx.type === 'expense').forEach(tx => {
+                const name = tx.description.split(/[\d\s]/)[0] || 'Unknown';
+                const cleanedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                const current = merchantMap.get(cleanedName) || { amount: 0, count: 0 };
+                merchantMap.set(cleanedName, {
+                    amount: current.amount + Math.abs(tx.amount),
+                    count: current.count + 1
+                });
+            });
+
+            const merchantArr = Array.from(merchantMap.entries())
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => b.amount - a.amount)
+                .slice(0, 3);
+            setMerchantData(merchantArr);
+
+            if (!silent) setLoading(false);
+        } catch (error) {
+            console.error('Dashboard data fetch error:', error);
+            if (!silent) setLoading(false);
+        }
+    }, [user?.id]);
+
+    const refreshFromCapture = useCallback(() => {
+        void fetchInbox();
+        void fetchDashboard(true);
+    }, [fetchInbox, fetchDashboard]);
+
+    const { trail: captureTrail } = usePaymentCaptureSync(refreshFromCapture);
+
     useEffect(() => {
-        const fetchData = async () => {
-            if (!user?.id) return;
+        void fetchInbox();
+    }, [fetchInbox]);
 
-            try {
-                const [allTxs, streakData, budgets, fetchedCards] = await Promise.all([
-                    supabaseTransactionService.getAll(user.id),
-                    streakService.getStreakData(user.id),
-                    budgetService.getAll(user.id),
-                    cardService.getAll(user.id)
-                ]);
-
-                setTransactions(allTxs);
-                setUserCards(fetchedCards);
-                setRecentTransactions(allTxs.slice(0, 5));
-
-                // Calculate stats
-                const now = new Date();
-                const currentMonth = now.getMonth();
-                const currentMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === currentMonth);
-
-                const totalIncome = allTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
-                const totalExpense = allTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
-                const monthlyIncome = currentMonthTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
-                const monthlyExpense = currentMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
-
-                const todayDate = new Date().toISOString().split('T')[0];
-                const todayTxs = allTxs.filter(tx => tx.date.startsWith(todayDate));
-
-                // Last month comparison
-                const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-                const lastMonthTxs = allTxs.filter(tx => new Date(tx.date).getMonth() === lastMonth);
-                const lastMonthExpense = lastMonthTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
-                const expenseTrend = lastMonthExpense > 0 ? ((monthlyExpense - lastMonthExpense) / lastMonthExpense) * 100 : 0;
-
-                setStats({
-                    totalBalance: totalIncome - totalExpense,
-                    monthlyIncome,
-                    monthlyExpense,
-                    transactionsToday: todayTxs.length,
-                    streakDays: streakData.currentStreak,
-                    totalSaving: Math.max(0, totalIncome - totalExpense),
-                    balanceTrend: totalIncome > 0 ? Math.round((totalIncome - totalExpense) / totalIncome * 100) : 0,
-                    expenseTrend: Math.round(expenseTrend * 10) / 10,
-                });
-
-                // Chart data - last 14 days
-                const last14Days = Array.from({ length: 14 }, (_, i) => {
-                    const date = new Date();
-                    date.setDate(date.getDate() - (13 - i));
-                    return date.toISOString().split('T')[0];
-                });
-
-                const chartDataCalc = last14Days.map(date => {
-                    const dayTxs = allTxs.filter(tx => tx.date.startsWith(date));
-                    return {
-                        day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
-                        income: dayTxs.filter(tx => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0),
-                        expense: Math.abs(dayTxs.filter(tx => tx.type === 'expense').reduce((sum, tx) => sum + tx.amount, 0))
-                    };
-                });
-                setChartData(chartDataCalc);
-
-                // Category data
-                const categoryMap = new Map<string, number>();
-                allTxs.filter(tx => tx.type === 'expense').forEach(tx => {
-                    const current = categoryMap.get(tx.category) || 0;
-                    categoryMap.set(tx.category, current + Math.abs(tx.amount));
-                });
-
-                const categoryArr = Array.from(categoryMap.entries())
-                    .map(([name, value], idx) => ({
-                        name,
-                        value,
-                        color: ['#000000', '#E11D48', '#3F3F46', '#09090B', '#F43F5E', '#18181B'][idx % 6]
-                    }))
-                    .sort((a, b) => b.value - a.value)
-                    .slice(0, 5);
-                setCategoryData(categoryArr);
-
-                // Budget progress
-                const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
-                const budgetPercentage = totalBudget > 0 ? Math.min(100, Math.round((monthlyExpense / totalBudget) * 100)) : 0;
-                setBudgetProgress({
-                    used: monthlyExpense,
-                    total: totalBudget,
-                    percentage: budgetPercentage
-                });
-
-                // Financial Health Score Calculation
-                // Factors: Streak (20%), Budget Adherence (25%), Savings Rate (25%), Activity (15%), Diversification (15%)
-                let score = 0;
-
-                // 1. Streak Points (20%) - Consistent tracking
-                const streakPoints = Math.min(100, streakData.currentStreak * 12);
-                score += streakPoints * 0.20;
-
-                // 2. Budget Adherence (25%) - Staying under budget
-                const budgetAdherence = totalBudget > 0
-                    ? Math.max(0, 100 - budgetPercentage)  // Lower usage is better
-                    : 50; // Default if no budget set
-                score += budgetAdherence * 0.25;
-
-                // 3. Savings Rate (25%) - Money saved vs income
-                const savingsRateCalc = totalIncome > 0
-                    ? Math.max(0, Math.min(100, ((totalIncome - totalExpense) / totalIncome) * 100))
-                    : 50;
-                score += savingsRateCalc * 0.25;
-
-                // 4. Activity (15%) - Regular transactions
-                const activityPoints = Math.min(100, allTxs.length * 5);
-                score += activityPoints * 0.15;
-
-                // 5. Category Diversification (15%) - Not overspending in one area
-                const uniqueCategories = new Set(allTxs.map(t => t.category)).size;
-                const diversificationPoints = Math.min(100, uniqueCategories * 15);
-                score += diversificationPoints * 0.15;
-
-                // Round and clamp between 0-100
-                const finalScore = Math.max(0, Math.min(100, Math.round(score)));
-                setHealthScore(allTxs.length > 0 ? finalScore : 50); // Default to 50 if no transactions
-
-                // Merchant Data Extraction
-                const merchantMap = new Map<string, { amount: number; count: number }>();
-                allTxs.filter(tx => tx.type === 'expense').forEach(tx => {
-                    const name = tx.description.split(/[\d\s]/)[0] || 'Unknown';
-                    const cleanedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-                    const current = merchantMap.get(cleanedName) || { amount: 0, count: 0 };
-                    merchantMap.set(cleanedName, {
-                        amount: current.amount + Math.abs(tx.amount),
-                        count: current.count + 1
-                    });
-                });
-
-                const merchantArr = Array.from(merchantMap.entries())
-                    .map(([name, data]) => ({ name, ...data }))
-                    .sort((a, b) => b.amount - a.amount)
-                    .slice(0, 3);
-                setMerchantData(merchantArr);
-
-                setLoading(false);
-            } catch (error) {
-                console.error('Dashboard data fetch error:', error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+    useEffect(() => {
+        void fetchDashboard();
         if (user?.id) {
             initializeCards(user.id);
         }
-    }, [user?.id, initializeCards]);
+    }, [user?.id, initializeCards, fetchDashboard]);
 
     const getCategoryIcon = (category: string) => {
         const icons: Record<string, string> = {
@@ -323,6 +302,33 @@ const DashboardPage = () => {
                         </div>
                     </div>
                 </motion.header>
+
+                {captureTrail && (
+                    <motion.div variants={itemVariants} className={styles.captureTrail}>
+                        <div className={styles.captureTrailIcon}>
+                            <Zap size={18} strokeWidth={2.5} />
+                        </div>
+                        <div className={styles.captureTrailBody}>
+                            <p className={styles.captureTrailLabel}>
+                                Live payment capture
+                                <span className={styles.captureTrailState}>{formatCaptureState(captureTrail.state)}</span>
+                            </p>
+                            <p className={styles.captureTrailMerchant}>
+                                {captureTrail.merchant}
+                                {captureTrail.amount > 0 ? ` · ${formatCurrency(captureTrail.amount)}` : ''}
+                            </p>
+                            {formatBehaviorFlow(captureTrail.behaviorFlow) && (
+                                <p className={styles.captureTrailFlow}>{formatBehaviorFlow(captureTrail.behaviorFlow)}</p>
+                            )}
+                        </div>
+                        <Link
+                            to={captureTrail.pendingReview ? '/transaction-inbox' : '/transactions'}
+                            className={styles.captureTrailAction}
+                        >
+                            {captureTrail.pendingReview ? 'Review' : 'Ledger'}
+                        </Link>
+                    </motion.div>
+                )}
 
                 {pendingInboxCount > 0 && (
                     <motion.div variants={itemVariants}>

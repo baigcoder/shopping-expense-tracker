@@ -215,6 +215,27 @@ async function syncDetectedTransaction(data, authData, source = 'extension') {
         duplicate: !!body?.duplicate,
         transaction
     });
+    if (body?.pendingReview) {
+        notifyWebsiteTabs('TRANSACTION_CANDIDATE_ADDED', {
+            candidate: transaction,
+            name: payload.name || payload.merchantName,
+            amount: payload.amount || payload.price,
+            type: payload.type,
+            behaviorFlow: payload.behaviorFlow || [],
+            hostname: payload.hostname,
+            pendingReview: true
+        });
+    }
+    if (authData?.userId) {
+        broadcastTransaction(authData.userId, {
+            ...transaction,
+            name: payload.name || payload.merchantName || transaction?.description,
+            amount: payload.amount || payload.price || transaction?.amount,
+            type: payload.type,
+            behaviorFlow: payload.behaviorFlow || [],
+            pendingReview: !!body?.pendingReview
+        });
+    }
 
     return {
         success: true,
@@ -1073,6 +1094,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 url: message.data.url,
                 timestamp: Date.now()
             });
+
+            if (['checkout_entered', 'payment_form_active', 'payment_submitted', 'transaction_confirmed'].includes(message.data.state)) {
+                notifyWebsiteTabs('PAYMENT_CAPTURE_PROGRESS', {
+                    siteName: message.data.siteName,
+                    hostname: message.data.hostname,
+                    state: message.data.state,
+                    url: message.data.url,
+                    timestamp: Date.now()
+                });
+            }
             break;
 
         case 'TRANSACTION_SYNCED':
@@ -1780,17 +1811,27 @@ async function handleBehaviorTransaction(data) {
                     message: 'Transaction queued for inbox review',
                     details: createdResponse
                 });
-                notifyWebsiteTabs('TRANSACTION_CANDIDATE_ADDED', {
+                const capturePayload = {
                     candidate: created,
                     name: data.name,
                     amount: data.price || data.amount,
-                    type: data.type
-                });
+                    type: data.type,
+                    behaviorFlow: data.behaviorFlow || [],
+                    hostname: data.hostname,
+                    pendingReview: true,
+                    timestamp: Date.now()
+                };
+                notifyWebsiteTabs('TRANSACTION_CANDIDATE_ADDED', capturePayload);
                 notifyWebsiteTabs('CASHLY_DATA_UPDATED', {
                     area: 'transaction-inbox',
-                    candidate: created,
-                    pendingReview: true
+                    ...capturePayload
                 });
+                notifyWebsiteTabs('PAYMENT_CAPTURE_PROGRESS', {
+                    ...capturePayload,
+                    siteName: data.name,
+                    state: 'queued'
+                });
+                broadcastTransaction(authData.userId, capturePayload);
                 return { success: true, pendingReview: true };
             }
 
@@ -1830,12 +1871,26 @@ async function handleBehaviorTransaction(data) {
                 error
             });
             console.error('Failed to save behavior transaction:', error);
+            await postExtensionHealthEvent(authData, {
+                eventType: 'detected_transaction',
+                status: 'error',
+                siteHostname: data.hostname,
+                message: error,
+                details: { statusCode: response.status }
+            });
             return { success: false, error };
         }
     } catch (error) {
         await updateTransactionSyncStatus('error', {
             transactionHash: data.transactionHash || data.idempotencyKey,
             error: error?.message || String(error)
+        });
+        const authForHealth = await chrome.storage.local.get(['accessToken', 'userId', 'userEmail']);
+        await postExtensionHealthEvent(authForHealth, {
+            eventType: 'detected_transaction',
+            status: 'error',
+            siteHostname: data.hostname,
+            message: error?.message || String(error)
         });
         console.error('Behavior transaction save error:', error);
         return { success: false, error: error.message };
@@ -1879,7 +1934,8 @@ async function broadcastTransaction(userId, transaction) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'apikey': getSupabaseAnonKey()
+                'apikey': getSupabaseAnonKey(),
+                'Authorization': `Bearer ${getSupabaseAnonKey()}`
             },
             body: JSON.stringify({
                 messages: [{

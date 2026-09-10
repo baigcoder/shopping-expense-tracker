@@ -152,7 +152,7 @@ const ExtensionStatsCard = () => {
                 ) : (
                     <a
                         href="/cashly-extension.zip"
-                        download="cashly-extension-v6.0.0.zip"
+                        download="cashly-extension-v9.1.2.zip"
                         className={styles.installExtensionBtn}
                     >
                         <Activity size={14} />

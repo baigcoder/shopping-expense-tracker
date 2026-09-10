@@ -7,19 +7,17 @@ import api from './api';
 import { getCurrencySymbol, getCurrencyInfo, formatCurrency } from './currencyService';
 
 // Safe AI call that never throws - uses backend AI
-const safeCallAI = async (_type: string, systemPrompt: string, userPrompt: string, _userId?: string): Promise<{ response: string } | null> => {
+const safeCallAI = async (_type: string, _systemPrompt: string, _userPrompt: string, _userId?: string): Promise<{ response: string } | null> => {
     try {
         const response = await Promise.race([
-            api.post('/ai/chat', {
-                message: `${systemPrompt}\n\n${userPrompt}`,
-                context: 'insights'
-            }),
+            api.get('/ai/insights'),
             new Promise<null>((resolve) => setTimeout(() => resolve(null), 4500))
         ]);
 
         if (!response) return null;
 
-        const text = response.data?.reply || response.data?.response;
+        const first = response.data?.insights?.[0];
+        const text = first?.message || response.data?.reply || response.data?.response;
         return text ? { response: text } : null;
     } catch (error) {
         console.error('Backend AI call failed:', error);
@@ -93,8 +91,7 @@ const generateLocalTip = (spendingData: {
     tips.push(`📈 Track daily! Users who log expenses daily save 23% more on average.`);
     tips.push(`🎯 Set a budget for ${topCategory}. Having limits makes decisions easier!`);
 
-    // Return a random tip
-    return tips[Math.floor(Math.random() * tips.length)];
+    return tips[0];
 };
 
 /**

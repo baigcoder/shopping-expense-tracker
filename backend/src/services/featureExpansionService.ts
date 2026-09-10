@@ -1,5 +1,6 @@
 import { supabase } from '../config/supabase.js';
 import { GenerateReportInput } from '../validators/schemas.js';
+import { buildWeeklyCoachActions } from '../utils/aiGrounding.js';
 
 const asRows = (value: unknown): any[] => Array.isArray(value) ? value : [];
 const today = () => new Date().toISOString().slice(0, 10);
@@ -309,14 +310,50 @@ export async function generateWeeklyCoachPlan(userId: string) {
     const existing = await getCurrentCoachPlan(userId);
     if (existing) return existing;
 
-    const [transactions, subscriptions, goals] = await Promise.all([
+    const [transactions, subscriptions, goals, budgets, pending] = await Promise.all([
         safeRows('transactions', userId, 'date'),
         safeRows('subscriptions', userId, 'created_at'),
         safeRows('goals', userId, 'created_at'),
+        safeRows('budgets', userId, 'created_at'),
+        supabase
+            .from('transaction_candidates')
+            .select('amount, category, status')
+            .eq('user_id', userId)
+            .eq('status', 'pending')
+            .limit(20)
+            .then((result) => asRows(result.data))
+            .catch(() => []),
     ]);
     const week = weekBounds();
-    const totalExpense = transactions.filter((tx) => tx.type !== 'income').reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
-    const monthlySubs = subscriptions.reduce((sum, sub) => sum + Number(sub.price || 0), 0);
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthlyExpenses = transactions.filter((tx) => tx.type !== 'income' && new Date(tx.date || tx.created_at) >= monthStart);
+    const monthlySpent = monthlyExpenses.reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+    const categoryTotals: Record<string, number> = {};
+    monthlyExpenses.forEach((tx) => {
+        const category = tx.category || 'Other';
+        categoryTotals[category] = (categoryTotals[category] || 0) + Number(tx.amount || 0);
+    });
+    const top = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0] || ['None', 0];
+    const monthlySubs = subscriptions.reduce((sum, sub) => {
+        const price = Number(sub.price || 0);
+        if (sub.cycle === 'yearly') return sum + price / 12;
+        if (sub.cycle === 'weekly') return sum + price * 4;
+        return sum + price;
+    }, 0);
+    const overBudgetCategories = budgets
+        .filter((budget) => Number(budget.amount) > 0 && (categoryTotals[budget.category] || 0) >= Number(budget.amount))
+        .map((budget) => budget.category);
+    const coach = buildWeeklyCoachActions({
+        topCategory: String(top[0]),
+        topCategoryAmount: Number(top[1]) || 0,
+        monthlySpent,
+        goals,
+        trials: subscriptions.filter((sub) => sub.is_trial),
+        monthlySubCost: monthlySubs,
+        pendingCount: pending.length,
+        overBudgetCategories,
+    });
 
     const { data: plan, error } = await supabase
         .from('coach_plans')
@@ -324,7 +361,7 @@ export async function generateWeeklyCoachPlan(userId: string) {
             user_id: userId,
             week_start: week.start,
             week_end: week.end,
-            summary: 'Three focused actions for this week.',
+            summary: coach.summary,
             streak: 0,
         })
         .select()
@@ -332,32 +369,11 @@ export async function generateWeeklyCoachPlan(userId: string) {
 
     if (error) throw error;
 
-    const actions = [
-        {
-            plan_id: plan.id,
-            user_id: userId,
-            action_type: 'spending',
-            title: 'Review top spending category',
-            description: `Check your largest recent expense group and cut one avoidable purchase. Recent expense baseline: ${totalExpense.toFixed(2)}.`,
-            target_amount: Math.max(5, Math.round(totalExpense * 0.03)),
-        },
-        {
-            plan_id: plan.id,
-            user_id: userId,
-            action_type: 'savings',
-            title: goals.length ? 'Move progress toward one goal' : 'Create one savings goal',
-            description: goals.length ? 'Add a small contribution to your most important active goal.' : 'Create a simple emergency or purchase goal to anchor savings behavior.',
-            target_amount: 10,
-        },
-        {
-            plan_id: plan.id,
-            user_id: userId,
-            action_type: 'subscription',
-            title: 'Audit subscriptions',
-            description: `Review active subscriptions and cancel or downgrade one low-value service. Current monthly subscription baseline: ${monthlySubs.toFixed(2)}.`,
-            target_amount: Math.max(5, Math.round(monthlySubs * 0.1)),
-        },
-    ];
+    const actions = coach.actions.map((action) => ({
+        plan_id: plan.id,
+        user_id: userId,
+        ...action,
+    }));
 
     const { data: createdActions, error: actionError } = await supabase
         .from('coach_actions')

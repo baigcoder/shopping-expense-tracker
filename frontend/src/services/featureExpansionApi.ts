@@ -66,6 +66,8 @@ export interface MerchantRule {
     enabled: boolean;
 }
 
+export const invalidateInboxCache = () => clearReadCache('inbox:');
+
 export const transactionInboxApi = {
     list: async (params: Record<string, any> = {}) => {
         const key = `inbox:${JSON.stringify(params)}`;

@@ -2,6 +2,7 @@ import { supabase } from '../config/supabase.js';
 import { getFinancialSnapshot } from './financialContextService.js';
 import openRouterService from './openRouterService.js';
 import { getUserSettings } from './settingsService.js';
+import { formatMoneyAmount } from '../utils/aiGrounding.js';
 
 type TransactionType = 'income' | 'expense';
 type TrendDirection = 'increasing' | 'stable' | 'decreasing';
@@ -200,7 +201,7 @@ function monthlySubscriptionCost(subscriptions: any[]) {
         }, 0);
 }
 
-function generateForecasts(transactions: MoneyTwinTransaction[], patterns: SpendingPattern[], subscriptions: any[], aiForecast: any[] = []): FinancialForecast[] {
+function generateForecasts(transactions: MoneyTwinTransaction[], patterns: SpendingPattern[], subscriptions: any[], aiForecast: any[] = [], currency = 'USD'): FinancialForecast[] {
     const now = new Date();
     const expenses = transactions.filter((transaction) => transaction.type !== 'income' && !transaction.pending);
     const income = transactions.filter((transaction) => transaction.type === 'income');
@@ -233,7 +234,7 @@ function generateForecasts(transactions: MoneyTwinTransaction[], patterns: Spend
         const savingsRate = predictedIncome > 0 ? (predictedSavings / predictedIncome) * 100 : 0;
         const warnings = [
             ...(Array.isArray(ai?.insights) ? ai.insights.slice(0, 2) : []),
-            ...(predictedSavings < 0 ? [`Projected deficit: Rs ${Math.abs(predictedSavings).toLocaleString()}`] : []),
+            ...(predictedSavings < 0 ? [`Projected deficit: ${formatMoneyAmount(Math.abs(predictedSavings), currency)}`] : []),
             ...(trend.direction === 'increasing' && trend.percentage > 10 ? [`Spending trend is up ${Math.round(trend.percentage)}%`] : []),
         ];
         const riskLevel: RiskLevel = predictedSavings < 0 ? 'critical' : savingsRate < 10 ? 'high' : savingsRate < 20 ? 'medium' : 'low';
@@ -264,7 +265,7 @@ function calculateHealthScore(velocity: ReturnType<typeof calculateVelocity>, pa
     return Math.round(clamp(score, 0, 100));
 }
 
-function detectRisks(transactions: MoneyTwinTransaction[], velocity: ReturnType<typeof calculateVelocity>, budgets: any[], forecasts: FinancialForecast[], aiRisks: any[] = []): RiskAlert[] {
+function detectRisks(transactions: MoneyTwinTransaction[], velocity: ReturnType<typeof calculateVelocity>, budgets: any[], forecasts: FinancialForecast[], aiRisks: any[] = [], currency = 'USD'): RiskAlert[] {
     const now = new Date();
     const alerts: RiskAlert[] = aiRisks.slice(0, 3).map((risk, index) => ({
         id: `ai-risk-${index}`,
@@ -287,7 +288,7 @@ function detectRisks(transactions: MoneyTwinTransaction[], velocity: ReturnType<
             message: `At the current burn rate, available monthly income may run out in ${velocity.daysUntilBroke} days.`,
             daysUntil: velocity.daysUntilBroke,
             probability: clamp(100 - velocity.daysUntilBroke * 5, 30, 100),
-            preventionTip: `Reduce daily flexible spending by about Rs ${Math.round(velocity.dailyRate * 0.3).toLocaleString()}.`,
+            preventionTip: `Reduce daily flexible spending by about ${formatMoneyAmount(Math.round(velocity.dailyRate * 0.3), currency)}.`,
             createdAt: now.toISOString(),
         });
     }
@@ -312,7 +313,7 @@ function detectRisks(transactions: MoneyTwinTransaction[], velocity: ReturnType<
                 message: `You have used ${Math.round(percentUsed)}% of this budget with ${daysLeft} day(s) left.`,
                 daysUntil: velocity.dailyRate > 0 ? Math.round(Math.max(0, amount(budget.amount) - spent) / velocity.dailyRate) : null,
                 probability: Math.round(clamp(percentUsed + 10, 0, 100)),
-                preventionTip: `Keep ${budget.category} spending near Rs ${Math.round(dailyBudget).toLocaleString()}/day for the rest of this month.`,
+                preventionTip: `Keep ${budget.category} spending near ${formatMoneyAmount(Math.round(dailyBudget), currency)}/day for the rest of this month.`,
                 createdAt: now.toISOString(),
             });
         }
@@ -342,7 +343,7 @@ function detectRisks(transactions: MoneyTwinTransaction[], velocity: ReturnType<
             type: 'budget_breach',
             severity: 'danger',
             title: 'Future deficit predicted',
-            message: `${critical.month} may be short by Rs ${Math.abs(critical.predictedSavings).toLocaleString()}.`,
+            message: `${critical.month} may be short by ${formatMoneyAmount(Math.abs(critical.predictedSavings), currency)}.`,
             daysUntil: 30,
             probability: 70,
             preventionTip: 'Adjust spending this week before the deficit becomes likely.',
@@ -446,9 +447,10 @@ export async function getMoneyTwin(userId: string, options: { force?: boolean; i
 
     const patterns = analyzePatterns(modelTransactions);
     const velocity = calculateVelocity(modelTransactions);
-    const forecasts = generateForecasts(modelTransactions, patterns, subscriptions, aiForecast);
+    const currency = snapshot.summary.currency || settings.currency || 'USD';
+    const forecasts = generateForecasts(modelTransactions, patterns, subscriptions, aiForecast, currency);
     const healthScore = calculateHealthScore(velocity, patterns, budgets, goals);
-    const riskAlerts = detectRisks(modelTransactions, velocity, budgets, forecasts, aiRisks);
+    const riskAlerts = detectRisks(modelTransactions, velocity, budgets, forecasts, aiRisks, currency);
 
     return {
         userId,

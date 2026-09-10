@@ -6,6 +6,7 @@ import { genZToast } from '../services/genZToast';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
 import { emitFinancialDataEvent } from '../services/financialDataEvents';
+import { claimCaptureToast } from '../lib/captureToastGuard';
 
 interface ExtensionStatus {
     installed: boolean;
@@ -489,20 +490,25 @@ export const useExtensionSync = () => {
                 const { type, data } = event.data;
 
                 if (type === 'BEHAVIOR_TRANSACTION_ADDED' || type === 'TRANSACTION_ADDED') {
-
-
-                    // Dispatch event for components to refresh
                     emitFinancialDataEvent('transaction-added', data);
                     window.dispatchEvent(new CustomEvent('transaction-added-realtime', { detail: data }));
 
-                    // Show toast notification
                     const amount = data.amount || 0;
                     const name = data.name || data.transaction?.description || 'Transaction';
                     const iconType = data.type === 'trial' ? '🎁' : (data.type === 'subscription' ? '💳' : '🛒');
                     toast.success(`${iconType} ${name} ${amount > 0 ? `• $${amount.toFixed(2)}` : ''} tracked!`);
                 } else if (type === 'TRANSACTION_CANDIDATE_ADDED') {
                     emitFinancialDataEvent('transaction-candidate-added', data);
-                    toast.info('New transaction is waiting in your inbox for review.');
+                    window.dispatchEvent(new CustomEvent('payment-capture-trail', { detail: { ...data, state: 'queued', pendingReview: true } }));
+                    const toastKey = String(data?.candidate?.id || data?.id || data?.transactionHash || data?.name || 'candidate');
+                    if (claimCaptureToast(`inbox-${toastKey}`)) {
+                        toast.info('New transaction is waiting in your inbox for review.');
+                    }
+                } else if (type === 'PAYMENT_CAPTURE_PROGRESS') {
+                    window.dispatchEvent(new CustomEvent('payment-capture-trail', { detail: data }));
+                } else if (type === 'SITE_VISIT_TRACKED') {
+                    window.dispatchEvent(new CustomEvent('site-visit-tracked', { detail: data }));
+                    emitFinancialDataEvent('site-visit-tracked', data);
                 } else if (type === 'CASHLY_DATA_UPDATED') {
                     emitFinancialDataEvent('cashly-data-updated', data);
                     window.dispatchEvent(new CustomEvent('cashly-data-updated', { detail: data }));

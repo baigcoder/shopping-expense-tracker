@@ -8,6 +8,7 @@ import AddCardModal from '../components/AddCardModal';
 import TransactionModal from '../components/TransactionModal';
 import ExtensionWall from '../components/ExtensionWall';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { useUIStore, useModalStore } from '../store/useStore';
 import styles from './DashboardLayout.module.css';
 
@@ -18,6 +19,7 @@ const DashboardLayout = () => {
     const isAddCardOpen = useModalStore((s) => s.isAddCardOpen);
     const isAddTransactionOpen = useModalStore((s) => s.isAddTransactionOpen);
     const [assistantReady, setAssistantReady] = useState(false);
+    useRealtimeSync();
 
     useEffect(() => {
         const loadAssistant = () => setAssistantReady(true);

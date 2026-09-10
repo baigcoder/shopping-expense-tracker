@@ -5,6 +5,7 @@ import { X, Mic, MicOff, PhoneOff, Settings, Activity, Sparkles, Volume2 } from 
 import { cn } from '@/lib/utils';
 import { aiDataCache } from '../services/aiDataCacheService';
 import api from '../services/api';
+import { fetchCashlyVoiceAudio } from '../services/voiceTts';
 
 interface VoiceCallModalProps {
     isOpen: boolean;
@@ -15,13 +16,17 @@ interface VoiceCallModalProps {
     onEditPreferences?: () => void;
 }
 
-const AI_SERVER_URL = import.meta.env.VITE_AI_SERVER_URL || 'http://localhost:8000';
-
 const VOICE_IDS: { [key: string]: { id: string; gender: string } } = {
     'jenny': { id: 'jenny', gender: 'female' },
     'aria': { id: 'aria', gender: 'female' },
     'guy': { id: 'guy', gender: 'male' },
     'davis': { id: 'davis', gender: 'male' },
+};
+
+const getSpeechRecognition = () => {
+    if (typeof window === 'undefined') return null;
+    const speechWindow = window as typeof window & { SpeechRecognition?: new () => any; webkitSpeechRecognition?: new () => any };
+    return speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition || null;
 };
 
 const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
@@ -33,6 +38,9 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     const [isThinking, setIsThinking] = useState(false);
     const [transcript, setTranscript] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
     const [callDuration, setCallDuration] = useState(0);
+    const [micSupported, setMicSupported] = useState(() => !!getSpeechRecognition());
+    const [typedMessage, setTypedMessage] = useState('');
+    const [micError, setMicError] = useState<string | null>(null);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const recognitionRef = useRef<any>(null);
@@ -70,35 +78,37 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
-            const maleVoice = voices.find(v => v.name.includes('David') || v.name.includes('Mark')) || voices[0];
-            if (maleVoice) utterance.voice = maleVoice;
+            const wantFemale = (VOICE_IDS[voiceName.toLowerCase()] || VOICE_IDS.jenny).gender === 'female';
+            const matched = voices.find((voice) => {
+                const name = voice.name.toLowerCase();
+                return wantFemale
+                    ? /female|zira|samantha|susan|karen|google uk english female/.test(name)
+                    : /male|david|mark|daniel|google uk english male/.test(name);
+            }) || voices[0];
+            if (matched) utterance.voice = matched;
             utterance.onend = () => setIsAISpeaking(false);
             utterance.onerror = () => setIsAISpeaking(false);
             setIsAISpeaking(true);
             window.speechSynthesis.speak(utterance);
         }
-    }, []);
+    }, [voiceName]);
 
     const speakWithElevenLabs = useCallback(async (text: string) => {
         const voiceKey = voiceName.toLowerCase();
         const voiceConfig = VOICE_IDS[voiceKey] || VOICE_IDS['jenny'];
         try {
             setIsAISpeaking(true);
-            const response = await fetch(`${AI_SERVER_URL}/tts`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text, voice: voiceConfig.id })
-            });
-            if (!response.ok) { speakWithWebSpeech(text); return; }
-            const audioBlob = await response.blob();
+            const audioBlob = await fetchCashlyVoiceAudio(text, voiceConfig.id);
             const audioUrl = URL.createObjectURL(audioBlob);
             if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
             const audio = new Audio(audioUrl);
             audioRef.current = audio;
             audio.onended = () => { setIsAISpeaking(false); URL.revokeObjectURL(audioUrl); };
-            audio.onerror = () => { setIsAISpeaking(false); URL.revokeObjectURL(audioUrl); };
+            audio.onerror = () => { setIsAISpeaking(false); URL.revokeObjectURL(audioUrl); speakWithWebSpeech(text); };
             await audio.play();
-        } catch (error) { speakWithWebSpeech(text); }
+        } catch (error) {
+            speakWithWebSpeech(text);
+        }
     }, [voiceName, speakWithWebSpeech]);
 
     const handleUserSpeech = useCallback(async (userText: string) => {
@@ -117,6 +127,9 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
             await speakWithElevenLabs(aiText);
         } catch (error) {
             setIsThinking(false);
+            if (!callEndedRef.current) {
+                setTranscript(prev => [...prev, { role: 'ai', text: "I couldn't reach Cashly just now. Try again." }]);
+            }
         }
     }, [isAISpeaking, isThinking, userId, speakWithElevenLabs]);
 
@@ -139,20 +152,30 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
     }, [isOpen, userId, userName, speakWithElevenLabs]);
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window)) {
-            const recognition = new (window as any).webkitSpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.onresult = (event: any) => {
-                let final = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    if (event.results[i].isFinal) final += event.results[i][0].transcript;
-                }
-                if (final.trim()) handleUserSpeech(final.trim());
-            };
-            recognition.onend = () => { if (!callEndedRef.current) try { recognition.start(); } catch (e) {} };
-            recognitionRef.current = recognition;
+        const Recognition = getSpeechRecognition();
+        setMicSupported(!!Recognition);
+        if (!Recognition) {
+            recognitionRef.current = null;
+            return;
         }
+        const recognition = new Recognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        recognition.onresult = (event: any) => {
+            let final = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                if (event.results[i].isFinal) final += event.results[i][0].transcript;
+            }
+            if (final.trim()) handleUserSpeech(final.trim());
+        };
+        recognition.onerror = (event: any) => {
+            if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                setMicError('Microphone permission is blocked.');
+            }
+        };
+        recognition.onend = () => { if (!callEndedRef.current) try { recognition.start(); } catch {} };
+        recognitionRef.current = recognition;
     }, [handleUserSpeech]);
 
     useEffect(() => {
@@ -287,7 +310,19 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                             
                             <div className="mt-4 px-6 py-2 bg-black border-2 border-black shadow-[4px_4px_0px_#3b82f6]">
                                 <p className="text-[10px] font-black uppercase text-white tracking-[0.2em]">
-                                    {callStatus === 'connecting' ? 'Booting System...' : isAISpeaking ? 'Transmitting...' : isThinking ? 'Calculating...' : 'Listening...'}
+                                    {callStatus === 'connecting'
+                                        ? 'Booting System...'
+                                        : isAISpeaking
+                                            ? 'Transmitting...'
+                                            : isThinking
+                                                ? 'Calculating...'
+                                                : !micSupported
+                                                    ? 'Type below — mic not supported'
+                                                    : micError
+                                                        ? micError
+                                                        : isMuted
+                                                            ? 'Muted'
+                                                            : 'Listening...'}
                                 </p>
                             </div>
                         </div>
@@ -351,12 +386,36 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                     </div>
 
                     {/* Controls */}
-                    <div className="p-8 bg-white border-t-[3px] border-black flex justify-center items-center gap-10">
+                    <div className="p-6 bg-white border-t-[3px] border-black flex flex-col gap-4">
+                        {(!micSupported || micError) && (
+                            <form
+                                className="flex gap-3"
+                                onSubmit={(event) => {
+                                    event.preventDefault();
+                                    const text = typedMessage.trim();
+                                    if (!text) return;
+                                    setTypedMessage('');
+                                    void handleUserSpeech(text);
+                                }}
+                            >
+                                <input
+                                    value={typedMessage}
+                                    onChange={(event) => setTypedMessage(event.target.value)}
+                                    placeholder="Mic not supported here — type a question"
+                                    className="flex-1 h-12 px-4 border-[3px] border-black font-bold text-sm focus:outline-none"
+                                />
+                                <button type="submit" className="h-12 px-4 border-[3px] border-black bg-black text-white font-black uppercase text-xs">
+                                    Send
+                                </button>
+                            </form>
+                        )}
+                        <div className="flex justify-center items-center gap-10">
                         <button 
-                            onClick={() => setIsMuted(!isMuted)} 
+                            onClick={() => micSupported && setIsMuted(!isMuted)} 
+                            disabled={!micSupported}
                             className={cn(
                                 "w-16 h-16 flex items-center justify-center border-[3px] border-black transition-all shadow-[4px_4px_0px_#000]",
-                                isMuted ? "bg-rose-500 text-white" : "bg-white text-black hover:bg-black hover:text-white"
+                                !micSupported || isMuted ? "bg-rose-500 text-white" : "bg-white text-black hover:bg-black hover:text-white"
                             )}
                         >
                             {isMuted ? <MicOff size={24} strokeWidth={3} /> : <Mic size={24} strokeWidth={3} />}
@@ -375,6 +434,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                         >
                             <Settings size={24} strokeWidth={3} />
                         </button>
+                    </div>
                     </div>
 
                     {/* Status Bar */}

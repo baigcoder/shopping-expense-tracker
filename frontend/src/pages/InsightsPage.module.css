@@ -85,6 +85,18 @@
     text-transform: uppercase;
 }
 
+.liveBadgeDegraded {
+    background: #facc15;
+    border-color: #000000;
+    color: #000000;
+}
+
+.liveBadgeLocal {
+    background: #ffffff;
+    border-color: #000000;
+    color: #000000;
+}
+
 /* === STATS GRID === */
 .statsRow {
     display: grid;

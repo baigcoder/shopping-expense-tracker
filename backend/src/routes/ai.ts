@@ -8,10 +8,12 @@ import openRouterService, { FinancialContext, OpenRouterUseCase } from '../servi
 import cacheService from '../services/redisCacheService';
 import { authMiddleware, AuthRequest } from '../middleware/auth.js';
 import { sanitizeChatMessage } from '../utils/security';
+import { composeChatSystemPrompt, formatMoneyAmount, parseVoiceIntent, spendRiskLevel, validateVoiceAction } from '../utils/aiGrounding.js';
 import { supabase } from '../config/supabase.js';
 import { buildCashlySystemPrompt, getFinancialSnapshot, getFinancialSummary } from '../services/financialContextService.js';
 import { createMoneyTransaction } from '../services/transactionDomainService.js';
 import { getUserSettings } from '../services/settingsService.js';
+import { getGroqConfigurationError, getGroqModel, isGroqConfigured } from '../services/groqService.js';
 
 const router = Router();
 
@@ -31,6 +33,14 @@ const aiChatLimiter = rateLimit({
     legacyHeaders: false,
 });
 
+const aiActionLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 10,
+    message: { error: 'Too many voice actions. Please wait a moment.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 function getChatUseCase(context: unknown, useCase: unknown): OpenRouterUseCase {
     if (useCase === 'document' || context === 'pdf_analysis') return 'document';
     return 'chat';
@@ -46,7 +56,11 @@ function getEmptyFinancialContext(userId: string): FinancialContext {
         transactionCount: 0,
         healthScore: 50,
         subscriptionCount: 0,
-        monthlySubCost: 0
+        monthlySubCost: 0,
+        pendingCount: 0,
+        pendingAmount: 0,
+        overBudgetCount: 0,
+        currency: 'USD'
     };
 }
 
@@ -60,7 +74,7 @@ function getFeatureFallback(feature: 'insights' | 'forecast' | 'risks', context:
             month: nextMonth.toLocaleString('default', { month: 'short', year: 'numeric' }),
             predictedExpenses: Math.round(context.monthlySpent || 0),
             predictedIncome: 0,
-            riskLevel: context.monthlySpent > 50000 ? 'high' : 'medium',
+            riskLevel: spendRiskLevel(context.monthlySpent, context.currency),
             insights: ['Local forecast based on your latest cached spending summary.']
         }];
     }
@@ -176,6 +190,7 @@ function getFallbackChatReply(message: string, context: {
     transactions?: number;
     goals?: number;
     budgets?: number;
+    currency?: string;
 }) {
     const hasData = (context.transactions || 0) > 0 || (context.goals || 0) > 0 || (context.budgets || 0) > 0;
 
@@ -183,11 +198,11 @@ function getFallbackChatReply(message: string, context: {
         return `Hey there! 👋 I'm having a brief connection issue with my AI brain, but I'm still here to help. Start by adding some transactions and I'll be able to give you personalized financial advice. You can track spending, set budgets, and create savings goals!`;
     }
 
-    const monthly = (context.monthlySpent || 0).toLocaleString();
-    const weekly = (context.weeklySpent || 0).toLocaleString();
+    const monthly = formatMoneyAmount(context.monthlySpent || 0, context.currency);
+    const weekly = formatMoneyAmount(context.weeklySpent || 0, context.currency);
     const txCount = context.transactions || 0;
 
-    return `Hey! 👋 I'm working with a quick local summary right now. Here's what I see: you've spent Rs ${monthly} this month and Rs ${weekly} this week across ${txCount} transactions. Try asking me something specific like "how can I save money?" or "show my budget status" and I'll do my best to help! 💪`;
+    return `Hey! 👋 I'm working with a quick local summary right now. Here's what I see: you've spent ${monthly} this month and ${weekly} this week across ${txCount} transactions. Try asking me something specific like "how can I save money?" or "show my budget status" and I'll do my best to help! 💪`;
 }
 
 // ==================== ROUTES ====================
@@ -461,9 +476,14 @@ router.get('/status', async (_req: Request, res: Response) => {
     try {
         const cacheStats = await cacheService.getCacheStats();
         res.json({
+            groq: {
+                status: isGroqConfigured() ? 'ok' : 'not_configured',
+                error: getGroqConfigurationError(),
+                model: getGroqModel('fastChat'),
+            },
             openrouter: {
-                status: openRouterService.isConfigured() ? 'ok' : 'not_configured',
-                error: openRouterService.getConfigurationError(),
+                status: openRouterService.isOpenRouterConfigured() ? 'ok' : 'not_configured',
+                error: openRouterService.getOpenRouterConfigurationError(),
                 model: openRouterService.getModelName(),
                 models: openRouterService.getModelMap()
             },
@@ -499,14 +519,12 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
         // 1. Get previous chat history from Redis
         const history = aiSettings.aiMemoryEnabled ? await cacheService.getChatHistory(userId) : [];
 
-        const snapshot = await getFinancialSnapshot(userId, {
-            includePendingCandidates: aiSettings.aiIncludePendingCandidates,
-        });
-
-        const clientContextText = typeof clientContext === 'string' ? clientContext.trim().slice(0, 12000) : '';
-        const systemPrompt = clientContextText
-            ? `You are "Cashly AI", a friendly financial assistant. Use the user's current client-provided financial data below as the freshest source of truth.\n\n${clientContextText}`
-            : buildCashlySystemPrompt(snapshot);
+        const snapshot = await getFinancialSnapshot(userId);
+        const clientContextText = typeof clientContext === 'string' ? clientContext : '';
+        const systemPrompt = composeChatSystemPrompt(
+            buildCashlySystemPrompt(snapshot, { includePendingCandidates: aiSettings.aiIncludePendingCandidates }),
+            clientContextText
+        );
 
         let reply: string;
         const chatUseCase = getChatUseCase(context, useCase);
@@ -531,7 +549,7 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
                 {
                     model,
                     useCase: chatUseCase,
-                    temperature: 0.7,
+                    temperature: 0.5,
                     maxTokens: 500,
                     user: userId
                 }
@@ -548,7 +566,8 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
                 weeklySpent: snapshot.summary.weeklySpent,
                 transactions: snapshot.transactions.length,
                 goals: snapshot.goals.length,
-                budgets: snapshot.budgets.length
+                budgets: snapshot.budgets.length,
+                currency: snapshot.summary.currency
             });
         }
 
@@ -596,55 +615,37 @@ router.post('/chat/fast', aiChatLimiter, async (req: AuthRequest, res: Response)
         return res.status(400).json({ error: 'Message required' });
     }
 
-    if (!context) {
-        return res.status(400).json({ error: 'Context required - use /chat endpoint for auto-fetch' });
-    }
-
     const validation = sanitizeChatMessage(message);
     if (!validation.valid) {
         return res.status(400).json({ error: validation.error || 'Invalid message' });
     }
     const sanitizedMessage = validation.sanitized;
-    const sanitizedContext = String(context).slice(0, 12000);
 
     const startTime = Date.now();
 
     try {
         const aiSettings = await getUserSettings(userId);
-
-        // Load chat history for memory/context continuity
         const history = aiSettings.aiMemoryEnabled ? await cacheService.getChatHistory(userId) : [];
-
-        // Build system prompt from provided context
-        const systemPrompt = `You are "Cashly AI", a smart and friendly financial assistant for the Cashly expense tracking app. You give genuinely helpful, personalized financial advice based on the user's REAL spending data.
-
-PERSONALITY:
-- Friendly, warm, and encouraging but always honest
-- Use emojis naturally (1-2 per response) to keep things engaging
-- Speak in a conversational tone, like a knowledgeable friend
-
-RULES:
-- Keep responses concise (3-5 sentences max unless the user asks for details)
-- ALWAYS reference the user's actual data below to personalize your advice
-- Be specific: mention real amounts, categories, and trends from their data
-- If the user asks about something you have data for, give precise numbers
-- DO NOT use markdown formatting (no **, no #, no bullet points with -)
-- If the user references something from earlier in the conversation, use the chat history to stay contextual
-
-${sanitizedContext}`;
+        const snapshotResult = await withTimeout(
+            getFinancialSnapshot(userId),
+            Math.min(AI_CONTEXT_TIMEOUT_MS, 2000),
+            'financial snapshot'
+        );
+        const snapshot = snapshotResult.value;
+        const groundedPrompt = snapshot
+            ? buildCashlySystemPrompt(snapshot, { includePendingCandidates: aiSettings.aiIncludePendingCandidates })
+            : '';
+        const systemPrompt = composeChatSystemPrompt(groundedPrompt || 'You are Cashly AI. Financial data is still loading; do not invent totals.', String(context || ''));
 
         let reply: string;
         let model = openRouterService.getModelName('fastChat');
         let aiUnavailable = false;
 
-        const contextData = await cacheService.getCachedUserSnapshot(userId) || {};
-        
         try {
             if (!aiSettings.aiLiveEnabled) {
                 throw new Error('Live AI is disabled in Settings');
             }
 
-            // Include conversation history for contextual awareness
             const chatHistory = history
                 .filter((item: any) => item?.role === 'user' || item?.role === 'assistant')
                 .map((item: any) => ({ role: item.role as 'user' | 'assistant', content: String(item.content || '') }));
@@ -658,7 +659,7 @@ ${sanitizedContext}`;
                 {
                     model,
                     useCase: 'fastChat',
-                    temperature: 0.7,
+                    temperature: 0.5,
                     maxTokens: 500,
                     user: userId
                 }
@@ -670,27 +671,22 @@ ${sanitizedContext}`;
             aiUnavailable = true;
             model = 'local-fallback';
             console.error('AI fast chat provider error:', aiError.message);
-            
-            // Provide accurate local data in fallback
-            const typedContextData = contextData as any;
             reply = getFallbackChatReply(sanitizedMessage, {
-                monthlySpent: typedContextData?.monthlySpent || 0,
-                weeklySpent: typedContextData?.weeklySpent || 0,
-                transactions: typedContextData?.transactionCount || 0,
-                goals: typedContextData?.goalCount || 0,
-                budgets: typedContextData?.budgetCount || 0
+                monthlySpent: snapshot?.summary.monthlySpent || 0,
+                weeklySpent: snapshot?.summary.weeklySpent || 0,
+                transactions: snapshot?.transactions.length || 0,
+                goals: snapshot?.goals.length || 0,
+                budgets: snapshot?.budgets.length || 0,
+                currency: snapshot?.summary.currency
             });
         }
 
-        // Save to chat history for memory continuity
         if (aiSettings.aiMemoryEnabled) {
             await cacheService.appendChatHistory(userId, { role: 'user', content: sanitizedMessage });
             await cacheService.appendChatHistory(userId, { role: 'assistant', content: reply });
         }
 
         const responseTime = Date.now() - startTime;
-
-        console.log(`⚡ Fast AI response in ${responseTime}ms (model: ${model})`);
 
         res.json({
             reply,
@@ -699,7 +695,11 @@ ${sanitizedContext}`;
             aiUnavailable,
             fast: true,
             responseTime,
-            historyLength: aiSettings.aiMemoryEnabled ? history.length + 2 : 0
+            historyLength: aiSettings.aiMemoryEnabled ? history.length + 2 : 0,
+            contextLoaded: snapshot ? {
+                transactions: snapshot.transactions.length,
+                pendingCandidates: snapshot.pendingCandidates.length
+            } : undefined
         });
     } catch (error: any) {
         console.error('AI fast chat error:', error.message);
@@ -731,7 +731,7 @@ router.post('/chat/clear', async (req: AuthRequest, res: Response) => {
  * POST /api/ai/voice-action
  * Execute actions via voice commands (add goals, reminders, transactions)
  */
-router.post('/voice-action', async (req: AuthRequest, res: Response) => {
+router.post('/voice-action', aiActionLimiter, async (req: AuthRequest, res: Response) => {
     const userId = getAIUserId(req);
     const { message, userName } = req.body;
 
@@ -781,20 +781,20 @@ RESPOND ONLY with valid JSON in this exact format:
     "amount": 1000,
     "due_date": "2025-01-15",
     "description": "transaction desc",
-    "category": "Food",
+    "category": "Food & Dining",
     "type": "expense"
   },
   "confirmation": "Natural language confirmation to speak to user"
 }
 
-If action is "none", params can be empty and confirmation should be a helpful response to their question.`;
+If required fields are missing, use action "none". Do not invent amounts.`;
 
         const intentResponse = await openRouterService.chatCompletion(
             [
                 { role: 'system', content: detectPrompt }
             ],
             {
-                temperature: 0.3,
+                temperature: 0.2,
                 maxTokens: 300,
                 useCase: 'voice',
                 responseFormat: { type: 'json_object' },
@@ -802,24 +802,24 @@ If action is "none", params can be empty and confirmation should be a helpful re
             }
         );
 
-        const intentText = intentResponse.content || '{"action":"none"}';
+        const parsed = parseVoiceIntent(intentResponse.content || '{"action":"none"}');
+        const validated = validateVoiceAction(parsed);
+        const intent = validated.intent;
 
-        // Extract JSON from response
-        let intent;
-        try {
-            const jsonMatch = intentText.match(/\{[\s\S]*\}/);
-            intent = JSON.parse(jsonMatch ? jsonMatch[0] : '{"action":"none"}');
-        } catch (e) {
-            intent = { action: 'none', params: {}, confirmation: "I didn't quite understand. Could you rephrase that?" };
+        if (!validated.ok) {
+            return res.json({
+                action: 'none',
+                params: {},
+                confirmation: validated.error || "I didn't quite understand. Could you rephrase that?",
+                actionResult: null,
+                success: false
+            });
         }
 
-        console.log('🎤 Voice action detected:', intent.action, intent.params);
-
         let actionResult = null;
-        const displayName = userName ? `Sir ${userName}` : '';
+        const displayName = userName ? String(userName).slice(0, 40) : '';
 
-        // Execute the action
-        if (intent.action === 'add_goal' && intent.params.name && intent.params.target) {
+        if (intent.action === 'add_goal') {
             const { data, error } = await supabase
                 .from('goals')
                 .insert({
@@ -827,7 +827,6 @@ If action is "none", params can be empty and confirmation should be a helpful re
                     name: intent.params.name,
                     target: intent.params.target,
                     saved: 0,
-                    deadline: intent.params.deadline || null,
                     created_at: new Date().toISOString()
                 })
                 .select()
@@ -836,20 +835,18 @@ If action is "none", params can be empty and confirmation should be a helpful re
             if (!error && data) {
                 actionResult = data;
                 if (aiSettings.aiAutoRefresh) await cacheService.invalidateUserCache(userId);
-                intent.confirmation = `Done ${displayName}! I've created a new savings goal: "${intent.params.name}" with a target of Rs ${intent.params.target.toLocaleString()}. You're now tracking this goal!`;
+                intent.confirmation = `Done ${displayName}! I've created a new savings goal: "${intent.params.name}" with a target of ${formatMoneyAmount(intent.params.target, aiSettings.currency)}.`;
             } else {
-                intent.confirmation = "I had trouble creating that goal. Please try again.";
+                intent.confirmation = 'I had trouble creating that goal. Please try again.';
             }
-        } else if (intent.action === 'add_reminder' && intent.params.title) {
-            const dueDate = intent.params.due_date || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-
+        } else if (intent.action === 'add_reminder') {
             const { data, error } = await supabase
                 .from('bills')
                 .insert({
                     user_id: userId,
                     title: intent.params.title,
                     amount: intent.params.amount || 0,
-                    due_date: dueDate,
+                    due_date: intent.params.due_date,
                     is_paid: false,
                     category: 'Bills'
                 })
@@ -859,24 +856,23 @@ If action is "none", params can be empty and confirmation should be a helpful re
             if (!error && data) {
                 actionResult = data;
                 if (aiSettings.aiAutoRefresh) await cacheService.invalidateUserCache(userId);
-                intent.confirmation = `Got it ${displayName}! I've set a reminder for "${intent.params.title}"${intent.params.amount ? ` of Rs ${intent.params.amount.toLocaleString()}` : ''} due on ${new Date(dueDate).toLocaleDateString()}.`;
+                intent.confirmation = `Got it ${displayName}! I've set a reminder for "${intent.params.title}"${intent.params.amount ? ` of ${formatMoneyAmount(intent.params.amount, aiSettings.currency)}` : ''} due on ${new Date(intent.params.due_date).toLocaleDateString()}.`;
             } else {
-                console.error('Bill insert error:', error);
                 intent.confirmation = "I couldn't create that reminder. Please try again.";
             }
-        } else if (intent.action === 'add_transaction' && intent.params.amount) {
+        } else if (intent.action === 'add_transaction') {
             try {
                 actionResult = await createMoneyTransaction({
                     user_id: userId,
-                    description: intent.params.description || 'Voice transaction',
+                    description: intent.params.description,
                     amount: intent.params.amount,
-                    type: intent.params.type || 'expense',
-                    category: intent.params.category || 'Other',
+                    type: intent.params.type,
+                    category: intent.params.category,
                     date: new Date().toISOString().split('T')[0],
                     source: 'voice-action'
                 });
-                const type = intent.params.type === 'income' ? 'income' : 'expense';
-                intent.confirmation = `Recorded ${displayName}! I've added a ${type} of Rs ${intent.params.amount.toLocaleString()} for "${intent.params.description || intent.params.category}".`;
+                if (aiSettings.aiAutoRefresh) await cacheService.invalidateUserCache(userId);
+                intent.confirmation = `Recorded ${displayName}! I've added a ${intent.params.type} of ${formatMoneyAmount(intent.params.amount, aiSettings.currency)} for "${intent.params.description}".`;
             } catch (error) {
                 console.error('Transaction insert error:', error);
                 intent.confirmation = "I couldn't log that transaction. Please try again.";

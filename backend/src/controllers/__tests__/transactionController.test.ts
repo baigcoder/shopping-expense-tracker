@@ -25,7 +25,7 @@ const mockListUserTransactions = vi.hoisted(() => vi.fn())
 const mockListUserTransactionsPage = vi.hoisted(() => vi.fn())
 const mockGetMoneyTransaction = vi.hoisted(() => vi.fn())
 const mockCreateMoneyTransaction = vi.hoisted(() => vi.fn())
-const mockCreateDetectedTransaction = vi.hoisted(() => vi.fn())
+const mockCreateDetectedCandidate = vi.hoisted(() => vi.fn())
 const mockUpdateMoneyTransaction = vi.hoisted(() => vi.fn())
 const mockDeleteMoneyTransaction = vi.hoisted(() => vi.fn())
 
@@ -34,9 +34,12 @@ vi.mock('../../services/transactionDomainService.js', () => ({
     listUserTransactionsPage: mockListUserTransactionsPage,
     getMoneyTransaction: mockGetMoneyTransaction,
     createMoneyTransaction: mockCreateMoneyTransaction,
-    createDetectedTransaction: mockCreateDetectedTransaction,
     updateMoneyTransaction: mockUpdateMoneyTransaction,
     deleteMoneyTransaction: mockDeleteMoneyTransaction,
+}))
+
+vi.mock('../../services/transactionInboxService.js', () => ({
+    createDetectedCandidate: mockCreateDetectedCandidate,
 }))
 
 vi.mock('../../middleware/errorHandler.js', () => ({
@@ -213,17 +216,27 @@ describe('Transaction Controller', () => {
     })
 
     describe('createDetectedTransaction', () => {
-        it('saves detected transactions through the transaction domain service', async () => {
+        it('queues detected payments in the inbox for review', async () => {
             const payload = {
                 amount: 2500,
                 serviceName: 'Netflix',
                 type: 'subscription',
                 isSubscription: true,
             }
-            mockCreateDetectedTransaction.mockResolvedValueOnce({
-                transaction: mockTransaction,
+            const candidate = {
+                id: 'candidate-1',
+                description: 'Netflix',
+                amount: 2500,
+                status: 'pending',
+                transaction_hash: 'test-hash',
+            }
+            mockCreateDetectedCandidate.mockResolvedValueOnce({
+                candidate,
                 duplicate: false,
-                transactionHash: 'test-hash',
+                duplicateTransaction: null,
+                autoApproved: false,
+                pendingReview: true,
+                transaction: null,
             })
 
             const req = createMockRequest({ body: payload })
@@ -231,15 +244,62 @@ describe('Transaction Controller', () => {
 
             await createDetectedTransaction(req as Request, res as Response, createMockNext())
 
-            expect(mockCreateDetectedTransaction).toHaveBeenCalledWith(mockUser.supabaseId, payload)
+            expect(mockCreateDetectedCandidate).toHaveBeenCalledWith(mockUser.supabaseId, payload)
+            expect(res.status).toHaveBeenCalledWith(202)
+            expect(res.json).toHaveBeenCalledWith({
+                success: true,
+                message: 'Detected transaction queued for review',
+                pendingReview: true,
+                autoApproved: false,
+                data: candidate,
+                candidate,
+                transaction: candidate,
+                duplicate: false,
+                duplicateTransaction: null,
+                transactionHash: 'test-hash',
+            })
+        })
+
+        it('posts trusted extension captures straight to the ledger', async () => {
+            const payload = {
+                amount: 12.99,
+                serviceName: 'Netflix',
+                type: 'subscription',
+                isSubscription: true,
+            }
+            const candidate = {
+                id: 'candidate-2',
+                description: 'Netflix',
+                amount: 12.99,
+                status: 'approved',
+                transaction_hash: 'trusted-hash',
+            }
+            mockCreateDetectedCandidate.mockResolvedValueOnce({
+                candidate,
+                duplicate: false,
+                duplicateTransaction: null,
+                autoApproved: true,
+                pendingReview: false,
+                transaction: mockTransaction,
+            })
+
+            const req = createMockRequest({ body: payload })
+            const res = createMockResponse()
+
+            await createDetectedTransaction(req as Request, res as Response, createMockNext())
+
             expect(res.status).toHaveBeenCalledWith(201)
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
-                message: 'Detected transaction saved',
+                message: 'Detected transaction added to ledger',
+                pendingReview: false,
+                autoApproved: true,
                 data: mockTransaction,
+                candidate,
                 transaction: mockTransaction,
                 duplicate: false,
-                transactionHash: 'test-hash',
+                duplicateTransaction: null,
+                transactionHash: 'trusted-hash',
             })
         })
     })

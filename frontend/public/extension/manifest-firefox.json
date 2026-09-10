@@ -1,49 +1,57 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Cashly - Smart Expense Tracker",
-    "version": "2.0.1",
+    "version": "9.1.2",
     "description": "Review online purchases in Cashly before they reach your finance ledger.",
+    "short_name": "Cashly",
+    "author": "Cashly",
+    "homepage_url": "https://cashly.app",
     "permissions": [
         "storage",
         "activeTab",
         "notifications",
-        "tabs",
-        "https://*.amazon.com/*",
-        "https://*.ebay.com/*",
-        "https://*.walmart.com/*",
-        "https://*.bestbuy.com/*",
-        "https://*.target.com/*",
-        "https://*.etsy.com/*",
-        "https://*.aliexpress.com/*",
-        "https://*.shopify.com/*",
+        "tabs"
+    ],
+    "host_permissions": [
         "<all_urls>"
     ],
-    "browser_action": {
+    "action": {
         "default_popup": "popup.html",
         "default_title": "Cashly - Review-First Finance",
         "default_icon": {
             "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
             "48": "icons/icon48.png",
             "128": "icons/icon128.png"
         }
     },
     "background": {
         "scripts": [
-            "background-firefox.js"
+            "background.js"
         ],
-        "persistent": false
+        "type": "module"
     },
     "content_scripts": [
         {
             "matches": [
-                "https://*.amazon.com/*",
-                "https://*.ebay.com/*",
-                "https://*.walmart.com/*",
-                "https://*.bestbuy.com/*",
-                "https://*.target.com/*",
-                "https://*.etsy.com/*",
-                "https://*.aliexpress.com/*",
+                "https://*.vercel.app/*",
+                "http://localhost:*/*",
+                "http://127.0.0.1:*/*"
+            ],
+            "js": [
+                "content-website.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
                 "<all_urls>"
+            ],
+            "exclude_matches": [
+                "http://localhost/*",
+                "http://localhost:*/*",
+                "http://127.0.0.1/*",
+                "http://127.0.0.1:*/*"
             ],
             "js": [
                 "content.js"
@@ -56,22 +64,29 @@
     ],
     "icons": {
         "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
     },
     "web_accessible_resources": [
-        "content.css"
+        {
+            "resources": [
+                "content.css",
+                "icons/icon16.png",
+                "icons/icon32.png",
+                "icons/icon48.png",
+                "icons/icon128.png",
+                "icons/logo.png"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "vibetracker@example.com",
-            "strict_min_version": "140.0",
-            "data_collection_permissions": {
-                "required": [
-                    "financialAndPaymentInfo",
-                    "websiteActivity"
-                ]
-            }
+            "id": "finzen@finzen-app.com",
+            "strict_min_version": "109.0"
         }
     }
 }

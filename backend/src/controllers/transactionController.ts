@@ -122,10 +122,27 @@ export const createDetectedTransaction = asyncHandler(async (req: Request, res: 
 
     const result = await createDetectedCandidate(userId, data);
 
+    if (result.autoApproved && result.transaction) {
+        res.status(201).json({
+            success: true,
+            message: 'Detected transaction added to ledger',
+            pendingReview: false,
+            autoApproved: true,
+            data: result.transaction,
+            candidate: result.candidate,
+            transaction: result.transaction,
+            duplicate: result.duplicate,
+            duplicateTransaction: result.duplicateTransaction,
+            transactionHash: result.candidate.transaction_hash,
+        });
+        return;
+    }
+
     res.status(202).json({
         success: true,
         message: result.duplicate ? 'Detected transaction needs review and may be duplicate' : 'Detected transaction queued for review',
         pendingReview: true,
+        autoApproved: false,
         data: result.candidate,
         candidate: result.candidate,
         transaction: result.candidate,

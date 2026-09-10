@@ -226,7 +226,7 @@ const SettingsPage = () => {
         setAiTest('TESTING_PROVIDER_PIPELINE...');
         try {
             const result = await settingsApi.testAI();
-            setAiTest(`${result.status.toUpperCase()}: ${result.model.toUpperCase()}`);
+            setAiTest(`${result.status.toUpperCase()}: ${(result.provider || 'ai').toUpperCase()} ${result.model.toUpperCase()}`);
             result.ok ? toast.success('PROVIDER_READY') : toast.warning('PROVIDER_LATENCY_DETECTED');
         } catch (error: any) {
             setAiTest('PROVIDER_TEST_FAILED');
@@ -412,6 +412,18 @@ const SettingsPage = () => {
                         
                         <div className={styles.sliderBox}>
                             <div className="grid gap-6 md:grid-cols-2">
+                                <div className="border-4 border-black p-6 bg-white">
+                                    <p className={styles.rowLabel}>Groq</p>
+                                    <p className={cn(styles.rowDesc, "font-black")}>
+                                        {dashboard?.ai.provider.groq?.configured ? 'FAST_PATH: ONLINE' : 'FAST_PATH: OFFLINE'}
+                                    </p>
+                                </div>
+                                <div className="border-4 border-black p-6 bg-white">
+                                    <p className={styles.rowLabel}>OpenRouter</p>
+                                    <p className={cn(styles.rowDesc, "font-black")}>
+                                        {dashboard?.ai.provider.openrouter?.configured ? 'FALLBACK: ONLINE' : 'FALLBACK: OFFLINE'}
+                                    </p>
+                                </div>
                                 <div className="border-4 border-black p-6 bg-white">
                                     <p className={styles.rowLabel}>Provider Status</p>
                                     <p className={cn(styles.rowDesc, "font-black")}>

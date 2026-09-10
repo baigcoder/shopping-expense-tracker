@@ -47,41 +47,7 @@
 
     const openWeb = (path) => chrome.tabs.create({ url: `${WEBSITE_URL}${path}` });
 
-    const ensureCapturePermission = async () => {
-        try {
-            const origin = 'https://*/*';
-            const already = await chrome.permissions.contains({ origins: [origin] });
-            if (already) {
-                await registerAllUrlCapture();
-                return;
-            }
-            const granted = await chrome.permissions.request({ origins: [origin] });
-            if (granted) await registerAllUrlCapture();
-        } catch (error) {
-            console.warn('Capture permission request failed:', error);
-        }
-    };
-
-    const registerAllUrlCapture = async () => {
-        if (!chrome.scripting?.registerContentScripts) return;
-        try {
-            await chrome.scripting.unregisterContentScripts({ ids: ['cashly-capture-all'] }).catch(() => undefined);
-            await chrome.scripting.registerContentScripts([{
-                id: 'cashly-capture-all',
-                matches: ['https://*/*'],
-                excludeMatches: [
-                    'http://localhost/*',
-                    'http://127.0.0.1/*',
-                    'https://*.vercel.app/*',
-                ],
-                js: ['content.js'],
-                css: ['content.css'],
-                runAt: 'document_idle',
-            }]);
-        } catch (error) {
-            console.warn('Could not register all-URL capture:', error);
-        }
-    };
+    const ensureCapturePermission = async () => {};
 
     const getAuth = async () => {
         const data = await chrome.storage.local.get(['accessToken', 'userEmail', 'userId', 'supabaseSession']);

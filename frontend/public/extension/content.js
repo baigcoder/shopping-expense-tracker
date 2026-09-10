@@ -278,7 +278,7 @@
     // CONFIGURATION
     // ================================
     const CONFIG = {
-        CONFIRMATION_TIMEOUT_MS: 60000,  // Extended from 30s to 60s
+        CONFIRMATION_TIMEOUT_MS: 90000,
         STATE_HISTORY_LIMIT: 20,         // Limit state history
         DEBOUNCE_MS: 300,                // Debounce for mutation observer
         ANALYSIS_CACHE_MS: 300000        // 5 minutes
@@ -959,6 +959,12 @@
                 detectionSignals
             });
 
+            if (amount <= 0 && !isTrial) {
+                log('Skipping zero-amount capture until a real total is visible');
+                this.hasTriggered = false;
+                return;
+            }
+
             const transaction = {
                 name: this.siteInfo.name,
                 merchantName: this.siteInfo.name,
@@ -1355,6 +1361,9 @@
     const CHECKOUT_URL_PATTERNS = [
         /\/checkout/i, /\/payment/i, /\/billing/i, /\/subscribe/i,
         /\/pay\//i, /\/cart/i, /\/order/i, /\/purchase/i,
+        /\/bag\b/i, /\/basket/i, /securecheckout/i, /checkouts\//i,
+        /\/paynow/i, /\/place-?order/i, /\/complete-?order/i,
+        /checkout\.shopify/i, /\/express-checkout/i,
         /step=payment/i, /step=checkout/i
     ];
 
@@ -1363,16 +1372,26 @@
         'input[name*="card"]', 'input[data-stripe]',
         '[class*="card-number"]', 'iframe[src*="stripe"]',
         'iframe[src*="braintree"]', 'iframe[src*="paypal"]',
+        'iframe[src*="razorpay"]', 'iframe[src*="adyen"]',
+        'iframe[src*="square"]', 'iframe[src*="paddle"]',
         '.StripeElement'
     ];
 
-    const PAYMENT_BUTTON_PATTERNS = [
-        /pay(\s*now)?/i, /submit\s*(payment|order)?/i,
-        /complete\s*(order|purchase)?/i, /place\s*order/i,
-        /confirm\s*(order|payment)?/i, /subscribe/i,
-        /start\s*(your\s*)?(free\s*)?trial/i, /try\s*(it\s*)?(free|now)/i,
-        /buy\s*now/i, /continue/i, /no\s*charge\s*today/i,
-        /get\s*(started|premium|pro)/i, /upgrade/i
+    const STRONG_PAYMENT_BUTTON_PATTERNS = [
+        /\bpay\s*now\b/i, /submit\s*(payment|order)/i,
+        /complete\s*(order|purchase|payment)/i, /place\s*order/i,
+        /confirm\s*(order|payment|purchase)/i,
+        /start\s*(your\s*)?(free\s*)?trial/i, /no\s*charge\s*today/i
+    ];
+
+    const PRODUCT_BUY_BUTTON_PATTERNS = [
+        /buy\s*now/i, /order\s*now/i
+    ];
+
+    const WEAK_PAYMENT_BUTTON_PATTERNS = [
+        /\bpay\b/i, /pay\s*with/i, /continue/i, /checkout/i,
+        /get\s*(started|premium|pro)/i, /upgrade/i,
+        /try\s*(it\s*)?(free|now)/i, /\bsubscribe\b/i
     ];
 
     const SUCCESS_URL_PATTERNS = [
@@ -1390,68 +1409,81 @@
     // ================================
     const analyzer = new SiteAnalyzer();
     const tracker = new TransactionTracker();
-    let siteAnalysisResult = null; // Store analysis result for popup queries
+    let siteAnalysisResult = null;
+    let captureStarted = false;
+
+    function isInPaymentFlow() {
+        return [
+            STATES.CHECKOUT_ENTERED,
+            STATES.PAYMENT_FORM_ACTIVE,
+            STATES.PAYMENT_SUBMITTED
+        ].includes(tracker.currentState) || CHECKOUT_URL_PATTERNS.some((pattern) => pattern.test(window.location.href));
+    }
+
+    function refreshCaptureFromPage(fullAnalyze = false) {
+        if (fullAnalyze) {
+            siteAnalysisResult = analyzer.analyze();
+            tracker.siteInfo.category = siteAnalysisResult.category;
+            if (siteAnalysisResult.score > 0 && tracker.currentState === STATES.IDLE) {
+                tracker.transition(STATES.MONITORING, { analysisScore: siteAnalysisResult.score });
+            }
+        }
+        checkCheckoutURL();
+        checkPaymentForms();
+        checkCancellation();
+    }
 
     function initialize() {
-        // Check blacklist first
         if (isBlacklisted(hostname)) {
             log('Site is blacklisted, skipping');
             return;
         }
 
-        // Try cached analysis first
-        const cachedResult = getCachedAnalysis(hostname);
-        if (cachedResult) {
-            siteAnalysisResult = cachedResult;
-        } else {
-            siteAnalysisResult = analyzer.analyze();
-            setCachedAnalysis(hostname, siteAnalysisResult);
-        }
-
+        siteAnalysisResult = analyzer.analyze();
+        setCachedAnalysis(hostname, siteAnalysisResult);
         tracker.siteInfo.category = siteAnalysisResult.category;
 
-        if (siteAnalysisResult.isPaymentSite || siteAnalysisResult.score > 0) {
+        if (siteAnalysisResult.score > 0) {
             log('Payment/trial signals detected, starting monitoring...', {
                 score: siteAnalysisResult.score,
                 signals: siteAnalysisResult.signals
             });
             tracker.transition(STATES.MONITORING, { analysisScore: siteAnalysisResult.score });
-            startBehaviorDetection();
         } else {
-            log('Not a payment site, staying idle', {
-                score: siteAnalysisResult.score,
-                signals: siteAnalysisResult.signals
-            });
+            log('No payment signals yet — watching this page dynamically');
             tracker.notifyBackground();
         }
+
+        startBehaviorDetection();
     }
 
     function startBehaviorDetection() {
-        // Check checkout URL
-        checkCheckoutURL();
-        checkPaymentForms();
-        checkCancellation();
+        if (captureStarted) {
+            refreshCaptureFromPage(true);
+            return;
+        }
+        captureStarted = true;
 
-        // Listen for payment button clicks
+        refreshCaptureFromPage(true);
         document.addEventListener('click', handleClick, true);
 
-        // Debounced payment form checker for performance
-        const debouncedCheckPaymentForms = debounce(checkPaymentForms, CONFIG.DEBOUNCE_MS);
+        const debouncedCheckoutWatch = debounce(() => refreshCaptureFromPage(false), CONFIG.DEBOUNCE_MS);
+        const observer = new MutationObserver(debouncedCheckoutWatch);
+        if (document.body) {
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
 
-        // Watch for DOM changes (SPA support) - DEBOUNCED for performance
-        const observer = new MutationObserver(debouncedCheckPaymentForms);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        // Intercept history changes (SPA navigation)
-        const originalPushState = history.pushState;
-        history.pushState = function () {
-            originalPushState.apply(this, arguments);
-            setTimeout(() => {
-                checkCheckoutURL();
-                checkPaymentForms();
-                checkCancellation();
-            }, 300);
+        const wrapHistory = (method) => {
+            const original = history[method];
+            history[method] = function dynamicCaptureHistory() {
+                const result = original.apply(this, arguments);
+                setTimeout(() => refreshCaptureFromPage(true), 200);
+                return result;
+            };
         };
+        wrapHistory('pushState');
+        wrapHistory('replaceState');
+        window.addEventListener('popstate', () => setTimeout(() => refreshCaptureFromPage(true), 200));
     }
 
     function checkCheckoutURL() {
@@ -1490,7 +1522,12 @@
         if (!target) return;
 
         const text = (target.innerText || target.value || '').trim();
-        const isPayButton = PAYMENT_BUTTON_PATTERNS.some(p => p.test(text));
+        const isContinueShopping = /continue\s*(shopping|browsing)|keep\s*shopping/i.test(text);
+        const veryStrongPay = STRONG_PAYMENT_BUTTON_PATTERNS.some(p => p.test(text));
+        const productBuy = PRODUCT_BUY_BUTTON_PATTERNS.some(p => p.test(text))
+            && tracker.currentState === STATES.MONITORING;
+        const weakPay = WEAK_PAYMENT_BUTTON_PATTERNS.some(p => p.test(text));
+        const isPayButton = !isContinueShopping && (veryStrongPay || productBuy || (weakPay && isInPaymentFlow()));
 
         if (isPayButton) {
             log('Payment button clicked:', text);
@@ -1531,33 +1568,54 @@
 
     let confirmationWatcherActive = false;
 
+    function checkConfirmation() {
+        const url = window.location.href.toLowerCase();
+        if (SUCCESS_URL_PATTERNS.some(p => p.test(url))) {
+            checkSuccessElements();
+        }
+    }
+
+    function patchHistoryForCheckout() {
+        if (window.__cashlyHistoryPatched) return;
+        window.__cashlyHistoryPatched = true;
+        ['pushState', 'replaceState'].forEach((method) => {
+            const original = history[method];
+            history[method] = function patchedHistory() {
+                const result = original.apply(this, arguments);
+                if (confirmationWatcherActive) {
+                    checkConfirmation();
+                    checkSuccessElements();
+                }
+                return result;
+            };
+        });
+    }
+
     function startConfirmationWatcher() {
         if (confirmationWatcherActive) return;
         confirmationWatcherActive = true;
+        patchHistoryForCheckout();
 
         log('Started confirmation watcher');
-
-        const checkConfirmation = () => {
-            const url = window.location.href.toLowerCase();
-            if (SUCCESS_URL_PATTERNS.some(p => p.test(url))) {
-                checkSuccessElements();
-            }
-        };
 
         checkConfirmation();
         window.addEventListener('popstate', checkConfirmation);
 
-        // Watch DOM for success modals - ALWAYS check for success elements on mutations
         const observer = new MutationObserver(() => {
-            // Always check success elements on DOM changes (modal detection)
             checkSuccessElements();
         });
-        observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+        const pollId = setInterval(() => {
+            checkConfirmation();
+            checkSuccessElements();
+        }, 1500);
 
         setTimeout(() => {
             observer.disconnect();
+            clearInterval(pollId);
             confirmationWatcherActive = false;
-        }, CONFIG.CONFIRMATION_TIMEOUT_MS);  // Extended to 60s
+        }, CONFIG.CONFIRMATION_TIMEOUT_MS);
     }
 
     function checkSuccessElements() {
