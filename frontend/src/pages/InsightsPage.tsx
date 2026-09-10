@@ -58,6 +58,7 @@ const InsightsPage = () => {
     const [categorySpending, setCategorySpending] = useState<CategorySpending[]>([]);
     const [aiTip, setAiTip] = useState<string | null>(null);
     const [aiLoading, setAiLoading] = useState(false);
+    const [coachPlan, setCoachPlan] = useState<any>(null);
     const [insightSource, setInsightSource] = useState<'local' | 'ai' | 'degraded'>('local');
 
     // Icon mapping
