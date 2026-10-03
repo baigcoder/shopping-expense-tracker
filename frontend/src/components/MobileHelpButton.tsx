@@ -1,7 +1,7 @@
 // Mobile Help Button - Shows limitations info on mobile
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, X, Smartphone, Monitor, Check, AlertCircle, FileText, Camera, MessageSquare } from 'lucide-react';
+import { HelpCircle, X, Smartphone, Monitor, Check, AlertCircle, FileText, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const MobileHelpButton = () => {
@@ -26,17 +26,18 @@ const MobileHelpButton = () => {
             <motion.button
                 onClick={() => setIsOpen(true)}
                 className={cn(
-                    "fixed bottom-20 left-4 z-[90]",
-                    "w-10 h-10",
-                    "bg-white border-2 border-black",
-                    "shadow-[3px_3px_0_#E11D48]",
+                    "fixed bottom-20 left-4 z-[85]",
+                    "w-9 h-9 rounded-full",
+                    "bg-[var(--color-surface)] border border-[var(--color-border)]",
+                    "shadow-sm",
                     "flex items-center justify-center",
-                    "text-black hover:bg-black hover:text-white",
+                    "text-[var(--color-muted)] hover:text-[var(--color-brand)] hover:border-[var(--color-brand)]",
                     "transition-all duration-150"
                 )}
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.92 }}
+                aria-label="Mobile and Desktop Guide"
             >
-                <HelpCircle size={20} />
+                <HelpCircle size={18} />
             </motion.button>
 
             {/* Help Modal */}
@@ -48,7 +49,7 @@ const MobileHelpButton = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100]"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
                             onClick={() => setIsOpen(false)}
                         />
 
@@ -57,85 +58,88 @@ const MobileHelpButton = () => {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 50 }}
-                            className="fixed bottom-0 left-0 right-0 z-[101] bg-white border-t-4 border-black overflow-hidden max-h-[85vh] overflow-y-auto"
+                            className="fixed bottom-0 left-0 right-0 z-[101] bg-[var(--color-surface)] rounded-t-2xl border-t border-[var(--color-border)] overflow-hidden max-h-[85vh] overflow-y-auto shadow-2xl"
                         >
                             {/* Header */}
-                            <div className="sticky top-0 bg-black text-white border-b-4 border-[#E11D48] p-4 flex items-center justify-between">
-                                <h2 className="text-sm font-black uppercase tracking-widest">Mobile vs Desktop</h2>
+                            <div className="sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] p-4 flex items-center justify-between z-10">
+                                <div>
+                                    <h2 className="text-sm font-semibold text-[var(--color-ink)]">Platform Capabilities</h2>
+                                    <p className="text-xs text-[var(--color-muted)]">Mobile Workspace vs Desktop Suite</p>
+                                </div>
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="p-1.5 border-2 border-white hover:bg-[#E11D48] transition-colors"
+                                    className="p-1.5 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-surface-2)] text-[var(--color-muted)] transition-colors"
                                 >
-                                    <X size={18} />
+                                    <X size={16} />
                                 </button>
                             </div>
 
-                            <div className="p-5 space-y-6">
+                            <div className="p-5 space-y-5">
                                 {/* Mobile Section */}
                                 <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="p-2 bg-black border-2 border-black">
-                                            <Smartphone size={18} className="text-[#E11D48]" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="p-1.5 rounded-lg bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
+                                            <Smartphone size={16} />
                                         </div>
-                                        <h3 className="font-black uppercase tracking-widest text-black">On Mobile</h3>
+                                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink)]">Active On Mobile</h3>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <FeatureItem icon={<Check />} text="Add spending manually" available />
-                                        <FeatureItem icon={<Check />} text="View all your data" available />
-                                        <FeatureItem icon={<Check />} text="AI chat assistant" available />
-                                        <FeatureItem icon={<Check />} text="Import bank PDFs" available />
-                                        <FeatureItem icon={<Check />} text="View charts & insights" available />
-                                        <FeatureItem icon={<Check />} text="Manage budgets & goals" available />
+                                    <div className="space-y-2">
+                                        <FeatureItem icon={<Check />} text="Instant manual ledger logging" available />
+                                        <FeatureItem icon={<Check />} text="Real-time multi-account balances" available />
+                                        <FeatureItem icon={<Check />} text="AI Financial intelligence assistant" available />
+                                        <FeatureItem icon={<Check />} text="Bank statement OCR parser" available />
+                                        <FeatureItem icon={<Check />} text="Interactive spending trajectories" available />
+                                        <FeatureItem icon={<Check />} text="Budget pace and safe headroom tracking" available />
                                     </div>
                                 </div>
 
-                                {/* Not Available Section */}
+                                {/* Desktop Only Section */}
                                 <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="p-2 bg-[#F59E0B] border-2 border-black">
-                                            <AlertCircle size={18} className="text-black" />
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                                            <AlertCircle size={16} />
                                         </div>
-                                        <h3 className="font-black uppercase tracking-widest text-black">Desktop Only</h3>
+                                        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink)]">Desktop Optimized</h3>
                                     </div>
 
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         <FeatureItem
                                             icon={<Monitor />}
-                                            text="Auto-capture (browser extension)"
+                                            text="Automated checkout extension capture"
                                             available={false}
-                                            reason="Chrome mobile doesn't support extensions"
+                                            reason="Chrome mobile restrictions prevent background extension tabs"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Tips Section */}
-                                <div className="bg-white border-[3px] border-black shadow-[4px_4px_0_#E11D48] p-4">
-                                    <h4 className="font-black uppercase tracking-widest text-black mb-3">💡 Tips for Mobile</h4>
-                                    <div className="space-y-2 text-sm text-zinc-700 font-medium">
-                                        <div className="flex items-start gap-2">
-                                            <FileText size={16} className="mt-0.5 flex-shrink-0" />
-                                            <p>Upload bank statements (PDF) to import transactions</p>
+                                <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-4">
+                                    <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink)] mb-3">Workflow Recommendations</h4>
+                                    <div className="space-y-2.5 text-xs text-[var(--color-secondary-ink)]">
+                                        <div className="flex items-start gap-2.5">
+                                            <FileText size={15} className="mt-0.5 text-[var(--color-brand)] shrink-0" />
+                                            <p>Upload PDF bank statements under Activity &gt; Imports for automatic statement parsing</p>
                                         </div>
-                                        <div className="flex items-start gap-2">
-                                            <MessageSquare size={16} className="mt-0.5 flex-shrink-0" />
-                                            <p>Use AI chat: "I spent Rs 500 at Grocery Store"</p>
+                                        <div className="flex items-start gap-2.5">
+                                            <MessageSquare size={15} className="mt-0.5 text-[var(--color-brand)] shrink-0" />
+                                            <p>Chat with Cashly AI: "I just spent Rs 850 at Metro Grocery" for hands-free categorization</p>
                                         </div>
-                                        <div className="flex items-start gap-2">
-                                            <Smartphone size={16} className="mt-0.5 flex-shrink-0" />
-                                            <p>Tap the + button for quick expense entry</p>
+                                        <div className="flex items-start gap-2.5">
+                                            <Smartphone size={15} className="mt-0.5 text-[var(--color-brand)] shrink-0" />
+                                            <p>Tap the + button in the bottom navigation for rapid transaction capture</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Desktop Promo */}
-                                <div className="bg-black border-2 border-black p-4 text-white shadow-[6px_6px_0_#E11D48]">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <Monitor size={20} className="text-[#E11D48]" />
-                                        <span className="font-black uppercase tracking-widest">Want auto-tracking?</span>
+                                <div className="bg-[var(--color-ink)] rounded-xl p-4 text-white">
+                                    <div className="flex items-center gap-2.5 mb-1.5">
+                                        <Monitor size={18} className="text-[var(--color-brand)]" />
+                                        <span className="text-xs font-semibold">Automated Browser Tracking</span>
                                     </div>
-                                    <p className="text-sm text-zinc-300 font-medium">
-                                        Open Cashly on a desktop browser to install our extension and automatically capture online purchases!
+                                    <p className="text-xs text-white/70 leading-relaxed">
+                                        Open Cashly on your desktop Chrome or Edge browser to link our companion extension for zero-click merchant tracking.
                                     </p>
                                 </div>
                             </div>
@@ -160,24 +164,28 @@ const FeatureItem = ({
     reason?: string;
 }) => (
     <div className={cn(
-        "flex items-start gap-3 p-3 border-2",
-        available ? "bg-[#ECFDF5] border-black" : "bg-zinc-50 border-zinc-300"
+        "flex items-start gap-3 p-2.5 rounded-lg border text-xs",
+        available
+            ? "bg-[var(--color-surface)] border-[var(--color-border)]"
+            : "bg-[var(--color-surface-2)]/60 border-[var(--color-border)]/50"
     )}>
         <div className={cn(
-            "p-1 border-2 flex-shrink-0",
-            available ? "bg-black border-black text-white" : "bg-white border-zinc-300 text-zinc-400"
+            "p-1 rounded flex-shrink-0 [&>svg]:w-3.5 [&>svg]:h-3.5",
+            available
+                ? "bg-[var(--color-brand-soft)] text-[var(--color-brand)]"
+                : "bg-zinc-200/50 dark:bg-zinc-800 text-[var(--color-muted)]"
         )}>
             {icon}
         </div>
         <div>
             <p className={cn(
-                "font-bold text-sm",
-                available ? "text-black" : "text-zinc-500"
+                "font-medium",
+                available ? "text-[var(--color-ink)]" : "text-[var(--color-muted)]"
             )}>
                 {text}
             </p>
             {reason && (
-                <p className="text-xs text-zinc-400 mt-0.5">{reason}</p>
+                <p className="text-[11px] text-[var(--color-muted)] mt-0.5">{reason}</p>
             )}
         </div>
     </div>

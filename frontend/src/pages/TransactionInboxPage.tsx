@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Surface } from '@/components/ui/Surface';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const categories = ['Food & Dining', 'Shopping', 'Subscriptions', 'Transport', 'Utilities', 'Entertainment', 'Healthcare', 'Other'];
 
@@ -41,7 +42,7 @@ const TransactionInboxPage = () => {
 
             setItems(data);
             setRules(ruleResult);
-        } catch (error) {
+        } catch {
             toast.error('Failed to load inbox');
         } finally {
             setLoading(false);
@@ -182,27 +183,47 @@ const TransactionInboxPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--bg-page)] p-1 text-[var(--text-primary)] sm:p-2">
-            <PageHeader
-                title="Review inbox"
-                description="Approve, edit, merge, or reject captures before they hit your ledger."
-                actions={
-                    <Button variant="outline" onClick={() => void load()}>
-                        <RefreshCw size={16} /> Refresh
-                    </Button>
-                }
-            />
+        <div className="min-h-screen bg-[var(--color-canvas)] p-1 text-[var(--color-ink)] sm:p-2 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[var(--color-orange)] text-white font-mono">
+                            Sovereign Review Terminal
+                        </span>
+                        <span className="text-xs text-[var(--color-muted)] font-mono">
+                            Explicit consent before ledger mutation
+                        </span>
+                    </div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl text-[var(--color-ink)] mt-2">
+                        REVIEW INBOX.
+                    </h1>
+                    <p className="text-xs text-[var(--color-muted)] font-mono mt-1">
+                        Approve, edit, merge, or reject captures before they affect your cash runway.
+                    </p>
+                </div>
 
-            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-6 lg:gap-10">
-                <Surface padded={false} className="overflow-hidden">
-                    <div className="flex flex-col gap-4 border-b border-[#E7E5E4] bg-[#F4F0EB] p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-5">
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" onClick={() => void load()} className="rounded-full">
+                        <RefreshCw size={14} className="mr-1.5" /> Refresh Terminal
+                    </Button>
+                </div>
+            </div>
+
+            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8">
+                <Surface padded={false} className="overflow-hidden border-[var(--color-border)] shadow-xs rounded-2xl">
+                    <div className="flex flex-col gap-4 border-b border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-5">
                         <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                            <div className="flex w-full items-center gap-1 overflow-x-auto rounded-xl border border-[#E7E5E4] bg-white p-1 sm:w-auto">
+                            <div className="flex w-full items-center gap-1 overflow-x-auto rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1 sm:w-auto">
                                 {['pending', 'approved', 'rejected', 'merged'].map(value => (
                                     <button
                                         key={value}
                                         onClick={() => setStatus(value)}
-                                        className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium capitalize transition-colors ${status === value ? 'bg-[#E11D48] text-white' : 'text-[#57534E] hover:bg-[#F4F0EB]'}`}
+                                        className={cn(
+                                            'whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold capitalize transition-colors',
+                                            status === value
+                                                ? 'bg-[var(--color-ink)] text-white shadow-xs'
+                                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                                        )}
                                     >
                                         {value}
                                     </button>
@@ -212,7 +233,7 @@ const TransactionInboxPage = () => {
                             <select 
                                 value={sortBy} 
                                 onChange={(e) => setSortBy(e.target.value as any)}
-                                className="h-10 rounded-[var(--r-md)] border border-[#E7E5E4] bg-white px-3 text-sm outline-none"
+                                className="h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-ink)] outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                             >
                                 <option value="date">Sort: Date</option>
                                 <option value="confidence">Sort: Review needed</option>
@@ -223,7 +244,7 @@ const TransactionInboxPage = () => {
                             <Button
                                 onClick={() => bulk('approve')}
                                 disabled={!selected.length}
-                                className="bg-[#059669] hover:bg-[#047857]"
+                                className="bg-[var(--color-success)] text-white hover:opacity-90 shadow-xs"
                             >
                                 Approve ({selected.length})
                             </Button>
@@ -238,7 +259,7 @@ const TransactionInboxPage = () => {
                     </div>
 
                     {loading ? (
-                        <div className="flex flex-col items-center gap-3 p-12 text-sm text-[var(--text-muted)]">
+                        <div className="flex flex-col items-center gap-3 p-12 text-sm text-[var(--color-muted)]">
                             <RefreshCw size={22} className="animate-spin" />
                             Loading inbox…
                         </div>
@@ -251,38 +272,38 @@ const TransactionInboxPage = () => {
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm border-collapse">
-                                <thead className="bg-[#F4F0EB] text-[var(--text-muted)]">
-                                    <tr>
+                                <thead className="bg-[var(--color-surface-2)] text-[var(--color-muted)]">
+                                    <tr className="border-b border-[var(--color-border)] text-[11px] uppercase tracking-wider font-semibold">
                                         <th className="w-16 p-4 text-left">
-                                            <div className="relative h-5 w-5 rounded border border-[#D6D3D1] bg-white">
+                                            <div className="relative h-4 w-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
                                                 <input 
                                                     type="checkbox" 
                                                     className="absolute inset-0 z-10 cursor-pointer opacity-0"
                                                     onChange={(e) => setSelected(e.target.checked ? items.map(i => i.id) : [])}
                                                     checked={selected.length === items.length && items.length > 0}
                                                 />
-                                                {selected.length === items.length && items.length > 0 && <Check size={14} className="absolute inset-0 m-auto text-[#E11D48]" />}
+                                                {selected.length === items.length && items.length > 0 && <Check size={12} className="absolute inset-0 m-auto text-[var(--color-brand)]" />}
                                             </div>
                                         </th>
-                                        <th className="p-4 text-left text-xs font-medium">Transaction</th>
-                                        <th className="p-4 text-left text-xs font-medium">Source</th>
-                                        <th className="p-4 text-left text-xs font-medium">Confidence</th>
-                                        <th className="p-4 text-right text-xs font-medium">Amount</th>
-                                        <th className="p-4 text-right text-xs font-medium">Actions</th>
+                                        <th className="p-4 text-left">Transaction</th>
+                                        <th className="p-4 text-left">Source</th>
+                                        <th className="p-4 text-left">Confidence</th>
+                                        <th className="p-4 text-right">Amount</th>
+                                        <th className="p-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {items.map(item => (
-                                        <tr key={item.id} className="border-b border-[var(--border)] hover:bg-[#FAF8F5] transition-colors">
+                                        <tr key={item.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-2)]/60 transition-colors">
                                             <td className="p-4">
-                                                <div className="relative h-5 w-5 rounded border border-[#D6D3D1] bg-white">
+                                                <div className="relative h-4 w-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
                                                     <input
                                                         type="checkbox"
                                                         className="absolute inset-0 z-10 cursor-pointer opacity-0"
                                                         checked={selected.includes(item.id)}
                                                         onChange={(e) => setSelected(prev => e.target.checked ? [...prev, item.id] : prev.filter(id => id !== item.id))}
                                                     />
-                                                    {selected.includes(item.id) && <Check size={14} className="absolute inset-0 m-auto text-[#E11D48]" />}
+                                                    {selected.includes(item.id) && <Check size={12} className="absolute inset-0 m-auto text-[var(--color-brand)]" />}
                                                 </div>
                                             </td>
                                             <td className="p-4">
@@ -291,12 +312,12 @@ const TransactionInboxPage = () => {
                                                         <input
                                                             value={editDrafts[item.id].description}
                                                             onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
-                                                            className="h-10 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none focus:border-[#E11D48]"
+                                                            className="h-9 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                                         />
                                                         <select
                                                             value={editDrafts[item.id].category}
                                                             onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
-                                                            className="h-10 w-full cursor-pointer rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none"
+                                                            className="h-9 w-full cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none"
                                                         >
                                                             {categories.map((category) => <option key={category}>{category}</option>)}
                                                             {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
@@ -304,27 +325,27 @@ const TransactionInboxPage = () => {
                                                     </div>
                                                 ) : (
                                                     <>
-                                                        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
+                                                        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-ink)]">
                                                             {item.description}
                                                             {item.duplicate_transaction_id && (
-                                                                <span className="rounded-full border border-[#E11D48]/30 bg-[#FFE4E6] px-2 py-0.5 text-[10px] font-medium text-[#E11D48]">Possible duplicate</span>
+                                                                <span className="rounded-full border border-[var(--color-brand)]/30 bg-[var(--color-brand-light)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-brand)]">Possible duplicate</span>
                                                             )}
                                                         </div>
-                                                        <div className="mt-1 text-xs text-[var(--text-muted)]">{item.date} · {item.category}</div>
+                                                        <div className="mt-1 text-xs font-mono text-[var(--color-muted)]">{item.date} · {item.category}</div>
                                                     </>
                                                 )}
                                             </td>
                                             <td className="p-4">
                                                 {(() => {
                                                     const srcMap: Record<string, { label: string; bg: string; color: string }> = {
-                                                        pdf:       { label: 'PDF', bg: '#F4F0EB', color: '#57534E' },
-                                                        csv:       { label: 'CSV', bg: '#F4F0EB', color: '#57534E' },
-                                                        extension: { label: 'Extension', bg: '#FFE4E6', color: '#E11D48' },
-                                                        ai:        { label: 'AI', bg: '#ECFDF5', color: '#059669' },
+                                                        pdf:       { label: 'PDF', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
+                                                        csv:       { label: 'CSV', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
+                                                        extension: { label: 'Extension', bg: 'var(--color-brand-soft)', color: 'var(--color-brand)' },
+                                                        ai:        { label: 'AI', bg: 'var(--color-ai-soft)', color: 'var(--color-ai)' },
                                                     };
-                                                    const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: '#F4F0EB', color: '#57534E' };
+                                                    const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: 'var(--color-surface-2)', color: 'var(--color-muted)' };
                                                     return (
-                                                        <span style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 600, textTransform: 'none', background: s.bg, color: s.color, border: '1px solid #E7E5E4', display: 'inline-block', borderRadius: 999 }}>
+                                                        <span style={{ padding: '3px 8px', fontSize: '0.72rem', fontWeight: 600, background: s.bg, color: s.color, border: '1px solid var(--color-border)', display: 'inline-block', borderRadius: 999 }}>
                                                             {s.label}
                                                         </span>
                                                     );
@@ -333,18 +354,18 @@ const TransactionInboxPage = () => {
                                             <td className="p-4">
                                                 {(() => {
                                                     const pct = Math.round((item.confidence || 0) * 100);
-                                                    const color = pct >= 80 ? '#059669' : pct >= 50 ? '#D97706' : '#E11D48';
+                                                    const color = pct >= 80 ? 'var(--color-success)' : pct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)';
                                                     return (
                                                         <div className="flex items-center gap-2">
-                                                            <span className="text-sm font-semibold" style={{ color }}>{pct}%</span>
-                                                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#F4F0EB]">
+                                                            <span className="text-xs font-semibold tabular-nums font-mono" style={{ color }}>{pct}%</span>
+                                                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--color-surface-2)]">
                                                                 <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
                                                             </div>
                                                         </div>
                                                     );
                                                 })()}
                                             </td>
-                                            <td className="p-4 text-right text-sm font-semibold">
+                                            <td className="p-4 text-right text-sm font-semibold tabular-nums font-mono">
                                                 {editDrafts[item.id] ? (
                                                     <input
                                                         type="number"
@@ -352,36 +373,52 @@ const TransactionInboxPage = () => {
                                                         step="0.01"
                                                         value={editDrafts[item.id].amount}
                                                         onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
-                                                        className="ml-auto h-10 w-28 rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-right text-sm outline-none focus:border-[#E11D48]"
+                                                        className="ml-auto h-9 w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-right text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                                     />
                                                 ) : (
                                                     formatCurrency(Number(item.amount || 0))
                                                 )}
                                             </td>
                                             <td className="p-4">
-                                                <div className="flex justify-end gap-2">
+                                                <div className="flex justify-end gap-1.5">
                                                     {status === 'pending' && (
                                                         <>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => editDrafts[item.id] ? cancelEdit(item.id) : startEdit(item)}
                                                                 title={editDrafts[item.id] ? 'Cancel edit' : 'Edit before approve'}
-                                                                className={`flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] border border-[#E7E5E4] ${editDrafts[item.id] ? 'bg-[#FEF3C7] text-[#1C1917]' : 'bg-white text-[#1C1917] hover:bg-[#F4F0EB]'}`}
+                                                                className={cn(
+                                                                    'flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)]',
+                                                                    editDrafts[item.id] ? 'bg-amber-100 text-amber-900' : 'bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                                                                )}
                                                             >
-                                                                <Pencil size={16} strokeWidth={2} />
+                                                                <Pencil size={14} strokeWidth={2} />
                                                             </button>
                                                             {item.duplicate_transaction_id && (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => merge(item)}
                                                                     title="Merge into existing ledger item"
-                                                                    className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] border border-[#E7E5E4] bg-[#FEF3C7] text-[#1C1917]"
+                                                                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)] bg-amber-50 text-amber-800"
                                                                 >
-                                                                    <Link2 size={16} strokeWidth={2} />
+                                                                    <Link2 size={14} strokeWidth={2} />
                                                                 </button>
                                                             )}
-                                                            <button type="button" onClick={() => approve(item)} title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'} className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] bg-[#059669] text-white"><Check size={16} strokeWidth={2} /></button>
-                                                            <button type="button" onClick={() => reject(item.id)} className="flex h-9 w-9 items-center justify-center rounded-[var(--r-md)] bg-[#E11D48] text-white"><X size={16} strokeWidth={2} /></button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => approve(item)}
+                                                                title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'}
+                                                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-success)] text-white hover:opacity-90"
+                                                            >
+                                                                <Check size={14} strokeWidth={2.5} />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => reject(item.id)}
+                                                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-danger)] text-white hover:opacity-90"
+                                                            >
+                                                                <X size={14} strokeWidth={2.5} />
+                                                            </button>
                                                         </>
                                                     )}
                                                 </div>
@@ -395,51 +432,51 @@ const TransactionInboxPage = () => {
                 </Surface>
 
                 <aside className="space-y-6 sm:space-y-8 min-w-0">
-                    <Surface>
+                    <Surface className="border-[var(--color-border)] shadow-xs">
                         <div className="mb-4 flex items-center gap-2">
-                            <Wand2 size={18} className="text-[#E11D48]" />
-                            <h2 className="font-display text-lg font-semibold">Merchant rule</h2>
+                            <Wand2 size={18} className="text-[var(--color-brand)]" />
+                            <h2 className="font-display text-base font-bold text-[var(--color-ink)]">Merchant rule</h2>
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-sm font-medium text-[#57534E]">Merchant pattern</label>
-                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="h-11 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm outline-none focus:border-[#E11D48]" />
+                                <label className="text-xs font-semibold text-[var(--color-muted)]">Merchant pattern</label>
+                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]" />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-sm font-medium text-[#57534E]">Category</label>
-                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="h-11 w-full rounded-[var(--r-md)] border border-[#E7E5E4] px-3 text-sm">
+                                <label className="text-xs font-semibold text-[var(--color-muted)]">Category</label>
+                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-ink)]">
                                     {categories.map(category => <option key={category}>{category}</option>)}
                                 </select>
                             </div>
-                            <Button onClick={addRule} className="w-full">Create rule</Button>
-                            <p className="text-xs leading-relaxed text-[#78716C]">
+                            <Button onClick={addRule} className="w-full bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white">Create rule</Button>
+                            <p className="text-xs leading-relaxed text-[var(--color-muted)]">
                                 Matching extension captures with high confidence auto-post to the ledger. Everything else stays here until you approve.
                             </p>
                         </div>
                     </Surface>
                     
-                    <Surface>
+                    <Surface className="border-[var(--color-border)] shadow-xs">
                         <div className="mb-4 flex items-center gap-2">
-                            <Settings2 size={18} />
-                            <h2 className="font-display text-lg font-semibold">Active rules</h2>
+                            <Settings2 size={18} className="text-[var(--color-muted)]" />
+                            <h2 className="font-display text-base font-bold text-[var(--color-ink)]">Active rules</h2>
                         </div>
                         <div className="custom-scrollbar max-h-[400px] space-y-3 overflow-auto pr-1">
                             {rules.map(rule => (
-                                <div key={rule.id} className="flex flex-col justify-between gap-3 rounded-xl border border-[#E7E5E4] bg-[#FAF8F5] p-3 min-[420px]:flex-row min-[420px]:items-center">
+                                <div key={rule.id} className="flex flex-col justify-between gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] p-3 min-[420px]:flex-row min-[420px]:items-center">
                                     <div>
-                                        <div className="text-sm font-medium">{rule.merchant_pattern}</div>
-                                        <div className="mt-0.5 text-xs text-[#78716C]">{rule.match_type} • <span className="text-[#E11D48]">{rule.category}</span></div>
+                                        <div className="text-xs font-semibold text-[var(--color-ink)]">{rule.merchant_pattern}</div>
+                                        <div className="mt-0.5 text-[11px] text-[var(--color-muted)]">{rule.match_type} • <span className="text-[var(--color-brand)] font-medium">{rule.category}</span></div>
                                     </div>
                                     <button
                                         onClick={async () => { await merchantRulesApi.delete(rule.id); load(); }}
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#78716C] hover:bg-[#FFE4E6] hover:text-[#E11D48]"
+                                        className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-danger)] transition-colors"
                                     >
-                                        <Trash2 size={16} />
+                                        <Trash2 size={14} />
                                     </button>
                                 </div>
                             ))}
                             {rules.length === 0 && (
-                                <p className="py-6 text-center text-sm text-[#78716C]">No rules yet.</p>
+                                <p className="py-6 text-center text-xs text-[var(--color-muted)]">No rules yet.</p>
                             )}
                         </div>
                     </Surface>

@@ -120,7 +120,7 @@ describe('transactionService', () => {
                 storeName: 'Amazon',
                 storeUrl: 'https://amazon.com',
                 productName: 'Test Product',
-                categoryId: 'cat-123',
+                categoryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
                 purchaseDate: '2024-01-15',
                 notes: 'Test notes',
             }
@@ -141,7 +141,7 @@ describe('transactionService', () => {
                 storeName: 'Amazon',
                 storeUrl: 'https://amazon.com',
                 productName: 'Test Product',
-                categoryId: 'cat-123',
+                categoryId: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
                 purchaseDate: '2024-01-15',
                 notes: 'Test notes',
             })

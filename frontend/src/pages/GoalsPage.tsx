@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Target, Plus, Trophy, TrendingUp, PiggyBank, Sparkles, X,
-    DollarSign, Calendar, Pencil, Trash2, ShieldCheck,
-    ArrowUpRight, Clock, CheckCircle2
+    Target, Plus, Trophy, TrendingUp, PiggyBank,
+    Pencil, Trash2,
+    RefreshCw
 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { supabase } from '../config/supabase';
 import { useAuthStore } from '../store/useStore';
-import { GoalsSkeleton } from '../components/LoadingSkeleton';
+import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
-import styles from './GoalsPage.module.css';
+import { PlanNavigationTabs } from '@/components/PlanNavigationTabs';
 
 interface Goal {
     id: string;
@@ -27,39 +28,32 @@ interface Goal {
     created_at: string;
 }
 
+const GOAL_ICONS = ['🎯', '🏠', '✈️', '🚗', '💻', '📚', '💍', '🎓', '💰', '🏝️', '🛡️', '👶'];
+
 const GOAL_COLORS = [
-    { name: 'blue', bg: '#3b82f6', light: '#eff6ff', text: '#2563eb' },
-    { name: 'indigo', bg: '#6366f1', light: '#eef2ff', text: '#4f46e5' },
-    { name: 'teal', bg: '#14b8a6', light: '#f0fdfa', text: '#0d9488' },
-    { name: 'amber', bg: '#f59e0b', light: '#fffbeb', text: '#d97706' },
-    { name: 'rose', bg: '#f43f5e', light: '#fff1f2', text: '#e11d48' },
-    { name: 'emerald', bg: '#10b981', light: '#f0fdf4', text: '#059669' },
+    { name: 'brand', bg: '#0E8174', label: 'Sovereign Jade' },
+    { name: 'blue', bg: '#2563EB', label: 'Classic Blue' },
+    { name: 'emerald', bg: '#059669', label: 'Emerald Green' },
+    { name: 'amber', bg: '#D97706', label: 'Warm Amber' },
+    { name: 'purple', bg: '#7C3AED', label: 'Royal Purple' },
+    { name: 'stone', bg: '#44403C', label: 'Charcoal' },
 ];
 
-const GOAL_ICONS = ['🎯', '🏠', '✈️', '🚗', '💻', '📚', '💍', '🎓', '💰', '🏝️'];
-
-// Animation Variants
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-};
-
-const GoalsPage = () => {
+export const GoalsPage = () => {
     const { user } = useAuthStore();
     const [goals, setGoals] = useState<Goal[]>([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
+
+    // Quick deposit modal
+    const [depositGoal, setDepositGoal] = useState<Goal | null>(null);
+    const [depositAmount, setDepositAmount] = useState('');
+    const [depositing, setDepositing] = useState(false);
+
+    // Filter
+    const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     // Form state
     const [formData, setFormData] = useState({
@@ -68,10 +62,11 @@ const GoalsPage = () => {
         current_amount: '',
         deadline: '',
         icon: '🎯',
-        color: 'blue'
+        color: 'brand'
     });
+    const [saving, setSaving] = useState(false);
 
-    const fetchGoals = async () => {
+    const fetchGoals = useCallback(async () => {
         if (!user?.id) return;
         try {
             const { data, error } = await supabase
@@ -84,37 +79,33 @@ const GoalsPage = () => {
             setGoals(data || []);
         } catch (error) {
             console.error('Failed to fetch goals:', error);
+            toast.error('Could not load savings goals');
         } finally {
             setLoading(false);
+            setRefreshing(false);
         }
-    };
+    }, [user?.id]);
 
     useEffect(() => {
         fetchGoals();
-    }, [user?.id]);
+    }, [fetchGoals]);
 
-    // Listen for goal changes to update immediately
-    useEffect(() => {
-        const handleGoalChange = () => {
-            console.log('🔄 Goal changed - refreshing');
-            fetchGoals();
-        };
-
-        window.addEventListener('goal-added', handleGoalChange);
-        window.addEventListener('goal-updated', handleGoalChange);
-        window.addEventListener('goal-deleted', handleGoalChange);
-
-        return () => {
-            window.removeEventListener('goal-added', handleGoalChange);
-            window.removeEventListener('goal-updated', handleGoalChange);
-            window.removeEventListener('goal-deleted', handleGoalChange);
-        };
-    }, [user?.id]);
-
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchGoals();
+        toast.success('Goals updated');
+    };
 
     const openAddModal = () => {
         setEditingGoal(null);
-        setFormData({ name: '', target_amount: '', current_amount: '', deadline: '', icon: '🎯', color: 'blue' });
+        setFormData({
+            name: '',
+            target_amount: '',
+            current_amount: '',
+            deadline: '',
+            icon: '🎯',
+            color: 'brand'
+        });
         setIsModalOpen(true);
     };
 
@@ -125,24 +116,33 @@ const GoalsPage = () => {
             target_amount: goal.target_amount.toString(),
             current_amount: goal.current_amount.toString(),
             deadline: goal.deadline ? goal.deadline.split('T')[0] : '',
-            icon: goal.icon,
-            color: goal.color
+            icon: goal.icon || '🎯',
+            color: goal.color || 'brand'
         });
         setIsModalOpen(true);
     };
 
-    const handleSubmit = async () => {
-        if (!formData.name || !formData.target_amount) {
-            toast.error('Please fill in required fields');
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!formData.name || !formData.target_amount || !user?.id) {
+            toast.error('Please enter a goal name and target amount');
             return;
         }
 
+        const target = parseFloat(formData.target_amount);
+        const current = parseFloat(formData.current_amount) || 0;
+        if (isNaN(target) || target <= 0) {
+            toast.error('Target amount must be greater than zero');
+            return;
+        }
+
+        setSaving(true);
         try {
             const goalData = {
-                user_id: user?.id,
+                user_id: user.id,
                 name: formData.name,
-                target_amount: parseFloat(formData.target_amount),
-                current_amount: parseFloat(formData.current_amount) || 0,
+                target_amount: target,
+                current_amount: current,
                 deadline: formData.deadline || null,
                 icon: formData.icon,
                 color: formData.color
@@ -154,13 +154,13 @@ const GoalsPage = () => {
                     .update(goalData)
                     .eq('id', editingGoal.id);
                 if (error) throw error;
-                toast.success('Goal updated successfully');
+                toast.success('Goal updated');
             } else {
                 const { error } = await supabase
                     .from('goals')
                     .insert([goalData]);
                 if (error) throw error;
-                toast.success('Goal created successfully');
+                toast.success('New goal created! 🎯');
             }
 
             setIsModalOpen(false);
@@ -168,358 +168,563 @@ const GoalsPage = () => {
         } catch (error) {
             console.error('Failed to save goal:', error);
             toast.error('Failed to save goal');
+        } finally {
+            setSaving(false);
         }
     };
 
-    const handleDelete = async (goalId: string, e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (!confirm('Are you sure you want to delete this goal?')) return;
+    const handleDelete = async (goalId: string, name: string) => {
+        if (!confirm(`Delete savings goal "${name}"?`)) return;
         try {
             const { error } = await supabase.from('goals').delete().eq('id', goalId);
             if (error) throw error;
             toast.success('Goal deleted');
             fetchGoals();
-        } catch (error) {
+        } catch {
             toast.error('Failed to delete goal');
         }
     };
 
-    const getColorData = (colorName: string) => {
-        return GOAL_COLORS.find(c => c.name === colorName) || GOAL_COLORS[0];
+    const handleQuickDeposit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!depositGoal) return;
+        const amount = parseFloat(depositAmount);
+        if (isNaN(amount) || amount <= 0) {
+            toast.error('Enter a valid deposit amount');
+            return;
+        }
+
+        setDepositing(true);
+        try {
+            const nextCurrent = depositGoal.current_amount + amount;
+            const { error } = await supabase
+                .from('goals')
+                .update({ current_amount: nextCurrent })
+                .eq('id', depositGoal.id);
+
+            if (error) throw error;
+
+            toast.success(`Deposited ${formatCurrency(amount)} toward ${depositGoal.name}!`);
+            setDepositGoal(null);
+            setDepositAmount('');
+            fetchGoals();
+        } catch {
+            toast.error('Deposit failed');
+        } finally {
+            setDepositing(false);
+        }
     };
 
-    const calculateProgress = (current: number, target: number) => {
-        const t = target || 1;
-        return Math.min(Math.round((current / t) * 100), 100);
-    };
+    // Computations
+    const decoratedGoals = useMemo(() => {
+        const today = new Date();
 
-    const completedGoalsCount = goals.filter(g => (g.current_amount || 0) >= (g.target_amount || 0)).length;
-    const totalSaved = goals.reduce((sum, g) => sum + (g.current_amount || 0), 0);
-    const avgProgress = goals.length > 0
-        ? Math.round(goals.reduce((sum, g) => sum + calculateProgress(g.current_amount, g.target_amount), 0) / goals.length)
-        : 0;
+        return goals.map(goal => {
+            const current = goal.current_amount || 0;
+            const target = goal.target_amount || 1;
+            const progress = Math.min(Math.round((current / target) * 100), 100);
+            const remaining = Math.max(target - current, 0);
+            const isCompleted = current >= target;
 
-    if (loading && goals.length === 0) {
-        return (
-            <div className={styles.mainContent}>
-                <GoalsSkeleton />
-            </div>
-        );
-    }
+            let monthsRemaining: number | null = null;
+            let requiredMonthly = 0;
+
+            if (goal.deadline) {
+                const dDate = new Date(goal.deadline);
+                const diffTime = dDate.getTime() - today.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                monthsRemaining = Math.max(Math.ceil(diffDays / 30.4), 1);
+
+                if (!isCompleted && monthsRemaining > 0) {
+                    requiredMonthly = remaining / monthsRemaining;
+                }
+            }
+
+            return {
+                ...goal,
+                progress,
+                remaining,
+                isCompleted,
+                monthsRemaining,
+                requiredMonthly,
+            };
+        });
+    }, [goals]);
+
+    // High level metrics
+    const totalTarget = useMemo(() => goals.reduce((sum, g) => sum + (g.target_amount || 0), 0), [goals]);
+    const totalSaved = useMemo(() => goals.reduce((sum, g) => sum + (g.current_amount || 0), 0), [goals]);
+    const overallProgress = totalTarget > 0 ? (totalSaved / totalTarget) * 100 : 0;
+    const completedCount = decoratedGoals.filter(g => g.isCompleted).length;
+    const activeCount = decoratedGoals.length - completedCount;
+    const totalRequiredMonthly = useMemo(() => {
+        return decoratedGoals.reduce((sum, g) => sum + g.requiredMonthly, 0);
+    }, [decoratedGoals]);
+
+    const filteredGoals = useMemo(() => {
+        if (filter === 'active') return decoratedGoals.filter(g => !g.isCompleted);
+        if (filter === 'completed') return decoratedGoals.filter(g => g.isCompleted);
+        return decoratedGoals;
+    }, [decoratedGoals, filter]);
 
     return (
-        <div className={styles.mainContent}>
-            {/* Glass Header */}
-            <motion.header
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                className={styles.header}
-            >
-                <div className={styles.headerTitle}>
-                    <div className={styles.headerIcon}>
-                        <PiggyBank className="h-9 w-9" strokeWidth={3} />
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Capital Accumulation Roadmap
                     </div>
-                    <div className={styles.headerInfo}>
-                        <h1>Savings Goals</h1>
-                        <p>Total Freedom Tracker</p>
-                    </div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Goals & Milestones
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Target milestones, automated monthly contribution tracking, and progress metrics.
+                    </p>
                 </div>
-                <div className="flex items-center gap-6">
-                    <button
-                        className="font-black text-black uppercase tracking-widest text-[12px] hover:underline"
-                        onClick={() => fetchGoals()}
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
                     >
-                        Sync Data
-                    </button>
-                    <button
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
+                        Sync
+                    </Button>
+                    <Button
+                        size="sm"
                         onClick={openAddModal}
-                        className="h-14 px-8 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[6px_6px_0px_#E11D48] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48]"
+                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm transition-all"
                     >
-                        New Goal
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Create New Goal
+                    </Button>
+                </div>
+            </div>
+
+            {/* Pillar Sub-Tabs */}
+            <PlanNavigationTabs
+                badges={{
+                    goals: activeCount,
+                }}
+            />
+
+            {/* Color-Blocked Overview Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Cadmium Orange: Total Capital Saved */}
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                        <span>Capital Saved</span>
+                        <PiggyBank className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(totalSaved)}
+                        </div>
+                        <div className="text-xs font-semibold text-white/90 mt-2">
+                            {overallProgress.toFixed(0)}% of total milestone targets
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. Deep Ink: Required Monthly Contribution */}
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                        <span>Required Monthly Pace</span>
+                        <TrendingUp className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(totalRequiredMonthly)}
+                        </div>
+                        <div className="text-xs text-white/70 mt-2">
+                            To achieve targets by specified deadlines
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Warm Ivory / White: Total Target Sum */}
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                        <span>Total Target Sum</span>
+                        <Target className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : formatCurrency(totalTarget)}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            Remaining: {formatCurrency(Math.max(totalTarget - totalSaved, 0))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Muted Sage / Soft Accent: Milestones Reached */}
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                        <span>Milestones Reached</span>
+                        <Trophy className="h-4 w-4 text-[var(--color-ink)]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : completedCount}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            Goals funded to 100% completion
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-3">
+                <div className="flex items-center gap-1.5">
+                    <button
+                        onClick={() => setFilter('all')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            filter === 'all'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        All Goals ({decoratedGoals.length})
+                    </button>
+                    <button
+                        onClick={() => setFilter('active')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            filter === 'active'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        In Progress ({activeCount})
+                    </button>
+                    <button
+                        onClick={() => setFilter('completed')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            filter === 'completed'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        Completed ({completedCount})
                     </button>
                 </div>
-            </motion.header>
-
-            {/* Stats Overview */}
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className={styles.overviewGrid}
-            >
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={styles.statIconContainer}>
-                            <Target className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <span className="text-[10px] font-black uppercase bg-black text-white px-2 py-0.5">Active</span>
-                    </div>
-                    <div className={styles.statLabel}>Total Goals</div>
-                    <div className={styles.statValue}>{goals.length}</div>
-                    <div className={styles.statSubtext}>Mission Status</div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={styles.statIconContainer}>
-                            <Trophy className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <span className="text-[10px] font-black uppercase bg-[#E11D48] text-white px-2 py-0.5">Elite</span>
-                    </div>
-                    <div className={styles.statLabel}>Completed</div>
-                    <div className={styles.statValue}>{completedGoalsCount}</div>
-                    <div className={styles.statSubtext}>Targets Achieved</div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={styles.statIconContainer}>
-                            <TrendingUp className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <span className="text-[10px] font-black uppercase bg-black text-white px-2 py-0.5">Wealth</span>
-                    </div>
-                    <div className={styles.statLabel}>Total Saved</div>
-                    <div className={styles.statValue}>${totalSaved.toLocaleString()}</div>
-                    <div className={styles.statSubtext}>Capital Stashed</div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className={styles.premiumStatCard}>
-                    <div className={styles.statHeader}>
-                        <div className={styles.statIconContainer}>
-                            <Sparkles className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <span className="text-[10px] font-black uppercase bg-[#E11D48] text-white px-2 py-0.5">Power</span>
-                    </div>
-                    <div className={styles.statLabel}>Avg. Progress</div>
-                    <div className={styles.statValue}>{avgProgress}%</div>
-                    <div className={styles.statSubtext}>Efficiency Rate</div>
-                </motion.div>
-            </motion.div>
+            </div>
 
             {/* Goals Grid */}
-            {goals.length === 0 ? (
-                <motion.div
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className={styles.emptyStateContainer}
-                >
-                    <div className={styles.emptyStateCard}>
-                        <div className={styles.emptyIconWrapper}>
-                            <Target className="h-14 w-14" strokeWidth={4} />
-                        </div>
-                        <h2 className="font-black uppercase italic text-3xl">Zero Targets Detected</h2>
-                        <p className="font-bold text-black opacity-60">Your financial arsenal is empty. Deploy your first savings mission now.</p>
-                        <button
-                            onClick={openAddModal}
-                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48] mt-4"
-                        >
-                            Deploy First Mission
-                        </button>
+            {loading ? (
+                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                    Loading savings milestones...
+                </div>
+            ) : filteredGoals.length === 0 ? (
+                <div className="p-12 text-center rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3">
+                    <div className="h-12 w-12 rounded-2xl bg-[var(--color-surface-subtle)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
+                        <PiggyBank className="h-6 w-6" />
                     </div>
-                </motion.div>
+                    <div>
+                        <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                            {filter === 'completed' ? 'No completed goals yet' : 'No savings goals established'}
+                        </h3>
+                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                            Track funding for travel, emergency reserve, real estate, or gadget upgrades.
+                        </p>
+                    </div>
+                    {filter !== 'completed' && (
+                        <div className="pt-2">
+                            <Button
+                                size="sm"
+                                onClick={openAddModal}
+                                className="rounded-xl bg-[var(--color-brand)] text-white text-xs"
+                            >
+                                <Plus className="h-3.5 w-3.5 mr-1" />
+                                Create First Goal
+                            </Button>
+                        </div>
+                    )}
+                </div>
             ) : (
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className={styles.goalsGrid}
-                >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <AnimatePresence mode="popLayout">
-                        {goals.map((goal, index) => {
-                            const color = getColorData(goal.color);
-                            const progress = calculateProgress(goal.current_amount, goal.target_amount);
-                            const isCompleted = progress >= 100;
+                        {filteredGoals.map(goal => {
+                            const colorObj = GOAL_COLORS.find(c => c.name === goal.color) || GOAL_COLORS[0];
 
                             return (
                                 <motion.div
                                     key={goal.id}
                                     layout
-                                    variants={itemVariants}
-                                    className={cn(styles.premiumGoalCard, isCompleted && styles.completedCard)}
-                                    onClick={() => openEditModal(goal)}
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] hover:border-[var(--color-border)] transition-all space-y-4"
                                 >
-                                    <div className={styles.goalCardHeader}>
-                                        <div
-                                            className={styles.goalAvatar}
-                                            style={{ backgroundColor: color.light, color: color.text }}
-                                        >
-                                            {goal.icon}
-                                        </div>
-                                        <div className={styles.actionButtons}>
-                                            <button
-                                                className={styles.iconBtn}
-                                                onClick={(e) => { e.stopPropagation(); openEditModal(goal); }}
-                                            >
-                                                <Pencil className="h-4 w-4" />
-                                            </button>
-                                            <button
-                                                className={cn(styles.iconBtn, styles.deleteBtn)}
-                                                onClick={(e) => handleDelete(goal.id, e)}
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.goalInfo}>
-                                        <h3>{goal.name}</h3>
-                                        <div className={styles.goalMeta}>
-                                            <Calendar className="h-3.5 w-3.5" />
-                                            {goal.deadline ? new Date(goal.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'No Deadline'}
-                                        </div>
-                                    </div>
-
-                                    <div className={styles.progressContainer}>
-                                        <div className={styles.percentageBadge}>{progress}% Complete</div>
-                                        <div className={styles.linearProgressBase}>
+                                    {/* Top Bar */}
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-3">
                                             <div
-                                                className={styles.linearProgressFill}
-                                                style={{ width: `${progress}%`, backgroundColor: color.bg }}
+                                                className="h-11 w-11 rounded-xl flex items-center justify-center text-xl shadow-xs"
+                                                style={{ backgroundColor: `${colorObj.bg}15`, border: `1px solid ${colorObj.bg}30` }}
+                                            >
+                                                {goal.icon || '🎯'}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                    {goal.name}
+                                                </h3>
+                                                <div className="text-xs text-[var(--color-text-muted)] font-mono tabular-nums">
+                                                    Target: {formatCurrency(goal.target_amount)}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-1">
+                                            {goal.isCompleted ? (
+                                                <Badge variant="success" className="text-[10px]">
+                                                    Achieved
+                                                </Badge>
+                                            ) : (
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        setDepositGoal(goal);
+                                                        setDepositAmount('');
+                                                    }}
+                                                    className="h-7 text-xs px-2.5 font-semibold text-[var(--color-brand)] border-[var(--color-brand)]/30 hover:bg-[var(--color-brand)]/10 rounded-lg"
+                                                >
+                                                    + Add Funds
+                                                </Button>
+                                            )}
+
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => openEditModal(goal)}
+                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded-lg"
+                                            >
+                                                <Pencil className="h-3.5 w-3.5" />
+                                            </Button>
+
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleDelete(goal.id, goal.name)}
+                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    {/* Progress Bar */}
+                                    <div className="space-y-1.5">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-[var(--color-text-secondary)] font-medium">
+                                                {goal.progress}% funded
+                                            </span>
+                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                                {formatCurrency(goal.current_amount)}
+                                            </span>
+                                        </div>
+                                        <div className="h-2 w-full rounded-full bg-[var(--color-border-subtle)] overflow-hidden">
+                                            <div
+                                                className="h-full rounded-full transition-all duration-500"
+                                                style={{
+                                                    width: `${goal.progress}%`,
+                                                    backgroundColor: colorObj.bg
+                                                }}
                                             />
                                         </div>
-                                        <div className={styles.progressDetails}>
-                                            <div className={styles.detailRow}>
-                                                <span className={styles.detailLabel}>Capital Saved</span>
-                                                <span className={styles.detailValue}>${goal.current_amount.toLocaleString()}</span>
-                                            </div>
-                                            <div className={styles.detailRow}>
-                                                <span className={styles.detailLabel}>Target Objective</span>
-                                                <span className={styles.detailValue}>${goal.target_amount.toLocaleString()}</span>
-                                            </div>
-                                        </div>
                                     </div>
 
-                                    {isCompleted && (
-                                        <div className={styles.completionBadge}>
-                                            <CheckCircle2 className="h-4 w-4" />
-                                            Achievement Unlocked! 🎉
+                                    {/* Metrics Footer */}
+                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-xs">
+                                        <div>
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                                Deadline
+                                            </span>
+                                            <span className="font-medium text-[var(--color-text-secondary)]">
+                                                {goal.deadline ? new Date(goal.deadline).toLocaleDateString() : 'No deadline'}
+                                            </span>
                                         </div>
-                                    )}
+                                        <div className="text-right">
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                                Monthly Pace
+                                            </span>
+                                            <span className="font-semibold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                                {goal.isCompleted
+                                                    ? 'Complete'
+                                                    : goal.requiredMonthly > 0
+                                                    ? `${formatCurrency(goal.requiredMonthly)}/mo`
+                                                    : 'Self-paced'}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             );
                         })}
                     </AnimatePresence>
-                </motion.div>
+                </div>
             )}
 
-            {/* Add/Edit Goal Modal */}
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogContent className={styles.glassDialog}>
-                    <div className={styles.modalHeader}>
-                        <div className={styles.modalIcon}>
-                            <Target className="h-8 w-8" />
-                        </div>
-                        <div className={styles.modalTitle}>
-                            <DialogTitle>{editingGoal ? 'Revise Goal' : 'New Savings Goal'}</DialogTitle>
-                            <DialogDescription>Define your target and track your progress</DialogDescription>
-                        </div>
-                    </div>
+            {/* Quick Deposit Modal */}
+            <Dialog open={!!depositGoal} onOpenChange={(open) => !open && setDepositGoal(null)}>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Funds to Goal</DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Log a deposit towards {depositGoal?.name}.
+                        </DialogDescription>
+                    </DialogHeader>
 
-                    <div className={styles.modalBody}>
-                        {/* Icon & Color Selection */}
-                        <div className="grid grid-cols-2 gap-8">
-                            <div className={styles.selectionArea}>
-                                <span className={styles.selectionLabel}>Select Icon</span>
-                                <div className={styles.gridSelection}>
-                                    {GOAL_ICONS.map(icon => (
-                                        <button
-                                            key={icon}
-                                            className={cn(styles.selectBtn, formData.icon === icon && styles.selected)}
-                                            onClick={() => setFormData({ ...formData, icon })}
-                                        >
-                                            {icon}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className={styles.selectionArea}>
-                                <span className={styles.selectionLabel}>Accent Color</span>
-                                <div className={styles.gridSelection}>
-                                    {GOAL_COLORS.map(color => (
-                                        <button
-                                            key={color.name}
-                                            className={cn(styles.selectBtn, formData.color === color.name && styles.selected)}
-                                            onClick={() => setFormData({ ...formData, color: color.name })}
-                                            style={{ backgroundColor: color.light }}
-                                        >
-                                            <div className="h-4 w-4 rounded-full" style={{ backgroundColor: color.bg }} />
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Name Input */}
-                        <div className={styles.inputGroup}>
-                            <span className={styles.selectionLabel}>Goal Name</span>
+                    <form onSubmit={handleQuickDeposit} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="dep-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Deposit Amount</Label>
                             <Input
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                placeholder="e.g., Summer Trip to Tokyo"
-                                className={styles.premiumInput}
+                                id="dep-amount"
+                                type="number"
+                                step="0.01"
+                                placeholder="100.00"
+                                value={depositAmount}
+                                onChange={e => setDepositAmount(e.target.value)}
+                                required
+                                autoFocus
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
                             />
                         </div>
 
-                        {/* Amounts Grid */}
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className={styles.inputGroup}>
-                                <span className={styles.selectionLabel}>Target Amount</span>
-                                <div className="relative">
-                                    <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                                    <Input
-                                        type="number"
-                                        value={formData.target_amount}
-                                        onChange={(e) => setFormData({ ...formData, target_amount: e.target.value })}
-                                        placeholder="5000"
-                                        className={cn(styles.premiumInput, "pl-12")}
-                                    />
-                                </div>
-                            </div>
-                            <div className={styles.inputGroup}>
-                                <span className={styles.selectionLabel}>Already Saved</span>
-                                <div className="relative">
-                                    <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                                    <Input
-                                        type="number"
-                                        value={formData.current_amount}
-                                        onChange={(e) => setFormData({ ...formData, current_amount: e.target.value })}
-                                        placeholder="0"
-                                        className={cn(styles.premiumInput, "pl-12")}
-                                    />
-                                </div>
-                            </div>
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setDepositGoal(null)}
+                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={depositing}
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                            >
+                                {depositing ? 'Updating...' : 'Confirm Deposit'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Add / Edit Goal Modal */}
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">
+                            {editingGoal ? 'Edit Savings Goal' : 'Create Savings Milestone'}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Define your milestone target and timeline.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="goal-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Goal Name</Label>
+                            <Input
+                                id="goal-name"
+                                placeholder="e.g. Japan Vacation, Emergency Fund, Tesla Downpayment"
+                                value={formData.name}
+                                onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                                required
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+                            />
                         </div>
 
-                        {/* Deadline */}
-                        <div className={styles.inputGroup}>
-                            <span className={styles.selectionLabel}>Target Date (Optional)</span>
-                            <div className="relative">
-                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <Label htmlFor="goal-target" className="text-xs font-semibold text-[var(--color-text-primary)]">Target Amount</Label>
                                 <Input
-                                    type="date"
-                                    value={formData.deadline}
-                                    onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-                                    className={cn(styles.premiumInput, "pl-12")}
+                                    id="goal-target"
+                                    type="number"
+                                    step="1"
+                                    placeholder="5000"
+                                    value={formData.target_amount}
+                                    onChange={e => setFormData(prev => ({ ...prev, target_amount: e.target.value }))}
+                                    required
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label htmlFor="goal-current" className="text-xs font-semibold text-[var(--color-text-primary)]">Current Saved</Label>
+                                <Input
+                                    id="goal-current"
+                                    type="number"
+                                    step="1"
+                                    placeholder="500"
+                                    value={formData.current_amount}
+                                    onChange={e => setFormData(prev => ({ ...prev, current_amount: e.target.value }))}
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
                                 />
                             </div>
                         </div>
 
-                        {/* Actions */}
-                        <div className="flex gap-6 pt-6">
-                            <button
-                                className="flex-1 h-14 border-4 border-black bg-white font-black uppercase tracking-widest text-black hover:bg-slate-50 transition-all"
-                                onClick={() => setIsModalOpen(false)}
-                            >
-                                Discard
-                            </button>
-                            <button
-                                className="flex-1 h-14 border-4 border-black bg-[#E11D48] text-white font-black uppercase tracking-widest shadow-[6px_6px_0px_#000000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px]"
-                                onClick={handleSubmit}
-                            >
-                                {editingGoal ? 'Update Mission' : 'Activate Objective'}
-                            </button>
+                        <div className="space-y-1.5">
+                            <Label htmlFor="goal-deadline" className="text-xs font-semibold text-[var(--color-text-primary)]">Target Date (Optional)</Label>
+                            <Input
+                                id="goal-deadline"
+                                type="date"
+                                value={formData.deadline}
+                                onChange={e => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                            />
                         </div>
-                    </div>
+
+                        {/* Icon Picker */}
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Select Icon</Label>
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                {GOAL_ICONS.map(icon => (
+                                    <button
+                                        key={icon}
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, icon }))}
+                                        className={cn(
+                                            'h-9 w-9 rounded-xl flex items-center justify-center text-lg border transition-all',
+                                            formData.icon === icon
+                                                ? 'border-[var(--color-brand)] bg-[var(--color-brand)]/10 scale-110 shadow-xs'
+                                                : 'border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-subtle)]'
+                                        )}
+                                    >
+                                        {icon}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsModalOpen(false)}
+                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={saving}
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                            >
+                                {saving ? 'Saving...' : editingGoal ? 'Update Goal' : 'Create Goal'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </div>

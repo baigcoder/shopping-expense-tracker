@@ -1,525 +1,1000 @@
-// SubscriptionsPage - Stark Gen Z Brutalist Mission Manager
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
-    Repeat, Plus, Calendar, DollarSign, Bell,
-    Trash2, Edit2, Clock, Zap, CreditCard, RefreshCw, X,
-    CheckCircle2, Timer, Crown, Sparkles, Check, AlertCircle, TrendingUp, ArrowUpRight
+    Repeat, Plus,
+    Trash2, Clock, RefreshCw,
+    Timer, Check, AlertCircle, TrendingUp,
+    FileText
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useStore';
-import { subscriptionService, Subscription, TrialInfo } from '../services/subscriptionService';
+import { subscriptionService, Subscription } from '../services/subscriptionService';
+import { billService, Bill } from '../services/billService';
 import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import {
     Dialog, DialogContent, DialogHeader, DialogTitle,
-    DialogDescription
+    DialogDescription, DialogFooter
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
-import styles from './SubscriptionsPage.module.css';
-import { SubscriptionsSkeleton } from '../components/LoadingSkeleton';
-import { featureExpansionApi } from '../services/featureExpansionApi';
+import { Badge } from '@/components/ui/badge';
+import { PlanNavigationTabs } from '@/components/PlanNavigationTabs';
 
-const CATEGORIES = [
+const SUBSCRIPTION_CATEGORIES = [
     'Entertainment', 'Music', 'Software', 'Gaming', 'Fitness',
     'News', 'Education', 'Cloud Storage', 'Productivity', 'Other'
 ];
 
-const COLORS = [
-    { name: 'Pure Black', value: '#000000' },
-    { name: 'Hyper Red', value: '#E11D48' },
-    { name: 'Slate Gray', value: '#64748b' },
-    { name: 'Deep Indigo', value: '#4338ca' },
-    { name: 'Dark Green', value: '#14532d' },
-    { name: 'Iron', value: '#1e293b' },
+const BILL_CATEGORIES = [
+    'Utilities', 'Housing & Rent', 'Internet & Phone', 'Insurance',
+    'Loan & Credit', 'Taxes', 'Healthcare', 'Subscriptions', 'Other'
 ];
 
-const SubscriptionsPage = () => {
-    const { user } = useAuthStore();
-    const [loading, setLoading] = useState(true);
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [commandCenter, setCommandCenter] = useState<any>(null);
+type CommitmentTab = 'all' | 'subscriptions' | 'bills' | 'trials';
 
-    // Form state
-    const [formData, setFormData] = useState({
+export const SubscriptionsPage = () => {
+    const { user } = useAuthStore();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const initialTab = (searchParams.get('tab') as CommitmentTab) || 'all';
+
+    const [activeTab, setActiveTab] = useState<CommitmentTab>(initialTab);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    // Data
+    const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+    const [bills, setBills] = useState<Bill[]>([]);
+
+    // Modal state
+    const [addModalType, setAddModalType] = useState<'subscription' | 'bill' | null>(null);
+
+    // Subscription Form
+    const [subForm, setSubForm] = useState({
         name: '',
         category: 'Entertainment',
         price: '',
         cycle: 'monthly' as 'monthly' | 'yearly' | 'weekly',
-        color: '#000000',
+        color: '#0F766E',
         is_trial: false,
         trial_days: '7',
         start_date: new Date().toISOString().split('T')[0],
     });
 
-    const fetchSubscriptions = async () => {
+    // Bill Form
+    const [billForm, setBillForm] = useState({
+        name: '',
+        amount: '',
+        dueDate: new Date().toISOString().split('T')[0],
+        category: 'Utilities',
+        frequency: 'monthly' as Bill['frequency'],
+        reminderDays: '3',
+        notes: '',
+    });
+
+    const [submitting, setSubmitting] = useState(false);
+
+    // Sync tab with URL
+    useEffect(() => {
+        const tab = searchParams.get('tab') as CommitmentTab;
+        if (tab && ['all', 'subscriptions', 'bills', 'trials'].includes(tab)) {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
+
+    const handleTabChange = (tab: CommitmentTab) => {
+        setActiveTab(tab);
+        setSearchParams(tab === 'all' ? {} : { tab });
+    };
+
+    const loadData = useCallback(async () => {
         if (!user?.id) return;
-        setLoading(true);
         try {
-            await subscriptionService.checkAndUpdateExpired(user.id);
-            const [data, center] = await Promise.all([
+            const [subs, billsData] = await Promise.all([
                 subscriptionService.getAll(user.id),
-                featureExpansionApi.subscriptionCommandCenter().catch(() => null)
+                billService.getAll(user.id),
             ]);
-            setSubscriptions(data);
-            setCommandCenter(center);
+            setSubscriptions(subs);
+            setBills(billsData);
         } catch (error) {
-            toast.error('Sync failed');
+            console.error('Failed to load commitments:', error);
+            toast.error('Could not load commitments');
         } finally {
             setLoading(false);
+            setRefreshing(false);
         }
+    }, [user?.id]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await loadData();
+        toast.success('Commitments synchronized');
     };
 
-    useEffect(() => {
-        fetchSubscriptions();
-    }, [user?.id]);
+    // Calculations
+    const activeSubs = useMemo(() => subscriptions.filter(s => s.status !== 'cancelled' && !s.is_trial), [subscriptions]);
+    const trialSubs = useMemo(() => subscriptions.filter(s => s.is_trial && s.status !== 'cancelled'), [subscriptions]);
+    const unpaidBills = useMemo(() => bills.filter(b => !b.is_paid), [bills]);
 
-    useEffect(() => {
-        const handleSubscriptionChange = () => fetchSubscriptions();
-        window.addEventListener('subscription-changed', handleSubscriptionChange);
-        return () => window.removeEventListener('subscription-changed', handleSubscriptionChange);
-    }, [user?.id]);
+    const monthlySubTotal = useMemo(() => {
+        return activeSubs.reduce((sum, s) => {
+            if (s.cycle === 'monthly') return sum + s.price;
+            if (s.cycle === 'yearly') return sum + (s.price / 12);
+            if (s.cycle === 'weekly') return sum + (s.price * 4);
+            return sum;
+        }, 0);
+    }, [activeSubs]);
 
+    const monthlyBillTotal = useMemo(() => {
+        return bills.reduce((sum, b) => {
+            if (b.frequency === 'monthly') return sum + b.amount;
+            if (b.frequency === 'yearly') return sum + (b.amount / 12);
+            if (b.frequency === 'quarterly') return sum + (b.amount / 3);
+            if (b.frequency === 'one-time' && !b.is_paid) return sum + b.amount;
+            return sum;
+        }, 0);
+    }, [bills]);
 
-    const activeSubscriptions = subscriptions.filter(s => s.status !== 'cancelled' && !s.is_trial);
-    const trials = subscriptions.filter(s => s.is_trial && s.status !== 'cancelled');
+    const totalMonthlyCommitted = monthlySubTotal + monthlyBillTotal;
+    const annualRunRate = totalMonthlyCommitted * 12;
 
-    const monthlyTotal = activeSubscriptions.reduce((sum, sub) => {
-        if (sub.cycle === 'monthly') return sum + sub.price;
-        if (sub.cycle === 'yearly') return sum + (sub.price / 12);
-        if (sub.cycle === 'weekly') return sum + (sub.price * 4);
-        return sum;
-    }, 0);
+    // Obligations due in next 7 days
+    const upcomingNext7Days = useMemo(() => {
+        const today = new Date();
+        const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const in7Days = new Date(startOfToday.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-    const handleAdd = async () => {
-        if (!user?.id || !formData.name) return;
-        try {
-            if (formData.is_trial) {
-                await subscriptionService.startTrial(user.id, formData.name, parseInt(formData.trial_days) || 7, {
-                    category: formData.category,
-                    color: formData.color,
-                });
-            } else {
-                await subscriptionService.create({
-                    user_id: user.id,
-                    name: formData.name,
-                    category: formData.category,
-                    price: parseFloat(formData.price) || 0,
-                    cycle: formData.cycle,
-                    color: formData.color,
-                    logo: '',
-                    is_active: true,
-                    status: 'active',
-                    is_trial: false,
-                    start_date: formData.start_date,
-                    next_payment_date: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0]
-                });
+        let count = 0;
+        let amount = 0;
+
+        // Check bills
+        bills.forEach(b => {
+            if (b.is_paid && b.frequency === 'one-time') return;
+            const nextDue = billService.getNextDueDate(b);
+            if (nextDue >= startOfToday && nextDue <= in7Days) {
+                count++;
+                amount += b.amount;
             }
-            toast.success('Mission Deployed!');
-            setShowAddModal(false);
-            fetchSubscriptions();
-        } catch (error) {
-            toast.error('Deployment failed');
-        }
-    };
+        });
 
-    const handleCancel = async (id: string, name: string) => {
-        if (!confirm(`Terminate Mission: ${name}?`)) return;
+        // Check subscriptions
+        subscriptions.forEach(s => {
+            if (s.status === 'cancelled') return;
+            if (s.renew_date || s.next_payment_date) {
+                const renew = new Date(s.renew_date || s.next_payment_date || '');
+                if (!isNaN(renew.getTime()) && renew >= startOfToday && renew <= in7Days) {
+                    count++;
+                    amount += s.price;
+                }
+            }
+        });
+
+        return { count, amount };
+    }, [bills, subscriptions]);
+
+    // Handle Actions
+    const handleToggleSubStatus = async (sub: Subscription) => {
+        const nextStatus = sub.is_active ? 'cancelled' : 'active';
         try {
-            await subscriptionService.cancel(id);
-            toast.success('Mission Terminated');
-            fetchSubscriptions();
-        } catch (error) {
-            toast.error('Action failed');
+            await subscriptionService.update(sub.id, {
+                is_active: !sub.is_active,
+                status: nextStatus
+            });
+            toast.success(`${sub.name} is now ${nextStatus}`);
+            loadData();
+        } catch {
+            toast.error('Failed to update subscription');
         }
     };
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    const handleDeleteSub = async (id: string, name: string) => {
+        if (!confirm(`Remove ${name} from your commitments?`)) return;
+        try {
+            await subscriptionService.delete(id);
+            toast.success(`${name} removed`);
+            loadData();
+        } catch {
+            toast.error('Failed to delete subscription');
+        }
     };
 
-    const fadeInUp = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+    const handleMarkBillPaid = async (bill: Bill) => {
+        try {
+            await billService.markAsPaid(bill.id);
+            toast.success(`Marked ${bill.name} as paid!`);
+            loadData();
+        } catch {
+            toast.error('Failed to update bill');
+        }
     };
 
-    if (loading) {
-        return (
-            <div className={styles.mainContent}>
-                <SubscriptionsSkeleton />
-            </div>
-        );
-    }
+    const handleDeleteBill = async (id: string, name: string) => {
+        if (!confirm(`Delete bill reminder for ${name}?`)) return;
+        try {
+            await billService.delete(id);
+            toast.success(`${name} deleted`);
+            loadData();
+        } catch {
+            toast.error('Failed to delete bill');
+        }
+    };
+
+    // Form Submissions
+    const handleAddSubscription = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user?.id || !subForm.name || !subForm.price) return;
+        setSubmitting(true);
+        try {
+            const price = parseFloat(subForm.price);
+            if (isNaN(price) || price < 0) throw new Error('Invalid price');
+
+            await subscriptionService.create({
+                user_id: user.id,
+                name: subForm.name,
+                logo: '📦',
+                category: subForm.category,
+                price,
+                cycle: subForm.cycle,
+                color: subForm.color,
+                is_active: true,
+                status: subForm.is_trial ? 'trial' : 'active',
+                is_trial: subForm.is_trial,
+                trial_days: subForm.is_trial ? parseInt(subForm.trial_days) || 7 : undefined,
+                start_date: subForm.start_date,
+            });
+
+            toast.success(`Added ${subForm.name} to commitments`);
+            setAddModalType(null);
+            setSubForm({
+                name: '',
+                category: 'Entertainment',
+                price: '',
+                cycle: 'monthly',
+                color: '#E11D48',
+                is_trial: false,
+                trial_days: '7',
+                start_date: new Date().toISOString().split('T')[0],
+            });
+            loadData();
+        } catch (err: any) {
+            toast.error(err.message || 'Failed to add subscription');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleAddBill = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user?.id || !billForm.name || !billForm.amount) return;
+        setSubmitting(true);
+        try {
+            const amount = parseFloat(billForm.amount);
+            if (isNaN(amount) || amount <= 0) throw new Error('Invalid amount');
+
+            await billService.create(user.id, {
+                name: billForm.name,
+                amount,
+                due_date: billForm.dueDate,
+                category: billForm.category,
+                is_recurring: billForm.frequency !== 'one-time',
+                frequency: billForm.frequency,
+                reminder_days: parseInt(billForm.reminderDays) || 3,
+                is_paid: false,
+                notes: billForm.notes || undefined,
+            });
+
+            toast.success(`Added ${billForm.name} bill reminder`);
+            setAddModalType(null);
+            setBillForm({
+                name: '',
+                amount: '',
+                dueDate: new Date().toISOString().split('T')[0],
+                category: 'Utilities',
+                frequency: 'monthly',
+                reminderDays: '3',
+                notes: '',
+            });
+            loadData();
+        } catch (err: any) {
+            toast.error(err.message || 'Failed to add bill');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
-        <div className={styles.mainContent}>
-            <div className={styles.contentArea}>
-                {/* Header Section */}
-                <motion.header
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className={styles.header}
-                >
-                    <div className={styles.headerLeft}>
-                        <div className={styles.titleIcon}>
-                            <Zap className="h-9 w-9" strokeWidth={3} />
-                        </div>
-                        <div>
-                            <h1 className={styles.title}>
-                                Subscriptions
-                                <span className={styles.liveBadge}>Live Intel</span>
-                            </h1>
-                        </div>
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Top Navigation & Breadcrumb */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Locked Capital Timeline
                     </div>
-                    <div className="flex items-center gap-6">
-                        <button
-                            className="font-black text-black uppercase tracking-widest text-[12px] hover:underline"
-                            onClick={() => fetchSubscriptions()}
-                        >
-                            Sync Stream
-                        </button>
-                        <button
-                            onClick={() => setShowAddModal(true)}
-                            className="h-14 px-8 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[6px_6px_0px_#E11D48] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48]"
-                        >
-                            Deploy Mission
-                        </button>
-                    </div>
-                </motion.header>
-
-                {commandCenter && (
-                    <section className="bg-white border-4 border-black p-8 mb-12 shadow-[8px_8px_0px_#000000]">
-                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                            <div>
-                                <h2 className="text-2xl font-black uppercase italic text-black">Subscription Command Center</h2>
-                                <p className="text-black/60 font-bold">Intel on trials, price changes, and unused streams.</p>
-                            </div>
-                            <div className="lg:text-right">
-                                <div className="text-4xl font-black text-black">{formatCurrency(commandCenter.totals?.yearlyCost || monthlyTotal * 12)}</div>
-                                <div className="text-xs font-black uppercase text-red-600 tracking-widest">Yearly exposure</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                            <div className="p-6 border-4 border-black bg-white shadow-[4px_4px_0px_#000000]">
-                                <div className="text-3xl font-black">{commandCenter.trialsEndingSoon?.length || 0}</div>
-                                <div className="text-xs font-black uppercase text-black/50">Trials ending soon</div>
-                            </div>
-                            <div className="p-6 border-4 border-black bg-red-600 text-white shadow-[4px_4px_0px_#000000]">
-                                <div className="text-3xl font-black">{commandCenter.priceIncreases?.length || 0}</div>
-                                <div className="text-xs font-black uppercase text-white/80">Price increases</div>
-                            </div>
-                            <div className="p-6 border-4 border-black bg-black text-white shadow-[4px_4px_0px_#E11D48]">
-                                <div className="text-3xl font-black">{commandCenter.unusedAlerts?.length || 0}</div>
-                                <div className="text-xs font-black uppercase text-white/80">Unused alerts</div>
-                            </div>
-                        </div>
-                        {commandCenter.cancellationHints?.[0] && (
-                            <div className="mt-8 p-4 border-2 border-black bg-slate-50 font-bold italic">
-                                <span className="text-red-600 mr-2">/ ADVICE:</span>
-                                {commandCenter.cancellationHints[0].hint}
-                            </div>
-                        )}
-                    </section>
-                )}
-
-                {/* Main Stats */}
-                <div className={styles.statsRow}>
-                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
-                        <div className={styles.statIconBox} style={{ backgroundColor: '#000000', color: '#FFFFFF' }}>
-                            <CreditCard className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <p className={styles.statLabel}>Monthly Burn</p>
-                        <h3 className={styles.statValue}>{formatCurrency(monthlyTotal)}</h3>
-                        <div className={styles.statProgress}>
-                            <div className={styles.progressFill} style={{ width: '70%', backgroundColor: '#E11D48' }} />
-                        </div>
-                    </motion.div>
-
-                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
-                        <div className={styles.statIconBox} style={{ backgroundColor: '#E11D48', color: '#FFFFFF' }}>
-                            <Zap className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <p className={styles.statLabel}>Active Missions</p>
-                        <h3 className={styles.statValue}>{activeSubscriptions.length}</h3>
-                        <div className={styles.statProgress}>
-                            <div className={styles.progressFill} style={{ width: '40%', backgroundColor: '#000000' }} />
-                        </div>
-                    </motion.div>
-
-                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
-                        <div className={styles.statIconBox} style={{ backgroundColor: '#000000', color: '#FFFFFF' }}>
-                            <ArrowUpRight className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <p className={styles.statLabel}>Yearly Projection</p>
-                        <h3 className={styles.statValue}>{formatCurrency(monthlyTotal * 12)}</h3>
-                        <div className={styles.statProgress}>
-                            <div className={styles.progressFill} style={{ width: '55%', backgroundColor: '#E11D48' }} />
-                        </div>
-                    </motion.div>
-
-                    <motion.div variants={fadeInUp} className={styles.premiumStatCard}>
-                        <div className={styles.statIconBox} style={{ backgroundColor: '#E11D48', color: '#FFFFFF' }}>
-                            <TrendingUp className="h-7 w-7" strokeWidth={3} />
-                        </div>
-                        <p className={styles.statLabel}>Trial Flow</p>
-                        <h3 className={styles.statValue}>{trials.length}</h3>
-                        <div className={styles.statProgress}>
-                            <div className={styles.progressFill} style={{ width: '85%', backgroundColor: '#000000' }} />
-                        </div>
-                    </motion.div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Commitments & Bills
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Fixed obligations, recurring subscriptions, and cashflow caps before discretionary spend.
+                    </p>
                 </div>
-
-                {/* Trial Section */}
-                {trials.length > 0 && (
-                    <div className="mb-12">
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>
-                                <Timer className="text-red-600" strokeWidth={3} />
-                                Trial Inflow
-                            </h2>
-                        </div>
-                        <div className={styles.subsGrid}>
-                            {trials.map(sub => (
-                                <TrialCard key={sub.id} sub={sub} onCancel={handleCancel} />
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Active Pipeline Section */}
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        <CreditCard className="text-black" strokeWidth={3} />
-                        Active Pipeline
-                    </h2>
-                </div>
-
-                <div className="mb-12">
-                    {activeSubscriptions.length === 0 ? (
-                        <div className={styles.emptyState}>
-                            <h3 className={styles.emptyTitle}>Empty Pipeline</h3>
-                            <p className={styles.emptyText}>Zero active recurring streams detected.</p>
-                            <button
-                                className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48]"
-                                onClick={() => setShowAddModal(true)}
-                            >
-                                Track First Mission
-                            </button>
-                        </div>
-                    ) : (
-                        <div className={styles.subsGrid}>
-                            {activeSubscriptions.map(sub => (
-                                <SubscriptionCard key={sub.id} sub={sub} onCancel={handleCancel} />
-                            ))}
-                        </div>
-                    )}
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                    >
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
+                        Sync
+                    </Button>
+                    <Button
+                        size="sm"
+                        onClick={() => setAddModalType('subscription')}
+                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm transition-all"
+                    >
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Add Commitment
+                    </Button>
                 </div>
             </div>
 
-            {/* Add Modal */}
-            <AddModal
-                isOpen={showAddModal}
-                onClose={() => setShowAddModal(false)}
-                onSubmit={handleAdd}
-                formData={formData}
-                setFormData={setFormData}
+            {/* Pillar Sub-Tabs */}
+            <PlanNavigationTabs
+                badges={{
+                    commitments: activeSubs.length + unpaidBills.length,
+                }}
             />
-        </div>
-    );
-};
 
-const SubscriptionCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
-    return (
-        <motion.div
-            className={styles.subCard}
-            variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 }
-            }}
-            whileHover={{ y: -10 }}
-        >
-            <div className={styles.subCardTop}>
-                <div className={styles.subBrand}>
-                    <div className={styles.subLogoBox}>
-                        {sub.name.charAt(0)}
+            {/* Color-Blocked Summary Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Cadmium Orange: Monthly Committed */}
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                        <span>Monthly Committed</span>
+                        <Repeat className="h-4 w-4 text-white" />
                     </div>
-                    <div>
-                        <h3 className={styles.subName}>{sub.name}</h3>
-                        <p className={styles.subCat}>{sub.category}</p>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(totalMonthlyCommitted)}
+                        </div>
+                        <div className="flex items-center gap-2 mt-2 text-xs font-semibold text-white/90">
+                            <span>{activeSubs.length} subscriptions</span>
+                            <span>•</span>
+                            <span>{bills.length} bills</span>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.cardActions}>
-                    <button className={styles.miniBtn} onClick={() => onCancel(sub.id, sub.name)}>
-                        <X className="h-5 w-5" strokeWidth={3} />
+
+                {/* 2. Deep Ink: Annual Run-Rate */}
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                        <span>Annual Obligation Run-Rate</span>
+                        <TrendingUp className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(annualRunRate)}
+                        </div>
+                        <div className="text-xs text-white/70 mt-2">
+                            Projected 12-month baseline outflow
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Warm Ivory / White: Due in Next 7 Days */}
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                        <span>Due in Next 7 Days</span>
+                        <Clock className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : formatCurrency(upcomingNext7Days.amount)}
+                        </div>
+                        <div className="text-xs text-amber-700 font-semibold mt-2 flex items-center gap-1">
+                            <AlertCircle className="h-3 w-3 text-amber-600" />
+                            <span>{upcomingNext7Days.count} items require settlement soon</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Muted Sage / Soft Accent: Active Free Trials */}
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                        <span>Active Free Trials</span>
+                        <Timer className="h-4 w-4 text-[var(--color-ink)]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : trialSubs.length}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            {trialSubs.length > 0 ? (
+                                <span className="text-blue-700 font-bold">Tracking conversion deadlines</span>
+                            ) : (
+                                'No active free trial risks'
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Tabs & Search */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[var(--color-border-subtle)] pb-3">
+                <div className="flex items-center gap-1.5">
+                    <button
+                        onClick={() => handleTabChange('all')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            activeTab === 'all'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        All Commitments ({subscriptions.length + bills.length})
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('subscriptions')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            activeTab === 'subscriptions'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        Subscriptions ({subscriptions.length})
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('bills')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            activeTab === 'bills'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        Bills & Rent ({bills.length})
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('trials')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                            activeTab === 'trials'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        <span>Free Trials</span>
+                        {trialSubs.length > 0 && (
+                            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-blue-500 text-white font-bold font-mono">
+                                {trialSubs.length}
+                            </span>
+                        )}
                     </button>
                 </div>
-            </div>
 
-            <div className={styles.subAmount}>
-                <span className={styles.amountVal}>{formatCurrency(sub.price)}</span>
-                <span className={styles.cycle}>/{sub.cycle.slice(0, 2)}</span>
-            </div>
-
-            <div className={styles.paymentInfo}>
-                <div className={styles.nextBill}>
-                    Next Due: <span className={styles.daysLeft}>{sub.next_payment_date ? new Date(sub.next_payment_date).toLocaleDateString() : 'N/A'}</span>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setAddModalType('bill')}
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                    >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add Bill
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setAddModalType('subscription')}
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                    >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add Subscription
+                    </Button>
                 </div>
-                <div className="flex items-center gap-1 bg-black text-white px-3 py-1 text-[10px] font-black uppercase">
-                    ACTIVE
+            </div>
+
+            {/* List / Table of Commitments */}
+            {loading ? (
+                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                    Synchronizing commitments and due dates...
                 </div>
-            </div>
-        </motion.div>
-    );
-};
-
-const TrialCard = ({ sub, onCancel }: { sub: Subscription, onCancel: any }) => {
-    const info = subscriptionService.getTrialInfo(sub);
-
-    return (
-        <motion.div className={cn(styles.subCard, styles.trialCard)} whileHover={{ y: -10 }}>
-            <div className={styles.subCardTop}>
-                <div className={styles.subBrand}>
-                    <div className={styles.subLogoBox}>
-                        {sub.name.charAt(0)}
-                    </div>
-                    <div>
-                        <h3 className={styles.subName}>{sub.name}</h3>
-                        <p className={styles.subCat}>Trial Period</p>
-                    </div>
-                </div>
-                <button className={styles.miniBtn} onClick={() => onCancel(sub.id, sub.name)}>
-                    <X className="h-5 w-5" strokeWidth={3} />
-                </button>
-            </div>
-
-            <div className={styles.trialProgress}>
-                <motion.div
-                    className={styles.trialFill}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${info.percentComplete}%` }}
-                />
-            </div>
-
-            <div className={styles.paymentInfo}>
-                <div className={styles.nextBill}>
-                    <span className={styles.daysLeft}>{info.daysRemaining} Days</span> Remaining
-                </div>
-                <button
-                    className="bg-red-600 text-white px-4 py-2 border-2 border-white font-black uppercase text-[10px]"
-                >
-                    Upgrade
-                </button>
-            </div>
-        </motion.div>
-    );
-};
-
-const AddModal = ({ isOpen, onClose, onSubmit, formData, setFormData }: any) => {
-    return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg p-0 overflow-hidden border-4 border-black rounded-none shadow-[12px_12px_0px_#000000]">
-                <div className="bg-black p-8 relative overflow-hidden">
-                    <div className="relative z-10">
-                        <DialogHeader>
-                            <div className="flex items-center gap-4 mb-3">
-                                <div className="p-3 bg-red-600 text-white border-2 border-white">
-                                    <Plus size={24} strokeWidth={3} />
-                                </div>
-                                <div>
-                                    <DialogTitle className="text-3xl font-black text-white uppercase tracking-tighter italic">Deploy Mission</DialogTitle>
-                                    <DialogDescription className="font-bold text-red-600 uppercase text-xs tracking-widest">Initialize new recurring stream</DialogDescription>
-                                </div>
+            ) : (
+                <div className="space-y-3">
+                    {/* Free Trial Urgent Alerts Banner */}
+                    {trialSubs.length > 0 && (activeTab === 'all' || activeTab === 'trials') && (
+                        <div className="p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/80 dark:border-blue-800/40 space-y-2">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 flex items-center gap-1.5">
+                                    <Timer className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    Active Free Trials Requiring Attention
+                                </span>
+                                <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-[10px] font-bold font-mono">
+                                    {trialSubs.length} Active
+                                </Badge>
                             </div>
-                        </DialogHeader>
-                    </div>
-                </div>
-
-                <div className="p-8 space-y-8 bg-white">
-                    <div className="flex items-center justify-between p-5 border-4 border-black bg-slate-50">
-                        <div className="flex items-center gap-4">
-                            <div className={cn("p-2 border-2 border-black", formData.is_trial ? "bg-red-600 text-white" : "bg-white text-black")}>
-                                <Timer size={20} strokeWidth={3} />
-                            </div>
-                            <div>
-                                <p className="text-sm font-black uppercase">Trial Mission</p>
-                                <p className="text-[10px] font-bold text-black/50 uppercase tracking-widest">Toggle for limited engagement</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                                {trialSubs.map(trial => (
+                                    <div key={trial.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface)] border border-blue-100 dark:border-blue-900/40 shadow-xs">
+                                        <div>
+                                            <div className="font-semibold text-xs text-[var(--color-text-primary)]">{trial.name}</div>
+                                            <div className="text-[11px] text-[var(--color-text-muted)] font-mono tabular-nums">
+                                                Converts to {formatCurrency(trial.price)}/{trial.cycle}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="warning" className="text-[10px]">
+                                                {trial.trial_days ? `${trial.trial_days}d trial` : 'Trial'}
+                                            </Badge>
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={() => handleToggleSubStatus(trial)}
+                                                className="text-[11px] h-7 px-2 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <Switch checked={formData.is_trial} onCheckedChange={(v) => setFormData({ ...formData, is_trial: v })} />
-                    </div>
+                    )}
 
-                    <div className="grid gap-6">
-                        <div className="space-y-2">
-                            <Label className="text-xs font-black uppercase tracking-widest text-black/40">Target Name</Label>
+                    {/* Commitments Table / Rows */}
+                    <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] overflow-hidden">
+                        <div className="divide-y divide-[var(--color-border-subtle)]">
+                            {/* Subscriptions */}
+                            {(activeTab === 'all' || activeTab === 'subscriptions') && subscriptions.map(sub => (
+                                <div
+                                    key={sub.id}
+                                    className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:bg-[var(--color-surface-subtle)]/60 transition-colors"
+                                >
+                                    <div className="flex items-center gap-3.5">
+                                        <div
+                                            className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-xs"
+                                            style={{ backgroundColor: sub.color || '#D92F57' }}
+                                        >
+                                            {sub.name.slice(0, 2).toUpperCase()}
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                    {sub.name}
+                                                </span>
+                                                <Badge variant="secondary" className="text-[10px]">
+                                                    {sub.category}
+                                                </Badge>
+                                                {sub.is_trial && (
+                                                    <Badge variant="warning" className="text-[10px]">
+                                                        Trial
+                                                    </Badge>
+                                                )}
+                                                {sub.status === 'cancelled' && (
+                                                    <Badge variant="outline" className="text-[10px] text-stone-500">
+                                                        Cancelled
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-2 mt-0.5 text-xs text-[var(--color-text-secondary)]">
+                                                <span className="capitalize">{sub.cycle} subscription</span>
+                                                {sub.renew_date && (
+                                                    <>
+                                                        <span>•</span>
+                                                        <span>Renews {new Date(sub.renew_date).toLocaleDateString()}</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
+                                        <div className="text-right">
+                                            <div className="text-base font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                                {formatCurrency(sub.price)}
+                                            </div>
+                                            <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">
+                                                per {sub.cycle === 'yearly' ? 'yr' : sub.cycle === 'weekly' ? 'wk' : 'mo'}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-1.5">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleToggleSubStatus(sub)}
+                                                className="h-8 text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                                            >
+                                                {sub.is_active ? 'Pause' : 'Resume'}
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => handleDeleteSub(sub.id, sub.name)}
+                                                className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Bills & Rent */}
+                            {(activeTab === 'all' || activeTab === 'bills') && bills.map(bill => {
+                                const nextDue = billService.getNextDueDate(bill);
+                                const isOverdue = !bill.is_paid && nextDue < new Date();
+
+                                return (
+                                    <div
+                                        key={bill.id}
+                                        className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:bg-[var(--color-surface-subtle)]/60 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-3.5">
+                                            <div className="h-10 w-10 rounded-xl bg-[var(--color-surface-subtle)] flex items-center justify-center font-bold text-sm text-[var(--color-text-secondary)] shrink-0 border border-[var(--color-border-subtle)]">
+                                                <FileText className="h-5 w-5 text-[var(--color-text-secondary)]" />
+                                            </div>
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                        {bill.name}
+                                                    </span>
+                                                    <Badge variant="secondary" className="text-[10px]">
+                                                        {bill.category}
+                                                    </Badge>
+                                                    {bill.is_paid ? (
+                                                        <Badge variant="success" className="text-[10px]">
+                                                            Paid
+                                                        </Badge>
+                                                    ) : isOverdue ? (
+                                                        <Badge variant="destructive" className="text-[10px]">
+                                                            Overdue
+                                                        </Badge>
+                                                    ) : (
+                                                        <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-300">
+                                                            Pending
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <div className="flex items-center gap-2 mt-0.5 text-xs text-[var(--color-text-secondary)]">
+                                                    <span>Due: {nextDue.toLocaleDateString()}</span>
+                                                    <span>•</span>
+                                                    <span className="capitalize">{bill.frequency}</span>
+                                                    {bill.notes && (
+                                                        <>
+                                                            <span>•</span>
+                                                            <span className="italic text-[var(--color-text-muted)]">{bill.notes}</span>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
+                                            <div className="text-right">
+                                                <div className="text-base font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                                    {formatCurrency(bill.amount)}
+                                                </div>
+                                                <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">
+                                                    {bill.frequency} bill
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-1.5">
+                                                {!bill.is_paid && (
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        onClick={() => handleMarkBillPaid(bill)}
+                                                        className="h-8 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                                                    >
+                                                        <Check className="h-3.5 w-3.5 mr-1" />
+                                                        Mark Paid
+                                                    </Button>
+                                                )}
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleDeleteBill(bill.id, bill.name)}
+                                                    className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {/* Empty state */}
+                            {subscriptions.length === 0 && bills.length === 0 && (
+                                <div className="p-12 text-center space-y-3">
+                                    <div className="h-12 w-12 rounded-2xl bg-[var(--color-surface-subtle)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
+                                        <Repeat className="h-6 w-6" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                            No recurring commitments tracked
+                                        </h3>
+                                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                                            Track your rent, utilities, streaming services, and SaaS tools to protect your cashflow.
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-center gap-2 pt-2">
+                                        <Button
+                                            size="sm"
+                                            onClick={() => setAddModalType('subscription')}
+                                            className="rounded-xl bg-[var(--color-brand)] text-white text-xs h-8"
+                                        >
+                                            <Plus className="h-3.5 w-3.5 mr-1" />
+                                            Add Subscription
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => setAddModalType('bill')}
+                                            className="rounded-xl border-[var(--color-border)] text-xs h-8 text-[var(--color-text-secondary)]"
+                                        >
+                                            <Plus className="h-3.5 w-3.5 mr-1" />
+                                            Add Bill
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Subscription Modal */}
+            <Dialog open={addModalType === 'subscription'} onOpenChange={(open) => !open && setAddModalType(null)}>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Subscription</DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Track a recurring SaaS, streaming, or subscription service.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleAddSubscription} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="sub-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Service Name</Label>
                             <Input
-                                placeholder="NETFLIX / AWS / SPOTIFY"
-                                className="h-14 rounded-none border-4 border-black bg-white text-lg font-black uppercase"
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                id="sub-name"
+                                placeholder="e.g. Netflix, Spotify, GitHub"
+                                value={subForm.name}
+                                onChange={e => setSubForm(prev => ({ ...prev, name: e.target.value }))}
+                                required
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
                             />
                         </div>
 
-                        {!formData.is_trial ? (
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase tracking-widest text-black/40">Resource Cost</Label>
-                                    <Input
-                                        type="number"
-                                        className="h-14 rounded-none border-4 border-black bg-white font-black"
-                                        value={formData.price}
-                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-xs font-black uppercase tracking-widest text-black/40">Interval</Label>
-                                    <Select value={formData.cycle} onValueChange={(v) => setFormData({ ...formData, cycle: v })}>
-                                        <SelectTrigger className="h-14 rounded-none border-4 border-black bg-white font-black uppercase">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent className="rounded-none border-4 border-black">
-                                            <SelectItem value="weekly">Weekly</SelectItem>
-                                            <SelectItem value="monthly">Monthly</SelectItem>
-                                            <SelectItem value="yearly">Yearly</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-2">
-                                <Label className="text-xs font-black uppercase tracking-widest text-black/40">Engagement Duration (Days)</Label>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <Label htmlFor="sub-price" className="text-xs font-semibold text-[var(--color-text-primary)]">Price</Label>
                                 <Input
+                                    id="sub-price"
                                     type="number"
-                                    className="h-14 rounded-none border-4 border-black bg-white font-black"
-                                    value={formData.trial_days}
-                                    onChange={(e) => setFormData({ ...formData, trial_days: e.target.value })}
+                                    step="0.01"
+                                    placeholder="14.99"
+                                    value={subForm.price}
+                                    onChange={e => setSubForm(prev => ({ ...prev, price: e.target.value }))}
+                                    required
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label htmlFor="sub-cycle" className="text-xs font-semibold text-[var(--color-text-primary)]">Billing Cycle</Label>
+                                <Select
+                                    value={subForm.cycle}
+                                    onValueChange={(val: any) => setSubForm(prev => ({ ...prev, cycle: val }))}
+                                >
+                                    <SelectTrigger id="sub-cycle" className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                        <SelectItem value="monthly">Monthly</SelectItem>
+                                        <SelectItem value="yearly">Yearly</SelectItem>
+                                        <SelectItem value="weekly">Weekly</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <Label htmlFor="sub-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                            <Select
+                                value={subForm.category}
+                                onValueChange={val => setSubForm(prev => ({ ...prev, category: val }))}
+                            >
+                                <SelectTrigger id="sub-category" className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                    {SUBSCRIPTION_CATEGORIES.map(cat => (
+                                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)]">
+                            <div>
+                                <Label htmlFor="sub-trial" className="text-xs font-semibold cursor-pointer text-[var(--color-text-primary)]">Free Trial Tracking</Label>
+                                <p className="text-[11px] text-[var(--color-text-muted)]">Set a deadline alert before conversion</p>
+                            </div>
+                            <Switch
+                                id="sub-trial"
+                                checked={subForm.is_trial}
+                                onCheckedChange={checked => setSubForm(prev => ({ ...prev, is_trial: checked }))}
+                            />
+                        </div>
+
+                        {subForm.is_trial && (
+                            <div className="space-y-1.5">
+                                <Label htmlFor="sub-trial-days" className="text-xs font-semibold text-[var(--color-text-primary)]">Trial Duration (Days)</Label>
+                                <Input
+                                    id="sub-trial-days"
+                                    type="number"
+                                    value={subForm.trial_days}
+                                    onChange={e => setSubForm(prev => ({ ...prev, trial_days: e.target.value }))}
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
                                 />
                             </div>
                         )}
-                    </div>
 
-                    <div className="flex gap-4 pt-4">
-                        <button 
-                            className="flex-1 h-16 border-4 border-black font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors" 
-                            onClick={onClose}
-                        >
-                            Abort
-                        </button>
-                        <button 
-                            className="flex-[2] h-16 bg-black text-white border-4 border-black font-black uppercase tracking-widest shadow-[6px_6px_0px_#E11D48] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all" 
-                            onClick={onSubmit}
-                        >
-                            Initiate Stream
-                        </button>
-                    </div>
-                </div>
-            </DialogContent>
-        </Dialog>
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setAddModalType(null)}
+                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={submitting}
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                            >
+                                {submitting ? 'Saving...' : 'Add Subscription'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Add Bill Modal */}
+            <Dialog open={addModalType === 'bill'} onOpenChange={(open) => !open && setAddModalType(null)}>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Bill or Obligation</DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Track rent, utilities, insurance, or loans with due date reminders.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleAddBill} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="bill-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Obligation Name</Label>
+                            <Input
+                                id="bill-name"
+                                placeholder="e.g. Electricity, Apartment Rent, Car Loan"
+                                value={billForm.name}
+                                onChange={e => setBillForm(prev => ({ ...prev, name: e.target.value }))}
+                                required
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <Label htmlFor="bill-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Amount</Label>
+                                <Input
+                                    id="bill-amount"
+                                    type="number"
+                                    step="0.01"
+                                    placeholder="150.00"
+                                    value={billForm.amount}
+                                    onChange={e => setBillForm(prev => ({ ...prev, amount: e.target.value }))}
+                                    required
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label htmlFor="bill-freq" className="text-xs font-semibold text-[var(--color-text-primary)]">Frequency</Label>
+                                <Select
+                                    value={billForm.frequency}
+                                    onValueChange={(val: any) => setBillForm(prev => ({ ...prev, frequency: val }))}
+                                >
+                                    <SelectTrigger id="bill-freq" className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                        <SelectItem value="monthly">Monthly</SelectItem>
+                                        <SelectItem value="quarterly">Quarterly</SelectItem>
+                                        <SelectItem value="yearly">Yearly</SelectItem>
+                                        <SelectItem value="one-time">One-Time</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <Label htmlFor="bill-due" className="text-xs font-semibold text-[var(--color-text-primary)]">Due Date</Label>
+                                <Input
+                                    id="bill-due"
+                                    type="date"
+                                    value={billForm.dueDate}
+                                    onChange={e => setBillForm(prev => ({ ...prev, dueDate: e.target.value }))}
+                                    required
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label htmlFor="bill-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                                <Select
+                                    value={billForm.category}
+                                    onValueChange={val => setBillForm(prev => ({ ...prev, category: val }))}
+                                >
+                                    <SelectTrigger id="bill-category" className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                        {BILL_CATEGORIES.map(cat => (
+                                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <Label htmlFor="bill-notes" className="text-xs font-semibold text-[var(--color-text-primary)]">Notes (Optional)</Label>
+                            <Input
+                                id="bill-notes"
+                                placeholder="Account number, auto-pay details..."
+                                value={billForm.notes}
+                                onChange={e => setBillForm(prev => ({ ...prev, notes: e.target.value }))}
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+                            />
+                        </div>
+
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setAddModalType(null)}
+                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={submitting}
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                            >
+                                {submitting ? 'Saving...' : 'Add Bill'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 };
 

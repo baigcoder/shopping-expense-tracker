@@ -1,77 +1,43 @@
-// AnalyticsPage — Calm Finance spending charts
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// AnalyticsPage — Spending Intelligence
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
-    AreaChart, Area, XAxis, Tooltip, ResponsiveContainer,
-    PieChart, Pie, Cell, BarChart, Bar, CartesianGrid, Sector
+    AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
+    PieChart, Pie, Cell, CartesianGrid
 } from 'recharts';
 import {
-    TrendingUp, TrendingDown, DollarSign, Store, Calendar, RefreshCw,
-    ArrowUpRight, BarChart3, PieChart as PieIcon, Activity, ArrowRight, Zap, Target
+    TrendingUp, DollarSign, Store, RefreshCw,
+    PieChart as PieIcon, Globe
 } from 'lucide-react';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
 import { FINANCIAL_DATA_EVENTS } from '../services/financialDataEvents';
-import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
-import styles from './AnalyticsPage.module.css';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { AnalyzeNavigationTabs } from '@/components/AnalyzeNavigationTabs';
 
 const CATEGORY_COLORS: Record<string, string> = {
-    'Food': '#78716C',
-    'Food & Dining': '#78716C',
-    'Shopping': '#E11D48',
-    'Transport': '#57534E',
-    'Entertainment': '#BE123C',
-    'Bills & Utilities': '#A8A29E',
-    'Health': '#E11D48',
-    'Travel': '#1C1917',
-    'Income': '#059669',
-    'Other': '#A8A29E',
+    'Food': '#B8680B',
+    'Food & Dining': '#B8680B',
+    'Shopping': '#0E8174',
+    'Transport': '#3677E8',
+    'Entertainment': '#7753C7',
+    'Bills & Utilities': '#56656A',
+    'Health': '#17824F',
+    'Travel': '#16A394',
+    'Income': '#17824F',
+    'Other': '#86969C',
 };
 
-const renderActiveShape = (props: any) => {
-    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
-    return (
-        <Sector
-            cx={cx}
-            cy={cy}
-            innerRadius={innerRadius}
-            outerRadius={outerRadius + 12}
-            startAngle={startAngle}
-            endAngle={endAngle}
-            fill={fill}
-            stroke="#E7E5E4"
-            strokeWidth={1}
-        />
-    );
-};
-
-const staggerContainer = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
-
-const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { type: 'spring', damping: 25, stiffness: 100 } }
-};
-
-const AnalyticsPage = () => {
+export const AnalyticsPage = () => {
     const { user } = useAuthStore();
     const sound = useSound();
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('month');
-    const [activeChart, setActiveChart] = useState<'online' | 'instore'>('online');
-    const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
     const fetchData = useCallback(async (silent = false) => {
         if (!user?.id) return;
@@ -103,26 +69,35 @@ const AnalyticsPage = () => {
         };
     }, [fetchData]);
 
-    useEffect(() => { fetchData(); }, [fetchData]);
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
+    // Filter by Time Range
     const filteredTx = useMemo(() => {
         const now = new Date();
         return transactions.filter(t => {
             if (t.type !== 'expense') return false;
             const d = new Date(t.date);
             switch (timeRange) {
-                case 'week': return d >= new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                case 'month': return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-                case 'year': return d.getFullYear() === now.getFullYear();
-                default: return true;
+                case 'week':
+                    return d >= new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                case 'month':
+                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                case 'year':
+                    return d.getFullYear() === now.getFullYear();
+                default:
+                    return true;
             }
         });
     }, [transactions, timeRange]);
 
+    // Primary KPI Metrics
     const totalSpent = useMemo(() => filteredTx.reduce((sum, t) => sum + t.amount, 0), [filteredTx]);
     const avgTicket = useMemo(() => filteredTx.length > 0 ? totalSpent / filteredTx.length : 0, [filteredTx, totalSpent]);
     const uniqueStores = useMemo(() => new Set(filteredTx.map(t => t.description)).size, [filteredTx]);
 
+    // Comparison with prior period
     const changePercent = useMemo(() => {
         const now = new Date();
         const prevTotal = transactions.filter(t => {
@@ -132,343 +107,408 @@ const AnalyticsPage = () => {
                 const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                 return d.getMonth() === prev.getMonth() && d.getFullYear() === prev.getFullYear();
             }
+            if (timeRange === 'week') {
+                const weekStart = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+                const weekEnd = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                return d >= weekStart && d < weekEnd;
+            }
             return false;
         }).reduce((sum, t) => sum + t.amount, 0);
+
         return prevTotal > 0 ? ((totalSpent - prevTotal) / prevTotal) * 100 : 0;
     }, [transactions, totalSpent, timeRange]);
 
-    const chartData = useMemo(() => {
-        const dailyData: Record<string, { online: number; instore: number }> = {};
-        const now = new Date();
-        const daysToShow = timeRange === 'week' ? 7 : 30;
+    // Channel breakdown (Online vs In-Store)
+    const channelStats = useMemo(() => {
+        let onlineSum = 0;
+        let instoreSum = 0;
 
-        for (let i = daysToShow; i >= 0; i--) {
+        filteredTx.forEach(t => {
+            const desc = (t.description || '').toLowerCase();
+            const isOnline = desc.includes('amazon') || desc.includes('online') || desc.includes('.com') || desc.includes('apple') || desc.includes('uber') || desc.includes('doordash');
+            if (isOnline) onlineSum += t.amount;
+            else instoreSum += t.amount;
+        });
+
+        const total = onlineSum + instoreSum || 1;
+        return {
+            onlineSum,
+            instoreSum,
+            onlinePercent: Math.round((onlineSum / total) * 100),
+            instorePercent: Math.round((instoreSum / total) * 100),
+        };
+    }, [filteredTx]);
+
+    // Daily spending curve
+    const timelineData = useMemo(() => {
+        const daysToShow = timeRange === 'week' ? 7 : timeRange === 'month' ? 30 : 12;
+        const now = new Date();
+        const dailyMap: Record<string, number> = {};
+
+        if (timeRange === 'year') {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            months.forEach(m => { dailyMap[m] = 0; });
+            filteredTx.forEach(t => {
+                const m = new Date(t.date).toLocaleString('default', { month: 'short' });
+                if (dailyMap[m] !== undefined) dailyMap[m] += t.amount;
+            });
+            return Object.entries(dailyMap).map(([label, amount]) => ({ label, amount }));
+        }
+
+        for (let i = daysToShow - 1; i >= 0; i--) {
             const d = new Date(now);
             d.setDate(d.getDate() - i);
             const key = d.toISOString().split('T')[0];
-            dailyData[key] = { online: 0, instore: 0 };
+            dailyMap[key] = 0;
         }
 
-        transactions.filter(t => t.type === 'expense').forEach(t => {
-            const dateKey = new Date(t.date).toISOString().split('T')[0];
-            if (dailyData[dateKey]) {
-                const isOnline = t.description?.toLowerCase().includes('amazon') ||
-                    t.description?.toLowerCase().includes('online') ||
-                    t.amount > 1000;
-                if (isOnline) dailyData[dateKey].online += t.amount;
-                else dailyData[dateKey].instore += t.amount;
+        filteredTx.forEach(t => {
+            const key = new Date(t.date).toISOString().split('T')[0];
+            if (dailyMap[key] !== undefined) {
+                dailyMap[key] += t.amount;
             }
         });
 
-        return Object.entries(dailyData).map(([date, values]) => ({
-            date,
-            online: values.online,
-            instore: values.instore,
-        }));
-    }, [transactions, timeRange]);
+        return Object.entries(dailyMap).map(([date, amount]) => {
+            const d = new Date(date);
+            return {
+                label: d.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
+                amount,
+            };
+        });
+    }, [filteredTx, timeRange]);
 
+    // Category Distribution
     const categoryData = useMemo(() => {
         const categoryTotals: Record<string, number> = {};
         filteredTx.forEach(t => {
             const cat = (t.category as any)?.name || (typeof t.category === 'string' ? t.category : 'Other');
             categoryTotals[cat] = (categoryTotals[cat] || 0) + t.amount;
         });
+
         return Object.entries(categoryTotals)
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 5)
+            .slice(0, 6)
             .map(([name, value]) => ({
                 name,
                 value,
-                fill: CATEGORY_COLORS[name] || '#64748b',
+                color: CATEGORY_COLORS[name] || '#64748b',
+                percent: totalSpent > 0 ? Math.round((value / totalSpent) * 100) : 0,
             }));
-    }, [filteredTx]);
+    }, [filteredTx, totalSpent]);
 
-    const weeklyData = useMemo(() => {
-        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        const data = days.map(day => ({ day, thisWeek: 0, lastWeek: 0 }));
-        const now = new Date();
-        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-
-        transactions.filter(t => t.type === 'expense').forEach(t => {
-            const d = new Date(t.date);
-            const dayIndex = (d.getDay() + 6) % 7;
-            if (d >= weekAgo) data[dayIndex].thisWeek += t.amount;
-            else if (d >= twoWeeksAgo) data[dayIndex].lastWeek += t.amount;
-        });
-        return data;
-    }, [transactions]);
-
+    // Top Merchants
     const topMerchants = useMemo(() => {
-        const stores: Record<string, { count: number; amount: number }> = {};
+        const stores: Record<string, { count: number; amount: number; category: string }> = {};
         filteredTx.forEach(t => {
-            const store = t.description || 'Unknown';
-            if (!stores[store]) stores[store] = { count: 0, amount: 0 };
+            const store = t.description || 'Unknown Merchant';
+            const cat = (t.category as any)?.name || (typeof t.category === 'string' ? t.category : 'General');
+            if (!stores[store]) stores[store] = { count: 0, amount: 0, category: cat };
             stores[store].count++;
             stores[store].amount += t.amount;
         });
+
         return Object.entries(stores)
-            .map(([name, data]) => ({ name: name.length > 18 ? name.slice(0, 15) + '...' : name, ...data }))
+            .map(([name, data]) => ({ name, ...data }))
             .sort((a, b) => b.amount - a.amount)
-            .slice(0, 8);
+            .slice(0, 6);
     }, [filteredTx]);
 
-    if (loading) {
-        return (
-            <div className={styles.mainContent}>
-                <AnalyticsSkeleton />
-            </div>
-        );
-    }
-
     return (
-        <div className={styles.mainContent}>
-            <motion.div
-                className={styles.contentArea}
-                variants={staggerContainer}
-                initial="hidden"
-                animate="show"
-            >
-                <header className={styles.header}>
-                    <div className={styles.headerLeft}>
-                        <div className={styles.titleIcon}>
-                            <Zap className="h-6 w-6" strokeWidth={2} />
-                        </div>
-                        <div>
-                            <h1 className={styles.title}>
-                                Analytics
-                                <div className={styles.liveBadge}>
-                                    <div className={styles.pulseDot}></div>
-                                    Live
-                                </div>
-                            </h1>
-                        </div>
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Header & Controls */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Spending Dynamics & Volume Concentration
                     </div>
-
-                    <div className={styles.headerActions}>
-                        <div className={styles.premiumTabs}>
-                            {(['week', 'month', 'year'] as const).map((range) => (
-                                <button
-                                    key={range}
-                                    className={cn(styles.tabBtn, timeRange === range && styles.tabActive)}
-                                    onClick={() => { setTimeRange(range); sound.playClick(); }}
-                                >
-                                    {range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
-                                </button>
-                            ))}
-                        </div>
-
-                        <button
-                            className={styles.refreshCircle}
-                            onClick={() => fetchData()}
-                            disabled={isRefreshing}
-                        >
-                            <RefreshCw className={cn("h-6 w-6", isRefreshing && styles.spinning)} strokeWidth={3} />
-                        </button>
-                    </div>
-                </header>
-
-                {/* Hero Stats Section */}
-                <div className={styles.heroStats}>
-                    <motion.div className={styles.mainHeroCard} variants={fadeInUp}>
-                        <div className={styles.heroIcon}>
-                            <Target className="h-9 w-9" strokeWidth={3} />
-                        </div>
-                        <div>
-                            <span className={styles.heroLabel}>Spent this {timeRange}</span>
-                            <div className="flex items-center gap-6">
-                                <h2 className={styles.heroValue}>{formatCurrency(totalSpent)}</h2>
-                                <div className={cn(styles.heroTrend, changePercent >= 0 ? styles.trendDown : styles.trendUp)}>
-                                    {changePercent >= 0 ? <TrendingUp size={16} strokeWidth={3} /> : <TrendingDown size={16} strokeWidth={3} />}
-                                    {Math.abs(changePercent).toFixed(1)}%
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    <div className={styles.miniStatsContainer}>
-                        {[
-                            { label: 'Average purchase', value: formatCurrency(avgTicket), icon: <Activity strokeWidth={2} /> },
-                            { label: 'Merchants', value: uniqueStores, icon: <Store strokeWidth={2} /> },
-                            { label: 'Purchases', value: filteredTx.length, icon: <Calendar strokeWidth={2} /> }
-                        ].map((stat, i) => (
-                            <motion.div key={i} className={styles.premiumMiniCard} variants={fadeInUp}>
-                                <div className={styles.miniIconBox}>
-                                    {stat.icon}
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className={styles.miniLabel}>{stat.label}</span>
-                                    <span className={styles.miniValueText}>{stat.value}</span>
-                                </div>
-                            </motion.div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Financial Analytics
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Question-oriented analytics: Where is money going, merchant concentration, and channels.
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center p-1.5 rounded-full bg-white border border-[var(--color-border)] text-xs shadow-xs">
+                        {(['week', 'month', 'year'] as const).map(range => (
+                            <button
+                                key={range}
+                                onClick={() => setTimeRange(range)}
+                                className={cn(
+                                    'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all',
+                                    timeRange === range
+                                        ? 'bg-[#111111] text-white shadow-xs'
+                                        : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]'
+                                )}
+                            >
+                                {range === 'week' ? 'Past 7D' : range === 'month' ? 'This Month' : 'This Year'}
+                            </button>
                         ))}
                     </div>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fetchData()}
+                        disabled={isRefreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                    >
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', isRefreshing && 'animate-spin')} />
+                        Sync
+                    </Button>
+                </div>
+            </div>
+
+            {/* Pillar Sub-Tabs */}
+            <AnalyzeNavigationTabs />
+
+            {/* Top Color-Blocked Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Cadmium Orange: Total Outflow */}
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                        <span>Total Outflow ({timeRange})</span>
+                        <DollarSign className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(totalSpent)}
+                        </div>
+                        <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-white/90">
+                            {changePercent !== 0 && (
+                                <span className="font-mono">
+                                    {changePercent > 0 ? '+' : ''}{changePercent.toFixed(1)}%
+                                </span>
+                            )}
+                            <span className="text-white/80 font-normal">vs previous period</span>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Main Charts Grid */}
-                <div className={styles.chartsGrid}>
-                    <motion.div className={cn(styles.visualCard, styles.fullWidth)} variants={fadeInUp}>
-                        <div className={styles.cardTop}>
-                            <div>
-                                <h3 className={styles.cardH3}>Spending</h3>
-                                <p className={styles.cardSubtitle}>Online vs in store</p>
-                            </div>
-                            <div className={styles.premiumTabs}>
-                                <button
-                                    className={cn(styles.tabBtn, activeChart === 'online' && styles.tabActive)}
-                                    onClick={() => setActiveChart('online')}
-                                >
-                                    Online
-                                </button>
-                                <button
-                                    className={cn(styles.tabBtn, activeChart === 'instore' && styles.tabActive)}
-                                    onClick={() => setActiveChart('instore')}
-                                >
-                                    In store
-                                </button>
-                            </div>
+                {/* 2. Deep Ink: Average Transaction Size */}
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                        <span>Average Ticket</span>
+                        <TrendingUp className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(avgTicket)}
                         </div>
-                        <div style={{ height: 400, width: '100%' }}>
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 6" vertical={false} stroke="#E7E5E4" strokeWidth={1} />
-                                    <XAxis
-                                        dataKey="date"
-                                        stroke="#78716C"
-                                        fontSize={12}
-                                        fontWeight={500}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        tickFormatter={(val) => new Date(val).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
-                                    />
-                                    <Tooltip
-                                        cursor={{ stroke: '#E11D48', strokeWidth: 1 }}
-                                        contentStyle={{
-                                            backgroundColor: '#FFFFFF',
-                                            border: '1px solid #E7E5E4',
-                                            borderRadius: '12px',
-                                            padding: '12px',
-                                            color: '#1C1917',
-                                            boxShadow: '0 8px 24px rgba(28,25,23,0.06)'
-                                        }}
-                                        itemStyle={{ color: '#1C1917', fontWeight: 600, textTransform: 'none' }}
-                                        formatter={(val: number) => [formatCurrency(val), activeChart === 'online' ? 'Online' : 'In store']}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey={activeChart}
-                                        stroke="#E11D48"
-                                        strokeWidth={2}
-                                        fill="#E11D48"
-                                        fillOpacity={0.12}
-                                        animationDuration={800}
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
+                        <div className="text-xs text-white/70 mt-2">
+                            Across {filteredTx.length} posted purchases
                         </div>
-                    </motion.div>
-
-                    <motion.div className={styles.visualCard} variants={fadeInUp}>
-                        <div className={styles.cardTop}>
-                            <div>
-                                <h3 className={styles.cardH3}>Categories</h3>
-                                <p className={styles.cardSubtitle}>Where the money went</p>
-                            </div>
-                            <PieIcon size={24} className="text-black" strokeWidth={3} />
-                        </div>
-                        <div className="flex-1 min-h-[350px] relative">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        activeIndex={activeCategoryIndex}
-                                        activeShape={renderActiveShape}
-                                        data={categoryData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={90}
-                                        outerRadius={120}
-                                        dataKey="value"
-                                        onMouseEnter={(_, index) => setActiveCategoryIndex(index)}
-                                        animationDuration={800}
-                                        stroke="#E7E5E4"
-                                        strokeWidth={1}
-                                    >
-                                        {categoryData.map((entry, index) => (
-                                            <Cell key={index} fill={entry.fill} />
-                                        ))}
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <span className="text-2xl font-semibold">
-                                    {categoryData[activeCategoryIndex] ? formatCurrency(categoryData[activeCategoryIndex].value) : '$0'}
-                                </span>
-                                <span className="mt-2 rounded-full bg-[#F4F0EB] px-2.5 py-0.5 text-xs font-medium text-[#57534E]">
-                                    {categoryData[activeCategoryIndex]?.name || 'None'}
-                                </span>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div className={styles.visualCard} variants={fadeInUp}>
-                        <div className={styles.cardTop}>
-                            <div>
-                                <h3 className={styles.cardH3}>This week vs last week</h3>
-                                <p className={styles.cardSubtitle}>Weekday comparison</p>
-                            </div>
-                        </div>
-                        <div className="flex-1 min-h-[350px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={weeklyData}>
-                                    <CartesianGrid vertical={false} stroke="#E7E5E4" strokeWidth={1} />
-                                    <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#78716C', fontWeight: 500 }} />
-                                    <Tooltip
-                                        cursor={{ fill: '#E11D48', opacity: 0.08 }}
-                                        contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E7E5E4', borderRadius: 12, color: '#1C1917' }}
-                                        formatter={(val: number) => formatCurrency(val)}
-                                    />
-                                    <Bar dataKey="thisWeek" name="This week" fill="#1C1917" radius={[6, 6, 0, 0]} />
-                                    <Bar dataKey="lastWeek" name="Last week" fill="#E11D48" radius={[6, 6, 0, 0]} />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </motion.div>
+                    </div>
                 </div>
 
-                {/* Top Merchants Section */}
-                <motion.div className={styles.merchantsSection} variants={fadeInUp}>
-                    <div className="flex items-center justify-between mb-8">
+                {/* 3. Warm Ivory / White: Active Merchants */}
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                        <span>Active Merchants</span>
+                        <Store className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : uniqueStores}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            Distinct retailers and venues
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Muted Sage / Soft Accent: Velocity */}
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                        <span>Categories</span>
+                        <PieIcon className="h-4 w-4 text-[var(--color-ink)]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : categoryData.length}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            Active expense segments
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {/* Question 1: Spending Trajectory Curve */}
+            <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
+                            Spending Velocity Curve
+                        </h2>
+                        <p className="text-xs text-[var(--color-text-muted)]">
+                            Daily cash burn pattern over the selected period
+                        </p>
+                    </div>
+                    <Badge variant="outline" className="text-xs font-mono">
+                        {timelineData.length} Data Points
+                    </Badge>
+                </div>
+
+                <div className="h-64 w-full">
+                    {loading ? (
+                        <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-muted)]">Loading charts...</div>
+                    ) : (
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={timelineData}>
+                                <defs>
+                                    <linearGradient id="spendPulse" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#D92F57" stopOpacity={0.25} />
+                                        <stop offset="95%" stopColor="#D92F57" stopOpacity={0.0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-10" />
+                                <XAxis dataKey="label" stroke="currentColor" className="opacity-50" fontSize={11} tickLine={false} axisLine={false} />
+                                <YAxis
+                                    stroke="currentColor"
+                                    className="opacity-50"
+                                    fontSize={11}
+                                    tickLine={false}
+                                    axisLine={false}
+                                    tickFormatter={(val) => `$${val}`}
+                                />
+                                <Tooltip
+                                    formatter={(value: any) => [formatCurrency(Number(value)), 'Spent']}
+                                    contentStyle={{
+                                        backgroundColor: 'var(--color-surface)',
+                                        borderColor: 'var(--color-border)',
+                                        color: 'var(--color-text-primary)',
+                                        borderRadius: '12px',
+                                        fontSize: '12px',
+                                        boxShadow: 'var(--shadow-sm)',
+                                    }}
+                                />
+                                <Area
+                                    type="monotone"
+                                    dataKey="amount"
+                                    stroke="#D92F57"
+                                    strokeWidth={2.5}
+                                    fillOpacity={1}
+                                    fill="url(#spendPulse)"
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    )}
+                </div>
+            </div>
+
+            {/* Question 2 & 3: Category Allocation & Top Merchants */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Category Donut & Breakdown */}
+                <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] p-5 space-y-4">
+                    <div className="flex items-center justify-between">
                         <div>
-                            <h3 className={styles.cardH3}>Top merchants</h3>
-                            <p className={styles.cardSubtitle}>Where you spend most</p>
+                            <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
+                                Where Did Money Go?
+                            </h2>
+                            <p className="text-xs text-[var(--color-text-muted)]">
+                                Category distribution of expenses
+                            </p>
                         </div>
-                        <ArrowUpRight size={28} className="text-black" strokeWidth={4} />
+                        <PieIcon className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
 
-                    <div className={styles.merchantGrid}>
-                        {topMerchants.length > 0 ? (
-                            topMerchants.map((merchant, i) => (
-                                <motion.div
-                                    key={i}
-                                    className={styles.merchantTile}
-                                    whileHover={{ x: 10 }}
-                                >
-                                    <div className={styles.rankCircle}>{i + 1}</div>
-                                    <div className={styles.merchantInfo}>
-                                        <span className={styles.mName}>{merchant.name}</span>
-                                        <span className={styles.mCount}>{merchant.count} purchases</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 pt-2">
+                        <div className="h-48 w-full flex items-center justify-center">
+                            {categoryData.length === 0 ? (
+                                <span className="text-xs text-[var(--color-text-muted)]">No expenses recorded</span>
+                            ) : (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={categoryData}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={45}
+                                            outerRadius={75}
+                                            paddingAngle={4}
+                                        >
+                                            {categoryData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.color} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            formatter={(value: any) => formatCurrency(Number(value))}
+                                            contentStyle={{
+                                                backgroundColor: 'var(--color-surface)',
+                                                borderColor: 'var(--color-border)',
+                                                color: 'var(--color-text-primary)',
+                                                borderRadius: '10px',
+                                                fontSize: '11px',
+                                            }}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            )}
+                        </div>
+
+                        <div className="space-y-2.5">
+                            {categoryData.map(cat => (
+                                <div key={cat.name} className="flex items-center justify-between text-xs">
+                                    <div className="flex items-center gap-2">
+                                        <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
+                                        <span className="font-medium text-[var(--color-text-primary)]">{cat.name}</span>
                                     </div>
-                                    <div className={styles.mAmount}>{formatCurrency(merchant.amount)}</div>
-                                </motion.div>
-                            ))
-                        ) : (
-                            <div className="col-span-full rounded-[var(--r-lg)] border border-dashed border-[var(--border)] py-16 text-center text-sm text-[var(--text-muted)]">
-                                No merchant data yet
+                                    <div className="text-right">
+                                        <span className="font-semibold tabular-nums font-mono text-[var(--color-text-primary)]">{formatCurrency(cat.value)}</span>
+                                        <span className="text-[var(--color-text-muted)] text-[10px] ml-1.5 font-mono">({cat.percent}%)</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Top Merchants Leaderboard */}
+                <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
+                                Top Merchants & Venues
+                            </h2>
+                            <p className="text-xs text-[var(--color-text-muted)]">
+                                Retailers with highest cumulative charge volume
+                            </p>
+                        </div>
+                        <Store className="h-4 w-4 text-[var(--color-brand)]" />
+                    </div>
+
+                    <div className="divide-y divide-[var(--color-border-subtle)] pt-1">
+                        {topMerchants.length === 0 ? (
+                            <div className="p-8 text-center text-xs text-[var(--color-text-muted)]">
+                                No merchant activity recorded in this period.
                             </div>
+                        ) : (
+                            topMerchants.map((merchant, idx) => (
+                                <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-7 w-7 rounded-lg bg-[var(--color-surface-subtle)] flex items-center justify-center font-bold text-[10px] text-[var(--color-text-secondary)] font-mono">
+                                            {idx + 1}
+                                        </div>
+                                        <div>
+                                            <div className="font-semibold text-[var(--color-text-primary)]">{merchant.name}</div>
+                                            <div className="text-[10px] text-[var(--color-text-muted)]">{merchant.count} transaction{merchant.count > 1 ? 's' : ''}</div>
+                                        </div>
+                                    </div>
+                                    <div className="font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                        {formatCurrency(merchant.amount)}
+                                    </div>
+                                </div>
+                            ))
                         )}
                     </div>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
         </div>
     );
 };

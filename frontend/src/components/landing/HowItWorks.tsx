@@ -1,21 +1,99 @@
-import { HOW_IT_WORKS } from './featureCatalog';
+import { Chrome, Inbox, BarChart3, Brain } from 'lucide-react';
 
+/**
+ * How It Works — Staggered Color-Blocked Cards
+ * Reference: bold asymmetric card grid, large numbers, color blocking
+ */
 export default function HowItWorks() {
     return (
-        <section id="how-it-works" className="scroll-mt-20 border-y border-[#E7E5E4] bg-[#F4F0EB]">
-            <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-                <h2 className="font-display text-3xl font-semibold tracking-tight text-[#1C1917]">How it works</h2>
-                <p className="mt-2 max-w-2xl text-[#57534E]">
-                    Capture, review, plan, then analyze. You stay in control of what is real.
-                </p>
-                <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {HOW_IT_WORKS.map((step, index) => (
-                        <article key={step.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-6 shadow-[var(--shadow-sm)]">
-                            <p className="text-sm font-medium text-[#E11D48]">{index + 1}</p>
-                            <h3 className="mt-2 font-display text-lg font-semibold text-[#1C1917]">{step.title}</h3>
-                            <p className="mt-2 text-sm leading-relaxed text-[#57534E]">{step.body}</p>
-                        </article>
-                    ))}
+        <section id="how-it-works" className="landing-how scroll-mt-20">
+            <div className="landing-how__header">
+                <div className="landing-how__tag">
+                    <span>●</span>
+                    How Cashly Works
+                </div>
+                <h2 className="landing-how__title">
+                    CAPTURE.<br/>
+                    REVIEW.<br/>
+                    PREDICT.
+                </h2>
+            </div>
+
+            <div className="landing-how__grid">
+                {/* Card 1: Capture */}
+                <div className="landing-how__card landing-how__card--capture">
+                    <span className="landing-how__card-number">01</span>
+                    <div>
+                        <span className="landing-how__card-tag">CAPTURE</span>
+                        <h3 className="landing-how__card-title">
+                            Shop naturally.<br/>
+                            Checkouts stage themselves.
+                        </h3>
+                        <p className="landing-how__card-desc">
+                            The lightweight browser companion captures checkouts silently from Amazon, Shopify, and any online store. Zero bank passwords needed.
+                        </p>
+                    </div>
+                    <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Chrome size={20} />
+                        <span style={{ fontSize: '12px', fontWeight: 600, opacity: 0.6, letterSpacing: '0.04em' }}>BROWSER COMPANION</span>
+                    </div>
+                </div>
+
+                {/* Card 2: Review */}
+                <div className="landing-how__card landing-how__card--review">
+                    <span className="landing-how__card-number">02</span>
+                    <div>
+                        <span className="landing-how__card-tag">REVIEW</span>
+                        <h3 className="landing-how__card-title">
+                            Nothing posts until<br/>
+                            you approve it.
+                        </h3>
+                        <p className="landing-how__card-desc">
+                            Every captured transaction waits in your quiet inbox. Split, recategorize, or dismiss—your ledger stays clean.
+                        </p>
+                    </div>
+                    <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Inbox size={20} />
+                        <span style={{ fontSize: '12px', fontWeight: 600, opacity: 0.6, letterSpacing: '0.04em' }}>TRANSACTION INBOX</span>
+                    </div>
+                </div>
+
+                {/* Card 3: Track */}
+                <div className="landing-how__card landing-how__card--track">
+                    <span className="landing-how__card-number">03</span>
+                    <div>
+                        <span className="landing-how__card-tag">TRACK</span>
+                        <h3 className="landing-how__card-title">
+                            Budgets, bills, goals—<br/>
+                            one unified system.
+                        </h3>
+                        <p className="landing-how__card-desc">
+                            After approval, transactions feed budgets, update forecasts, and recalculate your financial runway automatically.
+                        </p>
+                    </div>
+                    <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <BarChart3 size={20} />
+                        <span style={{ fontSize: '12px', fontWeight: 600, opacity: 0.6, letterSpacing: '0.04em' }}>UNIFIED ANALYTICS</span>
+                    </div>
+                </div>
+
+                {/* Card 4: Predict */}
+                <div className="landing-how__card landing-how__card--predict">
+                    <span className="landing-how__card-number">04</span>
+                    <div>
+                        <span className="landing-how__card-tag">PREDICT</span>
+                        <h3 className="landing-how__card-title">
+                            Know where your<br/>
+                            month ends before it does.
+                        </h3>
+                        <p className="landing-how__card-desc">
+                            Money Twin models your forward cashflow using burn velocity, recurring commitments, and historical variance.
+                        </p>
+                    </div>
+                    <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Brain size={20} />
+                        <span style={{ fontSize: '12px', fontWeight: 600, opacity: 0.6, letterSpacing: '0.04em' }}>MONEY TWIN AI</span>
+                    </div>
                 </div>
             </div>
         </section>

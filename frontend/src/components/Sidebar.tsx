@@ -1,124 +1,130 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    LayoutDashboard, Receipt, BarChart3, Settings, LogOut,
-    Target, CreditCard, Landmark, Repeat, Brain, PiggyBank,
-    Plus, FileText, Bell, Inbox, CalendarDays, Activity,
-    ShoppingBag, Sparkles, WalletCards, ChevronDown, HelpCircle,
-    User, Moon, Sun,
+    LayoutDashboard,
+    Receipt,
+    BarChart3,
+    Settings,
+    LogOut,
+    Target,
+    CreditCard,
+    Sparkles,
+    Plus,
+    Activity,
+    Inbox,
+    CalendarDays,
+    FileText,
+    Repeat,
+    PiggyBank,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useUIStore, useModalStore, useAuthStore } from '../store/useStore';
 import { logout as supabaseLogout } from '../config/supabase';
 import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
+import { transactionInboxApi } from '../services/featureExpansionApi';
 import styles from './Sidebar.module.css';
 
-// ─── Navigation structure ───
-const navGroups = [
-    {
-        label: 'Overview',
-        items: [
-            { path: '/dashboard',        icon: LayoutDashboard, label: 'Dashboard' },
-            { path: '/insights',         icon: Brain,           label: 'AI Assistant' },
-        ],
-    },
-    {
-        label: 'Finance',
-        items: [
-            { path: '/transactions',     icon: Receipt,         label: 'Transactions' },
-            { path: '/transaction-inbox', icon: Inbox,          label: 'Inbox' },
-            { path: '/accounts',         icon: Landmark,        label: 'Accounts' },
-            { path: '/cashflow-calendar', icon: CalendarDays,   label: 'Calendar' },
-        ],
-    },
-    {
-        label: 'Planning',
-        items: [
-            { path: '/budgets',          icon: Target,          label: 'Budgets' },
-            { path: '/goals',            icon: PiggyBank,       label: 'Goals' },
-            { path: '/bills',            icon: WalletCards,     label: 'Bills' },
-            { path: '/subscriptions',    icon: Repeat,          label: 'Subscriptions' },
-        ],
-    },
-    {
-        label: 'Insights',
-        items: [
-            { path: '/analytics',        icon: BarChart3,       label: 'Analytics' },
-            { path: '/money-twin',       icon: Sparkles,        label: 'Money Twin' },
-            { path: '/reports',          icon: FileText,        label: 'Reports' },
-            { path: '/shopping-activity', icon: ShoppingBag,    label: 'Shopping' },
-        ],
-    },
-    {
-        label: 'System',
-        items: [
-            { path: '/cards',            icon: CreditCard,      label: 'Cards' },
-            { path: '/extension-health', icon: Activity,        label: 'Extension' },
-            { path: '/reminders',        icon: Bell,            label: 'Reminders' },
-        ],
-    },
-];
+interface NavItemDef {
+    path: string;
+    icon: LucideIcon;
+    label: string;
+    badge?: number;
+    subItems?: { path: string; label: string; icon?: LucideIcon }[];
+}
+
+interface NavGroupDef {
+    label: string;
+    items: NavItemDef[];
+}
 
 const SPRING = { type: 'spring', stiffness: 420, damping: 38, mass: 0.75 } as const;
-const FADE   = { duration: 0.2, ease: [0.32, 0.72, 0, 1] } as const;
+const FADE = { duration: 0.2, ease: [0.32, 0.72, 0, 1] } as const;
 
-const Sidebar = () => {
+export const Sidebar = () => {
     const { sidebarOpen, toggleSidebar, sidebarHovered, setSidebarHovered, setSidebarOpen } = useUIStore();
     const { openAddTransaction } = useModalStore();
     const { user, logout: storeLogout } = useAuthStore();
-    const navigate  = useNavigate();
-    const location  = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const isExpanded = sidebarOpen || sidebarHovered;
-    const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+    const [inboxPendingCount, setInboxPendingCount] = useState(0);
 
-    const hasInteracted    = useRef(false);
-    const moveCount        = useRef(0);
-    const isInside         = useRef(false);
-    const hoverTimer       = useRef<NodeJS.Timeout | null>(null);
-    const collapseTimer    = useRef<NodeJS.Timeout | null>(null);
+    const hasInteracted = useRef(false);
+    const moveCount = useRef(0);
+    const isInside = useRef(false);
+    const hoverTimer = useRef<NodeJS.Timeout | null>(null);
+    const collapseTimer = useRef<NodeJS.Timeout | null>(null);
 
-    const toggleGroup = (label: string) => {
-        setCollapsedGroups(prev => ({ ...prev, [label]: !prev[label] }));
-    };
+    // Fetch live pending count for Inbox
+    useEffect(() => {
+        let mounted = true;
+        const fetchInboxCount = async () => {
+            try {
+                const res = await transactionInboxApi.list({ status: 'pending', limit: 1 });
+                if (mounted && res?.pagination?.total) {
+                    setInboxPendingCount(res.pagination.total);
+                }
+            } catch {
+                // Silently ignore if offline or unauthenticated
+            }
+        };
+        fetchInboxCount();
+        const interval = setInterval(fetchInboxCount, 60000);
+        return () => {
+            mounted = false;
+            clearInterval(interval);
+        };
+    }, []);
 
     useEffect(() => {
         setSidebarHovered(false);
-        hoverTimer.current   && clearTimeout(hoverTimer.current);
-        collapseTimer.current && clearTimeout(collapseTimer.current);
+        if (hoverTimer.current) clearTimeout(hoverTimer.current);
+        if (collapseTimer.current) clearTimeout(collapseTimer.current);
     }, [location.pathname, setSidebarHovered]);
 
-    useEffect(() => () => {
-        hoverTimer.current   && clearTimeout(hoverTimer.current);
-        collapseTimer.current && clearTimeout(collapseTimer.current);
+    useEffect(() => {
+        return () => {
+            if (hoverTimer.current) clearTimeout(hoverTimer.current);
+            if (collapseTimer.current) clearTimeout(collapseTimer.current);
+        };
     }, []);
 
     const handleMouseMove = useCallback(() => {
         if (!hasInteracted.current) {
-            if (++moveCount.current >= 3) hasInteracted.current = true;
+            moveCount.current += 1;
+            if (moveCount.current >= 3) hasInteracted.current = true;
         }
     }, []);
 
     const handleMouseEnter = useCallback(() => {
         isInside.current = true;
-        collapseTimer.current && clearTimeout(collapseTimer.current);
+        if (collapseTimer.current) clearTimeout(collapseTimer.current);
         if (!hasInteracted.current) return;
-        hoverTimer.current && clearTimeout(hoverTimer.current);
-        hoverTimer.current = setTimeout(() => { if (isInside.current) setSidebarHovered(true); }, 140);
+        if (hoverTimer.current) clearTimeout(hoverTimer.current);
+        hoverTimer.current = setTimeout(() => {
+            if (isInside.current) setSidebarHovered(true);
+        }, 140);
     }, [setSidebarHovered]);
 
     const handleMouseLeave = useCallback(() => {
         isInside.current = false;
-        hoverTimer.current && clearTimeout(hoverTimer.current);
+        if (hoverTimer.current) clearTimeout(hoverTimer.current);
         collapseTimer.current = setTimeout(() => setSidebarHovered(false), 90);
     }, [setSidebarHovered]);
 
     const handleNavClick = () => {
         soundManager.play('click');
-        if (window.innerWidth >= 1024) { setSidebarOpen(true); setSidebarHovered(false); return; }
-        setSidebarOpen(false); setSidebarHovered(false);
+        if (window.innerWidth >= 1024) {
+            setSidebarOpen(true);
+            setSidebarHovered(false);
+            return;
+        }
+        setSidebarOpen(false);
+        setSidebarHovered(false);
     };
 
     const handleLogout = async () => {
@@ -130,12 +136,89 @@ const Sidebar = () => {
             soundManager.play('whoosh');
             navigate('/login');
         } catch {
-            storeLogout(); localStorage.clear(); navigate('/login');
+            storeLogout();
+            localStorage.clear();
+            navigate('/login');
         }
     };
 
+    const navGroups: NavGroupDef[] = [
+        {
+            label: 'Core Pillars',
+            items: [
+                {
+                    path: '/dashboard',
+                    icon: LayoutDashboard,
+                    label: 'Home',
+                },
+                {
+                    path: '/transactions',
+                    icon: Receipt,
+                    label: 'Activity',
+                    badge: inboxPendingCount,
+                    subItems: [
+                        { path: '/transaction-inbox', label: 'Needs Review', icon: Inbox },
+                        { path: '/transactions', label: 'Ledger', icon: Receipt },
+                        { path: '/transactions?tab=imports', label: 'Statement Imports', icon: FileText },
+                    ],
+                },
+                {
+                    path: '/budgets',
+                    icon: Target,
+                    label: 'Plan',
+                    subItems: [
+                        { path: '/budgets', label: 'Budgets & Limits', icon: Target },
+                        { path: '/subscriptions', label: 'Commitments', icon: Repeat },
+                        { path: '/goals', label: 'Savings Goals', icon: PiggyBank },
+                        { path: '/cashflow-calendar', label: 'Cashflow Calendar', icon: CalendarDays },
+                    ],
+                },
+                {
+                    path: '/analytics',
+                    icon: BarChart3,
+                    label: 'Analyze',
+                    subItems: [
+                        { path: '/analytics', label: 'Spending Patterns', icon: BarChart3 },
+                        { path: '/money-twin', label: 'Money Twin', icon: Sparkles },
+                        { path: '/reports', label: 'Reports', icon: FileText },
+                    ],
+                },
+                {
+                    path: '/insights',
+                    icon: Sparkles,
+                    label: 'Assist',
+                },
+            ],
+        },
+        {
+            label: 'System & Utilities',
+            items: [
+                {
+                    path: '/cards',
+                    icon: CreditCard,
+                    label: 'Cards & Accounts',
+                },
+                {
+                    path: '/extension-health',
+                    icon: Activity,
+                    label: 'Extension',
+                },
+                {
+                    path: '/settings',
+                    icon: Settings,
+                    label: 'Settings',
+                },
+            ],
+        },
+    ];
+
     const firstName = user?.name?.split(' ')[0] || 'User';
-    const initials = (user?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    const initials = (user?.name || 'U')
+        .split(' ')
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
 
     return (
         <>
@@ -143,10 +226,12 @@ const Sidebar = () => {
             <AnimatePresence>
                 {sidebarOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
                         className="fixed inset-0 z-40 lg:hidden"
-                        style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(4px)' }}
+                        style={{ background: 'var(--cashly-bg-overlay)', backdropFilter: 'blur(4px)' }}
                         onClick={() => toggleSidebar()}
                     />
                 )}
@@ -174,12 +259,18 @@ const Sidebar = () => {
                 onMouseLeave={handleMouseLeave}
             >
                 {/* ── Brand ── */}
-                <div className="flex h-[72px] shrink-0 items-center px-5 gap-3"
-                     style={{ borderBottom: '1px solid var(--border)' }}>
+                <div
+                    className="flex h-16 shrink-0 items-center px-4 gap-3 cursor-pointer"
+                    style={{ borderBottom: '1px solid var(--border)' }}
+                    onClick={() => {
+                        navigate('/dashboard');
+                        handleNavClick();
+                    }}
+                >
                     <motion.div
                         className={cn(styles.logoIcon, styles.liveIcon)}
-                        whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                        onClick={() => navigate('/dashboard')}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                     >
                         C
                     </motion.div>
@@ -187,17 +278,17 @@ const Sidebar = () => {
                     <AnimatePresence mode="wait">
                         {isExpanded && (
                             <motion.div
-                                initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -8 }} transition={FADE}
+                                initial={{ opacity: 0, x: -8 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -8 }}
+                                transition={FADE}
                                 className="min-w-0 flex-1 overflow-hidden"
                             >
-                                <p className="font-display text-[16px] font-semibold tracking-tight truncate"
-                                   style={{ color: 'var(--text-primary)' }}>
+                                <p className="font-display text-base font-bold tracking-tight text-[var(--text-primary)]">
                                     Cashly
                                 </p>
-                                <p className="text-[11px] truncate"
-                                   style={{ color: 'var(--text-muted)' }}>
-                                    Review first
+                                <p className="text-[11px] text-[var(--text-muted)] truncate">
+                                    Financial Operating System
                                 </p>
                             </motion.div>
                         )}
@@ -205,157 +296,123 @@ const Sidebar = () => {
                 </div>
 
                 {/* ── Quick Add ── */}
-                <div className="shrink-0 px-3 py-6">
+                <div className="shrink-0 px-3 py-4">
                     <motion.button
-                        onClick={() => { soundManager.play('click'); openAddTransaction(); }}
+                        onClick={() => {
+                            soundManager.play('click');
+                            openAddTransaction();
+                        }}
                         className={styles.addButton}
                         whileTap={{ scale: 0.98 }}
+                        aria-label="Add Transaction"
                     >
-                        <Plus size={22} strokeWidth={3} />
+                        <Plus size={20} strokeWidth={2.5} />
                         <AnimatePresence mode="wait">
                             {isExpanded && (
                                 <motion.span
                                     initial={{ opacity: 0, width: 0 }}
                                     animate={{ opacity: 1, width: 'auto' }}
                                     exit={{ opacity: 0, width: 0 }}
-                                    className="overflow-hidden whitespace-nowrap"
+                                    className="overflow-hidden whitespace-nowrap text-sm font-semibold"
                                 >
-                                    Add
+                                    Quick Add
                                 </motion.span>
                             )}
                         </AnimatePresence>
                     </motion.button>
                 </div>
 
-                {/* ── Navigation ── */}
+                {/* ── Navigation Groups ── */}
                 <nav
                     className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-4 scrollbar-none"
                     style={{ overscrollBehavior: 'contain' }}
-                    onWheel={e => e.stopPropagation()}
+                    onWheel={(e) => e.stopPropagation()}
                 >
-                    {navGroups.map((group) => {
-                        const isCollapsed = collapsedGroups[group.label];
-                        return (
-                            <div key={group.label} className="mb-1">
-                                {/* Group Header */}
-                                <AnimatePresence>
-                                    {isExpanded && (
-                                        <motion.button
-                                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                            onClick={() => toggleGroup(group.label)}
-                                            className="flex items-center justify-between w-full px-3 pt-4 pb-2 group"
-                                        >
-                                            <span className="text-[11px] font-medium"
-                                                  style={{ color: 'var(--text-muted)' }}>
-                                                {group.label}
-                                            </span>
-                                            <ChevronDown
-                                                size={12}
+                    {navGroups.map((group, groupIdx) => (
+                        <div key={group.label} className={groupIdx > 0 ? 'mt-4 pt-3 border-t border-[var(--border)]/60' : ''}>
+                            {isExpanded && (
+                                <div className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                                    {group.label}
+                                </div>
+                            )}
+
+                            <div className="space-y-1">
+                                {group.items.map((item) => {
+                                    const isActive =
+                                        location.pathname === item.path ||
+                                        (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+
+                                    return (
+                                        <div key={item.path} className="relative">
+                                            <NavLink
+                                                to={item.path}
+                                                onClick={handleNavClick}
                                                 className={cn(
-                                                    'transition-transform duration-200',
-                                                    isCollapsed && '-rotate-90'
+                                                    styles.navItem,
+                                                    isActive && styles.active,
+                                                    'relative'
                                                 )}
-                                                style={{ color: 'var(--text-muted)' }}
-                                            />
-                                        </motion.button>
-                                    )}
-                                </AnimatePresence>
+                                            >
+                                                <motion.span className={styles.navIcon}>
+                                                    <item.icon size={20} strokeWidth={2.2} />
+                                                </motion.span>
 
-                                {/* Group Items */}
-                                <AnimatePresence initial={false}>
-                                    {(!isCollapsed || !isExpanded) && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.2 }}
-                                            className="space-y-1"
-                                        >
-                                            {group.items.map((item) => (
-                                                <NavLink
-                                                    key={item.path}
-                                                    to={item.path}
-                                                    onClick={handleNavClick}
-                                                    className={({ isActive }) => cn(
-                                                        styles.navItem,
-                                                        isActive && styles.active
+                                                <AnimatePresence mode="wait">
+                                                    {isExpanded && (
+                                                        <motion.span
+                                                            initial={{ opacity: 0, x: -6 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            exit={{ opacity: 0, x: -6 }}
+                                                            transition={FADE}
+                                                            className={cn(styles.navLabel, 'flex items-center justify-between flex-1')}
+                                                        >
+                                                            <span>{item.label}</span>
+                                                            {item.badge && item.badge > 0 ? (
+                                                                <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                                                                    {item.badge > 99 ? '99+' : item.badge}
+                                                                </span>
+                                                            ) : null}
+                                                        </motion.span>
                                                     )}
-                                                >
-                                                    <motion.span className={styles.navIcon}>
-                                                        <item.icon size={20} strokeWidth={2.5} />
-                                                    </motion.span>
-
-                                                    <AnimatePresence mode="wait">
-                                                        {isExpanded && (
-                                                            <motion.span
-                                                                initial={{ opacity: 0, x: -6 }}
-                                                                animate={{ opacity: 1, x: 0 }}
-                                                                exit={{ opacity: 0, x: -6 }}
-                                                                transition={FADE}
-                                                                className={styles.navLabel}
-                                                            >
-                                                                {item.label}
-                                                            </motion.span>
-                                                        )}
-                                                    </AnimatePresence>
-                                                </NavLink>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                                </AnimatePresence>
+                                            </NavLink>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </nav>
 
-                <div className={styles.bottom} style={{ borderBottom: '1px solid var(--border)', borderTop: 'none', paddingBottom: '0.5rem' }}>
-                    <NavLink
-                        to="/settings"
-                        onClick={handleNavClick}
-                        className={({ isActive }) => cn(
-                            styles.navItem,
-                            isActive && styles.active
-                        )}
-                    >
-                        <span className={styles.navIcon}>
-                            <Settings size={20} strokeWidth={2.5} />
-                        </span>
-                        <AnimatePresence mode="wait">
-                            {isExpanded && (
-                                <motion.span
-                                    initial={{ opacity: 0, x: -6 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -6 }}
-                                    transition={FADE}
-                                    className={styles.navLabel}
-                                >
-                                    Settings
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
-                    </NavLink>
-                </div>
-
-                {/* ── User Profile ── */}
-                <div className={styles.bottom}>
+                {/* ── User Profile & Sign Out ── */}
+                <div className={styles.bottom} style={{ borderTop: '1px solid var(--border)' }}>
                     <div className={styles.userProfile}>
-                        <div className={styles.avatar}>
+                        <div
+                            className={styles.avatar}
+                            onClick={() => {
+                                navigate('/profile');
+                                handleNavClick();
+                            }}
+                            title="View Profile"
+                        >
                             {initials}
                         </div>
 
                         <AnimatePresence mode="wait">
                             {isExpanded && (
                                 <motion.div
-                                    initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -6 }} transition={FADE}
-                                    className={styles.userInfo}
+                                    initial={{ opacity: 0, x: -6 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -6 }}
+                                    transition={FADE}
+                                    className={cn(styles.userInfo, 'cursor-pointer')}
+                                    onClick={() => {
+                                        navigate('/profile');
+                                        handleNavClick();
+                                    }}
                                 >
-                                    <span className={styles.userName}>
-                                        {firstName}
-                                    </span>
-                                    <span className={styles.userEmail}>
-                                        {user?.email || 'Premium'}
-                                    </span>
+                                    <span className={styles.userName}>{firstName}</span>
+                                    <span className={styles.userEmail}>{user?.email || 'Account'}</span>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -363,12 +420,17 @@ const Sidebar = () => {
                         <AnimatePresence mode="wait">
                             {isExpanded && (
                                 <motion.button
-                                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                    onClick={() => { handleNavClick(); handleLogout(); }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onClick={() => {
+                                        handleNavClick();
+                                        handleLogout();
+                                    }}
                                     className={styles.logoutBtn}
                                     title="Sign out"
                                 >
-                                    <LogOut size={18} strokeWidth={3} />
+                                    <LogOut size={16} strokeWidth={2.2} />
                                 </motion.button>
                             )}
                         </AnimatePresence>

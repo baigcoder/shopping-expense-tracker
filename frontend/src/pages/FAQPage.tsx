@@ -62,7 +62,7 @@ const FAQPage = () => {
                         key={index} 
                         className={cn(
                             "w-full max-w-full overflow-hidden border-2 sm:border-4 border-black transition-all",
-                            openIndex === index ? "bg-black text-white shadow-[4px_4px_0px_#E11D48] sm:shadow-[8px_8px_0px_#E11D48]" : "bg-white text-black hover:border-[#E11D48]"
+                            openIndex === index ? "bg-black text-white shadow-[4px_4px_0px_#0E8174] sm:shadow-[8px_8px_0px_#0E8174]" : "bg-white text-black hover:border-[#0E8174]"
                         )}
                     >
                         <button
@@ -72,7 +72,7 @@ const FAQPage = () => {
                             <span className="block min-w-0 flex-1 font-black uppercase text-[0.72rem] sm:text-lg italic tracking-tighter leading-tight whitespace-normal break-words" style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{faq.q}</span>
                             <div className={cn(
                                 "p-1.5 sm:p-2 border-2 shrink-0 transition-colors",
-                                openIndex === index ? "border-white bg-[#E11D48] text-white" : "border-black bg-white text-black"
+                                openIndex === index ? "border-white bg-[#0E8174] text-white" : "border-black bg-white text-black"
                             )}>
                                 {openIndex === index ? (
                                     <Minus size={20} strokeWidth={4} />
@@ -106,7 +106,7 @@ const FAQPage = () => {
                 </div>
                 <button
                     onClick={() => window.location.href = '/contact'}
-                    className="min-h-14 sm:h-16 w-full sm:w-auto px-6 sm:px-10 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors flex items-center justify-center gap-3"
+                    className="min-h-14 sm:h-16 w-full sm:w-auto px-6 sm:px-10 bg-black text-white font-black uppercase text-sm hover:bg-[#0E8174] transition-colors flex items-center justify-center gap-3"
                 >
                     <MessageSquare size={20} strokeWidth={3} />
                     Contact_Support

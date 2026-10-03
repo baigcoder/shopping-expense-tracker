@@ -1,8 +1,9 @@
 // AIChatbot - Stark Gen Z Neural Link Interface
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
-    MessageSquare, X, Send, Minimize2, Maximize2, RefreshCw, Phone
+    MessageSquare, X, Send, Minimize2, Maximize2, RefreshCw, Phone, ArrowUpRight
 } from 'lucide-react';
 import { useAuthStore, useUIStore } from '../store/useStore';
 import { useAIRealtime } from '../hooks/useAIRealtime';
@@ -29,7 +30,31 @@ const QUICK_ACTIONS = [
     { label: "Spending review", message: "Review my spending habits" },
 ];
 
+const getActionForMessage = (content: string) => {
+    const lower = content.toLowerCase();
+    if (lower.includes('inbox') || lower.includes('review') || lower.includes('candidate')) {
+        return { label: 'Review Inbox', path: '/transaction-inbox' };
+    }
+    if (lower.includes('budget') || lower.includes('limit') || lower.includes('cap')) {
+        return { label: 'Manage Budgets', path: '/budgets' };
+    }
+    if (lower.includes('subscription') || lower.includes('recurring') || lower.includes('bill')) {
+        return { label: 'Inspect Commitments', path: '/subscriptions' };
+    }
+    if (lower.includes('goal') || lower.includes('milestone')) {
+        return { label: 'Savings Goals', path: '/goals' };
+    }
+    if (lower.includes('forecast') || lower.includes('what-if') || lower.includes('simulation') || lower.includes('twin')) {
+        return { label: 'What-If Forecast', path: '/money-twin' };
+    }
+    if (lower.includes('transaction') || lower.includes('spent') || lower.includes('purchase')) {
+        return { label: 'View Transactions', path: '/transactions' };
+    }
+    return null;
+};
+
 const AIChatbot = () => {
+    const navigate = useNavigate();
     const { user } = useAuthStore();
     const { isChatOpen, setChatOpen, toggleChat } = useUIStore();
     const [isMinimized, setIsMinimized] = useState(false);
@@ -92,14 +117,20 @@ const AIChatbot = () => {
                 if (response.status === 200) {
                     setVoicePrefs({ isSetup: response.data.isSetup, voiceName: response.data.voiceName });
                 }
-            } catch (err: any) {}
+            } catch {
+                // Silently ignore if voice prefs unavailable
+            }
         };
         fetchVoicePrefs();
     }, [user?.id, isChatOpen]);
 
     const handleVoiceClick = () => {
         soundManager.play('click');
-        voicePrefs?.isSetup ? setShowVoiceCall(true) : setShowVoiceSetup(true);
+        if (voicePrefs?.isSetup) {
+            setShowVoiceCall(true);
+        } else {
+            setShowVoiceSetup(true);
+        }
     };
 
     const handleSend = async (messageText?: string) => {
@@ -129,7 +160,7 @@ const AIChatbot = () => {
             };
             setMessages(prev => [...prev, botMessage]);
             soundManager.play('success');
-        } catch (error) {
+        } catch {
             soundManager.play('error');
             const errorMessage: Message = {
                 id: (Date.now() + 1).toString(),
@@ -155,7 +186,7 @@ const AIChatbot = () => {
         // Clear backend chat history (Redis memory)
         try {
             await api.post('/ai/chat/clear');
-        } catch (e) {
+        } catch {
             console.warn('Could not clear backend chat history');
         }
         setMessages([{
@@ -169,19 +200,12 @@ const AIChatbot = () => {
     return (
         <>
             <motion.button
-                className={cn(styles.fab, styles.fabDesktop, 'hidden lg:flex')}
+                className={styles.fab}
                 onClick={() => { toggleChat(); soundManager.play('click'); }}
                 aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
+                whileTap={{ scale: 0.95 }}
             >
                 {isChatOpen ? <X size={20} /> : <MessageSquare size={20} />}
-            </motion.button>
-
-            <motion.button
-                className={cn(styles.fab, styles.fabMobile, 'lg:hidden')}
-                onClick={() => { toggleChat(); soundManager.play('click'); }}
-                aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
-            >
-                {isChatOpen ? <X size={18} /> : <MessageSquare size={18} />}
             </motion.button>
 
             <AnimatePresence>
@@ -225,14 +249,29 @@ const AIChatbot = () => {
                         {!isMinimized && (
                             <>
                                 <div className={styles.messages}>
-                                    {messages.map((msg) => (
-                                        <div
-                                            key={msg.id}
-                                            className={cn(styles.bubble, msg.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant)}
-                                        >
-                                            {msg.content}
-                                        </div>
-                                    ))}
+                                    {messages.map((msg) => {
+                                        const action = msg.role === 'assistant' ? getActionForMessage(msg.content) : null;
+                                        return (
+                                            <div
+                                                key={msg.id}
+                                                className={cn(styles.bubble, msg.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant)}
+                                            >
+                                                <div>{msg.content}</div>
+                                                {action && (
+                                                    <button
+                                                        onClick={() => {
+                                                            navigate(action.path);
+                                                            setChatOpen(false);
+                                                        }}
+                                                        className="mt-2 px-2.5 py-1 rounded-lg bg-white/90 border border-stone-200 text-stone-800 text-[11px] font-semibold flex items-center gap-1 hover:bg-white hover:text-[var(--cashly-brand)] shadow-2xs transition-all"
+                                                    >
+                                                        <span>[{action.label}]</span>
+                                                        <ArrowUpRight size={12} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                     {isLoading && (
                                         <div className={cn(styles.bubble, styles.bubbleAssistant)}>Thinking…</div>
                                     )}

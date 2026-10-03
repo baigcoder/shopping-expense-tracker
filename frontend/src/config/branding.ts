@@ -11,24 +11,25 @@ export const BRAND = {
     },
 
     colors: {
-        primary: "#1C1917",
-        primaryDark: "#0C0A09",
-        primaryLight: "#F4F0EB",
+        primary: "#0E8174",
+        primaryDark: "#0A6157",
+        primaryLight: "#DDF3EF",
 
-        accent: "#E11D48",
-        accentDark: "#BE123C",
-        accentLight: "#FFE4E6",
+        accent: "#16A394",
+        accentDark: "#0E8174",
+        accentLight: "#DDF3EF",
 
-        success: "#059669",
-        warning: "#D97706",
-        danger: "#E11D48",
+        success: "#17824F",
+        warning: "#B8680B",
+        danger: "#C94343",
+        ai: "#7753C7",
 
-        background: "#FAF8F5",
-        foreground: "#1C1917",
-        muted: "#F4F0EB",
-        border: "#E7E5E4",
+        background: "#F4F3EE",
+        foreground: "#142127",
+        muted: "#E9ECE8",
+        border: "#E2E8F0",
         card: "#FFFFFF",
-        sidebar: "#F4F0EB",
+        sidebar: "#E9ECE8",
     },
 
     features: [

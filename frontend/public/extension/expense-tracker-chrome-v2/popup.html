@@ -4,98 +4,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashly Extension - Review-First Finance</title>
+    <title>Cashly Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
     <div class="popup-shell">
+        <!-- ─────────────────────────────────────────────
+             01. LOGIN / SYNC VIEW
+        ───────────────────────────────────────────── -->
         <section id="loginView" class="view">
-            <div class="brand-lockup">
-                <div class="brand-mark">C</div>
-                <div>
-                    <h1>Cashly</h1>
-                    <p>Review-first finance automation</p>
+            <div class="login-brand-hero">
+                <div class="brand-tag">
+                    <span class="brand-tag-dot">●</span>
+                    <span>SOVEREIGN COMPANION</span>
+                </div>
+                <div class="brand-lockup">
+                    <div class="brand-mark">C</div>
+                    <div class="brand-text">
+                        <span class="brand-name">CASHLY</span>
+                        <span class="brand-pill">V10</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="status-card">
-                <h2>Connect your Cashly session</h2>
-                <p>Sign in on Cashly, then sync this extension. Detected transactions stay in review until you approve them.</p>
-                <button id="syncWebsiteBtn" class="btn primary">Sync from Cashly</button>
-                <button id="openLoginBtn" class="btn secondary">Open web login</button>
+            <div class="login-editorial-card">
+                <h1 class="login-headline">
+                    ZERO-PASSWORD<br>
+                    CHECKOUT<br>
+                    INTERCEPT.
+                </h1>
+                <p class="login-desc">
+                    Cashly captures checkouts silently from Amazon, Shopify, and any store. Staged purchases stay in your private review queue until you approve them.
+                </p>
+
+                <div class="login-actions">
+                    <button id="syncWebsiteBtn" class="btn btn-primary" type="button">
+                        <span>Sync from Cashly Session</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                    <button id="openLoginBtn" class="btn btn-secondary" type="button">
+                        <span>Open Web Login</span>
+                        <span class="btn-ext">↗</span>
+                    </button>
+                </div>
+
                 <div id="loginError" class="message error" hidden></div>
+
+                <div class="security-guarantee">
+                    <span class="security-icon">🔒</span>
+                    <span>Zero banking passwords required • Client-side local DOM capture only</span>
+                </div>
             </div>
         </section>
 
+        <!-- ─────────────────────────────────────────────
+             02. MAIN COMPANION CONSOLE VIEW
+        ───────────────────────────────────────────── -->
         <section id="mainView" class="view" hidden>
+            <!-- Top Bar with Editorial Branding & Controls -->
             <header class="topbar">
                 <div class="brand-lockup compact">
-                    <div class="brand-mark">C</div>
-                    <div>
-                        <h1>Cashly</h1>
-                        <p id="userEmail">Not synced</p>
+                    <div class="brand-mark compact">C</div>
+                    <div class="brand-meta">
+                        <div class="brand-title-row">
+                            <span class="brand-name">CASHLY</span>
+                            <span class="brand-subpill">COMPANION</span>
+                        </div>
+                        <p id="userEmail" class="user-email-display">Not synced</p>
                     </div>
                 </div>
                 <div class="top-actions">
-                    <button id="refreshBtn" class="icon-btn" title="Refresh">R</button>
-                    <button id="settingsBtn" class="icon-btn" title="Settings">S</button>
-                    <button id="logoutBtn" class="icon-btn danger" title="Logout">L</button>
+                    <button id="refreshBtn" class="icon-btn" title="Refresh sync" aria-label="Refresh">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+                    </button>
+                    <button id="settingsBtn" class="icon-btn" title="Companion Settings" aria-label="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>
+                    </button>
+                    <button id="logoutBtn" class="icon-btn danger" title="Sign out" aria-label="Sign out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                    </button>
                 </div>
             </header>
 
+            <!-- Sync Telemetry Strip -->
             <div class="health-strip" id="syncStatus">
                 <span class="dot"></span>
-                <span>Checking sync</span>
+                <span class="health-label">Checking sync</span>
             </div>
 
-            <div class="metrics-grid">
-                <article class="metric-card">
-                    <span class="metric-label">This month</span>
+            <!-- Monumental Cadmium Orange Hero Ledger Card -->
+            <div class="metric-card-hero">
+                <div class="metric-hero-eyebrow">
+                    <span class="metric-hero-tag">VERIFIED LEDGER BURN</span>
+                    <span class="metric-hero-chip">30-DAY VELOCITY</span>
+                </div>
+                <div class="metric-hero-amount">
                     <strong id="monthlySpent">$0.00</strong>
-                </article>
-                <article class="metric-card">
-                    <span class="metric-label">Pending review</span>
-                    <strong id="pendingCount">0</strong>
-                </article>
-                <article class="metric-card">
-                    <span class="metric-label">Queued syncs</span>
-                    <strong id="queuedCount">0</strong>
-                </article>
-                <article class="metric-card">
-                    <span class="metric-label">Failed events</span>
-                    <strong id="failedCount">0</strong>
-                </article>
+                </div>
+                <div class="metric-hero-footer">
+                    <span>Approved & Reconciled</span>
+                    <span class="metric-hero-badge">Sovereign State</span>
+                </div>
             </div>
 
-            <section class="panel">
-                <div class="panel-header">
-                    <h2>Current site</h2>
-                    <span id="siteName" class="pill">Unknown</span>
+            <!-- Integrated Multi-Segment Telemetry Rail (Anti-Card Spam) -->
+            <div class="telemetry-rail">
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Pending Review</span>
+                    <div class="telemetry-val-row">
+                        <strong id="pendingCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator amber">INBOX</span>
+                    </div>
                 </div>
-                <p id="lastDetection" class="muted">No recent detection loaded.</p>
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Queued Syncs</span>
+                    <div class="telemetry-val-row">
+                        <strong id="queuedCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator">SYNC</span>
+                    </div>
+                </div>
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Failed Events</span>
+                    <div class="telemetry-val-row">
+                        <strong id="failedCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator emerald">OK</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Browser Telemetry & Current Store Panel -->
+            <section class="panel site-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <span class="panel-mini-tag">ACTIVE TAB OBSERVATION</span>
+                        <h2>Current Domain</h2>
+                    </div>
+                    <span id="siteName" class="site-pill">Unknown</span>
+                </div>
+                <p id="lastDetection" class="detection-status">No recent detection loaded.</p>
             </section>
 
-            <section class="panel">
-                <div class="panel-header">
-                    <h2>Quick actions</h2>
+            <!-- Operational Quick Action Desk -->
+            <section class="panel actions-panel">
+                <div class="panel-header compact">
+                    <span class="panel-mini-tag">SOVEREIGN WORKSPACE COMMANDS</span>
                 </div>
+                <!-- Flagship Action: Review Inbox -->
+                <button id="openInboxBtn" class="btn btn-primary btn-inbox-flagship" type="button">
+                    <div class="inbox-btn-left">
+                        <span class="inbox-icon">📥</span>
+                        <div class="inbox-text">
+                            <strong>Review Staged Inbox</strong>
+                            <span>Approve, split, or dismiss checkouts</span>
+                        </div>
+                    </div>
+                    <span class="btn-arrow">→</span>
+                </button>
+
+                <!-- Secondary 3-Column Action Grid -->
                 <div class="action-grid">
-                    <button id="clipPageBtn" class="action-card">Clip page</button>
-                    <button id="addManualBtn" class="action-card">Add expense</button>
-                    <button id="openDashboard" class="action-card">Dashboard</button>
-                    <button id="openInboxBtn" class="action-card">Inbox</button>
-                    <button id="openCalendarBtn" class="action-card">Calendar</button>
-                    <button id="openReportsBtn" class="action-card">Reports</button>
-                    <button id="openCoachBtn" class="action-card">Coach</button>
-                    <button id="openHealthBtn" class="action-card">Health</button>
+                    <button id="openDashboard" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                        <span>Dashboard</span>
+                    </button>
+                    <button id="addManualBtn" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>Add Expense</span>
+                    </button>
+                    <button id="clipPageBtn" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                        <span>Clip Page</span>
+                    </button>
+                </div>
+
+                <!-- Touch-Native Floating Capsule Navigation Dock -->
+                <div class="capsule-dock">
+                    <button id="openCalendarBtn" class="dock-btn" type="button">Calendar</button>
+                    <button id="openReportsBtn" class="dock-btn" type="button">Reports</button>
+                    <button id="openCoachBtn" class="dock-btn" type="button">Twin</button>
+                    <button id="openHealthBtn" class="dock-btn" type="button">Telemetry</button>
                 </div>
             </section>
 
-            <section class="panel">
+            <!-- Recent Settled Transactions Ledger Feed -->
+            <section class="panel ledger-panel">
                 <div class="panel-header">
-                    <h2>Recent approved</h2>
-                    <button id="openTransactionsBtn" class="link-btn">All</button>
+                    <div>
+                        <span class="panel-mini-tag">CANONICAL LEDGER FEED</span>
+                        <h2>Settled Transactions</h2>
+                    </div>
+                    <button id="openTransactionsBtn" class="link-btn-subtle" type="button">
+                        <span>All Ledger</span>
+                        <span>→</span>
+                    </button>
                 </div>
                 <div id="recentTransactions" class="list">
                     <div class="empty">No transactions loaded.</div>
@@ -103,70 +208,98 @@
             </section>
         </section>
 
+        <!-- ─────────────────────────────────────────────
+             03. SYSTEM GOVERNANCE & SETTINGS VIEW
+        ───────────────────────────────────────────── -->
         <section id="settingsView" class="view" hidden>
             <header class="subbar">
-                <button id="backFromSettings" class="link-btn">Back</button>
-                <h1>Extension Settings</h1>
+                <button id="backFromSettings" class="btn-back" type="button">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h1>System Governance</h1>
             </header>
 
             <div class="settings-list">
                 <label class="setting-row">
-                    <span>
-                        <strong>Auto-track purchases</strong>
-                        <small>Detect checkout pages and queue candidates.</small>
+                    <span class="setting-text">
+                        <strong>Auto-Track Checkouts</strong>
+                        <small>Observe checkout confirmations and stage candidates.</small>
                     </span>
-                    <input type="checkbox" id="autoTrackToggle" checked>
+                    <input type="checkbox" id="autoTrackToggle" checked class="switch-input">
                 </label>
                 <label class="setting-row">
-                    <span>
-                        <strong>Show notifications</strong>
-                        <small>Notify when a candidate is queued.</small>
+                    <span class="setting-text">
+                        <strong>Sovereign Notifications</strong>
+                        <small>Notify with in-page HUD when candidate is intercepted.</small>
                     </span>
-                    <input type="checkbox" id="notificationsToggle" checked>
+                    <input type="checkbox" id="notificationsToggle" checked class="switch-input">
                 </label>
                 <label class="setting-row">
-                    <span>
-                        <strong>Share health events</strong>
-                        <small>Post sync, queue, permission, and failure status.</small>
+                    <span class="setting-text">
+                        <strong>Telemetry & Health Sync</strong>
+                        <small>Sync queues, health pings, and permission status.</small>
                     </span>
-                    <input type="checkbox" id="healthEventsToggle" checked>
+                    <input type="checkbox" id="healthEventsToggle" checked class="switch-input">
                 </label>
-                <div class="diagnostics">
-                    <span>API</span>
-                    <strong id="apiStatus">Not checked</strong>
-                </div>
-                <div class="diagnostics">
-                    <span>Inbox-first mode</span>
-                    <strong>Enabled</strong>
+
+                <div class="diagnostics-panel">
+                    <div class="diag-row">
+                        <span class="diag-lbl">Cashly Cloud API</span>
+                        <strong id="apiStatus" class="diag-val">Checking...</strong>
+                    </div>
+                    <div class="diag-row">
+                        <span class="diag-lbl">Review-First Protocol</span>
+                        <strong class="diag-val text-orange">Enforced Active</strong>
+                    </div>
+                    <div class="diag-row">
+                        <span class="diag-lbl">Banking Credentials</span>
+                        <strong class="diag-val text-emerald">Zero-Stored (Sovereign)</strong>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- ─────────────────────────────────────────────
+             04. ADD MANUAL EXPENSE VIEW
+        ───────────────────────────────────────────── -->
         <section id="addManualView" class="view" hidden>
             <header class="subbar">
-                <button id="backFromManual" class="link-btn">Back</button>
-                <h1>Add Expense</h1>
+                <button id="backFromManual" class="btn-back" type="button">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h1>Record Expense</h1>
             </header>
 
             <form id="manualForm" class="manual-form">
-                <label>Description
-                    <input type="text" id="manualDesc" placeholder="Coffee at Starbucks" required>
-                </label>
-                <label>Amount
-                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required>
-                </label>
-                <label>Category
-                    <select id="manualCategory">
-                        <option value="Shopping">Shopping</option>
+                <div class="form-group">
+                    <label for="manualDesc">Description / Merchant</label>
+                    <input type="text" id="manualDesc" placeholder="e.g. Sony Headphones, Groceries" required class="input-text">
+                </div>
+
+                <div class="form-group">
+                    <label for="manualAmount">Amount (USD / Ledger Currency)</label>
+                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required class="input-text font-mono">
+                </div>
+
+                <div class="form-group">
+                    <label for="manualCategory">Discretionary Category</label>
+                    <select id="manualCategory" class="input-select">
+                        <option value="Shopping">Shopping & Tech</option>
                         <option value="Food & Dining">Food & Dining</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Bills">Bills</option>
-                        <option value="Health">Health</option>
-                        <option value="Other">Other</option>
+                        <option value="Transport">Transport & Mobility</option>
+                        <option value="Entertainment">Entertainment & Media</option>
+                        <option value="Bills">Fixed Recurring Bills</option>
+                        <option value="Health">Health & Wellness</option>
+                        <option value="Other">Unassigned Discretionary</option>
                     </select>
-                </label>
-                <button type="submit" class="btn primary">Save expense</button>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 14px">
+                    <span>Save to Review Ledger</span>
+                    <span class="btn-arrow">→</span>
+                </button>
             </form>
         </section>
     </div>

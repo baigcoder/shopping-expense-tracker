@@ -1,11 +1,9 @@
-// Memoized spending chart. Recharts is heavy; this component re-renders only
-// when `chartData` reference changes. Animation is disabled on the dashboard
-// preview (kept only on the dedicated Analytics page).
 import { memo } from 'react';
 import {
     AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
     CartesianGrid
 } from 'recharts';
+import { TrendingUp } from 'lucide-react';
 
 export interface ChartDatum {
     day: string;
@@ -20,63 +18,92 @@ interface Props {
 const ChartTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }) => {
     if (!active || !payload || payload.length === 0) return null;
     return (
-        <div className="bg-white border-[3px] border-black p-4 shadow-[6px_6px_0px_#000000]">
-            <p className="text-[10px] font-black text-black uppercase tracking-widest mb-2 border-b-2 border-black pb-1">
+        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-3 shadow-xl backdrop-blur-md">
+            <p className="text-[10px] font-mono font-bold text-[var(--color-muted)] uppercase tracking-wider mb-2 border-b border-[var(--color-border)] pb-1">
                 {payload[0].payload.day}
             </p>
             {payload.map((entry, idx) => (
-                <div key={idx} className="flex items-center gap-3 mt-1">
-                    <div className="w-3 h-3 border-2 border-black" style={{ backgroundColor: entry.color }} />
-                    <span className="text-[10px] font-black text-black uppercase tracking-tighter">{entry.name}:</span>
-                    <span className="text-sm font-black text-black">Rs{entry.value}</span>
+                <div key={idx} className="flex items-center justify-between gap-4 mt-1 font-mono text-xs">
+                    <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+                        <span className="text-[var(--color-muted)] uppercase">{entry.name}:</span>
+                    </div>
+                    <span className="font-bold text-[var(--color-ink)] tabular-nums">Rs {entry.value.toLocaleString()}</span>
                 </div>
             ))}
         </div>
     );
 };
 
-const SpendingChartBase = ({ data }: Props) => (
-    <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="0" stroke="#e5e7eb" vertical={true} />
-            <XAxis
-                dataKey="day"
-                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
-                tickLine={false}
-                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
-                dy={10}
-            />
-            <YAxis
-                axisLine={{ stroke: '#000000', strokeWidth: 3 }}
-                tickLine={false}
-                tick={{ fill: '#000000', fontSize: 10, fontWeight: 900 }}
-                tickFormatter={(v: number) => `Rs${v}`}
-            />
-            <Tooltip content={<ChartTooltip />} />
-            <Area
-                type="stepAfter"
-                dataKey="income"
-                stroke="#000000"
-                strokeWidth={4}
-                fill="#000000"
-                fillOpacity={0.1}
-                name="Inflow"
-                isAnimationActive={false}
-                activeDot={{ r: 8, strokeWidth: 3, stroke: '#000000', fill: '#FFFFFF' }}
-            />
-            <Area
-                type="stepAfter"
-                dataKey="expense"
-                stroke="#E11D48"
-                strokeWidth={4}
-                fill="#E11D48"
-                fillOpacity={0.1}
-                name="Outflow"
-                isAnimationActive={false}
-            />
-        </AreaChart>
-    </ResponsiveContainer>
-);
+const SpendingChartBase = ({ data }: Props) => {
+    const hasData = data && data.some(d => (d.income > 0 || d.expense > 0));
+
+    if (!hasData) {
+        return (
+            <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center rounded-xl bg-[var(--color-surface-2)]/30 border border-dashed border-[var(--color-border)]">
+                <div className="w-10 h-10 rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] flex items-center justify-center mb-2">
+                    <TrendingUp className="w-5 h-5" />
+                </div>
+                <p className="text-xs font-bold text-[var(--color-ink)]">
+                    No Discretionary Burn in Current 14-Day Window
+                </p>
+                <p className="text-[11px] text-[var(--color-muted)] max-w-sm mt-1">
+                    Transactions approved from your review inbox or logged manually will dynamically draw your cumulative cash trajectory here.
+                </p>
+            </div>
+        );
+    }
+
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
+                <defs>
+                    <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+                    </linearGradient>
+                    <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#EE5024" stopOpacity={0.25} />
+                        <stop offset="95%" stopColor="#EE5024" stopOpacity={0.0} />
+                    </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                <XAxis
+                    dataKey="day"
+                    axisLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+                    tickLine={false}
+                    tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'monospace' }}
+                    dy={10}
+                />
+                <YAxis
+                    axisLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+                    tickLine={false}
+                    tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'monospace' }}
+                    tickFormatter={(v: number) => `Rs ${v >= 1000 ? `${(v/1000).toFixed(0)}k` : v}`}
+                />
+                <Tooltip content={<ChartTooltip />} />
+                <Area
+                    type="monotone"
+                    dataKey="income"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    fill="url(#incomeGrad)"
+                    name="Inflow"
+                    isAnimationActive={false}
+                />
+                <Area
+                    type="monotone"
+                    dataKey="expense"
+                    stroke="#EE5024"
+                    strokeWidth={2}
+                    fill="url(#expenseGrad)"
+                    name="Outflow"
+                    isAnimationActive={false}
+                />
+            </AreaChart>
+        </ResponsiveContainer>
+    );
+};
 
 export const SpendingChart = memo(SpendingChartBase);
 SpendingChart.displayName = 'SpendingChart';

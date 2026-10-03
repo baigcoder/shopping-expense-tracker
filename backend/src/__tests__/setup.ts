@@ -41,13 +41,38 @@ vi.mock('../config/prisma.js', () => ({
 
 // Mock Supabase
 vi.mock('@supabase/supabase-js', () => ({
-    createClient: vi.fn(() => ({
-        auth: {
-            getUser: vi.fn(),
-            signIn: vi.fn(),
-            signOut: vi.fn(),
-        },
-    })),
+    createClient: vi.fn((_url: string, _key: string, options?: any) => {
+        const headers = new Map<string, string>();
+        if (options?.global?.headers) {
+            Object.entries(options.global.headers).forEach(([k, v]) => {
+                headers.set(k, String(v));
+            });
+        }
+        return {
+            auth: {
+                getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: new Error('Invalid token') }),
+                signIn: vi.fn(),
+                signOut: vi.fn(),
+            },
+            rest: {
+                headers: {
+                    get: (headerName: string) => headers.get(headerName) || headers.get(headerName.toLowerCase()) || undefined,
+                },
+            },
+            from: vi.fn(() => ({
+                select: vi.fn().mockReturnThis(),
+                insert: vi.fn().mockReturnThis(),
+                update: vi.fn().mockReturnThis(),
+                delete: vi.fn().mockReturnThis(),
+                eq: vi.fn().mockReturnThis(),
+                order: vi.fn().mockReturnThis(),
+                limit: vi.fn().mockReturnThis(),
+                range: vi.fn().mockReturnThis(),
+                maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
+                single: vi.fn().mockResolvedValue({ data: null, error: null }),
+            })),
+        };
+    }),
 }))
 
 // Suppress console logs during tests

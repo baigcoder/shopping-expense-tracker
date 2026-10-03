@@ -1,25 +1,22 @@
-// InsightsPage - Cashly AI Financial Insights (Premium Redesign)
-// Midnight Coral Theme - Light Mode
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
-    Brain, Lightbulb, TrendingUp, AlertTriangle, Sparkles, Target,
-    ArrowRight, Zap, RefreshCw, PieChart, Scissors, Coffee,
-    UtensilsCrossed, CreditCard, PiggyBank, Trophy, Calendar,
-    ChevronRight, Plus, Shield, Activity, Wallet, Star, Check
+    AlertTriangle, Sparkles,
+    RefreshCw, Check,
+    Mic, ArrowUpRight,
+    Brain, PiggyBank, Lightbulb, Trophy
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useStore';
-import { generateSmartInsights, SmartInsight, InsightsStats, CategorySpending, getLocalFallbackTip } from '../services/smartInsightsService';
-import { getCachedAiTip, fetchAiTipInBackground } from '../services/aiTipCacheService';
-import { FINANCIAL_DATA_EVENTS } from '../services/financialDataEvents';
+import { generateSmartInsights, SmartInsight, InsightsStats, getLocalFallbackTip } from '../services/smartInsightsService';
+import { getCachedAiTip } from '../services/aiTipCacheService';
 import { formatCurrency } from '../services/currencyService';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import styles from './InsightsPage.module.css';
-import { InsightsSkeleton } from '../components/LoadingSkeleton';
-import { getBackendInsights } from '../services/aiService';
+import { Button } from '@/components/ui/button';
+import { getBackendInsights, getAIResponse } from '../services/aiService';
 import { featureExpansionApi } from '../services/featureExpansionApi';
+import { toast } from 'sonner';
+import VoiceCallModal from '../components/VoiceCallModal';
 
 const DEFAULT_INSIGHTS_STATS: InsightsStats = { potentialSavings: 0, activeTips: 0, alerts: 0, healthScore: 50 };
 
@@ -47,35 +44,37 @@ const mergeInsights = (local: SmartInsight[], remote: SmartInsight[]) => {
     return [...local, ...extras].slice(0, 8);
 };
 
-const InsightsPage = () => {
+export const InsightsPage = () => {
     const { user } = useAuthStore();
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [insights, setInsights] = useState<SmartInsight[]>([]);
     const [stats, setStats] = useState<InsightsStats>(DEFAULT_INSIGHTS_STATS);
-    const [categorySpending, setCategorySpending] = useState<CategorySpending[]>([]);
     const [aiTip, setAiTip] = useState<string | null>(null);
-    const [aiLoading, setAiLoading] = useState(false);
     const [coachPlan, setCoachPlan] = useState<any>(null);
+    const [generatingCoach, setGeneratingCoach] = useState(false);
     const [insightSource, setInsightSource] = useState<'local' | 'ai' | 'degraded'>('local');
 
-    // Icon mapping
-    const getIcon = (iconName: string) => {
-        const icons: Record<string, any> = {
-            AlertTriangle, TrendingUp, Target, Scissors, Coffee,
-            UtensilsCrossed, CreditCard, PiggyBank, Trophy, Calendar,
-            Lightbulb, Plus, Shield, Sparkles
-        };
-        return icons[iconName] || Lightbulb;
-    };
+    // Voice assistant modal
+    const [showVoiceCall, setShowVoiceCall] = useState(false);
+
+    // Interactive in-page AI conversation
+    const [chatInput, setChatInput] = useState('');
+    const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; text: string; action?: { label: string; path: string } }>>([
+        {
+            role: 'assistant',
+            text: 'Hello! I am your Cashly Co-Pilot. I monitor your transactions, spending velocities, and recurring bills.',
+            action: { label: 'Review Inbox', path: '/transaction-inbox' }
+        }
+    ]);
+    const [chatLoading, setChatLoading] = useState(false);
 
     // Fetch insights
     const fetchInsights = useCallback(async (showRefresh = false) => {
         if (!user?.id) {
             setInsights([]);
-            setCategorySpending([]);
             setInsightSource('local');
             setLoading(false);
             setRefreshing(false);
@@ -89,7 +88,6 @@ const InsightsPage = () => {
             const result = await generateSmartInsights(user.id);
             setInsights(result.insights);
             setStats(result.stats);
-            setCategorySpending(result.categorySpending);
             setInsightSource('local');
 
             void getBackendInsights(user.id).then((backend) => {
@@ -109,6 +107,14 @@ const InsightsPage = () => {
             } else {
                 setAiTip(getLocalFallbackTip(result.stats));
             }
+
+            // Load coach
+            try {
+                const plan = await featureExpansionApi.currentCoach();
+                setCoachPlan(plan);
+            } catch {
+                // Ignore
+            }
         } catch (error) {
             console.error('Failed to fetch insights:', error);
         } finally {
@@ -117,456 +123,471 @@ const InsightsPage = () => {
         }
     }, [user?.id]);
 
-    const tryFetchAiTip = async () => {
-        if (!user?.id || categorySpending.length === 0) return;
-        setAiLoading(true);
-        try {
-            const topCat = categorySpending[0];
-            await fetchAiTipInBackground(user.id, {
-                monthlyTotal: categorySpending.reduce((sum, c) => sum + c.amount, 0),
-                topCategory: topCat.category,
-                categoryAmount: topCat.amount
-            });
-        } catch (error) {
-            console.log('AI tip fetch failed');
-        }
-        setAiLoading(false);
-    };
-
     useEffect(() => {
         fetchInsights();
-        featureExpansionApi.currentCoach()
-            .then(plan => plan || featureExpansionApi.generateCoach())
-            .then(setCoachPlan)
-            .catch(() => setCoachPlan(null));
-        const handleAiTipReady = (e: CustomEvent) => setAiTip(e.detail.tip);
-        const handleDataChanged = () => fetchInsights(true);
+    }, [fetchInsights]);
 
-        window.addEventListener('ai-tip-ready', handleAiTipReady as EventListener);
-        window.addEventListener('insights-data-changed', handleDataChanged);
-        FINANCIAL_DATA_EVENTS.forEach((eventName) => {
-            window.addEventListener(eventName, handleDataChanged);
-        });
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchInsights(true);
+        toast.success('AI Context synchronized');
+    };
 
-        return () => {
-            window.removeEventListener('ai-tip-ready', handleAiTipReady as EventListener);
-            window.removeEventListener('insights-data-changed', handleDataChanged);
-            FINANCIAL_DATA_EVENTS.forEach((eventName) => {
-                window.removeEventListener(eventName, handleDataChanged);
+    const handleGenerateWeeklyCoach = async () => {
+        setGeneratingCoach(true);
+        try {
+            const plan = await featureExpansionApi.generateCoach();
+            setCoachPlan(plan);
+            toast.success('Generated new weekly financial habit plan!');
+        } catch {
+            toast.error('Could not generate coach plan');
+        } finally {
+            setGeneratingCoach(false);
+        }
+    };
+
+    const handleToggleCoachAction = async (actionId: string, currentStatus: string) => {
+        const nextStatus = currentStatus === 'done' ? 'pending' : 'done';
+        try {
+            await featureExpansionApi.updateCoachAction(actionId, nextStatus as any);
+            // Optimistic update
+            setCoachPlan((prev: any) => {
+                if (!prev || !prev.actions) return prev;
+                return {
+                    ...prev,
+                    actions: prev.actions.map((act: any) =>
+                        act.id === actionId ? { ...act, status: nextStatus } : act
+                    )
+                };
             });
-        };
-    }, [user?.id, fetchInsights]);
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1 }
+            toast.success(nextStatus === 'done' ? 'Habit completed! 🎉' : 'Marked as pending');
+        } catch {
+            toast.error('Failed to update habit');
         }
     };
 
-    const fadeInUp = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { type: "spring", stiffness: 100 }
+    // Chat submission
+    const handleSendChatMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!chatInput.trim() || !user?.id) return;
+
+        const userText = chatInput.trim();
+        setChatInput('');
+        setChatMessages(prev => [...prev, { role: 'user', text: userText }]);
+        setChatLoading(true);
+
+        try {
+            const content = await getAIResponse(userText, user.id);
+
+            // Infer structured deep-link action based on response text
+            let action: { label: string; path: string } | undefined;
+            const lower = content.toLowerCase();
+            if (lower.includes('inbox') || lower.includes('review')) {
+                action = { label: 'Review Candidates', path: '/transaction-inbox' };
+            } else if (lower.includes('budget') || lower.includes('limit')) {
+                action = { label: 'Manage Budgets', path: '/budgets' };
+            } else if (lower.includes('subscription') || lower.includes('recurring')) {
+                action = { label: 'Inspect Commitments', path: '/subscriptions' };
+            } else if (lower.includes('goal')) {
+                action = { label: 'View Savings Goals', path: '/goals' };
+            } else if (lower.includes('transaction') || lower.includes('spent')) {
+                action = { label: 'View Transactions', path: '/transactions' };
+            }
+
+            setChatMessages(prev => [...prev, { role: 'assistant', text: content, action }]);
+        } catch {
+            setChatMessages(prev => [...prev, {
+                role: 'assistant',
+                text: "I couldn't reach the model right now, but your local financial telemetry is active and healthy."
+            }]);
+        } finally {
+            setChatLoading(false);
         }
     };
-
-    const iconAnim = {
-        animate: {
-            y: [0, -4, 0],
-            scale: [1, 1.05, 1],
-            transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-        }
-    };
-
-    if (loading && insights.length === 0) {
-        return (
-            <div className={styles.mainContent}>
-                <InsightsSkeleton />
-            </div>
-        );
-    }
-
 
     return (
-        <div className={styles.mainContent}>
-            <div className={styles.contentArea}>
-                {/* Glass Header */}
-                <motion.header
-                    className={styles.header}
-                    initial={{ opacity: 0, y: -30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                >
-                    <div className={styles.headerLeft}>
-                        <motion.div
-                            className={styles.titleIcon}
-                            whileHover={{ scale: 1.1, rotate: 10 }}
-                        >
-                            <Brain size={28} />
-                        </motion.div>
-                        <div>
-                            <h1 className={styles.title}>
-                                Smart Insights
-                                <span className={cn(
-                                    styles.liveBadge,
-                                    insightSource === 'degraded' && styles.liveBadgeDegraded,
-                                    insightSource === 'local' && styles.liveBadgeLocal
-                                )}>
-                                    <Sparkles size={12} className="animate-pulse" />
-                                    {insightSource === 'ai' ? 'AI-powered' : insightSource === 'degraded' ? 'Local fallback' : 'Local insights'}
-                                </span>
-                            </h1>
-                            <p className="text-slate-500 mt-1 font-bold">
-                                {insightSource === 'ai'
-                                    ? 'AI tips based on how you spend'
-                                    : insightSource === 'degraded'
-                                        ? 'Showing local tips because live AI is unavailable'
-                                        : 'Tips from your ledger while live AI loads'}
-                            </p>
-                        </div>
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Assist & AI Financial Operator
                     </div>
-
-                    <div className="flex items-center gap-4">
-                        <motion.button
-                            whileHover={{ scale: 1.05, rotate: 15 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={styles.refreshCircle}
-                            onClick={() => fetchInsights(true)}
-                            disabled={refreshing}
-                        >
-                            <RefreshCw size={22} className={refreshing ? styles.spinning : ''} />
-                        </motion.button>
-                    </div>
-                </motion.header>
-
-                {coachPlan?.actions && (
-                    <section className="mb-6 rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-md)]">
-                        <div className="mb-6 flex items-center justify-between gap-4">
-                            <div>
-                                <h2 className="font-display text-xl font-semibold text-[var(--text-primary)]">This week’s plan</h2>
-                                <p className="mt-1 text-sm text-[var(--text-muted)]">{coachPlan.plan?.summary || 'Three actions for this week, based on spending, goals, and subscriptions.'}</p>
-                            </div>
-                            <Badge className="rounded-full border-0 bg-[#F4F0EB] px-3 py-1 text-xs font-medium text-[#57534E]">Weekly</Badge>
-                        </div>
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                            {coachPlan.actions.map((action: any) => (
-                                <button
-                                    key={action.id}
-                                    onClick={async () => {
-                                        await featureExpansionApi.updateCoachAction(action.id, action.status === 'done' ? 'pending' : 'done');
-                                        setCoachPlan(await featureExpansionApi.currentCoach());
-                                    }}
-                                    className="group rounded-[var(--r-lg)] border border-[var(--border)] bg-[#FAF8F5] p-5 text-left transition-colors hover:bg-white"
-                                >
-                                    <div className="mb-3 text-xs font-medium capitalize text-[var(--brand)]">{String(action.action_type || '').replace(/_/g, ' ')}</div>
-                                    <div className="mb-2 text-lg font-semibold">{action.title}</div>
-                                    <p className="mt-2 text-sm text-[var(--text-muted)]">{action.description}</p>
-                                    <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-4 text-xs font-medium">
-                                        <span>{action.status === 'done' ? 'Done' : 'Mark done'}</span>
-                                        {action.status === 'done' && <Check size={16} className="text-[var(--brand)]" />}
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </section>
-                )}
-
-                {/* Main Stats Row */}
-                <motion.div
-                    className={styles.statsRow}
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                >
-                    {/* Health Score */}
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <motion.div
-                            {...iconAnim}
-                            className={styles.statIconBox}
-                            style={{ background: 'var(--brand-muted)', color: 'var(--brand)', border: 'none' }}
-                        >
-                            <Activity size={24} />
-                        </motion.div>
-                        <h3 className={styles.statValue} style={{ color: stats.healthScore >= 70 ? 'var(--text-primary)' : 'var(--brand)' }}>
-                            {stats.healthScore}<span className="text-xl opacity-50">/100</span>
-                        </h3>
-                        <p className={styles.statLabel}>Money Health</p>
-                        <div className={styles.statProgress}>
-                            <motion.div
-                                className={styles.progressFill}
-                                style={{
-                                    width: `${stats.healthScore}%`,
-                                    background: 'var(--brand)'
-                                }}
-                                initial={{ width: 0 }}
-                                animate={{ width: `${stats.healthScore}%` }}
-                                transition={{ duration: 1.5, ease: "circOut" }}
-                            />
-                        </div>
-                    </motion.div>
-
-                    {/* Potential Savings */}
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <motion.div
-                            {...iconAnim}
-                            className={styles.statIconBox}
-                            style={{ background: 'var(--success-light)', color: 'var(--success)' }}
-                        >
-                            <PiggyBank size={24} />
-                        </motion.div>
-                        <h3 className={styles.statValue} style={{ color: 'var(--success)' }}>
-                            {formatCurrency(stats.potentialSavings)}
-                        </h3>
-                        <p className={styles.statLabel}>You Could Save</p>
-                        <p className="text-[10px] font-semibold text-slate-400 mt-2">Every Month</p>
-                    </motion.div>
-
-                    {/* Active Tips */}
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <motion.div
-                            {...iconAnim}
-                            className={styles.statIconBox}
-                            style={{ background: 'var(--bg-subtle)', color: 'var(--text-primary)' }}
-                        >
-                            <Lightbulb size={24} />
-                        </motion.div>
-                        <h3 className={styles.statValue} style={{ color: 'var(--text-primary)' }}>
-                            {stats.activeTips}
-                        </h3>
-                        <p className={styles.statLabel}>Tips For You</p>
-                        <p className="text-[10px] font-semibold text-slate-400 mt-2">Ways to Save</p>
-                    </motion.div>
-
-                    {/* Alerts */}
-                    <motion.div className={styles.premiumStatCard} variants={fadeInUp}>
-                        <motion.div
-                            {...iconAnim}
-                            className={styles.statIconBox}
-                            style={{
-                                background: stats.alerts > 0 ? '#fff1f2' : '#f8fafc',
-                                color: stats.alerts > 0 ? '#e11d48' : '#64748b'
-                            }}
-                        >
-                            {stats.alerts > 0 ? <AlertTriangle size={24} /> : <Shield size={24} />}
-                        </motion.div>
-                        <h3 className={styles.statValue} style={{ color: stats.alerts > 0 ? '#e11d48' : '#0f172a' }}>
-                            {stats.alerts > 0 ? stats.alerts : 'Stable'}
-                        </h3>
-                        <p className={styles.statLabel}>Warnings</p>
-                        <p className="text-[10px] font-semibold text-slate-400 mt-2">
-                            {stats.alerts > 0 ? 'Needs Attention' : 'All Good!'}
-                        </p>
-                    </motion.div>
-                </motion.div>
-
-                {/* AI Summary Card */}
-                <motion.div
-                    className={styles.aiSummaryCard}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4 }}
-                >
-                    <div className={styles.aiMagicCircle}>
-                        <Sparkles size={32} />
-                    </div>
-                    <div className={styles.aiContent}>
-                        <div className={styles.aiBadgeLabel}>
-                            <Star size={14} className="fill-indigo-500 text-indigo-500" />
-                            AI Money Advice
-                        </div>
-                        <p className={styles.aiMessage}>
-                            {aiTip || 'Looking at your spending to give you tips...'}
-                        </p>
-                    </div>
-                    <div className={styles.aiActions}>
-                        <motion.button
-                            whileHover={{ scale: 1.1, rotate: 180 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={styles.refreshCircle}
-                            onClick={tryFetchAiTip}
-                            disabled={aiLoading}
-                            style={{ border: '2px solid #E11D48', background: 'transparent' }}
-                        >
-                            <RefreshCw size={20} className={aiLoading ? styles.spinning : ''} />
-                        </motion.button>
-                    </div>
-                </motion.div>
-
-                {/* Main Content Grid */}
-                <div className={styles.mainGrid}>
-                    {/* Insights List */}
-                    <motion.div
-                        className={styles.insightsListSection}
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Contextual Intelligence
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Deterministic spending telemetry paired with grounded conversational modeling. No generic chatbot fluff.
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowVoiceCall(true)}
+                        className="rounded-full border-[var(--color-ink)] bg-white text-xs h-10 px-5 font-bold text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-white transition-all shadow-xs"
                     >
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className={styles.sectionTitle}>
-                                <div className="rounded-[var(--r-md)] bg-[var(--brand-muted)] p-2 text-[var(--brand)]">
-                                    <Target size={22} strokeWidth={2} />
-                                </div>
-                                Things to do
-                            </h2>
-                            <Badge variant="outline" className="h-8 rounded-full border-[#E7E5E4] bg-white px-4 text-xs font-medium text-[var(--text-muted)]">
-                                {insights.length} tips
-                            </Badge>
-                        </div>
-
-                        <div className={styles.insightsList}>
-                            <AnimatePresence mode="popLayout">
-                                {insights.length === 0 ? (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className="rounded-[var(--r-lg)] border border-dashed border-[var(--border)] bg-white py-16 text-center"
-                                    >
-                                        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-[var(--r-lg)] bg-[var(--bg-subtle)] text-[var(--text-primary)]">
-                                            <Trophy size={32} />
-                                        </div>
-                                        <h3 className="font-display text-xl font-semibold">You’re doing well</h3>
-                                        <p className="mx-auto mt-2 max-w-xs text-sm text-[var(--text-muted)]">
-                                            No issues found. Keep tracking your spending.
-                                        </p>
-                                    </motion.div>
-                                ) : (
-                                    insights.map((insight) => {
-                                        const Icon = getIcon(insight.icon);
-                                        return (
-                                            <motion.div
-                                                layout
-                                                key={insight.id}
-                                                className={styles.insightGlassCard}
-                                                variants={fadeInUp}
-                                                onClick={() => insight.actionPath && navigate(insight.actionPath)}
-                                            >
-                                                <div
-                                                    className={styles.insightIconBox}
-                                                    style={{
-                                                        background: insight.color === 'red' ? '#fff1f2' : '#f0fdf4',
-                                                        color: insight.color === 'red' ? '#e11d48' : '#10b981'
-                                                    }}
-                                                >
-                                                    <Icon size={24} />
-                                                </div>
-                                                <div className={styles.insightContent}>
-                                                    <div className="flex items-center gap-3 mb-2">
-                                                        <h3 className={styles.insightTitle}>{insight.title}</h3>
-                                                        {insight.severity === 'high' && (
-                                                            <span className="rounded-full border border-[#E11D48]/30 bg-[#FFE4E6] px-3 py-1 text-[10px] font-medium text-[#E11D48]">
-                                                                Urgent
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <p className={styles.insightText}>{insight.message}</p>
-                                                    {insight.value !== undefined && insight.value > 0 && (
-                                                        <div className="mt-3 flex w-fit items-center gap-2 rounded-[var(--r-md)] border border-[var(--border)] bg-white px-3 py-2">
-                                                            <Zap size={14} className="text-[var(--success)]" />
-                                                            <span className="text-xs font-medium text-[var(--text-primary)]">
-                                                                You could save {formatCurrency(insight.value)}
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className={styles.insightAction}>
-                                                    <ChevronRight size={22} strokeWidth={3} />
-                                                </div>
-                                            </motion.div>
-                                        );
-                                    })
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    </motion.div>
-
-                    {/* Sidebar */}
-                    <motion.div
-                        className={styles.sidebar}
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
+                        <Mic className="h-4 w-4 mr-2 text-[#EE5024]" />
+                        Voice Operator
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-4 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
                     >
-                        <h2 className={cn(styles.sectionTitle, "mb-6")}>
-                            <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-[var(--bg-subtle)] p-2.5 text-[var(--brand)]">
-                                <PieChart size={22} />
-                            </div>
-                            Spending Breakdown
-                        </h2>
-
-                        <motion.div variants={fadeInUp} className={styles.sidebarCard}>
-                            {categorySpending.length === 0 ? (
-                                <p className="text-center text-slate-400 py-10 font-bold text-sm">No spending data yet</p>
-                            ) : (
-                                categorySpending.slice(0, 5).map((cat, i) => (
-                                    <div key={cat.category} className={styles.categoryProgressBar}>
-                                        <div className={styles.categoryInfo}>
-                                            <span className="truncate">{cat.category}</span>
-                                            <div className="flex items-center gap-3">
-                                                <span className={styles.percentageBadge}>{cat.percentage}%</span>
-                                                {cat.trend === 'up' && <TrendingUp size={16} className="text-rose-500" />}
-                                                {cat.trend === 'down' && <TrendingUp size={16} className="text-emerald-500 rotate-180" />}
-                                            </div>
-                                        </div>
-                                        <div className={styles.progressTrack}>
-                                            <motion.div
-                                                className={styles.progressThumb}
-                                                style={{
-                                                    background: 'var(--brand)',
-                                                    width: `${cat.percentage}%`
-                                                }}
-                                                initial={{ width: 0 }}
-                                                animate={{ width: `${cat.percentage}%` }}
-                                                transition={{ delay: i * 0.1, duration: 1, ease: "circOut" }}
-                                            />
-                                        </div>
-                                        <p className="mt-2 text-right text-xs font-medium text-[var(--text-muted)]">
-                                            {formatCurrency(cat.amount)}
-                                        </p>
-                                    </div>
-                                ))
-                            )}
-                        </motion.div>
-
-                        {/* Quick Actions */}
-                        <motion.div variants={fadeInUp} className={styles.sidebarCard}>
-                            <h3 className="text-sm font-bold text-slate-600 mb-6">Quick Links</h3>
-                            <motion.button
-                                whileHover={{ x: 5 }}
-                                className={styles.actionBtn}
-                                onClick={() => navigate('/budgets')}
-                            >
-                                <div className={cn(styles.actionBtnIcon, "bg-[var(--success-light)] text-[var(--success)]")}>
-                                    <Target size={20} strokeWidth={2.5} />
-                                </div>
-                                Set a Budget
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ x: 5 }}
-                                className={styles.actionBtn}
-                                onClick={() => navigate('/goals')}
-                            >
-                                <div className={cn(styles.actionBtnIcon, "bg-[var(--brand-muted)] text-[var(--brand)]")}>
-                                    <PiggyBank size={20} strokeWidth={2.5} />
-                                </div>
-                                Save for a Goal
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ x: 5 }}
-                                className={styles.actionBtn}
-                                onClick={() => navigate('/subscriptions')}
-                            >
-                                <div className={cn(styles.actionBtnIcon, "bg-[var(--warning-light)] text-[var(--warning)]")}>
-                                    <CreditCard size={20} strokeWidth={2.5} />
-                                </div>
-                                Manage Subscriptions
-                            </motion.button>
-                        </motion.div>
-                    </motion.div>
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
+                        Sync Telemetry
+                    </Button>
                 </div>
             </div>
+
+            {/* Live Observation Banner */}
+            {aiTip && (
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white border border-[#222222] shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                        <div className="h-10 w-10 rounded-full bg-[#EE5024] text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5 sm:mt-0">
+                            <Sparkles className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="font-bold text-[11px] text-[#EE5024] uppercase tracking-wider font-mono">Live Spending Telemetry</span>
+                                <Badge variant="outline" className="text-[9px] border-white/20 text-white/80 font-mono">
+                                    Active Observation
+                                </Badge>
+                            </div>
+                            <p className="text-base text-white font-medium mt-1 leading-snug">{aiTip}</p>
+                        </div>
+                    </div>
+                    <Button
+                        size="sm"
+                        onClick={() => navigate('/transaction-inbox')}
+                        className="rounded-full bg-white text-[#111111] hover:bg-[#EE5024] hover:text-white font-bold text-xs h-9 px-4 shrink-0 transition-colors"
+                    >
+                        Review Inbox
+                        <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
+                    </Button>
+                </div>
+            )}
+
+            {/* V10 Color-Blocked KPI Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Cadmium Orange: Health Pulse */}
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                        <span>Health Pulse</span>
+                        <Brain className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : `${stats.healthScore}/100`}
+                        </div>
+                        <div className="text-xs font-semibold text-white/90 mt-2">
+                            {stats.healthScore >= 70 ? 'Optimal liquidity buffer' : 'Accelerated burn rate detected'}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. Deep Ink: Potential Savings */}
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                        <span>Identified Savings</span>
+                        <PiggyBank className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {loading ? '—' : formatCurrency(stats.potentialSavings)}
+                        </div>
+                        <div className="text-xs text-white/70 mt-2">
+                            Optimizable subscriptions & discretionary waste
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Warm Ivory / White: Active Context Vectors */}
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                        <span>Active Insights</span>
+                        <Lightbulb className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {loading ? '—' : insights.length}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            {insights.filter(i => i.severity === 'high').length} high-severity remediation targets
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Muted Sage / Soft Accent: Habits Progress */}
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                        <span>Weekly Habits</span>
+                        <Trophy className="h-4 w-4 text-[var(--color-ink)]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {coachPlan?.actions ? (
+                                `${coachPlan.actions.filter((a: any) => a.status === 'done').length}/${coachPlan.actions.length}`
+                            ) : '0/3'}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            Behavioral routines completed
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Layout: Left = Weekly Coach + Action Cards, Right = Embedded Co-Pilot Conversation */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* 2-Col Left Panel: Coach Plan & Context Insights */}
+                <div className="lg:col-span-2 space-y-6">
+                    {/* Weekly Coach Plan Card */}
+                    <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs p-5 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-sm font-bold text-[var(--color-text-primary)] flex items-center gap-1.5">
+                                    <Sparkles className="h-4 w-4 text-[var(--color-ai)]" />
+                                    Weekly Financial Coach
+                                </h2>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                                    3 concrete behavioral tasks generated from your active spending patterns
+                                </p>
+                            </div>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleGenerateWeeklyCoach}
+                                disabled={generatingCoach}
+                                className="rounded-xl border-[var(--color-border)] text-xs h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                            >
+                                <RefreshCw className={cn('h-3 w-3 mr-1', generatingCoach && 'animate-spin')} />
+                                Refresh Plan
+                            </Button>
+                        </div>
+
+                        {(!coachPlan || !coachPlan.actions || coachPlan.actions.length === 0) ? (
+                            <div className="p-6 text-center rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] space-y-2">
+                                <p className="text-xs text-[var(--color-text-muted)]">
+                                    No weekly coach plan generated yet.
+                                </p>
+                                <Button
+                                    size="sm"
+                                    onClick={handleGenerateWeeklyCoach}
+                                    disabled={generatingCoach}
+                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs h-8"
+                                >
+                                    Generate This Week's Habits
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="space-y-2.5">
+                                {coachPlan.actions.map((action: any) => {
+                                    const isDone = action.status === 'done';
+                                    return (
+                                        <div
+                                            key={action.id}
+                                            onClick={() => handleToggleCoachAction(action.id, action.status)}
+                                            className={cn(
+                                                'p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 select-none',
+                                                isDone
+                                                    ? 'bg-[var(--color-positive-subtle)] border-[var(--color-positive)]/30'
+                                                    : 'bg-[var(--color-surface)] border-[var(--color-border-subtle)] hover:border-[var(--color-border)]'
+                                            )}
+                                        >
+                                            <button
+                                                type="button"
+                                                className={cn(
+                                                    'h-5 w-5 rounded-lg border flex items-center justify-center mt-0.5 shrink-0 transition-colors',
+                                                    isDone
+                                                        ? 'bg-[var(--color-positive)] border-[var(--color-positive)] text-white'
+                                                        : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-text-secondary)]'
+                                                )}
+                                            >
+                                                {isDone && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+                                            </button>
+
+                                            <div className="flex-1">
+                                                <div className="flex items-center justify-between">
+                                                    <span className={cn(
+                                                        'text-xs font-semibold',
+                                                        isDone ? 'line-through text-[var(--color-positive)]' : 'text-[var(--color-text-primary)]'
+                                                    )}>
+                                                        {action.title}
+                                                    </span>
+                                                    {action.impact && (
+                                                        <span className="text-[10px] font-bold font-mono text-[var(--color-positive)] bg-[var(--color-positive-subtle)] px-1.5 py-0.5 rounded border border-[var(--color-positive)]/20">
+                                                            {action.impact}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className={cn(
+                                                    'text-[11px] mt-0.5 leading-relaxed',
+                                                    isDone ? 'text-[var(--color-positive)]/80' : 'text-[var(--color-text-secondary)]'
+                                                )}>
+                                                    {action.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Grounded Insight Action Cards */}
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
+                                High-Confidence Ledger Insights
+                            </h2>
+                            <span className="text-xs text-[var(--color-text-muted)] font-mono">
+                                {insights.length} recommendations
+                            </span>
+                        </div>
+
+                        <div className="space-y-3">
+                            {insights.map((insight) => (
+                                <div
+                                    key={insight.id}
+                                    className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs hover:border-[var(--color-border)] transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                                >
+                                    <div className="flex items-start gap-3">
+                                        <div className={cn(
+                                            'h-9 w-9 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs',
+                                            insight.severity === 'high' 
+                                                ? 'bg-[var(--color-danger-subtle)] text-[var(--color-danger)] border border-[var(--color-danger)]/20' 
+                                                : 'bg-[var(--color-ai-subtle)] text-[var(--color-ai)] border border-[var(--color-ai)]/20'
+                                        )}>
+                                            {insight.severity === 'high' ? (
+                                                <AlertTriangle className="h-4 w-4" />
+                                            ) : (
+                                                <Sparkles className="h-4 w-4" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-xs text-[var(--color-text-primary)]">
+                                                    {insight.title}
+                                                </span>
+                                                <Badge
+                                                    variant={insight.severity === 'high' ? 'destructive' : 'secondary'}
+                                                    className="text-[9px] uppercase tracking-wider font-mono"
+                                                >
+                                                    {insight.type}
+                                                </Badge>
+                                            </div>
+                                            <p className="text-xs text-[var(--color-text-secondary)] mt-1 max-w-xl">
+                                                {insight.message}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {insight.actionPath && (
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => navigate(insight.actionPath!)}
+                                            className="rounded-xl border-[var(--color-border)] text-xs h-8 shrink-0 font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]"
+                                        >
+                                            <span>{insight.action || 'Execute Action'}</span>
+                                            <ArrowUpRight className="h-3 w-3 ml-1" />
+                                        </Button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 1-Col Right Panel: Live Co-Pilot Conversation */}
+                <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs p-5 flex flex-col h-[640px]">
+                    <div className="flex items-center justify-between pb-3 border-b border-[var(--color-border-subtle)]">
+                        <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-xl bg-[var(--color-ai-subtle)] text-[var(--color-ai)] flex items-center justify-center font-bold">
+                                <Brain className="h-4 w-4" />
+                            </div>
+                            <div>
+                                <h3 className="text-xs font-bold text-[var(--color-text-primary)]">Co-Pilot Operator</h3>
+                                <p className="text-[10px] text-[var(--color-text-muted)]">Grounded in your financial ledger</p>
+                            </div>
+                        </div>
+                        <div className="h-2 w-2 rounded-full bg-[var(--color-positive)] animate-pulse" />
+                    </div>
+
+                    {/* Messages Area */}
+                    <div className="flex-1 overflow-y-auto py-3 space-y-3 pr-1 text-xs">
+                        {chatMessages.map((msg, i) => (
+                            <div
+                                key={i}
+                                className={cn(
+                                    'flex flex-col',
+                                    msg.role === 'user' ? 'items-end' : 'items-start'
+                                )}
+                            >
+                                <div
+                                    className={cn(
+                                        'p-3 rounded-xl max-w-[88%] leading-relaxed text-xs',
+                                        msg.role === 'user'
+                                            ? 'bg-[var(--color-brand)] text-white'
+                                            : 'bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)]'
+                                    )}
+                                >
+                                    {msg.text}
+                                </div>
+
+                                {msg.action && (
+                                    <button
+                                        onClick={() => navigate(msg.action!.path)}
+                                        className="mt-1.5 px-3 py-1 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)] text-[11px] font-semibold flex items-center gap-1 shadow-2xs hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] transition-colors"
+                                    >
+                                        <span>[{msg.action.label}]</span>
+                                        <ArrowUpRight className="h-3 w-3" />
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+
+                        {chatLoading && (
+                            <div className="flex items-center gap-1.5 text-[var(--color-text-muted)] text-xs py-1">
+                                <Sparkles className="h-3.5 w-3.5 animate-spin text-[var(--color-ai)]" />
+                                <span>Analyzing ledger...</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Chat Form */}
+                    <form onSubmit={handleSendChatMessage} className="pt-2 border-t border-[var(--color-border-subtle)] flex items-center gap-2">
+                        <input
+                            type="text"
+                            value={chatInput}
+                            onChange={e => setChatInput(e.target.value)}
+                            placeholder="Ask about spending, budgets, or bills..."
+                            className="flex-1 px-3 py-2 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-ai)]"
+                        />
+                        <Button
+                            type="submit"
+                            size="sm"
+                            disabled={!chatInput.trim() || chatLoading}
+                            className="rounded-xl bg-[var(--color-ai)] hover:bg-[var(--color-ai)]/90 text-white text-xs h-8 px-3 shadow-xs"
+                        >
+                            Send
+                        </Button>
+                    </form>
+                </div>
+            </div>
+
+            {/* Voice Assistant Modal */}
+            <VoiceCallModal
+                isOpen={showVoiceCall}
+                onClose={() => setShowVoiceCall(false)}
+                voiceName="jenny"
+                userId={user?.id || ''}
+                userName={user?.name?.split(' ')[0] || 'there'}
+            />
         </div>
     );
 };

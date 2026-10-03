@@ -118,17 +118,27 @@ app.use('/api/settings/security', createLimiter(15 * 60 * 1000, Number(process.e
 app.use('/api/settings/data', createLimiter(15 * 60 * 1000, Number(process.env.SECURITY_RATE_LIMIT_MAX || 60)));
 app.use('/api/reset', createLimiter(15 * 60 * 1000, Number(process.env.SECURITY_RATE_LIMIT_MAX || 60)));
 
+// Request correlation ID and structured observability
+app.use((req, res, next) => {
+    const incomingId = (req.headers['x-request-id'] as string) || (req.headers['x-correlation-id'] as string);
+    const requestId = incomingId || `req_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+    req.headers['x-request-id'] = requestId;
+    res.setHeader('x-request-id', requestId);
+    next();
+});
+
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging (production debugging)
+// Request logging (production debugging with correlation ID & latency)
 app.use('/api', (req, res, next) => {
     const start = Date.now();
+    const requestId = req.headers['x-request-id'];
     res.on('finish', () => {
         const duration = Date.now() - start;
-        const logLevel = res.statusCode >= 400 ? '❌' : '✅';
-        console.log(`${logLevel} ${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
+        const logLevel = res.statusCode >= 500 ? '🚨' : res.statusCode >= 400 ? '⚠️' : '✅';
+        console.log(`${logLevel} [${requestId}] ${req.method} ${req.originalUrl} - ${res.statusCode} (${duration}ms)`);
     });
     next();
 });

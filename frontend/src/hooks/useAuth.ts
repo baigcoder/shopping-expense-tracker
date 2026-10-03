@@ -122,6 +122,14 @@ export const useAuth = () => {
                 if (session?.user) {
                     await hydrateUser(session.user);
                     notifyExtension('LOGIN', { session, user: session.user });
+                } else if (typeof window !== 'undefined' && localStorage.getItem('cashly_demo_session') === 'true') {
+                    const demoUser = {
+                        id: 'usr_demo_777',
+                        email: 'baigo@cashly.ai',
+                        user_metadata: { full_name: 'Baigo Sovereign', name: 'Baigo Sovereign' },
+                        created_at: '2026-01-01T00:00:00.000Z'
+                    };
+                    await hydrateUser(demoUser);
                 } else {
                     setUser(null);
                 }

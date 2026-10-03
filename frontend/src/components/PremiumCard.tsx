@@ -16,7 +16,7 @@ const VisaLogo = () => (
 const MastercardLogo = () => (
     <svg viewBox="0 0 60 40" className="h-7 w-auto">
         <circle cx="20" cy="20" r="18" fill="#000" />
-        <circle cx="40" cy="20" r="18" fill="#E11D48" />
+        <circle cx="40" cy="20" r="18" fill="#C94343" />
     </svg>
 );
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle2, Loader2, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { sendPasswordResetEmail } from '../config/supabase';
@@ -19,9 +19,9 @@ const ForgotPasswordPage = () => {
         try {
             await sendPasswordResetEmail(email);
             setSent(true);
-            toast.success('Check your email for a reset link');
+            toast.success('Check your email for a recovery link');
         } catch (error: any) {
-            toast.error(error?.message || 'Could not send a reset link');
+            toast.error(error?.message || 'Could not send a recovery link');
         } finally {
             setIsLoading(false);
         }
@@ -29,44 +29,87 @@ const ForgotPasswordPage = () => {
 
     return (
         <AuthLayout
-            title={sent ? 'Check your email' : 'Forgot password'}
-            subtitle={sent ? `Reset instructions were sent to ${email}.` : 'Enter the email on your account and we will send a reset link.'}
+            title={sent ? 'Check your inbox' : 'Reset your password'}
+            subtitle={
+                sent
+                    ? `We sent password reset instructions to ${email}.`
+                    : 'Enter the email address associated with your Cashly workspace.'
+            }
         >
             {!sent ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-[#57534E]">Email</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-[#57534E]">
+                            Account Email
+                        </label>
                         <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
                             <Input
                                 type="email"
-                                className="pl-10"
-                                placeholder="you@email.com"
+                                className="h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]"
+                                placeholder="you@example.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                disabled={isLoading}
                             />
                         </div>
                     </div>
-                    <Button type="submit" disabled={isLoading} className="h-11 w-full">
-                        {isLoading ? 'Sending…' : 'Send reset link'}
+
+                    <Button 
+                        type="submit" 
+                        disabled={isLoading} 
+                        className="h-11 w-full bg-[var(--color-brand)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-hover)]"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Sending recovery link…
+                            </>
+                        ) : (
+                            <>
+                                <Send className="mr-2 h-4 w-4" />
+                                Send recovery link
+                            </>
+                        )}
                     </Button>
-                    <Button type="button" variant="ghost" className="w-full" onClick={() => navigate('/login')}>
-                        <ArrowLeft size={16} />
+
+                    <Button 
+                        type="button" 
+                        variant="ghost" 
+                        className="w-full text-xs font-medium text-[#57534E] hover:text-[#1C1917]" 
+                        onClick={() => navigate('/login')}
+                    >
+                        <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
                         Back to sign in
                     </Button>
                 </form>
             ) : (
                 <div className="space-y-5 text-center">
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#ECFDF5] text-[#059669]">
-                        <CheckCircle className="h-7 w-7" />
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ECFDF5] text-[#059669]">
+                        <CheckCircle2 className="h-7 w-7" />
                     </div>
-                    <Button variant="outline" className="w-full" onClick={() => setSent(false)}>
-                        Try another email
-                    </Button>
-                    <Button variant="ghost" className="w-full" onClick={() => navigate('/login')}>
-                        Back to sign in
-                    </Button>
+
+                    <p className="text-xs text-[#57534E] leading-relaxed">
+                        Didn't receive the email? Check your spam folder or try another address.
+                    </p>
+
+                    <div className="space-y-2">
+                        <Button 
+                            variant="outline" 
+                            className="h-11 w-full border-[#E7E5E4] bg-white text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]" 
+                            onClick={() => setSent(false)}
+                        >
+                            Try another email
+                        </Button>
+                        <Button 
+                            variant="ghost" 
+                            className="w-full text-xs font-medium text-[#78716C] hover:text-[#1C1917]" 
+                            onClick={() => navigate('/login')}
+                        >
+                            Back to sign in
+                        </Button>
+                    </div>
                 </div>
             )}
         </AuthLayout>

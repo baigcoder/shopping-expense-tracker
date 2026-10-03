@@ -3,18 +3,31 @@ import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { Prisma } from '@prisma/client';
 
+export type ErrorCode =
+    | 'VALIDATION_ERROR'
+    | 'UNAUTHORIZED'
+    | 'FORBIDDEN'
+    | 'NOT_FOUND'
+    | 'CONFLICT'
+    | 'RATE_LIMITED'
+    | 'DEPENDENCY_FAILURE'
+    | 'DATABASE_ERROR'
+    | 'INTERNAL_ERROR';
+
 export interface AppError extends Error {
     statusCode?: number;
+    code?: ErrorCode;
     isOperational?: boolean;
+    details?: unknown;
 }
 
 export const errorHandler = (
     err: AppError,
-    _req: Request,
+    req: Request,
     res: Response,
     _next: NextFunction
 ): void => {
-    console.error('Error:', err);
+    const requestId = (req.headers['x-request-id'] as string) || undefined;
 
     // Zod Validation Error
     if (err instanceof ZodError) {
@@ -25,31 +38,39 @@ export const errorHandler = (
 
         res.status(400).json({
             success: false,
+            code: 'VALIDATION_ERROR',
             message: 'Validation failed',
-            errors
+            errors,
+            requestId,
         });
         return;
     }
 
     // Prisma Errors
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        switch (err.code) {
+        switch ((err as Prisma.PrismaClientKnownRequestError).code) {
             case 'P2002':
                 res.status(409).json({
                     success: false,
-                    message: 'A record with this value already exists'
+                    code: 'CONFLICT',
+                    message: 'A record with this value already exists',
+                    requestId,
                 });
                 return;
             case 'P2025':
                 res.status(404).json({
                     success: false,
-                    message: 'Record not found'
+                    code: 'NOT_FOUND',
+                    message: 'Record not found',
+                    requestId,
                 });
                 return;
             default:
                 res.status(500).json({
                     success: false,
-                    message: 'Database error occurred'
+                    code: 'DATABASE_ERROR',
+                    message: 'Database error occurred',
+                    requestId,
                 });
                 return;
         }
@@ -57,19 +78,42 @@ export const errorHandler = (
 
     // Custom App Error
     if (err.isOperational) {
-        res.status(err.statusCode || 500).json({
+        const status = err.statusCode || 500;
+        const code: ErrorCode =
+            err.code ||
+            (status === 400
+                ? 'VALIDATION_ERROR'
+                : status === 401
+                ? 'UNAUTHORIZED'
+                : status === 403
+                ? 'FORBIDDEN'
+                : status === 404
+                ? 'NOT_FOUND'
+                : status === 409
+                ? 'CONFLICT'
+                : status === 429
+                ? 'RATE_LIMITED'
+                : 'INTERNAL_ERROR');
+
+        res.status(status).json({
             success: false,
-            message: err.message
+            code,
+            message: err.message,
+            details: err.details,
+            requestId,
         });
         return;
     }
 
-    // Unknown Error
+    // Unknown Error - Never leak internal stack traces or secrets in production
+    console.error(`[Unhandled Error] [Request ${requestId || 'unknown'}]:`, err);
     res.status(500).json({
         success: false,
+        code: 'INTERNAL_ERROR',
         message: process.env.NODE_ENV === 'production'
             ? 'Internal server error'
-            : err.message
+            : err.message || 'Internal server error',
+        requestId,
     });
 };
 
@@ -83,9 +127,11 @@ export const asyncHandler = (
 };
 
 // Create Custom Error
-export const createError = (message: string, statusCode: number): AppError => {
+export const createError = (message: string, statusCode: number, code?: ErrorCode, details?: unknown): AppError => {
     const error: AppError = new Error(message);
     error.statusCode = statusCode;
+    error.code = code;
     error.isOperational = true;
+    error.details = details;
     return error;
 };

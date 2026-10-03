@@ -10,12 +10,18 @@ const addDays = (date: Date, days: number) => {
     return next;
 };
 
-async function safeRows(table: string, userId: string, orderColumn = 'created_at') {
-    const { data, error } = await supabase
+async function safeRows(table: string, userId: string, orderColumn = 'created_at', limit?: number) {
+    let query = supabase
         .from(table)
         .select('*')
         .eq('user_id', userId)
         .order(orderColumn, { ascending: false });
+
+    if (limit) {
+        query = query.limit(limit);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
         console.warn(`Optional table ${table} unavailable: ${error.message}`);
@@ -315,41 +321,34 @@ export async function generateWeeklyCoachPlan(userId: string) {
         safeRows('subscriptions', userId, 'created_at'),
         safeRows('goals', userId, 'created_at'),
         safeRows('budgets', userId, 'created_at'),
-        supabase
-            .from('transaction_candidates')
-            .select('amount, category, status')
-            .eq('user_id', userId)
-            .eq('status', 'pending')
-            .limit(20)
-            .then((result) => asRows(result.data))
-            .catch(() => []),
+        safeRows('transaction_candidates', userId, 'created_at', 20),
     ]);
     const week = weekBounds();
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthlyExpenses = transactions.filter((tx) => tx.type !== 'income' && new Date(tx.date || tx.created_at) >= monthStart);
-    const monthlySpent = monthlyExpenses.reduce((sum, tx) => sum + Number(tx.amount || 0), 0);
+    const monthlyExpenses = transactions.filter((tx: any) => tx.type !== 'income' && new Date(tx.date || tx.created_at) >= monthStart);
+    const monthlySpent = monthlyExpenses.reduce((sum: number, tx: any) => sum + Number(tx.amount || 0), 0);
     const categoryTotals: Record<string, number> = {};
-    monthlyExpenses.forEach((tx) => {
+    monthlyExpenses.forEach((tx: any) => {
         const category = tx.category || 'Other';
         categoryTotals[category] = (categoryTotals[category] || 0) + Number(tx.amount || 0);
     });
     const top = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0] || ['None', 0];
-    const monthlySubs = subscriptions.reduce((sum, sub) => {
+    const monthlySubs = subscriptions.reduce((sum: number, sub: any) => {
         const price = Number(sub.price || 0);
         if (sub.cycle === 'yearly') return sum + price / 12;
         if (sub.cycle === 'weekly') return sum + price * 4;
         return sum + price;
     }, 0);
     const overBudgetCategories = budgets
-        .filter((budget) => Number(budget.amount) > 0 && (categoryTotals[budget.category] || 0) >= Number(budget.amount))
-        .map((budget) => budget.category);
+        .filter((budget: any) => Number(budget.amount) > 0 && (categoryTotals[budget.category] || 0) >= Number(budget.amount))
+        .map((budget: any) => budget.category);
     const coach = buildWeeklyCoachActions({
         topCategory: String(top[0]),
         topCategoryAmount: Number(top[1]) || 0,
         monthlySpent,
         goals,
-        trials: subscriptions.filter((sub) => sub.is_trial),
+        trials: subscriptions.filter((sub: any) => sub.is_trial),
         monthlySubCost: monthlySubs,
         pendingCount: pending.length,
         overBudgetCategories,

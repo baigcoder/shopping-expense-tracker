@@ -21,6 +21,7 @@ import {
     isLikelySameLedgerPurchase,
     normalizeCandidateHash,
 } from '../utils/candidateDedupe.js';
+import { idempotencyCoordinator } from '../utils/idempotencyGuard.js';
 
 export { AUTO_APPROVE_CONFIDENCE, shouldAutoApproveExtensionCapture };
 
@@ -494,67 +495,70 @@ export async function getPendingCandidate(userId: string, id: string) {
 }
 
 export async function approveCandidate(userId: string, id: string, updates: ApproveCandidateInput = {}) {
-    const candidate = await getPendingCandidate(userId, id);
-    if (!candidate) return null;
-    if (candidate.status === 'approved' && candidate.approved_transaction_id) {
-        return { candidate, transaction: await getMoneyTransaction(userId, candidate.approved_transaction_id), alreadyProcessed: true };
-    }
-    if (candidate.status !== 'pending') {
-        return { candidate, transaction: null, alreadyProcessed: true };
-    }
-
-    const transaction = await createMoneyTransaction({
-        user_id: userId,
-        date: normalizeDate(updates.date || candidate.date),
-        description: updates.description || candidate.description,
-        amount: updates.amount ?? candidate.amount,
-        type: updates.type || candidate.type || 'expense',
-        category: updates.category || candidate.category || 'Other',
-        source: `${candidate.source}_approved`,
-        confidence: candidate.confidence,
-        store_name: updates.merchantName || candidate.merchant_name || null,
-        product_name: null,
-        store_url: null,
-        notes: candidate.transaction_hash ? `${HASH_NOTE_PREFIX}${candidate.transaction_hash}` : null,
-    });
-
-    const { data, error } = await supabase
-        .from('transaction_candidates')
-        .update({
-            status: 'approved',
-            approved_transaction_id: transaction.id,
-            updated_at: new Date().toISOString(),
-        })
-        .eq('id', id)
-        .eq('user_id', userId)
-        .select()
-        .single();
-
-    if (error) throw error;
-    await invalidateUserAICacheIfEnabled(userId);
-
-    void broadcastPaymentCapture(userId, {
-        ...transaction,
-        pendingReview: false,
-        source: `${candidate.source}_approved`,
-        approvedFromCandidate: id,
-    });
-
-    const payload = (candidate.raw_payload || {}) as DetectedSubscriptionInput;
-    if (payload.isTrial || payload.is_trial || payload.isSubscription || payload.is_subscription || payload.type === 'trial' || payload.type === 'subscription') {
-        try {
-            await upsertDetectedSubscription(userId, {
-                ...payload,
-                merchantName: candidate.merchant_name || payload.merchantName,
-                amount: candidate.amount,
-                category: candidate.category,
-            });
-        } catch (subscriptionError) {
-            console.warn('Approved candidate subscription upsert failed:', subscriptionError);
+    return (await idempotencyCoordinator.execute(`approve:${userId}:${id}`, async () => {
+        const candidate = await getPendingCandidate(userId, id);
+        if (!candidate) return null;
+        if (candidate.status === 'approved' && candidate.approved_transaction_id) {
+            return { candidate, transaction: await getMoneyTransaction(userId, candidate.approved_transaction_id), alreadyProcessed: true };
         }
-    }
+        if (candidate.status !== 'pending') {
+            return { candidate, transaction: null, alreadyProcessed: true };
+        }
 
-    return { candidate: data as TransactionCandidate, transaction, alreadyProcessed: false };
+        const transaction = await createMoneyTransaction({
+            user_id: userId,
+            date: normalizeDate(updates.date || candidate.date),
+            description: updates.description || candidate.description,
+            amount: updates.amount ?? candidate.amount,
+            type: updates.type || candidate.type || 'expense',
+            category: updates.category || candidate.category || 'Other',
+            source: `${candidate.source}_approved`,
+            confidence: candidate.confidence,
+            store_name: updates.merchantName || candidate.merchant_name || null,
+            product_name: null,
+            store_url: null,
+            notes: candidate.transaction_hash ? `${HASH_NOTE_PREFIX}${candidate.transaction_hash}` : null,
+        });
+
+        const { data, error } = await supabase
+            .from('transaction_candidates')
+            .update({
+                status: 'approved',
+                approved_transaction_id: transaction.id,
+                updated_at: new Date().toISOString(),
+            })
+            .eq('id', id)
+            .eq('user_id', userId)
+            .eq('status', 'pending')
+            .select()
+            .single();
+
+        if (error) throw error;
+        await invalidateUserAICacheIfEnabled(userId);
+
+        void broadcastPaymentCapture(userId, {
+            ...transaction,
+            pendingReview: false,
+            source: `${candidate.source}_approved`,
+            approvedFromCandidate: id,
+        });
+
+        const payload = (candidate.raw_payload || {}) as DetectedSubscriptionInput;
+        if (payload.isTrial || payload.is_trial || payload.isSubscription || payload.is_subscription || payload.type === 'trial' || payload.type === 'subscription') {
+            try {
+                await upsertDetectedSubscription(userId, {
+                    ...payload,
+                    merchantName: candidate.merchant_name || payload.merchantName,
+                    amount: candidate.amount,
+                    category: candidate.category,
+                });
+            } catch (subscriptionError) {
+                console.warn('Approved candidate subscription upsert failed:', subscriptionError);
+            }
+        }
+
+        return { candidate: data as TransactionCandidate, transaction, alreadyProcessed: false };
+    })).result;
 }
 
 export async function rejectCandidate(userId: string, id: string) {

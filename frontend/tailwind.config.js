@@ -42,10 +42,53 @@ export default {
                     foreground: "hsl(var(--card-foreground))",
                 },
                 cream: "#FAF8F5",
-                ink: "#1C1917",
+                ink: "#142127",
                 rose: {
-                    DEFAULT: "#E11D48",
-                    dark: "#BE123C",
+                    DEFAULT: "#0E8174",
+                    dark: "#095B52",
+                },
+                v9: {
+                    midnight: "#09141B",
+                    deep: "#101E25",
+                    "surface-dark": "#142832",
+                    ivory: "#F4F3EE",
+                    soft: "#E9ECE8",
+                    "surface-light": "#FFFFFF",
+                    jade: {
+                        DEFAULT: "#0E8174",
+                        bright: "#16A394",
+                        soft: "#DDF3EF",
+                    },
+                    "text-dark": "#F7F6F1",
+                    "text-dark-muted": "#B6C1BF",
+                    "text-dark-dim": "#76888B",
+                    "text-light": "#142127",
+                    "text-light-muted": "#56656A",
+                    "text-light-dim": "#86969C",
+                    success: {
+                        DEFAULT: "#17824F",
+                        bright: "#1EA966",
+                        soft: "#E3F4EA",
+                    },
+                    warning: {
+                        DEFAULT: "#B8680B",
+                        bright: "#D97706",
+                        soft: "#FFF1DA",
+                    },
+                    danger: {
+                        DEFAULT: "#C94343",
+                        bright: "#E54B4B",
+                        soft: "#FBE9E9",
+                    },
+                    info: {
+                        DEFAULT: "#3677E8",
+                        soft: "#EAF1FF",
+                    },
+                    ai: {
+                        DEFAULT: "#7753C7",
+                        bright: "#8B62EA",
+                        soft: "#F1ECFF",
+                    },
                 },
             },
             borderRadius: {
@@ -58,6 +101,7 @@ export default {
             fontFamily: {
                 sans: ["Inter", "system-ui", "sans-serif"],
                 display: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+                mono: ["JetBrains Mono", "SFMono-Regular", "Menlo", "monospace"],
             },
             fontSize: {
                 "2xs": ["0.625rem", { lineHeight: "0.875rem" }],

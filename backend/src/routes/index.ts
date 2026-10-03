@@ -22,13 +22,52 @@ import { cacheControl } from '../middleware/cache.js';
 
 const router = Router();
 
-// Health check (cached for 1 minute)
+// Liveness check (process alive)
 router.get('/health', cacheControl('dynamic'), (_req, res) => {
     res.json({
         success: true,
-        message: 'Shopping Expense Tracker API is running',
-        timestamp: new Date().toISOString()
+        status: 'alive',
+        message: 'Cashly API service is live',
+        timestamp: new Date().toISOString(),
     });
+});
+
+// Readiness check (dependencies available)
+router.get('/ready', async (_req, res) => {
+    const startTime = Date.now();
+    try {
+        const { supabase } = await import('../config/supabase.js');
+        const { error } = await supabase.from('transactions').select('id').limit(1);
+        const latency = Date.now() - startTime;
+
+        if (error) {
+            res.status(503).json({
+                success: false,
+                status: 'degraded',
+                database: 'unavailable',
+                error: error.message,
+                latencyMs: latency,
+                timestamp: new Date().toISOString(),
+            });
+            return;
+        }
+
+        res.json({
+            success: true,
+            status: 'ready',
+            database: 'connected',
+            latencyMs: latency,
+            timestamp: new Date().toISOString(),
+        });
+    } catch (err: any) {
+        res.status(503).json({
+            success: false,
+            status: 'unready',
+            database: 'error',
+            error: err.message,
+            timestamp: new Date().toISOString(),
+        });
+    }
 });
 
 // Mount routes

@@ -14,6 +14,7 @@ vi.mock('../../config/supabase', () => ({
             }),
         },
     },
+    handleGoogleRedirect: vi.fn().mockResolvedValue(null),
 }))
 
 // Mock useAuthStore before importing the hook

@@ -85,20 +85,32 @@
 }
 
 .navItem:hover {
-    background: rgba(28, 25, 23, 0.05) !important;
-    color: var(--text-primary) !important;
+    background: var(--color-surface-2);
+    color: var(--color-ink);
 }
 
 .navItem:hover .navIcon {
-    color: var(--brand);
-    transform: none;
+    color: var(--color-brand);
 }
 
 .active {
-    background: #FFFFFF;
-    color: var(--brand) !important;
-    border-color: transparent;
-    box-shadow: var(--shadow-sm);
+    background: var(--color-ink);
+    color: #FFFFFF !important;
+    border-color: var(--color-ink);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-weight: 600;
+}
+
+.active .navIcon {
+    color: var(--color-orange) !important;
+}
+
+:global([data-theme='dark']) .active,
+:global(.dark) .active {
+    background: #1A1A1A;
+    color: #FFFFFF !important;
+    border-color: #333333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .navIcon {
@@ -130,8 +142,8 @@
     gap: 0.65rem;
     padding: 0.45rem;
     border-radius: var(--r-md);
-    background: #FFFFFF;
-    border: 1px solid var(--border);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     text-decoration: none;
     width: 100%;
     overflow: hidden;
@@ -141,8 +153,8 @@
     width: 32px;
     height: 32px;
     border-radius: 10px;
-    background: var(--bg-subtle);
-    color: var(--text-primary);
+    background: var(--color-surface-2);
+    color: var(--color-ink);
     display: flex;
     align-items: center;
     justify-content: center;

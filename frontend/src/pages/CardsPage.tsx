@@ -1,617 +1,769 @@
-// CardsPage - Stark Gen Z Brutalist Wallet Audit
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
-    Plus, CreditCard, Trash2, Eye, Shield, Smartphone, X, Clock, Lock, Copy,
-    Landmark, Building2, CheckCircle2, Edit3, Snowflake, Star, TrendingUp,
-    Calendar, DollarSign, BarChart3, AlertCircle, Check, Pencil, Zap, Target
+    Plus, CreditCard, Trash2,
+    Landmark, Building2, Snowflake, Star,
+    Pencil, Target,
+    Briefcase, Banknote, RefreshCw, ChevronRight
 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Card as UICard, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { useCardStore, useModalStore, useAuthStore, Card, CardBrand } from '../store/useStore';
-import { cardService, getBrandGradient, getThemeById } from '../services/cardService';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useCardStore, useModalStore, useAuthStore, Card } from '../store/useStore';
+import bankAccountService, { BankAccount } from '../services/bankAccountService';
+import { formatCurrency } from '../services/currencyService';
 import { toast } from 'sonner';
-import { CardsSkeleton } from '../components/LoadingSkeleton';
-import PremiumCard from '../components/PremiumCard';
-import LinkedAccountsCard from '../components/LinkedAccountsCard';
-import { useSound } from '@/hooks/useSound';
-import styles from './CardsPage.module.css';
 import { cn } from '@/lib/utils';
+import { useSound } from '@/hooks/useSound';
 
-// Animation Variants
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
+const ACCOUNT_TYPE_CONFIG = {
+    checking: { label: 'Checking', icon: Building2, color: 'text-blue-600 bg-blue-50' },
+    savings: { label: 'Savings', icon: Landmark, color: 'text-emerald-600 bg-emerald-50' },
+    credit: { label: 'Credit Card', icon: CreditCard, color: 'text-rose-600 bg-rose-50' },
+    investment: { label: 'Investment', icon: Briefcase, color: 'text-purple-600 bg-purple-50' },
+    cash: { label: 'Cash / Other', icon: Banknote, color: 'text-amber-600 bg-amber-50' }
 };
 
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-};
+export const CardsPage = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const initialTab = searchParams.get('tab') === 'accounts' ? 'accounts' : 'cards';
 
-const CardsPage = () => {
+    const [activeTab, setActiveTab] = useState<'cards' | 'accounts'>(initialTab);
     const { cards, initializeCards, removeCard, updateCard, isLoading: cardsLoading } = useCardStore();
     const { openAddCard } = useModalStore();
     const { user } = useAuthStore();
     const sound = useSound();
 
-    // State
+    // Accounts state
+    const [accounts, setAccounts] = useState<BankAccount[]>([]);
+    const [accountsLoading, setAccountsLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [showAccountModal, setShowAccountModal] = useState(false);
+    const [editingAccount, setEditingAccount] = useState<BankAccount | null>(null);
+
+    const [accountForm, setAccountForm] = useState({
+        name: '',
+        bank_name: '',
+        account_type: 'checking' as BankAccount['account_type'],
+        balance: '',
+    });
+    const [accountSubmitting, setAccountSubmitting] = useState(false);
+
+    // Selected Card inspection modal
     const [viewingCard, setViewingCard] = useState<Card | null>(null);
-    const [isEditingNickname, setIsEditingNickname] = useState(false);
-    const [editedNickname, setEditedNickname] = useState('');
     const [isEditingLimit, setIsEditingLimit] = useState(false);
     const [editedLimit, setEditedLimit] = useState('');
 
-    // CVV Password State
-    const [cvvPassword, setCvvPassword] = useState('');
-    const [confirmCvvPassword, setConfirmCvvPassword] = useState('');
-    const [isSettingCvvPassword, setIsSettingCvvPassword] = useState(false);
-    const [isVerifyingCvv, setIsVerifyingCvv] = useState(false);
-    const [cvvVerified, setCvvVerified] = useState(false);
-    const [cvvValue, setCvvValue] = useState('');
-    const [cvvTimer, setCvvTimer] = useState(0);
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab === 'accounts' || tab === 'cards') {
+            setActiveTab(tab);
+        }
+    }, [searchParams]);
 
-    // Initialize cards on mount
+    const handleTabChange = (tab: 'cards' | 'accounts') => {
+        setActiveTab(tab);
+        setSearchParams(tab === 'cards' ? {} : { tab });
+    };
+
+    // Load Cards & Accounts
+    const fetchAccounts = useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            const data = await bankAccountService.getAll(user.id);
+            setAccounts(data);
+        } catch {
+            console.error('Failed to load accounts');
+        } finally {
+            setAccountsLoading(false);
+            setRefreshing(false);
+        }
+    }, [user?.id]);
+
     useEffect(() => {
         if (user?.id) {
             initializeCards(user.id);
+            fetchAccounts();
         }
-    }, [user?.id, initializeCards]);
+    }, [user?.id, initializeCards, fetchAccounts]);
 
-    // Listen for card changes
-    useEffect(() => {
-        const handleCardChange = () => {
-            if (user?.id) initializeCards(user.id);
-        };
-        window.addEventListener('card-added', handleCardChange);
-        window.addEventListener('card-updated', handleCardChange);
-        window.addEventListener('card-deleted', handleCardChange);
-        return () => {
-            window.removeEventListener('card-added', handleCardChange);
-            window.removeEventListener('card-updated', handleCardChange);
-            window.removeEventListener('card-deleted', handleCardChange);
-        };
-    }, [user?.id, initializeCards]);
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        if (user?.id) {
+            initializeCards(user.id);
+            await fetchAccounts();
+        }
+        toast.success('Instruments synchronized');
+    };
 
-    // Toggle freeze
-    const handleToggleFreeze = async () => {
-        if (!viewingCard) return;
-        const newFrozen = !viewingCard.is_frozen;
-        updateCard(viewingCard.id, { is_frozen: newFrozen });
-        setViewingCard({ ...viewingCard, is_frozen: newFrozen });
-        toast.success(newFrozen ? 'Card frozen' : 'Card unfrozen');
+    // Toggle card freeze
+    const handleToggleFreeze = async (card: Card) => {
+        const newFrozen = !card.is_frozen;
+        await updateCard(card.id, { is_frozen: newFrozen });
+        if (viewingCard?.id === card.id) {
+            setViewingCard({ ...viewingCard, is_frozen: newFrozen });
+        }
+        toast.success(newFrozen ? `${card.nickname || 'Card'} frozen` : `${card.nickname || 'Card'} unfrozen`);
         sound.playClick();
     };
 
-    // Set as default
-    const handleSetDefault = async () => {
-        if (!viewingCard) return;
-        cards.forEach(c => {
-            if (c.is_default && c.id !== viewingCard.id) {
-                updateCard(c.id, { is_default: false });
+    // Set Default Card
+    const handleSetDefault = async (card: Card) => {
+        for (const c of cards) {
+            if (c.is_default && c.id !== card.id) {
+                await updateCard(c.id, { is_default: false });
             }
-        });
-        updateCard(viewingCard.id, { is_default: true });
-        setViewingCard({ ...viewingCard, is_default: true });
-        toast.success('Default card updated');
+        }
+        await updateCard(card.id, { is_default: true });
+        if (viewingCard?.id === card.id) {
+            setViewingCard({ ...viewingCard, is_default: true });
+        }
+        toast.success(`${card.nickname || 'Card'} set as primary payment card`);
         sound.playSuccess();
     };
 
-    // Save nickname
-    const handleSaveNickname = async () => {
-        if (!viewingCard) return;
-        updateCard(viewingCard.id, { nickname: editedNickname });
-        setViewingCard({ ...viewingCard, nickname: editedNickname });
-        setIsEditingNickname(false);
-        toast.success('Nickname saved');
+    // Delete Card
+    const handleDeleteCard = async (cardId: string, cardName: string) => {
+        if (!confirm(`Delete payment card "${cardName}"?`)) return;
+        await removeCard(cardId);
+        if (viewingCard?.id === cardId) setViewingCard(null);
+        toast.success('Card removed');
         sound.playClick();
     };
 
-    // Save spending limit
+    // Update Spending Limit
     const handleSaveLimit = async () => {
         if (!viewingCard) return;
-        const limit = parseFloat(editedLimit) || 0;
-        updateCard(viewingCard.id, { spending_limit: limit });
+        const limit = parseFloat(editedLimit);
+        if (isNaN(limit) || limit < 0) {
+            toast.error('Please enter a valid spending limit');
+            return;
+        }
+        await updateCard(viewingCard.id, { spending_limit: limit });
         setViewingCard({ ...viewingCard, spending_limit: limit });
         setIsEditingLimit(false);
-        toast.success('Limit saved');
-        sound.playClick();
+        toast.success('Card spending limit updated');
     };
 
-    // Delete card
-    const handleDeleteCard = async () => {
-        if (!viewingCard) return;
-        if (confirm('Remove this card?')) {
-            removeCard(viewingCard.id);
-            setViewingCard(null);
-            toast.success('Card removed');
-            sound.playSuccess();
-        }
-    };
-
-    // Copy to clipboard
-    const handleCopy = (text: string) => {
-        navigator.clipboard.writeText(text);
-        toast.success('Copied');
-        sound.playClick();
-    };
-
-    // Format spending limit percentage
-    const getSpendingProgress = (card: Card) => {
-        if (!card.spending_limit || card.spending_limit === 0) return 0;
-        return Math.min(100, ((card.total_spent || 0) / card.spending_limit) * 100);
-    };
-
-    // Format last used
-    const formatLastUsed = (date?: string) => {
-        if (!date) return 'Never used';
-        const d = new Date(date);
-        const now = new Date();
-        const diff = now.getTime() - d.getTime();
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        if (days === 0) return 'TODAY';
-        if (days === 1) return 'YESTERDAY';
-        if (days < 7) return `${days}D AGO`;
-        return d.toLocaleDateString().toUpperCase();
-    };
-
-    // CVV Timer countdown
-    useEffect(() => {
-        if (cvvTimer > 0) {
-            const timer = setTimeout(() => setCvvTimer(cvvTimer - 1), 1000);
-            return () => clearTimeout(timer);
-        } else if (cvvTimer === 0 && cvvVerified) {
-            setCvvVerified(false);
-            setCvvValue('');
-        }
-    }, [cvvTimer, cvvVerified]);
-
-    // Save CVV password
-    const handleSaveCvvPassword = async () => {
-        if (!viewingCard) return;
-        if (cvvPassword.length < 4) {
-            toast.error('Use at least 4 characters');
-            return;
-        }
-        if (cvvPassword !== confirmCvvPassword) {
-            toast.error('Passwords don’t match');
-            return;
-        }
-        updateCard(viewingCard.id, {
-            cvv_password: cvvPassword,
-            cvv_encrypted: cvvValue
+    // Bank Account Handlers
+    const handleOpenAddAccount = () => {
+        setEditingAccount(null);
+        setAccountForm({
+            name: '',
+            bank_name: '',
+            account_type: 'checking',
+            balance: '',
         });
-        setViewingCard({ ...viewingCard, cvv_password: cvvPassword, cvv_encrypted: cvvValue });
-        setIsSettingCvvPassword(false);
-        setCvvPassword('');
-        setConfirmCvvPassword('');
-        setCvvValue('');
-        toast.success('Card locked');
-        sound.playSuccess();
+        setShowAccountModal(true);
     };
 
-    // Verify CVV password
-    const handleVerifyCvv = () => {
-        if (!viewingCard) return;
-        if (cvvPassword === viewingCard.cvv_password) {
-            setCvvVerified(true);
-            setCvvTimer(30);
-            setCvvValue(viewingCard.cvv_encrypted || '***');
-            setIsVerifyingCvv(false);
-            setCvvPassword('');
-            toast.success('CVV shown for 30 seconds');
-            sound.playSuccess();
-        } else {
-            toast.error('Wrong password');
-            sound.playClick();
+    const handleOpenEditAccount = (acc: BankAccount) => {
+        setEditingAccount(acc);
+        setAccountForm({
+            name: acc.name,
+            bank_name: acc.bank_name,
+            account_type: acc.account_type,
+            balance: acc.balance.toString(),
+        });
+        setShowAccountModal(true);
+    };
+
+    const handleSaveAccount = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user?.id || !accountForm.name) return;
+        setAccountSubmitting(true);
+        try {
+            const balanceNum = parseFloat(accountForm.balance) || 0;
+            const data = {
+                user_id: user.id,
+                name: accountForm.name,
+                bank_name: accountForm.bank_name || 'Bank',
+                account_type: accountForm.account_type,
+                balance: balanceNum,
+                currency: 'USD',
+                color: '#E11D48',
+                icon: accountForm.account_type,
+                is_active: true,
+                last_updated: new Date().toISOString()
+            };
+
+            if (editingAccount) {
+                await bankAccountService.update(editingAccount.id, data);
+                toast.success('Account updated');
+            } else {
+                await bankAccountService.create(data);
+                toast.success('Bank account linked');
+            }
+
+            setShowAccountModal(false);
+            fetchAccounts();
+        } catch {
+            toast.error('Failed to save bank account');
+        } finally {
+            setAccountSubmitting(false);
         }
     };
 
-    const handleCardClick = (card: Card) => {
-        setViewingCard(card);
-        setEditedNickname(card.nickname || '');
-        setEditedLimit(card.spending_limit?.toString() || '');
-        setIsEditingNickname(false);
-        setIsEditingLimit(false);
-        setCvvVerified(false);
-        setCvvPassword('');
-        setConfirmCvvPassword('');
-        setIsSettingCvvPassword(false);
-        setIsVerifyingCvv(false);
-        setCvvTimer(0);
-        setCvvValue('');
-        sound.playClick();
+    const handleDeleteAccount = async (id: string, name: string) => {
+        if (!confirm(`Remove account "${name}"?`)) return;
+        const success = await bankAccountService.delete(id);
+        if (success) {
+            toast.success('Account removed');
+            fetchAccounts();
+        } else {
+            toast.error('Failed to delete account');
+        }
     };
 
-    if (cardsLoading && cards.length === 0) {
-        return <CardsSkeleton />;
-    }
+    // Net worth summary
+    const netWorthData = useMemo(() => {
+        return bankAccountService.calculateNetWorth(accounts);
+    }, [accounts]);
 
     return (
-        <div className={styles.mainContent}>
-            {/* Brutalist Header */}
-            <motion.header
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                className={styles.header}
-            >
-                <div className={styles.headerTitle}>
-                    <div className={styles.headerIcon}>
-                        <CreditCard size={32} strokeWidth={3} />
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Capital Infrastructure
                     </div>
-                    <div className={styles.headerInfo}>
-                        <h1>Cards</h1>
-                        <p>
-                            Saved cards for checkout capture
-                            <span className={styles.secureBadge}>Encrypted</span>
-                        </p>
-                    </div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Instruments & Channels
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Physical payment cards, spending limits, and connected bank capital feeds synchronized with the browser capture engine.
+                    </p>
                 </div>
-                <div className={styles.headerActions}>
-                    <button
-                        className="h-11 rounded-[var(--r-md)] border border-[var(--border)] bg-white px-5 text-sm font-medium hover:bg-[var(--bg-subtle)]"
-                        onClick={() => initializeCards(user?.id || '')}
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRefresh}
+                        disabled={refreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-4 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
                     >
-                        <Clock className="inline mr-2 h-4 w-4" strokeWidth={2} />
-                        Refresh
-                    </button>
-                    <button
-                        onClick={openAddCard}
-                        className="h-11 rounded-[var(--r-md)] bg-[var(--brand)] px-5 text-sm font-semibold text-white hover:bg-[var(--brand-hover)]"
-                    >
-                        <Plus className="inline mr-2 h-5 w-5" strokeWidth={2} />
-                        Add card
-                    </button>
-                </div>
-            </motion.header>
-
-            {/* Overview Section */}
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className={styles.overviewGrid}
-            >
-                {[
-                    { icon: <CreditCard size={24} strokeWidth={2} />, label: "Cards", value: cards.length, sub: "Saved", progress: (cards.length / 5) * 100, color: "#1C1917" },
-                    { icon: <Shield size={24} strokeWidth={2} />, label: "Security", value: "100%", sub: "Encrypted", progress: 100, color: "#1C1917" },
-                    { icon: <Landmark size={24} strokeWidth={2} />, label: "Payments", value: "Ready", sub: "Checkout", progress: 100, color: "#E11D48" }
-                ].map((stat, i) => (
-                    <motion.div key={i} variants={itemVariants} className={styles.premiumStatCard}>
-                        <div className={styles.statHeader}>
-                            <div className={styles.statIconContainer}>
-                                {stat.icon}
-                            </div>
-                            <div className={styles.secureBadge}>Verified</div>
-                        </div>
-                        <div className={styles.statLabel}>{stat.label}</div>
-                        <div className={styles.statValueContainer}>
-                            <div className={styles.statValue} style={{ color: stat.color }}>{stat.value}</div>
-                            <div className={styles.statSubtext}>{stat.sub}</div>
-                        </div>
-                        <div className={styles.statProgress}>
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${stat.progress}%` }}
-                                className={styles.progressFill}
-                                style={{ background: stat.color }}
-                            />
-                        </div>
-                    </motion.div>
-                ))}
-            </motion.div>
-
-            {/* Connected Banks Section */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className={styles.banksSection}
-            >
-                <div className={styles.banksHeader}>
-                    <div className={styles.banksIconContainer}>
-                        <Building2 size={32} strokeWidth={3} />
-                    </div>
-                    <div className={styles.banksInfo}>
-                        <h3>Linked accounts</h3>
-                        <p>Banks connected for import</p>
-                    </div>
-                    <div className={styles.secureBadge}>Encrypted</div>
-                </div>
-                <div className={styles.banksContent}>
-                    <LinkedAccountsCard />
-                </div>
-            </motion.div>
-
-            {/* Wallet Section */}
-            <div className={styles.walletSection}>
-                <div className={styles.sectionHeader}>
-                    <div className={styles.sectionTitle}>
-                        <h2>Wallet</h2>
-                        <p>Your saved cards</p>
-                    </div>
-                    <div className={styles.sectionLine} />
-                    <div className={styles.encryptedTag}>
-                        <Lock size={14} strokeWidth={3} />
-                        Encrypted
-                    </div>
-                </div>
-
-                <div className={styles.cardsGrid}>
-                    <motion.div
-                        whileHover={{ scale: 1.02, translate: '-4px, -4px' }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={openAddCard}
-                        className={styles.addCardTile}
-                    >
-                        <div className={styles.addCardIcon}>
-                            <Plus size={40} strokeWidth={3} />
-                        </div>
-                        <span className={styles.addCardText}>Add a card</span>
-                    </motion.div>
-
-                    <AnimatePresence mode="popLayout">
-                        {cards.map((card) => (
-                            <PremiumCard
-                                key={card.id}
-                                card={card}
-                                onClick={() => handleCardClick(card)}
-                            />
-                        ))}
-                    </AnimatePresence>
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
+                        Sync Feeds
+                    </Button>
+                    {activeTab === 'cards' ? (
+                        <Button
+                            size="sm"
+                            onClick={openAddCard}
+                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-5 shadow-sm transition-all"
+                        >
+                            <Plus className="h-4 w-4 mr-1.5" />
+                            Add Payment Card
+                        </Button>
+                    ) : (
+                        <Button
+                            size="sm"
+                            onClick={handleOpenAddAccount}
+                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-5 shadow-sm transition-all"
+                        >
+                            <Plus className="h-4 w-4 mr-1.5" />
+                            Link Bank Account
+                        </Button>
+                    )}
                 </div>
             </div>
 
-            {/* Brutalist Card Details Modal */}
-            <Dialog open={!!viewingCard} onOpenChange={() => setViewingCard(null)}>
-                <AnimatePresence>
-                    {viewingCard && (
-                        <DialogContent className={styles.glassDialog}>
-                            <div className={styles.modalHeader}>
-                                <div className="absolute top-8 right-8 flex gap-3">
-                                    {viewingCard.is_frozen && (
-                                        <Badge className="bg-[#E11D48] text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
-                                        Frozen
-                                        </Badge>
-                                    )}
-                                    {viewingCard.is_default && (
-                                        <Badge className="bg-black text-white border-2 border-black font-black uppercase text-[10px] px-3 py-1">
-                                        Default
-                                        </Badge>
-                                    )}
-                                </div>
-                                <div className={styles.modalIcon}>
-                                    {viewingCard.is_frozen ? <Snowflake size={32} strokeWidth={3} /> : <Target size={32} strokeWidth={3} />}
-                                </div>
-                                
-                                {isEditingNickname ? (
-                                    <div className="flex items-center gap-4 justify-center mt-6">
-                                        <Input
-                                            value={editedNickname}
-                                            onChange={(e) => setEditedNickname(e.target.value)}
-                                            className="h-12 w-60 border-4 border-black text-center font-black uppercase text-sm"
-                                            autoFocus
-                                        />
-                                        <button className="h-12 px-6 bg-black text-white font-black" onClick={handleSaveNickname}>
-                                            <Check size={20} strokeWidth={3} />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <DialogTitle className="mt-6 flex items-center justify-center gap-4 font-display text-2xl font-semibold tracking-tight">
-                                        {viewingCard.nickname || `${viewingCard.type.toUpperCase()} •••${viewingCard.last4}`}
-                                        <button onClick={() => { setEditedNickname(viewingCard.nickname || ''); setIsEditingNickname(true); }}>
-                                            <Pencil size={20} className="text-black/30 hover:text-black" strokeWidth={3} />
-                                        </button>
-                                    </DialogTitle>
-                                )}
-                                <DialogDescription className="mt-2 text-sm text-[var(--text-muted)]">
-                                    {viewingCard.holder} · expires {viewingCard.expiry}
-                                </DialogDescription>
+            {/* Instrument Editorial Pill Tabs */}
+            <div className="flex items-center justify-between pb-2">
+                <div className="inline-flex p-1.5 rounded-full bg-white border border-[var(--color-border)] shadow-xs">
+                    <button
+                        onClick={() => handleTabChange('cards')}
+                        className={cn(
+                            'px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2',
+                            activeTab === 'cards'
+                                ? 'bg-[#111111] text-white shadow-xs'
+                                : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]'
+                        )}
+                    >
+                        <CreditCard className={cn('h-3.5 w-3.5', activeTab === 'cards' ? 'text-[#EE5024]' : '')} />
+                        <span>Payment Cards ({cards.length})</span>
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('accounts')}
+                        className={cn(
+                            'px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2',
+                            activeTab === 'accounts'
+                                ? 'bg-[#111111] text-white shadow-xs'
+                                : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]'
+                        )}
+                    >
+                        <Landmark className={cn('h-3.5 w-3.5', activeTab === 'accounts' ? 'text-[#EE5024]' : '')} />
+                        <span>Bank Accounts ({accounts.length})</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Content: Cards Tab */}
+            {activeTab === 'cards' && (
+                <div className="space-y-6">
+                    {cardsLoading && cards.length === 0 ? (
+                        <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                            Loading payment instruments...
+                        </div>
+                    ) : cards.length === 0 ? (
+                        <div className="p-12 text-center rounded-[24px] bg-white border border-[var(--color-border)] space-y-3">
+                            <div className="h-12 w-12 rounded-full bg-[var(--color-canvas)] flex items-center justify-center mx-auto text-[#EE5024]">
+                                <CreditCard className="h-6 w-6" />
                             </div>
+                            <div>
+                                <h3 className="font-bold text-sm text-[var(--color-ink)] uppercase">
+                                    No payment cards linked
+                                </h3>
+                                <p className="text-xs text-[var(--color-ink)]/70 max-w-sm mx-auto mt-1">
+                                    Link your cards to automatically match checkout receipts from the companion extension.
+                                </p>
+                            </div>
+                            <div className="pt-2">
+                                <Button
+                                    size="sm"
+                                    onClick={openAddCard}
+                                    className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white text-xs font-bold px-5 h-9"
+                                >
+                                    <Plus className="h-3.5 w-3.5 mr-1" />
+                                    Add Your First Card
+                                </Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {cards.map((card) => {
+                                const limit = card.spending_limit || 0;
+                                const spent = card.total_spent || 0;
+                                const progress = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
 
-                            <div className={styles.modalContent}>
-                                <div className="mb-10 flex justify-center">
-                                    <PremiumCard card={viewingCard} showFullNumber={false} className="scale-110" />
-                                </div>
-
-                                <div className="bg-black text-white p-8 mb-8 border-4 border-black">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <DollarSign size={20} strokeWidth={3} />
-                                            <span className="text-xs font-medium">Spending limit</span>
-                                        </div>
-                                        {isEditingLimit ? (
-                                            <div className="flex items-center gap-4">
-                                                <Input
-                                                    type="number"
-                                                    value={editedLimit}
-                                                    onChange={(e) => setEditedLimit(e.target.value)}
-                                                    className="h-10 w-32 border-2 border-white bg-black text-white text-right font-black uppercase text-xs"
-                                                />
-                                                <button className="bg-white text-black p-2" onClick={handleSaveLimit}>
-                                                    <Check size={16} strokeWidth={3} />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <button
-                                                className="font-black text-xs uppercase text-[#E11D48] hover:underline"
-                                                onClick={() => { setEditedLimit(viewingCard.spending_limit?.toString() || ''); setIsEditingLimit(true); }}
-                                            >
-                                                {viewingCard.spending_limit ? `RS ${viewingCard.spending_limit.toLocaleString()}` : 'Set a limit'}
-                                            </button>
-                                        )}
-                                    </div>
-                                    {viewingCard.spending_limit && viewingCard.spending_limit > 0 && (
-                                        <>
-                                            <div className="h-6 bg-white/10 border-2 border-white overflow-hidden">
-                                                <motion.div
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${getSpendingProgress(viewingCard)}%` }}
-                                                    className="h-full bg-[#E11D48]"
-                                                />
-                                            </div>
-                                            <div className="flex justify-between mt-4 font-black text-[10px] uppercase tracking-widest">
-                                                <span>Spent: RS {(viewingCard.total_spent || 0).toLocaleString()}</span>
-                                                <span>{Math.round(getSpendingProgress(viewingCard))}% used</span>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4 mb-8">
-                                    <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
-                                        <Calendar size={24} strokeWidth={3} className="text-black/30" />
-                                        <div>
-                                            <div className="text-xs font-medium text-[var(--text-muted)]">Last used</div>
-                                            <div className="font-black text-sm">{formatLastUsed(viewingCard.last_used_at)}</div>
-                                        </div>
-                                    </div>
-                                    <div className="bg-white border-4 border-black p-6 flex items-center gap-4">
-                                        <BarChart3 size={24} strokeWidth={3} className="text-black/30" />
-                                        <div>
-                                            <div className="text-xs font-medium text-[var(--text-muted)]">This month</div>
-                                            <div className="font-black text-sm">RS {(viewingCard.total_spent || 0).toLocaleString()}</div>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        className={cn(
-                                            "h-16 border-4 border-black font-black uppercase text-xs flex items-center justify-center gap-3 transition-colors",
-                                            viewingCard.is_frozen ? "bg-[#E11D48] text-white" : "bg-white text-black hover:bg-black hover:text-white"
-                                        )}
-                                        onClick={handleToggleFreeze}
+                                return (
+                                    <div
+                                        key={card.id}
+                                        onClick={() => {
+                                            setViewingCard(card);
+                                            setEditedLimit(card.spending_limit?.toString() || '');
+                                        }}
+                                        className="cursor-pointer group p-6 rounded-[24px] bg-[#111111] text-white border border-[#222222] shadow-sm hover:border-[#EE5024] transition-all space-y-5 relative overflow-hidden"
                                     >
-                                        <Snowflake size={20} strokeWidth={3} />
-                                        {viewingCard.is_frozen ? 'Unfreeze card' : 'Freeze card'}
-                                    </button>
-                                    <button
-                                        className={cn(
-                                            "h-16 border-4 border-black font-black uppercase text-xs flex items-center justify-center gap-3 transition-colors",
-                                            viewingCard.is_default ? "bg-black text-white" : "bg-white text-black hover:bg-black hover:text-white"
-                                        )}
-                                        onClick={handleSetDefault}
-                                        disabled={viewingCard.is_default}
-                                    >
-                                        <Star size={20} strokeWidth={3} />
-                                        {viewingCard.is_default ? 'Default card' : 'Set as default'}
-                                    </button>
-                                </div>
+                                        {/* Card Visual Mini Header */}
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-9 w-9 rounded-xl bg-[#222222] text-[#EE5024] flex items-center justify-center font-bold text-xs font-mono border border-white/10">
+                                                    {(card.type || 'card').slice(0, 4).toUpperCase()}
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-sm text-white">
+                                                        {card.nickname || `${(card.type || 'Card').toUpperCase()} •••• ${card.last4}`}
+                                                    </div>
+                                                    <div className="text-[11px] text-white/50 font-mono">
+                                                        •••• {card.last4} | Exp {card.expiry}
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                <div className={styles.vaultDetails}>
-                                    <div className={styles.detailRow}>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-black text-white flex items-center justify-center border-2 border-black">
-                                                <CreditCard size={24} strokeWidth={3} />
+                                            <div className="flex items-center gap-1.5">
+                                                {card.is_default && (
+                                                    <Badge variant="default" className="text-[9px] bg-[#EE5024] text-white font-mono uppercase">
+                                                        Primary
+                                                    </Badge>
+                                                )}
+                                                {card.is_frozen && (
+                                                    <Badge variant="destructive" className="text-[9px] font-mono uppercase">
+                                                        Frozen
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Spending Limit Progress */}
+                                        <div className="space-y-1.5 pt-2">
+                                            <div className="flex items-center justify-between text-xs">
+                                                <span className="text-[var(--color-text-muted)]">Current Month Spent</span>
+                                                <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                                    {formatCurrency(spent)} {limit > 0 ? `/ ${formatCurrency(limit)}` : ''}
+                                                </span>
+                                            </div>
+                                            {limit > 0 && (
+                                                <div className="h-1.5 w-full rounded-full bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] overflow-hidden">
+                                                    <div
+                                                        className={cn(
+                                                            'h-full rounded-full transition-all',
+                                                            progress >= 100 ? 'bg-[var(--color-danger)]' : progress >= 80 ? 'bg-[var(--color-warning)]' : 'bg-[var(--color-positive)]'
+                                                        )}
+                                                        style={{ width: `${progress}%` }}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border-subtle)] text-xs text-[var(--color-text-secondary)]">
+                                            <span>Click to inspect & control</span>
+                                            <ChevronRight className="h-3.5 w-3.5 text-[var(--color-text-muted)] group-hover:translate-x-0.5 transition-transform" />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Content: Accounts Tab */}
+            {activeTab === 'accounts' && (
+                <div className="space-y-6">
+                    {/* Net Worth Summary Bento */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
+                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                                <span>Liquid Assets</span>
+                                <Building2 className="h-4 w-4 text-[var(--color-positive)]" />
+                            </div>
+                            <div className="text-2xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-positive)]">
+                                {accountsLoading ? '—' : formatCurrency(netWorthData.assets)}
+                            </div>
+                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                                Checking, savings & deposits
+                            </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
+                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                                <span>Liabilities & Balances</span>
+                                <CreditCard className="h-4 w-4 text-[var(--color-danger)]" />
+                            </div>
+                            <div className="text-2xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-danger)]">
+                                {accountsLoading ? '—' : formatCurrency(netWorthData.liabilities)}
+                            </div>
+                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                                Outstanding credit balances
+                            </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
+                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                                <span>Total Net Worth</span>
+                                <Target className="h-4 w-4 text-[var(--color-brand)]" />
+                            </div>
+                            <div className={cn(
+                                "text-2xl font-bold tracking-tight tabular-nums font-mono",
+                                netWorthData.netWorth >= 0 ? "text-[var(--color-text-primary)]" : "text-[var(--color-danger)]"
+                            )}>
+                                {accountsLoading ? '—' : formatCurrency(netWorthData.netWorth)}
+                            </div>
+                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                                Across all active accounts
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Accounts List */}
+                    {accountsLoading ? (
+                        <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                            Synchronizing bank accounts...
+                        </div>
+                    ) : accounts.length === 0 ? (
+                        <div className="p-12 text-center rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3">
+                            <div className="h-12 w-12 rounded-xl bg-[var(--color-surface-subtle)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
+                                <Landmark className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                    No bank accounts connected
+                                </h3>
+                                <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                                    Link your checking, savings, and credit accounts to track your net worth.
+                                </p>
+                            </div>
+                            <div className="pt-2">
+                                <Button
+                                    size="sm"
+                                    onClick={handleOpenAddAccount}
+                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs"
+                                >
+                                    <Plus className="h-3.5 w-3.5 mr-1" />
+                                    Link Account
+                                </Button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs overflow-hidden divide-y divide-[var(--color-border-subtle)]">
+                            {accounts.map((acc) => {
+                                const config = ACCOUNT_TYPE_CONFIG[acc.account_type] || ACCOUNT_TYPE_CONFIG.checking;
+                                const Icon = config.icon;
+
+                                return (
+                                    <div
+                                        key={acc.id}
+                                        className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:bg-[var(--color-surface-subtle)] transition-colors"
+                                    >
+                                        <div className="flex items-center gap-3.5">
+                                            <div className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0 border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-[var(--color-text-primary)]">
+                                                <Icon className="h-5 w-5" />
                                             </div>
                                             <div>
-                                                <span className={styles.infoLabel}>Card number</span>
-                                                <code className="text-sm font-black tracking-widest">
-                                                    •••• •••• •••• {viewingCard.last4 || '****'}
-                                                </code>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                        {acc.name}
+                                                    </span>
+                                                    <Badge variant="secondary" className="text-[10px] font-mono">
+                                                        {config.label}
+                                                    </Badge>
+                                                </div>
+                                                <div className="text-xs text-[var(--color-text-secondary)] mt-0.5">
+                                                    {acc.bank_name} • Last updated {new Date(acc.last_updated).toLocaleDateString()}
+                                                </div>
                                             </div>
                                         </div>
-                                        <button className="p-3 hover:bg-black hover:text-white transition-colors" onClick={() => handleCopy(viewingCard.last4 || '')}>
-                                            <Copy size={20} strokeWidth={3} />
-                                        </button>
+
+                                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
+                                            <div className="text-right">
+                                                <div className={cn(
+                                                    "text-base font-bold tabular-nums font-mono",
+                                                    acc.account_type === 'credit' ? "text-[var(--color-danger)]" : "text-[var(--color-text-primary)]"
+                                                )}>
+                                                    {formatCurrency(acc.balance)}
+                                                </div>
+                                                <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-mono">
+                                                    {acc.account_type === 'credit' ? 'Outstanding' : 'Available'}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-1">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleOpenEditAccount(acc)}
+                                                    className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"
+                                                >
+                                                    <Pencil className="h-3.5 w-3.5" />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => handleDeleteAccount(acc.id, acc.name)}
+                                                    className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-danger)]"
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </Button>
+                                            </div>
+                                        </div>
                                     </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Inspect Card Details Dialog */}
+            <Dialog open={!!viewingCard} onOpenChange={(open) => !open && setViewingCard(null)}>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-text-primary)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold flex items-center justify-between">
+                            <span>{viewingCard?.nickname || `${(viewingCard?.type || 'Card').toUpperCase()} •••• ${viewingCard?.last4}`}</span>
+                            {viewingCard?.is_default && (
+                                <Badge variant="default" className="text-[10px] bg-[var(--color-brand)] font-mono">Primary Card</Badge>
+                            )}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Manage spending limits, freeze status, and security rules.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {viewingCard && (
+                        <div className="space-y-4 pt-2">
+                            {/* Card Attributes */}
+                            <div className="p-4 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] space-y-2 text-xs">
+                                <div className="flex justify-between">
+                                    <span className="text-[var(--color-text-muted)]">Card Brand</span>
+                                    <span className="font-semibold uppercase">{viewingCard.type}</span>
                                 </div>
-
-                                {/* CVV Protection */}
-                                <div className="bg-[#E11D48] text-white p-8 border-4 border-black mt-8 shadow-[8px_8px_0px_#000000]">
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <Lock size={20} strokeWidth={3} />
-                                        <span className="text-sm font-medium">CVV lock</span>
-                                    </div>
-
-                                    {isSettingCvvPassword ? (
-                                        <div className="space-y-4">
-                                            <Input
-                                                type="password"
-                                                placeholder="CVV (3–4 digits)"
-                                                value={cvvValue}
-                                                onChange={(e) => setCvvValue(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                                                className="h-12 border-2 border-white bg-black text-white text-center font-black tracking-[1em]"
-                                                maxLength={4}
-                                            />
-                                            <Input
-                                                type="password"
-                                                placeholder="Password (at least 4 characters)"
-                                                value={cvvPassword}
-                                                onChange={(e) => setCvvPassword(e.target.value)}
-                                                className="h-12 border-2 border-white bg-black text-white"
-                                            />
-                                            <div className="flex gap-4">
-                                                <button className="flex-1 h-14 bg-white text-black font-black uppercase text-xs" onClick={handleSaveCvvPassword}>Save lock</button>
-                                                <button className="px-6 border-2 border-white font-medium text-xs" onClick={() => { setIsSettingCvvPassword(false); setCvvPassword(''); setConfirmCvvPassword(''); setCvvValue(''); }}>Cancel</button>
-                                            </div>
-                                        </div>
-                                    ) : isVerifyingCvv ? (
-                                        <div className="space-y-4">
-                                            <Input
-                                                type="password"
-                                                placeholder="Enter password"
-                                                value={cvvPassword}
-                                                onChange={(e) => setCvvPassword(e.target.value)}
-                                                className="h-12 border-2 border-white bg-black text-white"
-                                                autoFocus
-                                            />
-                                            <div className="flex gap-4">
-                                                <button className="flex-1 h-14 bg-white text-black font-semibold text-sm" onClick={handleVerifyCvv}>Show CVV</button>
-                                                <button className="px-6 border-2 border-white font-medium text-xs" onClick={() => { setIsVerifyingCvv(false); setCvvPassword(''); }}>Cancel</button>
-                                            </div>
-                                        </div>
-                                    ) : cvvVerified ? (
-                                        <div className="flex items-center justify-between bg-black p-6 border-2 border-white">
-                                            <div className="flex items-center gap-6">
-                                                <div className="text-3xl font-black tracking-[0.5em]">{cvvValue}</div>
-                                                <div className="text-xs font-medium text-white/70">Hides in {cvvTimer}s</div>
-                                            </div>
-                                            <button className="p-2 hover:text-[#E11D48]" onClick={() => handleCopy(cvvValue)}>
-                                                <Copy size={20} strokeWidth={3} />
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-xs font-black uppercase opacity-70">
-                                                {viewingCard.cvv_password ? 'Locked' : 'No lock'}
-                                            </span>
-                                            <button
-                                                className="h-12 px-8 bg-white text-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors"
-                                                onClick={() => viewingCard.cvv_password ? setIsVerifyingCvv(true) : setIsSettingCvvPassword(true)}
-                                            >
-                                                {viewingCard.cvv_password ? 'Unlock' : 'Set lock'}
-                                            </button>
-                                        </div>
-                                    )}
+                                <div className="flex justify-between">
+                                    <span className="text-[var(--color-text-muted)]">Card Number</span>
+                                    <span className="font-mono font-semibold">•••• •••• •••• {viewingCard.last4}</span>
                                 </div>
-
-                                <div className="flex gap-4 mt-12">
-                                    <button
-                                        className="flex-1 h-16 bg-black text-white font-black uppercase text-sm hover:bg-[#E11D48] transition-colors"
-                                        onClick={() => setViewingCard(null)}
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        className="h-16 w-16 border-4 border-black text-black hover:bg-[#E11D48] hover:text-white transition-colors flex items-center justify-center"
-                                        onClick={handleDeleteCard}
-                                    >
-                                        <Trash2 size={24} strokeWidth={3} />
-                                    </button>
+                                <div className="flex justify-between">
+                                    <span className="text-[var(--color-text-muted)]">Expiration</span>
+                                    <span className="font-semibold font-mono">{viewingCard.expiry}</span>
+                                </div>
+                                <div className="flex justify-between pt-1 border-t border-[var(--color-border-subtle)]">
+                                    <span className="text-[var(--color-text-muted)]">Monthly Spending</span>
+                                    <span className="font-bold tabular-nums font-mono text-[var(--color-text-primary)]">{formatCurrency(viewingCard.total_spent || 0)}</span>
                                 </div>
                             </div>
-                        </DialogContent>
+
+                            {/* Monthly Spending Limit */}
+                            <div className="space-y-1.5">
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Spending Ceiling</Label>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsEditingLimit(!isEditingLimit)}
+                                        className="text-[11px] text-[var(--color-brand)] font-medium hover:underline"
+                                    >
+                                        {isEditingLimit ? 'Cancel' : 'Edit Limit'}
+                                    </button>
+                                </div>
+
+                                {isEditingLimit ? (
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            type="number"
+                                            value={editedLimit}
+                                            onChange={e => setEditedLimit(e.target.value)}
+                                            placeholder="1000"
+                                            className="rounded-xl h-9 text-xs bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
+                                        />
+                                        <Button
+                                            size="sm"
+                                            onClick={handleSaveLimit}
+                                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs h-9"
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <div className="p-3 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] text-xs font-semibold font-mono tabular-nums text-[var(--color-text-primary)]">
+                                        {viewingCard.spending_limit ? formatCurrency(viewingCard.spending_limit) : 'No limit set (Uncapped)'}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Card Control Actions */}
+                            <div className="pt-2 flex flex-col gap-2">
+                                {!viewingCard.is_default && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleSetDefault(viewingCard)}
+                                        className="w-full rounded-xl text-xs h-9 justify-center border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]"
+                                    >
+                                        <Star className="h-3.5 w-3.5 mr-1.5 text-[var(--color-warning)]" />
+                                        Make Primary Payment Card
+                                    </Button>
+                                )}
+
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleToggleFreeze(viewingCard)}
+                                    className={cn(
+                                        'w-full rounded-xl text-xs h-9 justify-center border-[var(--color-border)]',
+                                        viewingCard.is_frozen 
+                                            ? 'text-[var(--color-positive)] border-[var(--color-positive)]/30 hover:bg-[var(--color-positive-subtle)]' 
+                                            : 'text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]'
+                                    )}
+                                >
+                                    <Snowflake className="h-3.5 w-3.5 mr-1.5" />
+                                    {viewingCard.is_frozen ? 'Unfreeze Card' : 'Freeze Card Temporarily'}
+                                </Button>
+
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleDeleteCard(viewingCard.id, viewingCard.nickname || viewingCard.last4)}
+                                    className="w-full text-xs h-8 text-[var(--color-danger)] hover:bg-[var(--color-danger-subtle)]"
+                                >
+                                    <Trash2 className="h-3.5 w-3.5 mr-1" />
+                                    Delete Card
+                                </Button>
+                            </div>
+                        </div>
                     )}
-                </AnimatePresence>
+                </DialogContent>
+            </Dialog>
+
+            {/* Add / Edit Bank Account Modal */}
+            <Dialog open={showAccountModal} onOpenChange={setShowAccountModal}>
+                <DialogContent className="sm:max-w-md rounded-2xl">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold">
+                            {editingAccount ? 'Edit Bank Account' : 'Link Bank Account'}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--cashly-text-muted)]">
+                            Track your liquid checking, savings, or liabilities in Cashly.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleSaveAccount} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-semibold">Account Label</Label>
+                            <Input
+                                placeholder="e.g. Primary Checking, High Yield Savings"
+                                value={accountForm.name}
+                                onChange={e => setAccountForm(prev => ({ ...prev, name: e.target.value }))}
+                                required
+                                className="rounded-xl"
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-semibold">Financial Institution</Label>
+                            <Input
+                                placeholder="e.g. Chase, Bank of America, Ally"
+                                value={accountForm.bank_name}
+                                onChange={e => setAccountForm(prev => ({ ...prev, bank_name: e.target.value }))}
+                                className="rounded-xl"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-semibold">Account Type</Label>
+                                <Select
+                                    value={accountForm.account_type}
+                                    onValueChange={(val: any) => setAccountForm(prev => ({ ...prev, account_type: val }))}
+                                >
+                                    <SelectTrigger className="rounded-xl">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="checking">Checking</SelectItem>
+                                        <SelectItem value="savings">Savings</SelectItem>
+                                        <SelectItem value="credit">Credit Card</SelectItem>
+                                        <SelectItem value="investment">Investment</SelectItem>
+                                        <SelectItem value="cash">Cash / Other</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-semibold">Current Balance ($)</Label>
+                                <Input
+                                    type="number"
+                                    step="0.01"
+                                    placeholder="2500.00"
+                                    value={accountForm.balance}
+                                    onChange={e => setAccountForm(prev => ({ ...prev, balance: e.target.value }))}
+                                    required
+                                    className="rounded-xl"
+                                />
+                            </div>
+                        </div>
+
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setShowAccountModal(false)}
+                                className="rounded-xl text-xs"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={accountSubmitting}
+                                className="rounded-xl bg-[var(--cashly-brand)] hover:bg-[var(--cashly-brand-hover)] text-white text-xs"
+                            >
+                                {accountSubmitting ? 'Saving...' : editingAccount ? 'Update Account' : 'Link Account'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
             </Dialog>
         </div>
     );

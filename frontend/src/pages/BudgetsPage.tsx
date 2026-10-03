@@ -1,23 +1,23 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Plus, Trash2, Wallet, RefreshCw, Target,
-    TrendingUp, Clock, DollarSign, LayoutGrid, Flame, AlertTriangle
+    TrendingUp, Clock, Flame, AlertTriangle,
 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
+import { formatCurrency } from '../services/currencyService';
 import { budgetService, Budget } from '../services/budgetService';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'sonner';
-import { BudgetsSkeleton } from '../components/LoadingSkeleton';
 import { cn } from '@/lib/utils';
 import { useSound } from '@/hooks/useSound';
-import styles from './BudgetsPage.module.css';
+import { PlanNavigationTabs } from '@/components/PlanNavigationTabs';
 
 const BUDGET_CATEGORIES = [
     'Shopping', 'Food & Dining', 'Transport', 'Entertainment',
@@ -33,17 +33,26 @@ const getCategoryEmoji = (category: string): string => {
     return emojis[category] || '📦';
 };
 
-const BudgetsPage = () => {
+type FilterStatus = 'all' | 'risk' | 'safe';
+
+export const BudgetsPage = () => {
     const { user } = useAuth();
     const sound = useSound();
     const [budgets, setBudgets] = useState<Budget[]>([]);
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [spendingMap, setSpendingMap] = useState<Record<string, number>>({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [newBudget, setNewBudget] = useState({ category: 'Shopping', limit: '' });
-    const [isRefreshing, setIsRefreshing] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
+
+    // Calendar progress for pace calculation
+    const now = new Date();
+    const currentDay = now.getDate();
+    const totalDaysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const monthProgressPercent = (currentDay / totalDaysInMonth) * 100;
 
     const calculateSpending = useCallback((txList: SupabaseTransaction[], budgetList: Budget[]) => {
         const currentMonth = new Date().getMonth();
@@ -80,6 +89,7 @@ const BudgetsPage = () => {
             setSpendingMap(calculateSpending(fetchedTransactions, fetchedBudgets));
         } catch (error) {
             console.error("Failed to load budget data", error);
+            toast.error("Failed to load budgets");
         } finally {
             setIsLoading(false);
             setIsRefreshing(false);
@@ -90,14 +100,18 @@ const BudgetsPage = () => {
         fetchData();
     }, [fetchData]);
 
-    const handleAddBudget = async () => {
+    const handleAddBudget = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!newBudget.category || !newBudget.limit || !user) return;
         setSaving(true);
         try {
+            const limitNum = parseFloat(newBudget.limit);
+            if (isNaN(limitNum) || limitNum <= 0) throw new Error('Please enter a valid amount');
+
             const created = await budgetService.create({
                 user_id: user.id,
                 category: newBudget.category,
-                amount: parseFloat(newBudget.limit),
+                amount: limitNum,
                 period: 'monthly'
             });
             if (created) {
@@ -106,168 +120,388 @@ const BudgetsPage = () => {
                 setSpendingMap(calculateSpending(transactions, updatedBudgets));
                 setNewBudget({ category: 'Shopping', limit: '' });
                 setShowModal(false);
-                toast.success('Budget limits activated! 🚀');
+                toast.success('Budget cap activated');
                 sound.playSuccess();
             }
-        } catch (error) {
-            toast.error("Cloud sync failed. Try again.");
+        } catch (error: any) {
+            toast.error(error.message || "Failed to save budget");
         } finally {
             setSaving(false);
         }
     };
 
-    const handleDeleteBudget = async (id: string, e: React.MouseEvent) => {
+    const handleDeleteBudget = async (id: string, category: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (!confirm('Discard this budget limit?')) return;
+        if (!confirm(`Remove monthly cap for ${category}?`)) return;
         if (await budgetService.delete(id)) {
             setBudgets(budgets.filter(b => b.id !== id));
-            toast.success("Budget target removed");
+            toast.success("Budget removed");
             sound.playClick();
         }
     };
 
-    const calculateBurnRate = (spent: number, limit: number) => {
-        const today = new Date().getDate();
-        const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-        const remainingDays = daysInMonth - today;
-        const dailyAvg = spent / today;
-        const remainingBudget = limit - spent;
-        
-        if (remainingBudget <= 0) return 0;
-        if (dailyAvg === 0) return remainingDays;
-        
-        return Math.floor(remainingBudget / dailyAvg);
-    };
+    // Global Stats
+    const totalBudget = useMemo(() => budgets.reduce((sum, b) => sum + b.amount, 0), [budgets]);
+    const totalSpent = useMemo(() => budgets.reduce((sum, b) => sum + (spendingMap[b.category] || 0), 0), [budgets, spendingMap]);
+    const remainingCash = totalBudget - totalSpent;
+    const globalProgressPercent = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
-    const totalBudget = budgets.reduce((sum, b) => sum + b.amount, 0);
-    const totalSpent = budgets.reduce((sum, b) => sum + (spendingMap[b.category] || 0), 0);
-    const remaining = totalBudget - totalSpent;
+    // Projected Month-End Global
+    const projectedGlobalTotal = currentDay > 0 ? (totalSpent / currentDay) * totalDaysInMonth : 0;
+    const globalOverrunRisk = projectedGlobalTotal > totalBudget && totalBudget > 0;
 
-    const getProgress = (spent: number, limit: number) => Math.min((spent / limit) * 100, 100);
-    const getStatusType = (spent: number, limit: number) => {
-        const percent = (spent / limit) * 100;
-        if (percent >= 100) return styles.danger;
-        if (percent >= 80) return styles.warning;
-        return styles.safe;
-    };
+    // Decorated Budgets with Velocity Analytics
+    const decoratedBudgets = useMemo(() => {
+        return budgets.map(b => {
+            const spent = spendingMap[b.category] || 0;
+            const progress = b.amount > 0 ? (spent / b.amount) * 100 : 0;
+            const remaining = b.amount - spent;
+            const projectedMonthEnd = currentDay > 0 ? (spent / currentDay) * totalDaysInMonth : spent;
+            const projectedOverrun = projectedMonthEnd - b.amount;
+            
+            // Pace assessment:
+            // High pace if spent % exceeds calendar % by more than 15%, or if already >= 100%
+            const isOverBudget = spent >= b.amount;
+            const isHighPace = !isOverBudget && (progress > monthProgressPercent + 12 || progress >= 85);
+            const isOnTrack = !isOverBudget && !isHighPace;
 
-    if (isLoading && budgets.length === 0) {
-        return <div className={styles.mainContent}><BudgetsSkeleton /></div>;
-    }
+            return {
+                ...b,
+                spent,
+                progress,
+                remaining,
+                projectedMonthEnd,
+                projectedOverrun,
+                isOverBudget,
+                isHighPace,
+                isOnTrack,
+            };
+        });
+    }, [budgets, spendingMap, currentDay, totalDaysInMonth, monthProgressPercent]);
+
+    // Filtered
+    const filteredBudgets = useMemo(() => {
+        if (filterStatus === 'risk') {
+            return decoratedBudgets.filter(b => b.isOverBudget || b.isHighPace);
+        }
+        if (filterStatus === 'safe') {
+            return decoratedBudgets.filter(b => b.isOnTrack);
+        }
+        return decoratedBudgets;
+    }, [decoratedBudgets, filterStatus]);
+
+    const highRiskCount = decoratedBudgets.filter(b => b.isOverBudget || b.isHighPace).length;
 
     return (
-        <div className={styles.mainContent}>
-            <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className={styles.header}>
-                <div className={styles.headerTitle}>
-                    <div className={styles.headerIcon}><Wallet size={28} /></div>
-                    <div className={styles.headerInfo}>
-                        <h1>Budget Health</h1>
-                        <p>Track your monthly fuel and spending velocity</p>
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-8 md:px-8 max-w-7xl mx-auto space-y-8">
+            {/* Header & Breadcrumb */}
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                        Guardrails & Pace Governance
                     </div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        Budgets & Velocity
+                    </h1>
+                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                        Category guardrails, daily burn pace, and projected month-end overrun warnings.
+                    </p>
                 </div>
-                <div className="flex items-center gap-4">
-                    <button onClick={fetchData} disabled={isRefreshing} className="h-14 px-6 border-4 border-black bg-white font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all">
-                        <RefreshCw size={16} className={cn("inline mr-2", isRefreshing && "animate-spin")} />
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={fetchData}
+                        disabled={isRefreshing}
+                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                    >
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', isRefreshing && 'animate-spin')} />
                         Refresh
-                    </button>
-                    <button onClick={() => setShowModal(true)} className="h-14 px-6 border-4 border-black bg-[#E11D48] text-white font-black uppercase text-[10px] tracking-widest shadow-[4px_4px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000000] transition-all">
-                        <Plus size={16} className="inline mr-2" />
-                        New Budget
-                    </button>
-                </div>
-            </motion.header>
-
-            <div className={styles.overviewGrid}>
-                <div className={styles.premiumStatCard}>
-                    <span className={styles.statLabel}>Total Allocation</span>
-                    <div className={styles.statValue}>{formatCurrency(totalBudget)}</div>
-                    <div className={styles.statSubtext}>Planned Fuel</div>
-                </div>
-                <div className={styles.premiumStatCard}>
-                    <span className={styles.statLabel}>Total Burn</span>
-                    <div className={styles.statValue}>{formatCurrency(totalSpent)}</div>
-                    <div className={styles.statSubtext}>Current Consumption</div>
-                </div>
-                <div className={cn(styles.premiumStatCard, remaining < 0 && styles.overBudgetCard)}>
-                    <span className={styles.statLabel}>{remaining < 0 ? 'DEFICIT' : 'REMAINING'}</span>
-                    <div className={cn(styles.statValue, remaining < 0 && "text-[#E11D48]")}>
-                        {formatCurrency(Math.abs(remaining))}
-                    </div>
-                    <div className={styles.statSubtext}>Buying Power</div>
+                    </Button>
+                    <Button
+                        size="sm"
+                        onClick={() => setShowModal(true)}
+                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm transition-all"
+                    >
+                        <Plus className="h-4 w-4 mr-1.5" />
+                        Create Budget Cap
+                    </Button>
                 </div>
             </div>
 
-            {budgets.length === 0 ? (
-                <div className={styles.emptyStateCard}>
-                    <div className={styles.modalIcon} style={{ margin: '0 auto 1.5rem' }}><Wallet size={32} /></div>
-                    <h2 className="text-3xl font-black uppercase mb-4">No budgets established</h2>
-                    <p className="text-slate-500 font-bold max-w-sm mx-auto mb-8 uppercase tracking-widest text-xs">
-                        Create your first budget limit to gain complete control over your cash flow.
-                    </p>
-                    <button onClick={() => setShowModal(true)} className="h-16 px-10 border-4 border-black bg-[#000000] text-white font-black uppercase tracking-widest shadow-[8px_8px_0px_#E11D48] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
-                        Launch First Target
+            {/* Pillar Sub-Tabs */}
+            <PlanNavigationTabs
+                badges={{
+                    budgets: budgets.length,
+                }}
+            />
+
+            {/* Overview Color-Blocked Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Cadmium Orange: Discretionary Headroom */}
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                        <span>Discretionary Headroom</span>
+                        <Wallet className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {isLoading ? '—' : formatCurrency(remainingCash)}
+                        </div>
+                        <div className="text-xs font-semibold text-white/90 mt-2">
+                            {remainingCash < 0 ? 'Deficit across budget limits' : 'Remaining cash balance before cap'}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. Deep Ink: Total Monthly Cap */}
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                        <span>Total Monthly Cap</span>
+                        <Target className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                            {isLoading ? '—' : formatCurrency(totalBudget)}
+                        </div>
+                        <div className="text-xs text-white/70 mt-2">
+                            Allocated across {budgets.length} categories
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. Warm Ivory / White: Month Burn to Date */}
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                        <span>Month Burn to Date</span>
+                        <Flame className="h-4 w-4 text-[#EE5024]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {isLoading ? '—' : formatCurrency(totalSpent)}
+                        </div>
+                        <div className="flex items-center gap-2 mt-2 text-xs text-[var(--color-ink)]/70 font-medium">
+                            <span className="font-bold text-[var(--color-ink)]">{globalProgressPercent.toFixed(0)}% consumed</span>
+                            <span>•</span>
+                            <span>Day {currentDay} of {totalDaysInMonth}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 4. Muted Sage / Soft Accent: Projected Month-End */}
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                        <span>Projected Month-End</span>
+                        <TrendingUp className="h-4 w-4 text-[var(--color-ink)]" />
+                    </div>
+                    <div className="my-2">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                            {isLoading ? '—' : formatCurrency(projectedGlobalTotal)}
+                        </div>
+                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                            {globalOverrunRisk ? (
+                                <span className="text-rose-600 font-bold flex items-center gap-1">
+                                    <AlertTriangle className="h-3 w-3" />
+                                    +{formatCurrency(projectedGlobalTotal - totalBudget)} overrun
+                                </span>
+                            ) : (
+                                <span className="text-emerald-700 font-bold">On pace to remain under cap</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Tabs & Velocity Banner */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[var(--color-border-subtle)] pb-3">
+                <div className="flex items-center gap-1.5">
+                    <button
+                        onClick={() => setFilterStatus('all')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            filterStatus === 'all'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        All Categories ({decoratedBudgets.length})
+                    </button>
+                    <button
+                        onClick={() => setFilterStatus('risk')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                            filterStatus === 'risk'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        <span>Pace Risks & Overruns</span>
+                        {highRiskCount > 0 && (
+                            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-amber-500 text-white font-bold font-mono">
+                                {highRiskCount}
+                            </span>
+                        )}
+                    </button>
+                    <button
+                        onClick={() => setFilterStatus('safe')}
+                        className={cn(
+                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            filterStatus === 'safe'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                        )}
+                    >
+                        On Track ({decoratedBudgets.filter(b => b.isOnTrack).length})
                     </button>
                 </div>
+
+                <div className="text-xs text-[var(--color-text-muted)] flex items-center gap-2">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>Month is {monthProgressPercent.toFixed(0)}% elapsed</span>
+                </div>
+            </div>
+
+            {/* Budget Cards Grid */}
+            {isLoading ? (
+                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                    Computing spending velocities and month-end projections...
+                </div>
+            ) : filteredBudgets.length === 0 ? (
+                <div className="p-12 text-center rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3">
+                    <div className="h-12 w-12 rounded-2xl bg-[var(--color-surface-subtle)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
+                        <Target className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                            {filterStatus === 'risk' ? 'No spending pace risks detected' : 'No budget limits configured'}
+                        </h3>
+                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                            {filterStatus === 'risk'
+                                ? 'All active category limits are pacing safely below their calendar benchmarks.'
+                                : 'Set spending limits on food, shopping, and entertainment to manage cashflow.'}
+                        </p>
+                    </div>
+                    {filterStatus !== 'risk' && (
+                        <div className="pt-2">
+                            <Button
+                                size="sm"
+                                onClick={() => setShowModal(true)}
+                                className="rounded-xl bg-[var(--color-brand)] text-white text-xs"
+                            >
+                                <Plus className="h-3.5 w-3.5 mr-1" />
+                                Add First Budget Limit
+                            </Button>
+                        </div>
+                    )}
+                </div>
             ) : (
-                <div className={styles.budgetGrid}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <AnimatePresence mode="popLayout">
-                        {budgets.map((budget) => {
-                            const spent = spendingMap[budget.category] || 0;
-                            const progress = getProgress(spent, budget.amount);
-                            const statusClass = getStatusType(spent, budget.amount);
-                            const daysLeft = calculateBurnRate(spent, budget.amount);
+                        {filteredBudgets.map((b) => {
+                            const progressClamped = Math.min(b.progress, 100);
 
                             return (
-                                <motion.div key={budget.id} layout className={cn(styles.premiumBudgetCard, statusClass)}>
-                                    <div className={styles.cardTop}>
-                                        <div className="flex items-center gap-4">
-                                            <div className={styles.categoryAvatar}>{getCategoryEmoji(budget.category)}</div>
-                                            <div className={styles.budgetInfo}>
-                                                <h3>{budget.category}</h3>
-                                                <div className={styles.limitLabel}>TARGET: {formatCurrency(budget.amount)}</div>
+                                <motion.div
+                                    key={b.id}
+                                    layout
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] hover:border-[var(--color-border)] transition-all space-y-4"
+                                >
+                                    {/* Card Header */}
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="h-10 w-10 rounded-xl bg-[var(--color-surface-subtle)] flex items-center justify-center text-lg border border-[var(--color-border-subtle)]">
+                                                {getCategoryEmoji(b.category)}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                    {b.category}
+                                                </h3>
+                                                <div className="text-xs text-[var(--color-text-muted)] font-mono tabular-nums">
+                                                    Cap: {formatCurrency(b.amount)}
+                                                </div>
                                             </div>
                                         </div>
-                                        <button className={styles.refreshBtn} style={{ width: '2.5rem', height: '2.5rem' }} onClick={(e) => handleDeleteBudget(budget.id, e)}>
-                                            <Trash2 size={16} />
-                                        </button>
+
+                                        <div className="flex items-center gap-1.5">
+                                            {b.isOverBudget ? (
+                                                <Badge variant="destructive" className="text-[10px]">
+                                                    Over Budget
+                                                </Badge>
+                                            ) : b.isHighPace ? (
+                                                <Badge variant="warning" className="text-[10px]">
+                                                    Pacing High
+                                                </Badge>
+                                            ) : (
+                                                <Badge variant="success" className="text-[10px]">
+                                                    On Track
+                                                </Badge>
+                                            )}
+
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={(e) => handleDeleteBudget(b.id, b.category, e)}
+                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
                                     </div>
 
-                                    <div className={styles.progressTrack}>
-                                        <div className={styles.progressLabelGroup}>
-                                            <span>Utilization</span>
-                                            <span>{progress.toFixed(0)}%</span>
+                                    {/* Utilization Progress Bar */}
+                                    <div className="space-y-1.5">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-[var(--color-text-secondary)] font-medium">
+                                                {b.progress.toFixed(0)}% consumed
+                                            </span>
+                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                                {formatCurrency(b.spent)} / {formatCurrency(b.amount)}
+                                            </span>
                                         </div>
-                                        <div className={styles.progressBar}>
-                                            <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+                                        <div className="h-2 w-full rounded-full bg-[var(--color-border-subtle)] overflow-hidden">
+                                            <div
+                                                className={cn(
+                                                    'h-full rounded-full transition-all duration-500',
+                                                    b.isOverBudget
+                                                        ? 'bg-rose-500'
+                                                        : b.isHighPace
+                                                        ? 'bg-amber-500'
+                                                        : 'bg-emerald-500'
+                                                )}
+                                                style={{ width: `${progressClamped}%` }}
+                                            />
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-between items-end">
+                                    {/* Velocity & Projection Diagnostics */}
+                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-xs">
                                         <div>
-                                            <span className={styles.statLabel}>Burned</span>
-                                            <div className="text-xl font-black">{formatCurrency(spent)}</div>
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                                Remaining
+                                            </span>
+                                            <span className={cn(
+                                                "font-semibold tabular-nums font-mono",
+                                                b.remaining < 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400"
+                                            )}>
+                                                {b.remaining < 0 ? `-${formatCurrency(Math.abs(b.remaining))}` : formatCurrency(b.remaining)}
+                                            </span>
                                         </div>
                                         <div className="text-right">
-                                            <span className={styles.statLabel}>Fuel Left</span>
-                                            <div className={cn("text-xl font-black", budget.amount - spent < 0 ? "text-[#E11D48]" : "text-black")}>
-                                                {formatCurrency(budget.amount - spent)}
-                                            </div>
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                                Projected Run
+                                            </span>
+                                            <span className={cn(
+                                                "font-semibold tabular-nums font-mono",
+                                                b.projectedOverrun > 0 ? "text-amber-600 dark:text-amber-400" : "text-[var(--color-text-primary)]"
+                                            )}>
+                                                {formatCurrency(b.projectedMonthEnd)}
+                                            </span>
                                         </div>
                                     </div>
-
-                                    <div className={styles.burnRate}>
-                                        <div className="flex items-center gap-2">
-                                            <Flame size={14} className={daysLeft < 5 ? "animate-pulse" : ""} />
-                                            <span>Burn Velocity</span>
-                                        </div>
-                                        <span>{daysLeft === 0 ? 'CRITICAL: EMPTY' : `${daysLeft} Days Left`}</span>
-                                    </div>
-
-                                    {progress >= 100 && (
-                                        <div className="bg-[#E11D48] text-white p-2 font-black uppercase text-[10px] tracking-tighter flex items-center gap-2 animate-bounce">
-                                            <AlertTriangle size={14} /> LIMIT BREACHED: ADJUST STRATEGY
-                                        </div>
-                                    )}
                                 </motion.div>
                             );
                         })}
@@ -275,51 +509,69 @@ const BudgetsPage = () => {
                 </div>
             )}
 
+            {/* Create Budget Modal */}
             <Dialog open={showModal} onOpenChange={setShowModal}>
-                <DialogContent className={styles.glassDialog}>
-                    <div className={styles.modalHeader}>
-                        <div className={styles.modalIcon}><Target size={32} /></div>
-                        <h2 className="text-2xl font-black uppercase">Plan Spending</h2>
-                        <p className="font-bold text-slate-500 uppercase tracking-widest text-[10px]">Define a monthly limit for a specific category</p>
-                    </div>
+                <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
+                    <DialogHeader>
+                        <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Set Category Spending Cap</DialogTitle>
+                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                            Establish a monthly ceiling to track your burn rate velocity.
+                        </DialogDescription>
+                    </DialogHeader>
 
-                    <div className="p-8">
-                        <div className={styles.formSection}>
-                            <label className={styles.labelPremium}>Select Category</label>
-                            <Select value={newBudget.category} onValueChange={(v) => setNewBudget({ ...newBudget, category: v })}>
-                                <SelectTrigger className={styles.premiumInput}><SelectValue /></SelectTrigger>
-                                <SelectContent className="border-4 border-black rounded-none">
+                    <form onSubmit={handleAddBudget} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="budget-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                            <Select
+                                value={newBudget.category}
+                                onValueChange={(val) => setNewBudget(prev => ({ ...prev, category: val }))}
+                            >
+                                <SelectTrigger id="budget-category" className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
                                     {BUDGET_CATEGORIES.map(cat => (
-                                        <SelectItem key={cat} value={cat} className="font-black uppercase text-[10px]">{cat}</SelectItem>
+                                        <SelectItem key={cat} value={cat}>
+                                            <span className="mr-2">{getCategoryEmoji(cat)}</span>
+                                            {cat}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
 
-                        <div className={styles.formSection}>
-                            <label className={styles.labelPremium}>Monthly Threshold</label>
-                            <div className="relative">
-                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
-                                <Input type="number" placeholder="5,000" value={newBudget.limit} onChange={(e) => setNewBudget({ ...newBudget, limit: e.target.value })} className={cn(styles.premiumInput, "pl-12")} />
-                            </div>
+                        <div className="space-y-1.5">
+                            <Label htmlFor="budget-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Limit Amount</Label>
+                            <Input
+                                id="budget-amount"
+                                type="number"
+                                step="1"
+                                placeholder="500"
+                                value={newBudget.limit}
+                                onChange={e => setNewBudget(prev => ({ ...prev, limit: e.target.value }))}
+                                required
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                            />
                         </div>
 
-                        <div className="flex gap-4">
-                            <button 
-                                onClick={() => setShowModal(false)} 
-                                className="flex-1 h-16 border-4 border-black bg-white font-black uppercase tracking-widest hover:bg-slate-50 transition-all"
+                        <DialogFooter className="gap-2 sm:gap-0 pt-2">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setShowModal(false)}
+                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
-                                Discard
-                            </button>
-                            <button 
-                                onClick={handleAddBudget} 
-                                disabled={saving || !newBudget.limit} 
-                                className="flex-[2] h-16 border-4 border-black bg-[#000000] text-white font-black uppercase tracking-widest shadow-[6px_6px_0px_#E11D48] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#E11D48] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                Cancel
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={saving}
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
                             >
-                                {saving ? <RefreshCw className="h-5 w-5 animate-spin mx-auto" /> : 'Establish Plan'}
-                            </button>
-                        </div>
-                    </div>
+                                {saving ? 'Activating...' : 'Activate Budget'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </div>
@@ -327,4 +579,3 @@ const BudgetsPage = () => {
 };
 
 export default BudgetsPage;
-

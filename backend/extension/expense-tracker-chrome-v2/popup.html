@@ -4,254 +4,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <title>Cashly Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="popup.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
-    <div class="popup-container">
-        <!-- Login View -->
-        <div id="loginView" class="view" style="display: none;">
-            <div class="login-header">
-                <span class="logo-emoji">💰</span>
-                <h1>Expense Tracker</h1>
-                <p>Sign in to sync your spending</p>
-            </div>
-
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
-                    <label>📧 Email</label>
-                    <input type="email" id="emailInput" placeholder="your@email.com" required>
+    <div class="popup-shell">
+        <!-- ─────────────────────────────────────────────
+             01. LOGIN / SYNC VIEW
+        ───────────────────────────────────────────── -->
+        <section id="loginView" class="view">
+            <div class="login-brand-hero">
+                <div class="brand-tag">
+                    <span class="brand-tag-dot">●</span>
+                    <span>SOVEREIGN COMPANION</span>
                 </div>
-                <div class="form-group">
-                    <label>🔒 Password</label>
-                    <input type="password" id="passwordInput" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
-                    Sign In →
-                </button>
-                <p class="login-footer">
-                    New here? <a href="http://localhost:5173/signup" target="_blank">Create account</a>
-                </p>
-            </form>
-
-            <div id="loginError" class="error-msg" style="display: none;"></div>
-        </div>
-
-        <!-- Main View -->
-        <div id="mainView" class="view" style="display: none;">
-            <!-- Header -->
-            <header class="header">
-                <div class="logo-area">
-                    <span class="logo">💰</span>
-                    <div>
-                        <h1>Expense Tracker</h1>
-                        <span class="version-badge">v2.0</span>
+                <div class="brand-lockup">
+                    <div class="brand-mark">C</div>
+                    <div class="brand-text">
+                        <span class="brand-name">CASHLY</span>
+                        <span class="brand-pill">V10</span>
                     </div>
                 </div>
-                <div class="header-right">
-                    <button class="icon-btn settings-btn" id="settingsBtn" title="Settings">⚙️</button>
-                    <button class="icon-btn logout-btn" id="logoutBtn" title="Logout">🚪</button>
+            </div>
+
+            <div class="login-editorial-card">
+                <h1 class="login-headline">
+                    ZERO-PASSWORD<br>
+                    CHECKOUT<br>
+                    INTERCEPT.
+                </h1>
+                <p class="login-desc">
+                    Cashly captures checkouts silently from Amazon, Shopify, and any store. Staged purchases stay in your private review queue until you approve them.
+                </p>
+
+                <div class="login-actions">
+                    <button id="syncWebsiteBtn" class="btn btn-primary" type="button">
+                        <span>Sync from Cashly Session</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                    <button id="openLoginBtn" class="btn btn-secondary" type="button">
+                        <span>Open Web Login</span>
+                        <span class="btn-ext">↗</span>
+                    </button>
+                </div>
+
+                <div id="loginError" class="message error" hidden></div>
+
+                <div class="security-guarantee">
+                    <span class="security-icon">🔒</span>
+                    <span>Zero banking passwords required • Client-side local DOM capture only</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────
+             02. MAIN COMPANION CONSOLE VIEW
+        ───────────────────────────────────────────── -->
+        <section id="mainView" class="view" hidden>
+            <!-- Top Bar with Editorial Branding & Controls -->
+            <header class="topbar">
+                <div class="brand-lockup compact">
+                    <div class="brand-mark compact">C</div>
+                    <div class="brand-meta">
+                        <div class="brand-title-row">
+                            <span class="brand-name">CASHLY</span>
+                            <span class="brand-subpill">COMPANION</span>
+                        </div>
+                        <p id="userEmail" class="user-email-display">Not synced</p>
+                    </div>
+                </div>
+                <div class="top-actions">
+                    <button id="refreshBtn" class="icon-btn" title="Refresh sync" aria-label="Refresh">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+                    </button>
+                    <button id="settingsBtn" class="icon-btn" title="Companion Settings" aria-label="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>
+                    </button>
+                    <button id="logoutBtn" class="icon-btn danger" title="Sign out" aria-label="Sign out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                    </button>
                 </div>
             </header>
 
-            <!-- User Card -->
-            <div class="user-card" id="userCard">
-                <div class="user-info">
-                    <span class="user-avatar">👤</span>
-                    <div>
-                        <span class="user-email" id="userEmail">user@email.com</span>
-                        <span class="sync-status" id="syncStatus">
-                            <span class="sync-dot"></span> Live Sync Active
-                        </span>
+            <!-- Sync Telemetry Strip -->
+            <div class="health-strip" id="syncStatus">
+                <span class="dot"></span>
+                <span class="health-label">Checking sync</span>
+            </div>
+
+            <!-- Monumental Cadmium Orange Hero Ledger Card -->
+            <div class="metric-card-hero">
+                <div class="metric-hero-eyebrow">
+                    <span class="metric-hero-tag">VERIFIED LEDGER BURN</span>
+                    <span class="metric-hero-chip">30-DAY VELOCITY</span>
+                </div>
+                <div class="metric-hero-amount">
+                    <strong id="monthlySpent">$0.00</strong>
+                </div>
+                <div class="metric-hero-footer">
+                    <span>Approved & Reconciled</span>
+                    <span class="metric-hero-badge">Sovereign State</span>
+                </div>
+            </div>
+
+            <!-- Integrated Multi-Segment Telemetry Rail (Anti-Card Spam) -->
+            <div class="telemetry-rail">
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Pending Review</span>
+                    <div class="telemetry-val-row">
+                        <strong id="pendingCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator amber">INBOX</span>
+                    </div>
+                </div>
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Queued Syncs</span>
+                    <div class="telemetry-val-row">
+                        <strong id="queuedCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator">SYNC</span>
+                    </div>
+                </div>
+                <div class="telemetry-segment">
+                    <span class="telemetry-lbl">Failed Events</span>
+                    <div class="telemetry-val-row">
+                        <strong id="failedCount" class="telemetry-val">0</strong>
+                        <span class="telemetry-indicator emerald">OK</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card primary">
-                    <div class="stat-icon">💸</div>
-                    <div class="stat-content">
-                        <span class="stat-value" id="monthlySpent">$0.00</span>
-                        <span class="stat-label">This Month</span>
+            <!-- Live Browser Telemetry & Current Store Panel -->
+            <section class="panel site-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <span class="panel-mini-tag">ACTIVE TAB OBSERVATION</span>
+                        <h2>Current Domain</h2>
                     </div>
+                    <span id="siteName" class="site-pill">Unknown</span>
                 </div>
-                <div class="stat-card secondary">
-                    <div class="stat-icon">🛒</div>
-                    <div class="stat-content">
-                        <span class="stat-value" id="transactionCount">0</span>
-                        <span class="stat-label">Purchases</span>
+                <p id="lastDetection" class="detection-status">No recent detection loaded.</p>
+            </section>
+
+            <!-- Operational Quick Action Desk -->
+            <section class="panel actions-panel">
+                <div class="panel-header compact">
+                    <span class="panel-mini-tag">SOVEREIGN WORKSPACE COMMANDS</span>
+                </div>
+                <!-- Flagship Action: Review Inbox -->
+                <button id="openInboxBtn" class="btn btn-primary btn-inbox-flagship" type="button">
+                    <div class="inbox-btn-left">
+                        <span class="inbox-icon">📥</span>
+                        <div class="inbox-text">
+                            <strong>Review Staged Inbox</strong>
+                            <span>Approve, split, or dismiss checkouts</span>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <span class="btn-arrow">→</span>
+                </button>
 
-            <!-- Budget Alert (if over budget) -->
-            <div class="budget-alert" id="budgetAlert" style="display: none;">
-                <span class="alert-icon">⚠️</span>
-                <div class="alert-content">
-                    <strong>Budget Alert!</strong>
-                    <span id="budgetAlertText">You're close to your limit</span>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="section">
-                <h2>Quick Actions</h2>
-                <div class="actions-grid">
-                    <button class="action-card" id="clipPageBtn">
-                        <span class="action-icon">📌</span>
-                        <span>Clip Page</span>
-                    </button>
-                    <button class="action-card" id="addManualBtn">
-                        <span class="action-icon">➕</span>
-                        <span>Add Expense</span>
-                    </button>
-                    <button class="action-card" id="openDashboard">
-                        <span class="action-icon">📊</span>
+                <!-- Secondary 3-Column Action Grid -->
+                <div class="action-grid">
+                    <button id="openDashboard" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                         <span>Dashboard</span>
                     </button>
-                    <button class="action-card" id="viewBudgetsBtn">
-                        <span class="action-icon">🎯</span>
-                        <span>Budgets</span>
+                    <button id="addManualBtn" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>Add Expense</span>
+                    </button>
+                    <button id="clipPageBtn" class="action-tile" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                        <span>Clip Page</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- Categories Summary -->
-            <div class="section">
-                <h2>Top Categories</h2>
-                <div class="categories-list" id="categoriesList">
-                    <div class="category-item">
-                        <span class="cat-icon">🛍️</span>
-                        <div class="cat-info">
-                            <span class="cat-name">Shopping</span>
-                            <div class="cat-bar">
-                                <div class="cat-fill" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <span class="cat-amount">$0</span>
+                <!-- Touch-Native Floating Capsule Navigation Dock -->
+                <div class="capsule-dock">
+                    <button id="openCalendarBtn" class="dock-btn" type="button">Calendar</button>
+                    <button id="openReportsBtn" class="dock-btn" type="button">Reports</button>
+                    <button id="openCoachBtn" class="dock-btn" type="button">Twin</button>
+                    <button id="openHealthBtn" class="dock-btn" type="button">Telemetry</button>
+                </div>
+            </section>
+
+            <!-- Recent Settled Transactions Ledger Feed -->
+            <section class="panel ledger-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="panel-mini-tag">CANONICAL LEDGER FEED</span>
+                        <h2>Settled Transactions</h2>
                     </div>
+                    <button id="openTransactionsBtn" class="link-btn-subtle" type="button">
+                        <span>All Ledger</span>
+                        <span>→</span>
+                    </button>
                 </div>
-            </div>
+                <div id="recentTransactions" class="list">
+                    <div class="empty">No transactions loaded.</div>
+                </div>
+            </section>
+        </section>
 
-            <!-- Recent Transactions -->
-            <div class="section">
-                <div class="section-header">
-                    <h2>Recent Activity <span class="live-dot"></span></h2>
-                    <button class="refresh-btn" id="refreshBtn" title="Refresh">🔄</button>
-                </div>
-                <div class="transaction-list" id="recentTransactions">
-                    <div class="empty-state">
-                        <span>🦗</span>
-                        <p>No transactions yet</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Supported Stores -->
-            <div class="section stores-section">
-                <h2>Auto-Track Enabled</h2>
-                <div class="stores-grid">
-                    <span class="store-badge">Amazon</span>
-                    <span class="store-badge">eBay</span>
-                    <span class="store-badge">Walmart</span>
-                    <span class="store-badge">Target</span>
-                    <span class="store-badge">+50 more</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Panel -->
-        <div id="settingsView" class="view" style="display: none;">
-            <header class="header">
-                <button class="back-btn" id="backFromSettings">← Back</button>
-                <h1>Settings</h1>
+        <!-- ─────────────────────────────────────────────
+             03. SYSTEM GOVERNANCE & SETTINGS VIEW
+        ───────────────────────────────────────────── -->
+        <section id="settingsView" class="view" hidden>
+            <header class="subbar">
+                <button id="backFromSettings" class="btn-back" type="button">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h1>System Governance</h1>
             </header>
 
-            <div class="settings-content">
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Auto-Track Purchases</span>
-                        <span class="setting-desc">Automatically detect and log purchases</span>
-                    </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="autoTrackToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
+            <div class="settings-list">
+                <label class="setting-row">
+                    <span class="setting-text">
+                        <strong>Auto-Track Checkouts</strong>
+                        <small>Observe checkout confirmations and stage candidates.</small>
+                    </span>
+                    <input type="checkbox" id="autoTrackToggle" checked class="switch-input">
+                </label>
+                <label class="setting-row">
+                    <span class="setting-text">
+                        <strong>Sovereign Notifications</strong>
+                        <small>Notify with in-page HUD when candidate is intercepted.</small>
+                    </span>
+                    <input type="checkbox" id="notificationsToggle" checked class="switch-input">
+                </label>
+                <label class="setting-row">
+                    <span class="setting-text">
+                        <strong>Telemetry & Health Sync</strong>
+                        <small>Sync queues, health pings, and permission status.</small>
+                    </span>
+                    <input type="checkbox" id="healthEventsToggle" checked class="switch-input">
+                </label>
 
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Show Notifications</span>
-                        <span class="setting-desc">Alert when purchase detected</span>
+                <div class="diagnostics-panel">
+                    <div class="diag-row">
+                        <span class="diag-lbl">Cashly Cloud API</span>
+                        <strong id="apiStatus" class="diag-val">Checking...</strong>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="notificationsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Budget Alerts</span>
-                        <span class="setting-desc">Warn when approaching budget limit</span>
+                    <div class="diag-row">
+                        <span class="diag-lbl">Review-First Protocol</span>
+                        <strong class="diag-val text-orange">Enforced Active</strong>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="budgetAlertsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <span class="setting-title">Dark Mode</span>
-                        <span class="setting-desc">Switch to dark theme</span>
+                    <div class="diag-row">
+                        <span class="diag-lbl">Banking Credentials</span>
+                        <strong class="diag-val text-emerald">Zero-Stored (Sovereign)</strong>
                     </div>
-                    <label class="toggle">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="toggle-slider"></span>
-                    </label>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Add Manual Transaction -->
-        <div id="addManualView" class="view" style="display: none;">
-            <header class="header">
-                <button class="back-btn" id="backFromManual">← Back</button>
-                <h1>Add Expense</h1>
+        <!-- ─────────────────────────────────────────────
+             04. ADD MANUAL EXPENSE VIEW
+        ───────────────────────────────────────────── -->
+        <section id="addManualView" class="view" hidden>
+            <header class="subbar">
+                <button id="backFromManual" class="btn-back" type="button">
+                    <span>←</span>
+                    <span>Back</span>
+                </button>
+                <h1>Record Expense</h1>
             </header>
 
             <form id="manualForm" class="manual-form">
                 <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="manualDesc" placeholder="e.g., Coffee at Starbucks" required>
+                    <label for="manualDesc">Description / Merchant</label>
+                    <input type="text" id="manualDesc" placeholder="e.g. Sony Headphones, Groceries" required class="input-text">
                 </div>
+
                 <div class="form-group">
-                    <label>Amount ($)</label>
-                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required>
+                    <label for="manualAmount">Amount (USD / Ledger Currency)</label>
+                    <input type="number" id="manualAmount" step="0.01" min="0" placeholder="0.00" required class="input-text font-mono">
                 </div>
+
                 <div class="form-group">
-                    <label>Category</label>
-                    <select id="manualCategory">
-                        <option value="Shopping">🛍️ Shopping</option>
-                        <option value="Food & Dining">🍔 Food & Dining</option>
-                        <option value="Transport">🚗 Transport</option>
-                        <option value="Entertainment">🎬 Entertainment</option>
-                        <option value="Bills">📱 Bills</option>
-                        <option value="Health">💊 Health</option>
-                        <option value="Other">📦 Other</option>
+                    <label for="manualCategory">Discretionary Category</label>
+                    <select id="manualCategory" class="input-select">
+                        <option value="Shopping">Shopping & Tech</option>
+                        <option value="Food & Dining">Food & Dining</option>
+                        <option value="Transport">Transport & Mobility</option>
+                        <option value="Entertainment">Entertainment & Media</option>
+                        <option value="Bills">Fixed Recurring Bills</option>
+                        <option value="Health">Health & Wellness</option>
+                        <option value="Other">Unassigned Discretionary</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">
-                    Save Expense ✓
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 14px">
+                    <span>Save to Review Ledger</span>
+                    <span class="btn-arrow">→</span>
                 </button>
             </form>
-        </div>
+        </section>
     </div>
+
+    <script src="config.js"></script>
     <script src="popup.js"></script>
 </body>
 

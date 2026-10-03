@@ -8,8 +8,6 @@ import DashboardLayout from './layouts/DashboardLayout';
 import { Spinner } from './components/LoadingSkeleton';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
-// Extension Integration
-import ExtensionGate from './components/ExtensionGate';
 import { Toaster } from 'sonner';
 import './styles/toast.css'; // Custom toast styles
 
@@ -28,13 +26,11 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TransactionsPage = lazy(() => import('./pages/TransactionsPage'));
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage'));
 const CardsPage = lazy(() => import('./pages/CardsPage'));
-const ExpenseDetailsPage = lazy(() => import('./pages/ExpenseDetailsPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 // Feature Pages
 const BudgetsPage = lazy(() => import('./pages/BudgetsPage'));
-const BillsPage = lazy(() => import('./pages/BillsPage'));
 const SubscriptionsPage = lazy(() => import('./pages/SubscriptionsPage'));
 const GoalsPage = lazy(() => import('./pages/GoalsPage'));
 const InsightsPage = lazy(() => import('./pages/InsightsPage'));
@@ -42,11 +38,7 @@ const ReportsPage = lazy(() => import('./pages/ReportsPage'));
 const TransactionInboxPage = lazy(() => import('./pages/TransactionInboxPage'));
 const CashflowCalendarPage = lazy(() => import('./pages/CashflowCalendarPage'));
 const ExtensionHealthPage = lazy(() => import('./pages/ExtensionHealthPage'));
-const RecurringPage = lazy(() => import('./pages/RecurringPage'));
-const AccountsPage = lazy(() => import('./pages/AccountsPage'));
 const MoneyTwinPage = lazy(() => import('./pages/MoneyTwinPage'));
-const BillRemindersPage = lazy(() => import('./pages/BillRemindersPage'));
-const AITestPage = lazy(() => import('./pages/AITestPage'));
 const ShoppingActivityPage = lazy(() => import('./pages/ShoppingActivityPage'));
 
 // Public Pages
@@ -251,13 +243,11 @@ function App() {
 
                         <Route path="/auth/callback" element={<AuthCallback />} />
 
-                        {/* Protected Dashboard Routes - Extension Required */}
+                        {/* Protected Dashboard Routes */}
                         <Route
                             element={
                                 isAuthenticated ? (
-                                    <ExtensionGate>
-                                        <DashboardLayout />
-                                    </ExtensionGate>
+                                    <DashboardLayout />
                                 ) : (
                                     <Navigate to="/login" />
                                 )
@@ -267,26 +257,32 @@ function App() {
                             <Route path="/transactions" element={<TransactionsPage />} />
                             <Route path="/transaction-inbox" element={<TransactionInboxPage />} />
                             <Route path="/analytics" element={<AnalyticsPage />} />
+                            <Route path="/analyze" element={<Navigate to="/analytics" replace />} />
                             <Route path="/cards" element={<CardsPage />} />
-                            <Route path="/expenses" element={<ExpenseDetailsPage />} />
+                            <Route path="/expenses" element={<Navigate to="/transactions" replace />} />
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/settings" element={<SettingsPage />} />
                             <Route path="/setting" element={<Navigate to="/settings" replace />} />
-                            {/* New Feature Routes */}
+                            {/* Feature Routes */}
+                            <Route path="/plan" element={<Navigate to="/budgets" replace />} />
+                            <Route path="/plan/budgets" element={<Navigate to="/budgets" replace />} />
+                            <Route path="/plan/commitments" element={<Navigate to="/subscriptions" replace />} />
+                            <Route path="/plan/goals" element={<Navigate to="/goals" replace />} />
+                            <Route path="/plan/calendar" element={<Navigate to="/cashflow-calendar" replace />} />
                             <Route path="/budgets" element={<BudgetsPage />} />
-                            <Route path="/bills" element={<BillsPage />} />
+                            <Route path="/bills" element={<Navigate to="/subscriptions?tab=bills" replace />} />
                             <Route path="/subscriptions" element={<SubscriptionsPage />} />
                             <Route path="/goals" element={<GoalsPage />} />
                             <Route path="/insights" element={<InsightsPage />} />
+                            <Route path="/assist" element={<Navigate to="/insights" replace />} />
                             <Route path="/reports" element={<ReportsPage />} />
                             <Route path="/cashflow-calendar" element={<CashflowCalendarPage />} />
                             <Route path="/extension-health" element={<ExtensionHealthPage />} />
-                            <Route path="/recurring" element={<RecurringPage />} />
-                            <Route path="/accounts" element={<AccountsPage />} />
+                            <Route path="/recurring" element={<Navigate to="/subscriptions" replace />} />
+                            <Route path="/accounts" element={<Navigate to="/cards?tab=accounts" replace />} />
                             <Route path="/money-twin" element={<MoneyTwinPage />} />
-                            <Route path="/ai-test" element={<AITestPage />} />
                             <Route path="/shopping-activity" element={<ShoppingActivityPage />} />
-                            <Route path="/reminders" element={<BillRemindersPage />} />
+                            <Route path="/reminders" element={<Navigate to="/subscriptions?tab=trials" replace />} />
                         </Route>
 
                         {/* Landing Page for non-authenticated users */}

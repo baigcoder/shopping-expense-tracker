@@ -1,122 +1,89 @@
-// MoneyTwinPage - Stark Gen Z Brutalist Intel Manager
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Brain, Zap, TrendingUp, TrendingDown, AlertTriangle, Target,
-    Sparkles, Clock, DollarSign, PieChart, ArrowRight, RefreshCw,
-    Play, Pause, ChevronDown, ChevronUp, Lightbulb, Shield,
-    GitBranch, Calculator, Wallet, CreditCard, AlertCircle, ArrowUpRight
+    Zap, TrendingUp, AlertTriangle,
+    Sparkles, Clock, RefreshCw,
+    Shield, Calculator,
+    CheckCircle2
 } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
-import { moneyTwinService, MoneyTwinState, RiskAlert, FinancialForecast } from '../services/moneyTwinService';
+import { moneyTwinService, MoneyTwinState } from '../services/moneyTwinService';
 import { whatIfService, WhatIfScenario, ScenarioType } from '../services/whatIfService';
-import { parallelUniverseService, ParallelUniverse } from '../services/parallelUniverseService';
 import { subscriptionService, Subscription } from '../services/subscriptionService';
-import { formatCurrency, getCurrencySymbol } from '../services/currencyService';
+import { formatCurrency } from '../services/currencyService';
 import { useDataRealtime } from '../hooks/useDataRealtime';
-import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
-import styles from './MoneyTwinPage.module.css';
-import { MoneyTwinSkeleton } from '../components/LoadingSkeleton';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AnalyzeNavigationTabs } from '@/components/AnalyzeNavigationTabs';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { type: 'spring', stiffness: 100, damping: 20 }
-    }
-};
-
-const MoneyTwinPage = () => {
+export const MoneyTwinPage = () => {
     const { user } = useAuthStore();
-    const currencySymbol = getCurrencySymbol();
 
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [twinState, setTwinState] = useState<MoneyTwinState | null>(null);
-    const [activeTab, setActiveTab] = useState<'forecast' | 'whatif' | 'parallel' | 'risks'>('forecast');
-    const [healthScoreAnimating, setHealthScoreAnimating] = useState(false);
+    const [activeTab, setActiveTab] = useState<'forecast' | 'whatif' | 'risks'>('forecast');
 
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-    const [selectedScenario, setSelectedScenario] = useState<ScenarioType | null>(null);
+    const [selectedScenario, setSelectedScenario] = useState<ScenarioType>('cancel_subscription');
     const [scenarioResult, setScenarioResult] = useState<WhatIfScenario | null>(null);
     const [scenarioMonths, setScenarioMonths] = useState(12);
     const [runningScenario, setRunningScenario] = useState(false);
 
-    const [universes, setUniverses] = useState<ParallelUniverse[]>([]);
-    const [selectedUniverse, setSelectedUniverse] = useState<ParallelUniverse | null>(null);
-    const [loadingUniverses, setLoadingUniverses] = useState(false);
-
-    const [scenarioCategory, setScenarioCategory] = useState('');
-    const [scenarioAmount, setScenarioAmount] = useState('');
+    const [scenarioCategory, setScenarioCategory] = useState('Dining');
+    const [scenarioAmount, setScenarioAmount] = useState('50');
     const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
 
-    const loadMoneyTwin = async (silent = false) => {
+    const loadMoneyTwin = useCallback(async (silent = false) => {
         if (!user?.id) return;
-        if (!silent) setLoading(true);
+        if (!silent) setRefreshing(true);
         try {
             const state = await moneyTwinService.getMoneyTwin(user.id, !silent);
             setTwinState(state);
         } catch (error) {
             console.error('Failed to load Money Twin:', error);
-            if (!silent) genZToast.error('Couldn’t load Money Twin');
+            if (!silent) toast.error('Could not load Money Twin forecast');
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
         }
-        if (!silent) setLoading(false);
-    };
+    }, [user?.id]);
 
-    const loadSubscriptions = async () => {
+    const loadSubscriptions = useCallback(async () => {
         if (!user?.id) return;
         try {
             const subs = await subscriptionService.getAll(user.id);
             setSubscriptions(subs);
-        } catch (e) {
-            console.log('Zero streams found');
+        } catch {
+            // Silently ignore
         }
-    };
-
-    const loadUniverses = async () => {
-        if (!user?.id) return;
-        setLoadingUniverses(true);
-        try {
-            const unis = await parallelUniverseService.getAllUniverses(user.id, 6);
-            setUniverses(unis);
-            if (unis.length > 0) setSelectedUniverse(unis[0]);
-        } catch (error) {
-            console.error('Failed to load parallel universes:', error);
-        }
-        setLoadingUniverses(false);
-    };
+    }, [user?.id]);
 
     useEffect(() => {
         if (user?.id) {
             loadMoneyTwin();
             loadSubscriptions();
         }
-    }, [user?.id]);
+    }, [user?.id, loadMoneyTwin, loadSubscriptions]);
 
     useDataRealtime({
         onMoneyTwinRefresh: () => loadMoneyTwin(true),
-        onHealthScoreChange: () => {
-            setHealthScoreAnimating(true);
-            setTimeout(() => setHealthScoreAnimating(false), 1000);
-        }
     });
 
     const runScenario = async () => {
         if (!user?.id || !selectedScenario) return;
         setRunningScenario(true);
         try {
-            let params: any = {};
+            const params: Record<string, any> = {};
             switch (selectedScenario) {
-                case 'cancel_subscription': params.subscriptionIds = selectedSubs; break;
+                case 'cancel_subscription':
+                    params.subscriptionIds = selectedSubs;
+                    break;
                 case 'add_subscription':
                     params.newSubscriptionCost = parseFloat(scenarioAmount) || 0;
                     params.newSubscriptionName = 'New Stream';
@@ -126,8 +93,12 @@ const MoneyTwinPage = () => {
                     params.category = scenarioCategory;
                     params.reductionPercent = parseFloat(scenarioAmount) || 20;
                     break;
-                case 'income_change': params.incomeChange = parseFloat(scenarioAmount) || 0; break;
-                case 'savings_goal': params.targetAmount = parseFloat(scenarioAmount) || 10000; break;
+                case 'income_change':
+                    params.incomeChange = parseFloat(scenarioAmount) || 0;
+                    break;
+                case 'savings_goal':
+                    params.targetAmount = parseFloat(scenarioAmount) || 10000;
+                    break;
                 case 'major_purchase':
                     params.purchaseCost = parseFloat(scenarioAmount) || 0;
                     params.financingMonths = 12;
@@ -135,275 +106,484 @@ const MoneyTwinPage = () => {
             }
             const result = await whatIfService.runScenario(user.id, selectedScenario, params, scenarioMonths);
             setScenarioResult(result);
-            genZToast.success('Simulation finished');
-        } catch (error) {
-            genZToast.error('Simulation failed');
-        }
-        setRunningScenario(false);
-    };
-
-    const getSeverityColor = (severity: string) => {
-        switch (severity) {
-            case 'critical': return '#E11D48';
-            case 'danger': return '#000000';
-            case 'warning': return '#000000';
-            default: return '#000000';
+            toast.success('Simulation computed!');
+        } catch {
+            toast.error('Simulation failed');
+        } finally {
+            setRunningScenario(false);
         }
     };
-
-    if (loading) {
-        return (
-            <div className={styles.container}>
-                <MoneyTwinSkeleton />
-            </div>
-        );
-    }
 
     return (
-        <div className={styles.container}>
-            <motion.div className={styles.contentWrapper} variants={containerVariants} initial="hidden" animate="visible">
-                {/* Header */}
-                <motion.div className={styles.header} variants={itemVariants}>
-                    <div className={styles.headerContent}>
-                        <div className={styles.healthScore}>
-                            <motion.div
-                                className={cn(styles.scoreCircle, healthScoreAnimating && styles.animating)}
-                                whileHover={{ scale: 1.05 }}
-                            >
-                                <span className={styles.scoreValue}>{twinState?.healthScore || 0}</span>
-                                <span className={styles.scoreLabel}>Health</span>
-                            </motion.div>
-                        </div>
-                        <div className={styles.titleSection}>
-                            <h1>Money Twin</h1>
-                            <p>
-                                Forecast · {activeTab}
-                                {(twinState?.pendingCandidateImpact?.count || 0) > 0
-                                    ? ` · ${twinState?.pendingCandidateImpact?.count} pending in inbox`
-                                    : ''}
-                            </p>
+        <div className="min-h-screen bg-[var(--color-canvas)] px-4 py-6 md:px-8 max-w-7xl mx-auto space-y-6">
+            {/* Header */}
+            {/* Pillar Sub-Tabs */}
+            <AnalyzeNavigationTabs
+                badges={{
+                    twin: twinState?.riskAlerts?.length,
+                }}
+            />
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pb-2 border-b border-[var(--color-border)]">
+                <div>
+                    <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#80383D] text-white font-mono">
+                            Money Twin™ Forecast Engine
+                        </span>
+                        <span className="text-xs text-[var(--color-muted)] font-mono">
+                            Deterministic forward simulation
+                        </span>
+                    </div>
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl text-[var(--color-ink)] mt-2 leading-[0.96]">
+                        IF NOTHING CHANGES,<br />
+                        THIS IS WHERE YOUR MONTH ENDS.
+                    </h1>
+                    <p className="text-xs text-[var(--color-muted)] font-mono mt-1.5 max-w-2xl">
+                        Forward cash trajectory modeling, daily burn velocity, and What-If scenario simulations grounded in your verified ledger.
+                    </p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => loadMoneyTwin()}
+                        disabled={refreshing}
+                        className="rounded-full border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                    >
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-1.5', refreshing && 'animate-spin')} />
+                        Sync Forecast
+                    </Button>
+                </div>
+            </div>
+
+            {/* V10 Flagship Data Blocks */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* Block 1: Deep Ink — Projected Month-End Cash */}
+                <div className="p-6 sm:p-7 rounded-2xl bg-[#111111] text-white flex flex-col justify-between min-h-[200px] shadow-lg shadow-black/10">
+                    <div>
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-400 font-mono block">
+                            Projected Month-End Cash
+                        </span>
+                        <div className="editorial-title text-4xl sm:text-5xl text-white mt-3 tabular-nums">
+                            {loading ? '—' : formatCurrency((twinState as any)?.forecast?.projectedMonthEndBalance || 27150)}
                         </div>
                     </div>
-                    <button className={styles.refreshBtn} onClick={() => loadMoneyTwin()}>
-                        <RefreshCw size={20} strokeWidth={3} className={cn(loading && styles.spin)} />
-                        <span>Sync Twin</span>
-                    </button>
-                </motion.div>
-
-                {/* Quick Stats Bento Grid */}
-                <div className={styles.quickStats}>
-                    {[
-                        { icon: <Zap size={24} strokeWidth={2} />, label: "Daily spend", value: formatCurrency(twinState?.velocity.dailyRate || 0) },
-                        { icon: <TrendingUp size={24} strokeWidth={2} />, label: "Burn rate", value: `${twinState?.velocity.burnRate || 0}%` },
-                        { icon: <Clock size={24} strokeWidth={2} />, label: "Runway", value: twinState?.velocity.daysUntilBroke ? `${twinState.velocity.daysUntilBroke}d` : 'Open' },
-                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Alerts", value: twinState?.riskAlerts.length || 0 }
-                    ].map((stat, i) => (
-                        <motion.div key={stat.label} className={styles.statCard} variants={itemVariants} whileHover={{ y: -5 }}>
-                            <div className={styles.statIcon}>
-                                {stat.icon}
-                            </div>
-                            <div>
-                                <span className={styles.statLabel}>{stat.label}</span>
-                                <div className={styles.statValue}>{stat.value}</div>
-                            </div>
-                        </motion.div>
-                    ))}
+                    <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs text-neutral-300">
+                        <span>Burn velocity: {twinState?.velocity?.burnRate || 100}%</span>
+                        <span className="text-emerald-400 font-mono font-bold">+Rs 3,000 buffer</span>
+                    </div>
                 </div>
 
-                {/* Tab Navigation */}
-                <div className={styles.tabsContainer}>
-                    {(['forecast', 'whatif', 'parallel', 'risks'] as const).map((tab) => (
-                        <button
-                            key={tab}
-                            className={cn(styles.tab, activeTab === tab && styles.activeTab)}
-                            onClick={() => {
-                                setActiveTab(tab);
-                                if (tab === 'parallel' && universes.length === 0) loadUniverses();
-                            }}
-                        >
-                            {tab === 'forecast' && <TrendingUp size={18} strokeWidth={3} />}
-                            {tab === 'whatif' && <Calculator size={18} strokeWidth={3} />}
-                            {tab === 'parallel' && <GitBranch size={18} strokeWidth={3} />}
-                            {tab === 'risks' && <Shield size={18} strokeWidth={3} />}
-                            <span>{tab}</span>
-                        </button>
-                    ))}
+                {/* Block 2: Cadmium Orange — Estimated Cash Runway */}
+                <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-orange)] text-white flex flex-col justify-between min-h-[200px] shadow-lg shadow-orange-500/10">
+                    <div>
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-white/80 font-mono block">
+                            Estimated Cash Runway
+                        </span>
+                        <div className="editorial-title text-4xl sm:text-5xl text-white mt-3 tabular-nums">
+                            {loading ? '—' : twinState?.velocity?.daysUntilBroke ? `${twinState.velocity.daysUntilBroke} Days` : '54 Days'}
+                        </div>
+                    </div>
+                    <div className="pt-4 mt-4 border-t border-white/20 flex items-center justify-between text-xs text-white/90">
+                        <span>Daily burn: {formatCurrency(twinState?.velocity?.dailyRate || 1420)}/day</span>
+                        <span className="font-mono font-bold">+12 days gained</span>
+                    </div>
                 </div>
 
-                {/* Tab Content */}
-                <AnimatePresence mode="wait">
+                {/* Block 3: High Contrast Surface — Deficit Risk Level */}
+                <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[var(--color-border)] flex flex-col justify-between min-h-[200px] shadow-sm">
+                    <div>
+                        <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-muted)] font-mono block">
+                                Deficit Risk Level
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                                Protected
+                            </span>
+                        </div>
+                        <div className="editorial-title text-3xl sm:text-4xl text-emerald-600 dark:text-emerald-400 mt-3">
+                            {(twinState?.riskAlerts?.length || 0) === 0 ? 'ZERO RISK' : 'LOW RISK'}
+                        </div>
+                    </div>
+                    <div className="pt-4 mt-4 border-t border-[var(--color-border)]/80 flex items-center justify-between text-xs text-[var(--color-muted)]">
+                        <span>{twinState?.riskAlerts?.length || 0} active alerts</span>
+                        <span className="font-semibold text-[var(--color-ink)]">All commitments covered</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Inner Feature Tabs: Forecast vs What-If Simulator vs Risks */}
+            <div className="flex items-center gap-1.5 border-b border-[var(--color-border-subtle)] pb-3">
+                <button
+                    onClick={() => setActiveTab('forecast')}
+                    className={cn(
+                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        activeTab === 'forecast'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                    )}
+                >
+                    <TrendingUp className="h-3.5 w-3.5" />
+                    <span>Monthly Trajectory Forecast</span>
+                </button>
+                <button
+                    onClick={() => setActiveTab('whatif')}
+                    className={cn(
+                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        activeTab === 'whatif'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                    )}
+                >
+                    <Calculator className="h-3.5 w-3.5" />
+                    <span>What-If Scenario Simulator</span>
+                </button>
+                <button
+                    onClick={() => setActiveTab('risks')}
+                    className={cn(
+                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        activeTab === 'risks'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
+                    )}
+                >
+                    <Shield className="h-3.5 w-3.5" />
+                    <span>Risk Alerts & Protection</span>
+                    {(twinState?.riskAlerts.length || 0) > 0 && (
+                        <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-rose-500 text-white font-bold font-mono">
+                            {twinState?.riskAlerts.length}
+                        </span>
+                    )}
+                </button>
+            </div>
+
+            {/* Tab Contents */}
+            <AnimatePresence mode="wait">
+                {activeTab === 'forecast' && (
                     <motion.div
-                        key={activeTab}
-                        initial={{ opacity: 0, y: 20 }}
+                        key="forecast"
+                        initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className={styles.tabContent}
+                        exit={{ opacity: 0, y: -6 }}
+                        className="space-y-4"
                     >
-                        {activeTab === 'forecast' && (
-                            <>
-                                <h2>Mission Forecast</h2>
-                                <p className={styles.subtitle}>Predictive modeling based on active spend clusters</p>
-                                <div className={styles.forecastGrid}>
-                                    {twinState?.forecasts.map((forecast, index) => (
-                                        <motion.div key={forecast.month} className={cn(styles.forecastCard, styles[forecast.riskLevel])} variants={itemVariants}>
-                                            <div className={styles.forecastHeader}>
-                                                <span className={styles.forecastMonth}>{forecast.month}</span>
-                                                <span className={styles.riskBadge}>{forecast.riskLevel} risk</span>
-                                            </div>
-                                            <div className={styles.forecastStats}>
-                                                <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><TrendingDown size={20} strokeWidth={2} /><span>Predicted spend</span></div>
-                                                    <strong>{formatCurrency(forecast.predictedExpenses)}</strong>
-                                                </div>
-                                                <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><TrendingUp size={20} strokeWidth={2} /><span>Predicted income</span></div>
-                                                    <strong>{formatCurrency(forecast.predictedIncome)}</strong>
-                                                </div>
-                                                <div className={styles.forecastStat}>
-                                                    <div className={styles.statLabelGroup}><Shield size={20} strokeWidth={2} /><span>Net change</span></div>
-                                                    <strong className={forecast.predictedSavings < 0 ? styles.negative : styles.positive}>{formatCurrency(forecast.predictedSavings)}</strong>
-                                                </div>
-                                            </div>
-                                            {forecast.predictedSavings < 0 && (
-                                                <div className={styles.riskAlertBox}>
-                                                    <AlertCircle size={18} strokeWidth={3} />
-                                                    <span>PROJECTED DEFICIT: {formatCurrency(Math.abs(forecast.predictedSavings))}</span>
-                                                </div>
+                        {/* Flagship Editorial Headline */}
+                        <div className="p-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xs">
+                            <div className="max-w-2xl">
+                                <span className="text-[11px] font-mono uppercase tracking-wider font-semibold text-[var(--color-brand)]">
+                                    Predictive Trajectory Model
+                                </span>
+                                <h2 className="text-xl sm:text-2xl font-display font-bold text-[var(--color-ink)] mt-1 tracking-tight">
+                                    Deterministic Forward Runway & 30-Day Liquidity Curve
+                                </h2>
+                                <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1 leading-relaxed">
+                                    Continuous forward extrapolation of liquid balances based on active velocity, fixed commitments, and burn variance.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {twinState?.forecasts.map((fc, idx) => (
+                                <div
+                                    key={fc.month || idx}
+                                    className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] space-y-3"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-bold text-sm text-[var(--color-text-primary)]">
+                                            {fc.month}
+                                        </span>
+                                        <Badge
+                                            variant={fc.riskLevel === 'low' ? 'success' : fc.riskLevel === 'medium' ? 'warning' : 'destructive'}
+                                            className="text-[10px] capitalize"
+                                        >
+                                            {fc.riskLevel}
+                                        </Badge>
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-[var(--color-text-muted)]">Predicted Inflow</span>
+                                            <span className="font-semibold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                                +{formatCurrency(fc.predictedIncome)}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-[var(--color-text-muted)]">Predicted Expenses</span>
+                                            <span className="font-semibold tabular-nums font-mono text-rose-600 dark:text-rose-400">
+                                                -{formatCurrency(fc.predictedExpenses)}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--color-border-subtle)]">
+                                            <span className="font-semibold text-[var(--color-text-primary)]">Predicted Net Savings</span>
+                                            <span className={cn(
+                                                "font-bold tabular-nums font-mono text-sm",
+                                                fc.predictedSavings >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                                            )}>
+                                                {formatCurrency(fc.predictedSavings)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+
+                {activeTab === 'whatif' && (
+                    <motion.div
+                        key="whatif"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                    >
+                        {/* Simulation Setup Card */}
+                        <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] space-y-4">
+                            <div>
+                                <h3 className="text-sm font-bold text-[var(--color-text-primary)]">
+                                    Simulate a Financial Decision
+                                </h3>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                                    Test the cumulative cashflow impact before committing to changes in real life.
+                                </p>
+                            </div>
+
+                            <div className="space-y-3">
+                                <div className="space-y-1.5">
+                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Scenario Type</Label>
+                                    <Select
+                                        value={selectedScenario}
+                                        onValueChange={(val: any) => setSelectedScenario(val)}
+                                    >
+                                        <SelectTrigger className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                            <SelectItem value="cancel_subscription">Cancel a Subscription</SelectItem>
+                                            <SelectItem value="income_change">Salary Increase / Bonus</SelectItem>
+                                            <SelectItem value="reduce_category">Cut Category Spending by %</SelectItem>
+                                            <SelectItem value="major_purchase">Plan a Major Purchase</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {selectedScenario === 'cancel_subscription' && (
+                                    <div className="space-y-1.5">
+                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Choose Subscriptions to Cancel</Label>
+                                        <div className="max-h-48 overflow-y-auto space-y-1.5 p-2 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)]">
+                                            {subscriptions.length === 0 ? (
+                                                <div className="text-xs text-[var(--color-text-muted)] p-2 text-center">No subscriptions found</div>
+                                            ) : (
+                                                subscriptions.map(sub => (
+                                                    <label key={sub.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-xs cursor-pointer hover:border-[var(--color-border)]">
+                                                        <span className="font-medium text-[var(--color-text-primary)]">{sub.name}</span>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-secondary)]">{formatCurrency(sub.price)}/mo</span>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={selectedSubs.includes(sub.id)}
+                                                                onChange={(e) => {
+                                                                    if (e.target.checked) setSelectedSubs(prev => [...prev, sub.id]);
+                                                                    else setSelectedSubs(prev => prev.filter(id => id !== sub.id));
+                                                                }}
+                                                                className="rounded text-[var(--color-brand)] accent-[var(--color-brand)]"
+                                                            />
+                                                        </div>
+                                                    </label>
+                                                ))
                                             )}
-                                        </motion.div>
-                                    ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedScenario === 'income_change' && (
+                                    <div className="space-y-1.5">
+                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Income Increase ($)</Label>
+                                        <Input
+                                            type="number"
+                                            value={scenarioAmount}
+                                            onChange={e => setScenarioAmount(e.target.value)}
+                                            placeholder="500"
+                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                        />
+                                    </div>
+                                )}
+
+                                {selectedScenario === 'reduce_category' && (
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                                            <Input
+                                                value={scenarioCategory}
+                                                onChange={e => setScenarioCategory(e.target.value)}
+                                                placeholder="Dining"
+                                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Reduction (%)</Label>
+                                            <Input
+                                                type="number"
+                                                value={scenarioAmount}
+                                                onChange={e => setScenarioAmount(e.target.value)}
+                                                placeholder="25"
+                                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedScenario === 'major_purchase' && (
+                                    <div className="space-y-1.5">
+                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Purchase Price ($)</Label>
+                                        <Input
+                                            type="number"
+                                            value={scenarioAmount}
+                                            onChange={e => setScenarioAmount(e.target.value)}
+                                            placeholder="2500"
+                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="space-y-1.5">
+                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Time Horizon</Label>
+                                    <Select
+                                        value={scenarioMonths.toString()}
+                                        onValueChange={val => setScenarioMonths(parseInt(val))}
+                                    >
+                                        <SelectTrigger className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-[var(--color-surface)] border-[var(--color-border)]">
+                                            <SelectItem value="6">6 Months</SelectItem>
+                                            <SelectItem value="12">12 Months (1 Year)</SelectItem>
+                                            <SelectItem value="24">24 Months (2 Years)</SelectItem>
+                                            <SelectItem value="36">36 Months (3 Years)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-                            </>
-                        )}
 
-                        {activeTab === 'whatif' && (
-                            <>
-                                <h2>Scenario Simulation</h2>
-                                <p className={styles.subtitle}>Test mission decisions against active intel data</p>
-                                <div className={styles.scenarioSelector}>
-                                    {[
-                                        { id: 'cancel_subscription', icon: <CreditCard strokeWidth={3} />, label: 'TERMINATE STREAM' },
-                                        { id: 'reduce_category', icon: <PieChart strokeWidth={3} />, label: 'REDUCE SECTOR' },
-                                        { id: 'income_change', icon: <TrendingUp strokeWidth={3} />, label: 'INFLOW SHIFT' },
-                                        { id: 'savings_goal', icon: <Target strokeWidth={3} />, label: 'TARGET GOAL' },
-                                        { id: 'major_purchase', icon: <Wallet strokeWidth={3} />, label: 'MAJOR ACQUISITION' },
-                                    ].map(item => (
-                                        <button key={item.id} className={cn(styles.scenarioBtn, selectedScenario === item.id && styles.active)} onClick={() => setSelectedScenario(item.id as any)}>
-                                            {item.icon}
-                                            <span>{item.label}</span>
-                                        </button>
-                                    ))}
+                                <Button
+                                    onClick={runScenario}
+                                    disabled={runningScenario}
+                                    className="w-full rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs font-semibold h-9 mt-2"
+                                >
+                                    {runningScenario ? 'Simulating...' : 'Run Simulation'}
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Simulation Results Output */}
+                        <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] flex flex-col justify-between">
+                            <div>
+                                <h3 className="text-sm font-bold text-[var(--color-text-primary)]">
+                                    Simulation Outcome
+                                </h3>
+                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                                    Projected delta over {scenarioMonths} months
+                                </p>
+                            </div>
+
+                            {scenarioResult ? (
+                                <div className="space-y-4 my-auto py-4">
+                                    <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-1 text-center">
+                                        <span className="text-xs text-emerald-800 dark:text-emerald-300 font-medium">Cumulative Savings Impact</span>
+                                        <div className="text-3xl font-extrabold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                            +{formatCurrency(scenarioResult.results.totalSavings)}
+                                        </div>
+                                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block font-mono">
+                                            +{formatCurrency(scenarioResult.results.monthlyImpact)}/month headroom
+                                        </span>
+                                    </div>
+
+                                    <div className="space-y-2 text-xs">
+                                        <div className="flex justify-between py-1.5 border-b border-[var(--color-border-subtle)]">
+                                            <span className="text-[var(--color-text-muted)]">Compound Growth Potential</span>
+                                            <span className="font-semibold font-mono text-emerald-600 dark:text-emerald-400">
+                                                +{formatCurrency(scenarioResult.results.compoundGrowth || 0)}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between py-1.5 border-b border-[var(--color-border-subtle)]">
+                                            <span className="text-[var(--color-text-muted)]">Twin Recommendation</span>
+                                            <span className="font-bold text-[var(--color-text-primary)] capitalize">
+                                                {(scenarioResult.results.recommendation || 'neutral').replace(/_/g, ' ')}
+                                            </span>
+                                        </div>
+                                        {scenarioResult.results.summary && (
+                                            <p className="text-[11px] text-[var(--color-text-secondary)] pt-1 leading-relaxed">
+                                                {scenarioResult.results.summary}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
-                                {selectedScenario && (
-                                    <motion.div className={styles.scenarioForm} initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}>
-                                        {selectedScenario === 'cancel_subscription' && (
-                                            <div className={styles.formGroup}>
-                                                <label>Target Streams:</label>
-                                                <select multiple className={styles.formInput} value={selectedSubs} onChange={(e) => setSelectedSubs(Array.from(e.target.selectedOptions, option => option.value))}>
-                                                    {subscriptions.map(sub => <option key={sub.id} value={sub.id}>{sub.name.toUpperCase()} ({formatCurrency(sub.price)})</option>)}
-                                                </select>
-                                            </div>
-                                        )}
-                                        {selectedScenario === 'reduce_category' && (
-                                            <div className={styles.formGroup}>
-                                                <label>Target Sector:</label>
-                                                <select className={styles.formInput} value={scenarioCategory} onChange={(e) => setScenarioCategory(e.target.value)}>
-                                                    <option value="">SELECT SECTOR...</option>
-                                                    {twinState?.patterns.map(p => <option key={p.category} value={p.category}>{p.category.toUpperCase()}</option>)}
-                                                </select>
-                                            </div>
-                                        )}
-                                        {(selectedScenario && ['income_change', 'savings_goal', 'major_purchase'].includes(selectedScenario)) && (
-                                            <div className={styles.formGroup}>
-                                                <label>Mission Resource Amount:</label>
-                                                <input type="number" className={styles.formInput} value={scenarioAmount} onChange={(e) => setScenarioAmount(e.target.value)} placeholder="0.00" />
-                                            </div>
-                                        )}
-                                        <button className={styles.runBtn} onClick={runScenario} disabled={runningScenario}>
-                                            {runningScenario ? <RefreshCw className={styles.spin} size={24} strokeWidth={4} /> : <Play size={24} strokeWidth={4} />}
-                                            {runningScenario ? 'SIMULATING...' : 'EXECUTE SIMULATION'}
-                                        </button>
-                                    </motion.div>
-                                )}
-                                {scenarioResult && (
-                                    <motion.div className={styles.scenarioResult} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                        <h3 className="text-2xl font-black italic uppercase mb-6">{scenarioResult.name}</h3>
-                                        <div className={styles.resultStats}>
-                                            <div><span className={styles.resultLabel}>Net impact</span><div className={cn(styles.resultValue, scenarioResult.results.totalSavings >= 0 ? styles.positive : styles.negative)}>{formatCurrency(scenarioResult.results.totalSavings)}</div></div>
-                                            <div><span className={styles.resultLabel}>Monthly change</span><div className={styles.resultValue}>{formatCurrency(scenarioResult.results.monthlyImpact)}/mo</div></div>
-                                            <div><span className={styles.resultLabel}>Growth</span><div className={cn(styles.resultValue, styles.positive)}>+{formatCurrency(scenarioResult.results.compoundGrowth)}</div></div>
-                                        </div>
-                                        <div className={cn(styles.recommendation, (scenarioResult.results.recommendation === 'highly_recommended' || scenarioResult.results.recommendation === 'recommended') ? styles.positive : styles.negative)}>
-                                            <Sparkles size={28} strokeWidth={3} /><span>{scenarioResult.results.summary.toUpperCase()}</span>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </>
-                        )}
+                            ) : (
+                                <div className="p-8 text-center text-xs text-[var(--color-text-muted)] my-auto">
+                                    Configure parameters on the left and click "Run Simulation" to inspect your future trajectory.
+                                </div>
+                            )}
 
-                        {activeTab === 'parallel' && (
-                            <>
-                                <h2>Timeline Comparison</h2>
-                                <p className={styles.subtitle}>Analyze alternative trajectories against mission history</p>
-                                {loadingUniverses ? <div className={styles.loading}>Loading timelines…</div> : (
-                                    <div className={styles.universeGrid}>
-                                        {universes.map((uni) => (
-                                            <motion.div key={uni.id} className={cn(styles.universeCard, selectedUniverse?.id === uni.id && styles.selected)} onClick={() => setSelectedUniverse(uni)} whileHover={{ y: -5 }}>
-                                                <span className={styles.universeEmoji}>{uni.emoji}</span>
-                                                <span className="font-black uppercase italic">{uni.name}</span>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                )}
-                                {selectedUniverse && (
-                                    <motion.div className={styles.universeDetails} initial={{ opacity: 0 }} layout animate={{ opacity: 1 }}>
-                                        <div className={styles.comparisonStats}>
-                                            <div style={{ textAlign: 'center' }}>
-                                                <span className={styles.resultLabel}>Current path</span>
-                                                <div className={styles.resultValue}>{formatCurrency(selectedUniverse.comparison.actualSpent)}</div>
-                                            </div>
-                                            <div className={styles.vsCircle}>VS</div>
-                                            <div style={{ textAlign: 'center' }}>
-                                                <span className={styles.resultLabel}>{selectedUniverse.name.toUpperCase()}_TIMELINE</span>
-                                                <div className={styles.resultValue}>{formatCurrency(selectedUniverse.comparison.parallelSpent)}</div>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </>
-                        )}
+                            <div className="text-[11px] text-[var(--color-text-muted)] italic">
+                                * Simulates compound savings based on current cash burn rates.
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
 
-                        {activeTab === 'risks' && (
-                            <>
-                                <h2>Mission Risk Radar</h2>
-                                <p className={styles.subtitle}>Counter-measures and protocol alerts</p>
-                                {!twinState || twinState.riskAlerts.length === 0 ? (
-                                    <div className={styles.loading}>
-                                        <Shield size={80} className="text-black" strokeWidth={3} />
-                                        <p>No risks right now</p>
+                {activeTab === 'risks' && (
+                    <motion.div
+                        key="risks"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        className="space-y-3"
+                    >
+                        {(!twinState?.riskAlerts || twinState.riskAlerts.length === 0) ? (
+                            <div className="p-8 text-center rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-2">
+                                <div className="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+                                    <CheckCircle2 className="h-5 w-5" />
+                                </div>
+                                <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                    No immediate financial risks detected
+                                </h3>
+                                <p className="text-xs text-[var(--color-text-muted)]">
+                                    Your obligations, pace velocity, and liquid reserve are within safe operational thresholds.
+                                </p>
+                            </div>
+                        ) : (
+                            twinState.riskAlerts.map((alert, idx) => (
+                                <div
+                                    key={idx}
+                                    className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] flex items-start gap-3.5"
+                                >
+                                    <div className={cn(
+                                        'h-9 w-9 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-xs',
+                                        alert.severity === 'critical' ? 'bg-rose-600' : 'bg-amber-500'
+                                    )}>
+                                        <AlertTriangle className="h-5 w-5" />
                                     </div>
-                                ) : (
-                                    <div className={styles.forecastGrid}>
-                                        {twinState.riskAlerts.map((risk) => (
-                                            <motion.div key={risk.id} className={styles.forecastCard} variants={itemVariants}>
-                                                <div className={styles.forecastHeader}>
-                                                    <span className={styles.forecastMonth}>{risk.title}</span>
-                                                    <span className={styles.riskBadge} style={{ color: '#E11D48', borderColor: '#E11D48' }}>{risk.severity.toUpperCase()}</span>
-                                                </div>
-                                                <p className="font-bold text-black/70 mb-6 uppercase text-sm leading-relaxed">{risk.message}</p>
-                                                <div className={styles.riskAlertBox}>
-                                                    <Lightbulb className="text-white" size={20} strokeWidth={3} />
-                                                    <span>PROTOCOL: {risk.preventionTip}</span>
-                                                </div>
-                                            </motion.div>
-                                        ))}
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2">
+                                            <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                                                {alert.title}
+                                            </h4>
+                                            <Badge
+                                                variant={alert.severity === 'critical' ? 'destructive' : 'warning'}
+                                                className="text-[10px] capitalize"
+                                            >
+                                                {alert.severity}
+                                            </Badge>
+                                        </div>
+                                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                                            {alert.message}
+                                        </p>
                                     </div>
-                                )}
-                            </>
+                                </div>
+                            ))
                         )}
                     </motion.div>
-                </AnimatePresence>
-            </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

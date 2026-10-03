@@ -1,16 +1,19 @@
-// Shopping Activity Page - Stark Gen Z Brutalist Telemetry Manager
+// Shopping Activity Page — Cashly Calm Finance Companion Telemetry
+// Authority: docs/design-v5/28_EXTENSION.md & docs/design-v5/37_COMPONENT_MIGRATION.md
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ShoppingCart, CreditCard, Clock, Store,
     Globe, Activity, RefreshCw, Zap, ExternalLink,
-    Landmark, Smartphone, MonitorPlay, Package,
-    ShoppingBag, Tag, CreditCard as CardIcon, ArrowRight, Target
+    Landmark, Smartphone, Package,
+    ShoppingBag, Tag, CreditCard as CardIcon, ArrowRight, Target, Radio
 } from 'lucide-react';
 import { useAuthStore } from '../store/useStore';
 import { supabase } from '../config/supabase';
 import { cn } from '@/lib/utils';
-import styles from './ShoppingActivityPage.module.css';
+import { Surface } from '@/components/ui/Surface';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ActivitySkeleton } from '../components/LoadingSkeleton';
 
 interface SiteVisit {
@@ -47,21 +50,9 @@ const SITE_CATEGORIES: Record<string, { category: 'shopping' | 'payment' | 'fina
     'mcb': { category: 'finance', iconComponent: Landmark },
 };
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { type: 'spring', stiffness: 100, damping: 20 }
-    }
+const FADE_VARIANTS = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] } }
 };
 
 const ShoppingActivityPage = () => {
@@ -211,124 +202,161 @@ const ShoppingActivityPage = () => {
     const timeAgo = (dateStr: string): string => {
         const diff = new Date().getTime() - new Date(dateStr).getTime();
         const mins = Math.floor(diff / 60000);
-        if (mins < 60) return `${mins}M AGO`;
+        if (mins < 60) return `${mins}m ago`;
         const hours = Math.floor(mins / 60);
-        if (hours < 24) return `${hours}H AGO`;
-        return `${Math.floor(hours / 24)}D AGO`;
+        if (hours < 24) return `${hours}h ago`;
+        return `${Math.floor(hours / 24)}d ago`;
     };
 
     if (loading) {
         return (
-            <div className={styles.container}>
+            <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
                 <ActivitySkeleton />
             </div>
         );
     }
 
     return (
-        <div className={styles.container}>
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
-                {/* Brutalist Header */}
-                <motion.header className={styles.header} variants={itemVariants}>
-                    <div className={styles.headerLeft}>
-                        <h1>
-                            Shopping activity
-                            <span className={styles.liveBadge}>
-                                <Activity size={14} strokeWidth={2} className="animate-pulse" />
-                                Live
-                            </span>
-                        </h1>
-                        <p>Sites the extension has seen recently</p>
+        <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+            {/* Header Section */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--color-border)] pb-6">
+                <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                        <Radio className="h-3.5 w-3.5 animate-pulse" />
+                        <span>Companion Telemetry</span>
                     </div>
-                    <button className={styles.refreshBtn} onClick={fetchSiteVisits} disabled={isRefreshing}>
-                        <RefreshCw size={20} strokeWidth={3} className={cn(isRefreshing && styles.spinner)} />
-                        <span>{isRefreshing ? 'Refreshing…' : 'Refresh'}</span>
-                    </button>
-                </motion.header>
-
-                {/* Stats Grid */}
-                <div className={styles.statsGrid}>
-                    {[
-                        { icon: <ShoppingCart size={22} strokeWidth={2} />, label: "Shopping sites", value: stats.shoppingSites },
-                        { icon: <CreditCard size={22} strokeWidth={2} />, label: "Payment sites", value: stats.paymentSites },
-                        { icon: <Target size={22} strokeWidth={2} />, label: "Visits", value: stats.totalVisits },
-                        { icon: <Globe size={22} strokeWidth={2} />, label: "Sites", value: stats.totalSites }
-                    ].map((stat, i) => (
-                        <motion.div key={i} variants={itemVariants} className={styles.statCard}>
-                            <div className={styles.statIcon}>{stat.icon}</div>
-                            <div>
-                                <div className={styles.statLabel}>{stat.label}</div>
-                                <div className={styles.statValue}>{stat.value}</div>
-                            </div>
-                        </motion.div>
-                    ))}
+                    <h1 className="mt-2 font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-ink)]">
+                        Shopping Activity & Interceptions
+                    </h1>
+                    <p className="mt-1 text-sm text-[var(--color-ink-secondary)]">
+                        Recent digital checkout platforms, payment gateways, and retail sites observed by the browser companion.
+                    </p>
                 </div>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={fetchSiteVisits}
+                    disabled={isRefreshing}
+                    className="h-9 gap-2 border-[var(--color-border)] text-xs text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                >
+                    <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
+                    <span>{isRefreshing ? 'Refreshing…' : 'Sync Telemetry'}</span>
+                </Button>
+            </div>
 
-                {/* Filter Tabs */}
-                <motion.div className={styles.filterTabs} variants={itemVariants}>
-                    {(['all', 'shopping', 'payment', 'finance'] as const).map(filter => (
-                        <button
-                            key={filter}
-                            className={cn(styles.filterTab, activeFilter === filter && styles.active)}
-                            onClick={() => { setActiveFilter(filter); }}
-                        >
-                            {filter === 'all' && <Zap size={16} strokeWidth={3} />}
-                            {filter === 'all' ? 'All' : filter.charAt(0).toUpperCase() + filter.slice(1)}
-                        </button>
-                    ))}
-                </motion.div>
+            {/* 4-Tile Telemetry Metrics */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                    { icon: ShoppingCart, label: "Retail Sites", value: stats.shoppingSites, color: "text-[#D92F57] bg-[#FBE8ED]" },
+                    { icon: CreditCard, label: "Payment Gateways", value: stats.paymentSites, color: "text-[#0284C7] bg-[#E0F2FE]" },
+                    { icon: Target, label: "Total Sessions", value: stats.totalVisits, color: "text-[#167A52] bg-[#E8F5EF]" },
+                    { icon: Globe, label: "Monitored Domains", value: stats.totalSites, color: "text-[#7547C7] bg-[#F1EBFF]" }
+                ].map((stat, i) => {
+                    const Icon = stat.icon;
+                    return (
+                        <Surface key={i} className="p-4 sm:p-5 flex items-center gap-3.5">
+                            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", stat.color)}>
+                                <Icon className="h-5 w-5" />
+                            </div>
+                            <div className="min-w-0">
+                                <p className="text-xs font-medium text-[var(--color-muted)] truncate">{stat.label}</p>
+                                <p className="mt-0.5 font-display text-xl sm:text-2xl font-bold tabular-nums text-[var(--color-ink)]">
+                                    {stat.value}
+                                </p>
+                            </div>
+                        </Surface>
+                    );
+                })}
+            </div>
 
-                {/* Site List */}
-                <div className={styles.siteGrid}>
-                    <AnimatePresence mode="popLayout">
-                        {filteredSites.length === 0 ? (
-                            <motion.div key="empty" className={styles.emptyState} variants={itemVariants}>
-                                <ShoppingBag size={80} strokeWidth={1} className="text-black/10" />
-                                <h3>Quiet for now</h3>
-                                <p>Nothing in this period yet</p>
-                            </motion.div>
-                        ) : (
-                            filteredSites.map((site, index) => {
-                                const { Icon } = getSiteCategory(site.site_name);
-                                return (
-                                    <motion.div
-                                        key={site.id}
-                                        className={cn(styles.siteCard, styles[site.category])}
-                                        variants={itemVariants}
-                                        layout
-                                    >
-                                        <div className={styles.siteHeader}>
-                                            <div className={styles.siteIcon}>
-                                                <Icon size={32} strokeWidth={3} />
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {(['all', 'shopping', 'payment', 'finance'] as const).map(filter => (
+                    <button
+                        key={filter}
+                        type="button"
+                        onClick={() => setActiveFilter(filter)}
+                        className={cn(
+                            "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium transition-colors border",
+                            activeFilter === filter
+                                ? "bg-[var(--color-brand)] border-[var(--color-brand)] text-white shadow-xs"
+                                : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-2)]"
+                        )}
+                    >
+                        {filter === 'all' && <Zap className="h-3 w-3" />}
+                        <span>{filter === 'all' ? 'All Platforms' : filter.charAt(0).toUpperCase() + filter.slice(1)}</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Platform Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <AnimatePresence mode="popLayout">
+                    {filteredSites.length === 0 ? (
+                        <div className="col-span-full py-16 text-center">
+                            <Surface className="mx-auto max-w-md p-8 text-center">
+                                <ShoppingBag className="mx-auto h-12 w-12 text-[var(--color-muted)] opacity-40" />
+                                <h3 className="mt-3 font-display text-base font-semibold text-[var(--color-ink)]">
+                                    No sessions recorded
+                                </h3>
+                                <p className="mt-1 text-xs text-[var(--color-muted)]">
+                                    As you browse online checkout flows, captured sessions and domains will appear here.
+                                </p>
+                            </Surface>
+                        </div>
+                    ) : (
+                        filteredSites.map((site) => {
+                            const { Icon } = getSiteCategory(site.site_name);
+                            return (
+                                <motion.div
+                                    key={site.id}
+                                    variants={FADE_VARIANTS}
+                                    initial="hidden"
+                                    animate="visible"
+                                    layout
+                                >
+                                    <Surface className="p-4 sm:p-5 flex flex-col justify-between h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)]">
+                                                    <Icon className="h-5 w-5" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <h3 className="font-display text-sm font-bold text-[var(--color-ink)] truncate">
+                                                        {site.site_name}
+                                                    </h3>
+                                                    <p className="text-xs text-[var(--color-muted)] truncate font-mono">
+                                                        {site.hostname}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className={styles.siteInfo}>
-                                                <h3>{site.site_name}</h3>
-                                                <span className={styles.siteHostname}>{site.hostname}</span>
-                                            </div>
-                                            <a href={site.url} target="_blank" rel="noopener noreferrer" className={styles.visitLink}>
-                                                <ExternalLink size={20} strokeWidth={3} />
+                                            <a
+                                                href={site.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                aria-label={`Visit ${site.site_name}`}
+                                                className="p-1.5 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-colors"
+                                            >
+                                                <ExternalLink className="h-4 w-4" />
                                             </a>
                                         </div>
-                                        <div className={styles.siteStats}>
-                                            <div className={styles.siteStat}>
-                                                <Clock size={16} strokeWidth={3} />
+
+                                        <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-xs text-[var(--color-ink-secondary)]">
+                                            <div className="flex items-center gap-1.5">
+                                                <Clock className="h-3.5 w-3.5 text-[var(--color-muted)]" />
                                                 <span>{timeAgo(site.last_visited)}</span>
                                             </div>
-                                            <div className={styles.siteStat}>
-                                                <Activity size={16} strokeWidth={3} />
-                                                <span>{site.visit_count} HITS</span>
-                                            </div>
+                                            <Badge variant="outline" className="text-[10px] font-mono tabular-nums uppercase border-[var(--color-border)]">
+                                                {site.visit_count} {site.visit_count === 1 ? 'visit' : 'visits'}
+                                            </Badge>
                                         </div>
-                                        <span className={styles.categoryBadge}>
-                                            {site.category.toUpperCase()}
-                                        </span>
-                                    </motion.div>
-                                );
-                            })
-                        )}
-                    </AnimatePresence>
-                </div>
-            </motion.div>
+                                    </Surface>
+                                </motion.div>
+                            );
+                        })
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 };
