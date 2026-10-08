@@ -1,9 +1,9 @@
-// Transaction Modal - Stark Gen Z Brutalist Data Input
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, Calendar, DollarSign, FileText, Tag, ChevronDown, Check, ArrowRight } from 'lucide-react';
-import { useModalStore, useAuthStore } from '../store/useStore';
+import { X, Loader2, Calendar, FileText, Tag, ChevronDown, Check, ArrowRight } from 'lucide-react';
+import { useModalStore, useAuthStore, useUIStore } from '../store/useStore';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
+import { getCurrencySymbol } from '../services/currencyService';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +23,8 @@ const CATEGORIES = [
 const TransactionModal = () => {
     const { isAddTransactionOpen, closeTransactionModal } = useModalStore();
     const { user } = useAuthStore();
+    const currency = useUIStore((state) => state.currency);
+    const currencySymbol = getCurrencySymbol(currency) || 'Rs';
 
     const [isLoading, setIsLoading] = useState(false);
     const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
@@ -149,19 +151,26 @@ const TransactionModal = () => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)]">
-                                    <DollarSign size={14} strokeWidth={2} /> Amount
+                                <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                                    <span>Amount</span>
+                                    <span className="text-[var(--color-ink)] font-bold">({currencySymbol})</span>
                                 </label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    value={formData.amount}
-                                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                                    placeholder="0.00"
-                                    className="w-full rounded-[var(--r-md)] border border-[var(--border)] px-4 py-3 text-2xl font-semibold outline-none placeholder:text-[#D6D3D1] focus:border-[var(--brand)]"
-                                    required
-                                />
+                                <div className="relative">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-base font-bold font-mono text-[var(--color-muted)]">
+                                        {currencySymbol}
+                                    </div>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={formData.amount}
+                                        onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                                        placeholder="0.00"
+                                        className="w-full rounded-xl border border-[var(--color-border)] pl-14 pr-4 py-3 text-2xl font-bold font-mono outline-none text-[var(--color-ink)] bg-[var(--color-surface)] placeholder:text-stone-300 focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20 tabular-nums transition-all"
+                                        required
+                                        autoFocus
+                                    />
+                                </div>
                             </div>
 
                             <div className="space-y-1.5">

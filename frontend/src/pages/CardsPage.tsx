@@ -228,14 +228,14 @@ export const CardsPage = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         Capital Infrastructure
                     </div>
-                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[var(--color-ink)] tracking-tight">
                         Instruments & Channels
                     </h1>
-                    <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
                         Physical payment cards, spending limits, and connected bank capital feeds synchronized with the browser capture engine.
                     </p>
                 </div>
@@ -245,16 +245,16 @@ export const CardsPage = () => {
                         size="sm"
                         onClick={handleRefresh}
                         disabled={refreshing}
-                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-4 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
                     >
-                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
+                        <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[var(--color-brand)]', refreshing && 'animate-spin')} />
                         Sync Feeds
                     </Button>
                     {activeTab === 'cards' ? (
                         <Button
                             size="sm"
                             onClick={openAddCard}
-                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-5 shadow-sm transition-all"
+                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
                         >
                             <Plus className="h-4 w-4 mr-1.5" />
                             Add Payment Card
@@ -263,7 +263,7 @@ export const CardsPage = () => {
                         <Button
                             size="sm"
                             onClick={handleOpenAddAccount}
-                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-5 shadow-sm transition-all"
+                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
                         >
                             <Plus className="h-4 w-4 mr-1.5" />
                             Link Bank Account
@@ -274,29 +274,29 @@ export const CardsPage = () => {
 
             {/* Instrument Editorial Pill Tabs */}
             <div className="flex items-center justify-between pb-2">
-                <div className="inline-flex p-1.5 rounded-full bg-white border border-[var(--color-border)] shadow-xs">
+                <div className="inline-flex p-1 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] shadow-xs">
                     <button
                         onClick={() => handleTabChange('cards')}
                         className={cn(
-                            'px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2',
+                            'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2',
                             activeTab === 'cards'
-                                ? 'bg-[#111111] text-white shadow-xs'
-                                : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
-                        <CreditCard className={cn('h-3.5 w-3.5', activeTab === 'cards' ? 'text-[#EE5024]' : '')} />
+                        <CreditCard className={cn('h-3.5 w-3.5', activeTab === 'cards' ? 'text-[var(--color-brand)]' : '')} />
                         <span>Payment Cards ({cards.length})</span>
                     </button>
                     <button
                         onClick={() => handleTabChange('accounts')}
                         className={cn(
-                            'px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2',
+                            'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2',
                             activeTab === 'accounts'
-                                ? 'bg-[#111111] text-white shadow-xs'
-                                : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)]'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
-                        <Landmark className={cn('h-3.5 w-3.5', activeTab === 'accounts' ? 'text-[#EE5024]' : '')} />
+                        <Landmark className={cn('h-3.5 w-3.5', activeTab === 'accounts' ? 'text-[var(--color-brand)]' : '')} />
                         <span>Bank Accounts ({accounts.length})</span>
                     </button>
                 </div>
@@ -306,19 +306,19 @@ export const CardsPage = () => {
             {activeTab === 'cards' && (
                 <div className="space-y-6">
                     {cardsLoading && cards.length === 0 ? (
-                        <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                        <div className="p-12 text-center text-xs text-[var(--color-muted)] animate-pulse">
                             Loading payment instruments...
                         </div>
                     ) : cards.length === 0 ? (
-                        <div className="p-12 text-center rounded-[24px] bg-white border border-[var(--color-border)] space-y-3">
-                            <div className="h-12 w-12 rounded-full bg-[var(--color-canvas)] flex items-center justify-center mx-auto text-[#EE5024]">
+                        <div className="p-12 text-center rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] space-y-3">
+                            <div className="h-12 w-12 rounded-2xl bg-[var(--color-surface-2)] flex items-center justify-center mx-auto text-[var(--color-brand)]">
                                 <CreditCard className="h-6 w-6" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm text-[var(--color-ink)] uppercase">
+                                <h3 className="font-bold text-sm text-[var(--color-ink)]">
                                     No payment cards linked
                                 </h3>
-                                <p className="text-xs text-[var(--color-ink)]/70 max-w-sm mx-auto mt-1">
+                                <p className="text-xs text-[var(--color-muted)] max-w-sm mx-auto mt-1">
                                     Link your cards to automatically match checkout receipts from the companion extension.
                                 </p>
                             </div>
@@ -326,7 +326,7 @@ export const CardsPage = () => {
                                 <Button
                                     size="sm"
                                     onClick={openAddCard}
-                                    className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white text-xs font-bold px-5 h-9"
+                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs font-semibold px-4 h-9"
                                 >
                                     <Plus className="h-3.5 w-3.5 mr-1" />
                                     Add Your First Card
@@ -347,20 +347,20 @@ export const CardsPage = () => {
                                             setViewingCard(card);
                                             setEditedLimit(card.spending_limit?.toString() || '');
                                         }}
-                                        className="cursor-pointer group p-6 rounded-[24px] bg-[#111111] text-white border border-[#222222] shadow-sm hover:border-[#EE5024] transition-all space-y-5 relative overflow-hidden"
+                                        className="cursor-pointer group p-6 rounded-2xl bg-[#111111] text-white border border-[#222222] shadow-sm hover:border-[var(--color-brand)] transition-all space-y-5 relative overflow-hidden"
                                     >
                                         {/* Card Visual Mini Header */}
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="h-9 w-9 rounded-xl bg-[#222222] text-[#EE5024] flex items-center justify-center font-bold text-xs font-mono border border-white/10">
+                                                <div className="h-9 w-9 rounded-xl bg-[#222222] text-[var(--color-brand)] flex items-center justify-center font-bold text-xs font-mono border border-white/10">
                                                     {(card.type || 'card').slice(0, 4).toUpperCase()}
                                                 </div>
                                                 <div>
                                                     <div className="font-bold text-sm text-white">
-                                                        {card.nickname || `${(card.type || 'Card').toUpperCase()} •••• ${card.last4}`}
+                                                        {card.nickname || `${(card.type || 'Card').toUpperCase()} •••• ${card.last4 || '••••'}`}
                                                     </div>
                                                     <div className="text-[11px] text-white/50 font-mono">
-                                                        •••• {card.last4} | Exp {card.expiry}
+                                                        •••• {card.last4 || '••••'} {card.expiry ? `| Exp ${card.expiry}` : ''}
                                                     </div>
                                                 </div>
                                             </div>

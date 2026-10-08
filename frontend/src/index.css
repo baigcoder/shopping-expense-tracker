@@ -112,9 +112,9 @@
   --shadow-premium: 0 1px 2px rgba(9, 20, 27, 0.06), 0 12px 32px rgba(14, 129, 116, 0.1);
 
   /* Typography */
-  --font-display: 'Syne', 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* Backwards compatibility aliases */
   --bg-page:        var(--cashly-bg-canvas);
@@ -531,10 +531,9 @@ textarea:focus-visible,
    ═══════════════════════════════════════════════════════════ */
 .editorial-title {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
 }
 
 .editorial-tag {
@@ -543,34 +542,89 @@ textarea:focus-visible,
   gap: 6px;
   padding: 4px 12px;
   border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .editorial-kpi-orange {
-  background: var(--color-orange);
-  color: #FFFFFF;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
   border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.editorial-kpi-orange::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-brand);
 }
 
 .editorial-kpi-ink {
-  background: var(--color-ink);
-  color: #FFFFFF;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
   border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.editorial-kpi-ink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-ink);
 }
 
 .editorial-kpi-pink {
-  background: var(--color-pink);
+  background: var(--color-surface);
   color: var(--color-ink);
+  border: 1px solid var(--color-border);
   border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.editorial-kpi-pink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #E11D48;
 }
 
 .editorial-kpi-sage {
-  background: var(--color-sage);
+  background: var(--color-surface);
   color: var(--color-ink);
+  border: 1px solid var(--color-border);
   border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.editorial-kpi-sage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #16A34A;
 }
 
 .editorial-pill-btn {

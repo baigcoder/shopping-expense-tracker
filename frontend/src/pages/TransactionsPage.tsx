@@ -16,6 +16,8 @@ import {
     Inbox,
     Sparkles,
     CheckCircle2,
+    Plus,
+    X,
 } from 'lucide-react';
 import { useAuthStore, useModalStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
@@ -53,6 +55,7 @@ export function TransactionsPage() {
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('all');
     const [dateRange, setDateRange] = useState<'all' | 'today' | 'week' | 'month'>('all');
+    const [typeFilter, setTypeFilter] = useState<'all' | 'expense' | 'income'>('all');
     const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
 
@@ -239,6 +242,10 @@ export function TransactionsPage() {
                     }
                 }
 
+                if (typeFilter !== 'all') {
+                    if (tx.type !== typeFilter) return false;
+                }
+
                 return true;
             })
             .sort((a, b) => {
@@ -248,7 +255,7 @@ export function TransactionsPage() {
                 if (sortOrder === 'lowest') return Math.abs(a.amount) - Math.abs(b.amount);
                 return 0;
             });
-    }, [transactions, search, categoryFilter, dateRange, sortOrder]);
+    }, [transactions, search, categoryFilter, dateRange, typeFilter, sortOrder]);
 
     const PAGE_SIZE = 12;
     const paginatedTransactions = useMemo(() => {
@@ -334,85 +341,140 @@ export function TransactionsPage() {
             {activeTab === 'ledger' && (
                 <div className="space-y-4 animate-fade-in">
                     {/* Search & Filter Toolbar */}
-                    <Surface className="p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 border-[var(--color-border)]">
-                        <div className="flex-1 flex items-center gap-2 min-w-0">
-                            <div className="relative flex-1 max-w-sm">
-                                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" />
-                                <input
-                                    type="text"
-                                    value={search}
+                    <Surface className="p-4 flex flex-col gap-3 border-[var(--color-border)] shadow-xs">
+                        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                            <div className="flex-1 flex flex-wrap items-center gap-2 min-w-0">
+                                <div className="relative flex-1 min-w-[200px] max-w-sm">
+                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" />
+                                    <input
+                                        type="text"
+                                        value={search}
+                                        onChange={(e) => {
+                                            setSearch(e.target.value);
+                                            setPage(1);
+                                        }}
+                                        placeholder="Search merchant or category..."
+                                        className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] focus:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] text-[var(--color-ink)]"
+                                    />
+                                    {search && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSearch('');
+                                                setPage(1);
+                                            }}
+                                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                                        >
+                                            <X className="w-3.5 h-3.5" />
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Segmented Type Filter */}
+                                <div className="flex items-center p-0.5 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setTypeFilter('all'); setPage(1); }}
+                                        className={cn(
+                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            typeFilter === 'all'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
+                                        )}
+                                    >
+                                        All
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setTypeFilter('expense'); setPage(1); }}
+                                        className={cn(
+                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            typeFilter === 'expense'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
+                                        )}
+                                    >
+                                        Outflow
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setTypeFilter('income'); setPage(1); }}
+                                        className={cn(
+                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            typeFilter === 'income'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
+                                        )}
+                                    >
+                                        Inflow
+                                    </button>
+                                </div>
+
+                                {/* Category Filter */}
+                                <select
+                                    value={categoryFilter}
                                     onChange={(e) => {
-                                        setSearch(e.target.value);
+                                        setCategoryFilter(e.target.value);
                                         setPage(1);
                                     }}
-                                    placeholder="Search merchant or category..."
-                                    className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] focus:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] text-[var(--color-ink)]"
-                                />
+                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                >
+                                    <option value="all">All Categories</option>
+                                    {categoriesList.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {/* Date Filter */}
+                                <select
+                                    value={dateRange}
+                                    onChange={(e) => {
+                                        setDateRange(e.target.value as any);
+                                        setPage(1);
+                                    }}
+                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] hidden sm:block"
+                                >
+                                    <option value="all">All Time</option>
+                                    <option value="today">Today</option>
+                                    <option value="week">Past 7 Days</option>
+                                    <option value="month">This Month</option>
+                                </select>
                             </div>
 
-                            {/* Category Filter */}
-                            <select
-                                value={categoryFilter}
-                                onChange={(e) => {
-                                    setCategoryFilter(e.target.value);
-                                    setPage(1);
-                                }}
-                                className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
-                            >
-                                <option value="all">All Categories</option>
-                                {categoriesList.map((cat) => (
-                                    <option key={cat} value={cat}>
-                                        {cat}
-                                    </option>
-                                ))}
-                            </select>
+                            {/* Right Tools: Sort, Export, Add */}
+                            <div className="flex items-center gap-2 shrink-0">
+                                <select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value as any)}
+                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                >
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="highest">Highest Amount</option>
+                                    <option value="lowest">Lowest Amount</option>
+                                </select>
 
-                            {/* Date Filter */}
-                            <select
-                                value={dateRange}
-                                onChange={(e) => {
-                                    setDateRange(e.target.value as any);
-                                    setPage(1);
-                                }}
-                                className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] hidden sm:block"
-                            >
-                                <option value="all">All Time</option>
-                                <option value="today">Today</option>
-                                <option value="week">Past 7 Days</option>
-                                <option value="month">This Month</option>
-                            </select>
-                        </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowExportModal(true)}
+                                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                                >
+                                    <Download className="w-3.5 h-3.5" />
+                                    <span className="hidden sm:inline">Export</span>
+                                </button>
 
-                        {/* Right Tools: Sort, Export, Add */}
-                        <div className="flex items-center gap-2 shrink-0">
-                            <select
-                                value={sortOrder}
-                                onChange={(e) => setSortOrder(e.target.value as any)}
-                                className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
-                            >
-                                <option value="newest">Newest First</option>
-                                <option value="oldest">Oldest First</option>
-                                <option value="highest">Highest Amount</option>
-                                <option value="lowest">Lowest Amount</option>
-                            </select>
-
-                            <button
-                                type="button"
-                                onClick={() => setShowExportModal(true)}
-                                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
-                            >
-                                <Download className="w-3.5 h-3.5" />
-                                <span className="hidden sm:inline">Export</span>
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={openAddTransaction}
-                                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-sm"
-                            >
-                                <Receipt className="w-3.5 h-3.5" />
-                                Add Transaction
-                            </button>
+                                <button
+                                    type="button"
+                                    onClick={openAddTransaction}
+                                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-sm"
+                                >
+                                    <Plus className="w-3.5 h-3.5" />
+                                    <span>Add</span>
+                                    <span className="hidden sm:inline">Transaction</span>
+                                </button>
+                            </div>
                         </div>
                     </Surface>
 
@@ -421,6 +483,7 @@ export function TransactionsPage() {
                         <span className="text-[var(--color-muted)]">
                             Showing <strong className="text-[var(--color-ink)] font-mono">{filteredTransactions.length}</strong> recorded entries
                             {categoryFilter !== 'all' ? ` in ${categoryFilter}` : ''}
+                            {typeFilter !== 'all' ? ` (${typeFilter})` : ''}
                         </span>
                         <div className="flex items-center gap-2">
                             <span className="text-[var(--color-muted)]">Filtered Outflow:</span>
@@ -434,11 +497,11 @@ export function TransactionsPage() {
                             <table className="w-full text-left text-sm">
                                 <thead>
                                     <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-muted)] text-[11px] uppercase tracking-wider">
-                                        <th className="py-3 px-4 font-semibold">Date</th>
+                                        <th className="py-3 px-4 font-semibold whitespace-nowrap">Date</th>
                                         <th className="py-3 px-4 font-semibold">Description / Merchant</th>
                                         <th className="py-3 px-4 font-semibold">Category</th>
-                                        <th className="py-3 px-4 font-semibold text-right">Amount</th>
-                                        <th className="py-3 px-4 font-semibold text-center w-16">Action</th>
+                                        <th className="py-3 px-4 font-semibold text-right whitespace-nowrap">Amount</th>
+                                        <th className="py-3 px-4 font-semibold text-center whitespace-nowrap min-w-[80px]">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-[var(--color-border)]/60">
@@ -472,7 +535,7 @@ export function TransactionsPage() {
                                                         </Badge>
                                                     </td>
                                                     <td className={cn(
-                                                        'py-3.5 px-4 text-right font-semibold tabular-nums font-mono',
+                                                        'py-3.5 px-4 text-right font-semibold tabular-nums font-mono whitespace-nowrap',
                                                         isExpense ? 'text-[var(--color-ink)]' : 'text-[var(--color-success)]'
                                                     )}>
                                                         {isExpense ? '-' : '+'}{formatCurrency(Math.abs(tx.amount))}
@@ -495,9 +558,43 @@ export function TransactionsPage() {
                                         })
                                     ) : (
                                         <tr>
-                                            <td colSpan={5} className="py-16 text-center text-sm text-[var(--color-muted)]">
-                                                <Receipt className="w-10 h-10 mx-auto mb-3 text-[var(--color-muted)]" />
-                                                No transactions match your current filters.
+                                            <td colSpan={5} className="py-16 text-center text-sm">
+                                                <div className="max-w-sm mx-auto flex flex-col items-center">
+                                                    <div className="w-12 h-12 rounded-2xl bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-center justify-center mb-3 text-[var(--color-muted)]">
+                                                        <Receipt className="w-6 h-6" />
+                                                    </div>
+                                                    <h4 className="font-semibold text-sm text-[var(--color-ink)]">
+                                                        {transactions.length === 0 ? 'No transactions yet' : 'No matching transactions'}
+                                                    </h4>
+                                                    <p className="text-xs text-[var(--color-muted)] mt-1 mb-4 leading-relaxed">
+                                                        {transactions.length === 0
+                                                            ? 'Start logging your expenses and income to see them in your authoritative ledger.'
+                                                            : 'No entries match your search or active filter combination. Try resetting filters.'}
+                                                    </p>
+                                                    {transactions.length === 0 ? (
+                                                        <button
+                                                            type="button"
+                                                            onClick={openAddTransaction}
+                                                            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-sm"
+                                                        >
+                                                            <Plus className="w-3.5 h-3.5" />
+                                                            Add First Transaction
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setSearch('');
+                                                                setCategoryFilter('all');
+                                                                setDateRange('all');
+                                                                setTypeFilter('all');
+                                                            }}
+                                                            className="px-3.5 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                                                        >
+                                                            Reset All Filters
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </td>
                                         </tr>
                                     )}

@@ -594,18 +594,24 @@ export default function DemoOSPage() {
                             {/* Dashboard Header Bar */}
                             <div className="flex items-center justify-between flex-wrap gap-4 pb-4 border-b border-[#E2E1DA]">
                                 <div>
-                                    <div className="text-xs font-mono font-bold text-[#EE5024] uppercase tracking-wider">
-                                        Deterministic Pacing Control
+                                    <div className="flex items-center gap-2">
+                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide bg-neutral-100 text-neutral-900 border border-neutral-200 font-mono">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                            Financial Command Center · Demo
+                                        </span>
+                                        <span className="text-xs text-neutral-500 font-mono hidden sm:inline">
+                                            Real-time cashflow & headroom
+                                        </span>
                                     </div>
-                                    <h1 className="text-2xl lg:text-3xl font-extrabold text-neutral-900 font-display mt-0.5">
-                                        Good evening, David
+                                    <h1 className="text-2xl lg:text-3xl font-display font-bold text-neutral-900 tracking-tight mt-1.5">
+                                        Financial Overview
                                     </h1>
                                 </div>
                                 <div className="flex items-center gap-2.5">
                                     <button
                                         type="button"
                                         onClick={() => setShowNumbers(!showNumbers)}
-                                        className="text-xs font-medium px-3 py-1.5 rounded-lg border border-neutral-300 bg-white hover:bg-neutral-50 flex items-center gap-1.5 text-neutral-600"
+                                        className="text-xs font-semibold px-3 py-1.5 rounded-xl border border-neutral-300 bg-white hover:bg-neutral-50 flex items-center gap-1.5 text-neutral-700 font-mono"
                                     >
                                         {showNumbers ? <Eye size={13} /> : <EyeOff size={13} />}
                                         <span>{showNumbers ? 'Hide Figures' : 'Show Figures'}</span>
@@ -616,7 +622,7 @@ export default function DemoOSPage() {
                                             setIsExtensionModalOpen(true);
                                             playSound('click');
                                         }}
-                                        className="bg-[#111111] text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 hover:bg-neutral-800 transition-colors shadow-sm"
+                                        className="bg-[#111111] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-neutral-800 transition-colors shadow-sm"
                                     >
                                         <ShoppingBag size={13} />
                                         <span>Simulate Intercept</span>
@@ -624,77 +630,77 @@ export default function DemoOSPage() {
                                 </div>
                             </div>
 
-                            {/* 4 Core KPI Tiles */}
+                            {/* 4 Calm, Elevated Financial Command Center Cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {/* Tile 1: Safe to Spend */}
-                                <div className="bg-[#EE5024] text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between min-h-[140px] relative overflow-hidden">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-amber-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/90">Safe To Spend</span>
-                                        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Safe To Spend</span>
+                                        <span className="w-2 h-2 rounded-full bg-amber-500" />
                                     </div>
                                     <div className="my-2">
-                                        <div className="text-3xl font-extrabold font-display">
+                                        <div className="text-3xl font-bold font-mono tracking-tight text-neutral-900 tabular-nums">
                                             {showNumbers ? formatAmount(safeToSpend) : '••••••'}
                                         </div>
-                                        <div className="text-xs text-white/80 font-medium mt-0.5">Discretionary headroom remaining</div>
+                                        <div className="text-xs text-neutral-500 font-medium mt-0.5">Discretionary headroom remaining</div>
                                     </div>
-                                    <div className="flex items-center justify-between text-[11px] text-white/80 pt-2 border-t border-white/20">
-                                        <span>Velocity: Healthy</span>
-                                        <span>30-day window</span>
+                                    <div className="flex items-center justify-between text-[11px] text-neutral-500 pt-2 border-t border-neutral-100">
+                                        <span>Velocity: Paced</span>
+                                        <span className="font-mono font-semibold text-neutral-700">30-day window</span>
                                     </div>
                                 </div>
 
                                 {/* Tile 2: Forward Runway */}
-                                <div className="bg-[#111111] text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between min-h-[140px]">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-emerald-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Cash Runway</span>
-                                        <TrendingUp size={14} className="text-emerald-400" />
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Cash Runway</span>
+                                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
                                     </div>
                                     <div className="my-2">
-                                        <div className="text-3xl font-extrabold font-display text-emerald-400">
+                                        <div className="text-3xl font-bold font-mono tracking-tight text-neutral-900 tabular-nums">
                                             {runwayDays} Days
                                         </div>
-                                        <div className="text-xs text-neutral-400 font-medium mt-0.5">Based on 30-day moving burn</div>
+                                        <div className="text-xs text-neutral-500 font-medium mt-0.5">Based on 30-day velocity</div>
                                     </div>
-                                    <div className="flex items-center justify-between text-[11px] text-neutral-400 pt-2 border-t border-neutral-800">
-                                        <span>Zero Deficit Risk</span>
-                                        <span className="font-mono text-emerald-400 font-bold">+12d buffer</span>
+                                    <div className="flex items-center justify-between text-[11px] text-neutral-500 pt-2 border-t border-neutral-100">
+                                        <span className="text-emerald-600 font-bold font-mono">Zero Deficit Risk</span>
+                                        <span className="font-mono text-emerald-600 font-bold">+12d buffer</span>
                                     </div>
                                 </div>
 
                                 {/* Tile 3: Committed Bills */}
-                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] shadow-xs flex flex-col justify-between min-h-[140px]">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-slate-700 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">Locked Bills</span>
-                                        <Repeat size={14} className="text-neutral-400" />
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Locked Bills</span>
+                                        <Repeat size={14} className="text-neutral-500" />
                                     </div>
                                     <div className="my-2">
-                                        <div className="text-3xl font-extrabold font-display text-neutral-900">
+                                        <div className="text-3xl font-bold font-mono tracking-tight text-neutral-900 tabular-nums">
                                             {showNumbers ? formatAmount(68200) : '••••••'}
                                         </div>
                                         <div className="text-xs text-neutral-500 font-medium mt-0.5">Rent, power, cloud & utilities</div>
                                     </div>
                                     <div className="flex items-center justify-between text-[11px] text-neutral-500 pt-2 border-t border-neutral-100">
                                         <span>4 recurring bills</span>
-                                        <span>Covered 100%</span>
+                                        <span className="font-semibold text-neutral-700">Covered 100%</span>
                                     </div>
                                 </div>
 
                                 {/* Tile 4: Daily Burn Pacing */}
-                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] shadow-xs flex flex-col justify-between min-h-[140px]">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-rose-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">Daily Burn</span>
-                                        <Zap size={14} className="text-amber-500" />
+                                        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Daily Burn</span>
+                                        <Zap size={14} className="text-rose-500" />
                                     </div>
                                     <div className="my-2">
-                                        <div className="text-3xl font-extrabold font-display text-neutral-900">
+                                        <div className="text-3xl font-bold font-mono tracking-tight text-neutral-900 tabular-nums">
                                             {showNumbers ? `${formatAmount(1420)}/d` : '••••••'}
                                         </div>
                                         <div className="text-xs text-neutral-500 font-medium mt-0.5">Normalized daily outflow</div>
                                     </div>
                                     <div className="flex items-center justify-between text-[11px] text-neutral-500 pt-2 border-t border-neutral-100">
                                         <span className="text-emerald-600 font-bold">-14% vs last week</span>
-                                        <span>Under cap</span>
+                                        <span className="text-neutral-700 font-medium">Under cap</span>
                                     </div>
                                 </div>
                             </div>
