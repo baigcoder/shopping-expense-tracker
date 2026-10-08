@@ -28,19 +28,27 @@ export default defineConfig({
         // Split chunks for better caching
         rollupOptions: {
             output: {
-                manualChunks: {
-                    // Vendor chunk - core React
-                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-                    // UI libraries
-                    'vendor-ui': ['framer-motion', 'lucide-react'],
-                    // Supabase
-                    'vendor-supabase': ['@supabase/supabase-js'],
-                    // Charting
-                    'vendor-charts': ['recharts'],
-                    // Utilities
-                    'vendor-utils': ['date-fns', 'zustand'],
-                    // PDF/OCR (lazy loaded)
-                    'vendor-pdf': ['pdfjs-dist'],
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (/[\\/]node_modules[\\/]pdfjs-dist[\\/]/.test(id)) {
+                            return 'vendor-pdf';
+                        }
+                        if (/[\\/]node_modules[\\/](recharts|d3-[a-z]+|victory-vendor)[\\/]/.test(id)) {
+                            return 'vendor-charts';
+                        }
+                        if (/[\\/]node_modules[\\/]@supabase[\\/]/.test(id)) {
+                            return 'vendor-supabase';
+                        }
+                        if (/[\\/]node_modules[\\/](framer-motion|lucide-react)[\\/]/.test(id)) {
+                            return 'vendor-ui';
+                        }
+                        if (/[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(id)) {
+                            return 'vendor-react';
+                        }
+                        if (/[\\/]node_modules[\\/](clsx|tailwind-merge|date-fns|zustand)[\\/]/.test(id)) {
+                            return 'vendor-utils';
+                        }
+                    }
                 },
                 // Optimize chunk filenames for caching
                 chunkFileNames: 'assets/[name]-[hash].js',

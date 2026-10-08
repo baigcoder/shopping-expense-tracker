@@ -324,7 +324,6 @@ export const useCardStore = create<CardState>()((set, get) => ({
 
         // Sync to Supabase
         try {
-            const { cardService } = await import('../services/cardService');
             await cardService.update(id, updates);
             console.log('✅ Card updated in Supabase');
         } catch (e) {

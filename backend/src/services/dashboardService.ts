@@ -15,10 +15,10 @@ const asRows = (value: unknown): any[] => (Array.isArray(value) ? value : []);
  * Authoritative financial query: Fails fast on database errors.
  * Never converts a database failure into a fake healthy zero state!
  */
-const requireRows = async (table: string, userId: string, orderColumn = 'created_at', limit = 500) => {
+const requireRows = async (table: string, userId: string, orderColumn = 'created_at', limit = 500, columns = '*') => {
     const { data, error } = await supabase
         .from(table)
-        .select('*')
+        .select(columns)
         .eq('user_id', userId)
         .order(orderColumn, { ascending: false })
         .limit(limit);
@@ -37,10 +37,10 @@ const requireRows = async (table: string, userId: string, orderColumn = 'created
 /**
  * Non-critical optional query: Falls back to empty list on error.
  */
-const safeRows = async (table: string, userId: string, orderColumn = 'created_at', limit = 500) => {
+const safeRows = async (table: string, userId: string, orderColumn = 'created_at', limit = 500, columns = '*') => {
     const { data, error } = await supabase
         .from(table)
-        .select('*')
+        .select(columns)
         .eq('user_id', userId)
         .order(orderColumn, { ascending: false })
         .limit(limit);
@@ -164,7 +164,7 @@ export async function getDashboardSummary(userId: string) {
         coach,
         reportExports,
     ] = await Promise.all([
-        requireRows('transactions', userId, 'date', 500),
+        requireRows('transactions', userId, 'date', 500, 'id, user_id, amount, date, created_at, type, description, store_name, category'),
         safeRows('budgets', userId, 'created_at', 100),
         safeRows('cards', userId, 'created_at', 50),
         safeRows('goals', userId, 'created_at', 100),

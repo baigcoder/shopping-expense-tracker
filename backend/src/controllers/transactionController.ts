@@ -59,8 +59,8 @@ const mapUpdateInput = (data: UpdateTransactionInput) => {
 
 export const getTransactions = asyncHandler(async (req: Request, res: Response) => {
     const userId = getCanonicalUserId(req);
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 20;
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(Math.max(parseInt(req.query.limit as string) || 20, 1), 100);
     const category = (req.query.category || req.query.categoryId) as string | undefined;
     const search = req.query.search as string | undefined;
     const sortBy = req.query.sortBy as string || 'date';
@@ -189,7 +189,7 @@ export const deleteTransaction = asyncHandler(async (req: Request, res: Response
 
 export const getRecentTransactions = asyncHandler(async (req: Request, res: Response) => {
     const userId = getCanonicalUserId(req);
-    const limit = parseInt(req.query.limit as string) || 5;
+    const limit = Math.min(Math.max(parseInt(req.query.limit as string) || 5, 1), 50);
     const transactions = await listUserTransactions(userId, { limit });
 
     res.json({

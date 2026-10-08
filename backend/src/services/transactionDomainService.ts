@@ -170,18 +170,16 @@ export async function listUserTransactions(
     userId: string,
     options: TransactionListOptions = {}
 ): Promise<MoneyTransaction[]> {
+    const limit = Math.min(Math.max(Number(options.limit) || 100, 1), 500);
     let query = supabase
         .from('transactions')
         .select('*')
         .eq('user_id', userId)
-        .order('date', { ascending: false });
+        .order('date', { ascending: false })
+        .limit(limit);
 
     if (options.since) {
         query = query.gte('date', options.since.toISOString());
-    }
-
-    if (options.limit) {
-        query = query.limit(options.limit);
     }
 
     const { data, error } = await query;
