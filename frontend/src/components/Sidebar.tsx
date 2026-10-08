@@ -25,6 +25,7 @@ import genZToast from '../services/genZToast';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
 import { transactionInboxApi } from '../services/featureExpansionApi';
+import { CashlyMark } from './brand/CashlyLogo';
 import styles from './Sidebar.module.css';
 
 interface NavItemDef {
@@ -268,11 +269,11 @@ export const Sidebar = () => {
                     }}
                 >
                     <motion.div
-                        className={cn(styles.logoIcon, styles.liveIcon)}
+                        className="shrink-0 flex items-center justify-center"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        C
+                        <CashlyMark size={34} variant="orange" />
                     </motion.div>
 
                     <AnimatePresence mode="wait">

@@ -6,6 +6,7 @@ import { useAuthStore } from './store/useStore';
 import { supabase } from './config/supabase';
 import DashboardLayout from './layouts/DashboardLayout';
 import { Spinner } from './components/LoadingSkeleton';
+import { CashlyLoader } from './components/brand/CashlyLoader';
 import ErrorBoundary from './components/ErrorBoundary';
 import OfflineIndicator from './components/OfflineIndicator';
 import { Toaster } from 'sonner';
@@ -44,6 +45,7 @@ const ShoppingActivityPage = lazy(() => import('./pages/ShoppingActivityPage'));
 // Public Pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
+import DemoOSPage from './pages/DemoOSPage';
 
 // Legal & Support Pages
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
@@ -167,9 +169,7 @@ const AuthCallback = () => {
     }, [navigate, setUser, setLoading, location]);
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-            <Spinner size={40} color="#E11D48" />
-        </div>
+        <CashlyLoader fullscreen message="Verifying authentication..." subtext="Connecting to secure session" />
     );
 };
 
@@ -198,9 +198,7 @@ function App() {
     // Wait for BOTH hydration AND session check to complete
     if (!hasHydrated || isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5]">
-                <Spinner size={40} color="#E11D48" />
-            </div>
+            <CashlyLoader fullscreen message="Initializing Financial OS..." subtext="Grounded in your real transactions" />
         );
     }
 
@@ -227,12 +225,7 @@ function App() {
                     }}
                 />
                 <Suspense fallback={
-                    <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAF8F5]">
-                        <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E11D48] font-display text-xl font-semibold text-white shadow-[var(--shadow-md)]">
-                            C
-                        </div>
-                        <Spinner size={32} color="#E11D48" />
-                    </div>
+                    <CashlyLoader fullscreen message="Loading console..." subtext="Preparing workspace" />
                 }>
                     <Routes>
                         {/* Auth Routes */}
@@ -289,6 +282,7 @@ function App() {
                         <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
                         {/* Public Legal & Support Pages */}
+                        <Route path="/demo" element={<DemoOSPage />} />
                         <Route path="/privacy" element={<PrivacyPolicyPage />} />
                         <Route path="/terms" element={<TermsOfServicePage />} />
                         <Route path="/faq" element={<FAQPage />} />

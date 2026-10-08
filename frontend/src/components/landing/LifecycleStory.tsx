@@ -77,6 +77,8 @@ const stages: StageData[] = [
 
 export default function LifecycleStory() {
     const [activeIdx, setActiveIdx] = useState(0);
+    const [reviewApproved, setReviewApproved] = useState(false);
+    const [capActivated, setCapActivated] = useState(false);
     const active = stages[activeIdx];
 
     return (
@@ -187,29 +189,54 @@ export default function LifecycleStory() {
                     {/* Visual 02: Review */}
                     {active.visualComponent === 'review' && (
                         <div className="landing-lifecycle__scene landing-lifecycle__scene--review">
-                            <div className="landing-lifecycle__inbox-card">
-                                <div className="landing-lifecycle__inbox-head">
-                                    <Inbox size={18} />
-                                    <span>Quiet Transaction Inbox (1 Item Awaiting Approval)</span>
-                                </div>
-                                <div className="landing-lifecycle__tx-item">
-                                    <div>
-                                        <div className="landing-lifecycle__tx-merchant">Amazon Electronics</div>
-                                        <div className="landing-lifecycle__tx-time">Captured 2 minutes ago · Office Tech</div>
+                            {!reviewApproved ? (
+                                <div className="landing-lifecycle__inbox-card">
+                                    <div className="landing-lifecycle__inbox-head">
+                                        <Inbox size={18} />
+                                        <span>Quiet Transaction Inbox (1 Item Awaiting Approval)</span>
                                     </div>
-                                    <div className="landing-lifecycle__tx-price">Rs 4,250</div>
+                                    <div className="landing-lifecycle__tx-item">
+                                        <div>
+                                            <div className="landing-lifecycle__tx-merchant">Amazon Electronics</div>
+                                            <div className="landing-lifecycle__tx-time">Captured 2 minutes ago · Office Tech</div>
+                                        </div>
+                                        <div className="landing-lifecycle__tx-price">Rs 4,250</div>
+                                    </div>
+                                    <div className="landing-lifecycle__inbox-actions">
+                                        <button onClick={() => setReviewApproved(true)} className="landing-lifecycle__btn-approve">
+                                            <Check size={14} /> Approve to Ledger
+                                        </button>
+                                        <button className="landing-lifecycle__btn-split">Split</button>
+                                        <button className="landing-lifecycle__btn-dismiss">Dismiss</button>
+                                    </div>
+                                    <div className="landing-lifecycle__inbox-note">
+                                        Notice: Ledger remains untouched until you click Approve.
+                                    </div>
                                 </div>
-                                <div className="landing-lifecycle__inbox-actions">
-                                    <button className="landing-lifecycle__btn-approve">
-                                        <Check size={14} /> Approve to Ledger
-                                    </button>
-                                    <button className="landing-lifecycle__btn-split">Split</button>
-                                    <button className="landing-lifecycle__btn-dismiss">Dismiss</button>
+                            ) : (
+                                <div className="landing-lifecycle__inbox-card" style={{ borderColor: 'rgba(16, 185, 129, 0.4)', background: '#131A16' }}>
+                                    <div className="landing-lifecycle__inbox-head">
+                                        <Check size={18} color="#10B981" />
+                                        <span style={{ color: '#10B981' }}>Inbox Cleared · Sovereign Consent Granted</span>
+                                    </div>
+                                    <div className="landing-lifecycle__tx-item" style={{ borderBottomColor: 'rgba(16, 185, 129, 0.2)' }}>
+                                        <div>
+                                            <div className="landing-lifecycle__tx-merchant">Amazon Electronics · Logitech Mouse</div>
+                                            <div className="landing-lifecycle__tx-time" style={{ color: '#10B981' }}>✓ Posted to Canonical Ledger</div>
+                                        </div>
+                                        <div className="landing-lifecycle__tx-price">Rs 4,250</div>
+                                    </div>
+                                    <div className="landing-lifecycle__inbox-actions" style={{ justifyContent: 'space-between' }}>
+                                        <button onClick={() => setActiveIdx(2)} className="landing-lifecycle__btn-approve" style={{ background: '#10B981', color: '#000', fontWeight: 600 }}>
+                                            Inspect in Stage 03 (Understand) →
+                                        </button>
+                                        <button onClick={() => setReviewApproved(false)} className="landing-lifecycle__btn-dismiss">Reset</button>
+                                    </div>
+                                    <div className="landing-lifecycle__inbox-note" style={{ color: '#A3A3A3' }}>
+                                        Ledger balances updated immediately. Budgets & Money Twin recalculated.
+                                    </div>
                                 </div>
-                                <div className="landing-lifecycle__inbox-note">
-                                    Notice: Ledger remains untouched until you click Approve.
-                                </div>
-                            </div>
+                            )}
                         </div>
                     )}
 
@@ -226,8 +253,8 @@ export default function LifecycleStory() {
                                     <span className="landing-lifecycle__ledger-sub">Total Discretionary Outflow</span>
                                 </div>
                                 <div className="landing-lifecycle__ledger-rows">
-                                    <div className="landing-lifecycle__l-row">
-                                        <span>Amazon Electronics (Mouse)</span>
+                                    <div className="landing-lifecycle__l-row" style={reviewApproved ? { borderColor: 'rgba(16, 185, 129, 0.3)', background: 'rgba(16, 185, 129, 0.05)' } : {}}>
+                                        <span>Amazon Electronics (Mouse) {reviewApproved && <span style={{ color: '#10B981', fontSize: '11px', fontWeight: 700 }}>● JUST POSTED</span>}</span>
                                         <span className="landing-lifecycle__l-approved">Approved · Rs 4,250</span>
                                     </div>
                                     <div className="landing-lifecycle__l-row">
@@ -311,12 +338,21 @@ export default function LifecycleStory() {
                                     Projected Month-End Impact: <strong>-Rs 6,300</strong> to cash runway.
                                 </div>
                                 <div className="landing-lifecycle__act-buttons">
-                                    <button className="landing-lifecycle__act-btn landing-lifecycle__act-btn--primary">
-                                        Cap Dining Budget at Rs 20,000
-                                    </button>
-                                    <button className="landing-lifecycle__act-btn">
-                                        Inspect Dining Transactions
-                                    </button>
+                                    {!capActivated ? (
+                                        <>
+                                            <button onClick={() => setCapActivated(true)} className="landing-lifecycle__act-btn landing-lifecycle__act-btn--primary">
+                                                Cap Dining Budget at Rs 20,000
+                                            </button>
+                                            <button className="landing-lifecycle__act-btn">
+                                                Inspect Dining Transactions
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 8, padding: '10px 14px', color: '#10B981', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                            <span>✓ Cap Active: Rs 20,000 (+4 days runway restored)</span>
+                                            <button onClick={() => setCapActivated(false)} style={{ background: 'none', border: 'none', color: '#10B981', textDecoration: 'underline', cursor: 'pointer', fontSize: 12 }}>Reset</button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

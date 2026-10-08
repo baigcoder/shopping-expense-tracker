@@ -606,7 +606,7 @@ export const AccountsSkeleton = () => (
 );
 
 // Spinner for inline loading
-export const Spinner = ({ size = 24, color = 'currentColor' }: { size?: number; color?: string }) => (
+export const Spinner = ({ size = 24, color = '#EE5024' }: { size?: number; color?: string }) => (
     <motion.div
         style={{
             width: size,

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import EditorialHero from '@/components/landing/EditorialHero';
 import ProductTriptych from '@/components/landing/ProductTriptych';
 import LifecycleStory from '@/components/landing/LifecycleStory';
@@ -10,6 +11,7 @@ import MoneyTwinShowcase from '@/components/landing/MoneyTwinShowcase';
 import AIShowcase from '@/components/landing/AIShowcase';
 import ExtensionShowcase from '@/components/landing/ExtensionShowcase';
 import TrustArchitecture from '@/components/landing/TrustArchitecture';
+import CompetitorMatrix from '@/components/landing/CompetitorMatrix';
 import FinalCampaignCTA from '@/components/landing/FinalCampaignCTA';
 import { MarketingFooter, MarketingNav } from '@/components/landing/MarketingChrome';
 import '@/components/landing/landing.css';
@@ -82,11 +84,35 @@ const LandingPage = () => {
                 {/* 12 TRUST / SECURITY */}
                 <TrustArchitecture />
 
-                {/* 13 FINAL CTA */}
+                {/* 13 COMPETITOR MATRIX */}
+                <CompetitorMatrix />
+
+                {/* 14 FINAL CTA */}
                 <FinalCampaignCTA />
             </main>
             {/* 14 FOOTER */}
             <MarketingFooter />
+
+            {/* ─── FLOATING LIVE DEMO LAUNCHER DOCK ─── */}
+            <aside aria-label="Live Demo Launcher" className="floating-demo-dock">
+                <Link
+                    to="/demo"
+                    className="floating-demo-dock__btn"
+                    title="Open Live Interactive Cashly OS Demo (No Signup Required)"
+                >
+                    <span className="landing-nav__demo-pulse" style={{ background: '#34D399' }} />
+                    <span>⚡ Try Live Demo OS</span>
+                    <span>→</span>
+                </Link>
+
+                <Link
+                    to="/demo?ext=open"
+                    className="floating-demo-dock__ext-btn"
+                    title="Simulate Chrome Extension Checkout Interceptor"
+                >
+                    <span>🛍️ Extension Demo</span>
+                </Link>
+            </aside>
         </div>
     );
 };

@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Check, RotateCcw, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import ArchitecturalBlocksScene from '@/components/landing/ArchitecturalBlocksScene';
+import { useLandingSettings } from './useLandingSettings';
 
 /**
  * Section 02: Product Triptych
@@ -7,8 +10,31 @@ import ArchitecturalBlocksScene from '@/components/landing/ArchitecturalBlocksSc
  * Panel 1: Desktop Web App (Architectural cubes + Cadmium Orange statement)
  * Panel 2: Mobile Cashly App (Candy Pink statistics screen + category ledger)
  * Panel 3: Extension Shopping Companion (Sage & Ink checkout detection frame)
+ * 
+ * ENHANCED: Cross-surface interactive telemetry synchronization!
  */
 export default function ProductTriptych() {
+    const { formatAmount, playSound } = useLandingSettings();
+    const [isStagedApproved, setIsStagedApproved] = useState(false);
+
+    // Staged item details (Base INR)
+    const stagedPrice = 34990;
+
+    // Synchronized metrics
+    const desktopSafeToSpend = isStagedApproved ? 42870 - stagedPrice : 42870;
+    const desktopRunway = isStagedApproved ? 32 : 42;
+    const mobileTotalSpent = isStagedApproved ? 78200 + stagedPrice : 78200;
+
+    const handleApprove = () => {
+        setIsStagedApproved(true);
+        playSound('success');
+    };
+
+    const handleReset = () => {
+        setIsStagedApproved(false);
+        playSound('click');
+    };
+
     return (
         <section id="triptych" className="landing-triptych scroll-mt-20">
             <div className="landing-triptych__header">
@@ -20,6 +46,7 @@ export default function ProductTriptych() {
                 </h2>
                 <p className="landing-triptych__sub">
                     Three specialized surfaces working as one synchronized financial nervous system.
+                    Approve a purchase in the browser extension and watch Desktop Safe-to-Spend and Mobile Ledgers update simultaneously.
                 </p>
             </div>
 
@@ -35,7 +62,25 @@ export default function ProductTriptych() {
                     {/* Bottom: Cadmium Orange Console Block */}
                     <div className="landing-triptych__panel-content landing-triptych__panel-content--orange">
                         <div>
-                            <div className="landing-triptych__chip">DESKTOP CONSOLE</div>
+                            <div className="flex items-center justify-between">
+                                <div className="landing-triptych__chip">DESKTOP CONSOLE</div>
+                                {isStagedApproved && (
+                                    <span style={{
+                                        fontSize: '10px',
+                                        background: 'rgba(0, 0, 0, 0.25)',
+                                        color: '#FFFFFF',
+                                        padding: '2px 8px',
+                                        borderRadius: '100px',
+                                        fontWeight: 700,
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                    }}>
+                                        <Zap size={10} className="text-yellow-300" /> Synced from Extension
+                                    </span>
+                                )}
+                            </div>
+
                             <h3 className="landing-triptych__headline">
                                 FINANCE<br />
                                 IS OUR<br />
@@ -47,11 +92,11 @@ export default function ProductTriptych() {
                             <div className="landing-triptych__metric-row">
                                 <div>
                                     <span className="landing-triptych__metric-label">Safe to Spend</span>
-                                    <div className="landing-triptych__metric-value">Rs 42,870</div>
+                                    <div className="landing-triptych__metric-value">{formatAmount(desktopSafeToSpend)}</div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
                                     <span className="landing-triptych__metric-label">Runway</span>
-                                    <div className="landing-triptych__metric-value">42 Days</div>
+                                    <div className="landing-triptych__metric-value">{desktopRunway} Days</div>
                                 </div>
                             </div>
 
@@ -65,7 +110,17 @@ export default function ProductTriptych() {
                                 <span>Explore Desktop Console</span>
                                 <span>→</span>
                             </Link>
-                            <div className="landing-triptych__home-bar" />
+                            <div style={{
+                                marginTop: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                fontSize: '11px',
+                                opacity: 0.85,
+                                fontWeight: 600
+                            }}>
+                                <span style={{ color: '#22C55E' }}>●</span> Double-Entry Verified Engine
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,7 +163,7 @@ export default function ProductTriptych() {
 
                         {/* Big Balance */}
                         <div className="landing-triptych__big-amount">
-                            2768,71 <span className="landing-triptych__curr">USD</span>
+                            {formatAmount(mobileTotalSpent)}
                         </div>
 
                         {/* Dual-bar Chart */}
@@ -135,7 +190,7 @@ export default function ProductTriptych() {
                                 <rect x="146" y="70" width="7" height="30" rx="2" fill="rgba(0,0,0,0.15)" />
 
                                 {/* Sep */}
-                                <rect x="186" y="14" width="7" height="86" rx="2" fill="#111111" />
+                                <rect x="186" y={isStagedApproved ? 6 : 14} width="7" height={isStagedApproved ? 94 : 86} rx="2" fill="#111111" />
                                 <rect x="196" y="32" width="7" height="68" rx="2" fill="rgba(0,0,0,0.25)" />
 
                                 {/* Oct */}
@@ -159,18 +214,31 @@ export default function ProductTriptych() {
                     {/* Bottom White Ledger Card */}
                     <div className="landing-triptych__ledger-bottom">
                         <div className="landing-triptych__callout">
-                            <p>You spent <strong>550USD</strong> on food in <u>September</u></p>
-                            <span>Once up your next meal with up to 3% cashback</span>
+                            <p>You spent <strong>{formatAmount(24500)}</strong> on Food in <u>September</u></p>
+                            <span>Healthy burn rate • Under monthly threshold</span>
                         </div>
 
                         <div className="landing-triptych__category-rows">
+                            {isStagedApproved && (
+                                <div className="landing-triptych__cat-row" style={{ background: '#FEF3C7', margin: '-4px -6px 8px -6px', padding: '6px 8px', borderRadius: '6px' }}>
+                                    <div className="landing-triptych__cat-meta">
+                                        <div className="landing-triptych__cat-icon landing-triptych__cat-icon--orange">🎧</div>
+                                        <span className="landing-triptych__cat-title" style={{ fontWeight: 700 }}>Amazon Staged (Reconciled)</span>
+                                    </div>
+                                    <div className="landing-triptych__cat-value">
+                                        <span style={{ fontWeight: 700 }}>{formatAmount(stagedPrice)}</span>
+                                        <span style={{ color: '#F59E0B' }}>●</span>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="landing-triptych__cat-row">
                                 <div className="landing-triptych__cat-meta">
                                     <div className="landing-triptych__cat-icon landing-triptych__cat-icon--orange">🍔</div>
-                                    <span className="landing-triptych__cat-title">Food</span>
+                                    <span className="landing-triptych__cat-title">Food & Dining</span>
                                 </div>
                                 <div className="landing-triptych__cat-value">
-                                    <span>525,23</span>
+                                    <span>{formatAmount(24500)}</span>
                                     <span style={{ color: '#10B981' }}>↗</span>
                                 </div>
                             </div>
@@ -181,18 +249,18 @@ export default function ProductTriptych() {
                                     <span className="landing-triptych__cat-title">Healthcare</span>
                                 </div>
                                 <div className="landing-triptych__cat-value">
-                                    <span>120,50</span>
-                                    <span style={{ color: '#EF4444' }}>↘</span>
+                                    <span>{formatAmount(4200)}</span>
+                                    <span style={{ color: '#10B981' }}>↘</span>
                                 </div>
                             </div>
 
                             <div className="landing-triptych__cat-row">
                                 <div className="landing-triptych__cat-meta">
                                     <div className="landing-triptych__cat-icon landing-triptych__cat-icon--sage">🛒</div>
-                                    <span className="landing-triptych__cat-title">Supplies</span>
+                                    <span className="landing-triptych__cat-title">Supplies & Utility</span>
                                 </div>
                                 <div className="landing-triptych__cat-value">
-                                    <span>622,20</span>
+                                    <span>{formatAmount(18200)}</span>
                                     <span style={{ color: '#EF4444' }}>↘</span>
                                 </div>
                             </div>
@@ -220,21 +288,76 @@ export default function ProductTriptych() {
                             <span className="landing-triptych__url">checkout.amazon.com/confirm</span>
                         </div>
 
-                        {/* Staged Purchase Alert Overlay */}
-                        <div className="landing-triptych__staged-alert">
-                            <div className="landing-triptych__staged-badge">
+                        {/* Staged Purchase Alert Overlay with Interactive Approval */}
+                        <div className="landing-triptych__staged-alert" style={{
+                            borderColor: isStagedApproved ? '#10B981' : undefined,
+                            background: isStagedApproved ? '#F0FDF4' : undefined,
+                        }}>
+                            <div className="landing-triptych__staged-badge" style={{ color: isStagedApproved ? '#059669' : undefined }}>
                                 <span>●</span>
-                                <span>CHECKOUT STAGED FOR REVIEW</span>
+                                <span>{isStagedApproved ? 'CHECKOUT RECONCILED TO LEDGER' : 'CHECKOUT STAGED FOR REVIEW'}</span>
                             </div>
                             <div className="landing-triptych__staged-details">
                                 <div>
                                     <div className="landing-triptych__staged-merchant">Amazon Electronics</div>
                                     <div className="landing-triptych__staged-item">Noise-Canceling Headphones</div>
                                 </div>
-                                <div className="landing-triptych__staged-amount">Rs 34,990</div>
+                                <div className="landing-triptych__staged-amount">{formatAmount(stagedPrice)}</div>
                             </div>
-                            <div className="landing-triptych__staged-footer">
-                                <span className="landing-triptych__staged-tag">Awaiting Approval in Inbox</span>
+
+                            <div style={{ marginTop: '10px' }}>
+                                {!isStagedApproved ? (
+                                    <button
+                                        type="button"
+                                        onClick={handleApprove}
+                                        style={{
+                                            width: '100%',
+                                            background: 'var(--landing-ink)',
+                                            color: '#FFFFFF',
+                                            border: 'none',
+                                            padding: '8px 14px',
+                                            borderRadius: '6px',
+                                            fontSize: '11px',
+                                            fontWeight: 700,
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '6px',
+                                        }}
+                                    >
+                                        <span>Authorize & Sync to All Devices</span>
+                                        <ArrowRight size={12} />
+                                    </button>
+                                ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <span style={{ fontSize: '11px', color: '#059669', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <Check size={13} /> Posted across Desktop & Mobile
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={handleReset}
+                                            style={{
+                                                background: 'transparent',
+                                                border: 'none',
+                                                cursor: 'pointer',
+                                                color: '#4B5563',
+                                                padding: '4px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                            title="Reset Sync Demo"
+                                        >
+                                            <RotateCcw size={12} />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="landing-triptych__staged-footer" style={{ marginTop: '8px' }}>
+                                <span className="landing-triptych__staged-tag">
+                                    {isStagedApproved ? 'Sovereign Double-Entry Cleared' : 'Awaiting Approval in Inbox'}
+                                </span>
                                 <span className="landing-triptych__staged-chip">Stage Clean</span>
                             </div>
                         </div>
@@ -242,15 +365,15 @@ export default function ProductTriptych() {
                         {/* 3-Part Color-Blocked Allocation Bar */}
                         <div className="landing-triptych__allocation-bar">
                             <div className="landing-triptych__alloc-block landing-triptych__alloc-block--pink">
-                                <span className="landing-triptych__alloc-val">2.768,71</span>
+                                <span className="landing-triptych__alloc-val">{formatAmount(mobileTotalSpent)}</span>
                                 <span className="landing-triptych__alloc-lbl">spent</span>
                             </div>
                             <div className="landing-triptych__alloc-block landing-triptych__alloc-block--wine">
-                                <span className="landing-triptych__alloc-val">1.250</span>
+                                <span className="landing-triptych__alloc-val">{formatAmount(68200)}</span>
                                 <span className="landing-triptych__alloc-lbl">bills</span>
                             </div>
                             <div className="landing-triptych__alloc-block landing-triptych__alloc-block--orange">
-                                <span className="landing-triptych__alloc-val">4.500</span>
+                                <span className="landing-triptych__alloc-val">{formatAmount(desktopSafeToSpend)}</span>
                                 <span className="landing-triptych__alloc-lbl">left</span>
                             </div>
                         </div>
@@ -267,16 +390,18 @@ export default function ProductTriptych() {
                         <div className="landing-triptych__sage-list">
                             <div className="landing-triptych__sage-item">
                                 <div>
-                                    <span className="landing-triptych__item-sub">01 - Deposit made</span>
-                                    <div className="landing-triptych__item-val">$300</div>
+                                    <span className="landing-triptych__item-sub">01 - Payroll Deposit</span>
+                                    <div className="landing-triptych__item-val">{formatAmount(125000)}</div>
                                 </div>
                                 <span className="landing-triptych__item-arrow">→</span>
                             </div>
 
                             <div className="landing-triptych__sage-item">
                                 <div>
-                                    <span className="landing-triptych__item-sub">02 - Amazon Staged</span>
-                                    <div className="landing-triptych__item-val">$250</div>
+                                    <span className="landing-triptych__item-sub">
+                                        {isStagedApproved ? '02 - Amazon (Reconciled)' : '02 - Amazon Staged'}
+                                    </span>
+                                    <div className="landing-triptych__item-val">{formatAmount(stagedPrice)}</div>
                                 </div>
                                 <span className="landing-triptych__item-arrow">→</span>
                             </div>

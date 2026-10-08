@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Check, Inbox, Link2, Pencil, RefreshCw, Settings2, Trash2, Wand2, X } from 'lucide-react';
+import { Check, Inbox, Link2, Pencil, RefreshCw, Settings2, Trash2, Wand2, X, Zap, Keyboard, ArrowDown, ArrowUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { merchantRulesApi, MerchantRule, transactionInboxApi, TransactionCandidate, invalidateInboxCache } from '../services/featureExpansionApi';
 import { formatCurrency } from '../services/currencyService';
 import { emitFinancialDataEvent } from '../services/financialDataEvents';
 import { invalidateTransactionCache } from '../services/supabaseTransactionService';
+import { soundManager } from '@/lib/sounds';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Surface } from '@/components/ui/Surface';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -101,7 +102,9 @@ const TransactionInboxPage = () => {
         }));
     };
 
-    const approve = async (item: TransactionCandidate) => {
+    const [focusedIndex, setFocusedIndex] = useState(0);
+
+    const approve = useCallback(async (item: TransactionCandidate) => {
         const draft = editDrafts[item.id];
         const updates: Partial<TransactionCandidate> = {};
         if (draft) {
@@ -120,37 +123,43 @@ const TransactionInboxPage = () => {
             emitFinancialDataEvent('transaction-added', result?.transaction || result?.data);
             emitFinancialDataEvent('cashly-data-updated', { area: 'transactions', source: 'inbox-approve' });
             cancelEdit(item.id);
+            soundManager.play('success');
             toast.success('Transaction approved');
             load(true);
         } catch {
+            soundManager.play('error');
             toast.error('Approve failed');
         }
-    };
+    }, [editDrafts, load]);
 
-    const merge = async (item: TransactionCandidate) => {
+    const merge = useCallback(async (item: TransactionCandidate) => {
         if (!item.duplicate_transaction_id) return;
         try {
             await transactionInboxApi.merge(item.id, item.duplicate_transaction_id);
             emitFinancialDataEvent('cashly-data-updated', { area: 'inbox', source: 'inbox-merge' });
+            soundManager.play('click');
             toast.success('Merged into existing ledger item');
             load(true);
         } catch {
+            soundManager.play('error');
             toast.error('Merge failed');
         }
-    };
+    }, [load]);
 
-    const reject = async (id: string) => {
+    const reject = useCallback(async (id: string) => {
         try {
             await transactionInboxApi.reject(id);
             cancelEdit(id);
+            soundManager.play('whoosh');
             toast.success('Candidate rejected');
             load();
         } catch {
+            soundManager.play('error');
             toast.error('Reject failed');
         }
-    };
+    }, [load]);
 
-    const bulk = async (action: 'approve' | 'reject') => {
+    const bulk = useCallback(async (action: 'approve' | 'reject') => {
         if (!selected.length) return;
         try {
             await transactionInboxApi.bulk(selected, action);
@@ -158,14 +167,88 @@ const TransactionInboxPage = () => {
                 invalidateTransactionCache();
                 emitFinancialDataEvent('transaction-added', { count: selected.length });
                 emitFinancialDataEvent('cashly-data-updated', { area: 'transactions', source: 'inbox-bulk-approve' });
+                soundManager.play('success');
+            } else {
+                soundManager.play('whoosh');
             }
             toast.success(action === 'approve' ? 'Bulk complete — duplicates were merged' : 'Bulk reject complete');
             setSelected([]);
             load();
         } catch {
+            soundManager.play('error');
             toast.error(`Bulk ${action} failed`);
         }
-    };
+    }, [selected, load]);
+
+    const batchApproveVerifiedClean = useCallback(async () => {
+        const cleanItems = items.filter(i => (i.confidence || 0) >= 0.85);
+        if (cleanItems.length === 0) {
+            toast.info('No pending candidates with ≥85% confidence to batch-approve');
+            return;
+        }
+        soundManager.play('click');
+        try {
+            await transactionInboxApi.bulk(cleanItems.map(i => i.id), 'approve');
+            invalidateTransactionCache();
+            emitFinancialDataEvent('transaction-added', { count: cleanItems.length });
+            emitFinancialDataEvent('cashly-data-updated', { area: 'transactions', source: 'inbox-bulk-clean' });
+            soundManager.play('success');
+            toast.success(`Batch approved ${cleanItems.length} verified candidates (≥85% confidence)!`);
+            load(true);
+        } catch {
+            soundManager.play('error');
+            toast.error('Failed to batch approve clean candidates');
+        }
+    }, [items, load]);
+
+    // Global keyboard hotkeys: [A] Approve, [R] Reject, [M] Merge, [Shift+A] Batch Clean, [J/K] Navigate
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const target = e.target as HTMLElement;
+            if (target && (target.tagName === 'INPUT' || target.tagName === 'SELECT' || target.tagName === 'TEXTAREA')) {
+                return;
+            }
+
+            if (status !== 'pending' || items.length === 0) return;
+
+            const safeIndex = Math.min(Math.max(0, focusedIndex), items.length - 1);
+            const currentItem = items[safeIndex];
+
+            if (e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                batchApproveVerifiedClean();
+                return;
+            }
+
+            if (e.key === 'a' || e.key === 'A') {
+                e.preventDefault();
+                if (currentItem) {
+                    approve(currentItem);
+                }
+            } else if (e.key === 'r' || e.key === 'R') {
+                e.preventDefault();
+                if (currentItem) {
+                    reject(currentItem.id);
+                }
+            } else if (e.key === 'm' || e.key === 'M') {
+                e.preventDefault();
+                if (currentItem && currentItem.duplicate_transaction_id) {
+                    merge(currentItem);
+                }
+            } else if (e.key === 'j' || e.key === 'J' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                setFocusedIndex(prev => Math.min(prev + 1, items.length - 1));
+                soundManager.play('click');
+            } else if (e.key === 'k' || e.key === 'K' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                setFocusedIndex(prev => Math.max(prev - 1, 0));
+                soundManager.play('click');
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [status, items, focusedIndex, approve, reject, merge, batchApproveVerifiedClean]);
 
     const addRule = async () => {
         if (!ruleForm.merchantPattern.trim()) return;
@@ -209,6 +292,23 @@ const TransactionInboxPage = () => {
                 </div>
             </div>
 
+            {/* Power-User Hotkey Guide Strip */}
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[var(--color-surface-2)]/80 border border-[var(--color-border)] text-xs font-mono text-[var(--color-muted)] overflow-x-auto shadow-xs">
+                <div className="flex items-center gap-1.5 text-[var(--color-ink)] font-bold shrink-0">
+                    <Keyboard size={14} className="text-[var(--color-brand)]" />
+                    <span>Terminal Shortcuts:</span>
+                </div>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">A</kbd> Approve</span>
+                <span className="shrink-0 opacity-40">·</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">R</kbd> Reject</span>
+                <span className="shrink-0 opacity-40">·</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">M</kbd> Merge</span>
+                <span className="shrink-0 opacity-40">·</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">Shift+A</kbd> Batch Clean (≥85%)</span>
+                <span className="shrink-0 opacity-40">·</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">J</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">K</kbd> Navigate Focus</span>
+            </div>
+
             <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8">
                 <Surface padded={false} className="overflow-hidden border-[var(--color-border)] shadow-xs rounded-2xl">
                     <div className="flex flex-col gap-4 border-b border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-5">
@@ -240,11 +340,21 @@ const TransactionInboxPage = () => {
                                 <option value="amount">Sort: Amount</option>
                             </select>
                         </div>
-                        <div className="flex flex-col gap-2 min-[420px]:flex-row">
+                        <div className="flex flex-wrap items-center gap-2">
+                            {status === 'pending' && (
+                                <Button
+                                    onClick={batchApproveVerifiedClean}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs flex items-center gap-1.5"
+                                >
+                                    <Zap size={13} />
+                                    <span>Batch Clean</span>
+                                    <kbd className="px-1 py-0.5 rounded text-[9px] bg-emerald-800/80 text-emerald-100 font-mono font-bold">Shift+A</kbd>
+                                </Button>
+                            )}
                             <Button
                                 onClick={() => bulk('approve')}
                                 disabled={!selected.length}
-                                className="bg-[var(--color-success)] text-white hover:opacity-90 shadow-xs"
+                                className="bg-[var(--color-success)] text-white hover:opacity-90 shadow-xs text-xs"
                             >
                                 Approve ({selected.length})
                             </Button>
@@ -252,6 +362,7 @@ const TransactionInboxPage = () => {
                                 variant="outline"
                                 onClick={() => bulk('reject')}
                                 disabled={!selected.length}
+                                className="text-xs"
                             >
                                 Reject ({selected.length})
                             </Button>
@@ -293,138 +404,165 @@ const TransactionInboxPage = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {items.map(item => (
-                                        <tr key={item.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface-2)]/60 transition-colors">
-                                            <td className="p-4">
-                                                <div className="relative h-4 w-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
-                                                    <input
-                                                        type="checkbox"
-                                                        className="absolute inset-0 z-10 cursor-pointer opacity-0"
-                                                        checked={selected.includes(item.id)}
-                                                        onChange={(e) => setSelected(prev => e.target.checked ? [...prev, item.id] : prev.filter(id => id !== item.id))}
-                                                    />
-                                                    {selected.includes(item.id) && <Check size={12} className="absolute inset-0 m-auto text-[var(--color-brand)]" />}
-                                                </div>
-                                            </td>
-                                            <td className="p-4">
-                                                {editDrafts[item.id] ? (
-                                                    <div className="min-w-[220px] space-y-2">
-                                                        <input
-                                                            value={editDrafts[item.id].description}
-                                                            onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
-                                                            className="h-9 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
-                                                        />
-                                                        <select
-                                                            value={editDrafts[item.id].category}
-                                                            onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
-                                                            className="h-9 w-full cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none"
-                                                        >
-                                                            {categories.map((category) => <option key={category}>{category}</option>)}
-                                                            {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
-                                                        </select>
+                                    {items.map((item, index) => {
+                                        const isFocused = index === focusedIndex && status === 'pending';
+                                        return (
+                                            <tr
+                                                key={item.id}
+                                                onClick={() => setFocusedIndex(index)}
+                                                className={cn(
+                                                    'border-b border-[var(--color-border)] transition-all cursor-pointer',
+                                                    isFocused
+                                                        ? 'bg-[var(--color-brand)]/8 ring-1 ring-inset ring-[var(--color-brand)]/35'
+                                                        : 'hover:bg-[var(--color-surface-2)]/60'
+                                                )}
+                                            >
+                                                <td className="p-4">
+                                                    <div className="flex items-center gap-2">
+                                                        {isFocused && (
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand)] animate-pulse shrink-0" />
+                                                        )}
+                                                        <div className="relative h-4 w-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="absolute inset-0 z-10 cursor-pointer opacity-0"
+                                                                checked={selected.includes(item.id)}
+                                                                onChange={(e) => setSelected(prev => e.target.checked ? [...prev, item.id] : prev.filter(id => id !== item.id))}
+                                                            />
+                                                            {selected.includes(item.id) && <Check size={12} className="absolute inset-0 m-auto text-[var(--color-brand)]" />}
+                                                        </div>
                                                     </div>
-                                                ) : (
-                                                    <>
-                                                        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-ink)]">
-                                                            {item.description}
-                                                            {item.duplicate_transaction_id && (
-                                                                <span className="rounded-full border border-[var(--color-brand)]/30 bg-[var(--color-brand-light)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-brand)]">Possible duplicate</span>
-                                                            )}
+                                                </td>
+                                                <td className="p-4">
+                                                    {editDrafts[item.id] ? (
+                                                        <div className="min-w-[220px] space-y-2">
+                                                            <input
+                                                                value={editDrafts[item.id].description}
+                                                                onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
+                                                                className="h-9 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                                            />
+                                                            <select
+                                                                value={editDrafts[item.id].category}
+                                                                onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
+                                                                className="h-9 w-full cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none"
+                                                            >
+                                                                {categories.map((category) => <option key={category}>{category}</option>)}
+                                                                {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
+                                                            </select>
                                                         </div>
-                                                        <div className="mt-1 text-xs font-mono text-[var(--color-muted)]">{item.date} · {item.category}</div>
-                                                    </>
-                                                )}
-                                            </td>
-                                            <td className="p-4">
-                                                {(() => {
-                                                    const srcMap: Record<string, { label: string; bg: string; color: string }> = {
-                                                        pdf:       { label: 'PDF', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
-                                                        csv:       { label: 'CSV', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
-                                                        extension: { label: 'Extension', bg: 'var(--color-brand-soft)', color: 'var(--color-brand)' },
-                                                        ai:        { label: 'AI', bg: 'var(--color-ai-soft)', color: 'var(--color-ai)' },
-                                                    };
-                                                    const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: 'var(--color-surface-2)', color: 'var(--color-muted)' };
-                                                    return (
-                                                        <span style={{ padding: '3px 8px', fontSize: '0.72rem', fontWeight: 600, background: s.bg, color: s.color, border: '1px solid var(--color-border)', display: 'inline-block', borderRadius: 999 }}>
-                                                            {s.label}
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </td>
-                                            <td className="p-4">
-                                                {(() => {
-                                                    const pct = Math.round((item.confidence || 0) * 100);
-                                                    const color = pct >= 80 ? 'var(--color-success)' : pct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)';
-                                                    return (
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-xs font-semibold tabular-nums font-mono" style={{ color }}>{pct}%</span>
-                                                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--color-surface-2)]">
-                                                                <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })()}
-                                            </td>
-                                            <td className="p-4 text-right text-sm font-semibold tabular-nums font-mono">
-                                                {editDrafts[item.id] ? (
-                                                    <input
-                                                        type="number"
-                                                        min="0"
-                                                        step="0.01"
-                                                        value={editDrafts[item.id].amount}
-                                                        onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
-                                                        className="ml-auto h-9 w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-right text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
-                                                    />
-                                                ) : (
-                                                    formatCurrency(Number(item.amount || 0))
-                                                )}
-                                            </td>
-                                            <td className="p-4">
-                                                <div className="flex justify-end gap-1.5">
-                                                    {status === 'pending' && (
+                                                    ) : (
                                                         <>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => editDrafts[item.id] ? cancelEdit(item.id) : startEdit(item)}
-                                                                title={editDrafts[item.id] ? 'Cancel edit' : 'Edit before approve'}
-                                                                className={cn(
-                                                                    'flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)]',
-                                                                    editDrafts[item.id] ? 'bg-amber-100 text-amber-900' : 'bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                                                            <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-ink)]">
+                                                                {item.description}
+                                                                {item.duplicate_transaction_id && (
+                                                                    <span className="rounded-full border border-[var(--color-brand)]/30 bg-[var(--color-brand-light)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-brand)]">Possible duplicate</span>
                                                                 )}
-                                                            >
-                                                                <Pencil size={14} strokeWidth={2} />
-                                                            </button>
-                                                            {item.duplicate_transaction_id && (
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => merge(item)}
-                                                                    title="Merge into existing ledger item"
-                                                                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)] bg-amber-50 text-amber-800"
-                                                                >
-                                                                    <Link2 size={14} strokeWidth={2} />
-                                                                </button>
-                                                            )}
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => approve(item)}
-                                                                title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger'}
-                                                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-success)] text-white hover:opacity-90"
-                                                            >
-                                                                <Check size={14} strokeWidth={2.5} />
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => reject(item.id)}
-                                                                className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-danger)] text-white hover:opacity-90"
-                                                            >
-                                                                <X size={14} strokeWidth={2.5} />
-                                                            </button>
+                                                            </div>
+                                                            <div className="mt-1 text-xs font-mono text-[var(--color-muted)]">{item.date} · {item.category}</div>
                                                         </>
                                                     )}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                                </td>
+                                                <td className="p-4">
+                                                    {(() => {
+                                                        const srcMap: Record<string, { label: string; bg: string; color: string }> = {
+                                                            pdf:       { label: 'PDF', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
+                                                            csv:       { label: 'CSV', bg: 'var(--color-surface-2)', color: 'var(--color-muted)' },
+                                                            extension: { label: 'Extension', bg: 'var(--color-brand-soft)', color: 'var(--color-brand)' },
+                                                            ai:        { label: 'AI', bg: 'var(--color-ai-soft)', color: 'var(--color-ai)' },
+                                                        };
+                                                        const s = srcMap[item.source?.toLowerCase()] || { label: item.source, bg: 'var(--color-surface-2)', color: 'var(--color-muted)' };
+                                                        return (
+                                                            <span style={{ padding: '3px 8px', fontSize: '0.72rem', fontWeight: 600, background: s.bg, color: s.color, border: '1px solid var(--color-border)', display: 'inline-block', borderRadius: 999 }}>
+                                                                {s.label}
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </td>
+                                                <td className="p-4">
+                                                    {(() => {
+                                                        const pct = Math.round((item.confidence || 0) * 100);
+                                                        const color = pct >= 80 ? 'var(--color-success)' : pct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)';
+                                                        return (
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-xs font-semibold tabular-nums font-mono" style={{ color }}>{pct}%</span>
+                                                                <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--color-surface-2)]">
+                                                                    <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })()}
+                                                </td>
+                                                <td className="p-4 text-right text-sm font-semibold tabular-nums font-mono">
+                                                    {editDrafts[item.id] ? (
+                                                        <input
+                                                            type="number"
+                                                            min="0"
+                                                            step="0.01"
+                                                            value={editDrafts[item.id].amount}
+                                                            onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
+                                                            className="ml-auto h-9 w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-right text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                                        />
+                                                    ) : (
+                                                        formatCurrency(Number(item.amount || 0))
+                                                    )}
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="flex justify-end gap-1.5">
+                                                        {status === 'pending' && (
+                                                            <>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => editDrafts[item.id] ? cancelEdit(item.id) : startEdit(item)}
+                                                                    title={editDrafts[item.id] ? 'Cancel edit' : 'Edit before approve'}
+                                                                    className={cn(
+                                                                        'flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-border)]',
+                                                                        editDrafts[item.id] ? 'bg-amber-100 text-amber-900' : 'bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                                                                    )}
+                                                                >
+                                                                    <Pencil size={14} strokeWidth={2} />
+                                                                </button>
+                                                                {item.duplicate_transaction_id && (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => merge(item)}
+                                                                        title="Merge into existing ledger item (M)"
+                                                                        className="flex h-8 px-2 items-center justify-center gap-1 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 font-mono text-xs font-semibold"
+                                                                    >
+                                                                        <Link2 size={13} strokeWidth={2} />
+                                                                        {isFocused && (
+                                                                            <kbd className="px-1 py-0.5 rounded text-[9px] bg-amber-200/80 text-amber-900 font-mono font-bold">M</kbd>
+                                                                        )}
+                                                                    </button>
+                                                                )}
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => approve(item)}
+                                                                    title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger (A)'}
+                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-success)] text-white hover:opacity-90 font-mono text-xs font-semibold shadow-xs"
+                                                                >
+                                                                    <Check size={14} strokeWidth={2.5} />
+                                                                    {isFocused && (
+                                                                        <kbd className="px-1 py-0.5 rounded text-[9px] bg-black/20 text-white font-mono font-bold">A</kbd>
+                                                                    )}
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => reject(item.id)}
+                                                                    title="Reject candidate (R)"
+                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-danger)] text-white hover:opacity-90 font-mono text-xs font-semibold shadow-xs"
+                                                                >
+                                                                    <X size={14} strokeWidth={2.5} />
+                                                                    {isFocused && (
+                                                                        <kbd className="px-1 py-0.5 rounded text-[9px] bg-black/20 text-white font-mono font-bold">R</kbd>
+                                                                    )}
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>

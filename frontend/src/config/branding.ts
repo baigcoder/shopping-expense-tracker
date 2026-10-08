@@ -6,8 +6,8 @@ export const BRAND = {
     description: "Review-first expense tracking with browser-extension capture, a quiet inbox, and AI that stays grounded in your real numbers.",
 
     logo: {
-        light: "/logo-light.svg",
-        dark: "/logo-dark.svg",
+        light: "/favicon.svg",
+        dark: "/favicon.svg",
     },
 
     colors: {

@@ -4,8 +4,8 @@
     "description": "Review-first finance automation with expense tracking, browser-extension sync, budgets, reports, and AI-powered insights.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#FFFFFF",
-    "theme_color": "#09090B",
+    "background_color": "#F4F3EE",
+    "theme_color": "#EE5024",
     "orientation": "portrait-primary",
     "scope": "/",
     "icons": [

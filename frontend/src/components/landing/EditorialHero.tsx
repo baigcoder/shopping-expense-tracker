@@ -1,18 +1,53 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Sparkles, TrendingUp, Check, RotateCcw, ShoppingBag, Lock, Zap } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sparkles, TrendingUp, Check, RotateCcw, ShoppingBag, Lock, Zap, Terminal, CornerDownLeft } from 'lucide-react';
+import { useLandingSettings } from './useLandingSettings';
 
-/**
- * Section 01: Editorial Hero
- * Campaign poster feel with monumental typography and direct, authentic product UI above the fold.
- * Features 3 living product consoles:
- * 1. Live Sovereign Intercept HUD (Interactive checkout approval)
- * 2. Money Twin Predictive Trajectory HUD (Dynamic SVG forward runway curve)
- * 3. Cashly Copilot Decision Surface (Executable 1-tap financial action chips)
- */
+const STORES = [
+    { id: 'amazon', name: 'amazon.com', item: 'Sony WH-1000XM5', price: 34990, category: 'Electronics • Discretionary' },
+    { id: 'shopify', name: 'gymshark.com', item: 'Seamless Training Set', price: 4200, category: 'Apparel • Discretionary' },
+    { id: 'uber', name: 'uber.com', item: 'Airport Transit Ride', price: 950, category: 'Transport • Transit' },
+    { id: 'swiggy', name: 'swiggy.com', item: 'Gourmet Dinner Feast', price: 1850, category: 'Dining • Discretionary' },
+];
+
+const COMMAND_PRESETS = [
+    'spent 450 at Nandos',
+    '> runway',
+    'cap dining at Rs 20,000',
+    'paid 1200 for groceries',
+];
+
 export default function EditorialHero() {
+    const { formatAmount, playSound } = useLandingSettings();
+    const [selectedStoreIndex, setSelectedStoreIndex] = useState(0);
     const [interceptApproved, setInterceptApproved] = useState(false);
     const [copilotActionExecuted, setCopilotActionExecuted] = useState(false);
+    const [commandQuery, setCommandQuery] = useState('spent 450 at Nandos');
+    const [commandLogged, setCommandLogged] = useState(false);
+
+    const activeStore = STORES[selectedStoreIndex];
+
+    const handleSwitchStore = (idx: number) => {
+        setSelectedStoreIndex(idx);
+        setInterceptApproved(false);
+        playSound('click');
+    };
+
+    const handleApproveIntercept = () => {
+        setInterceptApproved(true);
+        playSound('success');
+    };
+
+    const handleCopilotAction = () => {
+        setCopilotActionExecuted(true);
+        playSound('success');
+    };
+
+    const handleLogCommand = () => {
+        setCommandLogged(true);
+        playSound('success');
+        setTimeout(() => setCommandLogged(false), 2400);
+    };
 
     return (
         <section className="landing-editorial-hero">
@@ -43,10 +78,71 @@ export default function EditorialHero() {
                             <span>Start with Cashly</span>
                             <ArrowRight size={16} />
                         </Link>
+                        <Link
+                            to="/demo"
+                            className="landing-btn landing-btn--demo"
+                            title="Open full interactive Cashly OS Sandbox"
+                        >
+                            <span className="landing-nav__demo-pulse" style={{ background: '#FFFFFF' }} />
+                            <span>⚡ Launch Live Demo OS</span>
+                            <ArrowRight size={14} />
+                        </Link>
                         <a href="#triptych" className="landing-btn landing-btn--secondary">
                             <span>Explore Ecosystem</span>
                             <span style={{ opacity: 0.5 }}>↓</span>
                         </a>
+                    </div>
+                </div>
+
+                {/* ─── INTERACTIVE NATURAL LANGUAGE COMMAND BAR SANDBOX ─── */}
+                <div className="landing-hero-cmd-sandbox">
+                    <div className="landing-hero-cmd-sandbox__bar">
+                        <div className="landing-hero-cmd-sandbox__input-wrap">
+                            <Terminal size={15} className="text-[var(--landing-orange)] shrink-0" />
+                            <input
+                                type="text"
+                                value={commandQuery}
+                                onChange={(e) => setCommandQuery(e.target.value)}
+                                placeholder="Type: 'spent 450 at Nandos' or '> runway'..."
+                                className="landing-hero-cmd-sandbox__input"
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleLogCommand}
+                            className="landing-hero-cmd-sandbox__action-btn"
+                        >
+                            {commandLogged ? (
+                                <>
+                                    <Check size={13} className="text-emerald-400" />
+                                    <span>Parsed & Staged</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span>Simulate Enter</span>
+                                    <CornerDownLeft size={13} />
+                                </>
+                            )}
+                        </button>
+                    </div>
+
+                    <div className="landing-hero-cmd-sandbox__presets">
+                        <span className="landing-hero-cmd-sandbox__hint">Try live shortcuts:</span>
+                        {COMMAND_PRESETS.map((preset) => (
+                            <button
+                                key={preset}
+                                type="button"
+                                onClick={() => {
+                                    setCommandQuery(preset);
+                                    playSound('click');
+                                }}
+                                className={`landing-hero-cmd-sandbox__chip ${
+                                    commandQuery === preset ? 'landing-hero-cmd-sandbox__chip--active' : ''
+                                }`}
+                            >
+                                {preset}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -62,17 +158,33 @@ export default function EditorialHero() {
                             </div>
                             <span className="landing-hero-teaser__store-tag">
                                 <ShoppingBag size={11} />
-                                amazon.com
+                                {activeStore.name}
                             </span>
+                        </div>
+
+                        {/* Store Switcher Tabs */}
+                        <div className="landing-hero-teaser__store-selector">
+                            {STORES.map((s, idx) => (
+                                <button
+                                    key={s.id}
+                                    type="button"
+                                    onClick={() => handleSwitchStore(idx)}
+                                    className={`landing-hero-teaser__store-btn ${
+                                        selectedStoreIndex === idx ? 'landing-hero-teaser__store-btn--active' : ''
+                                    }`}
+                                >
+                                    {s.name.replace('.com', '')}
+                                </button>
+                            ))}
                         </div>
 
                         <div className="landing-hero-teaser__product-body">
                             <div className="landing-hero-teaser__item-row">
-                                <span className="landing-hero-teaser__item-name">Sony WH-1000XM5</span>
-                                <span className="landing-hero-teaser__item-price">Rs 34,990</span>
+                                <span className="landing-hero-teaser__item-name">{activeStore.item}</span>
+                                <span className="landing-hero-teaser__item-price">{formatAmount(activeStore.price)}</span>
                             </div>
                             <div className="landing-hero-teaser__item-meta">
-                                <span className="landing-hero-teaser__item-cat">Electronics • Discretionary</span>
+                                <span className="landing-hero-teaser__item-cat">{activeStore.category}</span>
                                 <span className="landing-hero-teaser__security-pill">
                                     <Lock size={10} /> Zero Passwords
                                 </span>
@@ -82,7 +194,7 @@ export default function EditorialHero() {
                         <div className="landing-hero-teaser__hud-footer">
                             {!interceptApproved ? (
                                 <button
-                                    onClick={() => setInterceptApproved(true)}
+                                    onClick={handleApproveIntercept}
                                     className="landing-hero-teaser__btn landing-hero-teaser__btn--white"
                                     type="button"
                                 >
@@ -93,10 +205,13 @@ export default function EditorialHero() {
                                 <div className="landing-hero-teaser__status-confirmed">
                                     <div className="landing-hero-teaser__status-text">
                                         <Check size={14} className="landing-hero-teaser__check-icon" />
-                                        <span>Reconciled to Ledger • Safe: Rs 42,870</span>
+                                        <span>Reconciled to Ledger • Safe: {formatAmount(42870)}</span>
                                     </div>
                                     <button
-                                        onClick={() => setInterceptApproved(false)}
+                                        onClick={() => {
+                                            setInterceptApproved(false);
+                                            playSound('click');
+                                        }}
                                         className="landing-hero-teaser__replay-btn"
                                         title="Reset demo"
                                         type="button"
@@ -122,7 +237,7 @@ export default function EditorialHero() {
 
                         <div className="landing-hero-teaser__metric">
                             <div className="flex items-baseline justify-between">
-                                <span className="landing-hero-teaser__num">Rs 27,150</span>
+                                <span className="landing-hero-teaser__num">{formatAmount(27150)}</span>
                                 <span className="text-xs font-mono text-emerald-400 font-bold">42-Day Runway</span>
                             </div>
                             <span className="landing-hero-teaser__lbl">Projected Month-End Cash</span>
@@ -158,7 +273,7 @@ export default function EditorialHero() {
                         </div>
 
                         <div className="landing-hero-teaser__telemetry-row">
-                            <span>Burn: Rs 1,420/day</span>
+                            <span>Burn: {formatAmount(1420)}/day</span>
                             <span className="font-mono text-emerald-400 font-bold">Zero Deficit Risk</span>
                         </div>
                     </div>
@@ -177,7 +292,7 @@ export default function EditorialHero() {
 
                         <div className="landing-hero-teaser__copilot-content">
                             <p className="landing-hero-teaser__insight-text">
-                                &ldquo;Rs 3,200 discretionary headroom detected above your 30-day runway target.&rdquo;
+                                &ldquo;{formatAmount(3200)} discretionary headroom detected above your 30-day runway target.&rdquo;
                             </p>
                         </div>
 
@@ -185,14 +300,14 @@ export default function EditorialHero() {
                             {!copilotActionExecuted ? (
                                 <div className="landing-hero-teaser__chip-row">
                                     <button
-                                        onClick={() => setCopilotActionExecuted(true)}
+                                        onClick={handleCopilotAction}
                                         className="landing-hero-teaser__action-chip landing-hero-teaser__action-chip--primary"
                                         type="button"
                                     >
-                                        <span>+ Vault Rs 3,000</span>
+                                        <span>+ Vault {formatAmount(3000)}</span>
                                     </button>
                                     <button
-                                        onClick={() => setCopilotActionExecuted(true)}
+                                        onClick={handleCopilotAction}
                                         className="landing-hero-teaser__action-chip landing-hero-teaser__action-chip--secondary"
                                         type="button"
                                     >
@@ -203,10 +318,13 @@ export default function EditorialHero() {
                                 <div className="landing-hero-teaser__copilot-success">
                                     <div className="landing-hero-teaser__status-text">
                                         <Check size={14} className="text-emerald-700" />
-                                        <span>Rs 3,000 Moved to Vault (+3.4d Runway)</span>
+                                        <span>{formatAmount(3000)} Moved to Vault (+3.4d Runway)</span>
                                     </div>
                                     <button
-                                        onClick={() => setCopilotActionExecuted(false)}
+                                        onClick={() => {
+                                            setCopilotActionExecuted(false);
+                                            playSound('click');
+                                        }}
                                         className="landing-hero-teaser__replay-btn text-neutral-800"
                                         title="Reset demo"
                                         type="button"

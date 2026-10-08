@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Sparkles, Inbox, Check } from 'lucide-react';
 import BRAND from '@/config/branding';
+import { CashlyMark } from '@/components/brand/CashlyLogo';
 
 interface AuthLayoutProps {
     children: ReactNode;
@@ -16,10 +17,8 @@ const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
             <div className="hidden lg:flex lg:w-1/2 flex-col justify-between border-r border-[var(--color-border)] bg-[#111111] text-white p-12 xl:p-16 relative overflow-hidden">
                 <div className="relative z-10">
                     {/* Brand Logo */}
-                    <Link to="/" className="inline-flex items-center gap-2.5">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-orange)] font-display text-lg font-bold text-white shadow-sm">
-                            C
-                        </span>
+                    <Link to="/" className="inline-flex items-center gap-3">
+                        <CashlyMark size={38} variant="orange" />
                         <div className="flex flex-col">
                             <span className="font-display text-xl font-bold tracking-tight text-white">{BRAND.name}</span>
                             <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">Financial OS</span>
@@ -85,10 +84,8 @@ const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
             <div className="flex w-full lg:w-1/2 flex-col justify-between p-6 sm:p-10 xl:p-14">
                 {/* Mobile Brand Bar */}
                 <div className="flex items-center justify-between lg:hidden pb-6 border-b border-[var(--color-border)]">
-                    <Link to="/" className="flex items-center gap-2">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--color-brand)] font-display text-sm font-bold text-white">
-                            C
-                        </span>
+                    <Link to="/" className="flex items-center gap-2.5">
+                        <CashlyMark size={32} variant="orange" />
                         <span className="font-display text-base font-bold text-[var(--color-ink)]">{BRAND.name}</span>
                     </Link>
                     <Link to="/" className="text-xs font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)]">

@@ -20,6 +20,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AnalyzeNavigationTabs } from '@/components/AnalyzeNavigationTabs';
+import { RunwaySimulator } from '../components/RunwaySimulator';
+import { supabaseTransactionService } from '../services/supabaseTransactionService';
 
 export const MoneyTwinPage = () => {
     const { user } = useAuthStore();
@@ -38,6 +40,13 @@ export const MoneyTwinPage = () => {
     const [scenarioCategory, setScenarioCategory] = useState('Dining');
     const [scenarioAmount, setScenarioAmount] = useState('50');
     const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
+
+    const [financials, setFinancials] = useState({
+        totalBalance: 78450,
+        monthlyExpense: 32400,
+        monthlyIncome: 85000,
+        committedBills: 12500,
+    });
 
     const loadMoneyTwin = useCallback(async (silent = false) => {
         if (!user?.id) return;
@@ -64,15 +73,51 @@ export const MoneyTwinPage = () => {
         }
     }, [user?.id]);
 
+    const loadFinancials = useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            const txs = await supabaseTransactionService.getAll(user.id);
+            const totalIncome = txs.filter((tx) => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+            const totalExpense = txs.filter((tx) => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+            const balance = totalIncome - totalExpense;
+
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            const currentMonthTxs = txs.filter((tx) => {
+                const d = new Date(tx.date);
+                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            });
+            const mIncome = currentMonthTxs.filter((tx) => tx.type === 'income').reduce((sum, tx) => sum + tx.amount, 0);
+            const mExpense = currentMonthTxs.filter((tx) => tx.type === 'expense').reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
+
+            const subs = await subscriptionService.getAll(user.id);
+            const committed = subs.filter((s) => s.is_active).reduce((sum, s) => sum + (s.price || 0), 0);
+
+            setFinancials({
+                totalBalance: balance > 0 ? balance : 78450,
+                monthlyExpense: mExpense > 0 ? mExpense : 32400,
+                monthlyIncome: mIncome > 0 ? mIncome : 85000,
+                committedBills: committed > 0 ? committed : 12500,
+            });
+        } catch {
+            // Keep defaults
+        }
+    }, [user?.id]);
+
     useEffect(() => {
         if (user?.id) {
             loadMoneyTwin();
             loadSubscriptions();
+            loadFinancials();
         }
-    }, [user?.id, loadMoneyTwin, loadSubscriptions]);
+    }, [user?.id, loadMoneyTwin, loadSubscriptions, loadFinancials]);
 
     useDataRealtime({
-        onMoneyTwinRefresh: () => loadMoneyTwin(true),
+        onMoneyTwinRefresh: () => {
+            loadMoneyTwin(true);
+            loadFinancials();
+        },
     });
 
     const runScenario = async () => {
@@ -335,10 +380,22 @@ export const MoneyTwinPage = () => {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
-                        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                        className="space-y-6"
                     >
-                        {/* Simulation Setup Card */}
-                        <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] space-y-4">
+                        {/* Interactive What-If Velocity Restraint Simulator */}
+                        <RunwaySimulator
+                            totalBalance={financials.totalBalance}
+                            monthlyExpense={financials.monthlyExpense}
+                            monthlyIncome={financials.monthlyIncome}
+                            committedBills={financials.committedBills}
+                            dailyBurnRate={twinState?.velocity?.dailyRate}
+                            variant="twin"
+                        />
+
+                        {/* Discrete Decision Modeling Grid */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Simulation Setup Card */}
+                            <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] space-y-4">
                             <div>
                                 <h3 className="text-sm font-bold text-[var(--color-text-primary)]">
                                     Simulate a Financial Decision
@@ -526,6 +583,7 @@ export const MoneyTwinPage = () => {
                             <div className="text-[11px] text-[var(--color-text-muted)] italic">
                                 * Simulates compound savings based on current cash burn rates.
                             </div>
+                        </div>
                         </div>
                     </motion.div>
                 )}

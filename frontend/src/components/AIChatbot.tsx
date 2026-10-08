@@ -1,9 +1,10 @@
-// AIChatbot - Stark Gen Z Neural Link Interface
-import { useState, useRef, useEffect } from 'react';
+// AIChatbot - Executable AI Co-Pilot with Action Chips
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
-    MessageSquare, X, Send, Minimize2, Maximize2, RefreshCw, Phone, ArrowUpRight
+    MessageSquare, X, Send, Minimize2, Maximize2, RefreshCw, Phone, ArrowUpRight,
+    Check, Loader2, Zap, PiggyBank, Wallet, Pause, TrendingDown
 } from 'lucide-react';
 import { useAuthStore, useUIStore } from '../store/useStore';
 import { useAIRealtime } from '../hooks/useAIRealtime';
@@ -14,11 +15,24 @@ import api from '../services/api';
 import { soundManager } from '@/lib/sounds';
 import styles from './AIChatbot.module.css';
 
+// --- Action Chip System ---
+type ActionChipStatus = 'idle' | 'loading' | 'done' | 'error';
+
+interface ActionChip {
+    id: string;
+    type: 'budget_cap' | 'goal_fund' | 'sub_pause' | 'navigate' | 'add_transaction';
+    label: string;
+    icon: 'wallet' | 'piggy' | 'pause' | 'trend' | 'zap' | 'navigate';
+    payload: Record<string, any>;
+    status: ActionChipStatus;
+}
+
 interface Message {
     id: string;
     role: 'user' | 'assistant';
     content: string;
     timestamp: Date;
+    actionChips?: ActionChip[];
 }
 
 const QUICK_ACTIONS = [
@@ -27,7 +41,7 @@ const QUICK_ACTIONS = [
     { label: "My budget", message: "Show my budget status" },
     { label: "Subscriptions", message: "What subscriptions do I have?" },
     { label: "Goals", message: "Show my goal progress" },
-    { label: "Spending review", message: "Review my spending habits" },
+    { label: "Extend runway", message: "How can I extend my runway by 5 days?" },
 ];
 
 const getActionForMessage = (content: string) => {
@@ -53,6 +67,237 @@ const getActionForMessage = (content: string) => {
     return null;
 };
 
+// Parse AI response text into actionable chips
+function extractActionChips(content: string, userId?: string): ActionChip[] {
+    const chips: ActionChip[] = [];
+    const lower = content.toLowerCase();
+
+    // Budget cap suggestions
+    const budgetCapPatterns = [
+        /cap\s+(\w[\w\s&]*?)\s+(?:budget\s+)?(?:at|to)\s+(?:rs\.?|₹|inr)\s*([\d,]+)/gi,
+        /reduce\s+(\w[\w\s&]*?)\s+(?:budget|spending)\s+(?:to|by)\s+(?:rs\.?|₹|inr)\s*([\d,]+)/gi,
+        /set\s+(\w[\w\s&]*?)\s+(?:limit|budget|cap)\s+(?:at|to)\s+(?:rs\.?|₹|inr)\s*([\d,]+)/gi,
+        /limit\s+(\w[\w\s&]*?)\s+(?:to|at)\s+(?:rs\.?|₹|inr)\s*([\d,]+)/gi,
+    ];
+
+    for (const pattern of budgetCapPatterns) {
+        let match;
+        while ((match = pattern.exec(content)) !== null) {
+            const category = match[1].trim().replace(/\s+/g, ' ');
+            const amount = parseInt(match[2].replace(/,/g, ''));
+            if (amount > 0 && category.length > 1) {
+                const chipId = `budget-${category}-${amount}`;
+                if (!chips.find(c => c.id === chipId)) {
+                    chips.push({
+                        id: chipId,
+                        type: 'budget_cap',
+                        label: `Cap ${category} at ₹${amount.toLocaleString()}`,
+                        icon: 'wallet',
+                        payload: { category, amount, userId },
+                        status: 'idle',
+                    });
+                }
+            }
+        }
+    }
+
+    // Goal funding suggestions
+    const goalFundPatterns = [
+        /(?:route|transfer|move|allocate)\s+(?:rs\.?|₹|inr)\s*([\d,]+)\s+(?:to|towards?|into)\s+(\w[\w\s]*(?:fund|goal|savings))/gi,
+        /(?:add|put|save)\s+(?:rs\.?|₹|inr)\s*([\d,]+)\s+(?:to|towards?|into|in)\s+(\w[\w\s]*(?:fund|goal|savings))/gi,
+    ];
+
+    for (const pattern of goalFundPatterns) {
+        let match;
+        while ((match = pattern.exec(content)) !== null) {
+            const amount = parseInt(match[1].replace(/,/g, ''));
+            const goalName = match[2].trim();
+            if (amount > 0 && goalName.length > 2) {
+                const chipId = `goal-${goalName}-${amount}`;
+                if (!chips.find(c => c.id === chipId)) {
+                    chips.push({
+                        id: chipId,
+                        type: 'goal_fund',
+                        label: `Route ₹${amount.toLocaleString()} to ${goalName}`,
+                        icon: 'piggy',
+                        payload: { goalName, amount, userId },
+                        status: 'idle',
+                    });
+                }
+            }
+        }
+    }
+
+    // Subscription pause suggestions
+    const subPausePatterns = [
+        /(?:pause|cancel|stop|freeze)\s+(\w[\w\s]*?)\s+subscription/gi,
+        /(?:unsubscribe|deactivate)\s+(?:from\s+)?(\w[\w\s]*?)(?:\s+subscription)?/gi,
+    ];
+
+    for (const pattern of subPausePatterns) {
+        let match;
+        while ((match = pattern.exec(content)) !== null) {
+            const subName = match[1].trim();
+            if (subName.length > 1) {
+                const chipId = `sub-pause-${subName}`;
+                if (!chips.find(c => c.id === chipId)) {
+                    chips.push({
+                        id: chipId,
+                        type: 'sub_pause',
+                        label: `Pause ${subName} Subscription`,
+                        icon: 'pause',
+                        payload: { subscriptionName: subName, userId },
+                        status: 'idle',
+                    });
+                }
+            }
+        }
+    }
+
+    // Generic spending reduction suggestions
+    if (lower.includes('reduce') && lower.includes('spending') && chips.length === 0) {
+        const amountMatch = content.match(/(?:rs\.?|₹|inr)\s*([\d,]+)/i);
+        const categoryMatch = content.match(/(?:reduce|cut)\s+(\w+)\s+spending/i);
+        if (amountMatch && categoryMatch) {
+            chips.push({
+                id: `reduce-${categoryMatch[1]}-${amountMatch[1]}`,
+                type: 'budget_cap',
+                label: `Reduce ${categoryMatch[1]} by ₹${parseInt(amountMatch[1].replace(/,/g, '')).toLocaleString()}`,
+                icon: 'trend',
+                payload: {
+                    category: categoryMatch[1],
+                    reduceBy: parseInt(amountMatch[1].replace(/,/g, '')),
+                    userId,
+                },
+                status: 'idle',
+            });
+        }
+    }
+
+    return chips;
+}
+
+// Execute action chip against real services
+async function executeActionChip(chip: ActionChip): Promise<boolean> {
+    try {
+        switch (chip.type) {
+            case 'budget_cap': {
+                const { budgetService } = await import('../services/budgetService');
+                const userId = chip.payload.userId;
+                if (!userId) return false;
+
+                const budgets = await budgetService.getAll(userId);
+                const existing = budgets.find(
+                    (b) => b.category.toLowerCase() === chip.payload.category.toLowerCase()
+                );
+
+                if (existing) {
+                    const newAmount = chip.payload.reduceBy
+                        ? Math.max(0, existing.amount - chip.payload.reduceBy)
+                        : chip.payload.amount;
+                    await budgetService.update(existing.id, { amount: newAmount });
+                } else {
+                    await budgetService.create({
+                        user_id: userId,
+                        category: chip.payload.category,
+                        amount: chip.payload.amount || 0,
+                        period: 'monthly',
+                    });
+                }
+                return true;
+            }
+
+            case 'goal_fund': {
+                const { goalService } = await import('../services/goalService');
+                const userId = chip.payload.userId;
+                if (!userId) return false;
+
+                const goals = await goalService.getAll(userId);
+                const existing = goals.find(
+                    (g) => g.name.toLowerCase().includes(chip.payload.goalName.toLowerCase())
+                );
+
+                if (existing) {
+                    await goalService.addFunds(existing.id, chip.payload.amount);
+                }
+                return !!existing;
+            }
+
+            case 'sub_pause': {
+                const { subscriptionService } = await import('../services/subscriptionService');
+                const userId = chip.payload.userId;
+                if (!userId) return false;
+
+                const subs = await subscriptionService.getAll(userId);
+                const existing = subs.find(
+                    (s) => s.name.toLowerCase().includes(chip.payload.subscriptionName.toLowerCase())
+                );
+
+                if (existing) {
+                    await subscriptionService.update(existing.id, { is_active: false });
+                }
+                return !!existing;
+            }
+
+            default:
+                return false;
+        }
+    } catch (err) {
+        console.error('Action chip execution failed:', err);
+        return false;
+    }
+}
+
+// --- Action Chip UI Component ---
+function ActionChipButton({
+    chip,
+    onExecute,
+}: {
+    chip: ActionChip;
+    onExecute: (chipId: string) => void;
+}) {
+    const iconMap = {
+        wallet: Wallet,
+        piggy: PiggyBank,
+        pause: Pause,
+        trend: TrendingDown,
+        zap: Zap,
+        navigate: ArrowUpRight,
+    };
+
+    const Icon = iconMap[chip.icon] || Zap;
+
+    return (
+        <motion.button
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            onClick={() => chip.status === 'idle' && onExecute(chip.id)}
+            disabled={chip.status !== 'idle'}
+            className={cn(
+                'mt-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold flex items-center gap-1.5 transition-all border',
+                chip.status === 'idle' &&
+                    'bg-[var(--color-brand-soft)] border-[var(--color-brand)]/30 text-[var(--color-brand)] hover:bg-[var(--color-brand)] hover:text-white hover:border-[var(--color-brand)] cursor-pointer shadow-xs',
+                chip.status === 'loading' &&
+                    'bg-[var(--color-surface-2)] border-[var(--color-border)] text-[var(--color-muted)] cursor-wait',
+                chip.status === 'done' &&
+                    'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400 cursor-default',
+                chip.status === 'error' &&
+                    'bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-400 cursor-default'
+            )}
+        >
+            {chip.status === 'loading' ? (
+                <Loader2 size={12} className="animate-spin" />
+            ) : chip.status === 'done' ? (
+                <Check size={12} />
+            ) : (
+                <Icon size={12} />
+            )}
+            <span>{chip.status === 'done' ? `✓ ${chip.label}` : chip.label}</span>
+        </motion.button>
+    );
+}
+
+// --- Main Component ---
 const AIChatbot = () => {
     const navigate = useNavigate();
     const { user } = useAuthStore();
@@ -63,7 +308,7 @@ const AIChatbot = () => {
         {
             id: '0',
             role: 'assistant',
-            content: "Hi — Cashly is ready. Ask about your spending, inbox, or budgets.",
+            content: "Hi — Cashly is ready. Ask about your spending, inbox, or budgets. I can take actions for you too.",
             timestamp: new Date()
         }
     ]);
@@ -99,11 +344,13 @@ const AIChatbot = () => {
     useAIRealtime({
         onContextInvalidated: () => console.log('🧠 AI context auto-refreshed'),
         onAnomalyDetected: (anomaly) => {
+            const chips = extractActionChips(anomaly.message, user?.id);
             const anomalyMessage: Message = {
                 id: Date.now().toString(),
                 role: 'assistant',
                 content: `Something unusual: ${anomaly.message}`,
-                timestamp: new Date()
+                timestamp: new Date(),
+                actionChips: chips.length > 0 ? chips : undefined,
             };
             setMessages(prev => [...prev, anomalyMessage]);
         }
@@ -133,6 +380,54 @@ const AIChatbot = () => {
         }
     };
 
+    // Execute an action chip
+    const handleExecuteChip = useCallback(async (messageId: string, chipId: string) => {
+        // Mark chip as loading
+        setMessages(prev =>
+            prev.map(msg =>
+                msg.id === messageId
+                    ? {
+                          ...msg,
+                          actionChips: msg.actionChips?.map(c =>
+                              c.id === chipId ? { ...c, status: 'loading' as ActionChipStatus } : c
+                          ),
+                      }
+                    : msg
+            )
+        );
+
+        soundManager.play('click');
+
+        // Find the chip
+        const msg = messages.find(m => m.id === messageId);
+        const chip = msg?.actionChips?.find(c => c.id === chipId);
+        if (!chip) return;
+
+        const success = await executeActionChip(chip);
+
+        // Update chip status
+        setMessages(prev =>
+            prev.map(m =>
+                m.id === messageId
+                    ? {
+                          ...m,
+                          actionChips: m.actionChips?.map(c =>
+                              c.id === chipId
+                                  ? { ...c, status: (success ? 'done' : 'error') as ActionChipStatus }
+                                  : c
+                          ),
+                      }
+                    : m
+            )
+        );
+
+        if (success) {
+            soundManager.play('success');
+        } else {
+            soundManager.play('error');
+        }
+    }, [messages]);
+
     const handleSend = async (messageText?: string) => {
         const text = messageText || input.trim();
         if (!text || isLoading) return;
@@ -152,11 +447,16 @@ const AIChatbot = () => {
         try {
             const { getAIResponse } = await import('../services/aiService');
             const response = await getAIResponse(text, user?.id);
+
+            // Extract action chips from the response
+            const chips = extractActionChips(response, user?.id);
+
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
                 content: response,
-                timestamp: new Date()
+                timestamp: new Date(),
+                actionChips: chips.length > 0 ? chips : undefined,
             };
             setMessages(prev => [...prev, botMessage]);
             soundManager.play('success');
@@ -226,8 +526,13 @@ const AIChatbot = () => {
                             <div className="flex items-center gap-3">
                                 <div className={styles.brandMark}>C</div>
                                 <div>
-                                    <h3 className="font-display text-sm font-semibold">Cashly</h3>
-                                    <p className="text-xs text-[var(--text-muted)]">Cashly is ready</p>
+                                    <h3 className="font-display text-sm font-semibold">Cashly Co-Pilot</h3>
+                                    <p className="text-xs text-[var(--text-muted)]">
+                                        <span className="inline-flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                            Active Agent
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-1">
@@ -257,7 +562,25 @@ const AIChatbot = () => {
                                                 className={cn(styles.bubble, msg.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant)}
                                             >
                                                 <div>{msg.content}</div>
-                                                {action && (
+
+                                                {/* Executable Action Chips */}
+                                                {msg.actionChips && msg.actionChips.length > 0 && (
+                                                    <div className="mt-2 pt-2 border-t border-[var(--color-border)]/50 space-y-1">
+                                                        <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] mb-1">
+                                                            Quick Actions
+                                                        </div>
+                                                        {msg.actionChips.map((chip) => (
+                                                            <ActionChipButton
+                                                                key={chip.id}
+                                                                chip={chip}
+                                                                onExecute={(chipId) => handleExecuteChip(msg.id, chipId)}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Navigation action (existing) */}
+                                                {action && !msg.actionChips?.length && (
                                                     <button
                                                         onClick={() => {
                                                             navigate(action.path);
@@ -273,7 +596,12 @@ const AIChatbot = () => {
                                         );
                                     })}
                                     {isLoading && (
-                                        <div className={cn(styles.bubble, styles.bubbleAssistant)}>Thinking…</div>
+                                        <div className={cn(styles.bubble, styles.bubbleAssistant)}>
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 size={14} className="animate-spin text-[var(--color-brand)]" />
+                                                <span>Analyzing your finances…</span>
+                                            </div>
+                                        </div>
                                     )}
                                     <div ref={messagesEndRef} />
                                 </div>
@@ -295,7 +623,7 @@ const AIChatbot = () => {
                                 <div className={styles.composer}>
                                     <input
                                         type="text"
-                                        placeholder="Ask about your spending"
+                                        placeholder="Ask me or tell me what to do…"
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
                                         onKeyDown={handleKeyPress}

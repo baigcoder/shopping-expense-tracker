@@ -63,6 +63,8 @@ const pillars: PillarConfig[] = [
 
 export default function PillarSystem() {
     const [activePillar, setActivePillar] = useState<PillarKey>('home');
+    const [activityApproved, setActivityApproved] = useState(false);
+    const [assistExecuted, setAssistExecuted] = useState(false);
     const current = pillars.find(p => p.key === activePillar) || pillars[0];
 
     return (
@@ -160,7 +162,9 @@ export default function PillarSystem() {
                         <div className="p-surface-card landing-animate-in">
                             <div className="p-surface-bar">
                                 <span>CANONICAL INBOX & LEDGER</span>
-                                <span className="p-surface-status p-surface-status--orange">1 NEW TO REVIEW</span>
+                                <span className="p-surface-status p-surface-status--orange">
+                                    {!activityApproved ? '1 NEW TO REVIEW' : '0 PENDING · RECONCILED'}
+                                </span>
                             </div>
                             <div className="p-activity-inbox-item">
                                 <div>
@@ -170,9 +174,37 @@ export default function PillarSystem() {
                                 <div className="p-act-amount">Rs 4,250</div>
                             </div>
                             <div className="p-inbox-cta-bar">
-                                <button className="p-btn-approve">Approve to Canonical Ledger</button>
-                                <button className="p-btn-secondary">Split</button>
-                                <button className="p-btn-secondary">Dismiss</button>
+                                {!activityApproved ? (
+                                    <>
+                                        <button onClick={() => setActivityApproved(true)} className="p-btn-approve" type="button">
+                                            Approve to Canonical Ledger
+                                        </button>
+                                        <button className="p-btn-secondary" type="button">Split</button>
+                                        <button className="p-btn-secondary" type="button">Dismiss</button>
+                                    </>
+                                ) : (
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        color: '#059669',
+                                        fontSize: '12px',
+                                        fontWeight: 700,
+                                        padding: '6px 12px',
+                                        background: '#ECFDF5',
+                                        borderRadius: '8px'
+                                    }}>
+                                        <CheckCircle2 size={15} />
+                                        <span>Posted to Ledger • Safe to Spend Updated: Rs 42,870</span>
+                                        <button
+                                            onClick={() => setActivityApproved(false)}
+                                            style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', color: '#666' }}
+                                            type="button"
+                                        >
+                                            Reset
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -218,7 +250,7 @@ export default function PillarSystem() {
                                 <span className="p-surface-status">HISTORICAL 90D</span>
                             </div>
                             <div className="p-analyze-metric">
-                                <span>2768,71 USD</span>
+                                <span>Rs 78,200</span>
                                 <small>-14% vs 30-day baseline</small>
                             </div>
                             <div className="p-dual-bars-visual">
@@ -253,10 +285,39 @@ export default function PillarSystem() {
                                 <div className="p-assist-headline">
                                     Dining Out pace will exhaust your monthly allocation <strong>6 days early</strong>.
                                 </div>
-                                <div className="p-assist-chips">
-                                    <button className="p-chip-primary">Cap Daily Dining to Rs 800</button>
-                                    <button className="p-chip-secondary">Shift Rs 5,000 from Shopping</button>
-                                </div>
+                                {!assistExecuted ? (
+                                    <div className="p-assist-chips">
+                                        <button onClick={() => setAssistExecuted(true)} className="p-chip-primary" type="button">
+                                            Cap Daily Dining to Rs 800
+                                        </button>
+                                        <button onClick={() => setAssistExecuted(true)} className="p-chip-secondary" type="button">
+                                            Shift Rs 5,000 from Shopping
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        color: '#059669',
+                                        fontSize: '12px',
+                                        fontWeight: 700,
+                                        marginTop: '14px',
+                                        padding: '8px 12px',
+                                        background: '#ECFDF5',
+                                        borderRadius: '8px'
+                                    }}>
+                                        <CheckCircle2 size={15} />
+                                        <span>Decision chip executed: Dining budget capped at Rs 800/day</span>
+                                        <button
+                                            onClick={() => setAssistExecuted(false)}
+                                            style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: '11px', color: '#666' }}
+                                            type="button"
+                                        >
+                                            Reset
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

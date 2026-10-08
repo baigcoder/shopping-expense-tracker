@@ -1,4 +1,5 @@
 import { Chrome, Check, ShieldCheck, ArrowRight } from 'lucide-react';
+import { CashlyMark } from '@/components/brand/CashlyLogo';
 
 const supportedStores = [
     { name: 'Amazon', category: 'Global Marketplace', icon: '📦' },
@@ -105,7 +106,7 @@ export default function ExtensionShowcase() {
                             <div className="companion-hud-overlay landing-animate-in">
                                 <div className="hud-overlay-head">
                                     <div className="hud-brand">
-                                        <span className="hud-logo">C</span>
+                                        <CashlyMark size={20} variant="orange" />
                                         <strong>Cashly Companion</strong>
                                     </div>
                                     <span className="hud-badge-detected">● CHECKOUT CAPTURED</span>
@@ -127,13 +128,29 @@ export default function ExtensionShowcase() {
 
                                     <div className="hud-action-row">
                                         <span className="hud-status-note">Staged in Review Queue</span>
-                                        <button className="hud-action-btn">
-                                            <span>Inspect in Cashly</span>
+                                        <a href="/demo?ext=open" className="hud-action-btn">
+                                            <span>Inspect in Live Demo OS</span>
                                             <ArrowRight size={12} />
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Direct Demo Trigger Bar below Mockup */}
+                        <div className="mt-4 p-3.5 bg-black/5 dark:bg-white/5 rounded-xl border border-black/10 dark:border-white/10 flex items-center justify-between gap-3 flex-wrap">
+                            <div className="flex items-center gap-2 text-xs">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="font-mono font-bold text-neutral-800 dark:text-neutral-200">Try Pre-Swipe Interceptor:</span>
+                                <span className="text-neutral-500 hidden sm:inline">Simulate checkout on Amazon, Gymshark, or Foodpanda</span>
+                            </div>
+                            <a
+                                href="/demo?ext=open"
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#EE5024] text-white text-xs font-mono font-bold hover:bg-[#d84318] transition-colors shadow-sm"
+                            >
+                                <span>⚡ Launch Extension Simulator</span>
+                                <ArrowRight size={12} />
+                            </a>
                         </div>
                     </div>
                 </div>

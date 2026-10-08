@@ -586,3 +586,59 @@ textarea:focus-visible,
   cursor: pointer;
 }
 
+/* ============================================================
+   RUNWAY SIMULATOR — Tactile Range Slider
+   ============================================================ */
+
+.runway-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+  height: 8px;
+  border-radius: 999px;
+  transition: opacity 0.2s;
+}
+
+.runway-slider:hover {
+  opacity: 0.9;
+}
+
+.runway-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-brand, #EE5024);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
+  cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.runway-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 12px rgba(238,80,36,0.35), 0 0 0 1px rgba(0,0,0,0.06);
+}
+
+.runway-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+  box-shadow: 0 1px 6px rgba(238,80,36,0.45), 0 0 0 2px rgba(238,80,36,0.2);
+}
+
+.runway-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-brand, #EE5024);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  cursor: grab;
+}
+
+.runway-slider::-moz-range-thumb:active {
+  cursor: grabbing;
+}
+

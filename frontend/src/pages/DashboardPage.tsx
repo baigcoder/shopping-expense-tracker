@@ -27,6 +27,8 @@ import { Surface } from '@/components/ui/Surface';
 import { Badge } from '@/components/ui/badge';
 import PremiumCard from '../components/PremiumCard';
 import { SpendingChart } from '../components/SpendingChart';
+import { RunwaySimulator } from '../components/RunwaySimulator';
+import { WeeklyDebriefModal } from '../components/WeeklyDebriefModal';
 import { useAuthStore, useCardStore, useModalStore } from '../store/useStore';
 import { supabaseTransactionService, SupabaseTransaction } from '../services/supabaseTransactionService';
 import { budgetService, Budget } from '../services/budgetService';
@@ -49,6 +51,7 @@ export function DashboardPage() {
 
     const [loading, setLoading] = useState(true);
     const [showBalance, setShowBalance] = useState(true);
+    const [debriefOpen, setDebriefOpen] = useState(false);
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [budgets, setBudgets] = useState<Budget[]>([]);
     const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -298,6 +301,14 @@ export function DashboardPage() {
                     </div>
 
                     <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setDebriefOpen(true)}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 transition-all font-mono"
+                        >
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+                            <span>Sunday Snapshot</span>
+                        </button>
                         <button
                             type="button"
                             onClick={() => setShowBalance(!showBalance)}
@@ -624,6 +635,17 @@ export function DashboardPage() {
                 </div>
             </div>
 
+            {/* 3A. INTERACTIVE WHAT-IF RUNWAY SIMULATOR */}
+            <section className="pt-2">
+                <RunwaySimulator
+                    totalBalance={stats.totalBalance}
+                    monthlyExpense={stats.monthlyExpense}
+                    monthlyIncome={stats.monthlyIncome}
+                    committedBills={stats.committedBills}
+                    variant="dashboard"
+                />
+            </section>
+
             {/* 3B. CANONICAL LEDGER ACTIVITY (Verified Approved Transactions) */}
             <section className="space-y-4 pt-2">
                 <div className="flex items-center justify-between pb-3 border-b border-[var(--color-border)]/70">
@@ -893,6 +915,16 @@ export function DashboardPage() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            {/* Sunday Snapshot / Weekly Financial Debrief Modal */}
+            <WeeklyDebriefModal
+                open={debriefOpen}
+                onClose={() => setDebriefOpen(false)}
+                totalBalance={stats.totalBalance}
+                weeklySpend={Math.round(stats.monthlyExpense / 4)}
+                baselineWeeklyBurn={Math.round((stats.monthlyIncome * 0.5) / 4) || 8400}
+                safeToSpendWeekly={Math.round(stats.safeHeadroom / 4)}
+            />
         </div>
     );
 }

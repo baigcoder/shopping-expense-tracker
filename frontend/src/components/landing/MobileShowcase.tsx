@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Home, ListOrdered, Calendar, BarChart3, Sparkles, Plus, Check, ArrowRight } from 'lucide-react';
+import { useLandingSettings } from './useLandingSettings';
 
 type MobileScreen = 'home' | 'activity' | 'plan' | 'analyze' | 'assist';
 
 export default function MobileShowcase() {
+    const { formatAmount } = useLandingSettings();
     const [activeScreen, setActiveScreen] = useState<MobileScreen>('home');
+    const [isApproved, setIsApproved] = useState(false);
+    const [diningCapped, setDiningCapped] = useState(false);
 
     return (
         <section id="mobile-showcase" className="landing-mobile-showcase scroll-mt-20">
@@ -112,13 +116,13 @@ export default function MobileShowcase() {
                                             <span className="m-greeting">Good evening,</span>
                                             <div className="m-user-name">David Daniels</div>
                                         </div>
-                                        <div className="m-notif-badge">🔔 1</div>
+                                        <div className="m-notif-badge">🔔 {isApproved ? '0' : '1'}</div>
                                     </div>
 
                                     {/* Safe to Spend Card */}
                                     <div className="m-hero-card m-hero-card--orange">
                                         <span className="m-hero-tag">SAFE TO SPEND</span>
-                                        <div className="m-hero-val">Rs 42,870</div>
+                                        <div className="m-hero-val">{formatAmount(42870)}</div>
                                         <div className="m-hero-row">
                                             <span>Velocity: Healthy</span>
                                             <span>42d runway</span>
@@ -137,7 +141,7 @@ export default function MobileShowcase() {
                                             <div className="m-action-circle m-action-circle--ink">
                                                 <ListOrdered size={16} />
                                             </div>
-                                            <span>Review (1)</span>
+                                            <span>Review ({isApproved ? '0' : '1'})</span>
                                         </div>
                                         <div className="m-action-item">
                                             <div className="m-action-circle m-action-circle--pink">
@@ -148,19 +152,35 @@ export default function MobileShowcase() {
                                     </div>
 
                                     {/* Pending Review Queue Banner */}
-                                    <div className="m-inbox-banner">
-                                        <div className="m-inbox-banner-head">
-                                            <span>1 Captured Checkout Needs Review</span>
-                                            <span className="m-inbox-badge">NEW</span>
-                                        </div>
-                                        <div className="m-inbox-preview">
-                                            <div>
-                                                <strong>Amazon Electronics</strong>
-                                                <p>Logitech Mouse · Rs 4,250</p>
+                                    {!isApproved ? (
+                                        <div className="m-inbox-banner">
+                                            <div className="m-inbox-banner-head">
+                                                <span>1 Captured Checkout Needs Review</span>
+                                                <span className="m-inbox-badge">NEW</span>
                                             </div>
-                                            <button className="m-inbox-approve-btn">Approve</button>
+                                            <div className="m-inbox-preview">
+                                                <div>
+                                                    <strong>Amazon Electronics</strong>
+                                                    <p>Logitech Mouse · {formatAmount(4250)}</p>
+                                                </div>
+                                                <button onClick={() => setIsApproved(true)} className="m-inbox-approve-btn">Approve</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ) : (
+                                        <div className="m-inbox-banner" style={{ background: 'rgba(16, 185, 129, 0.08)', borderColor: 'rgba(16, 185, 129, 0.25)' }}>
+                                            <div className="m-inbox-banner-head">
+                                                <span style={{ color: '#10B981', fontWeight: 600 }}>Inbox Zero · Verified</span>
+                                                <span className="m-inbox-badge" style={{ background: '#10B981' }}>POSTED</span>
+                                            </div>
+                                            <div className="m-inbox-preview">
+                                                <div>
+                                                    <strong>Amazon Electronics · {formatAmount(4250)}</strong>
+                                                    <p style={{ color: '#10B981', fontSize: '11px' }}>Approved to canonical ledger</p>
+                                                </div>
+                                                <button onClick={() => setIsApproved(false)} className="m-inbox-approve-btn" style={{ background: 'transparent', border: '1px solid #10B981', color: '#10B981' }}>Undo</button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
@@ -180,8 +200,10 @@ export default function MobileShowcase() {
                                                 <div className="m-feed-sub">Office Equipment · 2m ago</div>
                                             </div>
                                             <div className="m-feed-amount">
-                                                <span>-Rs 4,250</span>
-                                                <span className="m-feed-status m-feed-status--pending">Review</span>
+                                                <span>-{formatAmount(4250)}</span>
+                                                <span className={`m-feed-status ${isApproved ? 'm-feed-status--approved' : 'm-feed-status--pending'}`}>
+                                                    {isApproved ? 'Approved' : 'Review'}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -192,7 +214,7 @@ export default function MobileShowcase() {
                                                 <div className="m-feed-sub">Groceries · Yesterday</div>
                                             </div>
                                             <div className="m-feed-amount">
-                                                <span>-Rs 14,800</span>
+                                                <span>-{formatAmount(14800)}</span>
                                                 <span className="m-feed-status m-feed-status--approved">Approved</span>
                                             </div>
                                         </div>
@@ -204,7 +226,7 @@ export default function MobileShowcase() {
                                                 <div className="m-feed-sub">Utilities · 2 days ago</div>
                                             </div>
                                             <div className="m-feed-amount">
-                                                <span>-Rs 18,200</span>
+                                                <span>-{formatAmount(18200)}</span>
                                                 <span className="m-feed-status m-feed-status--approved">Approved</span>
                                             </div>
                                         </div>
@@ -222,7 +244,7 @@ export default function MobileShowcase() {
 
                                     <div className="m-budget-overview">
                                         <span className="m-budget-lbl">Total Capacity</span>
-                                        <div className="m-budget-num">Rs 78,200 / Rs 120,000</div>
+                                        <div className="m-budget-num">{formatAmount(78200)} / {formatAmount(120000)}</div>
                                         <div className="m-budget-bar">
                                             <div className="m-budget-bar-fill" style={{ width: '65%' }} />
                                         </div>
@@ -232,7 +254,7 @@ export default function MobileShowcase() {
                                         <div className="m-b-cat">
                                             <div className="m-b-cat-head">
                                                 <span>Housing & Rent</span>
-                                                <span>Rs 65,000 / Rs 65,000</span>
+                                                <span>{formatAmount(65000)} / {formatAmount(65000)}</span>
                                             </div>
                                             <div className="m-b-cat-bar"><div style={{ width: '100%', background: '#80383D' }} /></div>
                                         </div>
@@ -240,7 +262,7 @@ export default function MobileShowcase() {
                                         <div className="m-b-cat">
                                             <div className="m-b-cat-head">
                                                 <span>Groceries & Food</span>
-                                                <span>Rs 24,500 / Rs 35,000</span>
+                                                <span>{formatAmount(24500)} / {formatAmount(35000)}</span>
                                             </div>
                                             <div className="m-b-cat-bar"><div style={{ width: '70%', background: '#EE5024' }} /></div>
                                         </div>
@@ -248,7 +270,7 @@ export default function MobileShowcase() {
                                         <div className="m-b-cat">
                                             <div className="m-b-cat-head">
                                                 <span>Tech & Subscriptions</span>
-                                                <span>Rs 7,650 / Rs 15,000</span>
+                                                <span>{formatAmount(7650)} / {formatAmount(15000)}</span>
                                             </div>
                                             <div className="m-b-cat-bar"><div style={{ width: '51%', background: '#F0A1CB' }} /></div>
                                         </div>
@@ -267,7 +289,7 @@ export default function MobileShowcase() {
                                     <div className="m-analyze-box m-analyze-box--pink">
                                         <div className="m-analyze-head">
                                             <span>Discretionary Burn</span>
-                                            <strong>2768,71 USD</strong>
+                                            <strong>{formatAmount(78200)}</strong>
                                         </div>
                                         <div className="m-chart-bars">
                                             <div className="m-bar-col"><div className="m-bar" style={{ height: '40px' }} /><span>Jun</span></div>
@@ -305,12 +327,21 @@ export default function MobileShowcase() {
                                             Projected runway loss: <strong>-4 days</strong>
                                         </div>
                                         <div className="m-assist-actions">
-                                            <button className="m-assist-btn m-assist-btn--primary">
-                                                Cap Dining Budget at Rs 20,000
-                                            </button>
-                                            <button className="m-assist-btn">
-                                                Inspect 6 Dining Line Items
-                                            </button>
+                                            {!diningCapped ? (
+                                                <>
+                                                    <button onClick={() => setDiningCapped(true)} className="m-assist-btn m-assist-btn--primary">
+                                                        Cap Dining Budget at Rs 20,000
+                                                    </button>
+                                                    <button className="m-assist-btn">
+                                                        Inspect 6 Dining Line Items
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: 8, padding: '10px 14px', color: '#10B981', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                                    <span>✓ Dining Cap Active (Rs 20,000)</span>
+                                                    <button onClick={() => setDiningCapped(false)} style={{ background: 'none', border: 'none', color: '#10B981', textDecoration: 'underline', cursor: 'pointer', fontSize: 12 }}>Reset</button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

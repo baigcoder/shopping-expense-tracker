@@ -1,11 +1,20 @@
 // Supabase client – real @supabase/supabase-js replacing the old Firebase shim.
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl =
-    import.meta.env.VITE_SUPABASE_URL || 'https://ynmvjnsdygimhjxcjvzp.supabase.co';
-const supabaseAnonKey =
-    import.meta.env.VITE_SUPABASE_ANON_KEY ||
+const DEFAULT_SUPABASE_URL = 'https://ynmvjnsdygimhjxcjvzp.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubXZqbnNkeWdpbWhqeGNqdnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMzIwMzgsImV4cCI6MjA4MDcwODAzOH0.yzygIuk3wWRKPNVHCze3HegdeMVHZPj2caNdqZ9O_vY';
+
+// Sanitization: Ensure stale/dead project ref (gmttqefcyqaxhlghcfpo) from legacy Vercel env is overridden with active live project
+const envUrl = (import.meta.env.VITE_SUPABASE_URL || '').trim();
+const envKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+
+const isDeadProject = !envUrl || envUrl.includes('gmttqefcyqaxhlghcfpo');
+
+const supabaseUrl = isDeadProject ? DEFAULT_SUPABASE_URL : envUrl;
+const supabaseAnonKey = (isDeadProject || !envKey || envKey.includes('gmttqefcyqaxhlghcfpo'))
+    ? DEFAULT_SUPABASE_ANON_KEY
+    : envKey;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {

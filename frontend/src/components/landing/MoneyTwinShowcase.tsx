@@ -1,17 +1,44 @@
 import { useState } from 'react';
-import { Sliders, TrendingUp, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { Sliders, TrendingUp, AlertTriangle, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import { useLandingSettings } from './useLandingSettings';
+
+const RESTRAINT_PRESETS = [
+    { label: 'Baseline (0)', value: 0 },
+    { label: '−Rs 2,500', value: 100 },
+    { label: '−Rs 5,000', value: 200 },
+    { label: '−Rs 8,000', value: 320 },
+    { label: '−Rs 12,000', value: 480 },
+];
 
 export default function MoneyTwinShowcase() {
-    const [savingsOffset, setSavingsOffset] = useState(120);
+    const { formatAmount, playSound } = useLandingSettings();
+    const [savingsOffset, setSavingsOffset] = useState(200);
 
-    // Dynamic calculations
+    // Baseline financials in base INR
     const baseMonthEnd = 24150;
-    const projectedBalance = baseMonthEnd + savingsOffset * 25;
+    const preservedAmount = savingsOffset * 25; // 0 to 12500
+    const projectedBalance = baseMonthEnd + preservedAmount;
     const baseRunway = 42;
-    const projectedRunway = Math.round(baseRunway + savingsOffset / 10);
+    const runwayGain = Math.round(savingsOffset / 8);
+    const projectedRunway = baseRunway + runwayGain;
 
-    // SVG trajectory curve coordinates depending on slider
-    const endY = Math.max(20, Math.min(80, 55 - (savingsOffset / 300) * 35));
+    // SVG trajectory curve coordinates depending on slider (0 to 500)
+    // 0 -> endY is 120 (drops lower), 500 -> endY is 30 (climbs higher)
+    const endY = Math.max(25, Math.min(130, 95 - (savingsOffset / 500) * 70));
+    const baselineEndY = 95;
+
+    // Deficit Collision Radar logic
+    const hasDeficitAlert = savingsOffset === 0;
+    const deficitCollisionDay = 24;
+
+    const handleSliderChange = (newVal: number) => {
+        setSavingsOffset(newVal);
+    };
+
+    const handleSelectPreset = (val: number) => {
+        setSavingsOffset(val);
+        playSound('click');
+    };
 
     return (
         <section id="money-twin" className="landing-money-twin scroll-mt-20">
@@ -41,10 +68,10 @@ export default function MoneyTwinShowcase() {
                         <div className="mt-readout-card">
                             <span className="mt-readout-label">PROJECTED MONTH-END CASH</span>
                             <div className="mt-readout-val">
-                                Rs {projectedBalance.toLocaleString()}
+                                {formatAmount(projectedBalance)}
                             </div>
-                            <span className="mt-readout-status" style={{ color: '#10B981' }}>
-                                +Rs {(savingsOffset * 25).toLocaleString()} buffer
+                            <span className="mt-readout-status" style={{ color: preservedAmount > 0 ? '#10B981' : '#9CA3AF' }}>
+                                {preservedAmount > 0 ? `+${formatAmount(preservedAmount)} buffer` : 'Unrestrained velocity'}
                             </span>
                         </div>
 
@@ -54,17 +81,71 @@ export default function MoneyTwinShowcase() {
                                 {projectedRunway} Days
                             </div>
                             <span className="mt-readout-status">
-                                +{projectedRunway - baseRunway} days gained
+                                +{runwayGain} days gained
                             </span>
                         </div>
 
                         <div className="mt-readout-card">
-                            <span className="mt-readout-label">DEFICIT RISK LEVEL</span>
-                            <div className="mt-readout-val" style={{ color: projectedRunway > 45 ? '#10B981' : '#F59E0B' }}>
-                                {projectedRunway > 45 ? 'ZERO RISK' : 'MODERATE BUFFER'}
+                            <span className="mt-readout-label">DEFICIT COLLISION RADAR</span>
+                            <div className="mt-readout-val" style={{ color: hasDeficitAlert ? '#F59E0B' : '#10B981' }}>
+                                {hasDeficitAlert ? 'DEFICIT RISK' : 'COLLISION AVERTED'}
                             </div>
-                            <span className="mt-readout-status">All commitments covered</span>
+                            <span className="mt-readout-status">
+                                {hasDeficitAlert ? `Collides Day ${deficitCollisionDay} without restraint` : 'All fixed commitments protected'}
+                            </span>
                         </div>
+                    </div>
+
+                    {/* Deficit Collision Banner Alert */}
+                    <div style={{
+                        padding: '12px 16px',
+                        borderRadius: '10px',
+                        marginBottom: '20px',
+                        background: hasDeficitAlert ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+                        border: `1px solid ${hasDeficitAlert ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                        flexWrap: 'wrap',
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            {hasDeficitAlert ? (
+                                <AlertTriangle size={18} className="text-amber-400 shrink-0" />
+                            ) : (
+                                <ShieldCheck size={18} className="text-emerald-400 shrink-0" />
+                            )}
+                            <div style={{ fontSize: '13px', color: '#F3F4F6' }}>
+                                {hasDeficitAlert ? (
+                                    <>
+                                        <strong>Radar Warning:</strong> At current 7-day velocity, liquid reserves risk dipping near the {formatAmount(18000)} rent threshold around <strong>Day 24</strong>.
+                                    </>
+                                ) : (
+                                    <>
+                                        <strong>Runway Buffer Secured:</strong> Preserving <strong>{formatAmount(preservedAmount)}</strong> delays or completely eliminates fixed-expense collision risk.
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {hasDeficitAlert && (
+                            <button
+                                type="button"
+                                onClick={() => handleSelectPreset(200)}
+                                style={{
+                                    background: 'var(--landing-orange)',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '6px 14px',
+                                    borderRadius: '6px',
+                                    fontSize: '11px',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Simulate Safe Restraint
+                            </button>
+                        )}
                     </div>
 
                     {/* Artwork-Grade Trajectory Visualization */}
@@ -72,17 +153,17 @@ export default function MoneyTwinShowcase() {
                         <svg viewBox="0 0 800 240" preserveAspectRatio="none" className="mt-chart-svg">
                             <defs>
                                 <linearGradient id="safeAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.15" />
+                                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.18" />
                                     <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
                                 </linearGradient>
                                 <linearGradient id="riskAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                                     <stop offset="0%" stopColor="#EF4444" stopOpacity="0.0" />
-                                    <stop offset="100%" stopColor="#EF4444" stopOpacity="0.12" />
+                                    <stop offset="100%" stopColor="#EF4444" stopOpacity="0.15" />
                                 </linearGradient>
                             </defs>
 
                             {/* Safe Corridor Area */}
-                            <path d="M 0 100 Q 300 80, 800 50 L 800 0 L 0 0 Z" fill="url(#safeAreaGrad)" />
+                            <path d="M 0 100 Q 300 80, 800 40 L 800 0 L 0 0 Z" fill="url(#safeAreaGrad)" />
 
                             {/* Risk Corridor Area */}
                             <path d="M 0 160 Q 400 170, 800 180 L 800 240 L 0 240 Z" fill="url(#riskAreaGrad)" />
@@ -92,11 +173,26 @@ export default function MoneyTwinShowcase() {
                             <line x1="0" y1="120" x2="800" y2="120" stroke="rgba(255,255,255,0.06)" />
                             <line x1="0" y1="180" x2="800" y2="180" stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
 
+                            {/* Fixed Commitment / Rent Barrier Line */}
+                            <line x1="0" y1="140" x2="800" y2="140" stroke="rgba(239, 68, 68, 0.45)" strokeDasharray="4 4" strokeWidth="1.5" />
+                            <text x="12" y="135" fill="rgba(239, 68, 68, 0.8)" fontSize="10" fontFamily="Inter" fontWeight="600">
+                                Fixed Rent/Commitment Barrier ({formatAmount(18000)})
+                            </text>
+
                             {/* Historic Actual Path (Solid White) */}
                             <path
                                 d="M 0 120 Q 150 115, 300 105"
                                 stroke="#FFFFFF"
                                 strokeWidth="3"
+                                fill="none"
+                            />
+
+                            {/* Baseline Path (Without Restraint - Dashed) */}
+                            <path
+                                d={`M 300 105 Q 550 100, 800 ${baselineEndY}`}
+                                stroke="rgba(255, 255, 255, 0.25)"
+                                strokeWidth="2"
+                                strokeDasharray="5 5"
                                 fill="none"
                             />
 
@@ -114,46 +210,73 @@ export default function MoneyTwinShowcase() {
 
                             {/* Month End Marker */}
                             <circle cx="800" cy={endY} r="6" fill="#EE5024" />
-                            <text x="730" y={endY - 14} fill="#EE5024" fontSize="12" fontWeight="700" fontFamily="Inter">
-                                Day 30: Rs {projectedBalance.toLocaleString()}
+                            <text x="640" y={endY - 14} fill="#EE5024" fontSize="12" fontWeight="700" fontFamily="Inter">
+                                Day 30: {formatAmount(projectedBalance)}
                             </text>
                         </svg>
 
                         <div className="mt-chart-labels">
                             <span className="mt-badge-actual">● Actual Historic (Day 1–18)</span>
-                            <span className="mt-badge-projected">● Projected Trajectory (Day 18–30)</span>
-                            <span className="mt-badge-commitments">● Safe Runway Threshold</span>
+                            <span className="mt-badge-projected">● Simulated Trajectory (Day 18–30)</span>
+                            <span style={{ color: 'rgba(239,68,68,0.85)' }}>● Rent Barrier Threshold</span>
+                            <span className="mt-badge-commitments">● Safe Runway Corridor</span>
                         </div>
                     </div>
 
-                    {/* Interactive What-If Slider Controller */}
+                    {/* Interactive What-If Slider Controller & Tactile Presets */}
                     <div className="mt-slider-box">
                         <div className="mt-slider-header">
                             <div>
-                                <span className="mt-slider-title">Simulate Discretionary Restraint</span>
-                                <p className="mt-slider-sub">Drag slider to test how cutting discretionary dining/shopping impacts month-end runway</p>
+                                <span className="mt-slider-title">Simulate Velocity Restraint</span>
+                                <p className="mt-slider-sub">
+                                    Dial in monthly discretionary restraint to immediately compute runway expansion and avoid deficit collision
+                                </p>
                             </div>
                             <div className="mt-slider-readout">
-                                <span>Adjusted: </span>
-                                <strong>+Rs {(savingsOffset * 25).toLocaleString()} preserved</strong>
+                                <span>Preserved Discretionary: </span>
+                                <strong>+{formatAmount(preservedAmount)} / month</strong>
                             </div>
+                        </div>
+
+                        {/* Presets Chips */}
+                        <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
+                            {RESTRAINT_PRESETS.map((p) => (
+                                <button
+                                    key={p.label}
+                                    type="button"
+                                    onClick={() => handleSelectPreset(p.value)}
+                                    style={{
+                                        background: savingsOffset === p.value ? 'var(--landing-orange)' : 'rgba(255, 255, 255, 0.08)',
+                                        color: savingsOffset === p.value ? '#FFFFFF' : 'rgba(255, 255, 255, 0.8)',
+                                        border: savingsOffset === p.value ? '1px solid var(--landing-orange)' : '1px solid rgba(255, 255, 255, 0.12)',
+                                        borderRadius: '100px',
+                                        padding: '4px 12px',
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.15s ease',
+                                    }}
+                                >
+                                    {p.value === 0 ? p.label : `−${formatAmount(p.value * 25)}`}
+                                </button>
+                            ))}
                         </div>
 
                         <input
                             type="range"
                             min="0"
-                            max="300"
-                            step="10"
+                            max="500"
+                            step="20"
                             value={savingsOffset}
-                            onChange={(e) => setSavingsOffset(Number(e.target.value))}
+                            onChange={(e) => handleSliderChange(Number(e.target.value))}
                             className="mt-range-input"
                             aria-label="Simulate discretionary savings slider"
                         />
 
                         <div className="mt-slider-scale">
-                            <span>$0 baseline (as-is velocity)</span>
-                            <span>$150/mo restraint (+25 days)</span>
-                            <span>$300/mo high restraint (+58 days)</span>
+                            <span>{formatAmount(0)} baseline (as-is velocity)</span>
+                            <span>{formatAmount(5000)}/mo restraint (+25 days)</span>
+                            <span>{formatAmount(12500)}/mo high restraint (+62 days)</span>
                         </div>
                     </div>
                 </div>
