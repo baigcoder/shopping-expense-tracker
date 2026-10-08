@@ -42,6 +42,7 @@ import { formatCurrency } from '../services/currencyService';
 import { transactionInboxApi } from '../services/featureExpansionApi';
 import { cn } from '@/lib/utils';
 import { soundManager } from '@/lib/sounds';
+import { supabase } from '../config/supabase';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
 
 export function DashboardPage() {
@@ -76,6 +77,13 @@ export function DashboardPage() {
     });
     const [chartData, setChartData] = useState<{ day: string; income: number; expense: number }[]>([]);
 
+    const withTimeout = <T,>(promise: Promise<T>, ms = 3500, fallback: T): Promise<T> => {
+        return Promise.race([
+            promise,
+            new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+        ]).catch(() => fallback);
+    };
+
     const fetchInbox = useCallback(async () => {
         try {
             const result = await transactionInboxApi.list({ status: 'pending', limit: 1 });
@@ -86,16 +94,30 @@ export function DashboardPage() {
     }, []);
 
     const fetchDashboard = useCallback(async (silent = false) => {
-        if (!user?.id) return;
+        // Resilient user ID resolution: check store, then active session if store is hydrating
+        let userId = user?.id;
+        if (!userId) {
+            try {
+                const { data } = await supabase.auth.getSession();
+                userId = data.session?.user?.id;
+            } catch {
+                // Ignore session lookup error
+            }
+        }
+
+        if (!userId) {
+            if (!silent) setLoading(false);
+            return;
+        }
 
         try {
             const [allTxs, streakData, fetchedBudgets, fetchedCards, fetchedSubs, fetchedGoals] = await Promise.all([
-                supabaseTransactionService.getAll(user.id, { force: true }),
-                streakService.getStreakData(user.id).catch(() => ({ currentStreak: 0 })),
-                budgetService.getAll(user.id).catch(() => [] as Budget[]),
-                cardService.getAll(user.id).catch(() => [] as CardData[]),
-                subscriptionService.getAll(user.id).catch(() => [] as Subscription[]),
-                goalService.getAll(user.id).catch(() => [] as Goal[]),
+                withTimeout(supabaseTransactionService.getAll(userId, { force: true }), 4000, [] as SupabaseTransaction[]),
+                withTimeout(streakService.getStreakData(userId).catch(() => ({ currentStreak: 0 })), 3000, { currentStreak: 0 }),
+                withTimeout(budgetService.getAll(userId).catch(() => [] as Budget[]), 3000, [] as Budget[]),
+                withTimeout(cardService.getAll(userId).catch(() => [] as CardData[]), 3000, [] as CardData[]),
+                withTimeout(subscriptionService.getAll(userId).catch(() => [] as Subscription[]), 3000, [] as Subscription[]),
+                withTimeout(goalService.getAll(userId).catch(() => [] as Goal[]), 3000, [] as Goal[]),
             ]);
 
             setTransactions(allTxs);
@@ -190,6 +212,13 @@ export function DashboardPage() {
     useEffect(() => {
         void fetchInbox();
         void fetchDashboard();
+
+        // Safety watchdog: Guarantee loading skeleton is dismissed after 2.5 seconds maximum
+        const watchdog = setTimeout(() => {
+            setLoading(false);
+        }, 2500);
+
+        return () => clearTimeout(watchdog);
     }, [fetchInbox, fetchDashboard]);
 
     const handleCardClick = (card: CardData) => {

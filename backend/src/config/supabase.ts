@@ -1,11 +1,9 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const CANONICAL_SUPABASE_URL = 'https://ynmvjnsdygimhjxcjvzp.supabase.co';
-const CANONICAL_ANON_KEY =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubXZqbnNkeWdpbWhqeGNqdnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMzIwMzgsImV4cCI6MjA4MDcwODAzOH0.yzygIuk3wWRKPNVHCze3HegdeMVHZPj2caNdqZ9O_vY';
 
 export const supabaseUrl = process.env.SUPABASE_URL || CANONICAL_SUPABASE_URL;
-export const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || CANONICAL_ANON_KEY;
+export const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || '';
 
 export class PrivilegedOperationError extends Error {
     constructor(
