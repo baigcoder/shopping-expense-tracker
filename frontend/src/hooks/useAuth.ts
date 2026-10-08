@@ -61,39 +61,45 @@ export const useAuth = () => {
     const { setCurrency, setTheme } = useUIStore();
 
     useEffect(() => {
-        const hydrateUser = async (sessionUser: any) => {
+        const hydrateUser = (sessionUser: any) => {
             const fallbackUser = {
                 id: sessionUser.id,
                 email: sessionUser.email!,
-                name: sessionUser.user_metadata.full_name || sessionUser.user_metadata.name || sessionUser.email?.split('@')[0] || 'User',
-                avatarUrl: sessionUser.user_metadata.avatar_url,
+                name: sessionUser.user_metadata?.full_name || sessionUser.user_metadata?.name || sessionUser.email?.split('@')[0] || 'User',
+                avatarUrl: sessionUser.user_metadata?.avatar_url,
                 currency: 'USD',
                 createdAt: sessionUser.created_at || new Date().toISOString(),
             };
 
             setUser(fallbackUser);
 
-            try {
-                const { default: settingsApi } = await import('../services/settingsApi');
-                const settings = await settingsApi.get();
-                const currency = settings.preferences?.currency || settings.profile?.currency || fallbackUser.currency;
-                const theme = settings.preferences?.theme || 'light';
+            // Hydrate extra settings asynchronously in background so auth never hangs!
+            void (async () => {
+                try {
+                    const { default: settingsApi } = await import('../services/settingsApi');
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+                    const settings = await Promise.race([settingsApi.get(), timeoutPromise]) as any;
+                    if (!settings) return;
 
-                const profile = settings.profile as any;
-                setUser({
-                    ...fallbackUser,
-                    name: profile?.name || fallbackUser.name,
-                    avatarUrl: profile?.avatarUrl || profile?.avatar_url || fallbackUser.avatarUrl,
-                    currency,
-                    createdAt: profile?.createdAt || fallbackUser.createdAt,
-                });
-                setCurrency(currency);
-                setCurrencyService(currency);
-                setTheme(theme);
-                document.documentElement.classList.toggle('dark', theme === 'dark');
-            } catch (error) {
-                console.warn('Settings hydration skipped:', error instanceof Error ? error.message : error);
-            }
+                    const currency = settings.preferences?.currency || settings.profile?.currency || fallbackUser.currency;
+                    const theme = settings.preferences?.theme || 'light';
+
+                    const profile = settings.profile as any;
+                    setUser({
+                        ...fallbackUser,
+                        name: profile?.name || fallbackUser.name,
+                        avatarUrl: profile?.avatarUrl || profile?.avatar_url || fallbackUser.avatarUrl,
+                        currency,
+                        createdAt: profile?.createdAt || fallbackUser.createdAt,
+                    });
+                    setCurrency(currency);
+                    setCurrencyService(currency);
+                    setTheme(theme);
+                    document.documentElement.classList.toggle('dark', theme === 'dark');
+                } catch (error) {
+                    console.warn('Settings hydration skipped:', error instanceof Error ? error.message : error);
+                }
+            })();
         };
 
         const checkSession = async () => {
@@ -101,7 +107,7 @@ export const useAuth = () => {
                 // Check for OAuth redirect result first (handles popup-blocked fallback)
                 const redirectResult = await handleGoogleRedirect();
                 if (redirectResult?.user) {
-                    await hydrateUser(redirectResult.user);
+                    hydrateUser(redirectResult.user);
                     notifyExtension('LOGIN', {
                         session: redirectResult.session,
                         user: redirectResult.user,
@@ -120,7 +126,7 @@ export const useAuth = () => {
                 }
 
                 if (session?.user) {
-                    await hydrateUser(session.user);
+                    hydrateUser(session.user);
                     notifyExtension('LOGIN', { session, user: session.user });
                 } else if (typeof window !== 'undefined' && localStorage.getItem('cashly_demo_session') === 'true') {
                     const demoUser = {
@@ -129,7 +135,7 @@ export const useAuth = () => {
                         user_metadata: { full_name: 'Baigo Sovereign', name: 'Baigo Sovereign' },
                         created_at: '2026-01-01T00:00:00.000Z'
                     };
-                    await hydrateUser(demoUser);
+                    hydrateUser(demoUser);
                 } else {
                     setUser(null);
                 }
@@ -142,6 +148,11 @@ export const useAuth = () => {
         };
 
         checkSession();
+
+        // Safety watchdog: Never leave auth in loading state for more than 3 seconds
+        const watchdog = setTimeout(() => {
+            setLoading(false);
+        }, 3000);
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             console.log('Auth State Change:', event);
@@ -157,6 +168,7 @@ export const useAuth = () => {
 
         return () => {
             subscription.unsubscribe();
+            clearTimeout(watchdog);
         };
     }, [setUser, setLoading, setCurrency, setTheme]);
 

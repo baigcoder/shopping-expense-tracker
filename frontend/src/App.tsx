@@ -1,5 +1,5 @@
 // Main App with Routing
-import React, { useEffect, lazy, Suspense, useState, useRef } from 'react';
+import React, { useEffect, lazy, Suspense, useState, useRef, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useAuthStore } from './store/useStore';
@@ -61,21 +61,50 @@ const AuthCallback = () => {
     const location = useLocation();
     const { setUser, setLoading } = useAuthStore();
     const handledRef = useRef(false);
+    const [takingLong, setTakingLong] = useState(false);
+
+    const hydrateFromSession = useCallback((session: NonNullable<Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']>) => {
+        setUser({
+            id: session.user.id,
+            email: session.user.email!,
+            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+            avatarUrl: session.user.user_metadata?.avatar_url,
+            currency: 'USD',
+            createdAt: new Date().toISOString(),
+        });
+    }, [setUser]);
+
+    useEffect(() => {
+        const longTimer = setTimeout(() => {
+            setTakingLong(true);
+        }, 3500);
+
+        const watchdog = setTimeout(async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.user) {
+                    hydrateFromSession(session);
+                    navigate('/dashboard', { replace: true });
+                    return;
+                }
+            } catch {
+                // Ignore
+            }
+            navigate('/login', {
+                replace: true,
+                state: { authError: 'Authentication connection timed out. Please try signing in again.' },
+            });
+        }, 7000);
+
+        return () => {
+            clearTimeout(longTimer);
+            clearTimeout(watchdog);
+        };
+    }, [navigate, hydrateFromSession]);
 
     useEffect(() => {
         if (handledRef.current) return;
         handledRef.current = true;
-
-        const hydrateFromSession = (session: NonNullable<Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']>) => {
-            setUser({
-                id: session.user.id,
-                email: session.user.email!,
-                name: session.user.user_metadata.full_name || session.user.user_metadata.name || session.user.email?.split('@')[0] || 'User',
-                avatarUrl: session.user.user_metadata.avatar_url,
-                currency: 'USD',
-                createdAt: new Date().toISOString(),
-            });
-        };
 
         const handleAuthCallback = async () => {
             try {
@@ -113,13 +142,29 @@ const AuthCallback = () => {
                         return;
                     }
 
-                    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
-                    if (error) throw error;
+                    try {
+                        const exchangePromise = supabase.auth.exchangeCodeForSession(code);
+                        const timeoutPromise = new Promise<never>((_, reject) =>
+                            setTimeout(() => reject(new Error('PKCE exchange timeout')), 5500)
+                        );
 
-                    if (session?.user) {
-                        hydrateFromSession(session);
-                        navigateAfterAuth();
-                        return;
+                        const { data: { session }, error } = await Promise.race([exchangePromise, timeoutPromise]);
+                        if (error) throw error;
+
+                        if (session?.user) {
+                            hydrateFromSession(session);
+                            navigateAfterAuth();
+                            return;
+                        }
+                    } catch (codeErr) {
+                        // Resilient fallback: Check if session was already established
+                        const { data: { session: fallbackSession } } = await supabase.auth.getSession();
+                        if (fallbackSession?.user) {
+                            hydrateFromSession(fallbackSession);
+                            navigateAfterAuth();
+                            return;
+                        }
+                        throw codeErr;
                     }
                 }
 
@@ -166,10 +211,31 @@ const AuthCallback = () => {
         };
 
         handleAuthCallback();
-    }, [navigate, setUser, setLoading, location]);
+    }, [navigate, hydrateFromSession, setLoading, location]);
 
     return (
-        <CashlyLoader fullscreen message="Verifying authentication..." subtext="Connecting to secure session" />
+        <div className="relative min-h-screen">
+            <CashlyLoader fullscreen message="Verifying authentication..." subtext="Connecting to secure session" />
+            {takingLong && (
+                <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-white px-5 py-3 rounded-full border border-stone-300 shadow-2xl animate-fade-in">
+                    <span className="text-xs text-stone-600 font-medium">Connecting is taking longer than usual...</span>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/dashboard', { replace: true })}
+                        className="text-xs font-semibold px-3 py-1.5 bg-[#EE5024] text-white rounded-full hover:bg-[#D4431B] transition-colors shadow-sm"
+                    >
+                        Go to Dashboard
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => navigate('/login', { replace: true })}
+                        className="text-xs font-semibold px-2 py-1.5 text-stone-500 hover:text-stone-800 transition-colors"
+                    >
+                        Back to Login
+                    </button>
+                </div>
+            )}
+        </div>
     );
 };
 
@@ -191,7 +257,13 @@ function App() {
             setHasHydrated(true);
         }
 
-        return unsubscribe;
+        // Hydration safety timeout: never block longer than 1.5s
+        const timeout = setTimeout(() => setHasHydrated(true), 1500);
+
+        return () => {
+            unsubscribe();
+            clearTimeout(timeout);
+        };
     }, []);
 
 
