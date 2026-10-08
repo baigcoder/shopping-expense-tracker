@@ -8,8 +8,12 @@ import {
     disconnectAccount,
     refreshBalances
 } from '../controllers/plaid.controller.js';
+import { authMiddleware } from '../middleware/auth.js';
 
 const router = Router();
+
+// SECURITY: Enforce authentication on all Plaid bank connection endpoints
+router.use(authMiddleware);
 
 // Create Plaid Link token (starts the connection flow)
 router.post('/create-link-token', createLinkToken);

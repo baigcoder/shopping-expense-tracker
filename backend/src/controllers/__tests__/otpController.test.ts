@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { sendSignupOTP } from '../otpController.js';
 
 const mockPrisma = vi.hoisted(() => ({
+    user: {
+        findUnique: vi.fn(),
+    },
     emailOTP: {
         findFirst: vi.fn(),
         deleteMany: vi.fn(),
@@ -10,6 +13,8 @@ const mockPrisma = vi.hoisted(() => ({
 }));
 
 const mockListUsers = vi.hoisted(() => vi.fn());
+const mockCreateUser = vi.hoisted(() => vi.fn());
+const mockDeleteUser = vi.hoisted(() => vi.fn());
 const mockSendOTPEmail = vi.hoisted(() => vi.fn());
 
 vi.mock('../../config/prisma.js', () => ({
@@ -21,6 +26,8 @@ vi.mock('../../config/supabase.js', () => ({
         auth: {
             admin: {
                 listUsers: mockListUsers,
+                createUser: mockCreateUser,
+                deleteUser: mockDeleteUser,
             },
         },
     },
@@ -43,6 +50,9 @@ describe('OTP Controller', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockListUsers.mockResolvedValue({ data: { users: [] } });
+        mockPrisma.user.findUnique.mockResolvedValue(null);
+        mockCreateUser.mockResolvedValue({ data: { user: { id: 'staged-uuid-999' } }, error: null });
+        mockDeleteUser.mockResolvedValue({});
         mockPrisma.emailOTP.findFirst.mockResolvedValue(null);
         mockPrisma.emailOTP.deleteMany.mockResolvedValue({ count: 0 });
         mockPrisma.emailOTP.create.mockResolvedValue({

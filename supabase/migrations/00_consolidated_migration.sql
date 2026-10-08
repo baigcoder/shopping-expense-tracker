@@ -9,11 +9,9 @@
 CREATE TABLE IF NOT EXISTS public.cards (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    number TEXT NOT NULL,
+    last4 TEXT NOT NULL,
     holder TEXT NOT NULL,
     expiry TEXT NOT NULL,
-    cvv TEXT NOT NULL,
-    pin TEXT NOT NULL,
     card_type TEXT NOT NULL DEFAULT 'unknown',
     theme TEXT NOT NULL DEFAULT 'cyber-gold',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL

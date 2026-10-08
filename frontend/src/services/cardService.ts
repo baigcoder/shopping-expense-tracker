@@ -17,12 +17,14 @@ export interface CardData {
     number?: string;    // @deprecated - should only contain masked value
 }
 
+const SAFE_CARD_COLUMNS = 'id, user_id, last4, holder, expiry, card_type, theme, created_at';
+
 export const cardService = {
     // Get all cards for user
     getAll: async (userId: string): Promise<CardData[]> => {
         const { data, error } = await supabase
             .from('cards')
-            .select('*')
+            .select(SAFE_CARD_COLUMNS)
             .eq('user_id', userId)
             .order('created_at', { ascending: false });
 
@@ -36,10 +38,20 @@ export const cardService = {
 
     // Create a new card
     create: async (card: Omit<CardData, 'id' | 'created_at'>): Promise<CardData | null> => {
+        // Ensure only safe fields are submitted
+        const safePayload = {
+            user_id: card.user_id,
+            last4: card.last4,
+            holder: card.holder,
+            expiry: card.expiry,
+            card_type: card.card_type,
+            theme: card.theme
+        };
+
         const { data, error } = await supabase
             .from('cards')
-            .insert(card)
-            .select()
+            .insert(safePayload)
+            .select(SAFE_CARD_COLUMNS)
             .single();
 
         if (error) {
@@ -73,7 +85,7 @@ export const cardService = {
     getById: async (id: string, userId: string): Promise<CardData | null> => {
         const { data, error } = await supabase
             .from('cards')
-            .select('*')
+            .select(SAFE_CARD_COLUMNS)
             .eq('id', id)
             .eq('user_id', userId)
             .single();
@@ -92,7 +104,7 @@ export const cardService = {
             .from('cards')
             .update(updates)
             .eq('id', id)
-            .select()
+            .select(SAFE_CARD_COLUMNS)
             .single();
 
         if (error) {

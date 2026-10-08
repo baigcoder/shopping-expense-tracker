@@ -140,9 +140,6 @@ export interface Card {
     color?: string;           // Custom card color
     last_used_at?: string;    // Last transaction date
     total_spent?: number;     // Monthly spending total (computed)
-    // CVV Protection - password to view/verify CVV
-    cvv_password?: string;    // User-set password to protect CVV viewing
-    cvv_encrypted?: string;   // Encrypted CVV (only decrypted with correct password)
     // Deprecated fields - kept for backwards compatibility
     number?: string; // @deprecated - use last4 instead
 }

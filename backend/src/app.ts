@@ -35,12 +35,33 @@ if (process.env.VERCEL_URL) {
     frontendOrigins.push(`https://${process.env.VERCEL_URL.replace(/\/+$/, '')}`);
 }
 
+const allowedExtensionIds = new Set(
+    (process.env.ALLOWED_EXTENSION_IDS || process.env.EXTENSION_IDS || '')
+        .split(',')
+        .map((id) => id.trim())
+        .filter(Boolean)
+);
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const isAllowedExtensionOrigin = (origin: string): boolean => {
+    const chromeMatch = origin.match(/^chrome-extension:\/\/([a-z0-9]+)$/i);
+    const mozMatch = origin.match(/^moz-extension:\/\/([a-z0-9-]+)$/i);
+    const extId = chromeMatch?.[1] || mozMatch?.[1];
+
+    if (!extId) return false;
+    if (allowedExtensionIds.has(extId)) return true;
+
+    // Permit development extensions only when in local non-production environment
+    return isDevelopment && allowedExtensionIds.size === 0;
+};
+
 const isAllowedOrigin = (origin?: string) => {
     if (!origin) return true;
     const normalized = origin.replace(/\/+$/, '');
 
     if (normalized.startsWith('chrome-extension://') || normalized.startsWith('moz-extension://')) {
-        return true;
+        return isAllowedExtensionOrigin(normalized);
     }
 
     if (frontendOrigins.includes(normalized)) return true;

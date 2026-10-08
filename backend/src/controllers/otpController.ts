@@ -1,43 +1,20 @@
-// OTP Controller - Handle email verification with OTP
+// OTP Controller - Handle email verification with OTP (Hardened & Native Supabase Auth)
 import { Request, Response } from 'express';
 import prisma from '../config/prisma.js';
 import { supabaseAdmin } from '../config/supabase.js';
 import { generateOTP, getOTPExpiry, sendOTPEmail } from '../services/emailService.js';
-import crypto from 'crypto';
 
 // Maximum OTP verification attempts
 const MAX_ATTEMPTS = 5;
 const OTP_COOLDOWN_MINUTES = 1; // Minimum time between OTP requests
-const ENCRYPTION_KEY = crypto.scryptSync(process.env.JWT_SECRET || 'secret', 'salt', 32);
-const IV_LENGTH = 16;
-
-// Helper to encrypt password
-const encryptPassword = (text: string): string => {
-    const iv = crypto.randomBytes(IV_LENGTH);
-    const cipher = crypto.createCipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
-};
-
-// Helper to decrypt password
-const decryptPassword = (text: string): string => {
-    const textParts = text.split(':');
-    const iv = Buffer.from(textParts.shift()!, 'hex');
-    const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-    const decipher = crypto.createDecipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
-};
 
 // Send OTP for signup
 export const sendSignupOTP = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, name } = req.body;
-        const normalizedEmail = typeof email === 'string' ? email.toLowerCase() : '';
+        const normalizedEmail = typeof email === 'string' ? email.toLowerCase().trim() : '';
 
-        if (!email || !password) {
+        if (!normalizedEmail || !password) {
             res.status(400).json({
                 success: false,
                 error: 'Email and password are required',
@@ -45,13 +22,20 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
             return;
         }
 
-        // Check if email is already registered in Supabase
-        const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-        const emailExists = existingUsers?.users?.some(
-            (user: any) => user.email?.toLowerCase() === normalizedEmail
-        );
+        if (password.length < 8) {
+            res.status(400).json({
+                success: false,
+                error: 'Password must be at least 8 characters long',
+            });
+            return;
+        }
 
-        if (emailExists) {
+        // SECURITY (SEC-09): Use exact, non-enumerated database lookup instead of unpaginated listUsers()
+        const existingAppUser = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+        });
+
+        if (existingAppUser && existingAppUser.supabaseId) {
             res.status(400).json({
                 success: false,
                 error: 'Email already registered. Please login instead.',
@@ -82,17 +66,77 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
             return;
         }
 
+        // SECURITY (SEC-04): Use Supabase Auth's native password hashing lifecycle.
+        // We never store user passwords in emailOTP, metadata, Prisma, or temporary records.
+        let supabaseUserId = '';
+
+        try {
+            const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+                email: normalizedEmail,
+                password, // Hashed immediately by Supabase Auth (bcrypt in auth schema)
+                email_confirm: false, // Remains unconfirmed until OTP is entered
+                user_metadata: {
+                    name: name || '',
+                    full_name: name || '',
+                },
+            });
+
+            if (authError) {
+                const errorMsg = authError.message?.toLowerCase() || '';
+                const isAlreadyRegistered = errorMsg.includes('already registered') || errorMsg.includes('already exists');
+
+                if (isAlreadyRegistered) {
+                    // If account was staged in Supabase from a previous unverified attempt, update password safely
+                    const existingOtp = await prisma.emailOTP.findFirst({
+                        where: { email: normalizedEmail },
+                        orderBy: { createdAt: 'desc' },
+                    });
+                    const pendingSupabaseId = (existingOtp?.metadata as any)?.supabaseUserId;
+
+                    let existingUser = null;
+                    if (pendingSupabaseId) {
+                        const { data: userRes } = await supabaseAdmin.auth.admin.getUserById(pendingSupabaseId);
+                        existingUser = userRes?.user;
+                    }
+                    if (!existingUser) {
+                        const { data: listRes } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 100 });
+                        existingUser = listRes?.users?.find(u => u.email?.toLowerCase() === normalizedEmail);
+                    }
+
+                    if (existingUser) {
+                        supabaseUserId = existingUser.id;
+                        await supabaseAdmin.auth.admin.updateUserById(supabaseUserId, {
+                            password,
+                            user_metadata: { name: name || '' },
+                        });
+                    } else {
+                        throw authError;
+                    }
+                } else {
+                    throw authError;
+                }
+            } else if (authData.user) {
+                supabaseUserId = authData.user.id;
+            } else {
+                throw new Error('Supabase user creation failed without error');
+            }
+        } catch (authError: any) {
+            console.error('Supabase user staging error:', authError);
+            res.status(400).json({
+                success: false,
+                error: authError.message || 'Unable to register account with provided credentials',
+            });
+            return;
+        }
+
         // Generate OTP
         const otp = generateOTP();
         const expiresAt = getOTPExpiry();
 
-        // Encrypt password for temporary storage
-        const encryptedPassword = encryptPassword(password);
-
-        // Store signup data in metadata
+        // Metadata stores ONLY non-sensitive user identity tags (NO PASSWORDS)
         const metadata = JSON.stringify({
             name: name || '',
-            encryptedPassword,
+            supabaseUserId,
         });
 
         // Delete any existing unverified OTPs for this email
@@ -114,7 +158,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         });
 
         // Send OTP email
-        const emailSent = await sendOTPEmail(email, otp, name);
+        const emailSent = await sendOTPEmail(normalizedEmail, otp, name);
 
         if (!emailSent) {
             await prisma.emailOTP.deleteMany({
@@ -149,8 +193,9 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
 export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, otp } = req.body;
+        const normalizedEmail = typeof email === 'string' ? email.toLowerCase().trim() : '';
 
-        if (!email || !otp) {
+        if (!normalizedEmail || !otp) {
             res.status(400).json({
                 success: false,
                 error: 'Email and OTP are required',
@@ -161,7 +206,7 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
         // Find the OTP record
         const otpRecord = await prisma.emailOTP.findFirst({
             where: {
-                email: email.toLowerCase(),
+                email: normalizedEmail,
                 verified: false,
             },
             orderBy: { createdAt: 'desc' },
@@ -188,9 +233,9 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
         // Check attempts
         if (otpRecord.attempts >= MAX_ATTEMPTS) {
             await prisma.emailOTP.delete({ where: { id: otpRecord.id } });
-            res.status(400).json({
+            res.status(429).json({
                 success: false,
-                error: 'Too many attempts. Please request a new code.',
+                error: 'Too many failed attempts. Code invalidated. Please request a new one.',
             });
             return;
         }
@@ -212,83 +257,47 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // OTP is valid! Parse metadata and get original password
+        // OTP is valid! Parse metadata
         const metadata = JSON.parse(otpRecord.metadata || '{}');
-        const { name, encryptedPassword } = metadata;
+        const { name, supabaseUserId } = metadata;
 
-        let password = 'Password@123'; // Fallback (should not happen)
-        try {
-            if (encryptedPassword) {
-                password = decryptPassword(encryptedPassword);
-            }
-        } catch (e) {
-            console.error('Password decryption failed:', e);
-            throw new Error('Security check failed. Please signup again.');
+        if (!supabaseUserId) {
+            throw new Error('Verification context missing. Please register again.');
         }
 
-        // Create user in Supabase Auth (with confirmed email)
-        let userId = '';
-
+        // Confirm email in Supabase Auth natively
         try {
-            const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-                email: email.toLowerCase(),
-                password,
-                email_confirm: true, // Mark email as confirmed
+            await supabaseAdmin.auth.admin.updateUserById(supabaseUserId, {
+                email_confirm: true,
                 user_metadata: {
                     name: name || '',
                     full_name: name || '',
                 },
             });
-
-            if (authError) {
-                // Check if user already exists (retry scenario)
-                const isAlreadyRegistered = authError.message?.toLowerCase().includes('already registered') ||
-                    authError.message?.toLowerCase().includes('already exists');
-
-                if (isAlreadyRegistered) {
-                    const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
-                    const existingUser = usersData?.users?.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
-
-                    if (existingUser) {
-                        userId = existingUser.id;
-                        console.log('Recovered existing Supabase user for completion');
-                    } else {
-                        throw authError;
-                    }
-                } else {
-                    throw authError;
-                }
-            } else if (authData.user) {
-                userId = authData.user.id;
-            } else {
-                throw new Error('User creation failed without error');
-            }
-        } catch (error: any) {
-            console.error('Supabase user creation error:', error);
+        } catch (authError: any) {
+            console.error('Supabase user confirmation error:', authError);
             res.status(500).json({
                 success: false,
-                error: error.message || 'Failed to create account. Please try again.',
+                error: 'Failed to finalize account verification in auth provider',
             });
             return;
         }
 
-        // Create user in our database
-        // Use upsert to be safe in case Prisma sync failed but Supabase succeeded previously
+        // Upsert user in our database
         const user = await prisma.user.upsert({
-            where: { email: email.toLowerCase() },
+            where: { email: normalizedEmail },
             update: {
-                supabaseId: userId,
+                supabaseId: supabaseUserId,
                 name: name || null,
             },
             create: {
-                supabaseId: userId,
-                email: email.toLowerCase(),
+                supabaseId: supabaseUserId,
+                email: normalizedEmail,
                 name: name || null,
             },
         });
 
-        // Create default categories for new user
-        // Use createMany with skipDuplicates if possible, or ignore error
+        // Initialize default categories for user
         try {
             await prisma.category.createMany({
                 data: [
@@ -305,12 +314,9 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
             // Ignore if categories already exist
         }
 
-        // Mark OTP as verified and delete it
-        await prisma.emailOTP.delete({ where: { id: otpRecord.id } });
-
-        // Clean up old OTPs for this email
+        // Clean up OTPs for this email
         await prisma.emailOTP.deleteMany({
-            where: { email: email.toLowerCase() },
+            where: { email: normalizedEmail },
         });
 
         res.status(200).json({
@@ -335,8 +341,9 @@ export const verifyOTP = async (req: Request, res: Response): Promise<void> => {
 export const resendOTP = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email } = req.body;
+        const normalizedEmail = typeof email === 'string' ? email.toLowerCase().trim() : '';
 
-        if (!email) {
+        if (!normalizedEmail) {
             res.status(400).json({
                 success: false,
                 error: 'Email is required',
@@ -347,7 +354,7 @@ export const resendOTP = async (req: Request, res: Response): Promise<void> => {
         // Find existing pending OTP
         const existingOTP = await prisma.emailOTP.findFirst({
             where: {
-                email: email.toLowerCase(),
+                email: normalizedEmail,
                 verified: false,
             },
             orderBy: { createdAt: 'desc' },
@@ -386,7 +393,7 @@ export const resendOTP = async (req: Request, res: Response): Promise<void> => {
                 otp,
                 expiresAt,
                 attempts: 0,
-                createdAt: new Date(), // Reset created time for cooldown
+                createdAt: new Date(),
             },
         });
 
@@ -395,7 +402,7 @@ export const resendOTP = async (req: Request, res: Response): Promise<void> => {
         const name = metadata.name;
 
         // Send new OTP email
-        const emailSent = await sendOTPEmail(email, otp, name);
+        const emailSent = await sendOTPEmail(normalizedEmail, otp, name);
 
         if (!emailSent) {
             res.status(500).json({

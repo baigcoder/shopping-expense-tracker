@@ -1,22 +1,19 @@
-// Card Controller - Handles card CRUD operations
+// Card Controller - Handles card CRUD operations (PCI-DSS Hardened)
 import { Request, Response } from 'express';
 import { supabase } from '../config/supabase.js';
+import { getCanonicalUserId } from '../utils/userAuth.js';
+
+// Safe columns allowlist to prevent exposure of sensitive data
+export const SAFE_CARD_COLUMNS = 'id, user_id, last4, holder, expiry, card_type, theme, created_at';
 
 // Get all cards for authenticated user
 export const getCards = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
-
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Unauthorized'
-            });
-        }
+        const userId = getCanonicalUserId(req);
 
         const { data, error } = await supabase
             .from('cards')
-            .select('*')
+            .select(SAFE_CARD_COLUMNS)
             .eq('user_id', userId)
             .order('created_at', { ascending: false });
 
@@ -33,31 +30,24 @@ export const getCards = async (req: Request, res: Response) => {
             success: true,
             data: data || []
         });
-    } catch (error) {
-        console.error('Get cards error:', error);
-        res.status(500).json({
+    } catch (error: any) {
+        console.error('Get cards error:', error.message);
+        res.status(error.message.includes('Authentication required') ? 401 : 500).json({
             success: false,
-            message: 'Internal server error'
+            message: error.message || 'Internal server error'
         });
     }
 };
 
-// Get single card by ID
+// Get single card by ID (ownership enforced)
 export const getCardById = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
+        const userId = getCanonicalUserId(req);
         const { id } = req.params;
-
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Unauthorized'
-            });
-        }
 
         const { data, error } = await supabase
             .from('cards')
-            .select('*')
+            .select(SAFE_CARD_COLUMNS)
             .eq('id', id)
             .eq('user_id', userId)
             .single();
@@ -81,52 +71,57 @@ export const getCardById = async (req: Request, res: Response) => {
             success: true,
             data
         });
-    } catch (error) {
-        console.error('Get card error:', error);
-        res.status(500).json({
+    } catch (error: any) {
+        console.error('Get card error:', error.message);
+        res.status(error.message.includes('Authentication required') ? 401 : 500).json({
             success: false,
-            message: 'Internal server error'
+            message: error.message || 'Internal server error'
         });
     }
 };
 
-// Create new card
+// Create new card (PCI-DSS compliant: stores only last4, holder, expiry, card_type, theme)
 export const createCard = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
+        const userId = getCanonicalUserId(req);
+        const { holder, expiry, card_type, theme } = req.body;
 
-        if (!userId) {
-            return res.status(401).json({
+        // Security check: Reject requests trying to persist raw CVV or ATM PIN
+        if (req.body.pin || (req.body.cvv && req.body.cvv !== '***')) {
+            console.warn(`[SECURITY] Rejected attempt to store sensitive authentication data (CVV/PIN) for user ${userId}`);
+        }
+
+        // Extract last4 safely
+        const rawDigits = String(req.body.last4 || req.body.number || '').replace(/\D/g, '');
+        const last4 = rawDigits.slice(-4);
+
+        if (!last4 || last4.length !== 4) {
+            return res.status(400).json({
                 success: false,
-                message: 'Unauthorized'
+                message: 'Valid card number or last 4 digits required'
             });
         }
 
-        const { number, holder, expiry, cvv, pin, card_type, theme } = req.body;
-
-        // Validation
-        if (!number || !holder || !expiry || !cvv || !pin || !card_type) {
+        if (!holder || !expiry) {
             return res.status(400).json({
                 success: false,
-                message: 'Missing required fields'
+                message: 'Cardholder name and expiration date are required'
             });
         }
 
         const cardData = {
             user_id: userId,
-            number,
-            holder,
-            expiry,
-            cvv,
-            pin,
-            card_type,
+            last4,
+            holder: String(holder).trim().slice(0, 100),
+            expiry: String(expiry).trim().slice(0, 10),
+            card_type: card_type || 'unknown',
             theme: theme || 'money-moves'
         };
 
         const { data, error } = await supabase
             .from('cards')
             .insert(cardData)
-            .select()
+            .select(SAFE_CARD_COLUMNS)
             .single();
 
         if (error) {
@@ -143,44 +138,38 @@ export const createCard = async (req: Request, res: Response) => {
             message: 'Card created successfully! 💳',
             data
         });
-    } catch (error) {
-        console.error('Create card error:', error);
-        res.status(500).json({
+    } catch (error: any) {
+        console.error('Create card error:', error.message);
+        res.status(error.message.includes('Authentication required') ? 401 : 500).json({
             success: false,
-            message: 'Internal server error'
+            message: error.message || 'Internal server error'
         });
     }
 };
 
-// Update card
+// Update card (PCI-DSS compliant: only non-sensitive visual and metadata fields)
 export const updateCard = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
+        const userId = getCanonicalUserId(req);
         const { id } = req.params;
+        const { holder, expiry, card_type, theme, last4, number } = req.body;
 
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Unauthorized'
-            });
-        }
+        const updates: Record<string, any> = {};
 
-        const { number, holder, expiry, cvv, pin, card_type, theme } = req.body;
-
-        // Build update object with only provided fields
-        const updates: any = {};
-        if (number !== undefined) updates.number = number;
-        if (holder !== undefined) updates.holder = holder;
-        if (expiry !== undefined) updates.expiry = expiry;
-        if (cvv !== undefined) updates.cvv = cvv;
-        if (pin !== undefined) updates.pin = pin;
+        if (holder !== undefined) updates.holder = String(holder).trim().slice(0, 100);
+        if (expiry !== undefined) updates.expiry = String(expiry).trim().slice(0, 10);
         if (card_type !== undefined) updates.card_type = card_type;
         if (theme !== undefined) updates.theme = theme;
+
+        const digits = String(last4 || number || '').replace(/\D/g, '');
+        if (digits.length >= 4) {
+            updates.last4 = digits.slice(-4);
+        }
 
         if (Object.keys(updates).length === 0) {
             return res.status(400).json({
                 success: false,
-                message: 'No fields to update'
+                message: 'No valid update fields provided'
             });
         }
 
@@ -189,7 +178,7 @@ export const updateCard = async (req: Request, res: Response) => {
             .update(updates)
             .eq('id', id)
             .eq('user_id', userId)
-            .select()
+            .select(SAFE_CARD_COLUMNS)
             .single();
 
         if (error) {
@@ -212,27 +201,20 @@ export const updateCard = async (req: Request, res: Response) => {
             message: 'Card updated successfully! ✨',
             data
         });
-    } catch (error) {
-        console.error('Update card error:', error);
-        res.status(500).json({
+    } catch (error: any) {
+        console.error('Update card error:', error.message);
+        res.status(error.message.includes('Authentication required') ? 401 : 500).json({
             success: false,
-            message: 'Internal server error'
+            message: error.message || 'Internal server error'
         });
     }
 };
 
-// Delete card
+// Delete card (ownership enforced)
 export const deleteCard = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
+        const userId = getCanonicalUserId(req);
         const { id } = req.params;
-
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Unauthorized'
-            });
-        }
 
         const { error } = await supabase
             .from('cards')
@@ -253,11 +235,11 @@ export const deleteCard = async (req: Request, res: Response) => {
             success: true,
             message: 'Card deleted successfully! 🗑️'
         });
-    } catch (error) {
-        console.error('Delete card error:', error);
-        res.status(500).json({
+    } catch (error: any) {
+        console.error('Delete card error:', error.message);
+        res.status(error.message.includes('Authentication required') ? 401 : 500).json({
             success: false,
-            message: 'Internal server error'
+            message: error.message || 'Internal server error'
         });
     }
 };

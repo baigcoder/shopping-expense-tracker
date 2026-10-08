@@ -109,11 +109,7 @@ const AddCardModal = () => {
                 holder: cardHolder,
                 expiry: expiry,
                 theme: selectedTheme,
-                card_type: cardBrand,
-                // Legacy columns - set to masked/placeholder values
-                number: `**** **** **** ${last4}`,
-                cvv: '***',
-                pin: '****'
+                card_type: cardBrand
             };
 
             // Call Service
@@ -129,9 +125,7 @@ const AddCardModal = () => {
                         expiry: savedCard.expiry,
                         type: savedCard.card_type || cardBrand,
                         theme: savedCard.theme,
-                        number: `**** **** **** ${last4}`, // Masked for display
-                        cvv_password: cvvPassword || undefined,
-                        cvv_encrypted: cvv || undefined
+                        number: `**** **** **** ${last4}` // Masked for display
                     });
                     toast.success('Card added securely ✓');
                 } else {
