@@ -107,12 +107,14 @@ const LoginPage = () => {
         >
             <form onSubmit={handleEmail} className="space-y-4">
                 <div className="space-y-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="login-email" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                         Email Address
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="login-email"
+                            autoComplete="email"
                             type="email"
                             className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
                             placeholder="you@example.com"
@@ -128,7 +130,7 @@ const LoginPage = () => {
 
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                        <label htmlFor="login-password" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                             Password
                         </label>
                         <Link to="/forgot-password" className="text-xs font-medium text-[var(--color-brand)] hover:underline">
@@ -138,6 +140,8 @@ const LoginPage = () => {
                     <div className="relative">
                         <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="login-password"
+                            autoComplete="current-password"
                             type={showPw ? 'text' : 'password'}
                             className={cn('h-11 pl-10 pr-11 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
                             placeholder="Enter your password"

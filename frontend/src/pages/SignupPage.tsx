@@ -112,12 +112,14 @@ const SignupPage = () => {
         >
             <form onSubmit={handleSignup} className="space-y-3.5">
                 <div className="space-y-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-name" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                         Your Name
                     </label>
                     <div className="relative">
                         <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="signup-name"
+                            autoComplete="name"
                             className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', nameError && 'border-[var(--color-danger)]')}
                             placeholder="Alex Morgan"
                             value={name}
@@ -130,12 +132,14 @@ const SignupPage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-email" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                         Email Address
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="signup-email"
+                            autoComplete="email"
                             type="email"
                             className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
                             placeholder="you@example.com"
@@ -150,12 +154,14 @@ const SignupPage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-password" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                         Password
                     </label>
                     <div className="relative">
                         <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="signup-password"
+                            autoComplete="new-password"
                             type={showPw ? 'text' : 'password'}
                             className={cn('h-11 pl-10 pr-11 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
                             placeholder="At least 6 characters"
@@ -192,12 +198,14 @@ const SignupPage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-confirm" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
                         Confirm Password
                     </label>
                     <div className="relative">
                         <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
                         <Input
+                            id="signup-confirm"
+                            autoComplete="new-password"
                             type={showPw ? 'text' : 'password'}
                             className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', confirmError && 'border-[var(--color-danger)]')}
                             placeholder="Repeat password"
