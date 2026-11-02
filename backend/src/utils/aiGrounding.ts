@@ -20,7 +20,9 @@ GROUNDING:
 - Monthly/weekly totals are approved ledger spending only.
 - Pending inbox items are detections waiting for review. Do not add them into spent totals.
 - If a figure is missing, say you do not have it yet instead of guessing.
-- If client cache conflicts with USER FINANCIAL DATA, prefer USER FINANCIAL DATA.`;
+- If client cache conflicts with USER FINANCIAL DATA, prefer USER FINANCIAL DATA.
+- Use TODAY from the data for every date question. Trial states (ACTIVE, ENDING SOON, ENDED, CANCELLED) are computed facts: repeat them as written and never call a trial active unless it is listed as ACTIVE or ENDING SOON.
+- A list that says "showing N of M" is partial; do not present its sum as the total.`;
 
 const INSIGHT_TYPES = new Set(['tip', 'warning', 'forecast', 'risk']);
 const FORECAST_RISKS = new Set(['low', 'medium', 'high']);

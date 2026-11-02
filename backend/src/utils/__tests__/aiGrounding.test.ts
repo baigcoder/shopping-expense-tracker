@@ -46,6 +46,7 @@ describe('aiGrounding', () => {
         }, 10000);
         expect(forecasts[0].predictedExpenses).toBe(25000);
         expect(forecasts[0].predictedIncome).toBe(0);
+        // 10,000 is above the USD "extreme" band, so an invalid model risk level falls back to high.
         expect(forecasts[0].riskLevel).toBe('high');
     });
 

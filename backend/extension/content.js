@@ -260,6 +260,45 @@
         }
     }
 
+    // ================================
+    // PENDING CHECKOUT (survives page redirects)
+    // Real checkouts redirect to a thank-you / processor page, which reloads this script with fresh state.
+    // The pay click is stored here so the next page can finish the capture.
+    // ================================
+    const PENDING_KEY = 'cashlyPendingCheckout';
+    const PENDING_TTL_MS = 15 * 60 * 1000;
+    const PAYMENT_PROCESSOR_HOSTS = /stripe\.com|paypal\.com|paddle\.com|razorpay\.com|2checkout|checkout\.com|adyen|squareup|klarna|payfast|easypaisa|jazzcash|safepay|mollie|lemonsqueezy|gumroad/i;
+
+    async function loadPendingCheckout() {
+        try {
+            const stored = (await chrome.storage.local.get([PENDING_KEY]))[PENDING_KEY];
+            if (stored && Date.now() - stored.startedAt < PENDING_TTL_MS) return stored;
+        } catch (e) { /* storage unavailable */ }
+        return null;
+    }
+
+    async function savePendingCheckout(next) {
+        // Only processor pages read before writing; merchant pages write at once because the page may unload right after the click.
+        const previous = PAYMENT_PROCESSOR_HOSTS.test(next.hostname) ? await loadPendingCheckout() : null;
+        // Paying on a processor page keeps the merchant the user started from.
+        const keepMerchant = !!previous;
+        const merged = keepMerchant
+            ? { ...next, siteName: previous.siteName, hostname: previous.hostname, productName: previous.productName || next.productName, amount: next.amount || previous.amount, category: previous.category || next.category }
+            : next;
+        try {
+            await chrome.storage.local.set({ [PENDING_KEY]: { ...merged, startedAt: Date.now() } });
+        } catch (e) { /* storage unavailable */ }
+        return merged;
+    }
+
+    function clearPendingCheckout() {
+        try { chrome.storage.local.remove(PENDING_KEY); } catch (e) { /* ignore */ }
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
     // Site analysis cache (per domain)
     const analysisCache = {};
     function getCachedAnalysis(domain) {
@@ -887,7 +926,12 @@
         }
 
         transition(newState, data = {}) {
-            const stateOrder = Object.values(STATES);
+            // Cancellation states rank below checkout so a stray "unsubscribe" link can never block a purchase.
+            const stateOrder = [
+                STATES.IDLE, STATES.MONITORING, STATES.CANCELLATION_FLOW, STATES.CANCELLATION_CONFIRMED,
+                STATES.CHECKOUT_ENTERED, STATES.PAYMENT_FORM_ACTIVE, STATES.PAYMENT_SUBMITTED,
+                STATES.TRANSACTION_CONFIRMED
+            ];
             const currentIndex = stateOrder.indexOf(this.currentState);
             const newIndex = stateOrder.indexOf(newState);
 
@@ -942,14 +986,22 @@
             const rawPageText = document.body?.innerText || '';
             const pageText = rawPageText.toLowerCase();
 
-            const trialDays = this.extractTrialDays(pageText);
-            const isTrial = trialDays > 0 || this.transactionData.isTrial || /free\s*trial|start\s*(your\s*)?(free\s*)?trial|try\s*(it\s*)?free|no\s*charge\s*today/i.test(pageText);
-            const isSubscription = this.transactionData.isSubscription || this.detectSubscription(pageText);
+            const pending = this.pending || {};
+            // A trial needs the pay click to say so or the confirmation page to say it started; "free trial" ad copy is not enough.
+            const isTrial = !!(this.transactionData.isTrial || pending.isTrial
+                || /trial\s*(has\s*)?(started|begun|is\s*active|activated|confirmed)|enjoy\s*your\s*(free\s*)?trial|no\s*charge\s*today/i.test(pageText));
+            const trialDays = isTrial ? this.extractTrialDays(pageText) : 0;
+            const isSubscription = !!(this.transactionData.isSubscription || pending.isSubscription || this.detectSubscription(pageText));
             const billingCycle = this.transactionData.billingCycle || this.detectBillingCycle(pageText);
             const planTier = this.detectPlanTier(pageText);  // NEW
-            const amount = prices[0] || 0;
-            const currency = this.detectCurrency(rawPageText);
-            const productName = this.extractProductName();
+            // The total read at the moment of paying beats whatever number the thank-you page shows first.
+            // A trial charges nothing today; the price on the page is what it renews at.
+            const recurringAmount = isTrial ? (this.extractRecurringAmount(pageText) || pending.amount || prices[0] || 0) : 0;
+            const amount = isTrial ? 0 : (pending.amount || prices[0] || 0);
+            const currency = (pending.amount && pending.currency) || this.detectCurrency(rawPageText);
+            const productName = this.extractProductName() || pending.productName;
+            const merchantName = pending.siteName || this.siteInfo.name;
+            const merchantHost = pending.hostname || this.siteInfo.hostname;
             const detectionSignals = this.getDetectionSignals(pageText, amount, isSubscription, isTrial);
             const confidence = this.calculateDetectionConfidence({
                 amount,
@@ -960,17 +1012,21 @@
             });
 
             if (amount <= 0 && !isTrial) {
-                log('Skipping zero-amount capture until a real total is visible');
-                this.hasTriggered = false;
-                return;
+                // Totals often render late; retry, then queue with amount 0 so the purchase still reaches the inbox for review.
+                this.extractAttempts = (this.extractAttempts || 0) + 1;
+                if (this.extractAttempts <= 4) {
+                    setTimeout(() => this.extractAndSave(), 2000);
+                    return;
+                }
+                detectionSignals.push('amount_missing');
             }
 
             const transaction = {
-                name: this.siteInfo.name,
-                merchantName: this.siteInfo.name,
-                storeName: this.siteInfo.name,
+                name: merchantName,
+                merchantName,
+                storeName: merchantName,
                 productName,
-                hostname: this.siteInfo.hostname,
+                hostname: merchantHost,
                 type: isTrial ? 'trial' : (isSubscription ? 'subscription' : 'purchase'),
                 label: isTrial ? 'Trial Started' : (isSubscription ? 'Subscription' : 'Purchase'),
                 icon: isTrial ? '🎁' : (isSubscription ? '💳' : '🛒'),
@@ -979,6 +1035,7 @@
                 currency,
                 isTrial,
                 trialDays: trialDays || (isTrial ? 7 : 0),
+                recurringAmount: recurringAmount || undefined,
                 category: this.siteInfo.category,
                 billingCycle,
                 isSubscription,
@@ -1006,6 +1063,7 @@
             const txHash = generateTransactionHash(transaction);
             transaction.transactionHash = txHash;
             transaction.idempotencyKey = txHash;
+            clearPendingCheckout();
             const isDuplicate = await isTransactionDuplicate(txHash);
             if (isDuplicate) {
                 log('Duplicate transaction detected, skipping:', txHash);
@@ -1015,14 +1073,18 @@
             // Mark as saved
             await markTransactionSaved(txHash);
 
-            // Show notification
-            this.showNotification(transaction);
-
-            // Send to background for storage + sync
-            chrome.runtime.sendMessage({
-                type: 'BEHAVIOR_TRANSACTION_DETECTED',
-                data: transaction
-            });
+            // Send to background for storage + sync, then tell the user what actually happened.
+            this.showNotification(transaction, 'saving');
+            try {
+                chrome.runtime.sendMessage({ type: 'BEHAVIOR_TRANSACTION_DETECTED', data: transaction }, (result) => {
+                    void chrome.runtime.lastError;
+                    const status = result?.autoApproved ? 'saved'
+                        : result?.pendingReview ? 'inbox'
+                        : result?.success ? 'saved'
+                        : result?.reason === 'not_authenticated' ? 'signin' : 'retry';
+                    this.showNotification(transaction, status);
+                });
+            } catch (e) { this.showNotification(transaction, 'retry'); }
 
             // Also send subscription if applicable
             if (isSubscription || isTrial) {
@@ -1041,6 +1103,7 @@
                         is_trial: isTrial,
                         trialDays,
                         trial_days: trialDays,
+                        recurringAmount: transaction.recurringAmount,
                         productName: transaction.productName,
                         planTier: transaction.planTier,
                         confidence: transaction.confidence,
@@ -1101,9 +1164,10 @@
             // PRIORITY 2: Look for prices near "Total", "Grand Total", "Amount Due"
             const allElements = document.querySelectorAll('*');
             for (const el of allElements) {
-                const text = (el.innerText || '').toLowerCase();
-                if (/total|amount due|payable|grand total/i.test(text) && text.length < 100) {
-                    const price = this.extractPriceFromText(el.innerText);
+                // textContent avoids a forced layout per element (innerText on every node froze large checkouts).
+                const text = el.textContent || '';
+                if (text.length < 100 && /total|amount due|payable|grand total/i.test(text)) {
+                    const price = this.extractPriceFromText(text);
                     if (price > 0 && price < 1000000) {
                         log('Context price found:', price, 'near "total"');
                         prices.push({ price, confidence: 0.8 });
@@ -1149,7 +1213,7 @@
             if (/EUR|€/i.test(text)) return 'EUR';
             if (/GBP|£/i.test(text)) return 'GBP';
             if (/INR|₹/i.test(text)) return 'INR';
-            return 'USD';
+            return undefined; // unknown: let the backend treat it as the user's own currency
         }
 
         extractProductName() {
@@ -1223,13 +1287,20 @@
             return 0;
         }
 
+        // "then $9.99/month", "after your trial, Rs 999" — what a trial will actually cost.
+        extractRecurringAmount(pageText) {
+            const match = pageText.match(/(?:then|after\s+(?:the|your)?\s*(?:free\s*)?trial|thereafter|renews?\s+at)[^\d$€£₹]{0,25}(?:rs\.?|pkr|usd|inr|\$|€|£|₹)\s*([\d,]+(?:\.\d{1,2})?)/i);
+            const price = match ? parseFloat(match[1].replace(/,/g, '')) : 0;
+            return price > 0 && price < 1000000 ? price : 0;
+        }
+
         extractTrialDays(pageText) {
             const patterns = [
                 /(\d+)\s*[-–]?\s*day\s*(free\s*)?trial/i,
                 /free\s*for\s*(\d+)\s*days?/i,
                 /(\d+)\s*days?\s*free/i,
                 /try\s*free\s*for\s*(\d+)/i,
-                /(\d+)\s*[-–]?\s*day\s*(free)?/i
+                /(\d+)\s*[-–]?\s*day\s*free/i
             ];
 
             for (const p of patterns) {
@@ -1243,10 +1314,11 @@
         }
 
         detectSubscription(pageText) {
+            // "premium"/"renew" alone match ordinary shop copy, so only billing-cycle wording counts.
             const keywords = [
-                'subscription', 'recurring', 'renew', 'auto-renew',
-                'membership', 'premium', 'pro plan', 'billed monthly',
-                'billed yearly', 'per month', '/mo', '/year', 'free trial'
+                'subscription', 'recurring', 'auto-renew', 'renews',
+                'membership', 'billed monthly',
+                'billed yearly', 'billed annually', 'per month', '/mo', '/year', 'free trial'
             ];
             return keywords.filter(kw => pageText.includes(kw)).length >= 1;
         }
@@ -1281,15 +1353,15 @@
             const url = window.location.href.toLowerCase();
             const pageText = (document.body?.innerText || '').toLowerCase();
 
+            // No bare "unsubscribe"/"downgrade": newsletter footers contain them on almost every shop.
             const cancelPatterns = [
-                /\/cancel/i, /\/unsubscribe/i, /\/downgrade/i,
-                /cancel.*(subscription|plan|membership)/i,
+                /cancel[-_/]?(subscription|plan|membership|renewal)/i,
                 /subscription.*cancel/i
             ];
 
             const cancelKeywords = [
-                'cancel subscription', 'cancel my plan', 'unsubscribe',
-                'end membership', 'stop subscription', 'downgrade',
+                'cancel subscription', 'cancel my plan', 'cancel my subscription',
+                'end membership', 'stop subscription',
                 'cancel renewal', 'don\'t renew'
             ];
 
@@ -1303,7 +1375,14 @@
             return false;
         }
 
-        showNotification(data) {
+        showNotification(data, status = 'inbox') {
+            const copy = {
+                saving: ['Saving to Cashly…', `${data.label} detected`],
+                saved: ['Added to your Cashly dashboard', `${data.label} recorded`],
+                inbox: ['Queued in Cashly inbox', `${data.label} captured for review`],
+                signin: ['Sign in to Cashly to save this', `${data.label} is stored and will sync once you sign in`],
+                retry: ['Cashly will retry this sync', `${data.label} is stored on this device`]
+            }[status];
             const existing = document.getElementById('cashly-notification');
             if (existing) existing.remove();
 
@@ -1314,20 +1393,20 @@
                     <div class="cashly-toast-head">
                         <span class="cashly-toast-icon">${data.icon || 'C'}</span>
                         <div>
-                            <strong class="cashly-toast-title">Queued in Cashly inbox</strong>
-                            <span class="cashly-toast-sub">${data.label} captured for review</span>
+                            <strong class="cashly-toast-title">${escapeHtml(copy[0])}</strong>
+                            <span class="cashly-toast-sub">${escapeHtml(copy[1])}</span>
                         </div>
                         <button class="cashly-toast-close" type="button" aria-label="Dismiss">×</button>
                     </div>
                     <div class="cashly-toast-body">
                         <div class="cashly-toast-row">
                             <span>Service</span>
-                            <strong>${data.name}</strong>
+                            <strong>${escapeHtml(data.name)}</strong>
                         </div>
                         ${data.amount > 0 ? `
                         <div class="cashly-toast-row">
                             <span>Amount</span>
-                            <strong>$${data.amount.toFixed(2)}</strong>
+                            <strong>${escapeHtml(data.currency || '')} ${data.amount.toFixed(2)}</strong>
                         </div>` : ''}
                         ${data.isTrial ? `
                         <div class="cashly-toast-row">
@@ -1454,6 +1533,8 @@
 
         refreshCaptureFromPage(true);
         document.addEventListener('click', handleClick, true);
+        document.addEventListener('submit', handleSubmit, true);
+        restorePendingCheckout();
 
         const debouncedCheckoutWatch = debounce(() => refreshCaptureFromPage(false), CONFIG.DEBOUNCE_MS);
         const observer = new MutationObserver(debouncedCheckoutWatch);
@@ -1505,6 +1586,48 @@
         }
     }
 
+    // Snapshot the total now, persist it for redirect flows, and start watching for the confirmation.
+    function markPaymentSubmitted(extra = {}) {
+        tracker.transition(STATES.PAYMENT_SUBMITTED, { submittedAt: Date.now(), ...extra });
+        const snapshot = {
+            siteName: tracker.siteInfo.name,
+            hostname: tracker.siteInfo.hostname,
+            category: tracker.siteInfo.category,
+            amount: tracker.extractPrices()[0] || 0,
+            currency: tracker.detectCurrency(document.body?.innerText || ''),
+            productName: tracker.extractProductName(),
+            isTrial: !!extra.isTrial,
+            isSubscription: !!extra.isSubscription
+        };
+        tracker.pending = snapshot;
+        savePendingCheckout(snapshot).then((saved) => { tracker.pending = saved; });
+        startConfirmationWatcher();
+    }
+
+    // Enter-key / form submits never click a button, so catch card forms being submitted too.
+    function handleSubmit(e) {
+        const form = e.target;
+        if (!form?.querySelector || tracker.currentState === STATES.TRANSACTION_CONFIRMED) return;
+        const hasCardField = PAYMENT_FORM_SELECTORS.some((sel) => form.querySelector(sel));
+        if (hasCardField) markPaymentSubmitted({});
+    }
+
+    async function restorePendingCheckout() {
+        const pending = await loadPendingCheckout();
+        if (!pending || tracker.currentState === STATES.TRANSACTION_CONFIRMED) return;
+        // Resume only on the merchant itself or a payment processor, never on unrelated browsing.
+        const related = hostname.endsWith(pending.hostname) || pending.hostname.endsWith(hostname)
+            || PAYMENT_PROCESSOR_HOSTS.test(hostname) || PAYMENT_PROCESSOR_HOSTS.test(pending.hostname);
+        if (!related) return;
+        tracker.pending = pending;
+        tracker.transition(STATES.PAYMENT_SUBMITTED, {
+            submittedAt: pending.startedAt,
+            isTrial: pending.isTrial,
+            isSubscription: pending.isSubscription
+        });
+        startConfirmationWatcher();
+    }
+
     function handleClick(e) {
         const target = e.target.closest('button, [role="button"], a, input[type="submit"]');
         if (!target) return;
@@ -1520,13 +1643,10 @@
         if (isPayButton) {
             log('Payment button clicked:', text);
 
-            tracker.transition(STATES.PAYMENT_SUBMITTED, {
-                submittedAt: Date.now(),
+            markPaymentSubmitted({
                 isTrial: /trial/i.test(text),
                 isSubscription: /subscribe/i.test(text)
             });
-
-            startConfirmationWatcher();
         }
 
         // NEW: Check for cancellation confirmation buttons

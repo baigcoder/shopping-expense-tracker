@@ -296,3 +296,24 @@ export const sendResetOTPEmail = async (email: string, otp: string, category: st
     }
 };
 
+
+// Simple transactional email (no OTP template): used for trial-ending reminders.
+export const sendSimpleEmail = async (to: string, subject: string, text: string): Promise<boolean> => {
+    if (!transporter) {
+        console.error('Email transporter not initialized');
+        return false;
+    }
+
+    try {
+        await transporter.sendMail({
+            from: `"Cashly" <${process.env.SMTP_USER}>`,
+            to,
+            subject,
+            text,
+        });
+        return true;
+    } catch (error) {
+        logEmailError('Failed to send email', error);
+        return false;
+    }
+};
