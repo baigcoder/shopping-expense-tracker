@@ -4,6 +4,7 @@ import { initializeEmailTransporter, verifyEmailTransporter } from './services/e
 import cacheService from './services/redisCacheService.js';
 import openRouterService from './services/openRouterService.js';
 import { getGroqModel, isGroqConfigured } from './services/groqService.js';
+import { startTrialReminderScheduler } from './services/trialReminderService.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,6 +14,8 @@ app.listen(PORT, async () => {
   if (emailTransporter) {
     await verifyEmailTransporter();
   }
+
+  startTrialReminderScheduler();
 
   // Check AI and Redis connections
   const redisConnected = await cacheService.checkConnection();

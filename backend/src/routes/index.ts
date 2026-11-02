@@ -19,6 +19,8 @@ import dashboardRoutes from './dashboard.routes.js';
 import onboardingRoutes from './onboarding.routes.js';
 import moneyTwinRoutes from './moneyTwin.routes.js';
 import { cacheControl } from '../middleware/cache.js';
+import { timingSafeEqual } from 'crypto';
+import { sendTrialReminders } from '../services/trialReminderService.js';
 
 const router = Router();
 
@@ -30,6 +32,26 @@ router.get('/health', cacheControl('dynamic'), (_req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+
+// Scheduled job (Vercel Cron or any scheduler). Disabled until CRON_SECRET is set.
+const runTrialReminders = async (req: any, res: any) => {
+    const secret = process.env.CRON_SECRET;
+    if (!secret) return res.status(503).json({ success: false, error: 'CRON_SECRET is not configured' });
+
+    const given = Buffer.from(String(req.headers.authorization || ''));
+    const expected = Buffer.from(`Bearer ${secret}`);
+    if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    try {
+        res.json({ success: true, ...(await sendTrialReminders()) });
+    } catch (error: any) {
+        console.error('Trial reminder job failed:', error?.message || error);
+        res.status(500).json({ success: false, error: 'Trial reminder job failed' });
+    }
+};
+router.get('/cron/trial-reminders', runTrialReminders);
+router.post('/cron/trial-reminders', runTrialReminders);
 
 // Mount routes
 router.use('/auth', authRoutes);
