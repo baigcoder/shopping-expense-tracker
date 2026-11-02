@@ -100,7 +100,10 @@ export async function cancelDetectedSubscription(userId: string, data: { name?: 
             .ilike('name', `%${key.replace(/[%_]/g, '\\$&')}%`)
             .select();
         if (error) throw error;
-        if (rows?.length) return rows;
+        if (rows?.length) {
+            await invalidateUserAICacheIfEnabled(userId).catch(() => undefined); // AI must see new/ended trials now, not after the cache expires
+            return rows;
+        }
     }
     return [];
 }
@@ -158,6 +161,7 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
             .select()
             .single();
         if (error) throw error;
+        await invalidateUserAICacheIfEnabled(userId).catch(() => undefined); // AI must see new/ended trials now, not after the cache expires
         return updated;
     }
 
@@ -167,6 +171,7 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
         .select()
         .single();
     if (error) throw error;
+    await invalidateUserAICacheIfEnabled(userId).catch(() => undefined); // AI must see new/ended trials now, not after the cache expires
     return inserted;
 }
 

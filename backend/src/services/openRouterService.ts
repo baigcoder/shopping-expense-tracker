@@ -2,6 +2,8 @@
 // With automatic model fallback chains for reliability
 
 import { getDefaultForecast, normalizeForecasts, normalizeInsights, formatMoneyAmount } from '../utils/aiGrounding.js';
+import { findUnverified } from '../utils/replyVerifier.js';
+import { TrialAlert, trialInsights } from '../utils/userKnowledge.js';
 import {
     groqChatCompletion,
     isGroqConfigured,
@@ -108,7 +110,23 @@ export interface FinancialContext {
     pendingAmount?: number;
     overBudgetCount?: number;
     currency?: string;
+    // Computed facts (see userKnowledge.ts); the model repeats them, it does not derive them.
+    asOf?: string;
+    trialLines?: string[];
+    commitmentLines?: string[];
+    commitmentTotal?: number;
+    trialAlerts?: TrialAlert[];
 }
+
+const factsBlock = (context: FinancialContext) => [
+    context.asOf ? `TODAY is ${context.asOf}.` : '',
+    context.trialLines?.length ? `Subscriptions and trials:\n${context.trialLines.join('\n')}` : '',
+    context.commitmentLines?.length ? `Known charges in the next 30 days (${formatMoneyAmount(context.commitmentTotal || 0, context.currency)} total):\n${context.commitmentLines.join('\n')}` : '',
+].filter(Boolean).join('\n');
+
+// Drop generated items that quote a figure or date the model was never given.
+const onlyGrounded = <T extends { title: string; message: string }>(items: T[], source: string) =>
+    items.filter((item) => !findUnverified(`${item.title} ${item.message}`, source).length);
 
 export interface AIInsight {
     type: 'tip' | 'warning' | 'forecast' | 'risk';
@@ -362,6 +380,7 @@ Return ONLY valid JSON in this shape:
 ${context.subscriptionCount ? `- Subscriptions: ${context.subscriptionCount} (${money(context.monthlySubCost)}/month)` : ''}
 ${context.pendingCount ? `- Pending inbox (not in ledger): ${context.pendingCount} items totaling ${money(context.pendingAmount)}` : ''}
 ${context.overBudgetCount ? `- Categories over budget: ${context.overBudgetCount}` : ''}
+${factsBlock(context)}
 
 Amounts are in ${context.currency || 'USD'}. Provide 3 specific, actionable insights based only on this data.`;
 
@@ -375,7 +394,8 @@ Amounts are in ${context.currency || 'USD'}. Provide 3 specific, actionable insi
         );
 
         const parsed = parseJsonPayload(response.content);
-        const insights = normalizeInsights(parsed);
+        const generated = onlyGrounded(normalizeInsights(parsed), `${systemPrompt}\n${userPrompt}`);
+        const insights = [...trialInsights(context.trialAlerts, 'warning'), ...generated];
         return insights.length ? insights : getDefaultInsights(context);
     } catch (error: any) {
         console.error('OpenRouter insights error:', error.message);
@@ -392,8 +412,9 @@ Return ONLY valid JSON in this shape:
 - Monthly: ${formatMoneyAmount(context.monthlySpent, context.currency)}
 - Weekly: ${formatMoneyAmount(context.weeklySpent, context.currency)}
 - Top category: ${context.topCategory}
+${factsBlock(context)}
 
-Amounts are in ${context.currency || 'USD'}. Forecast the next 2 months. Keep predicted expenses near the current monthly amount.`;
+Amounts are in ${context.currency || 'USD'}. Forecast the next 2 months. Start from the current monthly amount and account for the known charges above (trials that start billing, renewals, bills); do not invent other changes.`;
 
     try {
         const response = await chatCompletion(
@@ -425,6 +446,7 @@ If no risks are detected, return {"risks":[]}.`;
 - Health score: ${context.healthScore || 50}/100
 ${context.pendingCount ? `- Pending inbox items: ${context.pendingCount}` : ''}
 ${context.overBudgetCount ? `- Over-budget categories: ${context.overBudgetCount}` : ''}
+${factsBlock(context)}
 Amounts are in ${context.currency || 'USD'}.`;
 
     try {
@@ -437,13 +459,14 @@ Amounts are in ${context.currency || 'USD'}.`;
         );
 
         const parsed = parseJsonPayload(response.content);
-        return normalizeInsights(Array.isArray(parsed) ? parsed : parsed.risks || []).map((risk) => ({
+        const generated = onlyGrounded(normalizeInsights(Array.isArray(parsed) ? parsed : parsed.risks || []), `${systemPrompt}\n${userPrompt}`).map((risk) => ({
             ...risk,
             type: 'risk' as const,
         }));
+        return [...trialInsights(context.trialAlerts, 'risk'), ...generated];
     } catch (error: any) {
         console.error('OpenRouter risk analysis error:', error.message);
-        return [];
+        return trialInsights(context.trialAlerts, 'risk');
     }
 }
 

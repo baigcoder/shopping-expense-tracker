@@ -4,10 +4,15 @@ import { supabase } from '../config/supabase.js';
 import { listUserTransactions, MoneyTransaction } from './transactionDomainService.js';
 import { CASHLY_CHAT_RULES, calculateHealthScore, formatMoneyAmount, normalizeCurrencyCode } from '../utils/aiGrounding.js';
 import { getUserSettings } from './settingsService.js';
+import { buildCommitments, Commitment, deriveSubscriptionFacts, describeFact, monthlyPaidCost, SubscriptionFact, trialAlerts } from '../utils/userKnowledge.js';
+
+const HISTORY_DAYS = 90;
+const TRANSACTION_FETCH_LIMIT = 2000;
 
 export interface FinancialSnapshot {
     userId: string;
     generatedAt: string;
+    asOf: string;
     dataVersion: string;
     transactions: MoneyTransaction[];
     subscriptions: any[];
@@ -19,6 +24,9 @@ export interface FinancialSnapshot {
     monthlySubCost: number;
     trialCount: number;
     categoryBreakdown: Record<string, number>;
+    subscriptionFacts: SubscriptionFact[];
+    commitments: Commitment[];
+    transactionsTruncated: boolean;
 }
 
 const asRows = (value: unknown): any[] => Array.isArray(value) ? value : [];
@@ -44,15 +52,6 @@ const buildSnapshotVersion = (
     upcomingBills.length,
     pendingCandidates.length
 ].join('|');
-
-function getMonthlySubscriptionCost(subscriptions: any[]) {
-    return subscriptions.reduce((sum, subscription) => {
-        const price = Number(subscription.price || 0);
-        if (subscription.cycle === 'yearly') return sum + price / 12;
-        if (subscription.cycle === 'weekly') return sum + price * 4;
-        return sum + price;
-    }, 0);
-}
 
 function summarizeTransactions(
     userId: string,
@@ -121,8 +120,9 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
     if (cached) return cached as FinancialSnapshot;
 
     const now = new Date();
-    const next7Days = new Date();
-    next7Days.setDate(next7Days.getDate() + 7);
+    const next30Days = new Date();
+    next30Days.setDate(next30Days.getDate() + 30);
+    const historyStart = new Date(now.getTime() - HISTORY_DAYS * 24 * 60 * 60 * 1000);
 
     const [
         transactions,
@@ -133,7 +133,8 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
         candidatesResult,
         settings
     ] = await Promise.all([
-        listUserTransactions(userId, { limit: 100 }),
+        // 90 days of ledger so month/week totals are exact instead of derived from the latest 100 rows.
+        listUserTransactions(userId, { since: historyStart, limit: TRANSACTION_FETCH_LIMIT }),
         supabase.from('subscriptions').select('*').eq('user_id', userId),
         supabase.from('goals').select('*').eq('user_id', userId),
         supabase.from('budgets').select('*').eq('user_id', userId),
@@ -142,7 +143,7 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
             .select('*')
             .eq('user_id', userId)
             .gte('due_date', now.toISOString())
-            .lte('due_date', next7Days.toISOString())
+            .lte('due_date', next30Days.toISOString())
             .order('due_date', { ascending: true }),
         supabase
             .from('transaction_candidates')
@@ -154,12 +155,16 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
         getUserSettings(userId).catch(() => ({ currency: 'USD' }))
     ]);
 
-    const subscriptions = asRows(subscriptionsResult.data).filter(subscription => subscription.is_active !== false);
+    const allSubscriptions = asRows(subscriptionsResult.data);
+    const subscriptionFacts = deriveSubscriptionFacts(allSubscriptions, transactions, now);
+    const subscriptions = allSubscriptions.filter(subscription => subscription.is_active !== false && subscription.status !== 'cancelled');
     const goals = asRows(goalsResult.data);
     const budgets = asRows(budgetsResult.data);
     const upcomingBills = asRows(billsResult.data);
     const pendingCandidates = asRows(candidatesResult.data);
-    const monthlySubCost = getMonthlySubscriptionCost(subscriptions);
+    const commitments = buildCommitments(subscriptionFacts, upcomingBills, now);
+    const money = (value: number) => formatMoneyAmount(value, settings.currency);
+    const monthlySubCost = monthlyPaidCost(subscriptionFacts);
     const pendingAmount = pendingCandidates.reduce((sum, candidate) => sum + Math.abs(Number(candidate.amount) || 0), 0);
 
     const tempBreakdown: Record<string, number> = {};
@@ -180,11 +185,12 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
         pendingAmount,
         currency: settings.currency,
     });
-    const trialCount = subscriptions.filter(subscription => subscription.is_trial).length;
+    const trialCount = subscriptionFacts.filter(fact => fact.state === 'trial_active' || fact.state === 'trial_ending_soon').length;
 
     const snapshot = {
         userId,
         generatedAt: new Date().toISOString(),
+        asOf: now.toISOString().slice(0, 10),
         dataVersion: buildSnapshotVersion(transactions, subscriptions, goals, budgets, upcomingBills, pendingCandidates),
         transactions,
         subscriptions,
@@ -195,11 +201,19 @@ export async function getFinancialSnapshot(userId: string, options: { force?: bo
         summary: {
             ...summaryBase,
             subscriptionCount: subscriptions.length,
-            monthlySubCost: Math.round(monthlySubCost)
+            monthlySubCost: Math.round(monthlySubCost),
+            asOf: now.toISOString().slice(0, 10),
+            trialLines: subscriptionFacts.slice(0, 15).map(fact => describeFact(fact, money)),
+            commitmentLines: commitments.slice(0, 10).map(item => `- ${item.date}: ${item.title} ${money(item.amount)}`),
+            commitmentTotal: commitments.reduce((sum, item) => sum + item.amount, 0),
+            trialAlerts: trialAlerts(subscriptionFacts, money)
         },
         monthlySubCost,
         trialCount,
-        categoryBreakdown
+        categoryBreakdown,
+        subscriptionFacts,
+        commitments,
+        transactionsTruncated: transactions.length >= TRANSACTION_FETCH_LIMIT
     };
 
     await Promise.all([
@@ -217,9 +231,14 @@ export function buildCashlySystemPrompt(snapshot: FinancialSnapshot, options: { 
     const currency = snapshot.summary.currency;
     const money = (value: number) => formatMoneyAmount(value, currency);
 
-    const subscriptionsList = snapshot.subscriptions.slice(0, 8).map(subscription =>
-        `- ${subscription.name}: ${money(subscription.price || 0)}/${subscription.cycle || 'monthly'}${subscription.is_trial ? ' (TRIAL)' : ''}`
-    ).join('\n');
+    // Cancelled items last so the live ones always make the cut; say so when the list is cut.
+    const factOrder = (fact: SubscriptionFact) => (fact.state === 'cancelled' ? 1 : 0);
+    const orderedFacts = [...snapshot.subscriptionFacts].sort((a, b) => factOrder(a) - factOrder(b) || (a.daysLeft ?? 999) - (b.daysLeft ?? 999));
+    const subscriptionsList = orderedFacts.slice(0, 15).map(fact => describeFact(fact, money)).join('\n')
+        + (orderedFacts.length > 15 ? `\n- (showing 15 of ${orderedFacts.length})` : '');
+    const commitmentsList = snapshot.commitments.slice(0, 10)
+        .map(item => `- ${item.date}: ${item.title} ${money(item.amount)}`).join('\n')
+        + (snapshot.commitments.length > 10 ? `\n- (showing 10 of ${snapshot.commitments.length})` : '');
 
     const goalsList = snapshot.goals.map(goal => {
         const progress = goal.target > 0 ? Math.round((goal.saved / goal.target) * 100) : 0;
@@ -234,7 +253,7 @@ export function buildCashlySystemPrompt(snapshot: FinancialSnapshot, options: { 
         return `- ${budget.category}: ${money(spent)} / ${money(budget.amount)} (${percent}%) ${status}`;
     }).join('\n');
 
-    const upcomingBills = snapshot.upcomingBills.slice(0, 5).map(bill => {
+    const upcomingBills = snapshot.upcomingBills.filter(bill => new Date(bill.due_date).getTime() - now.getTime() <= 7 * 24 * 60 * 60 * 1000).slice(0, 5).map(bill => {
         const dueDate = new Date(bill.due_date);
         const daysUntil = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
         return `- ${bill.title}: ${money(bill.amount || 0)} due in ${daysUntil} day${daysUntil !== 1 ? 's' : ''} (${dueDate.toLocaleDateString()})`;
@@ -256,18 +275,20 @@ export function buildCashlySystemPrompt(snapshot: FinancialSnapshot, options: { 
 
     return `${CASHLY_CHAT_RULES}
 
-USER FINANCIAL DATA
+USER FINANCIAL DATA (as of ${snapshot.asOf}, UTC; TODAY is ${snapshot.asOf})
 Amounts are in ${normalizeCurrencyCode(currency)}.
 Spending (approved ledger only):
 - This month: ${money(snapshot.summary.monthlySpent)}
 - This week: ${money(snapshot.summary.weeklySpent)}
 - Top category: ${snapshot.summary.topCategory} (${money(snapshot.summary.topCategoryAmount)})
-- Approved transactions in view: ${snapshot.transactions.length}
+- Approved transactions in view: ${snapshot.transactions.length} (last ${HISTORY_DAYS} days${snapshot.transactionsTruncated ? ', older ones cut off' : ''})
 - Money health: ${snapshot.summary.healthScore || 50}/100
 
-Subscriptions (${snapshot.subscriptions.length} active, ~${money(Math.round(snapshot.monthlySubCost))}/month):
+Subscriptions and trials (${money(Math.round(snapshot.monthlySubCost))}/month billed now, ${snapshot.trialCount} trial(s) not billed yet):
 ${subscriptionsList || '- No subscriptions tracked yet'}
-${snapshot.trialCount > 0 ? `- ${snapshot.trialCount} active trial(s)` : ''}
+
+Money leaving in the next 30 days (known commitments):
+${commitmentsList || '- Nothing scheduled'}
 
 Goals (${snapshot.goals.length}):
 ${goalsList || '- No goals set yet'}
@@ -275,7 +296,7 @@ ${goalsList || '- No goals set yet'}
 Budgets:
 ${budgetsList || '- No budgets set yet'}
 
-Upcoming bills:
+Upcoming bills (next 7 days):
 ${upcomingBills || '- No bills due soon'}
 
 Recent approved transactions:

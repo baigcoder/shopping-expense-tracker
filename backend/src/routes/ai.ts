@@ -8,6 +8,8 @@ import openRouterService, { FinancialContext, OpenRouterUseCase } from '../servi
 import cacheService from '../services/redisCacheService';
 import { authMiddleware, AuthRequest } from '../middleware/auth.js';
 import { sanitizeChatMessage } from '../utils/security';
+import { findUnverified, stripUnverified } from '../utils/replyVerifier.js';
+import { trialInsights } from '../utils/userKnowledge.js';
 import { composeChatSystemPrompt, formatMoneyAmount, parseVoiceIntent, spendRiskLevel, validateVoiceAction } from '../utils/aiGrounding.js';
 import { supabase } from '../config/supabase.js';
 import { buildCashlySystemPrompt, getFinancialSnapshot, getFinancialSummary } from '../services/financialContextService.js';
@@ -80,16 +82,17 @@ function getFeatureFallback(feature: 'insights' | 'forecast' | 'risks', context:
     }
 
     if (feature === 'risks') {
-        if (!context.transactionCount) return [];
+        const trialRisks = trialInsights(context.trialAlerts, 'risk', generatedAt);
+        if (!context.transactionCount) return trialRisks;
         return context.healthScore && context.healthScore < 60
-            ? [{
+            ? [...trialRisks, {
                 type: 'risk',
                 title: 'Spending Health Needs Attention',
                 message: 'Your local financial health score is low. Review top categories and reduce flexible spending this week.',
                 confidence: 0.8,
                 generatedAt
             }]
-            : [];
+            : trialRisks;
     }
 
     return [{
@@ -203,6 +206,90 @@ function getFallbackChatReply(message: string, context: {
     const txCount = context.transactions || 0;
 
     return `Hey! 👋 I'm working with a quick local summary right now. Here's what I see: you've spent ${monthly} this month and ${weekly} this week across ${txCount} transactions. Try asking me something specific like "how can I save money?" or "show my budget status" and I'll do my best to help! 💪`;
+}
+
+// Calls the model, then checks every figure/date in the reply against the prompt. One retry, then strip what can't be verified.
+async function completeGrounded(
+    systemPrompt: string,
+    history: Array<{ role: 'user' | 'assistant'; content: string }>,
+    userMessage: string,
+    options: Parameters<typeof openRouterService.chatCompletion>[1]
+) {
+    const messages = [
+        { role: 'system' as const, content: systemPrompt },
+        ...history,
+        { role: 'user' as const, content: userMessage }
+    ];
+    const first = await openRouterService.chatCompletion(messages, options);
+    const bad = findUnverified(first.content, systemPrompt);
+    if (!bad.length) return { content: first.content, model: first.model, grounding: 'verified' as const };
+
+    console.warn('AI reply had unverified figures, retrying:', bad.join(', '));
+    try {
+        const retry = await openRouterService.chatCompletion([
+            ...messages,
+            { role: 'assistant' as const, content: first.content },
+            { role: 'user' as const, content: `Your last answer used figures that are not in my data: ${bad.join(', ')}. Answer again using only figures from USER FINANCIAL DATA, or say you do not have them.` }
+        ], options);
+        const stillBad = findUnverified(retry.content, systemPrompt);
+        if (!stillBad.length) return { content: retry.content, model: retry.model, grounding: 'corrected' as const };
+        const cleaned = stripUnverified(retry.content, stillBad);
+        return { content: cleaned || "I don't have a verified figure for that in your data yet.", model: retry.model, grounding: 'trimmed' as const };
+    } catch {
+        const cleaned = stripUnverified(first.content, bad);
+        return { content: cleaned || "I don't have a verified figure for that in your data yet.", model: first.model, grounding: 'trimmed' as const };
+    }
+}
+
+// Parses a spoken command into an intent. The user's words go in a user message, never inside the instructions.
+async function detectVoiceIntent(message: string, userId: string): Promise<string> {
+    const detectPrompt = `You are an intent parser for a financial assistant. Extract the user's intent and parameters from their voice command.
+
+SUPPORTED ACTIONS:
+1. add_goal - Create a savings goal (needs: name, target amount)
+2. add_reminder - Create a bill reminder (needs: title, amount, due_date)
+3. add_transaction - Log a transaction (needs: description, amount, category, type expense/income)
+4. none - Just a question/conversation (no action needed)
+
+RESPOND ONLY with valid JSON in this exact format:
+{
+  "action": "add_goal|add_reminder|add_transaction|none",
+  "params": {
+    "name": "goal name",
+    "target": 50000,
+    "title": "reminder title",
+    "amount": 1000,
+    "due_date": "2025-01-15",
+    "description": "transaction desc",
+    "category": "Food & Dining",
+    "type": "expense"
+  },
+  "confirmation": "Natural language confirmation to speak to user"
+}
+
+If required fields are missing, use action "none". Do not invent amounts.`;
+    const intentResponse = await openRouterService.chatCompletion(
+        [
+            { role: 'system', content: detectPrompt },
+            { role: 'user', content: message }
+        ],
+        {
+            temperature: 0.2,
+            maxTokens: 300,
+            useCase: 'voice',
+            responseFormat: { type: 'json_object' },
+            user: userId
+        }
+    );
+    return intentResponse.content || '{"action":"none"}';
+}
+
+function describeProposal(intent: { action: string; params: Record<string, any> }, currency: string, name = '') {
+    const money = (value: number) => formatMoneyAmount(value, currency);
+    const who = name ? ` ${name}` : '';
+    if (intent.action === 'add_goal') return `Create savings goal "${intent.params.name}" with a target of ${money(intent.params.target)}? Please confirm${who}.`;
+    if (intent.action === 'add_reminder') return `Set a reminder "${intent.params.title}"${intent.params.amount ? ` for ${money(intent.params.amount)}` : ''} due ${intent.params.due_date}? Please confirm${who}.`;
+    return `Record a ${intent.params.type} of ${money(intent.params.amount)} for "${intent.params.description}" (${intent.params.category})? Please confirm${who}.`;
 }
 
 // ==================== ROUTES ====================
@@ -530,6 +617,7 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
         const chatUseCase = getChatUseCase(context, useCase);
         let model = openRouterService.getModelName(chatUseCase);
         let aiUnavailable = false;
+        let grounding: string | undefined;
 
         try {
             if (!aiSettings.aiLiveEnabled) {
@@ -540,23 +628,17 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
                 .filter((item: any) => item?.role === 'user' || item?.role === 'assistant')
                 .map((item: any) => ({ role: item.role, content: String(item.content || '') }));
 
-            const response = await openRouterService.chatCompletion(
-                [
-                    { role: 'system', content: systemPrompt },
-                    ...chatHistory,
-                    { role: 'user', content: sanitizedMessage }
-                ],
-                {
-                    model,
-                    useCase: chatUseCase,
-                    temperature: 0.5,
-                    maxTokens: 500,
-                    user: userId
-                }
-            );
+            const response = await completeGrounded(systemPrompt, chatHistory, sanitizedMessage, {
+                model,
+                useCase: chatUseCase,
+                temperature: 0.5,
+                maxTokens: 500,
+                user: userId
+            });
 
             reply = response.content;
             model = response.model;
+            grounding = response.grounding;
         } catch (aiError: any) {
             aiUnavailable = true;
             model = 'local-fallback';
@@ -582,6 +664,7 @@ router.post('/chat', aiChatLimiter, async (req: AuthRequest, res: Response) => {
             model,
             fromBackend: true,
             aiUnavailable,
+            grounding,
             contextLoaded: {
                 transactions: snapshot.transactions.length,
                 subscriptions: snapshot.subscriptions.length,
@@ -640,6 +723,7 @@ router.post('/chat/fast', aiChatLimiter, async (req: AuthRequest, res: Response)
         let reply: string;
         let model = openRouterService.getModelName('fastChat');
         let aiUnavailable = false;
+        let grounding: string | undefined;
 
         try {
             if (!aiSettings.aiLiveEnabled) {
@@ -650,23 +734,17 @@ router.post('/chat/fast', aiChatLimiter, async (req: AuthRequest, res: Response)
                 .filter((item: any) => item?.role === 'user' || item?.role === 'assistant')
                 .map((item: any) => ({ role: item.role as 'user' | 'assistant', content: String(item.content || '') }));
 
-            const response = await openRouterService.chatCompletion(
-                [
-                    { role: 'system', content: systemPrompt },
-                    ...chatHistory,
-                    { role: 'user', content: sanitizedMessage }
-                ],
-                {
-                    model,
-                    useCase: 'fastChat',
-                    temperature: 0.5,
-                    maxTokens: 500,
-                    user: userId
-                }
-            );
+            const response = await completeGrounded(systemPrompt, chatHistory, sanitizedMessage, {
+                model,
+                useCase: 'fastChat',
+                temperature: 0.5,
+                maxTokens: 500,
+                user: userId
+            });
 
             reply = response.content;
             model = response.model;
+            grounding = response.grounding;
         } catch (aiError: any) {
             aiUnavailable = true;
             model = 'local-fallback';
@@ -693,6 +771,7 @@ router.post('/chat/fast', aiChatLimiter, async (req: AuthRequest, res: Response)
             model,
             fromBackend: true,
             aiUnavailable,
+            grounding,
             fast: true,
             responseTime,
             historyLength: aiSettings.aiMemoryEnabled ? history.length + 2 : 0,
@@ -733,21 +812,25 @@ router.post('/chat/clear', async (req: AuthRequest, res: Response) => {
  */
 router.post('/voice-action', aiActionLimiter, async (req: AuthRequest, res: Response) => {
     const userId = getAIUserId(req);
-    const { message, userName } = req.body;
+    const { message, userName, confirm, intent: proposed, confirmId } = req.body;
+    const confirmed = confirm === true;
 
     if (!userId) {
         return res.status(401).json({ error: 'User ID required' });
     }
 
-    if (!message) {
+    if (!message && !confirmed) {
         return res.status(400).json({ error: 'Message required' });
     }
 
-    const validation = sanitizeChatMessage(message);
-    if (!validation.valid) {
-        return res.status(400).json({ error: validation.error || 'Invalid message' });
+    let sanitizedVoiceMessage = '';
+    if (!confirmed) {
+        const validation = sanitizeChatMessage(message);
+        if (!validation.valid) {
+            return res.status(400).json({ error: validation.error || 'Invalid message' });
+        }
+        sanitizedVoiceMessage = validation.sanitized;
     }
-    const sanitizedVoiceMessage = validation.sanitized;
 
     try {
         const aiSettings = await getUserSettings(userId);
@@ -761,48 +844,11 @@ router.post('/voice-action', aiActionLimiter, async (req: AuthRequest, res: Resp
             });
         }
 
-        const detectPrompt = `You are an intent parser for a financial assistant. Extract the user's intent and parameters from their voice command.
-
-SUPPORTED ACTIONS:
-1. add_goal - Create a savings goal (needs: name, target amount)
-2. add_reminder - Create a bill reminder (needs: title, amount, due_date)
-3. add_transaction - Log a transaction (needs: description, amount, category, type expense/income)
-4. none - Just a question/conversation (no action needed)
-
-USER COMMAND: "${sanitizedVoiceMessage}"
-
-RESPOND ONLY with valid JSON in this exact format:
-{
-  "action": "add_goal|add_reminder|add_transaction|none",
-  "params": {
-    "name": "goal name",
-    "target": 50000,
-    "title": "reminder title",
-    "amount": 1000,
-    "due_date": "2025-01-15",
-    "description": "transaction desc",
-    "category": "Food & Dining",
-    "type": "expense"
-  },
-  "confirmation": "Natural language confirmation to speak to user"
-}
-
-If required fields are missing, use action "none". Do not invent amounts.`;
-
-        const intentResponse = await openRouterService.chatCompletion(
-            [
-                { role: 'system', content: detectPrompt }
-            ],
-            {
-                temperature: 0.2,
-                maxTokens: 300,
-                useCase: 'voice',
-                responseFormat: { type: 'json_object' },
-                user: userId
-            }
-        );
-
-        const parsed = parseVoiceIntent(intentResponse.content || '{"action":"none"}');
+        // Confirmed calls skip the model: the validated proposal the user approved is what runs.
+        const intentContent = confirmed
+            ? JSON.stringify({ action: proposed?.action, params: proposed?.params || {}, confirmation: '' })
+            : await detectVoiceIntent(sanitizedVoiceMessage, userId);
+        const parsed = parseVoiceIntent(intentContent);
         const validated = validateVoiceAction(parsed);
         const intent = validated.intent;
 
@@ -816,8 +862,30 @@ If required fields are missing, use action "none". Do not invent amounts.`;
             });
         }
 
-        let actionResult = null;
         const displayName = userName ? String(userName).slice(0, 40) : '';
+
+        // Money-moving writes never run straight from a model's reading of speech: propose, then wait for confirm.
+        if (!confirmed && intent.action !== 'none') {
+            return res.json({
+                action: intent.action,
+                params: intent.params,
+                confirmation: describeProposal(intent, aiSettings.currency, displayName),
+                needsConfirmation: true,
+                actionResult: null,
+                success: false
+            });
+        }
+        if (confirmed && intent.action === 'none') {
+            return res.json({ action: 'none', params: {}, confirmation: 'Nothing to confirm.', actionResult: null, success: false });
+        }
+
+        // The same confirmation tapped twice must not create the record twice.
+        const doneKey = confirmed && confirmId ? `voice:done:${userId}:${String(confirmId).slice(0, 64)}` : null;
+        if (doneKey && await cacheService.getCache(doneKey)) {
+            return res.json({ action: intent.action, params: intent.params, confirmation: 'Already done.', actionResult: null, success: true, duplicate: true });
+        }
+
+        let actionResult = null;
 
         if (intent.action === 'add_goal') {
             const { data, error } = await supabase
@@ -878,6 +946,8 @@ If required fields are missing, use action "none". Do not invent amounts.`;
                 intent.confirmation = "I couldn't log that transaction. Please try again.";
             }
         }
+
+        if (doneKey && actionResult) await cacheService.setCache(doneKey, true, 120);
 
         res.json({
             action: intent.action,
