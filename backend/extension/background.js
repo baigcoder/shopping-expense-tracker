@@ -1072,8 +1072,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
 
         case 'BEHAVIOR_TRANSACTION_DETECTED':
-            handleBehaviorTransaction(message.data);
-            break;
+            // Reply with the outcome so the page toast can say saved / needs sign-in instead of always "queued".
+            handleBehaviorTransaction(message.data)
+                .then(sendResponse)
+                .catch((err) => sendResponse({ success: false, error: err?.message || String(err) }));
+            return true;
 
         case 'TRACKING_STATE_UPDATE':
             // Update tracking state for popup display
@@ -1610,27 +1613,49 @@ async function showSyncNotification(email) {
     });
 }
 
-async function syncPendingTransactions() {
-    const stored = await chrome.storage.local.get(['pendingTransactions', 'accessToken', 'userId', 'userEmail']);
-    const queued = Array.isArray(stored.pendingTransactions) ? stored.pendingTransactions : [];
-    if (!queued.length) return;
-
-    const accessToken = stored.accessToken || await getValidAccessToken();
-    if (!accessToken || !stored.userId) return;
-
-    const remaining = [];
-    for (const item of queued) {
-        try {
-            const isSub = item.source === 'subscription-detection' || item.type === 'trial' || item.type === 'subscription' || item.isTrial || item.is_trial;
-            const result = isSub
-                ? await handleSubscriptionDetected(item)
-                : await handleBehaviorTransaction(item);
-            if (!result?.success && result?.pending) remaining.push(item);
-        } catch {
-            remaining.push(item);
-        }
+async function queuePendingTransaction(data) {
+    const stored = await chrome.storage.local.get(['pendingTransactions']);
+    const queue = Array.isArray(stored.pendingTransactions) ? stored.pendingTransactions : [];
+    const hash = data.transactionHash || data.idempotencyKey;
+    const source = data.source || 'behavior-detection';
+    if (!hash || !queue.some((item) => (item.transactionHash || item.idempotencyKey) === hash && (item.source || 'behavior-detection') === source)) {
+        queue.push({ ...data, timestamp: Date.now(), source });
     }
-    await chrome.storage.local.set({ pendingTransactions: remaining });
+    const capped = queue.slice(-50);
+    await chrome.storage.local.set({ pendingTransactions: capped });
+    return capped.length;
+}
+
+let pendingSyncRunning = false;
+
+async function syncPendingTransactions() {
+    if (pendingSyncRunning) return;
+    pendingSyncRunning = true;
+    try {
+        const stored = await chrome.storage.local.get(['pendingTransactions', 'accessToken', 'userId']);
+        const queued = Array.isArray(stored.pendingTransactions) ? stored.pendingTransactions : [];
+        if (!queued.length) return;
+
+        const accessToken = await getValidAccessToken();
+        if (!accessToken || !stored.userId) return;
+
+        // Take the queue first; each handler re-queues its own failures, so nothing is lost or doubled.
+        await chrome.storage.local.set({ pendingTransactions: [] });
+        for (const item of queued) {
+            try {
+                if (item.source === 'subscription-detection') {
+                    const result = await handleSubscriptionDetected(item);
+                    if (!result?.success) await queuePendingTransaction({ ...item, source: 'subscription-detection' });
+                } else {
+                    await handleBehaviorTransaction(item);
+                }
+            } catch {
+                await queuePendingTransaction(item);
+            }
+        }
+    } finally {
+        pendingSyncRunning = false;
+    }
 }
 
 function getCategoryIcon(category) {
@@ -1697,6 +1722,18 @@ async function handleSubscriptionDetected(data = {}) {
 }
 
 async function handleCancellationDetected(data = {}) {
+    try {
+        const accessToken = await getValidAccessToken();
+        if (accessToken) {
+            await fetchWithTimeout(`${getApiBaseUrl()}/subscriptions/cancelled`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+                body: JSON.stringify({ name: data.name, hostname: data.hostname, url: data.url }),
+            }, 8000);
+        }
+    } catch (err) {
+        console.warn('Cancellation sync failed:', err?.message || err);
+    }
     notifyWebsiteTabs('CASHLY_DATA_UPDATED', {
         area: 'subscriptions',
         cancellation: data,
@@ -1721,25 +1758,18 @@ async function handleBehaviorTransaction(data) {
     console.log('ðŸŽ¯ Behavior-based transaction detected:', data);
 
     const authData = await chrome.storage.local.get(['accessToken', 'userId', 'userEmail']);
-    const accessToken = authData.accessToken || await getValidAccessToken();
-    authData.accessToken = accessToken;
+    // Always validate/refresh: the stored Supabase JWT expires hourly, and an expired one made every capture 401 and vanish.
+    authData.accessToken = await getValidAccessToken();
 
     if (!authData.accessToken || !authData.userId) {
         console.log('Not logged in, storing for later sync');
-        const pending = await chrome.storage.local.get(['pendingTransactions']) || { pendingTransactions: [] };
-        pending.pendingTransactions = pending.pendingTransactions || [];
-        pending.pendingTransactions.push({
-            ...data,
-            timestamp: Date.now(),
-            source: 'behavior-detection'
-        });
-        await chrome.storage.local.set({ pendingTransactions: pending.pendingTransactions });
+        const queued = await queuePendingTransaction(data);
         await updateTransactionSyncStatus('pending', {
             reason: 'not_authenticated',
-            queuedMessages: pending.pendingTransactions.length,
+            queuedMessages: queued,
             transactionHash: data.transactionHash || data.idempotencyKey
         });
-        return { success: false, pending: true };
+        return { success: false, pending: true, reason: 'not_authenticated' };
     }
 
     try {
@@ -1764,6 +1794,7 @@ async function handleBehaviorTransaction(data) {
             transactionHash: data.transactionHash || data.idempotencyKey,
             idempotencyKey: data.idempotencyKey || data.transactionHash,
             billingCycle: data.billingCycle,
+            recurringAmount: data.recurringAmount,
             isTrial: !!data.isTrial,
             isSubscription: !!data.isSubscription || data.type === 'subscription',
             trialDays: data.trialDays || 0,
@@ -1837,6 +1868,7 @@ async function handleBehaviorTransaction(data) {
 
             // Show enhanced notification
             showBehaviorNotification(data);
+            const autoApproved = !!createdResponse.autoApproved;
 
             // âš¡ INSTANT: Broadcast via Supabase Realtime for < 100ms latency
             broadcastTransaction(authData.userId, {
@@ -1862,7 +1894,7 @@ async function handleBehaviorTransaction(data) {
                 amount: data.price || data.amount
             });
 
-            return { success: true };
+            return { success: true, autoApproved };
         } else {
             const error = await response.text();
             await updateTransactionSyncStatus('error', {
@@ -1871,6 +1903,9 @@ async function handleBehaviorTransaction(data) {
                 error
             });
             console.error('Failed to save behavior transaction:', error);
+            // Auth/server/rate-limit failures are retryable; keep the capture instead of dropping it.
+            const retryable = response.status === 401 || response.status === 429 || response.status >= 500;
+            if (retryable) await queuePendingTransaction(data);
             await postExtensionHealthEvent(authData, {
                 eventType: 'detected_transaction',
                 status: 'error',
@@ -1878,7 +1913,7 @@ async function handleBehaviorTransaction(data) {
                 message: error,
                 details: { statusCode: response.status }
             });
-            return { success: false, error };
+            return { success: false, error, pending: retryable };
         }
     } catch (error) {
         await updateTransactionSyncStatus('error', {
@@ -1893,7 +1928,8 @@ async function handleBehaviorTransaction(data) {
             message: error?.message || String(error)
         });
         console.error('Behavior transaction save error:', error);
-        return { success: false, error: error.message };
+        await queuePendingTransaction(data); // network/timeout/rate-limit: retry on the next sync
+        return { success: false, error: error.message, pending: true };
     }
 }
 

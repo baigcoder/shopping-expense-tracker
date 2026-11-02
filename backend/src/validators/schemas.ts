@@ -39,6 +39,7 @@ export const detectedTransactionSchema = z.object({
     storeUrl: z.string().max(1000).optional(),
     amount: z.coerce.number().nonnegative().optional(),
     price: z.coerce.number().nonnegative().optional(),
+    recurringAmount: z.coerce.number().nonnegative().optional(),
     currency: z.string().min(3).max(8).optional(),
     type: z.string().max(50).optional(),
     category: z.string().max(100).optional(),
@@ -60,6 +61,12 @@ export const detectedTransactionSchema = z.object({
     behaviorFlow: z.array(z.any()).optional(),
     rawPayload: z.record(z.any()).optional(),
     notes: z.string().max(1000).optional(),
+});
+
+export const detectedCancellationSchema = z.object({
+    name: z.string().max(200).optional(),
+    hostname: z.string().max(255).optional(),
+    url: z.string().max(1000).optional(),
 });
 
 export const transactionCandidateSchema = z.object({

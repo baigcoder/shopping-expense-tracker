@@ -1,5 +1,5 @@
 import { supabase } from '../config/supabase.js';
-import { invalidateUserAICacheIfEnabled } from './settingsService.js';
+import { getUserSettings, invalidateUserAICacheIfEnabled } from './settingsService.js';
 import {
     ApproveCandidateInput,
     BulkCandidateInput,
@@ -15,6 +15,7 @@ import {
     updateMoneyTransaction,
 } from './transactionDomainService.js';
 import { broadcastPaymentCapture } from './paymentCaptureBroadcast.js';
+import { getFxRate } from '../utils/fxRates.js';
 import { AUTO_APPROVE_CONFIDENCE, shouldAutoApproveExtensionCapture } from '../utils/autoApproveCapture.js';
 import {
     buildCandidateHash,
@@ -86,6 +87,24 @@ type DetectedSubscriptionInput = DetectedTransactionInput & {
     source_url?: string;
 };
 
+// Marks the matching subscription cancelled when the user confirmed a cancellation on the merchant site.
+export async function cancelDetectedSubscription(userId: string, data: { name?: string; hostname?: string }) {
+    const keys = [data.name, data.hostname?.replace(/^www\./, '').split('.')[0]]
+        .map((value) => value?.trim())
+        .filter((value): value is string => !!value && value.length >= 3);
+    for (const key of keys) {
+        const { data: rows, error } = await supabase
+            .from('subscriptions')
+            .update({ status: 'cancelled', is_active: false, is_trial: false, updated_at: new Date().toISOString() })
+            .eq('user_id', userId)
+            .ilike('name', `%${key.replace(/[%_]/g, '\\$&')}%`)
+            .select();
+        if (error) throw error;
+        if (rows?.length) return rows;
+    }
+    return [];
+}
+
 export async function upsertDetectedSubscription(userId: string, data: DetectedSubscriptionInput) {
     const isTrial = !!(data.isTrial || data.is_trial || data.type === 'trial');
     const isSubscription = !!(
@@ -110,7 +129,8 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
         name,
         logo: '📦',
         category: data.category || 'Subscriptions',
-        price: Number(data.amount ?? data.price ?? 0) || 0,
+        // A trial charges nothing today; keep the price it renews at so the dashboard can forecast it.
+        price: Number(data.amount || data.price || data.recurringAmount || 0) || 0,
         cycle,
         is_active: true,
         is_trial: isTrial,
@@ -356,10 +376,30 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
     const isRecurring = data.isSubscription || data.type === 'subscription' || data.type === 'trial';
     const confidence = data.confidence ?? data.detectionConfidence ?? (data.amount || data.price ? 0.9 : 0.6);
 
+    // Book everything in the user's currency; keep the original amount in the payload and description.
+    let amount = data.amount ?? data.price ?? 0;
+    let fxRate = 1;
+    let fxUnavailable = false;
+    let fxNote = '';
+    const capturedCurrency = data.currency?.toUpperCase();
+    if (capturedCurrency && amount > 0) {
+        const userCurrency = await getUserSettings(userId).then((settings) => settings.currency).catch(() => null);
+        if (userCurrency && userCurrency !== capturedCurrency) {
+            const rate = await getFxRate(capturedCurrency, userCurrency);
+            if (rate) {
+                fxRate = rate;
+                fxNote = ` (${capturedCurrency} ${amount.toFixed(2)})`;
+                amount = Math.round(amount * rate * 100) / 100;
+            } else {
+                fxUnavailable = true;
+            }
+        }
+    }
+
     const result = await createTransactionCandidate(userId, {
         source: 'extension',
-        description,
-        amount: data.amount ?? data.price ?? 0,
+        description: `${description}${fxNote}`.slice(0, 500),
+        amount,
         date: data.detectedAt || data.date,
         type: data.type === 'income' ? 'income' : 'expense',
         category: data.category || (isRecurring ? 'Subscriptions' : 'Shopping'),
@@ -368,6 +408,8 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
             ...data,
             ingestion: 'auto_transaction_capture',
             normalizedCurrency: data.currency,
+            fxRate,
+            fxUnavailable,
             detectionSignals: data.detectionSignals || [],
         },
         confidence,
@@ -401,6 +443,7 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
         confidence: result.candidate.confidence,
         amount: result.candidate.amount,
         isTrial,
+        fxUnavailable,
     });
 
     if (autoApproved) {
@@ -429,7 +472,12 @@ export async function createDetectedCandidate(userId: string, data: DetectedTran
 
     if (isRecurring || data.isTrial) {
         try {
-            await upsertDetectedSubscription(userId, data);
+            await upsertDetectedSubscription(userId, {
+                ...data,
+                amount,
+                price: amount,
+                recurringAmount: data.recurringAmount ? Math.round(data.recurringAmount * fxRate * 100) / 100 : undefined,
+            });
         } catch (error) {
             console.warn('Detected subscription upsert failed:', error);
         }
