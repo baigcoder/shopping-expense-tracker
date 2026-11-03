@@ -1,90 +1,57 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 import { MarketingFooter, MarketingNav } from '@/components/landing/MarketingChrome';
-import { FEATURE_GROUPS, HOW_IT_WORKS } from '@/components/landing/featureCatalog';
-import BRAND from '@/config/branding';
+import { FEATURE_GROUPS } from '@/components/landing/featureCatalog';
+import { LiveCheckoutCard } from '@/features/landing/LiveCheckoutCard';
+import { useReveal } from '@/lib/reveal';
+import { cn } from '@/lib/utils';
+
+const wrap = 'mx-auto w-full max-w-[1320px] px-5 sm:px-8';
 
 const FeaturesPage = () => {
+    useReveal();
+    useEffect(() => { document.documentElement.classList.remove('dark'); }, []);
     return (
-        <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917]">
+        <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)]">
             <MarketingNav />
             <main>
-                <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr]">
-                    <div>
-                        <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand)]">
-                            <CheckCircle2 className="h-4 w-4" />
-                            Review-first workflows
+                <section className={cn(wrap, 'grid items-center gap-12 py-[clamp(48px,7vw,104px)] lg:grid-cols-12')} aria-labelledby="feat-h" data-reveal-group>
+                    <div className="lg:col-span-6">
+                        <h1 id="feat-h" className="font-display text-[length:clamp(36px,5vw,72px)] font-bold leading-[1.02] tracking-[-0.035em]" data-reveal>Everything Cashly does</h1>
+                        <p className="mt-6 max-w-[46ch] text-[18px] leading-relaxed text-[var(--color-ink-secondary)]" data-reveal>
+                            It starts with one card like this one. Approved purchases then feed your budgets, your calendar, your forecast and every answer the AI gives.
                         </p>
-                        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Everything in Cashly</h1>
-                        <p className="mt-4 max-w-xl leading-relaxed text-[#57534E]">
-                            Capture waits in Inbox. Rules make repeats predictable. Analytics, Money Twin, and AI only treat approved spend as real.
-                        </p>
-                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                            <Button asChild size="lg">
-                                <Link to="/signup">
-                                    Create account
-                                    <ArrowRight className="h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button asChild size="lg" variant="outline">
-                                <a href="/#analyze">How analysis works</a>
-                            </Button>
+                        <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 pr-2" data-reveal>
+                            <Link to="/demo" className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">Try the demo <ArrowRight size={18} /></Link>
+                            <Link to="/signup" className="text-[16px] font-medium underline underline-offset-4">Create a free account</Link>
                         </div>
                     </div>
-                    <div className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-md)]">
-                        <p className="text-xs font-medium text-[#78716C]">Review queue</p>
-                        <h2 className="mt-1 font-display text-xl font-semibold">Pending automation</h2>
-                        <div className="mt-4 space-y-3">
-                            {[
-                                ['Foodpanda', 'Food rule matched', 'High confidence'],
-                                ['Netflix', 'Subscription alert', 'Price check'],
-                                ['CSV import row 42', 'Duplicate warning', 'Needs review'],
-                            ].map(([title, meta, status]) => (
-                                <div key={title} className="flex items-center justify-between gap-3 rounded-xl border border-[#E7E5E4] bg-[#FAF8F5] px-3.5 py-3">
-                                    <div>
-                                        <p className="text-sm font-medium">{title}</p>
-                                        <p className="text-xs text-[#78716C]">{meta}</p>
-                                    </div>
-                                    <span className="rounded-full bg-[var(--color-brand-soft)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-brand)]">{status}</span>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="flex justify-center rounded-[24px] bg-[var(--color-ink)] px-5 py-12 lg:col-span-6" data-reveal>
+                        <LiveCheckoutCard />
                     </div>
                 </section>
 
-                <section className="border-y border-[#E7E5E4] bg-[#F4F0EB]">
-                    <div className="mx-auto grid max-w-6xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-                        {HOW_IT_WORKS.map((step, index) => (
-                            <div key={step.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
-                                <p className="text-sm font-medium text-[var(--color-brand)]">{index + 1}</p>
-                                <p className="mt-2 text-sm font-medium leading-snug">{step.title}</p>
-                                <p className="mt-1 text-xs leading-relaxed text-[#78716C]">{step.body}</p>
+                {FEATURE_GROUPS.map((group, gi) => (
+                    <section key={group.id} className={cn('py-[clamp(64px,8vw,120px)]', gi % 2 === 0 && 'bg-[var(--color-surface)]')} aria-labelledby={`g-${group.id}`} data-reveal-group>
+                        <div className={cn(wrap, 'grid gap-10 lg:grid-cols-12')}>
+                            <div className="lg:sticky lg:top-24 lg:col-span-4 lg:self-start" data-reveal>
+                                <h2 id={`g-${group.id}`} className="font-display text-[length:clamp(28px,3.2vw,44px)] font-bold leading-[1.05] tracking-[-0.03em]">{group.title}</h2>
+                                <p className="mt-4 max-w-[36ch] text-[17px] leading-relaxed text-[var(--color-ink-secondary)]">{group.description}</p>
                             </div>
-                        ))}
-                    </div>
-                </section>
-
-                {FEATURE_GROUPS.map((group) => (
-                    <section key={group.title} className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-                        <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{group.title}</h2>
-                        <p className="mt-2 max-w-2xl text-[#57534E]">{group.description}</p>
-                        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {group.features.map((feature) => (
-                                <article key={feature.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-sm)]">
-                                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
-                                        <feature.icon className="h-5 w-5" />
+                            <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:col-span-8" data-reveal>
+                                {group.features.map((f) => (
+                                    <div key={f.title}>
+                                        <dt className="font-display text-[20px] font-semibold tracking-tight">{f.title}</dt>
+                                        <dd className="mt-2 text-[16px] leading-relaxed text-[var(--color-ink-secondary)]">{f.description}</dd>
                                     </div>
-                                    <h3 className="font-display font-semibold">{feature.title}</h3>
-                                    <p className="mt-1.5 text-sm leading-relaxed text-[#57534E]">{feature.description}</p>
-                                </article>
-                            ))}
+                                ))}
+                            </dl>
                         </div>
                     </section>
                 ))}
             </main>
             <MarketingFooter />
-            <p className="sr-only">{BRAND.name}</p>
         </div>
     );
 };

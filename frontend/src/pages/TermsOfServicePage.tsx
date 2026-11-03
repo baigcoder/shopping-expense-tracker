@@ -4,17 +4,17 @@ const TermsOfServicePage = () => {
     return (
         <StaticPageTemplate
             title="Terms of Service"
-            subtitle="Effective Date: December 2024"
+            subtitle="The rules for using Cashly, written to be read. In effect since December 2024."
         >
             <h2>1. Acceptance of Terms</h2>
             <p>
-                By accessing and using SpendSync, you accept and agree to be bound by the terms and provision
+                By accessing and using Cashly, you accept and agree to be bound by the terms and provision
                 of this agreement. If you do not agree to these Terms of Service, please do not use our services.
             </p>
 
             <h2>2. Use License</h2>
             <p>
-                Permission is granted to temporarily download one copy of SpendSync for personal,
+                Permission is granted to temporarily download one copy of Cashly for personal,
                 non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.
             </p>
             <p>Under this license you may not:</p>
@@ -36,7 +36,7 @@ const TermsOfServicePage = () => {
             </p>
 
             <h2>4. Prohibited Uses</h2>
-            <p>You may not use SpendSync:</p>
+            <p>You may not use Cashly:</p>
             <ul>
                 <li>In any way that violates applicable laws or regulations</li>
                 <li>To transmit malicious code or viruses</li>
@@ -53,7 +53,7 @@ const TermsOfServicePage = () => {
 
             <h2>6. Limitation of Liability</h2>
             <p>
-                In no event shall SpendSync, nor its directors, employees, partners, or suppliers be liable
+                In no event shall Cashly, nor its directors, employees, partners, or suppliers be liable
                 for any indirect, incidental, special, consequential or punitive damages, including loss of
                 profits, data, or other intangible losses.
             </p>
