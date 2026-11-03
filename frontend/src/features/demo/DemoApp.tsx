@@ -1,9 +1,10 @@
 // /demo: the real app shell and screens, fed with sample data and walked through by the guide.
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { AppShell, appNav } from '@/components/app/AppShell';
 import { HomeView } from '../home/HomeView';
+import { InboxView, type InboxStatus } from '../inbox/InboxView';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -25,6 +26,15 @@ function DemoHome() {
             onDismiss={dismiss}
             onAdd={() => undefined}
         />
+    );
+}
+
+function DemoInbox() {
+    const { inbox, rules, approve, dismiss, merge, bulk, addRule } = useDemo();
+    const [status, setStatus] = useState<InboxStatus>('pending');
+    return (
+        <InboxView items={inbox[status]} rules={rules} status={status} money={money} onStatus={setStatus}
+            onApprove={approve} onReject={dismiss} onMerge={merge} onBulk={bulk} onAddRule={addRule} />
     );
 }
 
@@ -64,7 +74,8 @@ function DemoShell() {
         >
             <Routes>
                 <Route path="dashboard" element={<DemoHome />} />
-                {screens.map((s) => (
+                <Route path="transaction-inbox" element={<DemoInbox />} />
+                {screens.filter((s) => s.to !== '/transaction-inbox').map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />

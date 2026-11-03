@@ -101,7 +101,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
             </header>
 
             {/* The question this screen answers first */}
-            <section className="grid gap-6 rounded-[20px] bg-[var(--color-surface)] p-5 sm:p-6 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" data-tour="safe" aria-labelledby="h-safe">
+            <section className="grid grid-cols-[minmax(0,1fr)] gap-6 rounded-[20px] bg-[var(--color-surface)] p-5 sm:p-6 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" data-tour="safe" aria-labelledby="h-safe">
                 <div className="flex flex-col justify-between gap-6">
                     <div>
                         <h2 id="h-safe" className="text-[15px] text-[var(--color-ink-secondary)]">Safe to spend</h2>
@@ -137,7 +137,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                 </div>
             </section>
 
-            <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+            <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <div className="flex flex-col gap-4">
                 <Panel title="Waiting for your approval" tour="inbox"
                     action={<Link to={`${basePath}/transaction-inbox`} className="inline-flex items-center gap-1 text-[14px] font-medium text-[var(--color-ink)] hover:underline">Open inbox <ArrowRight size={14} /></Link>}>

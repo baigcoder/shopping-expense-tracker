@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, RotateCcw, X } from 'lucide-react';
 import { useDemo } from './DemoContext';
@@ -13,7 +13,10 @@ export const DEMO_STEPS: Step[] = [
     { route: '/demo/dashboard', target: 'upcoming', title: 'Trials before they charge', body: 'Free trials and bills appear days ahead. Adobe Express ends in two days here, so there is still time to cancel.' },
     { route: '/demo/dashboard', target: 'recent', title: 'A ledger you trust', body: 'Only approved purchases and income live here, so every chart and every AI answer is built on numbers you checked.' },
     { route: '/demo/dashboard', target: 'add', title: 'Cash and offline spending', body: 'Paid cash or bought in a shop? Add it by hand and it follows the same path as everything else.' },
-    { route: '/demo/dashboard', target: 'nav-inbox', title: 'Review inbox', body: 'The full inbox lets you edit amounts and categories, merge duplicates, and save a rule so a trusted merchant skips the queue next time.' },
+    { route: '/demo/transaction-inbox', target: 'inbox-list', title: 'The full review inbox', body: 'Each purchase says where it came from and how sure Cashly is. PayPro 4471 is unclear, so it says check the details.', tryIt: 'Press Edit on PayPro 4471, give it a name and a category, then Save and approve.' },
+    { route: '/demo/transaction-inbox', target: 'inbox-list', title: 'Duplicates are caught', body: 'The Imtiaz receipt from a statement import has the same total as a purchase you already approved. Merge keeps one, so it is never counted twice.' },
+    { route: '/demo/transaction-inbox', target: 'inbox-confident', title: 'Clear the easy ones at once', body: 'Purchases Cashly is sure about can be approved together. On a keyboard: A approves, R says not mine, J and K move.' },
+    { route: '/demo/transaction-inbox', target: 'inbox-rules', title: 'Trust a merchant', body: 'Save a rule and future purchases from that shop skip the inbox and land in the right category.', tryIt: 'Type Foodpanda, pick Food, and save the rule.' },
     { route: '/demo/dashboard', target: 'nav-budgets', title: 'Plan the month', body: 'Budgets, bills and subscriptions, savings goals and a cashflow calendar all read the same approved ledger.' },
     { route: '/demo/dashboard', target: 'nav-twin', title: 'Money Twin', body: 'A forecast of the rest of your month. Move a slider ("spend Rs 5,000 less on food") and see how many days your money lasts.' },
     { route: '/demo/dashboard', target: 'nav-assist', title: 'Ask Cashly', body: 'Ask in plain words: "Can I afford a Rs 30,000 phone this month?" Answers use your real numbers and say when something is still pending.' },
@@ -25,15 +28,18 @@ export function DemoGuide() {
     const { reset, lastAction } = useDemo();
     const navigate = useNavigate();
     const location = useLocation();
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(() => Math.max(0, DEMO_STEPS.findIndex((st) => window.location.pathname.startsWith(st.route))));
     const [open, setOpen] = useState(true);
     const step = DEMO_STEPS[index];
     const last = index === DEMO_STEPS.length - 1;
 
+    // Move to the step's screen only when the step changes; visitors can still wander off between steps.
+    const shownIndex = useRef(index);
     useEffect(() => {
-        if (!open) return;
-        if (!location.pathname.startsWith(step.route)) navigate(step.route);
-    }, [open, step.route, location.pathname, navigate]);
+        if (shownIndex.current === index) return; // a visitor who arrived on a screen stays on it
+        shownIndex.current = index;
+        if (open && !window.location.pathname.startsWith(step.route)) navigate(step.route);
+    }, [index, open]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         document.querySelectorAll('[data-tour-active]').forEach((el) => el.removeAttribute('data-tour-active'));

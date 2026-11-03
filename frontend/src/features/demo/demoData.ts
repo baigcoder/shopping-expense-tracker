@@ -1,5 +1,6 @@
 // Sample month for the demo, anchored to the 20th of the current month so it always shows a full month.
-import type { HomeBudget, HomeGoal, HomePending, HomeSubscription, HomeTransaction } from '../home/homeModel';
+import type { HomeBudget, HomeGoal, HomeSubscription, HomeTransaction } from '../home/homeModel';
+import type { InboxItem, InboxRule } from '../inbox/InboxView';
 
 const today = new Date();
 export const DEMO_NOW = new Date(today.getFullYear(), today.getMonth(), 20, 12);
@@ -34,10 +35,16 @@ export const demoTransactions = (): HomeTransaction[] => [
     { id: 't19', date: day(-20), description: 'Fuel and rides', amount: 12600, type: 'expense', category: 'Transport' },
 ];
 
-export const demoPending = (): HomePending[] => [
-    { id: 'p1', merchant: 'Daraz', description: 'Anker power bank 20,000 mAh', amount: 8499, category: 'Shopping', date: day(0), source: 'extension' },
-    { id: 'p2', merchant: 'Foodpanda', description: 'Dinner from Kolachi', amount: 3260, category: 'Food', date: day(0), source: 'extension' },
-    { id: 'p3', merchant: 'Spotify', description: 'Premium Duo, monthly', amount: 579, category: 'Subscriptions', date: day(0), source: 'extension' },
+export const demoInbox = (): InboxItem[] => [
+    { id: 'p1', merchant: 'Daraz', description: 'Anker power bank 20,000 mAh', amount: 8499, category: 'Shopping', date: day(0), source: 'extension', confidence: 0.96 },
+    { id: 'p2', merchant: 'Foodpanda', description: 'Dinner from Kolachi', amount: 3260, category: 'Food', date: day(0), source: 'extension', confidence: 0.93 },
+    { id: 'p3', merchant: 'Spotify', description: 'Premium Duo, monthly', amount: 579, category: 'Subscriptions', date: day(0), source: 'extension', confidence: 0.91 },
+    { id: 'p4', merchant: 'PayPro 4471', description: 'Card payment, merchant name unclear', amount: 2200, category: 'Other', date: day(-1), source: 'extension', confidence: 0.52 },
+    { id: 'p5', merchant: 'Imtiaz', description: 'Groceries, same total as one you already approved', amount: 11640, category: 'Food', date: day(-1), source: 'csv', confidence: 0.88, duplicateOf: 't11' },
+];
+
+export const demoRules = (): InboxRule[] => [
+    { id: 'r1', pattern: 'Careem', category: 'Transport', matchType: 'contains', enabled: true },
 ];
 
 export const demoBudgets: HomeBudget[] = [
