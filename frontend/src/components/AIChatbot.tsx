@@ -282,7 +282,7 @@ function ActionChipButton({
                 chip.status === 'done' &&
                     'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400 cursor-default',
                 chip.status === 'error' &&
-                    'bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-400 cursor-default'
+                    'bg-[var(--color-brand-soft)] dark:bg-[var(--color-wine)]/30 border-[var(--color-pink)] dark:border-[var(--color-brand)] text-[var(--color-brand)] dark:text-[var(--color-pink)] cursor-default'
             )}
         >
             {chip.status === 'loading' ? (

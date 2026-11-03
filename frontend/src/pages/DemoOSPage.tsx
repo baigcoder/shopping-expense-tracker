@@ -687,10 +687,10 @@ export default function DemoOSPage() {
                                 </div>
 
                                 {/* Tile 4: Daily Burn Pacing */}
-                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-rose-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E2E1DA] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                                     <div className="flex items-center justify-between">
                                         <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Daily Burn</span>
-                                        <Zap size={14} className="text-rose-500" />
+                                        <Zap size={14} className="text-[var(--color-brand)]" />
                                     </div>
                                     <div className="my-2">
                                         <div className="text-3xl font-bold font-mono tracking-tight text-neutral-900 tabular-nums">

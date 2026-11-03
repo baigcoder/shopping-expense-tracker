@@ -402,10 +402,10 @@ export const SettingsPage = () => {
                                             'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all shrink-0',
                                             isActive
                                                 ? isDanger
-                                                    ? 'bg-rose-600 text-white shadow-xs'
+                                                    ? 'bg-[var(--color-brand)] text-white shadow-xs'
                                                     : 'bg-[#111111] text-white shadow-xs'
                                                 : isDanger
-                                                ? 'text-rose-600 hover:bg-rose-50'
+                                                ? 'text-[var(--color-brand)] hover:bg-[var(--color-brand-soft)]'
                                                 : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)] hover:bg-white'
                                         )}
                                     >
@@ -441,10 +441,10 @@ export const SettingsPage = () => {
                                             'group relative flex items-center justify-between w-full px-4 py-3 rounded-[16px] text-xs font-bold uppercase tracking-wider transition-all text-left',
                                             isActive
                                                 ? isDanger
-                                                    ? 'bg-rose-600 text-white shadow-xs'
+                                                    ? 'bg-[var(--color-brand)] text-white shadow-xs'
                                                     : 'bg-[#111111] text-white shadow-xs'
                                                 : isDanger
-                                                ? 'text-rose-600 hover:bg-rose-50'
+                                                ? 'text-[var(--color-brand)] hover:bg-[var(--color-brand-soft)]'
                                                 : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)] hover:bg-[var(--color-canvas)]'
                                         )}
                                     >
@@ -529,7 +529,7 @@ export const SettingsPage = () => {
                                                     value={name}
                                                     onChange={e => setName(e.target.value)}
                                                     placeholder="Alex Morgan"
-                                                    className="rounded-lg h-10 text-xs bg-white border-stone-300 text-stone-900 focus-visible:ring-2 focus-visible:ring-[#E11D48]"
+                                                    className="rounded-lg h-10 text-xs bg-white border-stone-300 text-stone-900 focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
                                                 />
                                                 <p className="text-[11px] text-stone-500">
                                                     Used across transaction ledgers and reports.
@@ -565,7 +565,7 @@ export const SettingsPage = () => {
                                                 type="submit"
                                                 size="sm"
                                                 disabled={isSavingProfile}
-                                                className="rounded-lg bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs h-9 px-5 shadow-2xs transition-colors"
+                                                className="rounded-lg bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs h-9 px-5 shadow-2xs transition-colors"
                                             >
                                                 {isSavingProfile ? 'Saving...' : 'Save Profile Changes'}
                                             </Button>
@@ -589,7 +589,7 @@ export const SettingsPage = () => {
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs font-semibold uppercase tracking-wider text-[#E11D48]">
+                                                <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-brand)]">
                                                     Financial Baseline
                                                 </span>
                                             </div>
@@ -606,7 +606,7 @@ export const SettingsPage = () => {
                                                 value={preferences.currency}
                                                 onValueChange={(val) => handleUpdatePreference({ currency: val })}
                                             >
-                                                <SelectTrigger className="w-48 rounded-lg h-10 text-xs bg-stone-50 border-stone-300 text-stone-900 font-mono font-medium focus:ring-2 focus:ring-[#E11D48]">
+                                                <SelectTrigger className="w-48 rounded-lg h-10 text-xs bg-stone-50 border-stone-300 text-stone-900 font-mono font-medium focus:ring-2 focus:ring-[var(--color-brand)]">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent className="bg-white border-stone-200 text-stone-900">
@@ -937,7 +937,7 @@ export const SettingsPage = () => {
                                             onClick={handlePasswordReset}
                                             className="rounded-lg h-9 text-xs border-stone-300 text-stone-800 hover:bg-stone-50 font-medium"
                                         >
-                                            <Key className="h-3.5 w-3.5 mr-1.5 text-[#E11D48]" />
+                                            <Key className="h-3.5 w-3.5 mr-1.5 text-[var(--color-brand)]" />
                                             Send Password Reset Link
                                         </Button>
                                     </div>
@@ -1052,7 +1052,7 @@ export const SettingsPage = () => {
                                         </div>
 
                                         <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 space-y-3">
-                                            <Layers className="h-5 w-5 text-[#E11D48]" />
+                                            <Layers className="h-5 w-5 text-[var(--color-brand)]" />
                                             <div>
                                                 <span className="text-xs font-bold text-stone-900 block">PDF Statement</span>
                                                 <span className="text-[11px] text-stone-500">Printable monthly statement with verified audit signatures</span>

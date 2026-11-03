@@ -109,7 +109,7 @@ export function WeeklyDebriefModal({
                                     {formatCurrency(weeklySpend)}
                                 </div>
                                 <div className="flex items-center gap-1.5 mt-2 text-xs">
-                                    <span className={isFavorable ? "text-emerald-600 dark:text-emerald-400 font-bold font-mono" : "text-rose-600 font-bold font-mono"}>
+                                    <span className={isFavorable ? "text-emerald-600 dark:text-emerald-400 font-bold font-mono" : "text-[var(--color-brand)] font-bold font-mono"}>
                                         {variancePercent > 0 ? `+${variancePercent}%` : `${variancePercent}%`} variance
                                     </span>
                                     <span className="text-[var(--color-muted)] text-[11px]">

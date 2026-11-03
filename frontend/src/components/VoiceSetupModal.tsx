@@ -175,7 +175,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
 
                                     <button
                                         onClick={() => setStep('confirm')}
-                                        className="w-full py-4 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48] hover:translate-y-1 hover:shadow-[4px_4px_0px_#E11D48] transition-all flex items-center justify-center gap-2"
+                                        className="w-full py-4 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_var(--color-brand)] hover:translate-y-1 hover:shadow-[4px_4px_0px_var(--color-brand)] transition-all flex items-center justify-center gap-2"
                                     >
                                         <Sparkles size={20} strokeWidth={3} /> CONTINUE WITH {selectedVoice.name}
                                     </button>
@@ -213,7 +213,7 @@ const VoiceSetupModal: React.FC<VoiceSetupModalProps> = ({ isOpen, onClose, onSe
                                     </button>
                                     <button
                                         onClick={handleConfirm} disabled={isLoading}
-                                        className="flex-[2] py-4 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48] hover:translate-y-1 hover:shadow-[4px_4px_0px_#E11D48] transition-all flex items-center justify-center gap-2"
+                                        className="flex-[2] py-4 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_var(--color-brand)] hover:translate-y-1 hover:shadow-[4px_4px_0px_var(--color-brand)] transition-all flex items-center justify-center gap-2"
                                     >
                                         {isLoading ? <Loader2 size={24} className="animate-spin" /> : <><Mic size={24} strokeWidth={3} /> INITIALIZE</>}
                                     </button>

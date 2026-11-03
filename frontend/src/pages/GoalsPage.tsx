@@ -515,7 +515,7 @@ export const GoalsPage = () => {
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleDelete(goal.id, goal.name)}
-                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-brand)] rounded-lg"
                                             >
                                                 <Trash2 className="h-3.5 w-3.5" />
                                             </Button>

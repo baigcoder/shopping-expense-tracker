@@ -29,7 +29,7 @@ const StaticPageTemplate = ({ title, subtitle, children, className }: StaticPage
                 <div className="prose prose-stone mt-8 max-w-none
                     prose-headings:font-display prose-headings:font-semibold prose-headings:tracking-tight
                     prose-p:text-[#57534E] prose-p:leading-relaxed
-                    prose-a:text-[#E11D48] prose-a:no-underline hover:prose-a:underline
+                    prose-a:text-[var(--color-brand)] prose-a:no-underline hover:prose-a:underline
                     prose-strong:text-[#1C1917] prose-li:text-[#57534E]">
                     {children}
                 </div>

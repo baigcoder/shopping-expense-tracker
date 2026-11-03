@@ -103,7 +103,7 @@ const BillRemindersPage = () => {
                             Refresh_Nodes
                         </button>
                         <button
-                            className="h-14 px-8 bg-black text-white font-black text-xs uppercase hover:bg-[#E11D48] transition-colors flex items-center gap-2"
+                            className="h-14 px-8 bg-black text-white font-black text-xs uppercase hover:bg-[var(--color-brand)] transition-colors flex items-center gap-2"
                             onClick={() => setShowAddModal(true)}
                         >
                             <Plus size={18} strokeWidth={3} />
@@ -121,7 +121,7 @@ const BillRemindersPage = () => {
                 >
                     {[
                         { icon: <Clock size={24} strokeWidth={2} />, label: "Pending bills", value: unpaidReminders.length, progress: (unpaidReminders.length / 10) * 100, color: "#1C1917" },
-                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Overdue", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "#E11D48" },
+                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Overdue", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "var(--color-brand)" },
                         { icon: <DollarSign size={24} strokeWidth={2} />, label: "Total due", value: currencyService.formatCurrency(totalDue), progress: totalDue > 0 ? 60 : 0, color: "#1C1917" }
                     ].map((stat, i) => (
                         <motion.div key={i} className={styles.premiumStatCard} variants={itemVariants}>
@@ -167,7 +167,7 @@ const BillRemindersPage = () => {
                                 No bills waiting right now
                             </p>
                             <button
-                                className="h-14 px-10 bg-black text-white font-black text-xs uppercase hover:bg-[#E11D48] transition-colors"
+                                className="h-14 px-10 bg-black text-white font-black text-xs uppercase hover:bg-[var(--color-brand)] transition-colors"
                                 onClick={() => setShowAddModal(true)}
                             >
                                 Schedule_Audit
@@ -207,7 +207,7 @@ const BillRemindersPage = () => {
                         <div className={styles.sectionHeader}>
                             <div className="flex items-center gap-4">
                                 <h2 className={styles.sectionTitle}>
-                                    <Sparkles size={32} strokeWidth={3} className="text-[#E11D48]" />
+                                    <Sparkles size={32} strokeWidth={3} className="text-[var(--color-brand)]" />
                                     AI_Predicted_Flow
                                 </h2>
                             </div>
@@ -268,7 +268,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                 <div
                     className={styles.tileIcon}
                     style={{
-                        background: isOverdue ? '#E11D48' : isDueSoon ? '#000000' : '#FFFFFF',
+                        background: isOverdue ? 'var(--color-brand)' : isDueSoon ? '#000000' : '#FFFFFF',
                         color: isOverdue ? '#FFFFFF' : isDueSoon ? '#FFFFFF' : '#000000'
                     }}
                 >
@@ -280,7 +280,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                         <div
                             className={styles.statusBadge}
                             style={{
-                                background: isOverdue ? '#E11D48' : isDueSoon ? '#000000' : '#FFFFFF',
+                                background: isOverdue ? 'var(--color-brand)' : isDueSoon ? '#000000' : '#FFFFFF',
                                 color: isOverdue || isDueSoon ? 'white' : 'black',
                                 borderColor: 'black'
                             }}
@@ -416,7 +416,7 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-6 bg-black text-white border-4 border-black shadow-[8px_8px_0px_#E11D48]">
+                    <div className="flex items-center justify-between p-6 bg-black text-white border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]">
                         <div className="flex items-center gap-6">
                             <div className={cn("p-3 border-2 border-white", emailEnabled ? "bg-white text-black" : "bg-black text-white/30")}>
                                 <Mail size={24} strokeWidth={3} />
@@ -426,7 +426,7 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                                 <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Inbound Alert Protocol</p>
                             </div>
                         </div>
-                        <Switch checked={emailEnabled} onCheckedChange={setEmailEnabled} className="data-[state=checked]:bg-[#E11D48]" />
+                        <Switch checked={emailEnabled} onCheckedChange={setEmailEnabled} className="data-[state=checked]:bg-[var(--color-brand)]" />
                     </div>
 
                     <div className="flex gap-6 pt-4">
@@ -437,7 +437,7 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                             ABORT
                         </button>
                         <button 
-                            className="flex-[2] h-16 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors" 
+                            className="flex-[2] h-16 bg-black text-white font-black uppercase text-xs hover:bg-[var(--color-brand)] transition-colors" 
                             onClick={handleSubmit}
                         >
                             Add reminder

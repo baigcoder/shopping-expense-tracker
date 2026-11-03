@@ -257,7 +257,7 @@ export const SubscriptionsPage = () => {
                 category: 'Entertainment',
                 price: '',
                 cycle: 'monthly',
-                color: '#E11D48',
+                color: 'var(--color-brand)',
                 is_trial: false,
                 trial_days: '7',
                 start_date: new Date().toISOString().split('T')[0],
@@ -391,10 +391,10 @@ export const SubscriptionsPage = () => {
                 </div>
 
                 {/* 3. Due in Next 7 Days */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-rose-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                     <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
                         <span>Due in Next 7 Days</span>
-                        <Clock className="h-4 w-4 text-rose-500" />
+                        <Clock className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
                         <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
@@ -540,7 +540,7 @@ export const SubscriptionsPage = () => {
                                                 size="sm"
                                                 variant="outline"
                                                 onClick={() => handleToggleSubStatus(trial)}
-                                                className="text-[11px] h-7 px-2 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-800 hover:bg-rose-50 dark:hover:bg-rose-950/30"
+                                                className="text-[11px] h-7 px-2 text-[var(--color-brand)] dark:text-[var(--color-pink)] border-[var(--color-pink)] dark:border-[var(--color-wine)] hover:bg-[var(--color-brand-soft)] dark:hover:bg-[var(--color-wine)]/30"
                                             >
                                                 Cancel
                                             </Button>
@@ -621,7 +621,7 @@ export const SubscriptionsPage = () => {
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleDeleteSub(sub.id, sub.name)}
-                                                className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                                className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-brand)] rounded-lg"
                                             >
                                                 <Trash2 className="h-3.5 w-3.5" />
                                             </Button>
@@ -706,7 +706,7 @@ export const SubscriptionsPage = () => {
                                                     variant="ghost"
                                                     size="sm"
                                                     onClick={() => handleDeleteBill(bill.id, bill.name)}
-                                                    className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                                    className="h-8 w-8 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-brand)] rounded-lg"
                                                 >
                                                     <Trash2 className="h-3.5 w-3.5" />
                                                 </Button>

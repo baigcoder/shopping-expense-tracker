@@ -43,7 +43,7 @@ const ShoppingActivityPage = lazy(() => import('./pages/ShoppingActivityPage'));
 // Public Pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
-const DemoOSPage = lazy(() => import('./pages/DemoOSPage'));
+const DemoApp = lazy(() => import('./features/demo/DemoApp'));
 
 // Legal & Support Pages
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
@@ -173,7 +173,7 @@ function App() {
                         <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
                         {/* Public Legal & Support Pages */}
-                        <Route path="/demo" element={<DemoOSPage />} />
+                        <Route path="/demo/*" element={<DemoApp />} />
                         <Route path="/privacy" element={<PrivacyPolicyPage />} />
                         <Route path="/terms" element={<TermsOfServicePage />} />
                         <Route path="/faq" element={<FAQPage />} />

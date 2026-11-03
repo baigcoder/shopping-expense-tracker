@@ -143,12 +143,12 @@
 }
 
 .openExtensionBtn:hover {
-  background: #E11D48;
+  background: var(--color-brand);
 }
 
 .seeMore:hover {
   background: #F8FAFC;
-  color: #E11D48;
+  color: var(--color-brand);
 }
 
 @media (max-width: 480px) {

@@ -310,7 +310,7 @@
 }
 
 .searchInput:focus {
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     outline: none;
     box-shadow: 0 0 0 4px var(--brand-muted);
     transform: translateY(-2px);
@@ -355,7 +355,7 @@
 }
 
 .categorySelect:focus {
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     outline: none;
     box-shadow: 0 0 0 4px var(--brand-muted);
     transform: translateY(-2px);
@@ -513,7 +513,7 @@
 .actionIconBtn:hover {
     background: var(--bg-card);
     color: var(--brand);
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px var(--brand-glow);
 }
@@ -539,7 +539,7 @@
 
 .cat-entertainment {
     background: rgba(124, 58, 237, 0.1);
-    color: #E11D48;
+    color: var(--color-brand);
     border-color: rgba(124, 58, 237, 0.2);
 }
 
@@ -605,7 +605,7 @@
 
 .emptyState:hover .emptyIcon {
     transform: scale(1.1) rotate(5deg);
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     color: var(--brand);
 }
 

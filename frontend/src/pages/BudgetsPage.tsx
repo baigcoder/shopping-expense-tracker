@@ -251,7 +251,7 @@ export const BudgetsPage = () => {
                         </div>
                         <div className="text-xs text-[var(--color-muted)] mt-2">
                             {remainingCash < 0 ? (
-                                <span className="text-rose-600 font-semibold">Deficit across budget limits</span>
+                                <span className="text-[var(--color-brand)] font-semibold">Deficit across budget limits</span>
                             ) : (
                                 'Remaining cash balance before cap'
                             )}
@@ -276,10 +276,10 @@ export const BudgetsPage = () => {
                 </div>
 
                 {/* 3. Month Burn to Date */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-rose-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                     <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
                         <span>Month Burn to Date</span>
-                        <Flame className="h-4 w-4 text-rose-500" />
+                        <Flame className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
                         <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
@@ -305,7 +305,7 @@ export const BudgetsPage = () => {
                         </div>
                         <div className="text-xs mt-2">
                             {globalOverrunRisk ? (
-                                <span className="text-rose-600 font-semibold flex items-center gap-1">
+                                <span className="text-[var(--color-brand)] font-semibold flex items-center gap-1">
                                     <AlertTriangle className="h-3 w-3" />
                                     +{formatCurrency(projectedGlobalTotal - totalBudget)} overrun
                                 </span>
@@ -449,7 +449,7 @@ export const BudgetsPage = () => {
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={(e) => handleDeleteBudget(b.id, b.category, e)}
-                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-rose-600 rounded-lg"
+                                                className="h-7 w-7 p-0 text-[var(--color-text-muted)] hover:text-[var(--color-brand)] rounded-lg"
                                             >
                                                 <Trash2 className="h-3.5 w-3.5" />
                                             </Button>
@@ -471,7 +471,7 @@ export const BudgetsPage = () => {
                                                 className={cn(
                                                     'h-full rounded-full transition-all duration-500',
                                                     b.isOverBudget
-                                                        ? 'bg-rose-500'
+                                                        ? 'bg-[var(--color-brand)]'
                                                         : b.isHighPace
                                                         ? 'bg-amber-500'
                                                         : 'bg-emerald-500'
@@ -489,7 +489,7 @@ export const BudgetsPage = () => {
                                             </span>
                                             <span className={cn(
                                                 "font-semibold tabular-nums font-mono",
-                                                b.remaining < 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-700 dark:text-emerald-400"
+                                                b.remaining < 0 ? "text-[var(--color-brand)] dark:text-[var(--color-pink)]" : "text-emerald-700 dark:text-emerald-400"
                                             )}>
                                                 {b.remaining < 0 ? `-${formatCurrency(Math.abs(b.remaining))}` : formatCurrency(b.remaining)}
                                             </span>

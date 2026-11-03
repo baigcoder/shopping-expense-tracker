@@ -32,7 +32,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #E11D48;
+    border: 1px solid var(--color-brand);
     box-shadow: var(--shadow-md);
 }
 
@@ -68,7 +68,7 @@
 }
 
 .overBudgetCard {
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     box-shadow: var(--shadow-md);
 }
 
@@ -182,9 +182,9 @@
 }
 
 /* === STATUSES === */
-.danger .progressFill { background: #E11D48; }
-.danger .statValue { color: #E11D48; }
-.danger { border-color: #E11D48; box-shadow: var(--shadow-md); }
+.danger .progressFill { background: var(--color-brand); }
+.danger .statValue { color: var(--color-brand); }
+.danger { border-color: var(--color-brand); box-shadow: var(--shadow-md); }
 
 .warning .progressFill { background: #f59e0b; }
 
@@ -220,7 +220,7 @@
 .modalIcon {
     width: 3.5rem;
     height: 3.5rem;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     display: flex;
     align-items: center;

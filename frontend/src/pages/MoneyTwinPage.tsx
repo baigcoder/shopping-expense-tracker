@@ -295,7 +295,7 @@ export const MoneyTwinPage = () => {
                     <Shield className="h-3.5 w-3.5" />
                     <span>Risk Alerts & Protection</span>
                     {(twinState?.riskAlerts.length || 0) > 0 && (
-                        <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-rose-500 text-white font-bold font-mono">
+                        <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-[var(--color-brand)] text-white font-bold font-mono">
                             {twinState?.riskAlerts.length}
                         </span>
                     )}
@@ -354,7 +354,7 @@ export const MoneyTwinPage = () => {
                                         </div>
                                         <div className="flex items-center justify-between text-xs">
                                             <span className="text-[var(--color-text-muted)]">Predicted Expenses</span>
-                                            <span className="font-semibold tabular-nums font-mono text-rose-600 dark:text-rose-400">
+                                            <span className="font-semibold tabular-nums font-mono text-[var(--color-brand)] dark:text-[var(--color-pink)]">
                                                 -{formatCurrency(fc.predictedExpenses)}
                                             </span>
                                         </div>
@@ -362,7 +362,7 @@ export const MoneyTwinPage = () => {
                                             <span className="font-semibold text-[var(--color-text-primary)]">Predicted Net Savings</span>
                                             <span className={cn(
                                                 "font-bold tabular-nums font-mono text-sm",
-                                                fc.predictedSavings >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                                                fc.predictedSavings >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--color-brand)] dark:text-[var(--color-pink)]"
                                             )}>
                                                 {formatCurrency(fc.predictedSavings)}
                                             </span>
@@ -616,7 +616,7 @@ export const MoneyTwinPage = () => {
                                 >
                                     <div className={cn(
                                         'h-9 w-9 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-xs',
-                                        alert.severity === 'critical' ? 'bg-rose-600' : 'bg-amber-500'
+                                        alert.severity === 'critical' ? 'bg-[var(--color-brand)]' : 'bg-amber-500'
                                     )}>
                                         <AlertTriangle className="h-5 w-5" />
                                     </div>

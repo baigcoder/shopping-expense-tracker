@@ -69,7 +69,7 @@
     gap: 0.75rem;
     padding: 0 1.5rem;
     height: 3.5rem;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
@@ -124,7 +124,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid #E11D48;
+    border: 3px solid var(--color-brand);
     box-shadow: var(--shadow-md);
 }
 
@@ -148,7 +148,7 @@
 }
 
 .negative {
-    color: #E11D48 !important;
+    color: var(--color-brand) !important;
 }
 
 .netWorthBreakdown {
@@ -274,7 +274,7 @@
 }
 
 .deleteBtn:hover {
-    background: #E11D48 !important;
+    background: var(--color-brand) !important;
 }
 
 .cardBalance {

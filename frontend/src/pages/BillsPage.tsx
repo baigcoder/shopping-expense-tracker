@@ -74,7 +74,7 @@ const getBillToneClasses = (tone: BillStatusTone) => {
         case 'paid':
             return 'border-emerald-200 bg-emerald-50 text-emerald-700';
         case 'overdue':
-            return 'border-rose-200 bg-rose-50 text-rose-700';
+            return 'border-[var(--color-pink)] bg-[var(--color-brand-soft)] text-[var(--color-brand)]';
         case 'soon':
             return 'border-amber-200 bg-amber-50 text-amber-700';
         default:
@@ -340,9 +340,9 @@ const BillsPage = () => {
                 </div>
 
                 {error && (
-                    <section className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900 shadow-sm">
+                    <section className="rounded-2xl border border-[var(--color-pink)] bg-[var(--color-brand-soft)] px-4 py-3 text-sm text-[var(--color-wine)] shadow-sm">
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-700" />
+                            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-brand)]" />
                             <p>{error}</p>
                         </div>
                     </section>
@@ -372,7 +372,7 @@ const BillsPage = () => {
                         <h3 className="text-3xl font-black uppercase italic mb-4">Zero Obligations</h3>
                         <p className="text-black opacity-60 font-bold max-w-md mx-auto mb-8">Deploy your first bill mission to start tracking your financial battlefield.</p>
                         <button
-                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48]"
+                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]"
                             onClick={() => setDialogOpen(true)}
                         >
                             DEPLOY FIRST MISSION
@@ -510,7 +510,7 @@ const BillsPage = () => {
 
                     <DialogFooter className="mt-4 gap-2">
                         <Button variant="outline" className="rounded-none border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white" onClick={() => setDialogOpen(false)}>Cancel</Button>
-                        <Button className="rounded-none bg-black text-white border-2 border-black shadow-[3px_3px_0_#E11D48] hover:bg-[#E11D48]" onClick={() => void handleCreateBill()} disabled={saving}>
+                        <Button className="rounded-none bg-black text-white border-2 border-black shadow-[3px_3px_0_var(--color-brand)] hover:bg-[var(--color-brand)]" onClick={() => void handleCreateBill()} disabled={saving}>
                             {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
                             Save bill
                         </Button>

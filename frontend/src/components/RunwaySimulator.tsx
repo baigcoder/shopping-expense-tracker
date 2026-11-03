@@ -361,7 +361,7 @@ export function RunwaySimulator({
                                             </span>
                                         )}
                                         <span className="flex items-center gap-1">
-                                            <span className="w-3 h-0.5 rounded bg-rose-400 opacity-50" style={{ borderTop: '1px dashed' }} /> Threshold
+                                            <span className="w-3 h-0.5 rounded bg-[var(--color-pink)] opacity-50" style={{ borderTop: '1px dashed' }} /> Threshold
                                         </span>
                                     </div>
                                 </div>
@@ -527,7 +527,7 @@ export function RunwaySimulator({
                                     simulation.deficitCollisionDay
                                         ? restraint > 0 && !simulation.deficitCollisionDayRestrained
                                             ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800'
-                                            : 'bg-rose-50/60 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800'
+                                            : 'bg-[var(--color-brand-soft)]/60 dark:bg-[var(--color-wine)]/20 border-[var(--color-pink)] dark:border-[var(--color-wine)]'
                                         : 'bg-[var(--color-surface-2)]/60 border-[var(--color-border)]/50'
                                 )}>
                                     <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold block">
@@ -539,7 +539,7 @@ export function RunwaySimulator({
                                         ) : restraint > 0 && !simulation.deficitCollisionDayRestrained ? (
                                             <span className="text-emerald-600 dark:text-emerald-400">RESOLVED</span>
                                         ) : (
-                                            <span className="text-rose-600 dark:text-rose-400">
+                                            <span className="text-[var(--color-brand)] dark:text-[var(--color-pink)]">
                                                 Day {simulation.deficitCollisionDay}
                                             </span>
                                         )}
@@ -568,7 +568,7 @@ export function RunwaySimulator({
                                             radarMessage.type === 'warning' &&
                                                 'bg-amber-50/70 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300',
                                             radarMessage.type === 'danger' &&
-                                                'bg-rose-50/70 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300'
+                                                'bg-[var(--color-brand-soft)]/70 dark:bg-[var(--color-wine)]/20 border-[var(--color-pink)] dark:border-[var(--color-wine)] text-[var(--color-wine)] dark:text-[var(--color-pink)]'
                                         )}
                                     >
                                         {radarMessage.type === 'success' ? (

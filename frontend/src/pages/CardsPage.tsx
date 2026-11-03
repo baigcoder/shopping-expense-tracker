@@ -22,7 +22,7 @@ import { useSound } from '@/hooks/useSound';
 const ACCOUNT_TYPE_CONFIG = {
     checking: { label: 'Checking', icon: Building2, color: 'text-blue-600 bg-blue-50' },
     savings: { label: 'Savings', icon: Landmark, color: 'text-emerald-600 bg-emerald-50' },
-    credit: { label: 'Credit Card', icon: CreditCard, color: 'text-rose-600 bg-rose-50' },
+    credit: { label: 'Credit Card', icon: CreditCard, color: 'text-[var(--color-brand)] bg-[var(--color-brand-soft)]' },
     investment: { label: 'Investment', icon: Briefcase, color: 'text-purple-600 bg-purple-50' },
     cash: { label: 'Cash / Other', icon: Banknote, color: 'text-amber-600 bg-amber-50' }
 };
@@ -184,7 +184,7 @@ export const CardsPage = () => {
                 account_type: accountForm.account_type,
                 balance: balanceNum,
                 currency: 'USD',
-                color: '#E11D48',
+                color: 'var(--color-brand)',
                 icon: accountForm.account_type,
                 is_active: true,
                 last_updated: new Date().toISOString()

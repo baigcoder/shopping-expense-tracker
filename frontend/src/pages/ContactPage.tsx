@@ -88,7 +88,7 @@ const ContactPage = () => {
 
                         <button 
                             type="submit" 
-                            className="w-full min-h-14 sm:h-16 bg-black text-white font-black uppercase text-[11px] sm:text-sm hover:bg-[#E11D48] transition-colors shadow-[4px_4px_0px_#E11D48] sm:shadow-[6px_6px_0px_#E11D48] hover:translate-x-1 hover:translate-y-1 hover:shadow-none flex items-center justify-center gap-2 sm:gap-4"
+                            className="w-full min-h-14 sm:h-16 bg-black text-white font-black uppercase text-[11px] sm:text-sm hover:bg-[var(--color-brand)] transition-colors shadow-[4px_4px_0px_var(--color-brand)] sm:shadow-[6px_6px_0px_var(--color-brand)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none flex items-center justify-center gap-2 sm:gap-4"
                         >
                             <Send size={18} strokeWidth={3} />
                             <span className="sm:hidden">Send</span>
@@ -99,7 +99,7 @@ const ContactPage = () => {
 
                 {/* Contact Info */}
                 <div className="w-full max-w-full min-w-0 space-y-8 overflow-hidden">
-                    <div className="border-2 sm:border-4 border-black p-4 sm:p-10 bg-white shadow-[3px_3px_0px_#E11D48] sm:shadow-[10px_10px_0px_#E11D48]">
+                    <div className="border-2 sm:border-4 border-black p-4 sm:p-10 bg-white shadow-[3px_3px_0px_var(--color-brand)] sm:shadow-[10px_10px_0px_var(--color-brand)]">
                         <div className="flex flex-col sm:flex-row items-start gap-5 sm:gap-6">
                             <div className="w-16 h-16 bg-black text-white border-2 border-black flex items-center justify-center shrink-0">
                                 <Mail size={32} strokeWidth={3} />
@@ -132,7 +132,7 @@ const ContactPage = () => {
 
                     <div className="border-2 sm:border-4 border-black p-4 sm:p-10 bg-black text-white">
                         <div className="flex items-center gap-4 mb-6">
-                            <Target size={24} strokeWidth={3} className="text-[#E11D48]" />
+                            <Target size={24} strokeWidth={3} className="text-[var(--color-brand)]" />
                             <h3 className="text-lg font-black uppercase italic tracking-tighter">Audit_Resources</h3>
                         </div>
                         <p className="text-xs font-black uppercase tracking-widest text-white/50 leading-relaxed">

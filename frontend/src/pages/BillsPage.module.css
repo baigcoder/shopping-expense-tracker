@@ -50,7 +50,7 @@
 .brandPage {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #E11D48;
+    color: var(--color-brand);
     text-transform: none;
     letter-spacing: -0.02em;
 }
@@ -123,7 +123,7 @@
 .urgentHero .heroIcon {
     border-color: #FFFFFF;
     color: #FFFFFF;
-    background: #E11D48;
+    background: var(--color-brand);
 }
 
 .urgentHero .heroLabel,
@@ -245,7 +245,7 @@
 }
 
 .critical .calendarHeader {
-    background: #E11D48;
+    background: var(--color-brand);
 }
 
 /* Bill Content */
@@ -269,7 +269,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: none;
-    color: #E11D48;
+    color: var(--color-brand);
     border: 1px solid var(--border);
     padding: 2px 8px;
     background: #FFFFFF;
@@ -289,7 +289,7 @@
     text-transform: none;
     letter-spacing: 0.05em;
     margin-bottom: 1rem;
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .payBtn {
@@ -359,7 +359,7 @@
 }
 
 .closeBtn {
-    background: #E11D48;
+    background: var(--color-brand);
     color: white;
     border: 3px solid white;
     width: 3.5rem;

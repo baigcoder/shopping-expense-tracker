@@ -267,10 +267,10 @@ export const AnalyticsPage = () => {
             {/* Top Elevated Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Total Outflow */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-rose-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
                     <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
                         <span>Total Outflow ({timeRange})</span>
-                        <TrendingUp className="h-4 w-4 text-rose-500" />
+                        <TrendingUp className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
                         <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
@@ -280,7 +280,7 @@ export const AnalyticsPage = () => {
                             {changePercent !== 0 && (
                                 <span className={cn(
                                     'font-mono font-semibold',
-                                    changePercent > 0 ? 'text-rose-600' : 'text-emerald-600'
+                                    changePercent > 0 ? 'text-[var(--color-brand)]' : 'text-emerald-600'
                                 )}>
                                     {changePercent > 0 ? '+' : ''}{changePercent.toFixed(1)}%
                                 </span>

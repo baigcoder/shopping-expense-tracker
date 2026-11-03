@@ -116,8 +116,8 @@ export const CashflowCalendarPage = () => {
         .reduce((sum, e) => sum + Math.abs(e.amount || 0), 0);
 
     const getHeatmapColor = (dailySpend: number) => {
-        if (dailySpend > 500) return 'bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-400';
-        if (dailySpend > 200) return 'bg-rose-500/10 border-rose-500/20 text-rose-700 dark:text-rose-400';
+        if (dailySpend > 500) return 'bg-[var(--color-brand)]/15 border-[var(--color-brand)]/30 text-[var(--color-brand)] dark:text-[var(--color-pink)]';
+        if (dailySpend > 200) return 'bg-[var(--color-brand)]/10 border-[var(--color-brand)]/20 text-[var(--color-brand)] dark:text-[var(--color-pink)]';
         if (dailySpend > 50) return 'bg-amber-500/10 border-amber-500/20 text-amber-700 dark:text-amber-400';
         if (dailySpend > 0) return 'bg-[var(--color-surface-subtle)] border-[var(--color-border-subtle)]';
         return '';
@@ -312,7 +312,7 @@ export const CashflowCalendarPage = () => {
                                             </div>
                                         )}
                                         {dailySpend > 0 && (
-                                            <div className="text-[9px] font-semibold text-rose-700 dark:text-rose-400 bg-rose-500/10 px-1 py-0.5 rounded truncate font-mono tabular-nums">
+                                            <div className="text-[9px] font-semibold text-[var(--color-brand)] dark:text-[var(--color-pink)] bg-[var(--color-brand)]/10 px-1 py-0.5 rounded truncate font-mono tabular-nums">
                                                 -{formatCurrency(dailySpend)}
                                             </div>
                                         )}
@@ -336,7 +336,7 @@ export const CashflowCalendarPage = () => {
                             })}
                         </h2>
                         {selectedDayOutflow > 0 && (
-                            <div className="text-xs text-rose-600 dark:text-rose-400 font-semibold mt-1 font-mono tabular-nums">
+                            <div className="text-xs text-[var(--color-brand)] dark:text-[var(--color-pink)] font-semibold mt-1 font-mono tabular-nums">
                                 Total Scheduled Outflow: {formatCurrency(selectedDayOutflow)}
                             </div>
                         )}
@@ -365,7 +365,7 @@ export const CashflowCalendarPage = () => {
                                                 ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                                                 : evt.type === 'bill'
                                                 ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400'
-                                                : 'bg-rose-500/10 text-rose-700 dark:text-rose-400'
+                                                : 'bg-[var(--color-brand)]/10 text-[var(--color-brand)] dark:text-[var(--color-pink)]'
                                         )}>
                                             {evt.type === 'income' ? (
                                                 <TrendingUp className="h-4 w-4" />

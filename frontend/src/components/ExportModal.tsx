@@ -46,7 +46,7 @@ const EXPORT_FORMATS = [
         name: 'PDF Statement',
         icon: FileText,
         description: 'Formatted, printable report perfect for physical record keeping.',
-        gradient: 'from-rose-500 to-pink-600'
+        gradient: 'from-[var(--color-brand)] to-pink-600'
     },
 ];
 

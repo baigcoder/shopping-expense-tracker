@@ -274,7 +274,7 @@
 .seeMore:hover {
     transform: none;
     box-shadow: var(--shadow-md);
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .seeMore svg:last-child {

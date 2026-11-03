@@ -17,7 +17,7 @@
   --color-muted-surface:    #DFDED8; /* Subdued Chip/Badge Fill */
   --color-ink:              #111111; /* Deep Black Ink Typography */
   --color-ink-secondary:    #4A4A48; /* Balanced Secondary Typography */
-  --color-muted:            #767672; /* Captions, meta, and disabled */
+  --color-muted:            #686864; /* Captions, meta: 4.8:1 on the ivory canvas */
   --color-border:           #E2E1DA; /* 1px hairline border */
   --color-border-strong:    #C8C7BE; /* Emphasized interactive border */
 
@@ -35,7 +35,7 @@
   --color-brand:            #EE5024; /* Primary Action = Cadmium Orange */
   --color-brand-hover:      #D64218;
   --color-brand-soft:       #FDF0EC;
-  --color-success:          #17824F; /* Forest Green (Income / Positive Yield) */
+  --color-success:          #146C42; /* Forest Green (Income / Positive Yield) */
   --color-success-soft:     #E3F4EA;
   --color-warning:          #B8680B; /* Warm Amber (Watch / Threshold) */
   --color-warning-soft:     #FFF1DA;
@@ -43,8 +43,8 @@
   --color-danger-soft:      #FBE9E9;
   --color-info:             #3677E8; /* Cobalt Blue (Information) */
   --color-info-soft:        #EAF1FF;
-  --color-ai:               #7753C7; /* Sovereign Violet (AI Engine Only) */
-  --color-ai-soft:          #F1ECFF;
+  --color-ai:               #80383D; /* Wine: AI answers */
+  --color-ai-soft:          #F6EEEE;
 
   /* Backwards-compatible aliases */
   --color-surface-subtle:   var(--color-surface-2);
@@ -71,7 +71,7 @@
   --cashly-brand:           var(--color-brand);
   --cashly-brand-hover:     var(--color-brand-hover);
   --cashly-brand-light:     var(--color-brand-soft);
-  --cashly-brand-muted:     rgba(14, 129, 116, 0.08);
+  --cashly-brand-muted:     rgba(238, 80, 36, 0.08);
 
   --cashly-success:         var(--color-success);
   --cashly-success-light:   var(--color-success-soft);
@@ -84,16 +84,16 @@
   --cashly-ai:              var(--color-ai);
   --cashly-ai-light:        var(--color-ai-soft);
 
-  /* Category Color Palette */
-  --cat-food:               #B8680B; /* Amber */
-  --cat-shopping:           #0E8174; /* Jade */
-  --cat-subscriptions:      #7753C7; /* Violet */
-  --cat-transport:          #3677E8; /* Cobalt */
-  --cat-bills:              #56656A; /* Slate */
-  --cat-health:             #17824F; /* Emerald */
-  --cat-entertainment:      #9333EA; /* Purple */
-  --cat-income:             #17824F; /* Forest Green */
-  --cat-other:              #86969C; /* Stone */
+  /* Category tints: pale tile + the dark of its own hue as ink (no violet, no jade) */
+  --cat-food:               #8A4B08;  --cat-food-soft:          #FBEBD3;
+  --cat-shopping:           #80383D;  --cat-shopping-soft:      #F6E3E4;
+  --cat-subscriptions:      #9C2F6B;  --cat-subscriptions-soft: #FBE3F0;
+  --cat-transport:          #1F4FA8;  --cat-transport-soft:     #E3ECFB;
+  --cat-bills:              #4A4A48;  --cat-bills-soft:         #EAE9E4;
+  --cat-health:             #17643F;  --cat-health-soft:        #E1F1E7;
+  --cat-entertainment:      #A8381A;  --cat-entertainment-soft: #FDE6DD;
+  --cat-income:             #17824F;  --cat-income-soft:        #E3F4EA;
+  --cat-other:              #5E5E5A;  --cat-other-soft:         #ECEBE6;
 
   /* Radii Tokens */
   --r-sm:  8px;
@@ -109,7 +109,7 @@
   --shadow-lg:  0 12px 28px -6px rgba(9, 20, 27, 0.08), 0 4px 12px -2px rgba(9, 20, 27, 0.04);
   --shadow-xl:  0 20px 48px -12px rgba(9, 20, 27, 0.14);
   --shadow-pop: 0 24px 60px -12px rgba(9, 20, 27, 0.2);
-  --shadow-premium: 0 1px 2px rgba(9, 20, 27, 0.06), 0 12px 32px rgba(14, 129, 116, 0.1);
+  --shadow-premium: var(--shadow-md);
 
   /* Typography */
   --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
@@ -141,7 +141,7 @@
   --brand-hover:    var(--cashly-brand-hover);
   --brand-light:    var(--cashly-brand-light);
   --brand-muted:    var(--cashly-brand-muted);
-  --brand-glow:     rgba(14, 129, 116, 0.18);
+  --brand-glow:     rgba(238, 80, 36, 0.18);
 
   --success:        var(--cashly-success);
   --success-light:  var(--cashly-success-light);
@@ -156,7 +156,7 @@
   --cashly-surface: var(--cashly-bg-surface);
   --cashly-soft:    var(--cashly-bg-subtle);
   --cashly-shadow:  var(--shadow-md);
-  --cashly-focus:   0 0 0 3px rgba(14, 129, 116, 0.22);
+  --cashly-focus:   0 0 0 3px rgba(238, 80, 36, 0.24);
   --content-max:    1280px;
 
   /* HSL shadcn mapping */
@@ -166,18 +166,18 @@
   --card-foreground:        200 32% 12%;
   --popover:                0 0% 100%;
   --popover-foreground:     200 32% 12%;
-  --primary:                174 80% 28%; /* #0E8174 Sovereign Jade */
+  --primary:                14 86% 54%; /* #EE5024 Cadmium Orange */
   --primary-foreground:     0 0% 100%;
   --secondary:              110 8% 92%; /* #E9ECE8 */
   --secondary-foreground:   197 11% 38%; /* #56656A */
   --muted:                  110 8% 92%;
   --muted-foreground:       197 9% 57%; /* #86969C */
-  --accent:                 174 80% 28%;
+  --accent:                 14 86% 54%;
   --accent-foreground:      0 0% 100%;
   --destructive:            0 56% 53%; /* #C94343 */
   --destructive-foreground: 0 0% 100%;
   --input:                  168 8% 86%; /* #D8DFDC */
-  --ring:                   174 80% 28%;
+  --ring:                   14 86% 54%;
 }
 
 /* Dark Theme Tokens (V9 Midnight Ink & Deep Surface) */
@@ -194,9 +194,9 @@
   --color-border:           #1F323E;
   --color-border-strong:    #2E4758;
 
-  --color-brand:            #16A394; /* Sovereign Jade Bright */
-  --color-brand-hover:      #19BDB2;
-  --color-brand-soft:       rgba(22, 163, 148, 0.18);
+  --color-brand:            #F26A42; /* Cadmium Orange, lifted for dark ground */
+  --color-brand-hover:      #F7825F;
+  --color-brand-soft:       rgba(242, 106, 66, 0.18);
 
   --cashly-bg-canvas:       #09141B;
   --cashly-bg-surface:      #101E25;
@@ -206,20 +206,20 @@
 
   --cashly-border:          #1F323E;
   --cashly-border-strong:   #2E4758;
-  --cashly-border-focus:    #16A394;
+  --cashly-border-focus:    #F26A42;
 
   --cashly-text-primary:    #F7F6F1;
   --cashly-text-secondary:  #B6C1BF;
   --cashly-text-muted:      #76888B;
   --cashly-text-inverse:    #09141B;
 
-  --cashly-brand:           #16A394;
-  --cashly-brand-hover:     #19BDB2;
-  --cashly-brand-light:     rgba(22, 163, 148, 0.18);
+  --cashly-brand:           #F26A42;
+  --cashly-brand-hover:     #F7825F;
+  --cashly-brand-light:     rgba(242, 106, 66, 0.18);
   --cashly-success-light:   rgba(23, 130, 79, 0.2);
   --cashly-warning-light:   rgba(184, 104, 11, 0.2);
   --cashly-danger-light:    rgba(201, 67, 67, 0.2);
-  --cashly-ai-light:        rgba(119, 83, 199, 0.24);
+  --cashly-ai-light:        rgba(128, 56, 61, 0.28);
 
   --bg-page:        var(--cashly-bg-canvas);
   --bg-card:        var(--cashly-bg-surface);
@@ -242,7 +242,7 @@
   --cashly-ink:     var(--cashly-text-primary);
   --cashly-surface: var(--cashly-bg-surface);
   --cashly-soft:    var(--cashly-bg-subtle);
-  --cashly-focus:   0 0 0 3px rgba(22, 163, 148, 0.35);
+  --cashly-focus:   0 0 0 3px rgba(242, 106, 66, 0.35);
 
   --background:             204 50% 7%; /* #09141B */
   --foreground:             44 20% 96%; /* #F7F6F1 */
@@ -470,13 +470,11 @@ textarea:focus-visible,
 }
 
 .v9-cinematic-bg {
-  background: radial-gradient(120% 80% at 50% -10%, rgba(14, 129, 116, 0.07) 0%, rgba(244, 243, 238, 0) 65%),
-              linear-gradient(180deg, #F4F3EE 0%, #E9ECE8 100%);
+  background: var(--color-canvas);
 }
 
 .dark .v9-cinematic-bg {
-  background: radial-gradient(120% 80% at 50% -10%, rgba(22, 163, 148, 0.12) 0%, rgba(9, 20, 27, 0) 70%),
-              linear-gradient(180deg, #09141B 0%, #101E25 100%);
+  background: var(--color-canvas);
 }
 
 .v9-tech-grid {
@@ -604,7 +602,7 @@ textarea:focus-visible,
   left: 0;
   right: 0;
   height: 3px;
-  background: #E11D48;
+  background: var(--color-brand);
 }
 
 .editorial-kpi-sage {
@@ -696,3 +694,11 @@ textarea:focus-visible,
   cursor: grabbing;
 }
 
+
+/* Demo tour: the step's target is outlined while the guide talks about it. */
+[data-tour-active] {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 4px;
+  border-radius: 20px;
+  transition: outline-color 0.2s ease;
+}

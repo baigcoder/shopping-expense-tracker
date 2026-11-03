@@ -50,7 +50,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     font-size: 11px;
     font-weight: 600;
@@ -77,7 +77,7 @@
 }
 
 .refreshBtn:hover:not(:disabled) {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
     box-shadow: var(--shadow-md);
 }
@@ -170,7 +170,7 @@
 }
 
 .filterTab:hover {
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .filterTab.active {
@@ -250,7 +250,7 @@
 }
 
 .visitLink:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: scale(1.1);
 }
 
@@ -288,7 +288,7 @@
     letter-spacing: -0.02em;
 }
 
-.siteCard.shopping .categoryBadge { background: #E11D48; }
+.siteCard.shopping .categoryBadge { background: var(--color-brand); }
 .siteCard.payment .categoryBadge { background: #000000; }
 .siteCard.finance .categoryBadge { background: #000000; color: #FFFFFF; }
 

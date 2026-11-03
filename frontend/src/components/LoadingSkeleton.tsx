@@ -347,7 +347,7 @@ export const BillRemindersSkeleton = () => (
             <Skeleton width="200px" height="28px" className="mb-6" />
             <div className="space-y-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="flex justify-between items-center p-4 border-[3px] border-black shadow-[4px_4px_0_#E11D48]">
+                        <div key={i} className="flex justify-between items-center p-4 border-[3px] border-black shadow-[4px_4px_0_var(--color-brand)]">
                         <div className="flex gap-4 items-center">
                             <Skeleton width="48px" height="48px" borderRadius="16px" />
                             <div className="space-y-2">

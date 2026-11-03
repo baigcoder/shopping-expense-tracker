@@ -93,7 +93,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                         <div>
                             <h3 className="font-display text-xl font-semibold tracking-tight">Money Twin</h3>
                             <div className="mt-1 flex items-center gap-2">
-                                <div className="h-2 w-2 animate-pulse rounded-full bg-[#E11D48]" />
+                                <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-brand)]" />
                                 <span className="text-xs text-[var(--text-muted)]">
                                     {patterns.length > 0 ? `${patterns.length} patterns` : 'Live forecast'}
                                 </span>
@@ -126,7 +126,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                     <p className={styles.statVal}>{formatCurrency(velocity.dailyRate)}</p>
                     <div className={cn(
                         "mt-2 text-[10px] font-black uppercase tracking-tighter px-2 py-0.5 border-2 border-black inline-block",
-                        velocity.acceleration > 0 ? "bg-rose-100 text-rose-600" : "bg-emerald-100 text-emerald-600"
+                        velocity.acceleration > 0 ? "bg-[var(--color-brand-soft)] text-[var(--color-brand)]" : "bg-emerald-100 text-emerald-600"
                     )}>
                         {velocity.acceleration > 0 ? '+' : ''}{velocity.acceleration}%
                     </div>
@@ -144,7 +144,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                     </div>
                     <p className={cn(
                         styles.statVal,
-                        velocity.burnRate > 100 ? "text-rose-600" : "text-emerald-600"
+                        velocity.burnRate > 100 ? "text-[var(--color-brand)]" : "text-emerald-600"
                     )}>{Math.max(0, 100 - velocity.burnRate)}%</p>
                     <p className="mt-2 text-[11px] text-[var(--text-muted)]">Room to save</p>
                 </div>
@@ -160,7 +160,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                             >
-                                <AlertTriangle size={14} className="text-rose-600" strokeWidth={3} />
+                                <AlertTriangle size={14} className="text-[var(--color-brand)]" strokeWidth={3} />
                                 <span>Watch: {alert.title.split(':')[0]}</span>
                             </motion.div>
                         ))
@@ -220,7 +220,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                                 }}
                             />
                             <Area type="monotone" dataKey="expenses" stroke="#78716C" strokeWidth={2} fill="#78716C" fillOpacity={0.08} name="Spending" />
-                            <Area type="monotone" dataKey="savings" stroke="#E11D48" strokeWidth={2} fill="#E11D48" fillOpacity={0.12} name="Forecast" activeDot={{ r: 5, strokeWidth: 0, fill: '#E11D48' }} />
+                            <Area type="monotone" dataKey="savings" stroke="var(--color-brand)" strokeWidth={2} fill="var(--color-brand)" fillOpacity={0.12} name="Forecast" activeDot={{ r: 5, strokeWidth: 0, fill: 'var(--color-brand)' }} />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
@@ -228,7 +228,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
 
             <div className={styles.footer}>
                 <div className="flex items-center gap-6 text-xs font-medium text-[var(--text-muted)]">
-                    <span className="flex items-center gap-2 text-[#E11D48]">
+                    <span className="flex items-center gap-2 text-[var(--color-brand)]">
                         <Activity className="h-3 w-3" /> Live
                     </span>
                     <span>On track</span>

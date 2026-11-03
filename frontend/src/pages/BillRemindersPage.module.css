@@ -183,7 +183,7 @@
 .reminderTile:hover {
     transform: none;
     box-shadow: var(--shadow-md);
-    border-color: #E11D48;
+    border-color: var(--color-brand);
 }
 
 .tileLeft {
@@ -282,7 +282,7 @@
 }
 
 .deleteBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
 }
 
@@ -320,7 +320,7 @@
 }
 
 .predictCard:hover .predictRate {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border-color: #FFFFFF;
 }

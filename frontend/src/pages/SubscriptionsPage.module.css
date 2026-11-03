@@ -56,7 +56,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     padding: 0.25rem 0.75rem;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     text-transform: none;
     letter-spacing: -0.02em;
@@ -180,7 +180,7 @@
 .subCat {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #E11D48;
+    color: var(--color-brand);
     text-transform: none;
     letter-spacing: -0.02em;
 }
@@ -223,7 +223,7 @@
 }
 
 .daysLeft {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     padding: 0.25rem 0.5rem;
     margin-left: 0.5rem;
@@ -257,7 +257,7 @@
 .trialCard {
     background: #000000;
     color: #FFFFFF;
-    border-color: #E11D48;
+    border-color: var(--color-brand);
 }
 
 .trialCard .subName,
@@ -270,14 +270,14 @@
 .trialProgress {
     height: 1.5rem;
     background: #222;
-    border: 3px solid #E11D48;
+    border: 3px solid var(--color-brand);
     margin: 2rem 0;
     overflow: hidden;
 }
 
 .trialFill {
     height: 100%;
-    background: #E11D48;
+    background: var(--color-brand);
 }
 
 /* EMPTY STATE */
@@ -300,7 +300,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     text-transform: none;
-    color: #E11D48;
+    color: var(--color-brand);
     margin-bottom: 2.5rem;
 }
 

@@ -12,7 +12,7 @@ const FeaturesPage = () => {
             <main>
                 <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr]">
                     <div>
-                        <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-[#E11D48]">
+                        <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-brand)]">
                             <CheckCircle2 className="h-4 w-4" />
                             Review-first workflows
                         </p>
@@ -46,7 +46,7 @@ const FeaturesPage = () => {
                                         <p className="text-sm font-medium">{title}</p>
                                         <p className="text-xs text-[#78716C]">{meta}</p>
                                     </div>
-                                    <span className="rounded-full bg-[#FFE4E6] px-2.5 py-1 text-[11px] font-medium text-[#E11D48]">{status}</span>
+                                    <span className="rounded-full bg-[var(--color-brand-soft)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-brand)]">{status}</span>
                                 </div>
                             ))}
                         </div>
@@ -57,7 +57,7 @@ const FeaturesPage = () => {
                     <div className="mx-auto grid max-w-6xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
                         {HOW_IT_WORKS.map((step, index) => (
                             <div key={step.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
-                                <p className="text-sm font-medium text-[#E11D48]">{index + 1}</p>
+                                <p className="text-sm font-medium text-[var(--color-brand)]">{index + 1}</p>
                                 <p className="mt-2 text-sm font-medium leading-snug">{step.title}</p>
                                 <p className="mt-1 text-xs leading-relaxed text-[#78716C]">{step.body}</p>
                             </div>
@@ -72,7 +72,7 @@ const FeaturesPage = () => {
                         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             {group.features.map((feature) => (
                                 <article key={feature.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-sm)]">
-                                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFE4E6] text-[#E11D48]">
+                                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
                                         <feature.icon className="h-5 w-5" />
                                     </div>
                                     <h3 className="font-display font-semibold">{feature.title}</h3>

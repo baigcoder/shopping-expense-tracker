@@ -250,7 +250,7 @@
 }
 
 .primaryBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
     box-shadow: var(--shadow-md);
 }
@@ -278,7 +278,7 @@
 }
 
 .actionBtn.danger:hover {
-    background: #E11D48;
+    background: var(--color-brand);
 }
 
 .chevron {
@@ -301,7 +301,7 @@
 }
 
 .dangerTitle {
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 /* Volume Slider */

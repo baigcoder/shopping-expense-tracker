@@ -132,7 +132,7 @@ export default function CashlyComparisonFlow() {
                             <ArrowDown className="h-4 w-4" />
                         </div>
 
-                        <div className="flex items-center gap-3 rounded-xl border border-[#FDA4AF] bg-[#FFF1F2]/60 p-3 text-xs">
+                        <div className="flex items-center gap-3 rounded-xl border border-[var(--color-pink)] bg-[var(--color-brand-soft)]/60 p-3 text-xs">
                             <span className="font-mono font-bold text-[#DC2626]">04</span>
                             <div>
                                 <p className="font-semibold text-[#DC2626]">Surprise overrun at month-end</p>

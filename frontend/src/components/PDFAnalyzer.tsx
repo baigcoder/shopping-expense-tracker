@@ -207,12 +207,12 @@ const PDFAnalyzer = ({ onComplete, onClose }: PDFAnalyzerProps) => {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="p-5 bg-rose-50 border-2 border-rose-100 rounded-3xl flex items-start gap-4"
+                                        className="p-5 bg-[var(--color-brand-soft)] border-2 border-[var(--color-brand-soft)] rounded-3xl flex items-start gap-4"
                                     >
-                                        <AlertCircle className="text-rose-500 mt-1 shrink-0" size={20} />
+                                        <AlertCircle className="text-[var(--color-brand)] mt-1 shrink-0" size={20} />
                                         <div className="space-y-1">
-                                            <p className="font-black text-rose-700 text-sm">Extraction Fault Detected</p>
-                                            <p className="text-rose-600/70 text-xs font-medium">{error}</p>
+                                            <p className="font-black text-[var(--color-brand)] text-sm">Extraction Fault Detected</p>
+                                            <p className="text-[var(--color-brand)]/70 text-xs font-medium">{error}</p>
                                         </div>
                                     </motion.div>
                                 )}
@@ -339,9 +339,9 @@ const PDFAnalyzer = ({ onComplete, onClose }: PDFAnalyzerProps) => {
                                         <span className="block text-[10px] font-black text-emerald-600 uppercase tracking-widest">Aggregate Inflow</span>
                                         <span className="block text-2xl font-black text-emerald-700 tracking-tighter">{formatCurrency(result.summary.totalIncome)}</span>
                                     </div>
-                                    <div className="p-6 bg-rose-50 border-2 border-rose-100/50 rounded-[2rem] space-y-2">
-                                        <span className="block text-[10px] font-black text-rose-600 uppercase tracking-widest">Aggregate Outflow</span>
-                                        <span className="block text-2xl font-black text-rose-700 tracking-tighter">{formatCurrency(result.summary.totalExpenses)}</span>
+                                    <div className="p-6 bg-[var(--color-brand-soft)] border-2 border-[var(--color-brand-soft)]/50 rounded-[2rem] space-y-2">
+                                        <span className="block text-[10px] font-black text-[var(--color-brand)] uppercase tracking-widest">Aggregate Outflow</span>
+                                        <span className="block text-2xl font-black text-[var(--color-brand)] tracking-tighter">{formatCurrency(result.summary.totalExpenses)}</span>
                                     </div>
                                     <div className="p-6 bg-white border-2 border-slate-100 rounded-[2rem] space-y-2 shadow-sm">
                                         <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Extracted Items</span>

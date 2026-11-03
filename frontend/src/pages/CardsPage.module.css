@@ -252,7 +252,7 @@
 
 .addCardTile:hover .addCardIcon {
     background: #FFFFFF;
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .addCardText {

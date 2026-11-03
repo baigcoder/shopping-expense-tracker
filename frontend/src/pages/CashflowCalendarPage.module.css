@@ -81,7 +81,7 @@
 }
 
 .cellToday {
-    background: #fff1f2;
+    background: var(--color-brand-soft);
 }
 
 .cellToday::after {
@@ -91,7 +91,7 @@
     right: 0.5rem;
     font-size: 10px;
     font-weight: 600;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     padding: 2px 6px;
 }
@@ -132,7 +132,7 @@
 }
 
 .eventBill {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border-color: #000000;
     box-shadow: var(--shadow-md);
