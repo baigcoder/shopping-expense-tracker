@@ -85,6 +85,10 @@ export const getOTPExpiry = (): Date => {
     return expiry;
 };
 
+// Names come from unauthenticated signup input, so escape them before they go into HTML email.
+export const escapeHtml = (value: string): string =>
+    value.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch] as string));
+
 // Send OTP email
 export const sendOTPEmail = async (email: string, otp: string, name?: string): Promise<boolean> => {
     if (!transporter) {
@@ -119,7 +123,7 @@ export const sendOTPEmail = async (email: string, otp: string, name?: string): P
                                     Verify Your Email
                                 </h1>
                                 <p style="margin: 12px 0 0; color: rgba(255,255,255,0.6); font-size: 15px;">
-                                    Hey ${userName}, here's your verification code
+                                    Hey ${escapeHtml(userName)}, here's your verification code
                                 </p>
                             </td>
                         </tr>
@@ -234,7 +238,7 @@ export const sendResetOTPEmail = async (email: string, otp: string, category: st
                                     Data Reset Request
                                 </h1>
                                 <p style="margin: 12px 0 0; color: rgba(255,255,255,0.6); font-size: 15px;">
-                                    Hey ${userName}, you requested to reset your <strong style="color: #ef4444;">${categoryDisplay}</strong> data
+                                    Hey ${escapeHtml(userName)}, you requested to reset your <strong style="color: #ef4444;">${categoryDisplay}</strong> data
                                 </p>
                             </td>
                         </tr>

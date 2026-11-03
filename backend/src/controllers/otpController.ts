@@ -12,6 +12,7 @@ const OTP_COOLDOWN_MINUTES = 1; // Minimum time between OTP requests
 export const sendSignupOTP = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, name } = req.body;
+        const safeName = typeof name === 'string' ? name.trim().slice(0, 80) : '';
         const normalizedEmail = typeof email === 'string' ? email.toLowerCase().trim() : '';
 
         if (!normalizedEmail || !password) {
@@ -76,8 +77,8 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
                 password, // Hashed immediately by Supabase Auth (bcrypt in auth schema)
                 email_confirm: false, // Remains unconfirmed until OTP is entered
                 user_metadata: {
-                    name: name || '',
-                    full_name: name || '',
+                    name: safeName,
+                    full_name: safeName,
                 },
             });
 
@@ -86,31 +87,38 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
                 const isAlreadyRegistered = errorMsg.includes('already registered') || errorMsg.includes('already exists');
 
                 if (isAlreadyRegistered) {
-                    // If account was staged in Supabase from a previous unverified attempt, update password safely
+                    // Only re-stage an unconfirmed account this flow created; never reset a real user's password
+                    // from this unauthenticated endpoint (account takeover).
                     const existingOtp = await prisma.emailOTP.findFirst({
                         where: { email: normalizedEmail },
                         orderBy: { createdAt: 'desc' },
                     });
-                    const pendingSupabaseId = (existingOtp?.metadata as any)?.supabaseUserId;
+                    const pendingSupabaseId = JSON.parse(existingOtp?.metadata || '{}').supabaseUserId;
 
-                    let existingUser = null;
+                    let stagedUser = null;
                     if (pendingSupabaseId) {
                         const { data: userRes } = await supabaseAdmin.auth.admin.getUserById(pendingSupabaseId);
-                        existingUser = userRes?.user;
-                    }
-                    if (!existingUser) {
-                        const { data: listRes } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 100 });
-                        existingUser = listRes?.users?.find(u => u.email?.toLowerCase() === normalizedEmail);
+                        stagedUser = userRes?.user;
                     }
 
-                    if (existingUser) {
-                        supabaseUserId = existingUser.id;
+                    const isOwnUnconfirmedStaging = Boolean(
+                        stagedUser
+                        && stagedUser.email?.toLowerCase() === normalizedEmail
+                        && !stagedUser.email_confirmed_at
+                    );
+
+                    if (stagedUser && isOwnUnconfirmedStaging) {
+                        supabaseUserId = stagedUser.id;
                         await supabaseAdmin.auth.admin.updateUserById(supabaseUserId, {
                             password,
-                            user_metadata: { name: name || '' },
+                            user_metadata: { name: safeName, full_name: safeName },
                         });
                     } else {
-                        throw authError;
+                        res.status(400).json({
+                            success: false,
+                            error: 'Email already registered. Please login instead.',
+                        });
+                        return;
                     }
                 } else {
                     throw authError;
@@ -135,7 +143,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
 
         // Metadata stores ONLY non-sensitive user identity tags (NO PASSWORDS)
         const metadata = JSON.stringify({
-            name: name || '',
+            name: safeName,
             supabaseUserId,
         });
 
@@ -158,7 +166,7 @@ export const sendSignupOTP = async (req: Request, res: Response): Promise<void> 
         });
 
         // Send OTP email
-        const emailSent = await sendOTPEmail(normalizedEmail, otp, name);
+        const emailSent = await sendOTPEmail(normalizedEmail, otp, safeName);
 
         if (!emailSent) {
             await prisma.emailOTP.deleteMany({

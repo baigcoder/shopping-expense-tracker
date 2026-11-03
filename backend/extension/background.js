@@ -20,6 +20,18 @@ const getSupabaseUrl = () => self.CONFIG?.SUPABASE_URL || '';
 const getSupabaseAnonKey = () => self.CONFIG?.SUPABASE_ANON_KEY || '';
 const getApiBaseUrl = () => (self.CONFIG?.API_BASE_URL || 'https://shopping-expense-tracker.vercel.app/api').replace(/\/$/, '');
 const WEBSITE_ORIGINS = self.CONFIG?.WEBSITE_ORIGINS || [];
+
+// Exact origin match: substring checks let https://evil.vercel.app/?https://<our-site> through.
+function isWebsiteOrigin(url) {
+    try {
+        return WEBSITE_ORIGINS.includes(new URL(url).origin);
+    } catch {
+        return false;
+    }
+}
+
+// Messages that change which Cashly account the extension is signed in to.
+const SESSION_MESSAGE_TYPES = new Set(['USER_LOGGED_IN', 'USER_LOGGED_OUT', 'WEBSITE_LOGIN', 'SYNC_SESSION_FROM_WEBSITE']);
 const TRANSACTION_SYNC_TIMEOUT_MS = 10000;
 
 function persistSessionFields(session = {}, user = {}) {
@@ -1066,6 +1078,13 @@ let currentTrackingState = {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('Background received:', message.type);
 
+    // Content scripts run on many sites; only the Cashly website may change the session. Popup/settings pages have no tab.
+    if (SESSION_MESSAGE_TYPES.has(message.type) && sender.tab && !isWebsiteOrigin(sender.url || sender.tab.url)) {
+        console.log('Rejected session message from', sender.url || sender.tab.url);
+        sendResponse?.({ error: 'Unknown origin' });
+        return;
+    }
+
     switch (message.type) {
         case 'PURCHASE_DETECTED':
             handlePurchaseDetected(message.data);
@@ -1283,7 +1302,7 @@ chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => 
     console.log('External message from:', sender.origin, message.type);
 
     // Verify the sender is our website
-    if (!WEBSITE_ORIGINS.some(origin => sender.origin?.includes(origin) || sender.url?.includes(origin))) {
+    if (!isWebsiteOrigin(sender.origin || sender.url)) {
         console.log('Rejected message from unknown origin');
         sendResponse({ error: 'Unknown origin' });
         return;
@@ -1501,7 +1520,7 @@ async function handleUserLoggedOut() {
 function notifyWebsiteTabs(type, data) {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach(tab => {
-            if (tab.url && WEBSITE_ORIGINS.some(origin => tab.url.includes(origin))) {
+            if (tab.url && isWebsiteOrigin(tab.url)) {
                 chrome.tabs.sendMessage(tab.id, { type, data }).catch(() => {
                     // Tab might be restricted or loading
                 });
@@ -1540,7 +1559,7 @@ async function syncWebsiteBridgeState(options = {}) {
 
     const tabs = await chrome.tabs.query({});
     const websiteTabs = tabs.filter((tab) =>
-        tab.id && tab.url && WEBSITE_ORIGINS.some((origin) => tab.url.includes(origin))
+        tab.id && tab.url && isWebsiteOrigin(tab.url)
     );
 
     await Promise.all(websiteTabs.map(async (tab) => {
