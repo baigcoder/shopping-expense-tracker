@@ -82,7 +82,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
     const change = model.lastMonthOut > 0 ? Math.round(((model.monthOut - model.lastMonthOut) / model.lastMonthOut) * 100) : null;
     const budgetLines = useMemo(() => model.categories.filter((c) => c.budget !== null).slice(0, 5), [model.categories]);
     const figures: { label: string; value: string; note?: string; positive?: boolean }[] = [
-        { label: 'Spent this month', value: money(model.monthOut), note: change === null ? undefined : `${change > 0 ? '+' : ''}${change}% vs last month` },
+        { label: 'Spent this month', value: money(model.monthOut), },
         { label: 'Money in', value: `+${money(model.monthIn)}`, positive: true },
         { label: 'Spent last month', value: money(model.lastMonthOut) },
     ];
@@ -91,8 +91,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
         <div className="flex flex-col gap-4">
             <header className="flex flex-wrap items-end justify-between gap-4 pb-2">
                 <div>
-                    <p className="text-[15px] text-[var(--color-muted)]">{greeting()}, {firstName}</p>
-                    <h1 className="font-display text-[28px] font-bold tracking-tight sm:text-[32px]">Your money this month</h1>
+                    <h1 className="font-display text-[28px] font-bold tracking-tight sm:text-[32px]">{greeting()}, {firstName}</h1>
                 </div>
                 <button type="button" onClick={onAdd} data-tour="add"
                     className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]">
@@ -106,9 +105,6 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                     <div>
                         <h2 id="h-safe" className="text-[15px] text-[var(--color-ink-secondary)]">Safe to spend</h2>
                         <p className="mt-1 font-display text-[clamp(40px,5vw,60px)] font-bold leading-none tracking-tight tabular-nums">{money(model.safeToSpend)}</p>
-                        <p className="mt-3 max-w-[38ch] text-[15px] leading-relaxed text-[var(--color-ink-secondary)]">
-                            After {money(model.committed30)} of bills due in the next 30 days and {money(model.plannedSavings)} set aside for goals.
-                        </p>
                     </div>
                     <dl className="grid grid-cols-2 gap-4 rounded-[14px] bg-[var(--color-canvas)] p-4">
                         <div>
@@ -159,7 +155,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                                     </div>
                                     <div className="mt-3 flex flex-wrap items-center justify-between gap-3 sm:pl-[52px]">
                                         <p className="text-[13px] text-[var(--color-muted)]">
-                                            {item.category} · safe to spend after: <span className="font-semibold text-[var(--color-ink)] tabular-nums">{money(item.safeAfter)}</span>
+                                            Safe after <span className="font-semibold text-[var(--color-ink)] tabular-nums">{money(item.safeAfter)}</span>
                                         </p>
                                         <div className="flex gap-2">
                                             <button type="button" onClick={() => onDismiss(item)} disabled={busyId === item.id}

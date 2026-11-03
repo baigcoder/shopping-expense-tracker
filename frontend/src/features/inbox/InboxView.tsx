@@ -37,8 +37,6 @@ interface InboxViewProps {
     onAddRule: (rule: { pattern: string; category: string; matchType: string }) => void;
 }
 
-const sourceLabel = (s: string) => ({ extension: 'Caught at checkout', pdf: 'From a statement', csv: 'From a statement', excel: 'From a statement', plaid: 'From your bank', ai: 'Suggested', manual_review: 'Added by hand' } as Record<string, string>)[s] || 'Caught';
-
 export function InboxView({ items, rules, status, loading, money, onStatus, onApprove, onReject, onMerge, onBulk, onAddRule }: InboxViewProps) {
     const [sort, setSort] = useState<'date' | 'amount' | 'confidence'>('date');
     const [selected, setSelected] = useState<string[]>([]);
@@ -88,11 +86,6 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
             <header className="flex flex-wrap items-end justify-between gap-4 pb-2" data-tour="inbox-head">
                 <div>
                     <h1 className="font-display text-[28px] font-bold tracking-tight sm:text-[32px]">Review inbox</h1>
-                    <p className="mt-1 max-w-[56ch] text-[15px] text-[var(--color-ink-secondary)]">
-                        {pending
-                            ? items.length ? `${items.length} ${items.length === 1 ? 'purchase is' : 'purchases are'} waiting, ${money(total)} in all. Nothing here counts until you approve it.` : 'Nothing is waiting. New checkouts land here first.'
-                            : status === 'approved' ? 'Purchases you approved. They are in your ledger.' : 'Purchases you said were not yours. They never touched your numbers.'}
-                    </p>
                 </div>
                 {pending && confident.length > 0 && (
                     <button type="button" onClick={() => onBulk(confident.map((i) => i.id), 'approve')} data-tour="inbox-confident"
@@ -166,8 +159,8 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                                         </div>
                                         <p className="truncate text-[15px] text-[var(--color-ink-secondary)]">{item.description}</p>
                                         <p className="mt-1 text-[13px] text-[var(--color-muted)]">
-                                            {sourceLabel(item.source)} · {new Date(item.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} · {item.category} ·{' '}
-                                            <span className={sure ? 'text-[var(--color-success)]' : 'font-medium text-[var(--cat-food)]'}>{sure ? 'Looks right' : 'Check the details'}</span>
+                                            {new Date(item.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} · {item.category}
+                                            {!sure && <span className="font-medium text-[var(--cat-food)]"> · Check this</span>}
                                         </p>
                                     </div>
                                 </div>
@@ -204,7 +197,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                                             <button type="button" onClick={() => setEditing((d) => ({ ...d, [item.id]: { description: item.description, amount: String(item.amount), category: item.category } }))}
                                                 className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-canvas)] px-4 text-[14px] hover:bg-[var(--color-surface-2)]"><Pencil size={14} /> Edit</button>
                                         )}
-                                        <button type="button" onClick={() => submit(item)} className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-white hover:bg-black">
+                                        <button type="button" onClick={() => submit(item)} title="A" className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-white hover:bg-black">
                                             <Check size={15} /> {draft ? 'Save and approve' : 'Approve'}
                                         </button>
                                     </div>
@@ -212,15 +205,11 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                             </article>
                         );
                     })}
-                    {pending && sorted.length > 0 && (
-                        <p className="px-2 pt-2 text-[13px] text-[var(--color-muted)]">Keyboard: A approve · R not mine · M merge · J and K move · Shift A approves every sure one</p>
-                    )}
                 </section>
 
                 <aside className="flex flex-col gap-4" aria-label="Merchant rules" data-tour="inbox-rules">
                     <form className="rounded-[20px] bg-[var(--color-surface)] p-5" onSubmit={(e) => { e.preventDefault(); if (!rule.pattern.trim()) return; onAddRule(rule); setRule({ pattern: '', category: rule.category, matchType: 'contains' }); }}>
                         <h2 className="font-display text-[17px] font-semibold">Trust a merchant</h2>
-                        <p className="mt-1 text-[14px] leading-relaxed text-[var(--color-ink-secondary)]">Purchases that match skip the inbox and land straight in the category you pick.</p>
                         <label className="mt-4 flex flex-col gap-1.5 text-[13px] font-medium">Merchant name contains
                             <input value={rule.pattern} onChange={(e) => setRule({ ...rule, pattern: e.target.value })} placeholder="Foodpanda" className="h-10 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[15px]" />
                         </label>

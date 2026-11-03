@@ -1,6 +1,7 @@
 // Sample month for the demo, anchored to the 20th of the current month so it always shows a full month.
 import type { HomeBudget, HomeGoal, HomeSubscription, HomeTransaction } from '../home/homeModel';
 import type { InboxItem, InboxRule } from '../inbox/InboxView';
+import type { CommitmentInput } from '../commitments/commitmentsModel';
 
 const today = new Date();
 export const DEMO_NOW = new Date(today.getFullYear(), today.getMonth(), 20, 12);
@@ -55,12 +56,20 @@ export const demoBudgets = (): (HomeBudget & { id: string })[] => [
     { id: 'b5', category: 'Health', amount: 5000 },
 ];
 
-export const demoSubscriptions: HomeSubscription[] = [
-    { id: 's1', name: 'Netflix Standard', price: 1100, is_active: true, next_payment_date: day(3) },
-    { id: 's2', name: 'Adobe Express', price: 2950, is_active: true, is_trial: true, trial_end_date: day(2) },
-    { id: 's3', name: 'Rent', price: 65000, is_active: true, next_payment_date: day(16) },
-    { id: 's4', name: 'PTCL internet', price: 4999, is_active: true, next_payment_date: day(28) },
+export const demoCommitments = (): CommitmentInput[] => [
+    { id: 's1', kind: 'subscription', name: 'Netflix Standard', category: 'Entertainment', amount: 1100, cycle: 'monthly', nextDate: day(3), active: true },
+    { id: 's2', kind: 'subscription', name: 'Adobe Express', category: 'Software', amount: 2950, cycle: 'monthly', nextDate: day(2), active: true, isTrial: true },
+    { id: 's3', kind: 'subscription', name: 'Spotify Duo', category: 'Subscriptions', amount: 579, cycle: 'monthly', nextDate: day(9), active: true },
+    { id: 's4', kind: 'subscription', name: 'iCloud 200 GB', category: 'Software', amount: 3900, cycle: 'yearly', nextDate: day(41), active: true },
+    { id: 'bl1', kind: 'bill', name: 'Rent', category: 'Bills', amount: 65000, cycle: 'monthly', nextDate: day(16), active: true, paid: false },
+    { id: 'bl2', kind: 'bill', name: 'PTCL internet', category: 'Bills', amount: 4999, cycle: 'monthly', nextDate: day(28), active: true, paid: false },
+    { id: 'bl3', kind: 'bill', name: 'K-Electric', category: 'Bills', amount: 9800, cycle: 'monthly', nextDate: day(6), active: true, paid: false },
 ];
+
+/** Home reads commitments in the shape the dashboard uses. */
+export const toHomeSubscriptions = (list: CommitmentInput[]): HomeSubscription[] => list
+    .filter((c) => c.active && !(c.kind === 'bill' && c.paid))
+    .map((c) => ({ id: c.id, name: c.name, price: c.amount, is_active: true, is_trial: c.isTrial, next_payment_date: c.isTrial ? null : c.nextDate, trial_end_date: c.isTrial ? c.nextDate : null }));
 
 export const demoGoals: HomeGoal[] = [
     { target: 300000, saved: 112000 },

@@ -7,6 +7,8 @@ import { HomeView } from '../home/HomeView';
 import { InboxView, type InboxStatus } from '../inbox/InboxView';
 import { BudgetsView } from '../budgets/BudgetsView';
 import { buildBudgets } from '../budgets/budgetModel';
+import { CommitmentsView, type CommitmentTab } from '../commitments/CommitmentsView';
+import { buildCommitments } from '../commitments/commitmentsModel';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -46,6 +48,23 @@ function DemoBudgets() {
     return <BudgetsView model={model} money={money} onAdd={addBudget} onRemove={(l) => removeBudget(l.id)} />;
 }
 
+function DemoCommitments() {
+    const { commitments, updateCommitment, addCommitment } = useDemo();
+    const [tab, setTab] = useState<CommitmentTab>('all');
+    const model = useMemo(() => buildCommitments(commitments, DEMO_NOW), [commitments]);
+    return (
+        <CommitmentsView model={model} tab={tab} money={money} onTab={setTab}
+            onToggle={(l) => updateCommitment(l.id, { active: !l.active, isTrial: l.active ? false : l.isTrial })}
+            onPaid={(l) => updateCommitment(l.id, { paid: true })}
+            onRemove={(l) => updateCommitment(l.id, null)}
+            onAdd={(c) => {
+                const start = new Date(c.date);
+                if (c.isTrial) start.setDate(start.getDate() + c.trialDays);
+                addCommitment({ id: `c-${Date.now()}`, kind: c.kind, name: c.name, category: c.category, amount: c.amount, cycle: c.cycle, nextDate: start.toISOString().slice(0, 10), active: true, isTrial: c.isTrial, paid: false });
+            }} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -75,7 +94,7 @@ function DemoShell() {
             signOutLabel="Leave the demo"
             banner={
                 <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--color-ink)] px-4 py-2.5 text-[14px] text-white sm:px-6 lg:px-10">
-                    <p>You are in the demo. Sample data, nothing is saved.</p>
+                    <p>Demo · sample data</p>
                     <Link to="/signup" className="font-semibold underline underline-offset-4">Create a free account</Link>
                 </div>
             }
@@ -84,7 +103,8 @@ function DemoShell() {
                 <Route path="dashboard" element={<DemoHome />} />
                 <Route path="transaction-inbox" element={<DemoInbox />} />
                 <Route path="budgets" element={<DemoBudgets />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets'].includes(s.to)).map((s) => (
+                <Route path="subscriptions" element={<DemoCommitments />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
