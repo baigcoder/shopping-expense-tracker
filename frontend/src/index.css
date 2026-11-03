@@ -39,7 +39,7 @@
   --color-success-soft:     #E3F4EA;
   --color-warning:          #B8680B; /* Warm Amber (Watch / Threshold) */
   --color-warning-soft:     #FFF1DA;
-  --color-danger:           #C94343; /* Crimson Red (Outflow / Deficit) */
+  --color-danger:           #B23535; /* Crimson Red (Outflow / Deficit) */
   --color-danger-soft:      #FBE9E9;
   --color-info:             #3677E8; /* Cobalt Blue (Information) */
   --color-info-soft:        #EAF1FF;
@@ -702,3 +702,22 @@ textarea:focus-visible,
   border-radius: 20px;
   transition: outline-color 0.2s ease;
 }
+
+/* Section entrances (src/lib/reveal.ts). Without JS or with reduced motion, everything is simply shown. */
+@media (prefers-reduced-motion: no-preference) {
+  html.reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  html.reveal-ready [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  .mask-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+  .mask-line > span { display: block; animation: mask-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .mask-line + .mask-line > span { animation-delay: 0.11s; }
+  .after-mask { animation: fade-up 0.6s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+}
+@keyframes mask-rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
