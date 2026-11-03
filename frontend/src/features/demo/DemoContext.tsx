@@ -5,6 +5,9 @@ import { demoBudgets, demoGoals, demoInbox, demoRules, demoSubscriptions, demoTr
 
 interface DemoState {
     input: Omit<HomeInput, 'now'>;
+    budgets: { id: string; category: string; amount: number }[];
+    addBudget: (category: string, amount: number) => void;
+    removeBudget: (id: string) => void;
     inbox: { pending: InboxItem[]; approved: InboxItem[]; rejected: InboxItem[] };
     rules: InboxRule[];
     approve: (item: InboxItem | { id: string }, edits?: Edits) => void;
@@ -25,6 +28,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     const [approved, setApproved] = useState<InboxItem[]>([]);
     const [rejected, setRejected] = useState<InboxItem[]>([]);
     const [rules, setRules] = useState<InboxRule[]>(demoRules);
+    const [budgets, setBudgets] = useState(demoBudgets);
     const [lastAction, setLastAction] = useState<string | null>(null);
 
     const take = (ids: string[]) => {
@@ -69,18 +73,29 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         setLastAction(`Rule saved. Purchases from “${r.pattern}” will skip the inbox and go to ${r.category}.`);
     }, []);
 
+    const addBudget = useCallback((category: string, amount: number) => {
+        setBudgets((b) => [...b, { id: `b-${Date.now()}`, category, amount }]);
+        setLastAction(`${category} budget added. Approved ${category.toLowerCase()} purchases now fill it.`);
+    }, []);
+
+    const removeBudget = useCallback((id: string) => {
+        setBudgets((b) => b.filter((x) => x.id !== id));
+        setLastAction('Budget removed.');
+    }, []);
+
     const reset = useCallback(() => {
-        setTransactions(demoTransactions()); setPending(demoInbox()); setApproved([]); setRejected([]); setRules(demoRules()); setLastAction(null);
+        setTransactions(demoTransactions()); setPending(demoInbox()); setApproved([]); setRejected([]); setRules(demoRules()); setBudgets(demoBudgets()); setLastAction(null);
     }, []);
 
     const value = useMemo<DemoState>(() => ({
         input: {
-            transactions, budgets: demoBudgets, subscriptions: demoSubscriptions, goals: demoGoals,
+            transactions, budgets, subscriptions: demoSubscriptions, goals: demoGoals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
+        budgets, addBudget, removeBudget,
         inbox: { pending, approved, rejected }, rules,
         approve, dismiss, merge, bulk, addRule, reset, lastAction,
-    }), [transactions, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
+    }), [transactions, budgets, addBudget, removeBudget, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }

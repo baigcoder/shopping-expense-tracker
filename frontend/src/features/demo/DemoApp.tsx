@@ -5,6 +5,8 @@ import { ArrowRight } from 'lucide-react';
 import { AppShell, appNav } from '@/components/app/AppShell';
 import { HomeView } from '../home/HomeView';
 import { InboxView, type InboxStatus } from '../inbox/InboxView';
+import { BudgetsView } from '../budgets/BudgetsView';
+import { buildBudgets } from '../budgets/budgetModel';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -36,6 +38,12 @@ function DemoInbox() {
         <InboxView items={inbox[status]} rules={rules} status={status} money={money} onStatus={setStatus}
             onApprove={approve} onReject={dismiss} onMerge={merge} onBulk={bulk} onAddRule={addRule} />
     );
+}
+
+function DemoBudgets() {
+    const { budgets, input, addBudget, removeBudget } = useDemo();
+    const model = useMemo(() => buildBudgets(budgets, input.transactions, DEMO_NOW), [budgets, input.transactions]);
+    return <BudgetsView model={model} money={money} onAdd={addBudget} onRemove={(l) => removeBudget(l.id)} />;
 }
 
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
@@ -75,7 +83,8 @@ function DemoShell() {
             <Routes>
                 <Route path="dashboard" element={<DemoHome />} />
                 <Route path="transaction-inbox" element={<DemoInbox />} />
-                {screens.filter((s) => s.to !== '/transaction-inbox').map((s) => (
+                <Route path="budgets" element={<DemoBudgets />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />

@@ -47,12 +47,12 @@ export const demoRules = (): InboxRule[] => [
     { id: 'r1', pattern: 'Careem', category: 'Transport', matchType: 'contains', enabled: true },
 ];
 
-export const demoBudgets: HomeBudget[] = [
-    { category: 'Food', amount: 40000 },
-    { category: 'Transport', amount: 15000 },
-    { category: 'Shopping', amount: 15000 },
-    { category: 'Entertainment', amount: 6000 },
-    { category: 'Health', amount: 5000 },
+export const demoBudgets = (): (HomeBudget & { id: string })[] => [
+    { id: 'b1', category: 'Food', amount: 40000 },
+    { id: 'b2', category: 'Transport', amount: 15000 },
+    { id: 'b3', category: 'Shopping', amount: 15000 },
+    { id: 'b4', category: 'Entertainment', amount: 6000 },
+    { id: 'b5', category: 'Health', amount: 5000 },
 ];
 
 export const demoSubscriptions: HomeSubscription[] = [
