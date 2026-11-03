@@ -16,6 +16,7 @@ import { linkFor } from '../assist/linkFor';
 import { demoAnswer } from './demoAnswers';
 import { TwinView } from '../twin/TwinView';
 import { ActivityView } from '../activity/ActivityView';
+import { CalendarView } from '../calendar/CalendarView';
 import { TransactionSideSheet } from '@/components/TransactionSideSheet';
 import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
@@ -139,6 +140,12 @@ function DemoActivity() {
     );
 }
 
+function DemoCalendar() {
+    const { input, commitments } = useDemo();
+    const charges = useMemo(() => commitments.map((c) => ({ ...c, active: c.active && !c.paid })), [commitments]);
+    return <CalendarView transactions={input.transactions} charges={charges} money={money} now={DEMO_NOW} />;
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -182,7 +189,8 @@ function DemoShell() {
                 <Route path="insights" element={<DemoAssist />} />
                 <Route path="money-twin" element={<DemoTwin />} />
                 <Route path="transactions" element={<DemoActivity />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions'].includes(s.to)).map((s) => (
+                <Route path="cashflow-calendar" element={<DemoCalendar />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
