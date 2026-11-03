@@ -15,6 +15,9 @@ import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistV
 import { linkFor } from '../assist/linkFor';
 import { demoAnswer } from './demoAnswers';
 import { TwinView } from '../twin/TwinView';
+import { ActivityView } from '../activity/ActivityView';
+import { TransactionSideSheet } from '@/components/TransactionSideSheet';
+import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -123,6 +126,19 @@ function DemoTwin() {
     );
 }
 
+function DemoActivity() {
+    const { input, updateTx, deleteTx } = useDemo();
+    const [open, setOpen] = useState<SupabaseTransaction | null>(null);
+    const rows = useMemo(() => input.transactions.map((t) => ({ ...t, user_id: 'demo', created_at: t.date })), [input.transactions]);
+    return (
+        <>
+            <ActivityView transactions={rows} money={money} now={DEMO_NOW} onOpen={(t) => setOpen(t as SupabaseTransaction)} />
+            <TransactionSideSheet transaction={open} open={open !== null} onOpenChange={(o) => !o && setOpen(null)}
+                onUpdate={async (u) => { updateTx(u); setOpen(null); }} onDelete={async (id) => { deleteTx(id); setOpen(null); }} />
+        </>
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -165,7 +181,8 @@ function DemoShell() {
                 <Route path="goals" element={<DemoGoals />} />
                 <Route path="insights" element={<DemoAssist />} />
                 <Route path="money-twin" element={<DemoTwin />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin'].includes(s.to)).map((s) => (
+                <Route path="transactions" element={<DemoActivity />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />

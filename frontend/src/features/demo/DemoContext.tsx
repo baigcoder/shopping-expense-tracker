@@ -16,6 +16,8 @@ interface DemoState {
     addGoal: (g: { name: string; target: number; deadline: string | null }) => void;
     depositGoal: (id: string, amount: number) => void;
     removeGoal: (id: string) => void;
+    updateTx: (t: HomeTransaction) => void;
+    deleteTx: (id: string) => void;
     inbox: { pending: InboxItem[]; approved: InboxItem[]; rejected: InboxItem[] };
     rules: InboxRule[];
     approve: (item: InboxItem | { id: string }, edits?: Edits) => void;
@@ -113,6 +115,9 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     }, []);
     const removeGoal = useCallback((id: string) => { setGoals((list) => list.filter((g) => g.id !== id)); setLastAction('Goal removed.'); }, []);
 
+    const updateTx = useCallback((t: HomeTransaction) => { setTransactions((list) => list.map((x) => (x.id === t.id ? { ...x, ...t } : x))); setLastAction('Saved. Every chart and total uses the change.'); }, []);
+    const deleteTx = useCallback((id: string) => { setTransactions((list) => list.filter((x) => x.id !== id)); setLastAction('Removed from the ledger.'); }, []);
+
     const reset = useCallback(() => {
         setTransactions(demoTransactions()); setPending(demoInbox()); setApproved([]); setRejected([]); setRules(demoRules()); setBudgets(demoBudgets()); setCommitments(demoCommitments()); setGoals(demoGoals()); setLastAction(null);
     }, []);
@@ -122,10 +127,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
             transactions, budgets, subscriptions: toHomeSubscriptions(commitments), goals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
-        budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal,
+        budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,
         inbox: { pending, approved, rejected }, rules,
         approve, dismiss, merge, bulk, addRule, reset, lastAction,
-    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
+    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }
