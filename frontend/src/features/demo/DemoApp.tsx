@@ -11,6 +11,9 @@ import { CommitmentsView, type CommitmentTab } from '../commitments/CommitmentsV
 import { buildCommitments } from '../commitments/commitmentsModel';
 import { GoalsView } from '../goals/GoalsView';
 import { buildGoals } from '../goals/goalsModel';
+import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistView';
+import { linkFor } from '../assist/linkFor';
+import { demoAnswer } from './demoAnswers';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -73,6 +76,41 @@ function DemoGoals() {
     return <GoalsView model={model} money={money} onAdd={addGoal} onDeposit={(g, n) => depositGoal(g.id, n)} onRemove={(g) => removeGoal(g.id)} />;
 }
 
+const DEMO_PLAN: PlanAction[] = [
+    { id: 'a1', title: 'Cancel Adobe Express before the trial ends', status: 'pending' },
+    { id: 'a2', title: 'Keep eating out under Rs 4,000 this week', status: 'pending' },
+    { id: 'a3', title: 'Move Rs 10,000 to the laptop goal', status: 'pending' },
+];
+
+function DemoAssist() {
+    const { input, budgets, commitments } = useDemo();
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [sending, setSending] = useState(false);
+    const [plan, setPlan] = useState<PlanAction[] | null>(null);
+    const home = useMemo(() => buildHomeModel({ ...input, now: DEMO_NOW }), [input]);
+    const budgetModel = useMemo(() => buildBudgets(budgets, input.transactions, DEMO_NOW), [budgets, input.transactions]);
+    const bills = useMemo(() => buildCommitments(commitments, DEMO_NOW), [commitments]);
+    const insights = [
+        ...bills.trials.map((t) => ({ id: t.id, title: `${t.name} starts charging in ${t.daysUntil} days`, message: `${money(t.amount)} a month after the free trial.`, path: '/subscriptions', urgent: true })),
+        ...budgetModel.lines.filter((l) => l.pace !== 'ok').map((l) => ({ id: l.id, title: `${l.category} is running fast`, message: `Heading for ${money(l.projected)} against ${money(l.amount)}.`, path: '/budgets' })),
+    ];
+    return (
+        <AssistView basePath="/demo" messages={messages} sending={sending} insights={insights}
+            suggestions={['Can I afford a Rs 30,000 phone?', 'Where did my money go this month?', 'Which subscriptions should I cancel?']}
+            onSend={(q) => {
+                setMessages((m) => [...m, { role: 'user', text: q }]);
+                setSending(true);
+                window.setTimeout(() => {
+                    const a = demoAnswer(q, home, budgetModel, bills, money);
+                    setMessages((m) => [...m, { role: 'assistant', text: a, link: linkFor(a) }]);
+                    setSending(false);
+                }, 650);
+            }}
+            plan={plan} onMakePlan={() => setPlan(DEMO_PLAN)}
+            onToggle={(a) => setPlan((p) => p?.map((x) => (x.id === a.id ? { ...x, status: x.status === 'done' ? 'pending' : 'done' } : x)) ?? p)} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -113,7 +151,8 @@ function DemoShell() {
                 <Route path="budgets" element={<DemoBudgets />} />
                 <Route path="subscriptions" element={<DemoCommitments />} />
                 <Route path="goals" element={<DemoGoals />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals'].includes(s.to)).map((s) => (
+                <Route path="insights" element={<DemoAssist />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
