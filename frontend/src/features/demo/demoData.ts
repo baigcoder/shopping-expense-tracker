@@ -71,7 +71,8 @@ export const toHomeSubscriptions = (list: CommitmentInput[]): HomeSubscription[]
     .filter((c) => c.active && !(c.kind === 'bill' && c.paid))
     .map((c) => ({ id: c.id, name: c.name, price: c.amount, is_active: true, is_trial: c.isTrial, next_payment_date: c.isTrial ? null : c.nextDate, trial_end_date: c.isTrial ? c.nextDate : null }));
 
-export const demoGoals: HomeGoal[] = [
-    { target: 300000, saved: 112000 },
-    { target: 80000, saved: 64000 },
+export const demoGoals = (): (HomeGoal & { id: string; name: string; deadline?: string | null })[] => [
+    { id: 'g1', name: 'New laptop', target: 300000, saved: 112000, deadline: day(160) },
+    { id: 'g2', name: 'Umrah fund', target: 80000, saved: 64000, deadline: day(70) },
+    { id: 'g3', name: 'Emergency savings', target: 150000, saved: 41000 },
 ];

@@ -12,6 +12,10 @@ interface DemoState {
     commitments: CommitmentInput[];
     updateCommitment: (id: string, patch: Partial<CommitmentInput> | null) => void;
     addCommitment: (c: CommitmentInput) => void;
+    goals: ReturnType<typeof demoGoals>;
+    addGoal: (g: { name: string; target: number; deadline: string | null }) => void;
+    depositGoal: (id: string, amount: number) => void;
+    removeGoal: (id: string) => void;
     inbox: { pending: InboxItem[]; approved: InboxItem[]; rejected: InboxItem[] };
     rules: InboxRule[];
     approve: (item: InboxItem | { id: string }, edits?: Edits) => void;
@@ -34,6 +38,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     const [rules, setRules] = useState<InboxRule[]>(demoRules);
     const [budgets, setBudgets] = useState(demoBudgets);
     const [commitments, setCommitments] = useState(demoCommitments);
+    const [goals, setGoals] = useState(demoGoals);
     const [lastAction, setLastAction] = useState<string | null>(null);
 
     const take = (ids: string[]) => {
@@ -98,19 +103,29 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         setLastAction(`${c.name} added. It shows on the 30-day strip and in Coming up on Home.`);
     }, []);
 
+    const addGoal = useCallback((g: { name: string; target: number; deadline: string | null }) => {
+        setGoals((list) => [...list, { id: `g-${Date.now()}`, saved: 0, ...g }]);
+        setLastAction(`${g.name} added. What you set aside for goals comes off safe-to-spend.`);
+    }, []);
+    const depositGoal = useCallback((id: string, amount: number) => {
+        setGoals((list) => list.map((g) => (g.id === id ? { ...g, saved: g.saved + amount } : g)));
+        setLastAction('Added. The goal moves closer and its monthly amount shrinks.');
+    }, []);
+    const removeGoal = useCallback((id: string) => { setGoals((list) => list.filter((g) => g.id !== id)); setLastAction('Goal removed.'); }, []);
+
     const reset = useCallback(() => {
-        setTransactions(demoTransactions()); setPending(demoInbox()); setApproved([]); setRejected([]); setRules(demoRules()); setBudgets(demoBudgets()); setCommitments(demoCommitments()); setLastAction(null);
+        setTransactions(demoTransactions()); setPending(demoInbox()); setApproved([]); setRejected([]); setRules(demoRules()); setBudgets(demoBudgets()); setCommitments(demoCommitments()); setGoals(demoGoals()); setLastAction(null);
     }, []);
 
     const value = useMemo<DemoState>(() => ({
         input: {
-            transactions, budgets, subscriptions: toHomeSubscriptions(commitments), goals: demoGoals,
+            transactions, budgets, subscriptions: toHomeSubscriptions(commitments), goals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
-        budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment,
+        budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal,
         inbox: { pending, approved, rejected }, rules,
         approve, dismiss, merge, bulk, addRule, reset, lastAction,
-    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
+    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }

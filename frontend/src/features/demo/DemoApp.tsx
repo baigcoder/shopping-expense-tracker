@@ -9,6 +9,8 @@ import { BudgetsView } from '../budgets/BudgetsView';
 import { buildBudgets } from '../budgets/budgetModel';
 import { CommitmentsView, type CommitmentTab } from '../commitments/CommitmentsView';
 import { buildCommitments } from '../commitments/commitmentsModel';
+import { GoalsView } from '../goals/GoalsView';
+import { buildGoals } from '../goals/goalsModel';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -65,6 +67,12 @@ function DemoCommitments() {
     );
 }
 
+function DemoGoals() {
+    const { goals, addGoal, depositGoal, removeGoal } = useDemo();
+    const model = useMemo(() => buildGoals(goals, DEMO_NOW), [goals]);
+    return <GoalsView model={model} money={money} onAdd={addGoal} onDeposit={(g, n) => depositGoal(g.id, n)} onRemove={(g) => removeGoal(g.id)} />;
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -104,7 +112,8 @@ function DemoShell() {
                 <Route path="transaction-inbox" element={<DemoInbox />} />
                 <Route path="budgets" element={<DemoBudgets />} />
                 <Route path="subscriptions" element={<DemoCommitments />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions'].includes(s.to)).map((s) => (
+                <Route path="goals" element={<DemoGoals />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
