@@ -156,7 +156,7 @@ const ProfilePage = () => {
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Email Address</label>
+                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Email</label>
                                     <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-xs">
                                         <Mail className="h-4 w-4 text-[var(--color-ai)]" />
                                         <span className="text-[var(--color-text-primary)] font-mono">{formData.email}</span>

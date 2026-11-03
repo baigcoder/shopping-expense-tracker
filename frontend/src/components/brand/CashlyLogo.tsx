@@ -87,7 +87,7 @@ export const CashlyMark: React.FC<{
             xmlns="http://www.w3.org/2000/svg"
             className={`shrink-0 transition-transform duration-200 ${className}`}
             style={{
-                filter: isTransparent ? 'none' : `drop-shadow(0 4px 12px ${colors.shadow})`,
+                filter: 'none',
             }}
             aria-label="Cashly Logo Mark"
         >

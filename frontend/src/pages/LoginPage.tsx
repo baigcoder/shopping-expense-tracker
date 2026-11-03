@@ -103,12 +103,12 @@ const LoginPage = () => {
     return (
         <AuthLayout 
             title="Welcome back" 
-            subtitle="Sign in to your Cashly workspace to review your inbox and financial pulse."
+            subtitle="Sign in to see what is waiting for you and where your month stands."
         >
             <form onSubmit={handleEmail} className="space-y-4">
                 <div className="space-y-1.5">
-                    <label htmlFor="login-email" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
-                        Email Address
+                    <label htmlFor="login-email" className="text-[14px] font-medium text-[var(--color-ink)]">
+                        Email
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
@@ -116,7 +116,7 @@ const LoginPage = () => {
                             id="login-email"
                             autoComplete="email"
                             type="email"
-                            className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 text-[15px] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
                             placeholder="you@example.com"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
@@ -125,15 +125,15 @@ const LoginPage = () => {
                             required
                         />
                     </div>
-                    {emailError && <p className="text-xs font-medium text-[var(--color-danger)]">Please enter a valid email</p>}
+                    {emailError && <p className="text-[13px] font-medium text-[var(--color-danger)]">Please enter a valid email</p>}
                 </div>
 
                 <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                        <label htmlFor="login-password" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                        <label htmlFor="login-password" className="text-[14px] font-medium text-[var(--color-ink)]">
                             Password
                         </label>
-                        <Link to="/forgot-password" className="text-xs font-medium text-[var(--color-brand)] hover:underline">
+                        <Link to="/forgot-password" className="text-[14px] font-medium text-[var(--color-ink)] underline underline-offset-2">
                             Forgot password?
                         </Link>
                     </div>
@@ -143,7 +143,7 @@ const LoginPage = () => {
                             id="login-password"
                             autoComplete="current-password"
                             type={showPw ? 'text' : 'password'}
-                            className={cn('h-11 pl-10 pr-11 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 pr-11 text-[15px] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
                             placeholder="Enter your password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
@@ -165,7 +165,7 @@ const LoginPage = () => {
                 <Button 
                     type="submit" 
                     disabled={isLoading} 
-                    className="h-12 w-full rounded-full bg-[var(--color-brand)] text-sm font-bold text-white shadow-md hover:bg-[var(--color-brand-hover)] hover:-translate-y-0.5 transition-all"
+                    className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]"
                 >
                     {isLoading ? (
                         <>
@@ -183,10 +183,10 @@ const LoginPage = () => {
 
             <div className="relative my-5">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#E7E5E4]" />
+                    <div className="w-full" />
                 </div>
-                <div className="relative flex justify-center text-xs">
-                    <span className="bg-white px-3 font-medium text-[#78716C]">or continue with</span>
+                <div className="relative flex justify-center text-[13px]">
+                    <span className="bg-[var(--color-canvas)] px-3 text-[14px] text-[var(--color-ink-secondary)]">or continue with</span>
                 </div>
             </div>
 
@@ -195,15 +195,15 @@ const LoginPage = () => {
                 variant="outline" 
                 onClick={handleGoogle} 
                 disabled={isLoading} 
-                className="h-11 w-full border-[#E7E5E4] bg-white text-sm font-medium text-[#1C1917] hover:bg-[#FAF8F5]"
+                className="h-12 w-full rounded-full border-0 bg-[var(--color-surface)] text-[15px] font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
             >
                 <GoogleIcon />
                 Continue with Google
             </Button>
 
-            <div className="mt-6 border-t border-[#E7E5E4] pt-4 text-center text-xs text-[#78716C]">
+            <div className="mt-8 text-center text-[15px] text-[var(--color-ink-secondary)]">
                 Don't have an account?{' '}
-                <Link to="/signup" className="font-semibold text-[var(--color-brand)] hover:underline">
+                <Link to="/signup" className="font-semibold text-[var(--color-ink)] underline underline-offset-2">
                     Create a free account
                 </Link>
             </div>

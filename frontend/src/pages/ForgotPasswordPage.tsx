@@ -39,7 +39,7 @@ const ForgotPasswordPage = () => {
             {!sent ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-[#57534E]">
+                        <label className="text-[14px] font-medium text-[var(--color-ink)]">
                             Account Email
                         </label>
                         <div className="relative">
@@ -59,7 +59,7 @@ const ForgotPasswordPage = () => {
                     <Button 
                         type="submit" 
                         disabled={isLoading} 
-                        className="h-11 w-full bg-[var(--color-brand)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-hover)]"
+                        className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]"
                     >
                         {isLoading ? (
                             <>
@@ -77,7 +77,7 @@ const ForgotPasswordPage = () => {
                     <Button 
                         type="button" 
                         variant="ghost" 
-                        className="w-full text-xs font-medium text-[#57534E] hover:text-[#1C1917]" 
+                        className="w-full text-[13px] font-medium text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]" 
                         onClick={() => navigate('/login')}
                     >
                         <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
@@ -90,21 +90,21 @@ const ForgotPasswordPage = () => {
                         <CheckCircle2 className="h-7 w-7" />
                     </div>
 
-                    <p className="text-xs text-[#57534E] leading-relaxed">
+                    <p className="text-[13px] text-[var(--color-ink-secondary)] leading-relaxed">
                         Didn't receive the email? Check your spam folder or try another address.
                     </p>
 
                     <div className="space-y-2">
                         <Button 
                             variant="outline" 
-                            className="h-11 w-full border-[#E7E5E4] bg-white text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]" 
+                            className="h-12 w-full rounded-full border-0 bg-[var(--color-surface)] text-[15px] font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]" 
                             onClick={() => setSent(false)}
                         >
                             Try another email
                         </Button>
                         <Button 
                             variant="ghost" 
-                            className="w-full text-xs font-medium text-[#78716C] hover:text-[#1C1917]" 
+                            className="w-full text-[13px] font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)]" 
                             onClick={() => navigate('/login')}
                         >
                             Back to sign in

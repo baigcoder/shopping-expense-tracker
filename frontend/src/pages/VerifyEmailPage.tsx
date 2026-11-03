@@ -110,11 +110,11 @@ const VerifyEmailPage = () => {
                     <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ECFDF5] text-[#059669]">
                         <CheckCircle2 className="h-7 w-7" />
                     </div>
-                    <p className="text-xs text-[#57534E] leading-relaxed">
+                    <p className="text-[13px] text-[var(--color-ink-secondary)] leading-relaxed">
                         Welcome to Cashly! Your workspace is initialized and ready to start capturing checkouts.
                     </p>
                     <Button 
-                        className="h-11 w-full bg-[var(--color-brand)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-hover)]" 
+                        className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]" 
                         onClick={() => navigate('/login')}
                     >
                         Go to sign in
@@ -128,7 +128,7 @@ const VerifyEmailPage = () => {
     return (
         <AuthLayout 
             title="Check your email" 
-            subtitle={`Enter the 6-digit confirmation code dispatched to ${email}.`}
+            subtitle={`Enter the 6-digit code we sent to ${email}.`}
         >
             <div className="space-y-5">
                 <div className="flex items-center justify-center gap-2 sm:gap-2.5" onPaste={handlePaste}>
@@ -154,7 +154,7 @@ const VerifyEmailPage = () => {
                 </div>
 
                 {status === 'error' && (
-                    <div className="flex items-center justify-center gap-2 rounded-lg bg-red-500/10 p-2.5 text-xs font-medium text-red-600 dark:text-red-400">
+                    <div className="flex items-center justify-center gap-2 rounded-lg bg-red-500/10 p-2.5 text-[13px] font-medium text-red-600 dark:text-red-400">
                         <AlertCircle size={14} className="shrink-0" />
                         <span>{errorMessage || 'Verification failed'}</span>
                     </div>
@@ -163,7 +163,7 @@ const VerifyEmailPage = () => {
                 <Button
                     onClick={handleVerify}
                     disabled={status === 'verifying' || otp.join('').length !== OTP_LENGTH}
-                    className="h-11 w-full bg-[var(--color-brand)] text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-brand-hover)]"
+                    className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]"
                 >
                     {status === 'verifying' ? (
                         <>
@@ -175,12 +175,12 @@ const VerifyEmailPage = () => {
                     )}
                 </Button>
 
-                <div className="flex items-center justify-between pt-1 text-xs">
+                <div className="flex items-center justify-between pt-1 text-[13px]">
                     <button
                         type="button"
                         onClick={handleResend}
                         disabled={resending || status === 'verifying'}
-                        className="flex items-center gap-1.5 font-medium text-[#57534E] hover:text-[#1C1917] disabled:opacity-50"
+                        className="flex items-center gap-1.5 font-medium text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)] disabled:opacity-50"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5', resending && 'animate-spin')} />
                         Resend code
@@ -189,7 +189,7 @@ const VerifyEmailPage = () => {
                     <button
                         type="button"
                         onClick={() => navigate('/login')}
-                        className="flex items-center gap-1 font-medium text-[#78716C] hover:text-[#1C1917]"
+                        className="flex items-center gap-1 font-medium text-[var(--color-muted)] hover:text-[var(--color-ink)]"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" />
                         Back to sign in

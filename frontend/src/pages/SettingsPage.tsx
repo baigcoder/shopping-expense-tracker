@@ -538,7 +538,7 @@ export const SettingsPage = () => {
 
                                             <div className="space-y-1.5">
                                                 <Label htmlFor="emailAddress" className="text-xs font-semibold text-stone-800">
-                                                    Email Address
+                                                    Email
                                                 </Label>
                                                 <div className="relative">
                                                     <Input
