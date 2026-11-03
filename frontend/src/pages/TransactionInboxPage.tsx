@@ -270,17 +270,17 @@ const TransactionInboxPage = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[var(--color-border)]">
                 <div>
                     <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[var(--color-orange)] text-white font-mono">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[13px] font-bold bg-[var(--color-orange)] text-white tabular-nums">
                             Sovereign Review Terminal
                         </span>
-                        <span className="text-xs text-[var(--color-muted)] font-mono">
+                        <span className="text-[13px] text-[var(--color-muted)] tabular-nums">
                             Explicit consent before ledger mutation
                         </span>
                     </div>
                     <h1 className="editorial-title text-3xl sm:text-4xl text-[var(--color-ink)] mt-2">
                         REVIEW INBOX.
                     </h1>
-                    <p className="text-xs text-[var(--color-muted)] font-mono mt-1">
+                    <p className="text-[13px] text-[var(--color-muted)] tabular-nums mt-1">
                         Approve, edit, merge, or reject captures before they affect your cash runway.
                     </p>
                 </div>
@@ -293,24 +293,24 @@ const TransactionInboxPage = () => {
             </div>
 
             {/* Power-User Hotkey Guide Strip */}
-            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[var(--color-surface-2)]/80 border border-[var(--color-border)] text-xs font-mono text-[var(--color-muted)] overflow-x-auto shadow-xs">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[var(--color-surface-2)]/80 border border-[var(--color-border)] text-[13px] tabular-nums text-[var(--color-muted)] overflow-x-auto">
                 <div className="flex items-center gap-1.5 text-[var(--color-ink)] font-bold shrink-0">
                     <Keyboard size={14} className="text-[var(--color-brand)]" />
                     <span>Terminal Shortcuts:</span>
                 </div>
-                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">A</kbd> Approve</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">A</kbd> Approve</span>
                 <span className="shrink-0 opacity-40">·</span>
-                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">R</kbd> Reject</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">R</kbd> Reject</span>
                 <span className="shrink-0 opacity-40">·</span>
-                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">M</kbd> Merge</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">M</kbd> Merge</span>
                 <span className="shrink-0 opacity-40">·</span>
-                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">Shift+A</kbd> Batch Clean (≥85%)</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">Shift+A</kbd> Batch Clean (≥85%)</span>
                 <span className="shrink-0 opacity-40">·</span>
-                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">J</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[10px]">K</kbd> Navigate Focus</span>
+                <span className="shrink-0"><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">J</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)] font-bold text-[13px]">K</kbd> Navigate Focus</span>
             </div>
 
             <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8">
-                <Surface padded={false} className="overflow-hidden border-[var(--color-border)] shadow-xs rounded-2xl">
+                <Surface padded={false} className="overflow-hidden border-[var(--color-border)] rounded-2xl">
                     <div className="flex flex-col gap-4 border-b border-[var(--color-border)] bg-[var(--color-surface-2)] p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-5">
                         <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                             <div className="flex w-full items-center gap-1 overflow-x-auto rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1 sm:w-auto">
@@ -319,9 +319,9 @@ const TransactionInboxPage = () => {
                                         key={value}
                                         onClick={() => setStatus(value)}
                                         className={cn(
-                                            'whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold capitalize transition-colors',
+                                            'whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-bold capitalize transition-colors',
                                             status === value
-                                                ? 'bg-[var(--color-ink)] text-white shadow-xs'
+                                                ? 'bg-[var(--color-ink)] text-white'
                                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
                                         )}
                                     >
@@ -333,7 +333,7 @@ const TransactionInboxPage = () => {
                             <select 
                                 value={sortBy} 
                                 onChange={(e) => setSortBy(e.target.value as any)}
-                                className="h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-ink)] outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                className="h-9 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] font-medium text-[var(--color-ink)] outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                             >
                                 <option value="date">Sort: Date</option>
                                 <option value="confidence">Sort: Review needed</option>
@@ -344,17 +344,17 @@ const TransactionInboxPage = () => {
                             {status === 'pending' && (
                                 <Button
                                     onClick={batchApproveVerifiedClean}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs flex items-center gap-1.5"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white text-[13px] flex items-center gap-1.5"
                                 >
                                     <Zap size={13} />
                                     <span>Batch Clean</span>
-                                    <kbd className="px-1 py-0.5 rounded text-[9px] bg-emerald-800/80 text-emerald-100 font-mono font-bold">Shift+A</kbd>
+                                    <kbd className="px-1 py-0.5 rounded text-[13px] bg-emerald-800/80 text-emerald-100 tabular-nums font-bold">Shift+A</kbd>
                                 </Button>
                             )}
                             <Button
                                 onClick={() => bulk('approve')}
                                 disabled={!selected.length}
-                                className="bg-[var(--color-success)] text-white hover:opacity-90 shadow-xs text-xs"
+                                className="bg-[var(--color-success)] text-white hover:opacity-90 text-[13px]"
                             >
                                 Approve ({selected.length})
                             </Button>
@@ -362,7 +362,7 @@ const TransactionInboxPage = () => {
                                 variant="outline"
                                 onClick={() => bulk('reject')}
                                 disabled={!selected.length}
-                                className="text-xs"
+                                className="text-[13px]"
                             >
                                 Reject ({selected.length})
                             </Button>
@@ -384,7 +384,7 @@ const TransactionInboxPage = () => {
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm border-collapse">
                                 <thead className="bg-[var(--color-surface-2)] text-[var(--color-muted)]">
-                                    <tr className="border-b border-[var(--color-border)] text-[11px] uppercase tracking-wider font-semibold">
+                                    <tr className="border-b border-[var(--color-border)] text-[13px] font-semibold">
                                         <th className="w-16 p-4 text-left">
                                             <div className="relative h-4 w-4 rounded border border-[var(--color-border)] bg-[var(--color-surface)]">
                                                 <input 
@@ -439,12 +439,12 @@ const TransactionInboxPage = () => {
                                                             <input
                                                                 value={editDrafts[item.id].description}
                                                                 onChange={(e) => updateDraft(item.id, 'description', e.target.value)}
-                                                                className="h-9 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                                                className="h-9 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                                             />
                                                             <select
                                                                 value={editDrafts[item.id].category}
                                                                 onChange={(e) => updateDraft(item.id, 'category', e.target.value)}
-                                                                className="h-9 w-full cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none"
+                                                                className="h-9 w-full cursor-pointer rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none"
                                                             >
                                                                 {categories.map((category) => <option key={category}>{category}</option>)}
                                                                 {!categories.includes(item.category) && item.category ? <option>{item.category}</option> : null}
@@ -455,10 +455,10 @@ const TransactionInboxPage = () => {
                                                             <div className="flex items-center gap-2 text-sm font-semibold text-[var(--color-ink)]">
                                                                 {item.description}
                                                                 {item.duplicate_transaction_id && (
-                                                                    <span className="rounded-full border border-[var(--color-brand)]/30 bg-[var(--color-brand-light)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-brand)]">Possible duplicate</span>
+                                                                    <span className="rounded-full border border-[var(--color-brand)]/30 bg-[var(--color-brand-light)] px-2 py-0.5 text-[13px] font-medium text-[var(--color-brand)]">Possible duplicate</span>
                                                                 )}
                                                             </div>
-                                                            <div className="mt-1 text-xs font-mono text-[var(--color-muted)]">{item.date} · {item.category}</div>
+                                                            <div className="mt-1 text-[13px] tabular-nums text-[var(--color-muted)]">{item.date} · {item.category}</div>
                                                         </>
                                                     )}
                                                 </td>
@@ -484,7 +484,7 @@ const TransactionInboxPage = () => {
                                                         const color = pct >= 80 ? 'var(--color-success)' : pct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)';
                                                         return (
                                                             <div className="flex items-center gap-2">
-                                                                <span className="text-xs font-semibold tabular-nums font-mono" style={{ color }}>{pct}%</span>
+                                                                <span className="text-[13px] font-semibold tabular-nums tabular-nums" style={{ color }}>{pct}%</span>
                                                                 <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--color-surface-2)]">
                                                                     <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }}></div>
                                                                 </div>
@@ -492,7 +492,7 @@ const TransactionInboxPage = () => {
                                                         );
                                                     })()}
                                                 </td>
-                                                <td className="p-4 text-right text-sm font-semibold tabular-nums font-mono">
+                                                <td className="p-4 text-right text-sm font-semibold tabular-nums tabular-nums">
                                                     {editDrafts[item.id] ? (
                                                         <input
                                                             type="number"
@@ -500,7 +500,7 @@ const TransactionInboxPage = () => {
                                                             step="0.01"
                                                             value={editDrafts[item.id].amount}
                                                             onChange={(e) => updateDraft(item.id, 'amount', e.target.value)}
-                                                            className="ml-auto h-9 w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-right text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                                            className="ml-auto h-9 w-28 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-right text-[13px] outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                                         />
                                                     ) : (
                                                         formatCurrency(Number(item.amount || 0))
@@ -526,11 +526,11 @@ const TransactionInboxPage = () => {
                                                                         type="button"
                                                                         onClick={() => merge(item)}
                                                                         title="Merge into existing ledger item (M)"
-                                                                        className="flex h-8 px-2 items-center justify-center gap-1 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 font-mono text-xs font-semibold"
+                                                                        className="flex h-8 px-2 items-center justify-center gap-1 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 tabular-nums text-[13px] font-semibold"
                                                                     >
                                                                         <Link2 size={13} strokeWidth={2} />
                                                                         {isFocused && (
-                                                                            <kbd className="px-1 py-0.5 rounded text-[9px] bg-amber-200/80 text-amber-900 font-mono font-bold">M</kbd>
+                                                                            <kbd className="px-1 py-0.5 rounded text-[13px] bg-amber-200/80 text-amber-900 tabular-nums font-bold">M</kbd>
                                                                         )}
                                                                     </button>
                                                                 )}
@@ -538,22 +538,22 @@ const TransactionInboxPage = () => {
                                                                     type="button"
                                                                     onClick={() => approve(item)}
                                                                     title={item.duplicate_transaction_id ? 'Keep as a new ledger item' : 'Approve to ledger (A)'}
-                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-success)] text-white hover:opacity-90 font-mono text-xs font-semibold shadow-xs"
+                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-success)] text-white hover:opacity-90 tabular-nums text-[13px] font-semibold"
                                                                 >
                                                                     <Check size={14} strokeWidth={2.5} />
                                                                     {isFocused && (
-                                                                        <kbd className="px-1 py-0.5 rounded text-[9px] bg-black/20 text-white font-mono font-bold">A</kbd>
+                                                                        <kbd className="px-1 py-0.5 rounded text-[13px] bg-black/20 text-white tabular-nums font-bold">A</kbd>
                                                                     )}
                                                                 </button>
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => reject(item.id)}
                                                                     title="Reject candidate (R)"
-                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-danger)] text-white hover:opacity-90 font-mono text-xs font-semibold shadow-xs"
+                                                                    className="flex h-8 px-2.5 items-center justify-center gap-1 rounded-lg bg-[var(--color-danger)] text-white hover:opacity-90 tabular-nums text-[13px] font-semibold"
                                                                 >
                                                                     <X size={14} strokeWidth={2.5} />
                                                                     {isFocused && (
-                                                                        <kbd className="px-1 py-0.5 rounded text-[9px] bg-black/20 text-white font-mono font-bold">R</kbd>
+                                                                        <kbd className="px-1 py-0.5 rounded text-[13px] bg-black/20 text-white tabular-nums font-bold">R</kbd>
                                                                     )}
                                                                 </button>
                                                             </>
@@ -570,30 +570,30 @@ const TransactionInboxPage = () => {
                 </Surface>
 
                 <aside className="space-y-6 sm:space-y-8 min-w-0">
-                    <Surface className="border-[var(--color-border)] shadow-xs">
+                    <Surface className="border-[var(--color-border)]">
                         <div className="mb-4 flex items-center gap-2">
                             <Wand2 size={18} className="text-[var(--color-brand)]" />
                             <h2 className="font-display text-base font-bold text-[var(--color-ink)]">Merchant rule</h2>
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-[var(--color-muted)]">Merchant pattern</label>
-                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs outline-none focus:ring-2 focus:ring-[var(--color-brand)]" />
+                                <label className="text-[13px] font-semibold text-[var(--color-muted)]">Merchant pattern</label>
+                                <input value={ruleForm.merchantPattern} onChange={e => setRuleForm({ ...ruleForm, merchantPattern: e.target.value })} placeholder="e.g. Foodpanda" className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] outline-none focus:ring-2 focus:ring-[var(--color-brand)]" />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-[var(--color-muted)]">Category</label>
-                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-ink)]">
+                                <label className="text-[13px] font-semibold text-[var(--color-muted)]">Category</label>
+                                <select value={ruleForm.category} onChange={e => setRuleForm({ ...ruleForm, category: e.target.value })} className="h-10 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[13px] font-medium text-[var(--color-ink)]">
                                     {categories.map(category => <option key={category}>{category}</option>)}
                                 </select>
                             </div>
                             <Button onClick={addRule} className="w-full bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white">Create rule</Button>
-                            <p className="text-xs leading-relaxed text-[var(--color-muted)]">
+                            <p className="text-[13px] leading-relaxed text-[var(--color-muted)]">
                                 Matching extension captures with high confidence auto-post to the ledger. Everything else stays here until you approve.
                             </p>
                         </div>
                     </Surface>
                     
-                    <Surface className="border-[var(--color-border)] shadow-xs">
+                    <Surface className="border-[var(--color-border)]">
                         <div className="mb-4 flex items-center gap-2">
                             <Settings2 size={18} className="text-[var(--color-muted)]" />
                             <h2 className="font-display text-base font-bold text-[var(--color-ink)]">Active rules</h2>
@@ -602,8 +602,8 @@ const TransactionInboxPage = () => {
                             {rules.map(rule => (
                                 <div key={rule.id} className="flex flex-col justify-between gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] p-3 min-[420px]:flex-row min-[420px]:items-center">
                                     <div>
-                                        <div className="text-xs font-semibold text-[var(--color-ink)]">{rule.merchant_pattern}</div>
-                                        <div className="mt-0.5 text-[11px] text-[var(--color-muted)]">{rule.match_type} • <span className="text-[var(--color-brand)] font-medium">{rule.category}</span></div>
+                                        <div className="text-[13px] font-semibold text-[var(--color-ink)]">{rule.merchant_pattern}</div>
+                                        <div className="mt-0.5 text-[13px] text-[var(--color-muted)]">{rule.match_type} • <span className="text-[var(--color-brand)] font-medium">{rule.category}</span></div>
                                     </div>
                                     <button
                                         onClick={async () => { await merchantRulesApi.delete(rule.id); load(); }}
@@ -614,7 +614,7 @@ const TransactionInboxPage = () => {
                                 </div>
                             ))}
                             {rules.length === 0 && (
-                                <p className="py-6 text-center text-xs text-[var(--color-muted)]">No rules yet.</p>
+                                <p className="py-6 text-center text-[13px] text-[var(--color-muted)]">No rules yet.</p>
                             )}
                         </div>
                     </Surface>

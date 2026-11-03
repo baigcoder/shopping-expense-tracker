@@ -263,7 +263,7 @@
 
 .errorText {
     color: #ef4444;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -408,7 +408,7 @@
 
     .cardNumberBig {
         font-size: 1.1rem;
-        letter-spacing: 0.08em;
+        letter-spacing: 0;
     }
 
     .submitBtnBig {

@@ -359,11 +359,11 @@ export const SettingsPage = () => {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                     <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[13px] tabular-nums mb-3">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
                             System Governance & Workspace
                         </div>
-                        <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                        <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] leading-none">
                             Control Center
                         </h1>
                         <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
@@ -376,7 +376,7 @@ export const SettingsPage = () => {
                             variant="outline"
                             size="sm"
                             onClick={handleSignOut}
-                            className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 font-bold text-[var(--color-ink)] hover:bg-[#EE5024] hover:text-white hover:border-[#EE5024] transition-all shadow-2xs"
+                            className="rounded-full border-[var(--color-border)] bg-white text-[13px] h-10 px-5 font-bold text-[var(--color-ink)] hover:bg-[#EE5024] hover:text-white hover:border-[#EE5024] transition-all shadow-2xs"
                         >
                             <LogOut className="h-3.5 w-3.5 mr-2 text-[#EE5024]" />
                             Sign Out
@@ -399,11 +399,11 @@ export const SettingsPage = () => {
                                         key={item.id}
                                         onClick={() => setActiveTab(item.id)}
                                         className={cn(
-                                            'flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all shrink-0',
+                                            'flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-bold whitespace-nowrap transition-all shrink-0',
                                             isActive
                                                 ? isDanger
-                                                    ? 'bg-[var(--color-brand)] text-white shadow-xs'
-                                                    : 'bg-[#111111] text-white shadow-xs'
+                                                    ? 'bg-[var(--color-brand)] text-white'
+                                                    : 'bg-[#111111] text-white'
                                                 : isDanger
                                                 ? 'text-[var(--color-brand)] hover:bg-[var(--color-brand-soft)]'
                                                 : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)] hover:bg-white'
@@ -420,9 +420,9 @@ export const SettingsPage = () => {
                         <nav
                             role="tablist"
                             aria-label="Settings Categories"
-                            className="hidden lg:flex flex-col gap-1.5 sticky top-24 p-2.5 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs"
+                            className="hidden lg:flex flex-col gap-1.5 sticky top-24 p-2.5 rounded-[24px] bg-white border border-[var(--color-border)]"
                         >
-                            <div className="px-3 py-2 text-[10px] font-mono font-bold tracking-wider text-[var(--color-ink)]/50 uppercase">
+                            <div className="px-3 py-2 text-[13px] tabular-nums font-bold text-[var(--color-ink)]/50">
                                 Navigation Matrix
                             </div>
 
@@ -438,11 +438,11 @@ export const SettingsPage = () => {
                                         aria-selected={isActive}
                                         onClick={() => setActiveTab(item.id)}
                                         className={cn(
-                                            'group relative flex items-center justify-between w-full px-4 py-3 rounded-[16px] text-xs font-bold uppercase tracking-wider transition-all text-left',
+                                            'group relative flex items-center justify-between w-full px-4 py-3 rounded-[16px] text-[13px] font-bold transition-all text-left',
                                             isActive
                                                 ? isDanger
-                                                    ? 'bg-[var(--color-brand)] text-white shadow-xs'
-                                                    : 'bg-[#111111] text-white shadow-xs'
+                                                    ? 'bg-[var(--color-brand)] text-white'
+                                                    : 'bg-[#111111] text-white'
                                                 : isDanger
                                                 ? 'text-[var(--color-brand)] hover:bg-[var(--color-brand-soft)]'
                                                 : 'text-[var(--color-ink)]/70 hover:text-[var(--color-ink)] hover:bg-[var(--color-canvas)]'
@@ -454,7 +454,7 @@ export const SettingsPage = () => {
                                         </div>
 
                                         {item.badge && (
-                                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-violet-100 text-violet-700 font-mono">
+                                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[13px] font-medium bg-violet-100 text-violet-700 tabular-nums">
                                                 {item.badge}
                                             </span>
                                         )}
@@ -463,7 +463,7 @@ export const SettingsPage = () => {
                             })}
 
                             <div className="mt-4 pt-3 border-t border-stone-200/60 px-3 pb-1">
-                                <div className="flex items-center justify-between text-[11px] text-stone-500 font-mono">
+                                <div className="flex items-center justify-between text-[13px] text-stone-500 tabular-nums">
                                     <span>Cashly Financial OS</span>
                                     <span>v7.2</span>
                                 </div>
@@ -485,7 +485,7 @@ export const SettingsPage = () => {
                                 {/* Identity Block */}
                                 <div className="p-6 rounded-xl bg-white border border-stone-200/90 shadow-2xs">
                                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pb-6 border-b border-stone-100">
-                                        <div className="h-16 w-16 rounded-xl bg-stone-900 text-white font-mono text-xl font-bold flex items-center justify-center shadow-xs">
+                                        <div className="h-16 w-16 rounded-xl bg-stone-900 text-white tabular-nums text-xl font-bold flex items-center justify-center">
                                             {userInitials}
                                         </div>
                                         <div className="flex-1">
@@ -493,12 +493,12 @@ export const SettingsPage = () => {
                                                 <h2 className="text-base font-bold text-stone-900">
                                                     {name || 'Account Holder'}
                                                 </h2>
-                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
                                                     <CheckCircle2 className="h-3 w-3" />
                                                     Active Workspace
                                                 </span>
                                             </div>
-                                            <p className="text-xs text-stone-500 mt-0.5">
+                                            <p className="text-[13px] text-stone-500 mt-0.5">
                                                 {email || 'No email attached'}
                                             </p>
                                         </div>
@@ -509,7 +509,7 @@ export const SettingsPage = () => {
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={handleCopyId}
-                                                className="rounded-lg h-8 text-xs font-mono border-stone-200 text-stone-600 hover:text-stone-900"
+                                                className="rounded-lg h-8 text-[13px] tabular-nums border-stone-200 text-stone-600 hover:text-stone-900"
                                             >
                                                 {copiedId ? <Check className="h-3 w-3 mr-1 text-emerald-600" /> : <Copy className="h-3 w-3 mr-1 text-stone-400" />}
                                                 {copiedId ? 'Copied' : 'Copy ID'}
@@ -521,7 +521,7 @@ export const SettingsPage = () => {
                                     <form onSubmit={handleProfileSubmit} className="pt-6 space-y-5">
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                             <div className="space-y-1.5">
-                                                <Label htmlFor="displayName" className="text-xs font-semibold text-stone-800">
+                                                <Label htmlFor="displayName" className="text-[13px] font-semibold text-stone-800">
                                                     Display Name
                                                 </Label>
                                                 <Input
@@ -529,15 +529,15 @@ export const SettingsPage = () => {
                                                     value={name}
                                                     onChange={e => setName(e.target.value)}
                                                     placeholder="Alex Morgan"
-                                                    className="rounded-lg h-10 text-xs bg-white border-stone-300 text-stone-900 focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
+                                                    className="rounded-lg h-10 text-[13px] bg-white border-stone-300 text-stone-900 focus-visible:ring-2 focus-visible:ring-[var(--color-brand)]"
                                                 />
-                                                <p className="text-[11px] text-stone-500">
+                                                <p className="text-[13px] text-stone-500">
                                                     Used across transaction ledgers and reports.
                                                 </p>
                                             </div>
 
                                             <div className="space-y-1.5">
-                                                <Label htmlFor="emailAddress" className="text-xs font-semibold text-stone-800">
+                                                <Label htmlFor="emailAddress" className="text-[13px] font-semibold text-stone-800">
                                                     Email
                                                 </Label>
                                                 <div className="relative">
@@ -545,27 +545,27 @@ export const SettingsPage = () => {
                                                         id="emailAddress"
                                                         value={email}
                                                         disabled
-                                                        className="rounded-lg h-10 text-xs bg-stone-50 border-stone-200 text-stone-600 cursor-not-allowed pr-20"
+                                                        className="rounded-lg h-10 text-[13px] bg-stone-50 border-stone-200 text-stone-600 cursor-not-allowed pr-20"
                                                     />
-                                                    <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                                    <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[13px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                                                         Verified
                                                     </span>
                                                 </div>
-                                                <p className="text-[11px] text-stone-500">
+                                                <p className="text-[13px] text-stone-500">
                                                     Managed via Supabase Authentication.
                                                 </p>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center justify-between pt-4 border-t border-stone-100">
-                                            <div className="text-[11px] font-mono text-stone-500">
+                                            <div className="text-[13px] tabular-nums text-stone-500">
                                                 Member Since: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : 'Jan 2024'}
                                             </div>
                                             <Button
                                                 type="submit"
                                                 size="sm"
                                                 disabled={isSavingProfile}
-                                                className="rounded-lg bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs h-9 px-5 shadow-2xs transition-colors"
+                                                className="rounded-lg bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-[13px] h-9 px-5 shadow-2xs transition-colors"
                                             >
                                                 {isSavingProfile ? 'Saving...' : 'Save Profile Changes'}
                                             </Button>
@@ -589,14 +589,14 @@ export const SettingsPage = () => {
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                         <div>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-brand)]">
+                                                <span className="text-[13px] font-semibold text-[var(--color-brand)]">
                                                     Financial Baseline
                                                 </span>
                                             </div>
                                             <h2 className="text-base font-bold text-stone-900 mt-0.5">
                                                 Base Operating Currency
                                             </h2>
-                                            <p className="text-xs text-stone-500 mt-0.5 max-w-lg">
+                                            <p className="text-[13px] text-stone-500 mt-0.5 max-w-lg">
                                                 Authoritative currency for all ledger transactions, budget burn rates, commitments, and export sheets.
                                             </p>
                                         </div>
@@ -606,12 +606,12 @@ export const SettingsPage = () => {
                                                 value={preferences.currency}
                                                 onValueChange={(val) => handleUpdatePreference({ currency: val })}
                                             >
-                                                <SelectTrigger className="w-48 rounded-lg h-10 text-xs bg-stone-50 border-stone-300 text-stone-900 font-mono font-medium focus:ring-2 focus:ring-[var(--color-brand)]">
+                                                <SelectTrigger className="w-48 rounded-lg h-10 text-[13px] bg-stone-50 border-stone-300 text-stone-900 tabular-nums font-medium focus:ring-2 focus:ring-[var(--color-brand)]">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent className="bg-white border-stone-200 text-stone-900">
                                                     {SUPPORTED_CURRENCIES.map(curr => (
-                                                        <SelectItem key={curr.code} value={curr.code} className="font-mono text-xs">
+                                                        <SelectItem key={curr.code} value={curr.code} className="tabular-nums text-[13px]">
                                                             {curr.code} ({curr.symbol}) — {curr.name}
                                                         </SelectItem>
                                                     ))}
@@ -623,15 +623,15 @@ export const SettingsPage = () => {
                                     {/* Numerical Tabular Preview Box */}
                                     <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 flex items-center justify-between">
                                         <div>
-                                            <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider block">
+                                            <span className="text-[13px] font-semibold text-stone-500 block">
                                                 Active Formatting Preview
                                             </span>
-                                            <div className="text-2xl font-bold font-mono text-stone-900 tracking-tight mt-1">
+                                            <div className="text-2xl font-bold tabular-nums text-stone-900 tracking-tight mt-1">
                                                 {activeCurrencyInfo.symbol} 12,450.00
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-xs font-mono font-medium text-stone-700 bg-white px-2.5 py-1 rounded border border-stone-200">
+                                            <span className="text-[13px] tabular-nums font-medium text-stone-700 bg-white px-2.5 py-1 rounded border border-stone-200">
                                                 {activeCurrencyInfo.code} ({activeCurrencyInfo.name})
                                             </span>
                                         </div>
@@ -652,10 +652,10 @@ export const SettingsPage = () => {
                                                     {preferences.soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
                                                 </div>
                                                 <div>
-                                                    <span className="text-xs font-semibold text-stone-900 block">
+                                                    <span className="text-[13px] font-semibold text-stone-900 block">
                                                         Auditory Feedback
                                                     </span>
-                                                    <span className="text-[11px] text-stone-500 leading-relaxed block">
+                                                    <span className="text-[13px] text-stone-500 leading-relaxed block">
                                                         Tactile acoustic feedback on ledger approvals, button clicks, and sync completions.
                                                     </span>
                                                 </div>
@@ -668,7 +668,7 @@ export const SettingsPage = () => {
                                                         variant="ghost"
                                                         size="sm"
                                                         onClick={() => sound.playSuccess()}
-                                                        className="h-8 px-2.5 text-[11px] text-stone-600 hover:text-stone-900 border border-stone-200 rounded-md"
+                                                        className="h-8 px-2.5 text-[13px] text-stone-600 hover:text-stone-900 border border-stone-200 rounded-md"
                                                     >
                                                         Test Chime
                                                     </Button>
@@ -688,10 +688,10 @@ export const SettingsPage = () => {
                                                     <Activity className="h-4 w-4" />
                                                 </div>
                                                 <div>
-                                                    <span className="text-xs font-semibold text-stone-900 block">
+                                                    <span className="text-[13px] font-semibold text-stone-900 block">
                                                         Reduced Motion
                                                     </span>
-                                                    <span className="text-[11px] text-stone-500 leading-relaxed block">
+                                                    <span className="text-[13px] text-stone-500 leading-relaxed block">
                                                         Suppresses non-essential transitions and spring physics across drawers and sheets.
                                                     </span>
                                                 </div>
@@ -714,8 +714,8 @@ export const SettingsPage = () => {
                                     <div className="divide-y divide-stone-100">
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">Weekly Financial Summary</span>
-                                                <span className="text-[11px] text-stone-500">Curated audit of burn rate and upcoming recurring obligations</span>
+                                                <span className="text-[13px] font-semibold text-stone-900 block">Weekly Financial Summary</span>
+                                                <span className="text-[13px] text-stone-500">Curated audit of burn rate and upcoming recurring obligations</span>
                                             </div>
                                             <Switch
                                                 checked={preferences.weeklyReport}
@@ -726,8 +726,8 @@ export const SettingsPage = () => {
 
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">Monthly Ledger Statement Digest</span>
-                                                <span className="text-[11px] text-stone-500">Automated end-of-month reconciliation package</span>
+                                                <span className="text-[13px] font-semibold text-stone-900 block">Monthly Ledger Statement Digest</span>
+                                                <span className="text-[13px] text-stone-500">Automated end-of-month reconciliation package</span>
                                             </div>
                                             <Switch
                                                 checked={preferences.monthlyReport}
@@ -738,8 +738,8 @@ export const SettingsPage = () => {
 
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">Email Notifications</span>
-                                                <span className="text-[11px] text-stone-500">Transaction approval confirmations and high-priority alerts</span>
+                                                <span className="text-[13px] font-semibold text-stone-900 block">Email Notifications</span>
+                                                <span className="text-[13px] text-stone-500">Transaction approval confirmations and high-priority alerts</span>
                                             </div>
                                             <Switch
                                                 checked={preferences.emailNotifications}
@@ -773,11 +773,11 @@ export const SettingsPage = () => {
                                                     <h2 className="text-base font-bold text-stone-900">
                                                         AI Engine & Context Grounding
                                                     </h2>
-                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-violet-50 text-violet-700 border border-violet-200">
+                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[13px] tabular-nums font-medium bg-violet-50 text-violet-700 border border-violet-200">
                                                         Groq / OpenRouter
                                                     </span>
                                                 </div>
-                                                <p className="text-xs text-stone-500 mt-0.5">
+                                                <p className="text-[13px] text-stone-500 mt-0.5">
                                                     Neural Co-Pilot calibrated for automated receipt extraction and predictive cashflow trajectories.
                                                 </p>
                                             </div>
@@ -790,7 +790,7 @@ export const SettingsPage = () => {
                                                 size="sm"
                                                 disabled={isTestingAI}
                                                 onClick={handleTestAI}
-                                                className="rounded-lg h-8 text-xs font-mono border-violet-200 text-violet-700 hover:bg-violet-50 transition-colors"
+                                                className="rounded-lg h-8 text-[13px] tabular-nums border-violet-200 text-violet-700 hover:bg-violet-50 transition-colors"
                                             >
                                                 <Zap className="h-3 w-3 mr-1.5 text-violet-600" />
                                                 {isTestingAI ? 'Pinging...' : 'Test AI Latency'}
@@ -801,31 +801,31 @@ export const SettingsPage = () => {
                                     {/* Telemetry Status Grid */}
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                                         <div className="p-3 rounded-lg bg-stone-50 border border-stone-200/80">
-                                            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider block font-mono">
+                                            <span className="text-[13px] font-semibold text-stone-400 block tabular-nums">
                                                 Active Model
                                             </span>
-                                            <span className="text-xs font-bold text-stone-900 font-mono mt-0.5 block truncate">
+                                            <span className="text-[13px] font-bold text-stone-900 tabular-nums mt-0.5 block truncate">
                                                 {dashboard?.ai?.provider?.groq?.model || 'llama-3.3-70b-versatile'}
                                             </span>
                                         </div>
 
                                         <div className="p-3 rounded-lg bg-stone-50 border border-stone-200/80">
-                                            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider block font-mono">
+                                            <span className="text-[13px] font-semibold text-stone-400 block tabular-nums">
                                                 Engine Status
                                             </span>
                                             <div className="flex items-center gap-1.5 mt-0.5">
                                                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                                                <span className="text-xs font-medium text-stone-900 font-mono">
+                                                <span className="text-[13px] font-medium text-stone-900 tabular-nums">
                                                     {aiLatencyStatus ? `${aiLatencyStatus.status} (${aiLatencyStatus.ms}ms)` : 'Operational'}
                                                 </span>
                                             </div>
                                         </div>
 
                                         <div className="p-3 rounded-lg bg-stone-50 border border-stone-200/80">
-                                            <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider block font-mono">
+                                            <span className="text-[13px] font-semibold text-stone-400 block tabular-nums">
                                                 Cache Protocol
                                             </span>
-                                            <span className="text-xs font-medium text-stone-900 font-mono mt-0.5 block">
+                                            <span className="text-[13px] font-medium text-stone-900 tabular-nums mt-0.5 block">
                                                 Redis Distributed (10m TTL)
                                             </span>
                                         </div>
@@ -841,10 +841,10 @@ export const SettingsPage = () => {
                                     <div className="divide-y divide-stone-100">
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">
+                                                <span className="text-[13px] font-semibold text-stone-900 block">
                                                     Live Context Grounding
                                                 </span>
-                                                <span className="text-[11px] text-stone-500 leading-relaxed block">
+                                                <span className="text-[13px] text-stone-500 leading-relaxed block">
                                                     Restricts AI answers to confirmed ledger data and prevents generative hallucinations.
                                                 </span>
                                             </div>
@@ -857,10 +857,10 @@ export const SettingsPage = () => {
 
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">
+                                                <span className="text-[13px] font-semibold text-stone-900 block">
                                                     Automatic Context Refresh
                                                 </span>
-                                                <span className="text-[11px] text-stone-500 leading-relaxed block">
+                                                <span className="text-[13px] text-stone-500 leading-relaxed block">
                                                     Invalidates stale embeddings immediately when new transactions are approved or imported.
                                                 </span>
                                             </div>
@@ -873,10 +873,10 @@ export const SettingsPage = () => {
 
                                         <div className="py-3.5 flex items-center justify-between gap-4">
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">
+                                                <span className="text-[13px] font-semibold text-stone-900 block">
                                                     Include Staged Review Candidates
                                                 </span>
-                                                <span className="text-[11px] text-stone-500 leading-relaxed block">
+                                                <span className="text-[13px] text-stone-500 leading-relaxed block">
                                                     Factors unposted browser captures into predictive runway headroom calculations.
                                                 </span>
                                             </div>
@@ -891,8 +891,8 @@ export const SettingsPage = () => {
                                     {/* Chat Memory Reset */}
                                     <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
                                         <div>
-                                            <span className="text-xs font-semibold text-stone-900 block">Clear Conversation Memory</span>
-                                            <span className="text-[11px] text-stone-500">Purges ephemeral Co-Pilot chat context from Redis cache</span>
+                                            <span className="text-[13px] font-semibold text-stone-900 block">Clear Conversation Memory</span>
+                                            <span className="text-[13px] text-stone-500">Purges ephemeral Co-Pilot chat context from Redis cache</span>
                                         </div>
                                         <Button
                                             type="button"
@@ -900,7 +900,7 @@ export const SettingsPage = () => {
                                             size="sm"
                                             disabled={isClearingMemory}
                                             onClick={handleClearChat}
-                                            className="rounded-lg h-8 text-xs border-stone-300 text-stone-700 hover:bg-stone-50"
+                                            className="rounded-lg h-8 text-[13px] border-stone-300 text-stone-700 hover:bg-stone-50"
                                         >
                                             <RefreshCw className="h-3 w-3 mr-1.5 text-stone-500" />
                                             {isClearingMemory ? 'Clearing...' : 'Clear Memory Cache'}
@@ -926,7 +926,7 @@ export const SettingsPage = () => {
                                             <h2 className="text-base font-bold text-stone-900">
                                                 Credential Access & Password
                                             </h2>
-                                            <p className="text-xs text-stone-500 mt-0.5">
+                                            <p className="text-[13px] text-stone-500 mt-0.5">
                                                 Manage your authentication credentials and account recovery options.
                                             </p>
                                         </div>
@@ -935,7 +935,7 @@ export const SettingsPage = () => {
                                             variant="outline"
                                             size="sm"
                                             onClick={handlePasswordReset}
-                                            className="rounded-lg h-9 text-xs border-stone-300 text-stone-800 hover:bg-stone-50 font-medium"
+                                            className="rounded-lg h-9 text-[13px] border-stone-300 text-stone-800 hover:bg-stone-50 font-medium"
                                         >
                                             <Key className="h-3.5 w-3.5 mr-1.5 text-[var(--color-brand)]" />
                                             Send Password Reset Link
@@ -947,16 +947,16 @@ export const SettingsPage = () => {
                                         <div className="flex items-center gap-3 p-3.5 rounded-lg bg-stone-50 border border-stone-200/70">
                                             <ShieldCheck className="h-5 w-5 text-emerald-600 shrink-0" />
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">Row-Level Security (RLS)</span>
-                                                <span className="text-[11px] text-stone-500 font-mono">Enforced at Postgres engine</span>
+                                                <span className="text-[13px] font-semibold text-stone-900 block">Row-Level Security (RLS)</span>
+                                                <span className="text-[13px] text-stone-500 tabular-nums">Enforced at Postgres engine</span>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-3 p-3.5 rounded-lg bg-stone-50 border border-stone-200/70">
                                             <Lock className="h-5 w-5 text-stone-700 shrink-0" />
                                             <div>
-                                                <span className="text-xs font-semibold text-stone-900 block">Transport Encryption</span>
-                                                <span className="text-[11px] text-stone-500 font-mono">TLS 1.3 / AES-256-GCM</span>
+                                                <span className="text-[13px] font-semibold text-stone-900 block">Transport Encryption</span>
+                                                <span className="text-[13px] text-stone-500 tabular-nums">TLS 1.3 / AES-256-GCM</span>
                                             </div>
                                         </div>
                                     </div>
@@ -969,15 +969,15 @@ export const SettingsPage = () => {
                                     </h3>
 
                                     <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 space-y-3">
-                                        <div className="flex items-center justify-between text-xs font-mono">
+                                        <div className="flex items-center justify-between text-[13px] tabular-nums">
                                             <span className="text-stone-500">Client IP Address:</span>
                                             <span className="font-semibold text-stone-900">{dashboard?.session?.ip || '127.0.0.1 (Localhost)'}</span>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs font-mono">
+                                        <div className="flex items-center justify-between text-[13px] tabular-nums">
                                             <span className="text-stone-500">Browser Environment:</span>
                                             <span className="text-stone-800 truncate max-w-xs">{navigator.userAgent.split(' ')[0]} (Verified)</span>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs font-mono">
+                                        <div className="flex items-center justify-between text-[13px] tabular-nums">
                                             <span className="text-stone-500">Last Telemetry Ping:</span>
                                             <span className="text-stone-800">{new Date().toLocaleTimeString()}</span>
                                         </div>
@@ -1001,7 +1001,7 @@ export const SettingsPage = () => {
                                             <h2 className="text-base font-bold text-stone-900">
                                                 Financial Ledger Portability
                                             </h2>
-                                            <p className="text-xs text-stone-500 mt-0.5">
+                                            <p className="text-[13px] text-stone-500 mt-0.5">
                                                 Export your raw transaction entries, category burn rates, and statements.
                                             </p>
                                         </div>
@@ -1010,7 +1010,7 @@ export const SettingsPage = () => {
                                             variant="outline"
                                             size="sm"
                                             onClick={() => navigate('/reports')}
-                                            className="rounded-lg h-8 text-xs border-stone-300 text-stone-700 hover:text-stone-900"
+                                            className="rounded-lg h-8 text-[13px] border-stone-300 text-stone-700 hover:text-stone-900"
                                         >
                                             View Tax Reports
                                             <ArrowRight className="h-3 w-3 ml-1.5" />
@@ -1022,14 +1022,14 @@ export const SettingsPage = () => {
                                         <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 space-y-3">
                                             <FileText className="h-5 w-5 text-stone-700" />
                                             <div>
-                                                <span className="text-xs font-bold text-stone-900 block">Raw CSV Export</span>
-                                                <span className="text-[11px] text-stone-500">Universal ledger dump compatible with Excel and Google Sheets</span>
+                                                <span className="text-[13px] font-bold text-stone-900 block">Raw CSV Export</span>
+                                                <span className="text-[13px] text-stone-500">Universal ledger dump compatible with Excel and Google Sheets</span>
                                             </div>
                                             <Button
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() => navigate('/reports')}
-                                                className="w-full text-xs h-8 border-stone-200 bg-white"
+                                                className="w-full text-[13px] h-8 border-stone-200 bg-white"
                                             >
                                                 Export CSV
                                             </Button>
@@ -1038,14 +1038,14 @@ export const SettingsPage = () => {
                                         <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 space-y-3">
                                             <FileSpreadsheet className="h-5 w-5 text-emerald-600" />
                                             <div>
-                                                <span className="text-xs font-bold text-stone-900 block">Excel Workbook</span>
-                                                <span className="text-[11px] text-stone-500">Formatted spreadsheet with category tabs and formulas</span>
+                                                <span className="text-[13px] font-bold text-stone-900 block">Excel Workbook</span>
+                                                <span className="text-[13px] text-stone-500">Formatted spreadsheet with category tabs and formulas</span>
                                             </div>
                                             <Button
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() => navigate('/reports')}
-                                                className="w-full text-xs h-8 border-stone-200 bg-white"
+                                                className="w-full text-[13px] h-8 border-stone-200 bg-white"
                                             >
                                                 Export XLSX
                                             </Button>
@@ -1054,14 +1054,14 @@ export const SettingsPage = () => {
                                         <div className="p-4 rounded-lg bg-stone-50 border border-stone-200/80 space-y-3">
                                             <Layers className="h-5 w-5 text-[var(--color-brand)]" />
                                             <div>
-                                                <span className="text-xs font-bold text-stone-900 block">PDF Statement</span>
-                                                <span className="text-[11px] text-stone-500">Printable monthly statement with verified audit signatures</span>
+                                                <span className="text-[13px] font-bold text-stone-900 block">PDF Statement</span>
+                                                <span className="text-[13px] text-stone-500">Printable monthly statement with verified audit signatures</span>
                                             </div>
                                             <Button
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() => navigate('/reports')}
-                                                className="w-full text-xs h-8 border-stone-200 bg-white"
+                                                className="w-full text-[13px] h-8 border-stone-200 bg-white"
                                             >
                                                 Print Statement
                                             </Button>
@@ -1089,7 +1089,7 @@ export const SettingsPage = () => {
                                             <h2 className="text-base font-bold text-red-950">
                                                 Irreversible Data Purge & Reset
                                             </h2>
-                                            <p className="text-xs text-red-800/80 mt-0.5 leading-relaxed max-w-xl">
+                                            <p className="text-[13px] text-red-800/80 mt-0.5 leading-relaxed max-w-xl">
                                                 Selectively delete confirmed financial records from your private database. Once purged, records cannot be recovered by support or database snapshots.
                                             </p>
                                         </div>
@@ -1097,19 +1097,19 @@ export const SettingsPage = () => {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                                         <div className="space-y-1.5">
-                                            <Label className="text-xs font-semibold text-red-950">Target Data Domain</Label>
+                                            <Label className="text-[13px] font-semibold text-red-950">Target Data Domain</Label>
                                             <Select
                                                 value={purgeCategory}
                                                 onValueChange={(val: any) => setPurgeCategory(val)}
                                             >
-                                                <SelectTrigger className="rounded-lg h-10 text-xs bg-white border-red-300 text-stone-900 focus:ring-2 focus:ring-red-500 font-medium">
+                                                <SelectTrigger className="rounded-lg h-10 text-[13px] bg-white border-red-300 text-stone-900 focus:ring-2 focus:ring-red-500 font-medium">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent className="bg-white border-stone-200 text-stone-900">
-                                                    <SelectItem value="transactions" className="text-xs font-medium">Purge All Transactions</SelectItem>
-                                                    <SelectItem value="budgets" className="text-xs font-medium">Purge All Budgets</SelectItem>
-                                                    <SelectItem value="subscriptions" className="text-xs font-medium">Purge All Subscriptions</SelectItem>
-                                                    <SelectItem value="goals" className="text-xs font-medium">Purge All Goals</SelectItem>
+                                                    <SelectItem value="transactions" className="text-[13px] font-medium">Purge All Transactions</SelectItem>
+                                                    <SelectItem value="budgets" className="text-[13px] font-medium">Purge All Budgets</SelectItem>
+                                                    <SelectItem value="subscriptions" className="text-[13px] font-medium">Purge All Subscriptions</SelectItem>
+                                                    <SelectItem value="goals" className="text-[13px] font-medium">Purge All Goals</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -1119,7 +1119,7 @@ export const SettingsPage = () => {
                                                 type="button"
                                                 variant="destructive"
                                                 onClick={handleOpenPurgeModal}
-                                                className="rounded-lg text-xs h-10 px-5 bg-red-600 hover:bg-red-700 text-white font-medium shadow-2xs transition-colors"
+                                                className="rounded-lg text-[13px] h-10 px-5 bg-red-600 hover:bg-red-700 text-white font-medium shadow-2xs transition-colors"
                                             >
                                                 <Trash2 className="h-3.5 w-3.5 mr-1.5" />
                                                 Initiate Purge Sequence
@@ -1143,7 +1143,7 @@ export const SettingsPage = () => {
                         <DialogTitle className="text-lg font-bold text-stone-900">
                             Confirm {purgeCategory.toUpperCase()} Purge
                         </DialogTitle>
-                        <DialogDescription className="text-xs text-stone-500 leading-relaxed">
+                        <DialogDescription className="text-[13px] text-stone-500 leading-relaxed">
                             This operation will permanently purge all <span className="font-semibold text-stone-800">{purgeCategory}</span> records from your private workspace database.
                         </DialogDescription>
                     </DialogHeader>
@@ -1151,15 +1151,15 @@ export const SettingsPage = () => {
                     {purgeStep === 1 ? (
                         <div className="space-y-4 py-2">
                             <div className="space-y-1.5">
-                                <Label htmlFor="confirmPurgeInput" className="text-xs font-semibold text-stone-700">
-                                    Type <span className="font-mono text-red-600">PURGE</span> to unlock confirmation:
+                                <Label htmlFor="confirmPurgeInput" className="text-[13px] font-semibold text-stone-700">
+                                    Type <span className="tabular-nums text-red-600">PURGE</span> to unlock confirmation:
                                 </Label>
                                 <Input
                                     id="confirmPurgeInput"
                                     value={purgeConfirmText}
                                     onChange={e => setPurgeConfirmText(e.target.value)}
                                     placeholder="PURGE"
-                                    className="rounded-lg h-9 text-xs font-mono border-stone-300 uppercase focus-visible:ring-red-500"
+                                    className="rounded-lg h-9 text-[13px] tabular-nums border-stone-300 focus-visible:ring-red-500"
                                 />
                             </div>
 
@@ -1168,7 +1168,7 @@ export const SettingsPage = () => {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setIsPurgeModalOpen(false)}
-                                    className="rounded-lg text-xs h-9 border-stone-200"
+                                    className="rounded-lg text-[13px] h-9 border-stone-200"
                                 >
                                     Cancel
                                 </Button>
@@ -1176,7 +1176,7 @@ export const SettingsPage = () => {
                                     size="sm"
                                     disabled={purgeConfirmText.trim().toUpperCase() !== 'PURGE' || isRequestingOtp}
                                     onClick={handleRequestPurgeOtp}
-                                    className="rounded-lg text-xs h-9 bg-red-600 hover:bg-red-700 text-white font-medium"
+                                    className="rounded-lg text-[13px] h-9 bg-red-600 hover:bg-red-700 text-white font-medium"
                                 >
                                     {isRequestingOtp ? 'Dispatching...' : 'Request Email Verification Code'}
                                 </Button>
@@ -1185,7 +1185,7 @@ export const SettingsPage = () => {
                     ) : (
                         <div className="space-y-4 py-2">
                             <div className="space-y-1.5">
-                                <Label htmlFor="otpPurgeInput" className="text-xs font-semibold text-stone-700">
+                                <Label htmlFor="otpPurgeInput" className="text-[13px] font-semibold text-stone-700">
                                     Enter 6-Digit Email Confirmation Code:
                                 </Label>
                                 <Input
@@ -1193,9 +1193,9 @@ export const SettingsPage = () => {
                                     value={purgeOtp}
                                     onChange={e => setPurgeOtp(e.target.value)}
                                     placeholder="123456"
-                                    className="rounded-lg h-9 text-xs font-mono tracking-widest text-center border-stone-300 focus-visible:ring-red-500"
+                                    className="rounded-lg h-9 text-[13px] tabular-nums text-center border-stone-300 focus-visible:ring-red-500"
                                 />
-                                <p className="text-[11px] text-stone-400">
+                                <p className="text-[13px] text-stone-400">
                                     Sent to {email || 'your registered email address'}.
                                 </p>
                             </div>
@@ -1205,7 +1205,7 @@ export const SettingsPage = () => {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setPurgeStep(1)}
-                                    className="rounded-lg text-xs h-9 border-stone-200"
+                                    className="rounded-lg text-[13px] h-9 border-stone-200"
                                 >
                                     Back
                                 </Button>
@@ -1213,7 +1213,7 @@ export const SettingsPage = () => {
                                     size="sm"
                                     disabled={isExecutingPurge || purgeOtp.trim().length < 4}
                                     onClick={handleExecutePurge}
-                                    className="rounded-lg text-xs h-9 bg-red-600 hover:bg-red-700 text-white font-medium"
+                                    className="rounded-lg text-[13px] h-9 bg-red-600 hover:bg-red-700 text-white font-medium"
                                 >
                                     {isExecutingPurge ? 'Purging Data...' : 'Confirm Permanent Purge'}
                                 </Button>

@@ -6,7 +6,7 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 0;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     height: 100%;
     position: relative;
@@ -15,7 +15,7 @@
 
 .card:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 /* Header with "Caution Tape" vibe */
@@ -63,7 +63,7 @@
     text-transform: none;
     color: #fff;
     text-shadow: 3px 3px 0 #000;
-    letter-spacing: 1px;
+    letter-spacing: 0;
 }
 
 .totalBadge {
@@ -74,7 +74,7 @@
     font-weight: 600;
     font-size: 0.9rem;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transform: rotate(-2deg);
     position: relative;
     z-index: 1;
@@ -120,7 +120,7 @@
 
 .billItem:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     background: #FEF9C3;
     /* Light yellow on hover */
 }
@@ -217,7 +217,7 @@
 }
 
 .billDue {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: #6B7280;
     background: #F3F4F6;
@@ -248,12 +248,12 @@
     background: #DC2626;
     color: #fff;
     padding: 2px 8px;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     border: 1px solid var(--border);
     transform: rotate(10deg);
     z-index: 2;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .empty {
@@ -282,7 +282,7 @@
 /* Responsive */
 @media (max-width: 768px) {
     .card {
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .billItem {

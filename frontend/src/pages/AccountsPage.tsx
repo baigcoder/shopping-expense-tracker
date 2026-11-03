@@ -182,7 +182,7 @@ const AccountsPage = () => {
                             <span className={`${styles.netWorthValue} ${totals.netWorth < 0 ? styles.negative : ''}`}>
                                 ${totals.netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                             </span>
-                            <span className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-1.5 py-0.5">Live Ledger</span>
+                            <span className="text-[13px] font-black bg-black text-white px-1.5 py-0.5">Live Ledger</span>
                         </div>
                     </div>
                 </div>
@@ -241,9 +241,9 @@ const AccountsPage = () => {
                                     <div className={styles.cardInfo}>
                                         <div className="flex items-center gap-2">
                                             <h3>{account.name}</h3>
-                                            {account.balance > 1000 && <span className="text-[9px] font-black bg-[var(--color-brand)] text-white px-1 py-0.5 tracking-tighter">HYPE</span>}
+                                            {account.balance > 1000 && <span className="text-[13px] font-black bg-[var(--color-brand)] text-white px-1 py-0.5 tracking-tighter">HYPE</span>}
                                         </div>
-                                        <p className="uppercase tracking-widest text-[10px] font-bold opacity-60">{account.bank_name}</p>
+                                        <p className=" text-[13px] font-bold opacity-60">{account.bank_name}</p>
                                     </div>
                                     <div className={styles.cardActions}>
                                         <button onClick={() => openEdit(account)}><Edit2 size={14} /></button>

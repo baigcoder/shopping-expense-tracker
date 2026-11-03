@@ -3,7 +3,7 @@
 .container {
     background: #FFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
 }
@@ -54,7 +54,7 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-transform: none;
     color: #000;
@@ -78,7 +78,7 @@
 }
 
 .healthLabel {
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-transform: none;
     color: #666;
@@ -135,7 +135,7 @@
 }
 
 .statLabel {
-    font-size: 0.65rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-transform: none;
     color: #666;
@@ -169,7 +169,7 @@
 }
 
 .riskMessage {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #444;
 }

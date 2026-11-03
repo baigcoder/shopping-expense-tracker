@@ -4,7 +4,7 @@
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     position: relative;
     overflow: hidden;
@@ -15,17 +15,17 @@
     .card {
         background: #09090B;
         border-color: #FFFFFF;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 }
 
 :global(.dark-theme) .card {
     background: #09090B;
     border-color: #FFFFFF;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .card:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }

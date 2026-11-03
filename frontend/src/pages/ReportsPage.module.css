@@ -28,7 +28,7 @@
     padding: 32px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     margin-bottom: 20px;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .liveBadge {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     padding: 4px 12px;
     background: var(--color-brand);
@@ -87,7 +87,7 @@
     border: 2px solid transparent;
     background: transparent;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.1s;
@@ -116,7 +116,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     padding: 40px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
     display: flex;
     flex-direction: column;
@@ -124,7 +124,7 @@
 
 .premiumStatCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIconBox {
@@ -140,7 +140,7 @@
 }
 
 .statLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -162,7 +162,7 @@
     gap: 8px;
     padding: 6px 12px;
     border: 1px solid var(--border);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
 }
@@ -178,7 +178,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     padding: 40px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
@@ -202,7 +202,7 @@
 }
 
 .chartDesc {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.5);
     margin-top: 4px;
@@ -219,7 +219,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     color: #000000;
     text-transform: none;
@@ -238,7 +238,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     padding: 40px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .sectionHeader {
@@ -280,7 +280,7 @@
     background: #000000;
     color: #FFFFFF;
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .reportIconBox {
@@ -325,7 +325,7 @@
     background: #000000;
     border: 1px solid var(--border);
     color: white;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;

@@ -19,14 +19,14 @@ const ChartTooltip = ({ active, payload }: { active?: boolean; payload?: any[] }
     if (!active || !payload || payload.length === 0) return null;
     return (
         <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-3 shadow-xl backdrop-blur-md">
-            <p className="text-[10px] font-mono font-bold text-[var(--color-muted)] uppercase tracking-wider mb-2 border-b border-[var(--color-border)] pb-1">
+            <p className="text-[13px] tabular-nums font-bold text-[var(--color-muted)] mb-2 border-b border-[var(--color-border)] pb-1">
                 {payload[0].payload.day}
             </p>
             {payload.map((entry, idx) => (
-                <div key={idx} className="flex items-center justify-between gap-4 mt-1 font-mono text-xs">
+                <div key={idx} className="flex items-center justify-between gap-4 mt-1 tabular-nums text-[13px]">
                     <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                        <span className="text-[var(--color-muted)] uppercase">{entry.name}:</span>
+                        <span className="text-[var(--color-muted)]">{entry.name}:</span>
                     </div>
                     <span className="font-bold text-[var(--color-ink)] tabular-nums">Rs {entry.value.toLocaleString()}</span>
                 </div>
@@ -44,10 +44,10 @@ const SpendingChartBase = ({ data }: Props) => {
                 <div className="w-10 h-10 rounded-full bg-[var(--color-brand)]/10 text-[var(--color-brand)] flex items-center justify-center mb-2">
                     <TrendingUp className="w-5 h-5" />
                 </div>
-                <p className="text-xs font-bold text-[var(--color-ink)]">
+                <p className="text-[13px] font-bold text-[var(--color-ink)]">
                     No Discretionary Burn in Current 14-Day Window
                 </p>
-                <p className="text-[11px] text-[var(--color-muted)] max-w-sm mt-1">
+                <p className="text-[13px] text-[var(--color-muted)] max-w-sm mt-1">
                     Transactions approved from your review inbox or logged manually will dynamically draw your cumulative cash trajectory here.
                 </p>
             </div>

@@ -3,7 +3,7 @@
     background: var(--bg-card);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
     border: none;
     overflow: hidden;

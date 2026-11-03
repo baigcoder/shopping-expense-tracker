@@ -284,7 +284,7 @@ export function TransactionsPage() {
                     <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--color-ink)]">
                         Money Activity
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-0.5">
+                    <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-0.5">
                         Authoritative financial ledger, capture review inbox & bank statement imports
                     </p>
                 </div>
@@ -295,9 +295,9 @@ export function TransactionsPage() {
                         type="button"
                         onClick={() => handleTabChange('ledger')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-lg text-[13px] font-semibold transition-all',
                             activeTab === 'ledger'
-                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
@@ -308,15 +308,15 @@ export function TransactionsPage() {
                         type="button"
                         onClick={() => handleTabChange('inbox')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5',
+                            'px-3.5 py-1.5 rounded-lg text-[13px] font-semibold transition-all flex items-center gap-1.5',
                             activeTab === 'inbox'
-                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
                         <span>Needs Review</span>
                         {inboxItems.length > 0 && (
-                            <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[var(--color-warning)] text-white animate-pulse">
+                            <span className="px-1.5 py-0.2 rounded-full text-[13px] font-bold bg-[var(--color-warning)] text-white animate-pulse">
                                 {inboxItems.length}
                             </span>
                         )}
@@ -326,9 +326,9 @@ export function TransactionsPage() {
                         type="button"
                         onClick={() => handleTabChange('imports')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-lg text-[13px] font-semibold transition-all',
                             activeTab === 'imports'
-                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
@@ -341,7 +341,7 @@ export function TransactionsPage() {
             {activeTab === 'ledger' && (
                 <div className="space-y-4 animate-fade-in">
                     {/* Search & Filter Toolbar */}
-                    <Surface className="p-4 flex flex-col gap-3 border-[var(--color-border)] shadow-xs">
+                    <Surface className="p-4 flex flex-col gap-3 border-[var(--color-border)]">
                         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                             <div className="flex-1 flex flex-wrap items-center gap-2 min-w-0">
                                 <div className="relative flex-1 min-w-[200px] max-w-sm">
@@ -354,7 +354,7 @@ export function TransactionsPage() {
                                             setPage(1);
                                         }}
                                         placeholder="Search merchant or category..."
-                                        className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] focus:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] text-[var(--color-ink)]"
+                                        className="w-full pl-9 pr-8 py-2 text-[13px] sm:text-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] focus:bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] text-[var(--color-ink)]"
                                     />
                                     {search && (
                                         <button
@@ -376,9 +376,9 @@ export function TransactionsPage() {
                                         type="button"
                                         onClick={() => { setTypeFilter('all'); setPage(1); }}
                                         className={cn(
-                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            'px-2.5 py-1.5 text-[13px] font-semibold rounded-lg transition-all',
                                             typeFilter === 'all'
-                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                                         )}
                                     >
@@ -388,9 +388,9 @@ export function TransactionsPage() {
                                         type="button"
                                         onClick={() => { setTypeFilter('expense'); setPage(1); }}
                                         className={cn(
-                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            'px-2.5 py-1.5 text-[13px] font-semibold rounded-lg transition-all',
                                             typeFilter === 'expense'
-                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                                         )}
                                     >
@@ -400,9 +400,9 @@ export function TransactionsPage() {
                                         type="button"
                                         onClick={() => { setTypeFilter('income'); setPage(1); }}
                                         className={cn(
-                                            'px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all',
+                                            'px-2.5 py-1.5 text-[13px] font-semibold rounded-lg transition-all',
                                             typeFilter === 'income'
-                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                                         )}
                                     >
@@ -417,7 +417,7 @@ export function TransactionsPage() {
                                         setCategoryFilter(e.target.value);
                                         setPage(1);
                                     }}
-                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                    className="px-3 py-2 text-[13px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                 >
                                     <option value="all">All Categories</option>
                                     {categoriesList.map((cat) => (
@@ -434,7 +434,7 @@ export function TransactionsPage() {
                                         setDateRange(e.target.value as any);
                                         setPage(1);
                                     }}
-                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] hidden sm:block"
+                                    className="px-3 py-2 text-[13px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)] hidden sm:block"
                                 >
                                     <option value="all">All Time</option>
                                     <option value="today">Today</option>
@@ -448,7 +448,7 @@ export function TransactionsPage() {
                                 <select
                                     value={sortOrder}
                                     onChange={(e) => setSortOrder(e.target.value as any)}
-                                    className="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
+                                    className="px-3 py-2 text-[13px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-brand)]"
                                 >
                                     <option value="newest">Newest First</option>
                                     <option value="oldest">Oldest First</option>
@@ -459,7 +459,7 @@ export function TransactionsPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowExportModal(true)}
-                                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                                    className="inline-flex items-center gap-1.5 px-3 py-2 text-[13px] font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
                                 >
                                     <Download className="w-3.5 h-3.5" />
                                     <span className="hidden sm:inline">Export</span>
@@ -468,7 +468,7 @@ export function TransactionsPage() {
                                 <button
                                     type="button"
                                     onClick={openAddTransaction}
-                                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-sm"
+                                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)]"
                                 >
                                     <Plus className="w-3.5 h-3.5" />
                                     <span>Add</span>
@@ -479,24 +479,24 @@ export function TransactionsPage() {
                     </Surface>
 
                     {/* Summary Ribbon: Count + Total Filtered Volume */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[13px]">
                         <span className="text-[var(--color-muted)]">
-                            Showing <strong className="text-[var(--color-ink)] font-mono">{filteredTransactions.length}</strong> recorded entries
+                            Showing <strong className="text-[var(--color-ink)] tabular-nums">{filteredTransactions.length}</strong> recorded entries
                             {categoryFilter !== 'all' ? ` in ${categoryFilter}` : ''}
                             {typeFilter !== 'all' ? ` (${typeFilter})` : ''}
                         </span>
                         <div className="flex items-center gap-2">
                             <span className="text-[var(--color-muted)]">Filtered Outflow:</span>
-                            <span className="font-mono font-bold text-[var(--color-ink)] text-sm">{formatCurrency(totalSpent)}</span>
+                            <span className="tabular-nums font-bold text-[var(--color-ink)] text-sm">{formatCurrency(totalSpent)}</span>
                         </div>
                     </div>
 
                     {/* Ledger Data Table */}
-                    <Surface className="p-0 overflow-hidden border-[var(--color-border)] shadow-xs">
+                    <Surface className="p-0 overflow-hidden border-[var(--color-border)]">
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-sm">
                                 <thead>
-                                    <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-muted)] text-[11px] uppercase tracking-wider">
+                                    <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-2)] text-[var(--color-muted)] text-[13px]">
                                         <th className="py-3 px-4 font-semibold whitespace-nowrap">Date</th>
                                         <th className="py-3 px-4 font-semibold">Description / Merchant</th>
                                         <th className="py-3 px-4 font-semibold">Category</th>
@@ -514,7 +514,7 @@ export function TransactionsPage() {
                                                     onClick={() => handleRowClick(tx)}
                                                     className="hover:bg-[var(--color-surface-2)]/80 cursor-pointer transition-colors"
                                                 >
-                                                    <td className="py-3.5 px-4 text-xs font-mono text-[var(--color-muted)] whitespace-nowrap">
+                                                    <td className="py-3.5 px-4 text-[13px] tabular-nums text-[var(--color-muted)] whitespace-nowrap">
                                                         {new Date(tx.date).toLocaleDateString('en-US', {
                                                             month: 'short',
                                                             day: 'numeric',
@@ -523,19 +523,19 @@ export function TransactionsPage() {
                                                     </td>
                                                     <td className="py-3.5 px-4 font-medium text-[var(--color-ink)]">
                                                         <div className="flex items-center gap-2.5">
-                                                            <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-center justify-center text-xs shrink-0">
+                                                            <div className="w-7 h-7 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-border)] flex items-center justify-center text-[13px] shrink-0">
                                                                 {isExpense ? '🛒' : '💰'}
                                                             </div>
                                                             <span className="truncate max-w-xs">{tx.description || 'Purchase'}</span>
                                                         </div>
                                                     </td>
                                                     <td className="py-3.5 px-4">
-                                                        <Badge variant="secondary" className="text-[11px] bg-[var(--color-surface-2)] text-[var(--color-ink)] border-[var(--color-border)]">
+                                                        <Badge variant="secondary" className="text-[13px] bg-[var(--color-surface-2)] text-[var(--color-ink)] border-[var(--color-border)]">
                                                             {tx.category || 'Other'}
                                                         </Badge>
                                                     </td>
                                                     <td className={cn(
-                                                        'py-3.5 px-4 text-right font-semibold tabular-nums font-mono whitespace-nowrap',
+                                                        'py-3.5 px-4 text-right font-semibold tabular-nums tabular-nums whitespace-nowrap',
                                                         isExpense ? 'text-[var(--color-ink)]' : 'text-[var(--color-success)]'
                                                     )}>
                                                         {isExpense ? '-' : '+'}{formatCurrency(Math.abs(tx.amount))}
@@ -566,7 +566,7 @@ export function TransactionsPage() {
                                                     <h4 className="font-semibold text-sm text-[var(--color-ink)]">
                                                         {transactions.length === 0 ? 'No transactions yet' : 'No matching transactions'}
                                                     </h4>
-                                                    <p className="text-xs text-[var(--color-muted)] mt-1 mb-4 leading-relaxed">
+                                                    <p className="text-[13px] text-[var(--color-muted)] mt-1 mb-4 leading-relaxed">
                                                         {transactions.length === 0
                                                             ? 'Start logging your expenses and income to see them in your authoritative ledger.'
                                                             : 'No entries match your search or active filter combination. Try resetting filters.'}
@@ -575,7 +575,7 @@ export function TransactionsPage() {
                                                         <button
                                                             type="button"
                                                             onClick={openAddTransaction}
-                                                            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-sm"
+                                                            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-semibold rounded-xl bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)]"
                                                         >
                                                             <Plus className="w-3.5 h-3.5" />
                                                             Add First Transaction
@@ -589,7 +589,7 @@ export function TransactionsPage() {
                                                                 setDateRange('all');
                                                                 setTypeFilter('all');
                                                             }}
-                                                            className="px-3.5 py-2 text-xs font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                                                            className="px-3.5 py-2 text-[13px] font-semibold rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
                                                         >
                                                             Reset All Filters
                                                         </button>
@@ -604,7 +604,7 @@ export function TransactionsPage() {
 
                         {/* Pagination Bar */}
                         {totalPages > 1 && (
-                            <div className="p-4 border-t border-[var(--color-border)] flex items-center justify-between text-xs text-[var(--color-muted)]">
+                            <div className="p-4 border-t border-[var(--color-border)] flex items-center justify-between text-[13px] text-[var(--color-muted)]">
                                 <span>
                                     Showing {(page - 1) * PAGE_SIZE + 1}–
                                     {Math.min(page * PAGE_SIZE, filteredTransactions.length)} of {filteredTransactions.length} items
@@ -648,7 +648,7 @@ export function TransactionsPage() {
                                 <h3 className="font-display font-bold text-sm text-[var(--color-ink)]">
                                     Capture Review Queue ({inboxItems.length})
                                 </h3>
-                                <p className="text-xs text-[var(--color-muted)]">
+                                <p className="text-[13px] text-[var(--color-muted)]">
                                     Unposted charges detected by the browser extension or uploaded statements. Approve to post to ledger.
                                 </p>
                             </div>
@@ -665,7 +665,7 @@ export function TransactionsPage() {
                                             setSelectedInboxIds(inboxItems.map((i) => i.id));
                                         }
                                     }}
-                                    className="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                                    className="px-3 py-1.5 rounded-lg text-[13px] font-medium border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
                                 >
                                     {selectedInboxIds.length === inboxItems.length ? 'Deselect All' : 'Select All'}
                                 </button>
@@ -673,7 +673,7 @@ export function TransactionsPage() {
                                     type="button"
                                     onClick={handleBatchApproveInbox}
                                     disabled={selectedInboxIds.length === 0}
-                                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--color-success)] text-white hover:opacity-90 shadow-sm disabled:opacity-50"
+                                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[13px] font-semibold bg-[var(--color-success)] text-white hover:opacity-90 disabled:opacity-50"
                                 >
                                     <Check className="w-3.5 h-3.5" />
                                     Approve Selected ({selectedInboxIds.length})
@@ -691,7 +691,7 @@ export function TransactionsPage() {
                                     <Surface
                                         key={item.id}
                                         className={cn(
-                                            'p-4 flex flex-col justify-between transition-all border shadow-xs',
+                                            'p-4 flex flex-col justify-between transition-all border',
                                             isSelected ? 'border-[var(--color-brand)] bg-[var(--color-brand-light)]/20' : 'border-[var(--color-border)]'
                                         )}
                                     >
@@ -714,17 +714,17 @@ export function TransactionsPage() {
                                                         {item.description || item.merchant_name || 'Detected Charge'}
                                                     </span>
                                                 </div>
-                                                <span className="font-display font-bold text-base tabular-nums font-mono text-[var(--color-ink)]">
+                                                <span className="font-display font-bold text-base tabular-nums tabular-nums text-[var(--color-ink)]">
                                                     {formatCurrency(Math.abs(Number(item.amount || 0)))}
                                                 </span>
                                             </div>
 
-                                            <div className="mt-2 flex items-center gap-2 text-xs text-[var(--color-muted)]">
-                                                <Badge variant="secondary" className="text-[10px] bg-[var(--color-surface-2)] text-[var(--color-ink)] border-[var(--color-border)]">
+                                            <div className="mt-2 flex items-center gap-2 text-[13px] text-[var(--color-muted)]">
+                                                <Badge variant="secondary" className="text-[13px] bg-[var(--color-surface-2)] text-[var(--color-ink)] border-[var(--color-border)]">
                                                     {item.category || 'Shopping'}
                                                 </Badge>
                                                 <span>·</span>
-                                                <span className="font-mono">
+                                                <span className="tabular-nums">
                                                     {new Date(item.date).toLocaleDateString('en-US', {
                                                         month: 'short',
                                                         day: 'numeric',
@@ -745,14 +745,14 @@ export function TransactionsPage() {
                                             <button
                                                 type="button"
                                                 onClick={() => handleRejectInbox(item.id)}
-                                                className="px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--color-danger)] hover:bg-red-50 dark:hover:bg-red-950/30"
+                                                className="px-3 py-1.5 rounded-lg text-[13px] font-medium text-[var(--color-danger)] hover:bg-red-50 dark:hover:bg-red-950/30"
                                             >
                                                 Reject
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => handleApproveInbox(item.id)}
-                                                className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--color-success)] text-white hover:opacity-90 shadow-sm"
+                                                className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-[13px] font-semibold bg-[var(--color-success)] text-white hover:opacity-90"
                                             >
                                                 <Check className="w-3.5 h-3.5" />
                                                 Approve
@@ -768,7 +768,7 @@ export function TransactionsPage() {
                             <h3 className="font-display font-bold text-lg text-[var(--color-ink)]">
                                 Review Queue is Empty
                             </h3>
-                            <p className="text-xs text-[var(--color-muted)] max-w-md mx-auto mt-1">
+                            <p className="text-[13px] text-[var(--color-muted)] max-w-md mx-auto mt-1">
                                 Great job! All background captures from checkouts and statement imports have been approved and reconciled.
                             </p>
                         </Surface>
@@ -784,7 +784,7 @@ export function TransactionsPage() {
                             <h3 className="font-display font-bold text-lg text-[var(--color-ink)]">
                                 Bank Statement & Spreadsheet Importer
                             </h3>
-                            <p className="text-xs text-[var(--color-muted)] mt-1">
+                            <p className="text-[13px] text-[var(--color-muted)] mt-1">
                                 Bring your financial history into Cashly without manual typing. Support for PDF statement OCR and CSV spreadsheets.
                             </p>
                         </div>
@@ -799,14 +799,14 @@ export function TransactionsPage() {
                                     <h4 className="font-semibold text-sm text-[var(--color-ink)]">
                                         CSV Spreadsheet Import
                                     </h4>
-                                    <p className="text-xs text-[var(--color-muted)] mt-1 leading-relaxed">
+                                    <p className="text-[13px] text-[var(--color-muted)] mt-1 leading-relaxed">
                                         Upload exports from Chase, Amex, Bank of America, Apple Card, or custom CSV with flexible column mapping.
                                     </p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => setShowCSVImport(true)}
-                                    className="mt-4 w-full py-2 px-3 rounded-xl text-xs font-semibold bg-[var(--color-ink)] text-[var(--color-surface)] hover:opacity-90 transition-all text-center block"
+                                    className="mt-4 w-full py-2 px-3 rounded-xl text-[13px] font-semibold bg-[var(--color-ink)] text-[var(--color-surface)] hover:opacity-90 transition-all text-center block"
                                 >
                                     Launch CSV Wizard
                                 </button>
@@ -821,14 +821,14 @@ export function TransactionsPage() {
                                     <h4 className="font-semibold text-sm text-[var(--color-ink)]">
                                         AI PDF Statement Scanner
                                     </h4>
-                                    <p className="text-xs text-[var(--color-muted)] mt-1 leading-relaxed">
+                                    <p className="text-[13px] text-[var(--color-muted)] mt-1 leading-relaxed">
                                         Scan monthly PDF bank statements using local OCR to parse charges directly into staged ledger entries.
                                     </p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => setShowPDFAnalyzer(true)}
-                                    className="mt-4 w-full py-2 px-3 rounded-xl text-xs font-semibold bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] transition-all text-center block"
+                                    className="mt-4 w-full py-2 px-3 rounded-xl text-[13px] font-semibold bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] transition-all text-center block"
                                 >
                                     Scan PDF Statement
                                 </button>

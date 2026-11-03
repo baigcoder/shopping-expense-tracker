@@ -172,10 +172,10 @@ export const MoneyTwinPage = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pb-2 border-b border-[var(--color-border)]">
                 <div>
                     <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#80383D] text-white font-mono">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[13px] font-bold bg-[#80383D] text-white tabular-nums">
                             Money Twin™ Forecast Engine
                         </span>
-                        <span className="text-xs text-[var(--color-muted)] font-mono">
+                        <span className="text-[13px] text-[var(--color-muted)] tabular-nums">
                             Deterministic forward simulation
                         </span>
                     </div>
@@ -183,7 +183,7 @@ export const MoneyTwinPage = () => {
                         IF NOTHING CHANGES,<br />
                         THIS IS WHERE YOUR MONTH ENDS.
                     </h1>
-                    <p className="text-xs text-[var(--color-muted)] font-mono mt-1.5 max-w-2xl">
+                    <p className="text-[13px] text-[var(--color-muted)] tabular-nums mt-1.5 max-w-2xl">
                         Forward cash trajectory modeling, daily burn velocity, and What-If scenario simulations grounded in your verified ledger.
                     </p>
                 </div>
@@ -193,7 +193,7 @@ export const MoneyTwinPage = () => {
                         size="sm"
                         onClick={() => loadMoneyTwin()}
                         disabled={refreshing}
-                        className="rounded-full border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                        className="rounded-full border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-9 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-1.5', refreshing && 'animate-spin')} />
                         Sync Forecast
@@ -206,43 +206,43 @@ export const MoneyTwinPage = () => {
                 {/* Block 1: Deep Ink — Projected Month-End Cash */}
                 <div className="p-6 sm:p-7 rounded-2xl bg-[#111111] text-white flex flex-col justify-between min-h-[200px] shadow-lg shadow-black/10">
                     <div>
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-400 font-mono block">
+                        <span className="text-[13px] font-bold text-neutral-400 tabular-nums block">
                             Projected Month-End Cash
                         </span>
                         <div className="editorial-title text-4xl sm:text-5xl text-white mt-3 tabular-nums">
                             {loading ? '—' : formatCurrency((twinState as any)?.forecast?.projectedMonthEndBalance || 27150)}
                         </div>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-xs text-neutral-300">
+                    <div className="pt-4 mt-4 border-t border-white/10 flex items-center justify-between text-[13px] text-neutral-300">
                         <span>Burn velocity: {twinState?.velocity?.burnRate || 100}%</span>
-                        <span className="text-emerald-400 font-mono font-bold">+Rs 3,000 buffer</span>
+                        <span className="text-emerald-400 tabular-nums font-bold">+Rs 3,000 buffer</span>
                     </div>
                 </div>
 
                 {/* Block 2: Cadmium Orange — Estimated Cash Runway */}
                 <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-orange)] text-white flex flex-col justify-between min-h-[200px] shadow-lg shadow-orange-500/10">
                     <div>
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-white/80 font-mono block">
+                        <span className="text-[13px] font-bold text-white/80 tabular-nums block">
                             Estimated Cash Runway
                         </span>
                         <div className="editorial-title text-4xl sm:text-5xl text-white mt-3 tabular-nums">
                             {loading ? '—' : twinState?.velocity?.daysUntilBroke ? `${twinState.velocity.daysUntilBroke} Days` : '54 Days'}
                         </div>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-white/20 flex items-center justify-between text-xs text-white/90">
+                    <div className="pt-4 mt-4 border-t border-white/20 flex items-center justify-between text-[13px] text-white/90">
                         <span>Daily burn: {formatCurrency(twinState?.velocity?.dailyRate || 1420)}/day</span>
-                        <span className="font-mono font-bold">+12 days gained</span>
+                        <span className="tabular-nums font-bold">+12 days gained</span>
                     </div>
                 </div>
 
                 {/* Block 3: High Contrast Surface — Deficit Risk Level */}
-                <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[var(--color-border)] flex flex-col justify-between min-h-[200px] shadow-sm">
+                <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[var(--color-border)] flex flex-col justify-between min-h-[200px]">
                     <div>
                         <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-muted)] font-mono block">
+                            <span className="text-[13px] font-bold text-[var(--color-muted)] tabular-nums block">
                                 Deficit Risk Level
                             </span>
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                            <span className="px-2 py-0.5 rounded-full text-[13px] font-bold tabular-nums bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
                                 Protected
                             </span>
                         </div>
@@ -250,7 +250,7 @@ export const MoneyTwinPage = () => {
                             {(twinState?.riskAlerts?.length || 0) === 0 ? 'ZERO RISK' : 'LOW RISK'}
                         </div>
                     </div>
-                    <div className="pt-4 mt-4 border-t border-[var(--color-border)]/80 flex items-center justify-between text-xs text-[var(--color-muted)]">
+                    <div className="pt-4 mt-4 border-t border-[var(--color-border)]/80 flex items-center justify-between text-[13px] text-[var(--color-muted)]">
                         <span>{twinState?.riskAlerts?.length || 0} active alerts</span>
                         <span className="font-semibold text-[var(--color-ink)]">All commitments covered</span>
                     </div>
@@ -262,9 +262,9 @@ export const MoneyTwinPage = () => {
                 <button
                     onClick={() => setActiveTab('forecast')}
                     className={cn(
-                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-1.5',
                         activeTab === 'forecast'
-                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                             : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                     )}
                 >
@@ -274,9 +274,9 @@ export const MoneyTwinPage = () => {
                 <button
                     onClick={() => setActiveTab('whatif')}
                     className={cn(
-                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-1.5',
                         activeTab === 'whatif'
-                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                             : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                     )}
                 >
@@ -286,16 +286,16 @@ export const MoneyTwinPage = () => {
                 <button
                     onClick={() => setActiveTab('risks')}
                     className={cn(
-                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                        'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-1.5',
                         activeTab === 'risks'
-                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                            ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                             : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                     )}
                 >
                     <Shield className="h-3.5 w-3.5" />
                     <span>Risk Alerts & Protection</span>
                     {(twinState?.riskAlerts.length || 0) > 0 && (
-                        <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-[var(--color-brand)] text-white font-bold font-mono">
+                        <span className="px-1.5 py-0.5 rounded-full text-[13px] bg-[var(--color-brand)] text-white font-bold tabular-nums">
                             {twinState?.riskAlerts.length}
                         </span>
                     )}
@@ -313,15 +313,15 @@ export const MoneyTwinPage = () => {
                         className="space-y-4"
                     >
                         {/* Flagship Editorial Headline */}
-                        <div className="p-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xs">
+                        <div className="p-6 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)]">
                             <div className="max-w-2xl">
-                                <span className="text-[11px] font-mono uppercase tracking-wider font-semibold text-[var(--color-brand)]">
+                                <span className="text-[13px] tabular-nums font-semibold text-[var(--color-brand)]">
                                     Predictive Trajectory Model
                                 </span>
                                 <h2 className="text-xl sm:text-2xl font-display font-bold text-[var(--color-ink)] mt-1 tracking-tight">
                                     Deterministic Forward Runway & 30-Day Liquidity Curve
                                 </h2>
-                                <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1 leading-relaxed">
+                                <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-1 leading-relaxed">
                                     Continuous forward extrapolation of liquid balances based on active velocity, fixed commitments, and burn variance.
                                 </p>
                             </div>
@@ -339,29 +339,29 @@ export const MoneyTwinPage = () => {
                                         </span>
                                         <Badge
                                             variant={fc.riskLevel === 'low' ? 'success' : fc.riskLevel === 'medium' ? 'warning' : 'destructive'}
-                                            className="text-[10px] capitalize"
+                                            className="text-[13px] capitalize"
                                         >
                                             {fc.riskLevel}
                                         </Badge>
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center justify-between text-xs">
+                                        <div className="flex items-center justify-between text-[13px]">
                                             <span className="text-[var(--color-text-muted)]">Predicted Inflow</span>
-                                            <span className="font-semibold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                            <span className="font-semibold tabular-nums tabular-nums text-emerald-600 dark:text-emerald-400">
                                                 +{formatCurrency(fc.predictedIncome)}
                                             </span>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs">
+                                        <div className="flex items-center justify-between text-[13px]">
                                             <span className="text-[var(--color-text-muted)]">Predicted Expenses</span>
-                                            <span className="font-semibold tabular-nums font-mono text-[var(--color-brand)] dark:text-[var(--color-pink)]">
+                                            <span className="font-semibold tabular-nums tabular-nums text-[var(--color-brand)] dark:text-[var(--color-pink)]">
                                                 -{formatCurrency(fc.predictedExpenses)}
                                             </span>
                                         </div>
-                                        <div className="flex items-center justify-between text-xs pt-1 border-t border-[var(--color-border-subtle)]">
+                                        <div className="flex items-center justify-between text-[13px] pt-1 border-t border-[var(--color-border-subtle)]">
                                             <span className="font-semibold text-[var(--color-text-primary)]">Predicted Net Savings</span>
                                             <span className={cn(
-                                                "font-bold tabular-nums font-mono text-sm",
+                                                "font-bold tabular-nums tabular-nums text-sm",
                                                 fc.predictedSavings >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--color-brand)] dark:text-[var(--color-pink)]"
                                             )}>
                                                 {formatCurrency(fc.predictedSavings)}
@@ -400,14 +400,14 @@ export const MoneyTwinPage = () => {
                                 <h3 className="text-sm font-bold text-[var(--color-text-primary)]">
                                     Simulate a Financial Decision
                                 </h3>
-                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                                <p className="text-[13px] text-[var(--color-text-muted)] mt-0.5">
                                     Test the cumulative cashflow impact before committing to changes in real life.
                                 </p>
                             </div>
 
                             <div className="space-y-3">
                                 <div className="space-y-1.5">
-                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Scenario Type</Label>
+                                    <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Scenario Type</Label>
                                     <Select
                                         value={selectedScenario}
                                         onValueChange={(val: any) => setSelectedScenario(val)}
@@ -426,16 +426,16 @@ export const MoneyTwinPage = () => {
 
                                 {selectedScenario === 'cancel_subscription' && (
                                     <div className="space-y-1.5">
-                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Choose Subscriptions to Cancel</Label>
+                                        <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Choose Subscriptions to Cancel</Label>
                                         <div className="max-h-48 overflow-y-auto space-y-1.5 p-2 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)]">
                                             {subscriptions.length === 0 ? (
-                                                <div className="text-xs text-[var(--color-text-muted)] p-2 text-center">No subscriptions found</div>
+                                                <div className="text-[13px] text-[var(--color-text-muted)] p-2 text-center">No subscriptions found</div>
                                             ) : (
                                                 subscriptions.map(sub => (
-                                                    <label key={sub.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-xs cursor-pointer hover:border-[var(--color-border)]">
+                                                    <label key={sub.id} className="flex items-center justify-between p-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-[13px] cursor-pointer hover:border-[var(--color-border)]">
                                                         <span className="font-medium text-[var(--color-text-primary)]">{sub.name}</span>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-secondary)]">{formatCurrency(sub.price)}/mo</span>
+                                                            <span className="tabular-nums tabular-nums font-semibold text-[var(--color-text-secondary)]">{formatCurrency(sub.price)}/mo</span>
                                                             <input
                                                                 type="checkbox"
                                                                 checked={selectedSubs.includes(sub.id)}
@@ -455,13 +455,13 @@ export const MoneyTwinPage = () => {
 
                                 {selectedScenario === 'income_change' && (
                                     <div className="space-y-1.5">
-                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Income Increase ($)</Label>
+                                        <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Monthly Income Increase ($)</Label>
                                         <Input
                                             type="number"
                                             value={scenarioAmount}
                                             onChange={e => setScenarioAmount(e.target.value)}
                                             placeholder="500"
-                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                         />
                                     </div>
                                 )}
@@ -469,7 +469,7 @@ export const MoneyTwinPage = () => {
                                 {selectedScenario === 'reduce_category' && (
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="space-y-1.5">
-                                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                                            <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Category</Label>
                                             <Input
                                                 value={scenarioCategory}
                                                 onChange={e => setScenarioCategory(e.target.value)}
@@ -478,13 +478,13 @@ export const MoneyTwinPage = () => {
                                             />
                                         </div>
                                         <div className="space-y-1.5">
-                                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Reduction (%)</Label>
+                                            <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Reduction (%)</Label>
                                             <Input
                                                 type="number"
                                                 value={scenarioAmount}
                                                 onChange={e => setScenarioAmount(e.target.value)}
                                                 placeholder="25"
-                                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                             />
                                         </div>
                                     </div>
@@ -492,19 +492,19 @@ export const MoneyTwinPage = () => {
 
                                 {selectedScenario === 'major_purchase' && (
                                     <div className="space-y-1.5">
-                                        <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Purchase Price ($)</Label>
+                                        <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Purchase Price ($)</Label>
                                         <Input
                                             type="number"
                                             value={scenarioAmount}
                                             onChange={e => setScenarioAmount(e.target.value)}
                                             placeholder="2500"
-                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                            className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                         />
                                     </div>
                                 )}
 
                                 <div className="space-y-1.5">
-                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Time Horizon</Label>
+                                    <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Time Horizon</Label>
                                     <Select
                                         value={scenarioMonths.toString()}
                                         onValueChange={val => setScenarioMonths(parseInt(val))}
@@ -524,7 +524,7 @@ export const MoneyTwinPage = () => {
                                 <Button
                                     onClick={runScenario}
                                     disabled={runningScenario}
-                                    className="w-full rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs font-semibold h-9 mt-2"
+                                    className="w-full rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px] font-semibold h-9 mt-2"
                                 >
                                     {runningScenario ? 'Simulating...' : 'Run Simulation'}
                                 </Button>
@@ -537,7 +537,7 @@ export const MoneyTwinPage = () => {
                                 <h3 className="text-sm font-bold text-[var(--color-text-primary)]">
                                     Simulation Outcome
                                 </h3>
-                                <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                                <p className="text-[13px] text-[var(--color-text-muted)] mt-0.5">
                                     Projected delta over {scenarioMonths} months
                                 </p>
                             </div>
@@ -545,19 +545,19 @@ export const MoneyTwinPage = () => {
                             {scenarioResult ? (
                                 <div className="space-y-4 my-auto py-4">
                                     <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-1 text-center">
-                                        <span className="text-xs text-emerald-800 dark:text-emerald-300 font-medium">Cumulative Savings Impact</span>
-                                        <div className="text-3xl font-extrabold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                        <span className="text-[13px] text-emerald-800 dark:text-emerald-300 font-medium">Cumulative Savings Impact</span>
+                                        <div className="text-3xl font-extrabold tabular-nums tabular-nums text-emerald-600 dark:text-emerald-400">
                                             +{formatCurrency(scenarioResult.results.totalSavings)}
                                         </div>
-                                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 block font-mono">
+                                        <span className="text-[13px] text-emerald-600 dark:text-emerald-400 block tabular-nums">
                                             +{formatCurrency(scenarioResult.results.monthlyImpact)}/month headroom
                                         </span>
                                     </div>
 
-                                    <div className="space-y-2 text-xs">
+                                    <div className="space-y-2 text-[13px]">
                                         <div className="flex justify-between py-1.5 border-b border-[var(--color-border-subtle)]">
                                             <span className="text-[var(--color-text-muted)]">Compound Growth Potential</span>
-                                            <span className="font-semibold font-mono text-emerald-600 dark:text-emerald-400">
+                                            <span className="font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
                                                 +{formatCurrency(scenarioResult.results.compoundGrowth || 0)}
                                             </span>
                                         </div>
@@ -568,19 +568,19 @@ export const MoneyTwinPage = () => {
                                             </span>
                                         </div>
                                         {scenarioResult.results.summary && (
-                                            <p className="text-[11px] text-[var(--color-text-secondary)] pt-1 leading-relaxed">
+                                            <p className="text-[13px] text-[var(--color-text-secondary)] pt-1 leading-relaxed">
                                                 {scenarioResult.results.summary}
                                             </p>
                                         )}
                                     </div>
                                 </div>
                             ) : (
-                                <div className="p-8 text-center text-xs text-[var(--color-text-muted)] my-auto">
+                                <div className="p-8 text-center text-[13px] text-[var(--color-text-muted)] my-auto">
                                     Configure parameters on the left and click "Run Simulation" to inspect your future trajectory.
                                 </div>
                             )}
 
-                            <div className="text-[11px] text-[var(--color-text-muted)] italic">
+                            <div className="text-[13px] text-[var(--color-text-muted)] italic">
                                 * Simulates compound savings based on current cash burn rates.
                             </div>
                         </div>
@@ -604,7 +604,7 @@ export const MoneyTwinPage = () => {
                                 <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                                     No immediate financial risks detected
                                 </h3>
-                                <p className="text-xs text-[var(--color-text-muted)]">
+                                <p className="text-[13px] text-[var(--color-text-muted)]">
                                     Your obligations, pace velocity, and liquid reserve are within safe operational thresholds.
                                 </p>
                             </div>
@@ -615,7 +615,7 @@ export const MoneyTwinPage = () => {
                                     className="p-4 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] flex items-start gap-3.5"
                                 >
                                     <div className={cn(
-                                        'h-9 w-9 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-xs',
+                                        'h-9 w-9 rounded-xl flex items-center justify-center shrink-0 text-white font-bold text-[13px]',
                                         alert.severity === 'critical' ? 'bg-[var(--color-brand)]' : 'bg-amber-500'
                                     )}>
                                         <AlertTriangle className="h-5 w-5" />
@@ -627,12 +627,12 @@ export const MoneyTwinPage = () => {
                                             </h4>
                                             <Badge
                                                 variant={alert.severity === 'critical' ? 'destructive' : 'warning'}
-                                                className="text-[10px] capitalize"
+                                                className="text-[13px] capitalize"
                                             >
                                                 {alert.severity}
                                             </Badge>
                                         </div>
-                                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                                        <p className="text-[13px] text-[var(--color-text-secondary)] mt-1">
                                             {alert.message}
                                         </p>
                                     </div>

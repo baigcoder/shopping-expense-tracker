@@ -26,7 +26,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .skeletonHeader {
@@ -71,7 +71,7 @@
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 16px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     margin-bottom: 0.75rem;
 }
 
@@ -127,7 +127,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .skeletonChartHeader {
@@ -215,7 +215,7 @@
 @media (max-width: 768px) {
     .skeletonCard {
         padding: 1.25rem;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .skeletonTransaction {

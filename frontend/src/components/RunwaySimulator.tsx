@@ -250,7 +250,7 @@ export function RunwaySimulator({
             >
                 <div className="flex items-center gap-3">
                     <div className={cn(
-                        'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-xs',
+                        'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
                         variant === 'twin'
                             ? 'bg-[var(--color-brand)] text-white'
                             : 'bg-[#111111] text-white'
@@ -262,11 +262,11 @@ export function RunwaySimulator({
                             <h3 className="font-display font-bold text-sm text-[var(--color-ink)]">
                                 Velocity Restraint Simulator
                             </h3>
-                            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-[var(--color-brand)]/15 text-[var(--color-brand)]">
+                            <span className="px-2 py-0.5 rounded text-[13px] tabular-nums font-bold bg-[var(--color-brand)]/15 text-[var(--color-brand)]">
                                 Interactive
                             </span>
                         </div>
-                        <p className="text-[11px] text-[var(--color-muted)] font-mono mt-0.5">
+                        <p className="text-[13px] text-[var(--color-muted)] tabular-nums mt-0.5">
                             Drag to simulate discretionary restraint → watch runway recalculate live
                         </p>
                     </div>
@@ -276,7 +276,7 @@ export function RunwaySimulator({
                         <motion.span
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+                            className="px-2.5 py-0.5 rounded-full text-[13px] font-bold tabular-nums bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                         >
                             +{simulation.runwayGain} days
                         </motion.span>
@@ -302,9 +302,9 @@ export function RunwaySimulator({
                                         key={preset.value}
                                         onClick={() => handlePresetClick(preset.value, idx)}
                                         className={cn(
-                                            'px-3 py-1.5 rounded-lg text-[11px] font-bold font-mono transition-all border',
+                                            'px-3 py-1.5 rounded-lg text-[13px] font-bold tabular-nums transition-all border',
                                             activePreset === idx
-                                                ? 'bg-[var(--color-ink)] text-white border-[var(--color-ink)] shadow-xs'
+                                                ? 'bg-[var(--color-ink)] text-white border-[var(--color-ink)]'
                                                 : 'bg-[var(--color-surface-2)] text-[var(--color-ink)] border-[var(--color-border)] hover:bg-[var(--color-border)]'
                                         )}
                                     >
@@ -315,9 +315,9 @@ export function RunwaySimulator({
 
                             {/* Tactile Slider */}
                             <div className="space-y-2">
-                                <div className="flex items-center justify-between text-xs">
-                                    <span className="font-mono text-[var(--color-muted)]">Monthly restraint</span>
-                                    <span className="font-mono font-bold text-[var(--color-ink)] tabular-nums">
+                                <div className="flex items-center justify-between text-[13px]">
+                                    <span className="tabular-nums text-[var(--color-muted)]">Monthly restraint</span>
+                                    <span className="tabular-nums font-bold text-[var(--color-ink)] tabular-nums">
                                         −{formatCurrency(restraint)}
                                     </span>
                                 </div>
@@ -335,7 +335,7 @@ export function RunwaySimulator({
                                             background: `linear-gradient(to right, var(--color-brand) 0%, var(--color-brand) ${(restraint / 20000) * 100}%, var(--color-surface-2) ${(restraint / 20000) * 100}%, var(--color-surface-2) 100%)`,
                                         }}
                                     />
-                                    <div className="flex justify-between text-[10px] font-mono text-[var(--color-muted)] mt-1 px-0.5">
+                                    <div className="flex justify-between text-[13px] tabular-nums text-[var(--color-muted)] mt-1 px-0.5">
                                         <span>₹0</span>
                                         <span>₹5K</span>
                                         <span>₹10K</span>
@@ -348,10 +348,10 @@ export function RunwaySimulator({
                             {/* Live SVG Trajectory Curve */}
                             <div className="rounded-xl border border-[var(--color-border)]/70 bg-[var(--color-canvas)]/50 p-3 sm:p-4">
                                 <div className="flex items-center justify-between mb-3">
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold">
+                                    <span className="text-[13px] tabular-nums text-[var(--color-muted)] font-semibold">
                                         30-Day Cash Trajectory
                                     </span>
-                                    <div className="flex items-center gap-3 text-[10px] font-mono">
+                                    <div className="flex items-center gap-3 text-[13px] tabular-nums">
                                         <span className="flex items-center gap-1">
                                             <span className="w-3 h-0.5 rounded bg-[var(--color-muted)]" /> Baseline
                                         </span>
@@ -463,19 +463,19 @@ export function RunwaySimulator({
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                 {/* Safe to Spend */}
                                 <div className="p-3 rounded-xl bg-[var(--color-surface-2)]/60 border border-[var(--color-border)]/50">
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold block">
+                                    <span className="text-[13px] tabular-nums text-[var(--color-muted)] font-semibold block">
                                         Safe to Spend
                                     </span>
                                     <motion.div
                                         key={simulation.restrainedSafeToSpend}
                                         initial={{ scale: 0.95 }}
                                         animate={{ scale: 1 }}
-                                        className="text-lg font-bold font-mono tabular-nums text-[var(--color-ink)] mt-1"
+                                        className="text-lg font-bold tabular-nums tabular-nums text-[var(--color-ink)] mt-1"
                                     >
                                         {formatCurrency(simulation.restrainedSafeToSpend)}
                                     </motion.div>
                                     {restraint > 0 && (
-                                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                                        <span className="text-[13px] tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
                                             +{formatCurrency(simulation.safeToSpendGain)}
                                         </span>
                                     )}
@@ -483,19 +483,19 @@ export function RunwaySimulator({
 
                                 {/* Forward Runway */}
                                 <div className="p-3 rounded-xl bg-[var(--color-surface-2)]/60 border border-[var(--color-border)]/50">
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold block">
+                                    <span className="text-[13px] tabular-nums text-[var(--color-muted)] font-semibold block">
                                         Forward Runway
                                     </span>
                                     <motion.div
                                         key={simulation.restrainedRunwayDays}
                                         initial={{ scale: 0.95 }}
                                         animate={{ scale: 1 }}
-                                        className="text-lg font-bold font-mono tabular-nums text-[var(--color-ink)] mt-1"
+                                        className="text-lg font-bold tabular-nums tabular-nums text-[var(--color-ink)] mt-1"
                                     >
                                         {Math.min(simulation.restrainedRunwayDays, 999)} Days
                                     </motion.div>
                                     {restraint > 0 && simulation.runwayGain > 0 && (
-                                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                                        <span className="text-[13px] tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
                                             +{simulation.runwayGain} days gained
                                         </span>
                                     )}
@@ -503,19 +503,19 @@ export function RunwaySimulator({
 
                                 {/* Daily Burn */}
                                 <div className="p-3 rounded-xl bg-[var(--color-surface-2)]/60 border border-[var(--color-border)]/50">
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold block">
+                                    <span className="text-[13px] tabular-nums text-[var(--color-muted)] font-semibold block">
                                         Daily Burn
                                     </span>
                                     <motion.div
                                         key={simulation.restrainedDailyBurn}
                                         initial={{ scale: 0.95 }}
                                         animate={{ scale: 1 }}
-                                        className="text-lg font-bold font-mono tabular-nums text-[var(--color-ink)] mt-1"
+                                        className="text-lg font-bold tabular-nums tabular-nums text-[var(--color-ink)] mt-1"
                                     >
                                         {formatCurrency(Math.round(simulation.restrainedDailyBurn))}
                                     </motion.div>
                                     {restraint > 0 && (
-                                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                                        <span className="text-[13px] tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
                                             −{formatCurrency(Math.round(simulation.dailyRestraint))}/day
                                         </span>
                                     )}
@@ -530,10 +530,10 @@ export function RunwaySimulator({
                                             : 'bg-[var(--color-brand-soft)]/60 dark:bg-[var(--color-wine)]/20 border-[var(--color-pink)] dark:border-[var(--color-wine)]'
                                         : 'bg-[var(--color-surface-2)]/60 border-[var(--color-border)]/50'
                                 )}>
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] font-semibold block">
+                                    <span className="text-[13px] tabular-nums text-[var(--color-muted)] font-semibold block">
                                         Collision Risk
                                     </span>
-                                    <div className="text-lg font-bold font-mono tabular-nums mt-1">
+                                    <div className="text-lg font-bold tabular-nums tabular-nums mt-1">
                                         {!simulation.deficitCollisionDay ? (
                                             <span className="text-emerald-600 dark:text-emerald-400">CLEAR</span>
                                         ) : restraint > 0 && !simulation.deficitCollisionDayRestrained ? (
@@ -545,7 +545,7 @@ export function RunwaySimulator({
                                         )}
                                     </div>
                                     {simulation.deficitCollisionDay && (
-                                        <span className="text-[10px] font-mono text-[var(--color-muted)]">
+                                        <span className="text-[13px] tabular-nums text-[var(--color-muted)]">
                                             {!simulation.deficitCollisionDayRestrained && restraint > 0
                                                 ? 'Buffer restored'
                                                 : 'Increase restraint'}
@@ -562,7 +562,7 @@ export function RunwaySimulator({
                                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                                         exit={{ opacity: 0, y: -4, height: 0 }}
                                         className={cn(
-                                            'p-3.5 rounded-xl border flex items-start gap-3 text-xs leading-relaxed',
+                                            'p-3.5 rounded-xl border flex items-start gap-3 text-[13px] leading-relaxed',
                                             radarMessage.type === 'success' &&
                                                 'bg-emerald-50/70 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300',
                                             radarMessage.type === 'warning' &&
@@ -579,7 +579,7 @@ export function RunwaySimulator({
                                             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                                         )}
                                         <div>
-                                            <span className="text-[10px] font-mono uppercase tracking-wider font-bold block mb-1">
+                                            <span className="text-[13px] tabular-nums font-bold block mb-1">
                                                 Deficit Collision Radar
                                             </span>
                                             {radarMessage.text}

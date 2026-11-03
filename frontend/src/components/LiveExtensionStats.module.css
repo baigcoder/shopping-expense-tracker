@@ -5,7 +5,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .header {
@@ -29,7 +29,7 @@
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 100px;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-transform: none;
     border: 1px solid var(--border);
@@ -61,12 +61,12 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .stat:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIcon {
@@ -95,7 +95,7 @@
 }
 
 .statInfo span {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: #6B7280;
     text-transform: none;
@@ -161,7 +161,7 @@
 @media (max-width: 768px) {
     .container {
         padding: 1.25rem;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .header h3 {
@@ -187,7 +187,7 @@
     }
 
     .statInfo span {
-        font-size: 0.7rem;
+        font-size: 0.8125rem;
     }
 }
 
@@ -268,12 +268,12 @@
     text-decoration: none;
     text-transform: none;
     transition: all 0.2s;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .seeMore:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     color: var(--color-brand);
 }
 

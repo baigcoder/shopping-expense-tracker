@@ -28,7 +28,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     position: sticky;
     top: 24px;
     z-index: 50;
@@ -76,7 +76,7 @@
     background: var(--brand-muted);
     border: none;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--brand);
     letter-spacing: 0;
@@ -116,7 +116,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 220px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .heroIcon {
@@ -178,7 +178,7 @@
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
     padding: 24px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -203,7 +203,7 @@
 }
 
 .miniLabel {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-muted);
     text-transform: none;
@@ -230,7 +230,7 @@
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
     padding: 28px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -292,7 +292,7 @@
 .tabActive {
     background: #FFFFFF;
     color: var(--text-primary);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     border-color: transparent;
 }
 
@@ -302,7 +302,7 @@
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
     padding: 28px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .merchantTile {
@@ -320,7 +320,7 @@
     background: #FFFFFF;
     color: inherit;
     transform: none;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .rankCircle {
@@ -391,7 +391,7 @@
 }
 
 .mCount {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-muted);
     opacity: 1;

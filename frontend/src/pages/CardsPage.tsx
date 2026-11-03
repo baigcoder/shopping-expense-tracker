@@ -228,14 +228,14 @@ export const CardsPage = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         Capital Infrastructure
                     </div>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[var(--color-ink)] tracking-tight">
                         Instruments & Channels
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
+                    <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
                         Physical payment cards, spending limits, and connected bank capital feeds synchronized with the browser capture engine.
                     </p>
                 </div>
@@ -245,7 +245,7 @@ export const CardsPage = () => {
                         size="sm"
                         onClick={handleRefresh}
                         disabled={refreshing}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[var(--color-brand)]', refreshing && 'animate-spin')} />
                         Sync Feeds
@@ -254,7 +254,7 @@ export const CardsPage = () => {
                         <Button
                             size="sm"
                             onClick={openAddCard}
-                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
+                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-[13px] h-9 px-4 transition-all"
                         >
                             <Plus className="h-4 w-4 mr-1.5" />
                             Add Payment Card
@@ -263,7 +263,7 @@ export const CardsPage = () => {
                         <Button
                             size="sm"
                             onClick={handleOpenAddAccount}
-                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
+                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-[13px] h-9 px-4 transition-all"
                         >
                             <Plus className="h-4 w-4 mr-1.5" />
                             Link Bank Account
@@ -274,13 +274,13 @@ export const CardsPage = () => {
 
             {/* Instrument Editorial Pill Tabs */}
             <div className="flex items-center justify-between pb-2">
-                <div className="inline-flex p-1 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] shadow-xs">
+                <div className="inline-flex p-1 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)]">
                     <button
                         onClick={() => handleTabChange('cards')}
                         className={cn(
-                            'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2',
+                            'px-4 py-1.5 rounded-lg text-[13px] font-semibold transition-all flex items-center gap-2',
                             activeTab === 'cards'
-                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
@@ -290,9 +290,9 @@ export const CardsPage = () => {
                     <button
                         onClick={() => handleTabChange('accounts')}
                         className={cn(
-                            'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2',
+                            'px-4 py-1.5 rounded-lg text-[13px] font-semibold transition-all flex items-center gap-2',
                             activeTab === 'accounts'
-                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                         )}
                     >
@@ -306,7 +306,7 @@ export const CardsPage = () => {
             {activeTab === 'cards' && (
                 <div className="space-y-6">
                     {cardsLoading && cards.length === 0 ? (
-                        <div className="p-12 text-center text-xs text-[var(--color-muted)] animate-pulse">
+                        <div className="p-12 text-center text-[13px] text-[var(--color-muted)] animate-pulse">
                             Loading payment instruments...
                         </div>
                     ) : cards.length === 0 ? (
@@ -318,7 +318,7 @@ export const CardsPage = () => {
                                 <h3 className="font-bold text-sm text-[var(--color-ink)]">
                                     No payment cards linked
                                 </h3>
-                                <p className="text-xs text-[var(--color-muted)] max-w-sm mx-auto mt-1">
+                                <p className="text-[13px] text-[var(--color-muted)] max-w-sm mx-auto mt-1">
                                     Link your cards to automatically match checkout receipts from the companion extension.
                                 </p>
                             </div>
@@ -326,7 +326,7 @@ export const CardsPage = () => {
                                 <Button
                                     size="sm"
                                     onClick={openAddCard}
-                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs font-semibold px-4 h-9"
+                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-[13px] font-semibold px-4 h-9"
                                 >
                                     <Plus className="h-3.5 w-3.5 mr-1" />
                                     Add Your First Card
@@ -347,19 +347,19 @@ export const CardsPage = () => {
                                             setViewingCard(card);
                                             setEditedLimit(card.spending_limit?.toString() || '');
                                         }}
-                                        className="cursor-pointer group p-6 rounded-2xl bg-[#111111] text-white border border-[#222222] shadow-sm hover:border-[var(--color-brand)] transition-all space-y-5 relative overflow-hidden"
+                                        className="cursor-pointer group p-6 rounded-2xl bg-[#111111] text-white border border-[#222222] hover:border-[var(--color-brand)] transition-all space-y-5 relative overflow-hidden"
                                     >
                                         {/* Card Visual Mini Header */}
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="h-9 w-9 rounded-xl bg-[#222222] text-[var(--color-brand)] flex items-center justify-center font-bold text-xs font-mono border border-white/10">
+                                                <div className="h-9 w-9 rounded-xl bg-[#222222] text-[var(--color-brand)] flex items-center justify-center font-bold text-[13px] tabular-nums border border-white/10">
                                                     {(card.type || 'card').slice(0, 4).toUpperCase()}
                                                 </div>
                                                 <div>
                                                     <div className="font-bold text-sm text-white">
                                                         {card.nickname || `${(card.type || 'Card').toUpperCase()} •••• ${card.last4 || '••••'}`}
                                                     </div>
-                                                    <div className="text-[11px] text-white/50 font-mono">
+                                                    <div className="text-[13px] text-white/50 tabular-nums">
                                                         •••• {card.last4 || '••••'} {card.expiry ? `| Exp ${card.expiry}` : ''}
                                                     </div>
                                                 </div>
@@ -367,12 +367,12 @@ export const CardsPage = () => {
 
                                             <div className="flex items-center gap-1.5">
                                                 {card.is_default && (
-                                                    <Badge variant="default" className="text-[9px] bg-[#EE5024] text-white font-mono uppercase">
+                                                    <Badge variant="default" className="text-[13px] bg-[#EE5024] text-white tabular-nums">
                                                         Primary
                                                     </Badge>
                                                 )}
                                                 {card.is_frozen && (
-                                                    <Badge variant="destructive" className="text-[9px] font-mono uppercase">
+                                                    <Badge variant="destructive" className="text-[13px] tabular-nums">
                                                         Frozen
                                                     </Badge>
                                                 )}
@@ -381,9 +381,9 @@ export const CardsPage = () => {
 
                                         {/* Spending Limit Progress */}
                                         <div className="space-y-1.5 pt-2">
-                                            <div className="flex items-center justify-between text-xs">
+                                            <div className="flex items-center justify-between text-[13px]">
                                                 <span className="text-[var(--color-text-muted)]">Current Month Spent</span>
-                                                <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                                <span className="tabular-nums tabular-nums font-semibold text-[var(--color-text-primary)]">
                                                     {formatCurrency(spent)} {limit > 0 ? `/ ${formatCurrency(limit)}` : ''}
                                                 </span>
                                             </div>
@@ -400,7 +400,7 @@ export const CardsPage = () => {
                                             )}
                                         </div>
 
-                                        <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border-subtle)] text-xs text-[var(--color-text-secondary)]">
+                                        <div className="flex items-center justify-between pt-2 border-t border-[var(--color-border-subtle)] text-[13px] text-[var(--color-text-secondary)]">
                                             <span>Click to inspect & control</span>
                                             <ChevronRight className="h-3.5 w-3.5 text-[var(--color-text-muted)] group-hover:translate-x-0.5 transition-transform" />
                                         </div>
@@ -417,44 +417,44 @@ export const CardsPage = () => {
                 <div className="space-y-6">
                     {/* Net Worth Summary Bento */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                            <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                                 <span>Liquid Assets</span>
                                 <Building2 className="h-4 w-4 text-[var(--color-positive)]" />
                             </div>
-                            <div className="text-2xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-positive)]">
+                            <div className="text-2xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-positive)]">
                                 {accountsLoading ? '—' : formatCurrency(netWorthData.assets)}
                             </div>
-                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                            <div className="text-[13px] text-[var(--color-text-secondary)] mt-2">
                                 Checking, savings & deposits
                             </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                            <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                                 <span>Liabilities & Balances</span>
                                 <CreditCard className="h-4 w-4 text-[var(--color-danger)]" />
                             </div>
-                            <div className="text-2xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-danger)]">
+                            <div className="text-2xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-danger)]">
                                 {accountsLoading ? '—' : formatCurrency(netWorthData.liabilities)}
                             </div>
-                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                            <div className="text-[13px] text-[var(--color-text-secondary)] mt-2">
                                 Outstanding credit balances
                             </div>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                            <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                        <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                            <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                                 <span>Total Net Worth</span>
                                 <Target className="h-4 w-4 text-[var(--color-brand)]" />
                             </div>
                             <div className={cn(
-                                "text-2xl font-bold tracking-tight tabular-nums font-mono",
+                                "text-2xl font-bold tracking-tight tabular-nums tabular-nums",
                                 netWorthData.netWorth >= 0 ? "text-[var(--color-text-primary)]" : "text-[var(--color-danger)]"
                             )}>
                                 {accountsLoading ? '—' : formatCurrency(netWorthData.netWorth)}
                             </div>
-                            <div className="text-[11px] text-[var(--color-text-secondary)] mt-2">
+                            <div className="text-[13px] text-[var(--color-text-secondary)] mt-2">
                                 Across all active accounts
                             </div>
                         </div>
@@ -462,7 +462,7 @@ export const CardsPage = () => {
 
                     {/* Accounts List */}
                     {accountsLoading ? (
-                        <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                        <div className="p-12 text-center text-[13px] text-[var(--color-text-muted)] animate-pulse">
                             Synchronizing bank accounts...
                         </div>
                     ) : accounts.length === 0 ? (
@@ -474,7 +474,7 @@ export const CardsPage = () => {
                                 <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                                     No bank accounts connected
                                 </h3>
-                                <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                                <p className="text-[13px] text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
                                     Link your checking, savings, and credit accounts to track your net worth.
                                 </p>
                             </div>
@@ -482,7 +482,7 @@ export const CardsPage = () => {
                                 <Button
                                     size="sm"
                                     onClick={handleOpenAddAccount}
-                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs"
+                                    className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-[13px]"
                                 >
                                     <Plus className="h-3.5 w-3.5 mr-1" />
                                     Link Account
@@ -490,7 +490,7 @@ export const CardsPage = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs overflow-hidden divide-y divide-[var(--color-border-subtle)]">
+                        <div className="rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] overflow-hidden divide-y divide-[var(--color-border-subtle)]">
                             {accounts.map((acc) => {
                                 const config = ACCOUNT_TYPE_CONFIG[acc.account_type] || ACCOUNT_TYPE_CONFIG.checking;
                                 const Icon = config.icon;
@@ -509,11 +509,11 @@ export const CardsPage = () => {
                                                     <span className="font-semibold text-sm text-[var(--color-text-primary)]">
                                                         {acc.name}
                                                     </span>
-                                                    <Badge variant="secondary" className="text-[10px] font-mono">
+                                                    <Badge variant="secondary" className="text-[13px] tabular-nums">
                                                         {config.label}
                                                     </Badge>
                                                 </div>
-                                                <div className="text-xs text-[var(--color-text-secondary)] mt-0.5">
+                                                <div className="text-[13px] text-[var(--color-text-secondary)] mt-0.5">
                                                     {acc.bank_name} • Last updated {new Date(acc.last_updated).toLocaleDateString()}
                                                 </div>
                                             </div>
@@ -522,12 +522,12 @@ export const CardsPage = () => {
                                         <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
                                             <div className="text-right">
                                                 <div className={cn(
-                                                    "text-base font-bold tabular-nums font-mono",
+                                                    "text-base font-bold tabular-nums tabular-nums",
                                                     acc.account_type === 'credit' ? "text-[var(--color-danger)]" : "text-[var(--color-text-primary)]"
                                                 )}>
                                                     {formatCurrency(acc.balance)}
                                                 </div>
-                                                <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider font-mono">
+                                                <div className="text-[13px] text-[var(--color-text-muted)] tabular-nums">
                                                     {acc.account_type === 'credit' ? 'Outstanding' : 'Available'}
                                                 </div>
                                             </div>
@@ -566,10 +566,10 @@ export const CardsPage = () => {
                         <DialogTitle className="text-lg font-bold flex items-center justify-between">
                             <span>{viewingCard?.nickname || `${(viewingCard?.type || 'Card').toUpperCase()} •••• ${viewingCard?.last4}`}</span>
                             {viewingCard?.is_default && (
-                                <Badge variant="default" className="text-[10px] bg-[var(--color-brand)] font-mono">Primary Card</Badge>
+                                <Badge variant="default" className="text-[13px] bg-[var(--color-brand)] tabular-nums">Primary Card</Badge>
                             )}
                         </DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Manage spending limits, freeze status, and security rules.
                         </DialogDescription>
                     </DialogHeader>
@@ -577,33 +577,33 @@ export const CardsPage = () => {
                     {viewingCard && (
                         <div className="space-y-4 pt-2">
                             {/* Card Attributes */}
-                            <div className="p-4 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] space-y-2 text-xs">
+                            <div className="p-4 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] space-y-2 text-[13px]">
                                 <div className="flex justify-between">
                                     <span className="text-[var(--color-text-muted)]">Card Brand</span>
-                                    <span className="font-semibold uppercase">{viewingCard.type}</span>
+                                    <span className="font-semibold">{viewingCard.type}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-[var(--color-text-muted)]">Card Number</span>
-                                    <span className="font-mono font-semibold">•••• •••• •••• {viewingCard.last4}</span>
+                                    <span className="tabular-nums font-semibold">•••• •••• •••• {viewingCard.last4}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-[var(--color-text-muted)]">Expiration</span>
-                                    <span className="font-semibold font-mono">{viewingCard.expiry}</span>
+                                    <span className="font-semibold tabular-nums">{viewingCard.expiry}</span>
                                 </div>
                                 <div className="flex justify-between pt-1 border-t border-[var(--color-border-subtle)]">
                                     <span className="text-[var(--color-text-muted)]">Monthly Spending</span>
-                                    <span className="font-bold tabular-nums font-mono text-[var(--color-text-primary)]">{formatCurrency(viewingCard.total_spent || 0)}</span>
+                                    <span className="font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">{formatCurrency(viewingCard.total_spent || 0)}</span>
                                 </div>
                             </div>
 
                             {/* Monthly Spending Limit */}
                             <div className="space-y-1.5">
                                 <div className="flex items-center justify-between">
-                                    <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Spending Ceiling</Label>
+                                    <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Monthly Spending Ceiling</Label>
                                     <button
                                         type="button"
                                         onClick={() => setIsEditingLimit(!isEditingLimit)}
-                                        className="text-[11px] text-[var(--color-brand)] font-medium hover:underline"
+                                        className="text-[13px] text-[var(--color-brand)] font-medium hover:underline"
                                     >
                                         {isEditingLimit ? 'Cancel' : 'Edit Limit'}
                                     </button>
@@ -616,18 +616,18 @@ export const CardsPage = () => {
                                             value={editedLimit}
                                             onChange={e => setEditedLimit(e.target.value)}
                                             placeholder="1000"
-                                            className="rounded-xl h-9 text-xs bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
+                                            className="rounded-xl h-9 text-[13px] bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
                                         />
                                         <Button
                                             size="sm"
                                             onClick={handleSaveLimit}
-                                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-xs h-9"
+                                            className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white text-[13px] h-9"
                                         >
                                             Save
                                         </Button>
                                     </div>
                                 ) : (
-                                    <div className="p-3 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] text-xs font-semibold font-mono tabular-nums text-[var(--color-text-primary)]">
+                                    <div className="p-3 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)] text-[13px] font-semibold tabular-nums tabular-nums text-[var(--color-text-primary)]">
                                         {viewingCard.spending_limit ? formatCurrency(viewingCard.spending_limit) : 'No limit set (Uncapped)'}
                                     </div>
                                 )}
@@ -640,7 +640,7 @@ export const CardsPage = () => {
                                         variant="outline"
                                         size="sm"
                                         onClick={() => handleSetDefault(viewingCard)}
-                                        className="w-full rounded-xl text-xs h-9 justify-center border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]"
+                                        className="w-full rounded-xl text-[13px] h-9 justify-center border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]"
                                     >
                                         <Star className="h-3.5 w-3.5 mr-1.5 text-[var(--color-warning)]" />
                                         Make Primary Payment Card
@@ -652,7 +652,7 @@ export const CardsPage = () => {
                                     size="sm"
                                     onClick={() => handleToggleFreeze(viewingCard)}
                                     className={cn(
-                                        'w-full rounded-xl text-xs h-9 justify-center border-[var(--color-border)]',
+                                        'w-full rounded-xl text-[13px] h-9 justify-center border-[var(--color-border)]',
                                         viewingCard.is_frozen 
                                             ? 'text-[var(--color-positive)] border-[var(--color-positive)]/30 hover:bg-[var(--color-positive-subtle)]' 
                                             : 'text-[var(--color-text-primary)] hover:bg-[var(--color-surface-subtle)]'
@@ -666,7 +666,7 @@ export const CardsPage = () => {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => handleDeleteCard(viewingCard.id, viewingCard.nickname || viewingCard.last4)}
-                                    className="w-full text-xs h-8 text-[var(--color-danger)] hover:bg-[var(--color-danger-subtle)]"
+                                    className="w-full text-[13px] h-8 text-[var(--color-danger)] hover:bg-[var(--color-danger-subtle)]"
                                 >
                                     <Trash2 className="h-3.5 w-3.5 mr-1" />
                                     Delete Card
@@ -684,14 +684,14 @@ export const CardsPage = () => {
                         <DialogTitle className="text-lg font-bold">
                             {editingAccount ? 'Edit Bank Account' : 'Link Bank Account'}
                         </DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--cashly-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--cashly-text-muted)]">
                             Track your liquid checking, savings, or liabilities in Cashly.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleSaveAccount} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-semibold">Account Label</Label>
+                            <Label className="text-[13px] font-semibold">Account Label</Label>
                             <Input
                                 placeholder="e.g. Primary Checking, High Yield Savings"
                                 value={accountForm.name}
@@ -702,7 +702,7 @@ export const CardsPage = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-semibold">Financial Institution</Label>
+                            <Label className="text-[13px] font-semibold">Financial Institution</Label>
                             <Input
                                 placeholder="e.g. Chase, Bank of America, Ally"
                                 value={accountForm.bank_name}
@@ -713,7 +713,7 @@ export const CardsPage = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label className="text-xs font-semibold">Account Type</Label>
+                                <Label className="text-[13px] font-semibold">Account Type</Label>
                                 <Select
                                     value={accountForm.account_type}
                                     onValueChange={(val: any) => setAccountForm(prev => ({ ...prev, account_type: val }))}
@@ -732,7 +732,7 @@ export const CardsPage = () => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label className="text-xs font-semibold">Current Balance ($)</Label>
+                                <Label className="text-[13px] font-semibold">Current Balance ($)</Label>
                                 <Input
                                     type="number"
                                     step="0.01"
@@ -750,14 +750,14 @@ export const CardsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setShowAccountModal(false)}
-                                className="rounded-xl text-xs"
+                                className="rounded-xl text-[13px]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={accountSubmitting}
-                                className="rounded-xl bg-[var(--cashly-brand)] hover:bg-[var(--cashly-brand-hover)] text-white text-xs"
+                                className="rounded-xl bg-[var(--cashly-brand)] hover:bg-[var(--cashly-brand-hover)] text-white text-[13px]"
                             >
                                 {accountSubmitting ? 'Saving...' : editingAccount ? 'Update Account' : 'Link Account'}
                             </Button>

@@ -36,7 +36,7 @@
     align-items: center;
     justify-content: center;
     color: white;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .brandName {
@@ -66,13 +66,13 @@
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
 .addBtn:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 /* === CONTENT AREA === */
@@ -96,13 +96,13 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.2s;
 }
 
 .heroCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .heroIcon {
@@ -156,7 +156,7 @@
     color: #FFFFFF;
     font-weight: 600;
     text-transform: none;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     margin-top: 1rem;
 }
 
@@ -209,13 +209,13 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     display: flex;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.2s;
 }
 
 .billCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .calendarHeader {
@@ -266,14 +266,14 @@
 
 .billCategory {
     display: inline-block;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-transform: none;
     color: var(--color-brand);
     border: 1px solid var(--border);
     padding: 2px 8px;
     background: #FFFFFF;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     margin-bottom: 1rem;
 }
 
@@ -308,7 +308,7 @@
 .payBtn:hover {
     background: #FFFFFF;
     color: #000000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .paidBadge {
@@ -339,7 +339,7 @@
     border: 6px solid #000000;
     width: 100%;
     max-width: 600px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .modalHeader {
@@ -395,7 +395,7 @@
 
 .formGroup input:focus {
     background: #FFFFFF;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .modalFooter {
@@ -414,7 +414,7 @@
     border: 1px solid var(--border);
     font-weight: 600;
     text-transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .cancelBtn {
@@ -479,6 +479,6 @@
     .modal {
         max-height: calc(100dvh - 1.5rem);
         overflow-y: auto;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 }

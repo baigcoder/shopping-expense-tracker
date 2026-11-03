@@ -6,7 +6,7 @@
     border-radius: 12px !important;
     overflow: hidden;
     position: relative;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     isolation: isolate;
 }
@@ -49,7 +49,7 @@
     align-items: center;
     gap: 0.6rem;
     font-weight: 600;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statsRow {
@@ -77,7 +77,7 @@
 }
 
 .statLabel {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #000000;
     text-transform: none;
@@ -116,7 +116,7 @@
 }
 
 .seeMoreLink {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #000000;
     text-transform: none;
@@ -136,7 +136,7 @@
     background: #3b82f6;
     color: #ffffff;
     transform: translate(-3px, -3px);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .riskBadge {
@@ -145,10 +145,10 @@
     gap: 0.65rem;
     padding: 0.65rem 1.25rem;
     border: 1px solid var(--border);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-transform: none;
     letter-spacing: 0.1rem;
     background: #ffffff;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }

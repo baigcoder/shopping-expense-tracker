@@ -52,7 +52,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
 
     if (loading) {
         return (
-            <div className="flex h-[380px] items-center justify-center rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-md)]">
+            <div className="flex h-[380px] items-center justify-center rounded-[var(--r-lg)] border border-[var(--border)] bg-white p-6">
                 <div className="flex flex-col items-center gap-4">
                     <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-[#FAF8F5] p-4">
                         <Loader2 className="h-8 w-8 animate-spin text-[var(--brand)]" />
@@ -94,7 +94,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                             <h3 className="font-display text-xl font-semibold tracking-tight">Money Twin</h3>
                             <div className="mt-1 flex items-center gap-2">
                                 <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-brand)]" />
-                                <span className="text-xs text-[var(--text-muted)]">
+                                <span className="text-[13px] text-[var(--text-muted)]">
                                     {patterns.length > 0 ? `${patterns.length} patterns` : 'Live forecast'}
                                 </span>
                             </div>
@@ -110,7 +110,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                         </button>
                         <div className={styles.healthBadge}>
                             <div className="flex flex-col items-center leading-none">
-                                <span className="text-[10px] font-medium text-[var(--text-muted)]">Health</span>
+                                <span className="text-[13px] font-medium text-[var(--text-muted)]">Health</span>
                                 <span className="text-2xl font-black mt-1">{healthScore}</span>
                             </div>
                         </div>
@@ -125,7 +125,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                     </div>
                     <p className={styles.statVal}>{formatCurrency(velocity.dailyRate)}</p>
                     <div className={cn(
-                        "mt-2 text-[10px] font-black uppercase tracking-tighter px-2 py-0.5 border-2 border-black inline-block",
+                        "mt-2 text-[13px] font-black tracking-tighter px-2 py-0.5 border-2 border-black inline-block",
                         velocity.acceleration > 0 ? "bg-[var(--color-brand-soft)] text-[var(--color-brand)]" : "bg-emerald-100 text-emerald-600"
                     )}>
                         {velocity.acceleration > 0 ? '+' : ''}{velocity.acceleration}%
@@ -136,7 +136,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                         <Target size={12} strokeWidth={2} /> This month
                     </div>
                     <p className={styles.statVal}>{formatCurrency(velocity.monthlyRate)}</p>
-                    <p className="mt-2 text-[11px] text-[var(--text-muted)]">Projected</p>
+                    <p className="mt-2 text-[13px] text-[var(--text-muted)]">Projected</p>
                 </div>
                 <div className={styles.statCell}>
                     <div className={styles.statLabel}>
@@ -146,7 +146,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                         styles.statVal,
                         velocity.burnRate > 100 ? "text-[var(--color-brand)]" : "text-emerald-600"
                     )}>{Math.max(0, 100 - velocity.burnRate)}%</p>
-                    <p className="mt-2 text-[11px] text-[var(--text-muted)]">Room to save</p>
+                    <p className="mt-2 text-[13px] text-[var(--text-muted)]">Room to save</p>
                 </div>
             </div>
 
@@ -165,14 +165,14 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                             </motion.div>
                         ))
                     ) : (
-                        <div className="flex items-center gap-2 rounded-full border border-[#059669]/20 bg-[#ECFDF5] px-3 py-1.5 text-xs font-medium text-[#059669]">
+                        <div className="flex items-center gap-2 rounded-full border border-[#059669]/20 bg-[#ECFDF5] px-3 py-1.5 text-[13px] font-medium text-[#059669]">
                             <CheckCircle size={14} strokeWidth={2} />
                             <span>Looking steady</span>
                         </div>
                     )}
                 </AnimatePresence>
                 {patterns.length > 0 && (
-                    <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[var(--text-primary)]">
+                    <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-[var(--text-primary)]">
                         <Zap size={14} className="text-[var(--brand)]" strokeWidth={2} />
                         <span>{patterns[0].category}</span>
                     </div>
@@ -200,15 +200,15 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
                                 content={({ active, payload }) => {
                                     if (active && payload && payload.length) {
                                         return (
-                                            <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-white p-3 shadow-[var(--shadow-md)]">
-                                                <p className="mb-2 border-b border-[var(--border)] pb-2 text-xs font-medium text-[var(--text-muted)]">
+                                            <div className="rounded-[var(--r-md)] border border-[var(--border)] bg-white p-3">
+                                                <p className="mb-2 border-b border-[var(--border)] pb-2 text-[13px] font-medium text-[var(--text-muted)]">
                                                     Forecast
                                                 </p>
                                                 {payload.map((entry, idx) => (
                                                     <div key={idx} className="flex items-center justify-between gap-6 mt-1">
                                                         <div className="flex items-center gap-2">
                                                             <div className="w-3 h-3 border-2 border-black" style={{ backgroundColor: entry.color }} />
-                                                            <span className="text-[10px] font-black uppercase text-black">{entry.name}</span>
+                                                            <span className="text-[13px] font-black text-black">{entry.name}</span>
                                                         </div>
                                                         <span className="text-sm font-black text-black">{formatCurrency(entry.value as number)}</span>
                                                     </div>
@@ -227,7 +227,7 @@ const MoneyTwinPulse: React.FC<Props> = ({ userId }) => {
             </div>
 
             <div className={styles.footer}>
-                <div className="flex items-center gap-6 text-xs font-medium text-[var(--text-muted)]">
+                <div className="flex items-center gap-6 text-[13px] font-medium text-[var(--text-muted)]">
                     <span className="flex items-center gap-2 text-[var(--color-brand)]">
                         <Activity className="h-3 w-3" /> Live
                     </span>

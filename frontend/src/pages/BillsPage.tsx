@@ -340,7 +340,7 @@ const BillsPage = () => {
                 </div>
 
                 {error && (
-                    <section className="rounded-2xl border border-[var(--color-pink)] bg-[var(--color-brand-soft)] px-4 py-3 text-sm text-[var(--color-wine)] shadow-sm">
+                    <section className="rounded-2xl border border-[var(--color-pink)] bg-[var(--color-brand-soft)] px-4 py-3 text-sm text-[var(--color-wine)]">
                         <div className="flex items-start gap-3">
                             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-brand)]" />
                             <p>{error}</p>
@@ -361,7 +361,7 @@ const BillsPage = () => {
                     <div className="flex min-h-[400px] items-center justify-center">
                         <div className="flex items-center gap-4 border-4 border-black p-8 bg-white shadow-[8px_8px_0px_#000000]">
                             <Loader2 className="h-8 w-8 animate-spin text-red-600" />
-                            <span className="font-black uppercase italic text-xl">Loading Intel...</span>
+                            <span className="font-black italic text-xl">Loading Intel...</span>
                         </div>
                     </div>
                 ) : decoratedBills.length === 0 ? (
@@ -369,10 +369,10 @@ const BillsPage = () => {
                         <div className="mx-auto flex h-24 w-24 items-center justify-center border-4 border-black bg-red-100 text-red-600 mb-8 shadow-[6px_6px_0px_#000000]">
                             <FileText className="h-10 w-10" strokeWidth={3} />
                         </div>
-                        <h3 className="text-3xl font-black uppercase italic mb-4">Zero Obligations</h3>
+                        <h3 className="text-3xl font-black italic mb-4">Zero Obligations</h3>
                         <p className="text-black opacity-60 font-bold max-w-md mx-auto mb-8">Deploy your first bill mission to start tracking your financial battlefield.</p>
                         <button
-                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]"
+                            className="h-16 px-10 bg-black text-white font-black border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]"
                             onClick={() => setDialogOpen(true)}
                         >
                             DEPLOY FIRST MISSION
@@ -503,7 +503,7 @@ const BillsPage = () => {
                                 value={form.notes}
                                 onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
                                 placeholder="Optional note or account reference"
-                                className="min-h-[96px] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                className="min-h-[96px] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                             />
                         </div>
                     </div>

@@ -314,14 +314,14 @@ export const SubscriptionsPage = () => {
             {/* Top Navigation & Breadcrumb */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         Locked Capital Timeline
                     </div>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[var(--color-ink)] tracking-tight">
                         Commitments & Bills
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
+                    <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
                         Fixed obligations, recurring subscriptions, and cashflow caps before discretionary spend.
                     </p>
                 </div>
@@ -331,7 +331,7 @@ export const SubscriptionsPage = () => {
                         size="sm"
                         onClick={handleRefresh}
                         disabled={refreshing}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[var(--color-brand)]', refreshing && 'animate-spin')} />
                         Sync
@@ -339,7 +339,7 @@ export const SubscriptionsPage = () => {
                     <Button
                         size="sm"
                         onClick={() => setAddModalType('subscription')}
-                        className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
+                        className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-[13px] h-9 px-4 transition-all"
                     >
                         <Plus className="h-4 w-4 mr-1.5" />
                         Add Commitment
@@ -357,50 +357,50 @@ export const SubscriptionsPage = () => {
             {/* Elevated Summary Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Monthly Committed */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-amber-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-amber-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Monthly Committed</span>
                         <Repeat className="h-4 w-4 text-amber-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(totalMonthlyCommitted)}
                         </div>
-                        <div className="flex items-center gap-2 mt-2 text-xs text-[var(--color-muted)]">
-                            <span className="font-semibold text-[var(--color-ink)] font-mono">{activeSubs.length}</span> subscriptions
+                        <div className="flex items-center gap-2 mt-2 text-[13px] text-[var(--color-muted)]">
+                            <span className="font-semibold text-[var(--color-ink)] tabular-nums">{activeSubs.length}</span> subscriptions
                             <span>·</span>
-                            <span className="font-semibold text-[var(--color-ink)] font-mono">{bills.length}</span> bills
+                            <span className="font-semibold text-[var(--color-ink)] tabular-nums">{bills.length}</span> bills
                         </div>
                     </div>
                 </div>
 
                 {/* 2. Annual Run-Rate */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Annual Obligation Run-Rate</span>
                         <TrendingUp className="h-4 w-4 text-[var(--color-ink)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(annualRunRate)}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             Projected 12-month baseline outflow
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Due in Next 7 Days */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Due in Next 7 Days</span>
                         <Clock className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(upcomingNext7Days.amount)}
                         </div>
-                        <div className="text-xs text-amber-700 dark:text-amber-400 font-medium mt-2 flex items-center gap-1">
+                        <div className="text-[13px] text-amber-700 dark:text-amber-400 font-medium mt-2 flex items-center gap-1">
                             <AlertCircle className="h-3 w-3 text-amber-500" />
                             <span>{upcomingNext7Days.count} items require settlement soon</span>
                         </div>
@@ -408,16 +408,16 @@ export const SubscriptionsPage = () => {
                 </div>
 
                 {/* 4. Active Free Trials */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-blue-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-blue-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Active Free Trials</span>
                         <Timer className="h-4 w-4 text-blue-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : trialSubs.length}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2 font-medium">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2 font-medium">
                             {trialSubs.length > 0 ? (
                                 <span className="text-blue-600 dark:text-blue-400 font-semibold">Tracking conversion deadlines</span>
                             ) : (
@@ -434,9 +434,9 @@ export const SubscriptionsPage = () => {
                     <button
                         onClick={() => handleTabChange('all')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             activeTab === 'all'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -445,9 +445,9 @@ export const SubscriptionsPage = () => {
                     <button
                         onClick={() => handleTabChange('subscriptions')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             activeTab === 'subscriptions'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -456,9 +456,9 @@ export const SubscriptionsPage = () => {
                     <button
                         onClick={() => handleTabChange('bills')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             activeTab === 'bills'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -467,15 +467,15 @@ export const SubscriptionsPage = () => {
                     <button
                         onClick={() => handleTabChange('trials')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-1.5',
                             activeTab === 'trials'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
                         <span>Free Trials</span>
                         {trialSubs.length > 0 && (
-                            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-blue-500 text-white font-bold font-mono">
+                            <span className="px-1.5 py-0.5 rounded-full text-[13px] bg-blue-500 text-white font-bold tabular-nums">
                                 {trialSubs.length}
                             </span>
                         )}
@@ -487,7 +487,7 @@ export const SubscriptionsPage = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setAddModalType('bill')}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                     >
                         <Plus className="h-3 w-3 mr-1" />
                         Add Bill
@@ -496,7 +496,7 @@ export const SubscriptionsPage = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setAddModalType('subscription')}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                     >
                         <Plus className="h-3 w-3 mr-1" />
                         Add Subscription
@@ -506,7 +506,7 @@ export const SubscriptionsPage = () => {
 
             {/* List / Table of Commitments */}
             {loading ? (
-                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                <div className="p-12 text-center text-[13px] text-[var(--color-text-muted)] animate-pulse">
                     Synchronizing commitments and due dates...
                 </div>
             ) : (
@@ -515,32 +515,32 @@ export const SubscriptionsPage = () => {
                     {trialSubs.length > 0 && (activeTab === 'all' || activeTab === 'trials') && (
                         <div className="p-4 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/80 dark:border-blue-800/40 space-y-2">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-semibold text-blue-900 dark:text-blue-300 flex items-center gap-1.5">
+                                <span className="text-[13px] font-semibold text-blue-900 dark:text-blue-300 flex items-center gap-1.5">
                                     <Timer className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                     Active Free Trials Requiring Attention
                                 </span>
-                                <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-[10px] font-bold font-mono">
+                                <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-[13px] font-bold tabular-nums">
                                     {trialSubs.length} Active
                                 </Badge>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                                 {trialSubs.map(trial => (
-                                    <div key={trial.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface)] border border-blue-100 dark:border-blue-900/40 shadow-xs">
+                                    <div key={trial.id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface)] border border-blue-100 dark:border-blue-900/40">
                                         <div>
-                                            <div className="font-semibold text-xs text-[var(--color-text-primary)]">{trial.name}</div>
-                                            <div className="text-[11px] text-[var(--color-text-muted)] font-mono tabular-nums">
+                                            <div className="font-semibold text-[13px] text-[var(--color-text-primary)]">{trial.name}</div>
+                                            <div className="text-[13px] text-[var(--color-text-muted)] tabular-nums tabular-nums">
                                                 Converts to {formatCurrency(trial.price)}/{trial.cycle}
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <Badge variant="warning" className="text-[10px]">
+                                            <Badge variant="warning" className="text-[13px]">
                                                 {trial.trial_days ? `${trial.trial_days}d trial` : 'Trial'}
                                             </Badge>
                                             <Button
                                                 size="sm"
                                                 variant="outline"
                                                 onClick={() => handleToggleSubStatus(trial)}
-                                                className="text-[11px] h-7 px-2 text-[var(--color-brand)] dark:text-[var(--color-pink)] border-[var(--color-pink)] dark:border-[var(--color-wine)] hover:bg-[var(--color-brand-soft)] dark:hover:bg-[var(--color-wine)]/30"
+                                                className="text-[13px] h-7 px-2 text-[var(--color-brand)] dark:text-[var(--color-pink)] border-[var(--color-pink)] dark:border-[var(--color-wine)] hover:bg-[var(--color-brand-soft)] dark:hover:bg-[var(--color-wine)]/30"
                                             >
                                                 Cancel
                                             </Button>
@@ -562,7 +562,7 @@ export const SubscriptionsPage = () => {
                                 >
                                     <div className="flex items-center gap-3.5">
                                         <div
-                                            className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-xs"
+                                            className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm text-white shrink-0"
                                             style={{ backgroundColor: sub.color || '#D92F57' }}
                                         >
                                             {sub.name.slice(0, 2).toUpperCase()}
@@ -572,21 +572,21 @@ export const SubscriptionsPage = () => {
                                                 <span className="font-semibold text-sm text-[var(--color-text-primary)]">
                                                     {sub.name}
                                                 </span>
-                                                <Badge variant="secondary" className="text-[10px]">
+                                                <Badge variant="secondary" className="text-[13px]">
                                                     {sub.category}
                                                 </Badge>
                                                 {sub.is_trial && (
-                                                    <Badge variant="warning" className="text-[10px]">
+                                                    <Badge variant="warning" className="text-[13px]">
                                                         Trial
                                                     </Badge>
                                                 )}
                                                 {sub.status === 'cancelled' && (
-                                                    <Badge variant="outline" className="text-[10px] text-stone-500">
+                                                    <Badge variant="outline" className="text-[13px] text-stone-500">
                                                         Cancelled
                                                     </Badge>
                                                 )}
                                             </div>
-                                            <div className="flex items-center gap-2 mt-0.5 text-xs text-[var(--color-text-secondary)]">
+                                            <div className="flex items-center gap-2 mt-0.5 text-[13px] text-[var(--color-text-secondary)]">
                                                 <span className="capitalize">{sub.cycle} subscription</span>
                                                 {sub.renew_date && (
                                                     <>
@@ -600,10 +600,10 @@ export const SubscriptionsPage = () => {
 
                                     <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
                                         <div className="text-right">
-                                            <div className="text-base font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                            <div className="text-base font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">
                                                 {formatCurrency(sub.price)}
                                             </div>
-                                            <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">
+                                            <div className="text-[13px] text-[var(--color-text-muted)]">
                                                 per {sub.cycle === 'yearly' ? 'yr' : sub.cycle === 'weekly' ? 'wk' : 'mo'}
                                             </div>
                                         </div>
@@ -613,7 +613,7 @@ export const SubscriptionsPage = () => {
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleToggleSubStatus(sub)}
-                                                className="h-8 text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                                                className="h-8 text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                                             >
                                                 {sub.is_active ? 'Pause' : 'Resume'}
                                             </Button>
@@ -649,24 +649,24 @@ export const SubscriptionsPage = () => {
                                                     <span className="font-semibold text-sm text-[var(--color-text-primary)]">
                                                         {bill.name}
                                                     </span>
-                                                    <Badge variant="secondary" className="text-[10px]">
+                                                    <Badge variant="secondary" className="text-[13px]">
                                                         {bill.category}
                                                     </Badge>
                                                     {bill.is_paid ? (
-                                                        <Badge variant="success" className="text-[10px]">
+                                                        <Badge variant="success" className="text-[13px]">
                                                             Paid
                                                         </Badge>
                                                     ) : isOverdue ? (
-                                                        <Badge variant="destructive" className="text-[10px]">
+                                                        <Badge variant="destructive" className="text-[13px]">
                                                             Overdue
                                                         </Badge>
                                                     ) : (
-                                                        <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-300">
+                                                        <Badge variant="outline" className="text-[13px] text-amber-600 border-amber-300">
                                                             Pending
                                                         </Badge>
                                                     )}
                                                 </div>
-                                                <div className="flex items-center gap-2 mt-0.5 text-xs text-[var(--color-text-secondary)]">
+                                                <div className="flex items-center gap-2 mt-0.5 text-[13px] text-[var(--color-text-secondary)]">
                                                     <span>Due: {nextDue.toLocaleDateString()}</span>
                                                     <span>•</span>
                                                     <span className="capitalize">{bill.frequency}</span>
@@ -682,10 +682,10 @@ export const SubscriptionsPage = () => {
 
                                         <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
                                             <div className="text-right">
-                                                <div className="text-base font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                                <div className="text-base font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">
                                                     {formatCurrency(bill.amount)}
                                                 </div>
-                                                <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider">
+                                                <div className="text-[13px] text-[var(--color-text-muted)]">
                                                     {bill.frequency} bill
                                                 </div>
                                             </div>
@@ -696,7 +696,7 @@ export const SubscriptionsPage = () => {
                                                         variant="outline"
                                                         size="sm"
                                                         onClick={() => handleMarkBillPaid(bill)}
-                                                        className="h-8 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                                                        className="h-8 text-[13px] font-semibold text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
                                                     >
                                                         <Check className="h-3.5 w-3.5 mr-1" />
                                                         Mark Paid
@@ -726,7 +726,7 @@ export const SubscriptionsPage = () => {
                                         <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                                             No recurring commitments tracked
                                         </h3>
-                                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                                        <p className="text-[13px] text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
                                             Track your rent, utilities, streaming services, and SaaS tools to protect your cashflow.
                                         </p>
                                     </div>
@@ -734,7 +734,7 @@ export const SubscriptionsPage = () => {
                                         <Button
                                             size="sm"
                                             onClick={() => setAddModalType('subscription')}
-                                            className="rounded-xl bg-[var(--color-brand)] text-white text-xs h-8"
+                                            className="rounded-xl bg-[var(--color-brand)] text-white text-[13px] h-8"
                                         >
                                             <Plus className="h-3.5 w-3.5 mr-1" />
                                             Add Subscription
@@ -743,7 +743,7 @@ export const SubscriptionsPage = () => {
                                             size="sm"
                                             variant="outline"
                                             onClick={() => setAddModalType('bill')}
-                                            className="rounded-xl border-[var(--color-border)] text-xs h-8 text-[var(--color-text-secondary)]"
+                                            className="rounded-xl border-[var(--color-border)] text-[13px] h-8 text-[var(--color-text-secondary)]"
                                         >
                                             <Plus className="h-3.5 w-3.5 mr-1" />
                                             Add Bill
@@ -761,14 +761,14 @@ export const SubscriptionsPage = () => {
                 <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Subscription</DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Track a recurring SaaS, streaming, or subscription service.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleAddSubscription} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="sub-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Service Name</Label>
+                            <Label htmlFor="sub-name" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Service Name</Label>
                             <Input
                                 id="sub-name"
                                 placeholder="e.g. Netflix, Spotify, GitHub"
@@ -781,7 +781,7 @@ export const SubscriptionsPage = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label htmlFor="sub-price" className="text-xs font-semibold text-[var(--color-text-primary)]">Price</Label>
+                                <Label htmlFor="sub-price" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Price</Label>
                                 <Input
                                     id="sub-price"
                                     type="number"
@@ -790,12 +790,12 @@ export const SubscriptionsPage = () => {
                                     value={subForm.price}
                                     onChange={e => setSubForm(prev => ({ ...prev, price: e.target.value }))}
                                     required
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="sub-cycle" className="text-xs font-semibold text-[var(--color-text-primary)]">Billing Cycle</Label>
+                                <Label htmlFor="sub-cycle" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Billing Cycle</Label>
                                 <Select
                                     value={subForm.cycle}
                                     onValueChange={(val: any) => setSubForm(prev => ({ ...prev, cycle: val }))}
@@ -813,7 +813,7 @@ export const SubscriptionsPage = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="sub-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                            <Label htmlFor="sub-category" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Category</Label>
                             <Select
                                 value={subForm.category}
                                 onValueChange={val => setSubForm(prev => ({ ...prev, category: val }))}
@@ -831,8 +831,8 @@ export const SubscriptionsPage = () => {
 
                         <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface-subtle)] border border-[var(--color-border-subtle)]">
                             <div>
-                                <Label htmlFor="sub-trial" className="text-xs font-semibold cursor-pointer text-[var(--color-text-primary)]">Free Trial Tracking</Label>
-                                <p className="text-[11px] text-[var(--color-text-muted)]">Set a deadline alert before conversion</p>
+                                <Label htmlFor="sub-trial" className="text-[13px] font-semibold cursor-pointer text-[var(--color-text-primary)]">Free Trial Tracking</Label>
+                                <p className="text-[13px] text-[var(--color-text-muted)]">Set a deadline alert before conversion</p>
                             </div>
                             <Switch
                                 id="sub-trial"
@@ -843,13 +843,13 @@ export const SubscriptionsPage = () => {
 
                         {subForm.is_trial && (
                             <div className="space-y-1.5">
-                                <Label htmlFor="sub-trial-days" className="text-xs font-semibold text-[var(--color-text-primary)]">Trial Duration (Days)</Label>
+                                <Label htmlFor="sub-trial-days" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Trial Duration (Days)</Label>
                                 <Input
                                     id="sub-trial-days"
                                     type="number"
                                     value={subForm.trial_days}
                                     onChange={e => setSubForm(prev => ({ ...prev, trial_days: e.target.value }))}
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
                         )}
@@ -859,14 +859,14 @@ export const SubscriptionsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setAddModalType(null)}
-                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                                className="rounded-xl text-[13px] border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={submitting}
-                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px]"
                             >
                                 {submitting ? 'Saving...' : 'Add Subscription'}
                             </Button>
@@ -880,14 +880,14 @@ export const SubscriptionsPage = () => {
                 <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Bill or Obligation</DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Track rent, utilities, insurance, or loans with due date reminders.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleAddBill} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="bill-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Obligation Name</Label>
+                            <Label htmlFor="bill-name" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Obligation Name</Label>
                             <Input
                                 id="bill-name"
                                 placeholder="e.g. Electricity, Apartment Rent, Car Loan"
@@ -900,7 +900,7 @@ export const SubscriptionsPage = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label htmlFor="bill-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Amount</Label>
+                                <Label htmlFor="bill-amount" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Amount</Label>
                                 <Input
                                     id="bill-amount"
                                     type="number"
@@ -909,12 +909,12 @@ export const SubscriptionsPage = () => {
                                     value={billForm.amount}
                                     onChange={e => setBillForm(prev => ({ ...prev, amount: e.target.value }))}
                                     required
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="bill-freq" className="text-xs font-semibold text-[var(--color-text-primary)]">Frequency</Label>
+                                <Label htmlFor="bill-freq" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Frequency</Label>
                                 <Select
                                     value={billForm.frequency}
                                     onValueChange={(val: any) => setBillForm(prev => ({ ...prev, frequency: val }))}
@@ -934,19 +934,19 @@ export const SubscriptionsPage = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label htmlFor="bill-due" className="text-xs font-semibold text-[var(--color-text-primary)]">Due Date</Label>
+                                <Label htmlFor="bill-due" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Due Date</Label>
                                 <Input
                                     id="bill-due"
                                     type="date"
                                     value={billForm.dueDate}
                                     onChange={e => setBillForm(prev => ({ ...prev, dueDate: e.target.value }))}
                                     required
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="bill-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                                <Label htmlFor="bill-category" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Category</Label>
                                 <Select
                                     value={billForm.category}
                                     onValueChange={val => setBillForm(prev => ({ ...prev, category: val }))}
@@ -964,7 +964,7 @@ export const SubscriptionsPage = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="bill-notes" className="text-xs font-semibold text-[var(--color-text-primary)]">Notes (Optional)</Label>
+                            <Label htmlFor="bill-notes" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Notes (Optional)</Label>
                             <Input
                                 id="bill-notes"
                                 placeholder="Account number, auto-pay details..."
@@ -979,14 +979,14 @@ export const SubscriptionsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setAddModalType(null)}
-                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                                className="rounded-xl text-[13px] border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={submitting}
-                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px]"
                             >
                                 {submitting ? 'Saving...' : 'Add Bill'}
                             </Button>

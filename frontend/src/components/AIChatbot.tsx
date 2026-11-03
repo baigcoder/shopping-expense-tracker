@@ -274,9 +274,9 @@ function ActionChipButton({
             onClick={() => chip.status === 'idle' && onExecute(chip.id)}
             disabled={chip.status !== 'idle'}
             className={cn(
-                'mt-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold flex items-center gap-1.5 transition-all border',
+                'mt-1.5 px-3 py-1.5 rounded-lg text-[13px] font-semibold flex items-center gap-1.5 transition-all border',
                 chip.status === 'idle' &&
-                    'bg-[var(--color-brand-soft)] border-[var(--color-brand)]/30 text-[var(--color-brand)] hover:bg-[var(--color-brand)] hover:text-white hover:border-[var(--color-brand)] cursor-pointer shadow-xs',
+                    'bg-[var(--color-brand-soft)] border-[var(--color-brand)]/30 text-[var(--color-brand)] hover:bg-[var(--color-brand)] hover:text-white hover:border-[var(--color-brand)] cursor-pointer',
                 chip.status === 'loading' &&
                     'bg-[var(--color-surface-2)] border-[var(--color-border)] text-[var(--color-muted)] cursor-wait',
                 chip.status === 'done' &&
@@ -527,7 +527,7 @@ const AIChatbot = () => {
                                 <div className={styles.brandMark}>C</div>
                                 <div>
                                     <h3 className="font-display text-sm font-semibold">Cashly Co-Pilot</h3>
-                                    <p className="text-xs text-[var(--text-muted)]">
+                                    <p className="text-[13px] text-[var(--text-muted)]">
                                         <span className="inline-flex items-center gap-1">
                                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                             Active Agent
@@ -566,7 +566,7 @@ const AIChatbot = () => {
                                                 {/* Executable Action Chips */}
                                                 {msg.actionChips && msg.actionChips.length > 0 && (
                                                     <div className="mt-2 pt-2 border-t border-[var(--color-border)]/50 space-y-1">
-                                                        <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-muted)] mb-1">
+                                                        <div className="text-[13px] tabular-nums text-[var(--color-muted)] mb-1">
                                                             Quick Actions
                                                         </div>
                                                         {msg.actionChips.map((chip) => (
@@ -586,7 +586,7 @@ const AIChatbot = () => {
                                                             navigate(action.path);
                                                             setChatOpen(false);
                                                         }}
-                                                        className="mt-2 px-2.5 py-1 rounded-lg bg-white/90 border border-stone-200 text-stone-800 text-[11px] font-semibold flex items-center gap-1 hover:bg-white hover:text-[var(--cashly-brand)] shadow-2xs transition-all"
+                                                        className="mt-2 px-2.5 py-1 rounded-lg bg-white/90 border border-stone-200 text-stone-800 text-[13px] font-semibold flex items-center gap-1 hover:bg-white hover:text-[var(--cashly-brand)] shadow-2xs transition-all"
                                                     >
                                                         <span>[{action.label}]</span>
                                                         <ArrowUpRight size={12} />

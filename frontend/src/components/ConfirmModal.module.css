@@ -164,7 +164,7 @@
 
     .modal {
         padding: 1.5rem;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .iconContainer {

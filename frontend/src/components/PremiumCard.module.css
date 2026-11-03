@@ -9,13 +9,13 @@
   position: relative;
   overflow: hidden;
   transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-  box-shadow: var(--shadow-md);
+  box-shadow: none;
   cursor: pointer;
 }
 
 .premiumCard:hover {
   transform: none;
-  box-shadow: var(--shadow-md);
+  box-shadow: none;
 }
 
 .cardContent {
@@ -40,7 +40,7 @@
 }
 
 .labelSmall {
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #94A3B8;
   text-transform: none;
@@ -67,7 +67,7 @@
   border-radius: var(--r-lg);
   padding: 4px;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
+  box-shadow: none;
 }
 
 .chipGrid {
@@ -87,7 +87,7 @@
   font-weight: 600;
   color: #000000;
   letter-spacing: -0.02em;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: inherit; font-variant-numeric: tabular-nums;
   margin-bottom: 1rem;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .infoLabel {
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #94A3B8;
   text-transform: none;
@@ -111,7 +111,7 @@
 }
 
 .infoText {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #000000;
   text-transform: none;
@@ -121,7 +121,7 @@
 
 @media (max-width: 480px) {
   .premiumCard {
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
   }
 
   .cardContent {
@@ -136,7 +136,7 @@
   .labelMain,
   .infoLabel,
   .infoText {
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
   }
 
   .cardChip {
@@ -146,6 +146,6 @@
 
   .cardNumbers {
     font-size: clamp(1rem, 6vw, 1.25rem);
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
   }
 }

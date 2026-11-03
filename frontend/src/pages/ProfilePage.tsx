@@ -61,11 +61,11 @@ const ProfilePage = () => {
                 animate={{ opacity: 1, y: 0 }}
             >
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
                         Identity & Credentials
                     </div>
-                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] leading-none">
                         User Profile
                     </h1>
                     <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
@@ -75,7 +75,7 @@ const ProfilePage = () => {
                 {!isEditing ? (
                     <Button 
                         onClick={() => setIsEditing(true)} 
-                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm transition-all"
+                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-[13px] h-10 px-6 transition-all"
                     >
                         <Edit2 className="mr-2 h-4 w-4" />
                         Edit Profile
@@ -85,14 +85,14 @@ const ProfilePage = () => {
                         <Button 
                             variant="outline" 
                             onClick={handleCancel}
-                            className="rounded-full border-[var(--color-border)] text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)]"
+                            className="rounded-full border-[var(--color-border)] text-[13px] h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)]"
                         >
                             <X className="mr-1.5 h-3.5 w-3.5" />
                             Cancel
                         </Button>
                         <Button 
                             onClick={handleSave} 
-                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm"
+                            className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-[13px] h-10 px-6"
                         >
                             <Save className="mr-1.5 h-4 w-4" />
                             Save
@@ -107,10 +107,10 @@ const ProfilePage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
             >
-                <div className="rounded-[28px] bg-white border border-[var(--color-border)] shadow-xs overflow-hidden">
+                <div className="rounded-[28px] bg-white border border-[var(--color-border)] overflow-hidden">
                     {/* Cover: Deep Ink with geometric accents */}
                     <div className="h-32 bg-[#111111] border-b border-[#222222] relative">
-                        <div className="absolute top-4 right-6 text-[10px] font-mono font-bold uppercase tracking-wider text-white/40">
+                        <div className="absolute top-4 right-6 text-[13px] tabular-nums font-bold text-white/40">
                             Cashly Sovereign Workspace
                         </div>
                     </div>
@@ -120,17 +120,17 @@ const ProfilePage = () => {
                         <div className="flex flex-col md:flex-row gap-6 -mt-14">
                             <div className="flex flex-col items-center gap-3">
                                 <div className="relative">
-                                    <Avatar className="h-24 w-24 border-4 border-[var(--color-surface)] shadow-md">
+                                    <Avatar className="h-24 w-24 border-4 border-[var(--color-surface)]">
                                         <AvatarImage src={`https://ui-avatars.com/api/?name=${user?.name || 'User'}&size=128&background=0F766E&color=fff`} />
                                         <AvatarFallback className="bg-[var(--color-brand)] text-white text-xl font-bold">{user?.name?.charAt(0) || 'U'}</AvatarFallback>
                                     </Avatar>
                                     {isEditing && (
-                                        <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 h-7 w-7 rounded-full shadow-md bg-[var(--color-surface)] border border-[var(--color-border)]">
+                                        <Button size="icon" variant="secondary" className="absolute bottom-0 right-0 h-7 w-7 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)]">
                                             <Camera className="h-3.5 w-3.5 text-[var(--color-text-primary)]" />
                                         </Button>
                                     )}
                                 </div>
-                                <Badge className="bg-[var(--color-brand)] text-white border-0 text-[10px] font-mono">
+                                <Badge className="bg-[var(--color-brand)] text-white border-0 text-[13px] tabular-nums">
                                     <Sparkles className="mr-1 h-3 w-3" />
                                     Pro Tier
                                 </Badge>
@@ -139,28 +139,28 @@ const ProfilePage = () => {
                             {/* Form */}
                             <div className="flex-1 space-y-4 pt-2 md:pt-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Full Name</label>
+                                    <label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Full Name</label>
                                     {isEditing ? (
                                         <Input
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             placeholder="Your full name"
-                                            className="rounded-xl h-9 text-xs bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
+                                            className="rounded-xl h-9 text-[13px] bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
                                         />
                                     ) : (
                                         <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)]">
                                             <User className="h-4 w-4 text-[var(--color-brand)]" />
-                                            <span className="font-semibold text-xs text-[var(--color-text-primary)]">{formData.name || 'Not set'}</span>
+                                            <span className="font-semibold text-[13px] text-[var(--color-text-primary)]">{formData.name || 'Not set'}</span>
                                         </div>
                                     )}
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Email</label>
-                                    <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-xs">
+                                    <label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Email</label>
+                                    <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-[13px]">
                                         <Mail className="h-4 w-4 text-[var(--color-ai)]" />
-                                        <span className="text-[var(--color-text-primary)] font-mono">{formData.email}</span>
-                                        <Badge variant="secondary" className="ml-auto text-[var(--color-positive)] bg-[var(--color-positive-subtle)] border border-[var(--color-positive)]/20 text-[10px] font-mono">
+                                        <span className="text-[var(--color-text-primary)] tabular-nums">{formData.email}</span>
+                                        <Badge variant="secondary" className="ml-auto text-[var(--color-positive)] bg-[var(--color-positive-subtle)] border border-[var(--color-positive)]/20 text-[13px] tabular-nums">
                                             <Shield className="mr-1 h-3 w-3" />
                                             Verified
                                         </Badge>
@@ -168,16 +168,16 @@ const ProfilePage = () => {
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Location</label>
+                                    <label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Location</label>
                                     {isEditing ? (
                                         <Input
                                             value={formData.location}
                                             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                             placeholder="e.g. San Francisco, CA"
-                                            className="rounded-xl h-9 text-xs bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
+                                            className="rounded-xl h-9 text-[13px] bg-[var(--color-surface-subtle)] border-[var(--color-border)] text-[var(--color-text-primary)]"
                                         />
                                     ) : (
-                                        <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-xs">
+                                        <div className="flex items-center gap-2 p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-[13px]">
                                             <MapPin className="h-4 w-4 text-[var(--color-warning)]" />
                                             <span className="text-[var(--color-text-primary)]">{formData.location || 'Not set'}</span>
                                         </div>
@@ -185,16 +185,16 @@ const ProfilePage = () => {
                                 </div>
 
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-[var(--color-text-primary)]">Bio / Financial Goal</label>
+                                    <label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Bio / Financial Goal</label>
                                     {isEditing ? (
                                         <textarea
-                                            className="w-full min-h-[70px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-subtle)] p-2.5 text-xs text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-brand)]"
+                                            className="w-full min-h-[70px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-subtle)] p-2.5 text-[13px] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-brand)]"
                                             value={formData.bio}
                                             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                                             placeholder="e.g. Saving for high-yield reserve..."
                                         />
                                     ) : (
-                                        <div className="p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-xs">
+                                        <div className="p-2.5 rounded-xl border border-[var(--color-border-subtle)] bg-[var(--color-surface-subtle)] text-[13px]">
                                             <span className="text-[var(--color-text-secondary)]">{formData.bio || 'No bio or targets configured yet'}</span>
                                         </div>
                                     )}
@@ -212,31 +212,31 @@ const ProfilePage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
             >
-                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                    <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                    <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                         <span>Member Since</span>
                         <Calendar className="h-4 w-4 text-[var(--color-positive)]" />
                     </div>
-                    <div className="text-2xl font-bold font-mono text-[var(--color-text-primary)]">Jan 2024</div>
-                    <p className="text-[11px] text-[var(--color-text-secondary)] mt-1 font-mono">11 months active</p>
+                    <div className="text-2xl font-bold tabular-nums text-[var(--color-text-primary)]">Jan 2024</div>
+                    <p className="text-[13px] text-[var(--color-text-secondary)] mt-1 tabular-nums">11 months active</p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                    <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                    <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                         <span>Documented Purchases</span>
                         <Receipt className="h-4 w-4 text-[var(--color-ai)]" />
                     </div>
-                    <div className="text-2xl font-bold font-mono tabular-nums text-[var(--color-text-primary)]">342</div>
-                    <p className="text-[11px] text-[var(--color-text-secondary)] mt-1">Audited ledger events</p>
+                    <div className="text-2xl font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">342</div>
+                    <p className="text-[13px] text-[var(--color-text-secondary)] mt-1">Audited ledger events</p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-xs">
-                    <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-medium mb-1.5">
+                <div className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                    <div className="flex items-center justify-between text-[13px] text-[var(--color-text-muted)] font-medium mb-1.5">
                         <span>Connected Instruments</span>
                         <CreditCard className="h-4 w-4 text-[var(--color-warning)]" />
                     </div>
-                    <div className="text-2xl font-bold font-mono tabular-nums text-[var(--color-text-primary)]">3</div>
-                    <p className="text-[11px] text-[var(--color-text-secondary)] mt-1">Cards & bank accounts</p>
+                    <div className="text-2xl font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">3</div>
+                    <p className="text-[13px] text-[var(--color-text-secondary)] mt-1">Cards & bank accounts</p>
                 </div>
             </motion.div>
         </div>

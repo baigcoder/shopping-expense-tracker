@@ -197,14 +197,14 @@ export const BudgetsPage = () => {
             {/* Header & Breadcrumb */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         Guardrails & Pace Governance
                     </div>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[var(--color-ink)] tracking-tight">
                         Budgets & Velocity
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
+                    <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
                         Category guardrails, daily burn pace, and projected month-end overrun warnings.
                     </p>
                 </div>
@@ -214,7 +214,7 @@ export const BudgetsPage = () => {
                         size="sm"
                         onClick={fetchData}
                         disabled={isRefreshing}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[var(--color-brand)]', isRefreshing && 'animate-spin')} />
                         Refresh
@@ -222,7 +222,7 @@ export const BudgetsPage = () => {
                     <Button
                         size="sm"
                         onClick={() => setShowModal(true)}
-                        className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-xs h-9 px-4 shadow-sm transition-all"
+                        className="rounded-xl bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white font-semibold text-[13px] h-9 px-4 transition-all"
                     >
                         <Plus className="h-4 w-4 mr-1.5" />
                         Create Budget Cap
@@ -240,16 +240,16 @@ export const BudgetsPage = () => {
             {/* Overview Elevated Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Discretionary Headroom */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-amber-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-amber-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Discretionary Headroom</span>
                         <Wallet className="h-4 w-4 text-amber-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {isLoading ? '—' : formatCurrency(remainingCash)}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             {remainingCash < 0 ? (
                                 <span className="text-[var(--color-brand)] font-semibold">Deficit across budget limits</span>
                             ) : (
@@ -260,33 +260,33 @@ export const BudgetsPage = () => {
                 </div>
 
                 {/* 2. Total Monthly Cap */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Total Monthly Cap</span>
                         <Target className="h-4 w-4 text-[var(--color-ink)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {isLoading ? '—' : formatCurrency(totalBudget)}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             Allocated across {budgets.length} categories
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Month Burn to Date */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Month Burn to Date</span>
                         <Flame className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {isLoading ? '—' : formatCurrency(totalSpent)}
                         </div>
-                        <div className="flex items-center gap-2 mt-2 text-xs text-[var(--color-muted)]">
-                            <span className="font-semibold text-[var(--color-ink)] font-mono">{globalProgressPercent.toFixed(0)}% consumed</span>
+                        <div className="flex items-center gap-2 mt-2 text-[13px] text-[var(--color-muted)]">
+                            <span className="font-semibold text-[var(--color-ink)] tabular-nums">{globalProgressPercent.toFixed(0)}% consumed</span>
                             <span>·</span>
                             <span>Day {currentDay} of {totalDaysInMonth}</span>
                         </div>
@@ -294,16 +294,16 @@ export const BudgetsPage = () => {
                 </div>
 
                 {/* 4. Projected Month-End */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-emerald-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-emerald-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Projected Month-End</span>
                         <TrendingUp className="h-4 w-4 text-emerald-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {isLoading ? '—' : formatCurrency(projectedGlobalTotal)}
                         </div>
-                        <div className="text-xs mt-2">
+                        <div className="text-[13px] mt-2">
                             {globalOverrunRisk ? (
                                 <span className="text-[var(--color-brand)] font-semibold flex items-center gap-1">
                                     <AlertTriangle className="h-3 w-3" />
@@ -323,9 +323,9 @@ export const BudgetsPage = () => {
                     <button
                         onClick={() => setFilterStatus('all')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             filterStatus === 'all'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -334,15 +334,15 @@ export const BudgetsPage = () => {
                     <button
                         onClick={() => setFilterStatus('risk')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-1.5',
                             filterStatus === 'risk'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
                         <span>Pace Risks & Overruns</span>
                         {highRiskCount > 0 && (
-                            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-amber-500 text-white font-bold font-mono">
+                            <span className="px-1.5 py-0.5 rounded-full text-[13px] bg-amber-500 text-white font-bold tabular-nums">
                                 {highRiskCount}
                             </span>
                         )}
@@ -350,9 +350,9 @@ export const BudgetsPage = () => {
                     <button
                         onClick={() => setFilterStatus('safe')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             filterStatus === 'safe'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -360,7 +360,7 @@ export const BudgetsPage = () => {
                     </button>
                 </div>
 
-                <div className="text-xs text-[var(--color-text-muted)] flex items-center gap-2">
+                <div className="text-[13px] text-[var(--color-text-muted)] flex items-center gap-2">
                     <Clock className="h-3.5 w-3.5" />
                     <span>Month is {monthProgressPercent.toFixed(0)}% elapsed</span>
                 </div>
@@ -368,7 +368,7 @@ export const BudgetsPage = () => {
 
             {/* Budget Cards Grid */}
             {isLoading ? (
-                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                <div className="p-12 text-center text-[13px] text-[var(--color-text-muted)] animate-pulse">
                     Computing spending velocities and month-end projections...
                 </div>
             ) : filteredBudgets.length === 0 ? (
@@ -380,7 +380,7 @@ export const BudgetsPage = () => {
                         <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                             {filterStatus === 'risk' ? 'No spending pace risks detected' : 'No budget limits configured'}
                         </h3>
-                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                        <p className="text-[13px] text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
                             {filterStatus === 'risk'
                                 ? 'All active category limits are pacing safely below their calendar benchmarks.'
                                 : 'Set spending limits on food, shopping, and entertainment to manage cashflow.'}
@@ -391,7 +391,7 @@ export const BudgetsPage = () => {
                             <Button
                                 size="sm"
                                 onClick={() => setShowModal(true)}
-                                className="rounded-xl bg-[var(--color-brand)] text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] text-white text-[13px]"
                             >
                                 <Plus className="h-3.5 w-3.5 mr-1" />
                                 Add First Budget Limit
@@ -424,7 +424,7 @@ export const BudgetsPage = () => {
                                                 <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                                                     {b.category}
                                                 </h3>
-                                                <div className="text-xs text-[var(--color-text-muted)] font-mono tabular-nums">
+                                                <div className="text-[13px] text-[var(--color-text-muted)] tabular-nums tabular-nums">
                                                     Cap: {formatCurrency(b.amount)}
                                                 </div>
                                             </div>
@@ -432,15 +432,15 @@ export const BudgetsPage = () => {
 
                                         <div className="flex items-center gap-1.5">
                                             {b.isOverBudget ? (
-                                                <Badge variant="destructive" className="text-[10px]">
+                                                <Badge variant="destructive" className="text-[13px]">
                                                     Over Budget
                                                 </Badge>
                                             ) : b.isHighPace ? (
-                                                <Badge variant="warning" className="text-[10px]">
+                                                <Badge variant="warning" className="text-[13px]">
                                                     Pacing High
                                                 </Badge>
                                             ) : (
-                                                <Badge variant="success" className="text-[10px]">
+                                                <Badge variant="success" className="text-[13px]">
                                                     On Track
                                                 </Badge>
                                             )}
@@ -458,11 +458,11 @@ export const BudgetsPage = () => {
 
                                     {/* Utilization Progress Bar */}
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center justify-between text-xs">
+                                        <div className="flex items-center justify-between text-[13px]">
                                             <span className="text-[var(--color-text-secondary)] font-medium">
                                                 {b.progress.toFixed(0)}% consumed
                                             </span>
-                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                            <span className="tabular-nums tabular-nums font-semibold text-[var(--color-text-primary)]">
                                                 {formatCurrency(b.spent)} / {formatCurrency(b.amount)}
                                             </span>
                                         </div>
@@ -482,24 +482,24 @@ export const BudgetsPage = () => {
                                     </div>
 
                                     {/* Velocity & Projection Diagnostics */}
-                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-xs">
+                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-[13px]">
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                            <span className="text-[13px] text-[var(--color-text-muted)] block">
                                                 Remaining
                                             </span>
                                             <span className={cn(
-                                                "font-semibold tabular-nums font-mono",
+                                                "font-semibold tabular-nums tabular-nums",
                                                 b.remaining < 0 ? "text-[var(--color-brand)] dark:text-[var(--color-pink)]" : "text-emerald-700 dark:text-emerald-400"
                                             )}>
                                                 {b.remaining < 0 ? `-${formatCurrency(Math.abs(b.remaining))}` : formatCurrency(b.remaining)}
                                             </span>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                            <span className="text-[13px] text-[var(--color-text-muted)] block">
                                                 Projected Run
                                             </span>
                                             <span className={cn(
-                                                "font-semibold tabular-nums font-mono",
+                                                "font-semibold tabular-nums tabular-nums",
                                                 b.projectedOverrun > 0 ? "text-amber-600 dark:text-amber-400" : "text-[var(--color-text-primary)]"
                                             )}>
                                                 {formatCurrency(b.projectedMonthEnd)}
@@ -518,14 +518,14 @@ export const BudgetsPage = () => {
                 <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Set Category Spending Cap</DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Establish a monthly ceiling to track your burn rate velocity.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleAddBudget} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="budget-category" className="text-xs font-semibold text-[var(--color-text-primary)]">Category</Label>
+                            <Label htmlFor="budget-category" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Category</Label>
                             <Select
                                 value={newBudget.category}
                                 onValueChange={(val) => setNewBudget(prev => ({ ...prev, category: val }))}
@@ -545,7 +545,7 @@ export const BudgetsPage = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="budget-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Monthly Limit Amount</Label>
+                            <Label htmlFor="budget-amount" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Monthly Limit Amount</Label>
                             <Input
                                 id="budget-amount"
                                 type="number"
@@ -554,7 +554,7 @@ export const BudgetsPage = () => {
                                 value={newBudget.limit}
                                 onChange={e => setNewBudget(prev => ({ ...prev, limit: e.target.value }))}
                                 required
-                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                             />
                         </div>
 
@@ -563,14 +563,14 @@ export const BudgetsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setShowModal(false)}
-                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                                className="rounded-xl text-[13px] border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={saving}
-                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px]"
                             >
                                 {saving ? 'Activating...' : 'Activate Budget'}
                             </Button>

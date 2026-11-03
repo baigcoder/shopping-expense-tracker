@@ -219,27 +219,27 @@ export const AnalyticsPage = () => {
             {/* Header & Controls */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)] text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand)] animate-pulse" />
                         Spending Dynamics & Volume Concentration
                     </div>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[var(--color-ink)] tracking-tight">
                         Financial Analytics
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
+                    <p className="text-[13px] sm:text-sm text-[var(--color-muted)] mt-1.5 max-w-xl font-normal leading-relaxed">
                         Question-oriented analytics: Where is money going, merchant concentration, and channels.
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center p-1 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] text-xs shadow-xs">
+                    <div className="flex items-center p-1 rounded-xl bg-[var(--color-surface-2)] border border-[var(--color-border)] text-[13px]">
                         {(['week', 'month', 'year'] as const).map(range => (
                             <button
                                 key={range}
                                 onClick={() => setTimeRange(range)}
                                 className={cn(
-                                    'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                                    'px-3.5 py-1.5 rounded-lg text-[13px] font-semibold transition-all',
                                     timeRange === range
-                                        ? 'bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs'
+                                        ? 'bg-[var(--color-surface)] text-[var(--color-ink)]'
                                         : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]'
                                 )}
                             >
@@ -253,7 +253,7 @@ export const AnalyticsPage = () => {
                         size="sm"
                         onClick={() => fetchData()}
                         disabled={isRefreshing}
-                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-xs h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
+                        className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[13px] h-9 px-4 text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[var(--color-brand)]', isRefreshing && 'animate-spin')} />
                         Sync
@@ -267,19 +267,19 @@ export const AnalyticsPage = () => {
             {/* Top Elevated Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Total Outflow */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-[var(--color-brand)] flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Total Outflow ({timeRange})</span>
                         <TrendingUp className="h-4 w-4 text-[var(--color-brand)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(totalSpent)}
                         </div>
-                        <div className="flex items-center gap-1.5 mt-2 text-xs text-[var(--color-muted)]">
+                        <div className="flex items-center gap-1.5 mt-2 text-[13px] text-[var(--color-muted)]">
                             {changePercent !== 0 && (
                                 <span className={cn(
-                                    'font-mono font-semibold',
+                                    'tabular-nums font-semibold',
                                     changePercent > 0 ? 'text-[var(--color-brand)]' : 'text-emerald-600'
                                 )}>
                                     {changePercent > 0 ? '+' : ''}{changePercent.toFixed(1)}%
@@ -291,48 +291,48 @@ export const AnalyticsPage = () => {
                 </div>
 
                 {/* 2. Average Transaction Size */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-slate-700 dark:border-t-slate-300 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Average Ticket</span>
                         <TrendingUp className="h-4 w-4 text-[var(--color-ink)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(avgTicket)}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             Across {filteredTx.length} posted purchases
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Active Merchants */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-indigo-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-indigo-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Active Merchants</span>
                         <Store className="h-4 w-4 text-indigo-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : uniqueStores}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             Distinct retailers and venues
                         </div>
                     </div>
                 </div>
 
                 {/* 4. Active Segments */}
-                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-emerald-500 shadow-xs flex flex-col justify-between min-h-[150px] transition-all hover:shadow-sm">
-                    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                <div className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] border-t-4 border-t-emerald-500 flex flex-col justify-between min-h-[150px] transition-all hover:">
+                    <div className="flex items-center justify-between text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                         <span>Categories</span>
                         <PieIcon className="h-4 w-4 text-emerald-500" />
                     </div>
                     <div className="my-2">
-                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : categoryData.length}
                         </div>
-                        <div className="text-xs text-[var(--color-muted)] mt-2">
+                        <div className="text-[13px] text-[var(--color-muted)] mt-2">
                             Active expense segments
                         </div>
                     </div>
@@ -341,24 +341,24 @@ export const AnalyticsPage = () => {
 
 
             {/* Question 1: Spending Trajectory Curve */}
-            <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xs p-5 space-y-4">
+            <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] p-5 space-y-4">
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-sm font-bold text-[var(--color-ink)]">
                             Spending Velocity Curve
                         </h2>
-                        <p className="text-xs text-[var(--color-muted)]">
+                        <p className="text-[13px] text-[var(--color-muted)]">
                             Daily cash burn pattern over the selected period
                         </p>
                     </div>
-                    <Badge variant="outline" className="text-xs font-mono">
+                    <Badge variant="outline" className="text-[13px] tabular-nums">
                         {timelineData.length} Data Points
                     </Badge>
                 </div>
 
                 <div className="h-64 w-full">
                     {loading ? (
-                        <div className="h-full flex items-center justify-center text-xs text-[var(--color-muted)]">Loading charts...</div>
+                        <div className="h-full flex items-center justify-center text-[13px] text-[var(--color-muted)]">Loading charts...</div>
                     ) : (
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={timelineData}>
@@ -412,7 +412,7 @@ export const AnalyticsPage = () => {
                             <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
                                 Where Did Money Go?
                             </h2>
-                            <p className="text-xs text-[var(--color-text-muted)]">
+                            <p className="text-[13px] text-[var(--color-text-muted)]">
                                 Category distribution of expenses
                             </p>
                         </div>
@@ -422,7 +422,7 @@ export const AnalyticsPage = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 pt-2">
                         <div className="h-48 w-full flex items-center justify-center">
                             {categoryData.length === 0 ? (
-                                <span className="text-xs text-[var(--color-text-muted)]">No expenses recorded</span>
+                                <span className="text-[13px] text-[var(--color-text-muted)]">No expenses recorded</span>
                             ) : (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
@@ -457,14 +457,14 @@ export const AnalyticsPage = () => {
 
                         <div className="space-y-2.5">
                             {categoryData.map(cat => (
-                                <div key={cat.name} className="flex items-center justify-between text-xs">
+                                <div key={cat.name} className="flex items-center justify-between text-[13px]">
                                     <div className="flex items-center gap-2">
                                         <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: cat.color }} />
                                         <span className="font-medium text-[var(--color-text-primary)]">{cat.name}</span>
                                     </div>
                                     <div className="text-right">
-                                        <span className="font-semibold tabular-nums font-mono text-[var(--color-text-primary)]">{formatCurrency(cat.value)}</span>
-                                        <span className="text-[var(--color-text-muted)] text-[10px] ml-1.5 font-mono">({cat.percent}%)</span>
+                                        <span className="font-semibold tabular-nums tabular-nums text-[var(--color-text-primary)]">{formatCurrency(cat.value)}</span>
+                                        <span className="text-[var(--color-text-muted)] text-[13px] ml-1.5 tabular-nums">({cat.percent}%)</span>
                                     </div>
                                 </div>
                             ))}
@@ -479,7 +479,7 @@ export const AnalyticsPage = () => {
                             <h2 className="text-sm font-bold text-[var(--color-text-primary)]">
                                 Top Merchants & Venues
                             </h2>
-                            <p className="text-xs text-[var(--color-text-muted)]">
+                            <p className="text-[13px] text-[var(--color-text-muted)]">
                                 Retailers with highest cumulative charge volume
                             </p>
                         </div>
@@ -488,22 +488,22 @@ export const AnalyticsPage = () => {
 
                     <div className="divide-y divide-[var(--color-border-subtle)] pt-1">
                         {topMerchants.length === 0 ? (
-                            <div className="p-8 text-center text-xs text-[var(--color-text-muted)]">
+                            <div className="p-8 text-center text-[13px] text-[var(--color-text-muted)]">
                                 No merchant activity recorded in this period.
                             </div>
                         ) : (
                             topMerchants.map((merchant, idx) => (
-                                <div key={idx} className="py-2.5 flex items-center justify-between text-xs">
+                                <div key={idx} className="py-2.5 flex items-center justify-between text-[13px]">
                                     <div className="flex items-center gap-3">
-                                        <div className="h-7 w-7 rounded-lg bg-[var(--color-surface-subtle)] flex items-center justify-center font-bold text-[10px] text-[var(--color-text-secondary)] font-mono">
+                                        <div className="h-7 w-7 rounded-lg bg-[var(--color-surface-subtle)] flex items-center justify-center font-bold text-[13px] text-[var(--color-text-secondary)] tabular-nums">
                                             {idx + 1}
                                         </div>
                                         <div>
                                             <div className="font-semibold text-[var(--color-text-primary)]">{merchant.name}</div>
-                                            <div className="text-[10px] text-[var(--color-text-muted)]">{merchant.count} transaction{merchant.count > 1 ? 's' : ''}</div>
+                                            <div className="text-[13px] text-[var(--color-text-muted)]">{merchant.count} transaction{merchant.count > 1 ? 's' : ''}</div>
                                         </div>
                                     </div>
-                                    <div className="font-bold tabular-nums font-mono text-[var(--color-text-primary)]">
+                                    <div className="font-bold tabular-nums tabular-nums text-[var(--color-text-primary)]">
                                         {formatCurrency(merchant.amount)}
                                     </div>
                                 </div>

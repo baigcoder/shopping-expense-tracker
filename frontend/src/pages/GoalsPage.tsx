@@ -272,11 +272,11 @@ export const GoalsPage = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
                         Capital Accumulation Roadmap
                     </div>
-                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] leading-none">
                         Goals & Milestones
                     </h1>
                     <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
@@ -289,7 +289,7 @@ export const GoalsPage = () => {
                         size="sm"
                         onClick={handleRefresh}
                         disabled={refreshing}
-                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                        className="rounded-full border-[var(--color-border)] bg-white text-[13px] h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
                         Sync
@@ -297,7 +297,7 @@ export const GoalsPage = () => {
                     <Button
                         size="sm"
                         onClick={openAddModal}
-                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-xs h-10 px-6 shadow-sm transition-all"
+                        className="rounded-full bg-[#EE5024] hover:bg-[#EE5024]/90 text-white font-bold text-[13px] h-10 px-6 transition-all"
                     >
                         <Plus className="h-4 w-4 mr-1.5" />
                         Create New Goal
@@ -315,64 +315,64 @@ export const GoalsPage = () => {
             {/* Color-Blocked Overview Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Cadmium Orange: Total Capital Saved */}
-                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-white/80">
                         <span>Capital Saved</span>
                         <PiggyBank className="h-4 w-4 text-white" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-white leading-none">
                             {loading ? '—' : formatCurrency(totalSaved)}
                         </div>
-                        <div className="text-xs font-semibold text-white/90 mt-2">
+                        <div className="text-[13px] font-semibold text-white/90 mt-2">
                             {overallProgress.toFixed(0)}% of total milestone targets
                         </div>
                     </div>
                 </div>
 
                 {/* 2. Deep Ink: Required Monthly Contribution */}
-                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-white/60">
                         <span>Required Monthly Pace</span>
                         <TrendingUp className="h-4 w-4 text-[#EE5024]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-white leading-none">
                             {loading ? '—' : formatCurrency(totalRequiredMonthly)}
                         </div>
-                        <div className="text-xs text-white/70 mt-2">
+                        <div className="text-[13px] text-white/70 mt-2">
                             To achieve targets by specified deadlines
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Warm Ivory / White: Total Target Sum */}
-                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-[var(--color-ink)]/60">
                         <span>Total Target Sum</span>
                         <Target className="h-4 w-4 text-[#EE5024]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(totalTarget)}
                         </div>
-                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                        <div className="text-[13px] text-[var(--color-ink)]/70 mt-2 font-medium">
                             Remaining: {formatCurrency(Math.max(totalTarget - totalSaved, 0))}
                         </div>
                     </div>
                 </div>
 
                 {/* 4. Muted Sage / Soft Accent: Milestones Reached */}
-                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-[var(--color-ink)]/70">
                         <span>Milestones Reached</span>
                         <Trophy className="h-4 w-4 text-[var(--color-ink)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : completedCount}
                         </div>
-                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                        <div className="text-[13px] text-[var(--color-ink)]/70 mt-2 font-medium">
                             Goals funded to 100% completion
                         </div>
                     </div>
@@ -385,9 +385,9 @@ export const GoalsPage = () => {
                     <button
                         onClick={() => setFilter('all')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             filter === 'all'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -396,9 +396,9 @@ export const GoalsPage = () => {
                     <button
                         onClick={() => setFilter('active')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             filter === 'active'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -407,9 +407,9 @@ export const GoalsPage = () => {
                     <button
                         onClick={() => setFilter('completed')}
                         className={cn(
-                            'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all',
+                            'px-3.5 py-1.5 rounded-xl text-[13px] font-semibold transition-all',
                             filter === 'completed'
-                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)] shadow-xs'
+                                ? 'bg-[var(--color-text-primary)] text-[var(--color-canvas)]'
                                 : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-subtle)]'
                         )}
                     >
@@ -420,7 +420,7 @@ export const GoalsPage = () => {
 
             {/* Goals Grid */}
             {loading ? (
-                <div className="p-12 text-center text-xs text-[var(--color-text-muted)] animate-pulse">
+                <div className="p-12 text-center text-[13px] text-[var(--color-text-muted)] animate-pulse">
                     Loading savings milestones...
                 </div>
             ) : filteredGoals.length === 0 ? (
@@ -432,7 +432,7 @@ export const GoalsPage = () => {
                         <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                             {filter === 'completed' ? 'No completed goals yet' : 'No savings goals established'}
                         </h3>
-                        <p className="text-xs text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
+                        <p className="text-[13px] text-[var(--color-text-muted)] max-w-sm mx-auto mt-1">
                             Track funding for travel, emergency reserve, real estate, or gadget upgrades.
                         </p>
                     </div>
@@ -441,7 +441,7 @@ export const GoalsPage = () => {
                             <Button
                                 size="sm"
                                 onClick={openAddModal}
-                                className="rounded-xl bg-[var(--color-brand)] text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] text-white text-[13px]"
                             >
                                 <Plus className="h-3.5 w-3.5 mr-1" />
                                 Create First Goal
@@ -468,7 +468,7 @@ export const GoalsPage = () => {
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
                                             <div
-                                                className="h-11 w-11 rounded-xl flex items-center justify-center text-xl shadow-xs"
+                                                className="h-11 w-11 rounded-xl flex items-center justify-center text-xl"
                                                 style={{ backgroundColor: `${colorObj.bg}15`, border: `1px solid ${colorObj.bg}30` }}
                                             >
                                                 {goal.icon || '🎯'}
@@ -477,7 +477,7 @@ export const GoalsPage = () => {
                                                 <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">
                                                     {goal.name}
                                                 </h3>
-                                                <div className="text-xs text-[var(--color-text-muted)] font-mono tabular-nums">
+                                                <div className="text-[13px] text-[var(--color-text-muted)] tabular-nums tabular-nums">
                                                     Target: {formatCurrency(goal.target_amount)}
                                                 </div>
                                             </div>
@@ -485,7 +485,7 @@ export const GoalsPage = () => {
 
                                         <div className="flex items-center gap-1">
                                             {goal.isCompleted ? (
-                                                <Badge variant="success" className="text-[10px]">
+                                                <Badge variant="success" className="text-[13px]">
                                                     Achieved
                                                 </Badge>
                                             ) : (
@@ -496,7 +496,7 @@ export const GoalsPage = () => {
                                                         setDepositGoal(goal);
                                                         setDepositAmount('');
                                                     }}
-                                                    className="h-7 text-xs px-2.5 font-semibold text-[var(--color-brand)] border-[var(--color-brand)]/30 hover:bg-[var(--color-brand)]/10 rounded-lg"
+                                                    className="h-7 text-[13px] px-2.5 font-semibold text-[var(--color-brand)] border-[var(--color-brand)]/30 hover:bg-[var(--color-brand)]/10 rounded-lg"
                                                 >
                                                     + Add Funds
                                                 </Button>
@@ -524,11 +524,11 @@ export const GoalsPage = () => {
 
                                     {/* Progress Bar */}
                                     <div className="space-y-1.5">
-                                        <div className="flex items-center justify-between text-xs">
+                                        <div className="flex items-center justify-between text-[13px]">
                                             <span className="text-[var(--color-text-secondary)] font-medium">
                                                 {goal.progress}% funded
                                             </span>
-                                            <span className="tabular-nums font-mono font-semibold text-[var(--color-text-primary)]">
+                                            <span className="tabular-nums tabular-nums font-semibold text-[var(--color-text-primary)]">
                                                 {formatCurrency(goal.current_amount)}
                                             </span>
                                         </div>
@@ -544,9 +544,9 @@ export const GoalsPage = () => {
                                     </div>
 
                                     {/* Metrics Footer */}
-                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-xs">
+                                    <div className="pt-2 border-t border-[var(--color-border-subtle)] grid grid-cols-2 gap-2 text-[13px]">
                                         <div>
-                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                            <span className="text-[13px] text-[var(--color-text-muted)] block">
                                                 Deadline
                                             </span>
                                             <span className="font-medium text-[var(--color-text-secondary)]">
@@ -554,10 +554,10 @@ export const GoalsPage = () => {
                                             </span>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-wider block">
+                                            <span className="text-[13px] text-[var(--color-text-muted)] block">
                                                 Monthly Pace
                                             </span>
-                                            <span className="font-semibold tabular-nums font-mono text-emerald-600 dark:text-emerald-400">
+                                            <span className="font-semibold tabular-nums tabular-nums text-emerald-600 dark:text-emerald-400">
                                                 {goal.isCompleted
                                                     ? 'Complete'
                                                     : goal.requiredMonthly > 0
@@ -578,14 +578,14 @@ export const GoalsPage = () => {
                 <DialogContent className="sm:max-w-md rounded-2xl bg-[var(--color-surface)] border-[var(--color-border)]">
                     <DialogHeader>
                         <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">Add Funds to Goal</DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Log a deposit towards {depositGoal?.name}.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleQuickDeposit} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="dep-amount" className="text-xs font-semibold text-[var(--color-text-primary)]">Deposit Amount</Label>
+                            <Label htmlFor="dep-amount" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Deposit Amount</Label>
                             <Input
                                 id="dep-amount"
                                 type="number"
@@ -595,7 +595,7 @@ export const GoalsPage = () => {
                                 onChange={e => setDepositAmount(e.target.value)}
                                 required
                                 autoFocus
-                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                             />
                         </div>
 
@@ -604,14 +604,14 @@ export const GoalsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setDepositGoal(null)}
-                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                                className="rounded-xl text-[13px] border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={depositing}
-                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px]"
                             >
                                 {depositing ? 'Updating...' : 'Confirm Deposit'}
                             </Button>
@@ -627,14 +627,14 @@ export const GoalsPage = () => {
                         <DialogTitle className="text-lg font-bold text-[var(--color-text-primary)]">
                             {editingGoal ? 'Edit Savings Goal' : 'Create Savings Milestone'}
                         </DialogTitle>
-                        <DialogDescription className="text-xs text-[var(--color-text-muted)]">
+                        <DialogDescription className="text-[13px] text-[var(--color-text-muted)]">
                             Define your milestone target and timeline.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="goal-name" className="text-xs font-semibold text-[var(--color-text-primary)]">Goal Name</Label>
+                            <Label htmlFor="goal-name" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Goal Name</Label>
                             <Input
                                 id="goal-name"
                                 placeholder="e.g. Japan Vacation, Emergency Fund, Tesla Downpayment"
@@ -647,7 +647,7 @@ export const GoalsPage = () => {
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-1.5">
-                                <Label htmlFor="goal-target" className="text-xs font-semibold text-[var(--color-text-primary)]">Target Amount</Label>
+                                <Label htmlFor="goal-target" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Target Amount</Label>
                                 <Input
                                     id="goal-target"
                                     type="number"
@@ -656,12 +656,12 @@ export const GoalsPage = () => {
                                     value={formData.target_amount}
                                     onChange={e => setFormData(prev => ({ ...prev, target_amount: e.target.value }))}
                                     required
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <Label htmlFor="goal-current" className="text-xs font-semibold text-[var(--color-text-primary)]">Current Saved</Label>
+                                <Label htmlFor="goal-current" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Current Saved</Label>
                                 <Input
                                     id="goal-current"
                                     type="number"
@@ -669,25 +669,25 @@ export const GoalsPage = () => {
                                     placeholder="500"
                                     value={formData.current_amount}
                                     onChange={e => setFormData(prev => ({ ...prev, current_amount: e.target.value }))}
-                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                    className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-1.5">
-                            <Label htmlFor="goal-deadline" className="text-xs font-semibold text-[var(--color-text-primary)]">Target Date (Optional)</Label>
+                            <Label htmlFor="goal-deadline" className="text-[13px] font-semibold text-[var(--color-text-primary)]">Target Date (Optional)</Label>
                             <Input
                                 id="goal-deadline"
                                 type="date"
                                 value={formData.deadline}
                                 onChange={e => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
-                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] font-mono"
+                                className="rounded-xl border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)] tabular-nums"
                             />
                         </div>
 
                         {/* Icon Picker */}
                         <div className="space-y-1.5">
-                            <Label className="text-xs font-semibold text-[var(--color-text-primary)]">Select Icon</Label>
+                            <Label className="text-[13px] font-semibold text-[var(--color-text-primary)]">Select Icon</Label>
                             <div className="flex flex-wrap gap-2 pt-1">
                                 {GOAL_ICONS.map(icon => (
                                     <button
@@ -697,7 +697,7 @@ export const GoalsPage = () => {
                                         className={cn(
                                             'h-9 w-9 rounded-xl flex items-center justify-center text-lg border transition-all',
                                             formData.icon === icon
-                                                ? 'border-[var(--color-brand)] bg-[var(--color-brand)]/10 scale-110 shadow-xs'
+                                                ? 'border-[var(--color-brand)] bg-[var(--color-brand)]/10 scale-110'
                                                 : 'border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-subtle)]'
                                         )}
                                     >
@@ -712,14 +712,14 @@ export const GoalsPage = () => {
                                 type="button"
                                 variant="outline"
                                 onClick={() => setIsModalOpen(false)}
-                                className="rounded-xl text-xs border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                                className="rounded-xl text-[13px] border-[var(--color-border)] text-[var(--color-text-secondary)]"
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="submit"
                                 disabled={saving}
-                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-xs"
+                                className="rounded-xl bg-[var(--color-brand)] hover:opacity-90 text-white text-[13px]"
                             >
                                 {saving ? 'Saving...' : editingGoal ? 'Update Goal' : 'Create Goal'}
                             </Button>

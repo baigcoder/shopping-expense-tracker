@@ -128,11 +128,11 @@ export const CashflowCalendarPage = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-6 border-b border-[var(--color-border)]">
                 <div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[10px] font-mono tracking-wider uppercase mb-3 shadow-xs">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-ink)] text-white text-[13px] tabular-nums mb-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#EE5024] animate-pulse" />
                         Liquidity Runway & Movement
                     </div>
-                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] uppercase leading-none">
+                    <h1 className="editorial-title text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-[-0.04em] text-[var(--color-ink)] leading-none">
                         Cashflow Timeline
                     </h1>
                     <p className="text-sm text-[var(--color-ink)]/70 mt-2 max-w-xl font-medium leading-relaxed">
@@ -145,7 +145,7 @@ export const CashflowCalendarPage = () => {
                         size="sm"
                         onClick={handleRefresh}
                         disabled={refreshing}
-                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
+                        className="rounded-full border-[var(--color-border)] bg-white text-[13px] h-10 px-5 text-[var(--color-ink)] hover:border-[var(--color-ink)] transition-all"
                     >
                         <RefreshCw className={cn('h-3.5 w-3.5 mr-2 text-[#EE5024]', refreshing && 'animate-spin')} />
                         Sync
@@ -154,7 +154,7 @@ export const CashflowCalendarPage = () => {
                         variant="outline"
                         size="sm"
                         onClick={jumpToToday}
-                        className="rounded-full border-[var(--color-border)] bg-white text-xs h-10 px-5 font-bold text-[var(--color-ink)] hover:bg-[#EE5024] hover:text-white hover:border-[#EE5024] transition-all"
+                        className="rounded-full border-[var(--color-border)] bg-white text-[13px] h-10 px-5 font-bold text-[var(--color-ink)] hover:bg-[#EE5024] hover:text-white hover:border-[#EE5024] transition-all"
                     >
                         Today
                     </Button>
@@ -167,13 +167,13 @@ export const CashflowCalendarPage = () => {
             {/* Month Navigation & Color-Blocked Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Deep Ink: Timeline Period */}
-                <div className="p-6 rounded-[24px] bg-[#111111] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/60">
+                <div className="p-6 rounded-[24px] bg-[#111111] text-white flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-white/60">
                         <span>Timeline Period</span>
                         <CalendarDays className="h-4 w-4 text-[#EE5024]" />
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                        <span className="text-2xl font-extrabold font-mono text-white">
+                        <span className="text-2xl font-extrabold tabular-nums text-white">
                             {currentDate.toLocaleString('default', { month: 'short' })} {currentDate.getFullYear()}
                         </span>
                         <div className="flex items-center gap-1.5">
@@ -194,48 +194,48 @@ export const CashflowCalendarPage = () => {
                 </div>
 
                 {/* 2. Cadmium Orange: Net Monthly Cashflow */}
-                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white shadow-sm flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-white/80">
+                <div className="p-6 rounded-[24px] bg-[#EE5024] text-white flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-white/80">
                         <span>Net Monthly Cashflow</span>
                         <Target className="h-4 w-4 text-white" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-white leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-white leading-none">
                             {loading ? '—' : formatCurrency(stats.net)}
                         </div>
-                        <div className="text-xs font-semibold text-white/90 mt-2">
+                        <div className="text-[13px] font-semibold text-white/90 mt-2">
                             {stats.net >= 0 ? 'Positive net monthly liquidity' : 'Net deficit — draw from reserves'}
                         </div>
                     </div>
                 </div>
 
                 {/* 3. Warm Ivory / White: Scheduled Outflow */}
-                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] shadow-xs flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/60">
+                <div className="p-6 rounded-[24px] bg-white border border-[var(--color-border)] flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-[var(--color-ink)]/60">
                         <span>Scheduled Outflow</span>
                         <TrendingDown className="h-4 w-4 text-[#EE5024]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(stats.expense)}
                         </div>
-                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                        <div className="text-[13px] text-[var(--color-ink)]/70 mt-2 font-medium">
                             Committed bills, rent & subscriptions
                         </div>
                     </div>
                 </div>
 
                 {/* 4. Muted Sage / Soft Accent: Projected Inflow */}
-                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 shadow-xs flex flex-col justify-between min-h-[160px]">
-                    <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[var(--color-ink)]/70">
+                <div className="p-6 rounded-[24px] bg-[#BBC7B1]/30 border border-[#BBC7B1]/60 flex flex-col justify-between min-h-[160px]">
+                    <div className="flex items-center justify-between text-[13px] font-bold text-[var(--color-ink)]/70">
                         <span>Projected Inflow</span>
                         <TrendingUp className="h-4 w-4 text-[var(--color-ink)]" />
                     </div>
                     <div className="my-2">
-                        <div className="text-4xl font-extrabold tracking-tight tabular-nums font-mono text-[var(--color-ink)] leading-none">
+                        <div className="text-4xl font-extrabold tracking-tight tabular-nums tabular-nums text-[var(--color-ink)] leading-none">
                             {loading ? '—' : formatCurrency(stats.income)}
                         </div>
-                        <div className="text-xs text-[var(--color-ink)]/70 mt-2 font-medium">
+                        <div className="text-[13px] text-[var(--color-ink)]/70 mt-2 font-medium">
                             Expected paydays & deposits
                         </div>
                     </div>
@@ -248,7 +248,7 @@ export const CashflowCalendarPage = () => {
                 {/* 2-Col Calendar Grid */}
                 <div className="lg:col-span-2 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] p-4 sm:p-5">
                     {/* Day Headers */}
-                    <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[var(--color-text-muted)] pb-2 border-b border-[var(--color-border-subtle)]">
+                    <div className="grid grid-cols-7 gap-1 text-center text-[13px] font-semibold text-[var(--color-text-muted)] pb-2 border-b border-[var(--color-border-subtle)]">
                         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
                             <div key={d} className="py-1">{d}</div>
                         ))}
@@ -279,7 +279,7 @@ export const CashflowCalendarPage = () => {
                                         'min-h-[72px] sm:min-h-[84px] p-1.5 rounded-xl border text-left transition-all relative flex flex-col justify-between',
                                         isCurrentMonth ? 'border-[var(--color-border-subtle)]' : 'border-transparent opacity-35',
                                         isSelected
-                                            ? 'ring-2 ring-[var(--color-brand)] bg-[var(--color-surface)] shadow-xs z-10'
+                                            ? 'ring-2 ring-[var(--color-brand)] bg-[var(--color-surface)] z-10'
                                             : getHeatmapColor(dailySpend) || 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-subtle)]',
                                         isToday && 'font-bold'
                                     )}
@@ -287,9 +287,9 @@ export const CashflowCalendarPage = () => {
                                     {/* Day Number Header */}
                                     <div className="flex items-center justify-between w-full">
                                         <span className={cn(
-                                            'text-xs tabular-nums font-mono',
+                                            'text-[13px] tabular-nums tabular-nums',
                                             isToday
-                                                ? 'h-5 w-5 rounded-full bg-[var(--color-brand)] text-white flex items-center justify-center font-bold text-[10px]'
+                                                ? 'h-5 w-5 rounded-full bg-[var(--color-brand)] text-white flex items-center justify-center font-bold text-[13px]'
                                                 : isSelected
                                                 ? 'text-[var(--color-brand)] font-bold'
                                                 : 'text-[var(--color-text-primary)]'
@@ -298,7 +298,7 @@ export const CashflowCalendarPage = () => {
                                         </span>
 
                                         {dayEvents.length > 0 && (
-                                            <span className="text-[10px] text-[var(--color-text-muted)] font-medium font-mono">
+                                            <span className="text-[13px] text-[var(--color-text-muted)] font-medium tabular-nums">
                                                 {dayEvents.length}
                                             </span>
                                         )}
@@ -307,12 +307,12 @@ export const CashflowCalendarPage = () => {
                                     {/* Event Previews / Indicators */}
                                     <div className="space-y-0.5 w-full mt-1">
                                         {dailyIncome > 0 && (
-                                            <div className="text-[9px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1 py-0.5 rounded truncate font-mono tabular-nums">
+                                            <div className="text-[13px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1 py-0.5 rounded truncate tabular-nums tabular-nums">
                                                 +{formatCurrency(dailyIncome)}
                                             </div>
                                         )}
                                         {dailySpend > 0 && (
-                                            <div className="text-[9px] font-semibold text-[var(--color-brand)] dark:text-[var(--color-pink)] bg-[var(--color-brand)]/10 px-1 py-0.5 rounded truncate font-mono tabular-nums">
+                                            <div className="text-[13px] font-semibold text-[var(--color-brand)] dark:text-[var(--color-pink)] bg-[var(--color-brand)]/10 px-1 py-0.5 rounded truncate tabular-nums tabular-nums">
                                                 -{formatCurrency(dailySpend)}
                                             </div>
                                         )}
@@ -326,7 +326,7 @@ export const CashflowCalendarPage = () => {
                 {/* Day Schedule Side Panel */}
                 <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-[var(--shadow-xs)] p-5 space-y-4">
                     <div>
-                        <div className="text-xs text-[var(--color-text-muted)] font-medium">Schedule for</div>
+                        <div className="text-[13px] text-[var(--color-text-muted)] font-medium">Schedule for</div>
                         <h2 className="text-lg font-bold text-[var(--color-text-primary)] mt-0.5">
                             {selectedDate.toLocaleDateString(undefined, {
                                 weekday: 'long',
@@ -336,7 +336,7 @@ export const CashflowCalendarPage = () => {
                             })}
                         </h2>
                         {selectedDayOutflow > 0 && (
-                            <div className="text-xs text-[var(--color-brand)] dark:text-[var(--color-pink)] font-semibold mt-1 font-mono tabular-nums">
+                            <div className="text-[13px] text-[var(--color-brand)] dark:text-[var(--color-pink)] font-semibold mt-1 tabular-nums tabular-nums">
                                 Total Scheduled Outflow: {formatCurrency(selectedDayOutflow)}
                             </div>
                         )}
@@ -348,7 +348,7 @@ export const CashflowCalendarPage = () => {
                                 <div className="h-9 w-9 rounded-xl bg-[var(--color-surface-subtle)] flex items-center justify-center mx-auto text-[var(--color-text-muted)]">
                                     <CheckCircle2 className="h-5 w-5" />
                                 </div>
-                                <p className="text-xs text-[var(--color-text-muted)]">
+                                <p className="text-[13px] text-[var(--color-text-muted)]">
                                     No bills, subscriptions, or transactions scheduled on this date.
                                 </p>
                             </div>
@@ -360,7 +360,7 @@ export const CashflowCalendarPage = () => {
                                 >
                                     <div className="flex items-center gap-2.5">
                                         <div className={cn(
-                                            'h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
+                                            'h-8 w-8 rounded-lg flex items-center justify-center shrink-0 text-[13px] font-bold',
                                             evt.type === 'income'
                                                 ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                                                 : evt.type === 'bill'
@@ -376,10 +376,10 @@ export const CashflowCalendarPage = () => {
                                             )}
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-xs text-[var(--color-text-primary)]">
+                                            <div className="font-semibold text-[13px] text-[var(--color-text-primary)]">
                                                 {evt.title || evt.name || 'Obligation'}
                                             </div>
-                                            <div className="text-[11px] text-[var(--color-text-muted)] capitalize">
+                                            <div className="text-[13px] text-[var(--color-text-muted)] capitalize">
                                                 {evt.type} • {evt.category || 'Standard'}
                                             </div>
                                         </div>
@@ -387,13 +387,13 @@ export const CashflowCalendarPage = () => {
 
                                     <div className="text-right">
                                         <div className={cn(
-                                            'text-xs font-bold tabular-nums font-mono',
+                                            'text-[13px] font-bold tabular-nums tabular-nums',
                                             evt.type === 'income' ? 'text-emerald-700 dark:text-emerald-400' : 'text-[var(--color-text-primary)]'
                                         )}>
                                             {evt.type === 'income' ? '+' : '-'}{formatCurrency(Math.abs(evt.amount || 0))}
                                         </div>
                                         {evt.status && (
-                                            <Badge variant="secondary" className="text-[9px] mt-0.5">
+                                            <Badge variant="secondary" className="text-[13px] mt-0.5">
                                                 {evt.status}
                                             </Badge>
                                         )}
