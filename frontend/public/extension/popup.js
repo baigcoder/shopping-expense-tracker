@@ -245,13 +245,11 @@
         transactions.slice(0, 4).forEach((tx) => {
             const row = document.createElement('div');
             row.className = 'tx-row';
-            row.innerHTML = `
-                <div>
-                    <p>${tx.description || tx.store_name || 'Transaction'}</p>
-                    <span>${tx.category || 'Other'}</span>
-                </div>
-                <strong>${tx.type === 'income' ? '+' : '-'}${formatCurrency(Math.abs(Number(tx.amount || 0)))}</strong>
-            `;
+            row.innerHTML = '<div><p></p><span></span></div><strong></strong>';
+            // Descriptions come from captured page text, so set them as text, not HTML.
+            row.querySelector('p').textContent = tx.description || tx.store_name || 'Transaction';
+            row.querySelector('span').textContent = tx.category || 'Other';
+            row.querySelector('strong').textContent = `${tx.type === 'income' ? '+' : '-'}${formatCurrency(Math.abs(Number(tx.amount || 0)))}`;
             container.appendChild(row);
         });
     };

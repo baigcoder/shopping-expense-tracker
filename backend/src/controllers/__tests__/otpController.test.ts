@@ -15,6 +15,8 @@ const mockPrisma = vi.hoisted(() => ({
 const mockListUsers = vi.hoisted(() => vi.fn());
 const mockCreateUser = vi.hoisted(() => vi.fn());
 const mockDeleteUser = vi.hoisted(() => vi.fn());
+const mockGetUserById = vi.hoisted(() => vi.fn());
+const mockUpdateUserById = vi.hoisted(() => vi.fn());
 const mockSendOTPEmail = vi.hoisted(() => vi.fn());
 
 vi.mock('../../config/prisma.js', () => ({
@@ -28,6 +30,8 @@ vi.mock('../../config/supabase.js', () => ({
                 listUsers: mockListUsers,
                 createUser: mockCreateUser,
                 deleteUser: mockDeleteUser,
+                getUserById: mockGetUserById,
+                updateUserById: mockUpdateUserById,
             },
         },
     },
@@ -84,5 +88,40 @@ describe('OTP Controller', () => {
                 verified: false,
             },
         });
+    });
+
+    it('never resets the password of an existing confirmed account', async () => {
+        mockCreateUser.mockResolvedValue({ data: { user: null }, error: { message: 'User already registered' } });
+        mockListUsers.mockResolvedValue({
+            data: { users: [{ id: 'victim-uuid', email: 'victim@example.com', email_confirmed_at: '2026-01-01T00:00:00Z' }] },
+        });
+
+        const req: any = { body: { email: 'victim@example.com', password: 'Attacker123!' } };
+        const res = createResponse();
+
+        await sendSignupOTP(req, res);
+
+        expect(mockUpdateUserById).not.toHaveBeenCalled();
+        expect(mockSendOTPEmail).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+    });
+
+    it('re-stages an unconfirmed account this signup flow created', async () => {
+        mockSendOTPEmail.mockResolvedValue(true);
+        mockCreateUser.mockResolvedValue({ data: { user: null }, error: { message: 'User already registered' } });
+        mockPrisma.emailOTP.findFirst
+            .mockResolvedValueOnce(null) // cooldown check
+            .mockResolvedValueOnce({ metadata: JSON.stringify({ supabaseUserId: 'staged-uuid-1' }) });
+        mockGetUserById.mockResolvedValue({
+            data: { user: { id: 'staged-uuid-1', email: 'pending@example.com', email_confirmed_at: null } },
+        });
+
+        const req: any = { body: { email: 'pending@example.com', password: 'Password123!', name: 'Pat' } };
+        const res = createResponse();
+
+        await sendSignupOTP(req, res);
+
+        expect(mockUpdateUserById).toHaveBeenCalledWith('staged-uuid-1', expect.objectContaining({ password: 'Password123!' }));
+        expect(mockSendOTPEmail).toHaveBeenCalledOnce();
     });
 });
