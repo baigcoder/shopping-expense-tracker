@@ -14,6 +14,7 @@ import { buildGoals } from '../goals/goalsModel';
 import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistView';
 import { linkFor } from '../assist/linkFor';
 import { demoAnswer } from './demoAnswers';
+import { TwinView } from '../twin/TwinView';
 import { buildHomeModel } from '../home/homeModel';
 import { DemoProvider, useDemo } from './DemoContext';
 import { DemoGuide } from './DemoGuide';
@@ -111,6 +112,17 @@ function DemoAssist() {
     );
 }
 
+function DemoTwin() {
+    const { input, commitments } = useDemo();
+    const charges = useMemo(() => buildCommitments(commitments, DEMO_NOW).lines.map((l) => ({
+        id: l.id, name: l.name, amount: l.amount, daysUntil: l.daysUntil, cycle: l.cycle, kind: l.kind, active: l.active && !l.paid, isTrial: l.isTrial,
+    })), [commitments]);
+    return (
+        <TwinView transactions={input.transactions} charges={charges} money={money} now={DEMO_NOW}
+            alerts={[{ id: 'w1', title: 'Rent lands in 16 days', message: 'Keep about Rs 65,000 free until then.', urgent: false }]} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -152,7 +164,8 @@ function DemoShell() {
                 <Route path="subscriptions" element={<DemoCommitments />} />
                 <Route path="goals" element={<DemoGoals />} />
                 <Route path="insights" element={<DemoAssist />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights'].includes(s.to)).map((s) => (
+                <Route path="money-twin" element={<DemoTwin />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
