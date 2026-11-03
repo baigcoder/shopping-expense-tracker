@@ -53,6 +53,23 @@ describe('Supabase Configuration & Privileged Access Control (INV-01 & Hardening
         expect(result.reason).toContain('malformed');
     });
 
+    it('accepts a new-style sb_secret_ key', () => {
+        const result = validateServiceRoleConfiguration(
+            'sb_secret_dummyValueForTests123',
+            'https://ynmvjnsdygimhjxcjvzp.supabase.co'
+        );
+        expect(result.isValid).toBe(true);
+    });
+
+    it('rejects a publishable key used as the service key', () => {
+        const result = validateServiceRoleConfiguration(
+            'sb_publishable_dummyValueForTests123',
+            'https://ynmvjnsdygimhjxcjvzp.supabase.co'
+        );
+        expect(result.isValid).toBe(false);
+        expect(result.reason).toContain('publishable');
+    });
+
     it('rejects missing or empty service-role key', () => {
         const result = validateServiceRoleConfiguration(
             '',

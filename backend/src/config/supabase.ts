@@ -69,6 +69,20 @@ export function validateServiceRoleConfiguration(
         };
     }
 
+    if (serviceKey.startsWith('sb_publishable_')) {
+        return {
+            isValid: false,
+            reason: 'SUPABASE_SERVICE_ROLE_KEY is a publishable key; expected a secret (sb_secret_) or service_role key',
+            ref: null,
+            expectedRef,
+        };
+    }
+
+    // New-style secret keys are opaque (no embedded project ref); Supabase rejects a key from another project at request time.
+    if (serviceKey.startsWith('sb_secret_')) {
+        return { isValid: true, ref: null, expectedRef };
+    }
+
     const meta = decodeJwtMetadata(serviceKey);
     if (!meta.isValid) {
         return {
