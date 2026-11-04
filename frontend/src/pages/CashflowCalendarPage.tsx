@@ -21,7 +21,7 @@ const CashflowCalendarPage = () => {
         try {
             const [t, s, b] = await Promise.all([supabaseTransactionService.getAll(user.id), subscriptionService.getAll(user.id), billService.getAll(user.id)]);
             setTransactions(t);
-            setCharges([...s.map(fromSub), ...b.map(fromBill)].map((c) => ({ ...c, active: c.active && !c.paid })));
+            setCharges([...s.map(fromSub), ...b.map(fromBill)]);
         } catch {
             toast.error('Could not load your calendar.');
         } finally {

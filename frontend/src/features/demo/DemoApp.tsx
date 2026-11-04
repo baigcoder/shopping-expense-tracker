@@ -157,8 +157,7 @@ function DemoActivity() {
 
 function DemoCalendar() {
     const { input, commitments } = useDemo();
-    const charges = useMemo(() => commitments.map((c) => ({ ...c, active: c.active && !c.paid })), [commitments]);
-    return <CalendarView transactions={input.transactions} charges={charges} money={money} now={DEMO_NOW} />;
+    return <CalendarView transactions={input.transactions} charges={commitments} money={money} now={DEMO_NOW} />;
 }
 
 function DemoSpending() {
