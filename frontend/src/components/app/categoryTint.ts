@@ -10,7 +10,10 @@ const MAP: [RegExp, string][] = [
     [/income|salary|refund/i, 'income'],
 ];
 
+/** The family a category belongs to (food, transport, …), or 'other'. Budgets use it so "Food" covers "Groceries". */
+export const categoryGroup = (category: string) => MAP.find(([re]) => re.test(category || ''))?.[1] || 'other';
+
 export function categoryTint(category: string): { ink: string; soft: string } {
-    const key = MAP.find(([re]) => re.test(category || ''))?.[1] || 'other';
+    const key = categoryGroup(category);
     return { ink: `var(--cat-${key})`, soft: `var(--cat-${key}-soft)` };
 }

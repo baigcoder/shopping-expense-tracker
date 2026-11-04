@@ -59,9 +59,9 @@ function DemoInbox() {
 }
 
 function DemoBudgets() {
-    const { budgets, input, addBudget, removeBudget } = useDemo();
+    const { budgets, input, addBudget, removeBudget, updateBudget } = useDemo();
     const model = useMemo(() => buildBudgets(budgets, input.transactions, DEMO_NOW), [budgets, input.transactions]);
-    return <BudgetsView model={model} money={money} onAdd={addBudget} onRemove={(l) => removeBudget(l.id)} />;
+    return <BudgetsView model={model} money={money} onAdd={addBudget} onUpdate={(l, n) => updateBudget(l.id, n)} onRemove={(l) => removeBudget(l.id)} />;
 }
 
 function DemoCommitments() {

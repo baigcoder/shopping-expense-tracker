@@ -10,6 +10,7 @@ interface DemoState {
     budgets: { id: string; category: string; amount: number }[];
     addBudget: (category: string, amount: number) => void;
     removeBudget: (id: string) => void;
+    updateBudget: (id: string, amount: number) => void;
     commitments: CommitmentInput[];
     updateCommitment: (id: string, patch: Partial<CommitmentInput> | null) => void;
     addCommitment: (c: CommitmentInput) => void;
@@ -95,6 +96,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         setLastAction(`${category} budget added. Approved ${category.toLowerCase()} purchases now fill it.`);
     }, []);
 
+    const updateBudget = useCallback((id: string, amount: number) => setBudgets((b) => b.map((x) => (x.id === id ? { ...x, amount } : x))), []);
     const removeBudget = useCallback((id: string) => {
         setBudgets((b) => b.filter((x) => x.id !== id));
         setLastAction('Budget removed.');
@@ -132,10 +134,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
             transactions, budgets, commitments, goals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
-        budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,
+        budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,
         inbox: { pending: withRules(pending, rules), approved, rejected }, rules,
         approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction,
-    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction]);
+    }), [transactions, budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }

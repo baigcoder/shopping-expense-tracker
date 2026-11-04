@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { BudgetLine, BudgetModel } from './budgetModel';
 import { categoryTint } from '@/components/app/categoryTint';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,7 @@ interface BudgetsViewProps {
     loading?: boolean;
     saving?: boolean;
     onAdd: (category: string, amount: number) => void;
+    onUpdate: (line: BudgetLine, amount: number) => void;
     onRemove: (line: BudgetLine) => void;
 }
 
@@ -22,20 +23,25 @@ const paceText = (l: BudgetLine, money: (n: number) => string) =>
         : l.pace === 'fast' ? `At this pace: ${money(l.projected)} by month end${l.projected > l.amount ? `, ${money(l.projected - l.amount)} over` : ''}`
             : `${money(l.remaining)} left`;
 
-export function BudgetsView({ model, money, loading, saving, onAdd, onRemove }: BudgetsViewProps) {
+export function BudgetsView({ model, money, loading, saving, onAdd, onUpdate, onRemove }: BudgetsViewProps) {
     const [filter, setFilter] = useState<Filter>('all');
     const [category, setCategory] = useState(BUDGET_CATEGORIES[0]);
     const [amount, setAmount] = useState('');
+    const [limitFor, setLimitFor] = useState<{ id: string; value: string } | null>(null);
+    const [confirm, setConfirm] = useState<string | null>(null);
     const watch = model.lines.filter((l) => l.pace !== 'ok');
     const shown = filter === 'all' ? model.lines : filter === 'watch' ? watch : model.lines.filter((l) => l.pace === 'ok');
     const free = BUDGET_CATEGORIES.filter((c) => !model.lines.some((l) => l.category === c));
+    // The select shows the first free category when the remembered one is taken; save what it shows.
+    const pick = free.includes(category) ? category : free[0];
     const overall = model.projected > model.total && model.total > 0;
 
     const add = (e: FormEvent) => {
         e.preventDefault();
         const n = Number(amount);
         if (!Number.isFinite(n) || n <= 0) return;
-        onAdd(category, n);
+        if (!pick) return;
+        onAdd(pick, n);
         setAmount('');
     };
 
@@ -85,7 +91,18 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onRemove }: 
                                     <div className="min-w-0 flex-1">
                                         <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                                             <h2 className="font-display text-[17px] font-semibold">{l.category}</h2>
-                                            <p className="text-[15px] tabular-nums text-[var(--color-ink-secondary)]"><b className={cn('font-display text-[18px] text-[var(--color-ink)]', l.pace === 'over' && 'text-[var(--color-danger)]')}>{money(l.spent)}</b> of {money(l.amount)}</p>
+                                            {limitFor?.id === l.id ? (
+                                                <form className="flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); const n = Number(limitFor.value); if (Number.isFinite(n) && n > 0) { onUpdate(l, n); setLimitFor(null); } }}>
+                                                    <input autoFocus inputMode="decimal" aria-label={`${l.category} monthly limit`} value={limitFor.value} onChange={(e) => setLimitFor({ id: l.id, value: e.target.value })}
+                                                        className="h-9 w-28 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[15px] tabular-nums" />
+                                                    <button type="submit" className="h-9 rounded-full bg-[var(--color-ink)] px-3 text-[14px] font-semibold text-white">Save</button>
+                                                    <button type="button" onClick={() => setLimitFor(null)} className="h-9 rounded-full px-2 text-[14px] text-[var(--color-ink-secondary)]">Cancel</button>
+                                                </form>
+                                            ) : (
+                                                <p className="text-[15px] tabular-nums text-[var(--color-ink-secondary)]"><b className={cn('font-display text-[18px] text-[var(--color-ink)]', l.pace === 'over' && 'text-[var(--color-danger)]')}>{money(l.spent)}</b> of{' '}
+                                                    <button type="button" onClick={() => setLimitFor({ id: l.id, value: String(l.amount) })} aria-label={`Change the ${l.category} limit of ${money(l.amount)}`} className="underline decoration-dotted underline-offset-4 hover:text-[var(--color-ink)]">{money(l.amount)}</button>
+                                                </p>
+                                            )}
                                         </div>
                                         <div className={cn("relative h-2.5 rounded-full", li === 0 ? "mt-8" : "mt-3")} style={{ background: tint.soft }}>
                                             <div className="h-full rounded-full" style={{ width: `${Math.min(100, l.progress)}%`, background: l.pace === 'over' ? 'var(--color-danger)' : tint.ink }} />
@@ -94,8 +111,9 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onRemove }: 
                                         </div>
                                         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
                                             <p className={cn('text-[14px]', l.pace === 'over' ? 'text-[var(--color-danger)]' : l.pace === 'fast' ? 'font-medium text-[var(--cat-food)]' : 'text-[var(--color-ink-secondary)]')}>{paceText(l, money)}</p>
-                                            <button type="button" onClick={() => onRemove(l)} aria-label={`Remove the ${l.category} budget`}
-                                                className="rounded-full p-2 text-[var(--color-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-ink)]"><Trash2 size={15} /></button>
+                                            <button type="button" onClick={() => { if (confirm === l.id) { onRemove(l); setConfirm(null); } else setConfirm(l.id); }} onBlur={() => setConfirm(null)}
+                                                aria-label={confirm === l.id ? `Confirm removing the ${l.category} budget` : `Remove the ${l.category} budget`}
+                                                className={cn('h-8 rounded-full px-3 text-[13px] font-medium hover:bg-[var(--color-surface-2)]', confirm === l.id ? 'text-[var(--color-danger)]' : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]')}>{confirm === l.id ? 'Remove it?' : 'Remove'}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -104,10 +122,28 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onRemove }: 
                     })}
                 </section>
 
+                <div className="flex flex-col gap-4">
+                {model.unbudgeted.length > 0 && (
+                    <section className="rounded-[20px] bg-[var(--color-surface)] p-5" aria-labelledby="loose-h" data-tour="budgets-suggest">
+                        <h2 id="loose-h" className="font-display text-[17px] font-semibold">Not budgeted yet</h2>
+                        <ul className="mt-2">
+                            {model.unbudgeted.map((u) => (
+                                <li key={u.category} className="flex items-center justify-between gap-3 py-2">
+                                    <span className="min-w-0">
+                                        <span className="block truncate text-[15px] font-medium">{u.category}</span>
+                                        <span className="block text-[13px] tabular-nums text-[var(--color-muted)]">{money(u.spent)} this month</span>
+                                    </span>
+                                    <button type="button" disabled={saving} onClick={() => onAdd(u.category, u.suggested)}
+                                        className="h-9 shrink-0 rounded-full bg-[var(--color-canvas)] px-3 text-[14px] font-semibold tabular-nums hover:bg-[var(--color-surface-2)] disabled:opacity-50">Set {money(u.suggested)}</button>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
                 <form onSubmit={add} className="rounded-[20px] bg-[var(--color-surface)] p-5" data-tour="budgets-add" aria-labelledby="add-h">
                     <h2 id="add-h" className="font-display text-[17px] font-semibold">Add a budget</h2>
                     <label className="mt-4 flex flex-col gap-1.5 text-[13px] font-medium">Category
-                        <select value={free.includes(category) ? category : free[0] || ''} onChange={(e) => setCategory(e.target.value)} disabled={!free.length}
+                        <select value={pick || ''} onChange={(e) => setCategory(e.target.value)} disabled={!free.length}
                             className="h-10 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-2 text-[15px]">
                             {free.map((c) => <option key={c}>{c}</option>)}
                         </select>
@@ -121,6 +157,7 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onRemove }: 
                         <Plus size={16} /> {saving ? 'Saving' : 'Add budget'}
                     </button>
                 </form>
+                </div>
             </div>
         </div>
     );
