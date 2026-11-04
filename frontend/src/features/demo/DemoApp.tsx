@@ -194,6 +194,7 @@ function DemoCards() {
             onFreeze={(id, frozen) => patch(id, { frozen })}
             onPrimary={(id) => setCards((l) => l.map((c) => ({ ...c, primary: c.id === id })))}
             onLimit={(id, limit) => patch(id, { limit })}
+            onRename={(id, name) => patch(id, { name })}
             onRemoveCard={(id) => setCards((l) => l.filter((c) => c.id !== id))} />
     );
 }

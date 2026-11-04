@@ -13,27 +13,27 @@ export interface CardData {
     card_type: CardBrand;
     theme: string;
     created_at: string;
-    // Deprecated - kept for backwards compatibility during migration
-    number?: string;    // @deprecated - should only contain masked value
+    // Settings changed on the Cards screen (migration 20261104_card_settings)
+    nickname?: string | null;
+    spending_limit?: number | null;
+    is_frozen?: boolean;
+    is_default?: boolean;
 }
 
 const SAFE_CARD_COLUMNS = 'id, user_id, last4, holder, expiry, card_type, theme, created_at';
+const SETTINGS_COLUMNS = 'nickname, spending_limit, is_frozen, is_default';
+export type CardSettings = Pick<CardData, 'nickname' | 'spending_limit' | 'is_frozen' | 'is_default'>;
 
 export const cardService = {
     // Get all cards for user
+    // Throws on failure, so a failed load is never shown as "no cards".
     getAll: async (userId: string): Promise<CardData[]> => {
-        const { data, error } = await supabase
-            .from('cards')
-            .select(SAFE_CARD_COLUMNS)
-            .eq('user_id', userId)
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            console.error('Error fetching cards:', error);
-            return [];
-        }
-
-        return data || [];
+        const query = (columns: string) => supabase.from('cards').select(columns).eq('user_id', userId).order('created_at', { ascending: false });
+        let { data, error } = await query(`${SAFE_CARD_COLUMNS}, ${SETTINGS_COLUMNS}`);
+        // 42703 = undefined column: the settings migration is not applied yet, so load cards without settings.
+        if (error?.code === '42703') ({ data, error } = await query(SAFE_CARD_COLUMNS));
+        if (error) throw new Error(`Could not load cards: ${error.message}`);
+        return (data || []) as unknown as CardData[];
     },
 
     // Create a new card
@@ -99,10 +99,13 @@ export const cardService = {
     },
 
     // Update a card
-    update: async (id: string, updates: Partial<CardData>): Promise<CardData | null> => {
+    // Only the settings can change; the card itself (last4, expiry) is fixed once added.
+    update: async (id: string, updates: CardSettings): Promise<CardData | null> => {
+        const allowed: CardSettings = {};
+        for (const k of ['nickname', 'spending_limit', 'is_frozen', 'is_default'] as const) if (k in updates) (allowed as Record<string, unknown>)[k] = updates[k];
         const { data, error } = await supabase
             .from('cards')
-            .update(updates)
+            .update(allowed)
             .eq('id', id)
             .select(SAFE_CARD_COLUMNS)
             .single();

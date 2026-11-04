@@ -15,6 +15,7 @@ interface CardsViewProps {
     onFreeze: (id: string, frozen: boolean) => void;
     onPrimary: (id: string) => void;
     onLimit: (id: string, limit: number) => void;
+    onRename: (id: string, name: string) => void;
     onRemoveCard: (id: string) => void;
 }
 
@@ -46,7 +47,8 @@ function AccountForm({ initial, saving, onSave, onCancel }: { initial?: AccountR
     );
 }
 
-export function CardsView({ accounts, cards, money, loading, onSaveAccount, onRemoveAccount, onAddCard, onFreeze, onPrimary, onLimit, onRemoveCard }: CardsViewProps) {
+export function CardsView({ accounts, cards, money, loading, onSaveAccount, onRemoveAccount, onAddCard, onFreeze, onPrimary, onLimit, onRename, onRemoveCard }: CardsViewProps) {
+    const [renaming, setRenaming] = useState<{ id: string; value: string } | null>(null);
     const [editing, setEditing] = useState<string | 'new' | null>(null);
     const [saving, setSaving] = useState(false);
     const [confirm, setConfirm] = useState<string | null>(null);
@@ -111,7 +113,15 @@ export function CardsView({ accounts, cards, money, loading, onSaveAccount, onRe
                         <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--color-surface-2)] py-3 first:border-t-0">
                             <span className={cn('flex h-10 w-16 shrink-0 items-end rounded-[8px] p-1.5 text-[13px] font-semibold tabular-nums text-white', c.frozen ? 'bg-[var(--color-muted)]' : 'bg-[var(--color-ink)]')} aria-hidden>{c.last4}</span>
                             <span className="min-w-0 flex-1">
-                                <span className="block truncate text-[15px] font-medium">{c.name}{c.primary && <span className="ml-2 text-[13px] font-normal text-[var(--color-muted)]">Primary</span>}{c.frozen && <span className="ml-2 text-[13px] font-normal text-[var(--color-danger)]">Frozen</span>}</span>
+                                {renaming?.id === c.id ? (
+                                    <form className="flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); const n = renaming.value.trim(); if (n) { onRename(c.id, n); setRenaming(null); } }}>
+                                        <input autoFocus aria-label="Card name" value={renaming.value} onChange={(e) => setRenaming({ id: c.id, value: e.target.value })} className={cn(field, 'h-9 w-40')} />
+                                        <button type="submit" className={quiet}>Save</button>
+                                    </form>
+                                ) : (
+                                <span className="block truncate text-[15px] font-medium">
+                                    <button type="button" onClick={() => setRenaming({ id: c.id, value: c.name })} aria-label={`Rename ${c.name}`} className="hover:underline">{c.name}</button>{c.primary && <span className="ml-2 text-[13px] font-normal text-[var(--color-muted)]">Primary</span>}{c.frozen && <span className="ml-2 text-[13px] font-normal text-[var(--color-danger)]">Frozen</span>}</span>
+                                )}
                                 <span className="block text-[13px] capitalize text-[var(--color-muted)]">{c.brand} •••• {c.last4} · {c.expiry}</span>
                             </span>
                             <span className="flex w-full flex-wrap items-center gap-x-2 pl-20 sm:w-auto sm:pl-0">

@@ -22,9 +22,14 @@ export const CardsPage = () => {
 
     useEffect(() => {
         if (!user?.id) return;
-        initializeCards(user.id);
+        void initializeCards(user.id).then((ok) => { if (!ok) toast.error('Could not load your cards.'); });
         void loadAccounts();
     }, [user?.id, initializeCards, loadAccounts]);
+
+    const save = async (work: () => Promise<void>, ok: string) => {
+        try { await work(); toast.success(ok); }
+        catch { toast.error('That did not save. Try again.'); }
+    };
 
     const saveAccount = async (d: AccountDraft, id?: string) => {
         if (!user?.id) return;
@@ -51,14 +56,15 @@ export const CardsPage = () => {
                 else toast.error('Could not remove it.');
             }}
             onAddCard={openAddCard}
-            onFreeze={async (id, frozen) => { await updateCard(id, { is_frozen: frozen }); toast.success(frozen ? 'Card frozen' : 'Card unfrozen'); }}
-            onPrimary={async (id) => {
+            onFreeze={(id, frozen) => void save(() => updateCard(id, { is_frozen: frozen }), frozen ? 'Card frozen' : 'Card unfrozen')}
+            // The old primary is cleared first: the database allows one primary card per user.
+            onPrimary={(id) => void save(async () => {
                 for (const c of cards) if (c.is_default && c.id !== id) await updateCard(c.id, { is_default: false });
                 await updateCard(id, { is_default: true });
-                toast.success('Primary card changed');
-            }}
-            onLimit={async (id, limit) => { await updateCard(id, { spending_limit: limit }); toast.success('Limit saved'); }}
-            onRemoveCard={async (id) => { await removeCard(id); toast.success('Card removed'); }}
+            }, 'Primary card changed')}
+            onLimit={(id, limit) => void save(() => updateCard(id, { spending_limit: limit }), 'Limit saved')}
+            onRename={(id, name) => void save(() => updateCard(id, { nickname: name }), 'Card renamed')}
+            onRemoveCard={(id) => void save(() => removeCard(id), 'Card removed')}
         />
     );
 };

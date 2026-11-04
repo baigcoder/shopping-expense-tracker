@@ -144,44 +144,19 @@ export interface Card {
     number?: string; // @deprecated - use last4 instead
 }
 
-// All cards storage (stores all users' cards)
-interface AllCardsStorage {
-    [userId: string]: Card[];
-}
-
 interface CardState {
     cards: Card[];
     isLoading: boolean;
     currentUserId: string | null;
-    initializeCards: (userId: string) => Promise<void>;
+    /** Resolves false when the cards could not be loaded, so the screen can say so instead of showing none. */
+    initializeCards: (userId: string) => Promise<boolean>;
     setCards: (cards: Card[]) => void;
     addCard: (card: Omit<Card, 'id'> & { id?: string }) => void;
-    removeCard: (id: string) => void;
-    updateCard: (id: string, updates: Partial<Card>) => Promise<void>;
+    /** Throw when the save fails; the screen goes back to how it was. */
+    removeCard: (id: string) => Promise<void>;
+    updateCard: (id: string, updates: Pick<Card, 'nickname' | 'spending_limit' | 'is_frozen' | 'is_default'>) => Promise<void>;
     clearCards: () => void;
 }
-
-// Helper to get all cards from storage
-const getAllCardsFromStorage = (): AllCardsStorage => {
-    try {
-        const stored = localStorage.getItem('all-cards-storage');
-        if (stored) {
-            return JSON.parse(stored);
-        }
-    } catch (e) {
-        console.error('Error reading cards from storage:', e);
-    }
-    return {};
-};
-
-// Helper to save all cards to storage
-const saveAllCardsToStorage = (allCards: AllCardsStorage) => {
-    try {
-        localStorage.setItem('all-cards-storage', JSON.stringify(allCards));
-    } catch (e) {
-        console.error('Error saving cards to storage:', e);
-    }
-};
 
 // Detect card brand from number
 export const detectCardBrand = (number: string): CardBrand => {
@@ -198,148 +173,61 @@ export const detectCardBrand = (number: string): CardBrand => {
     return 'unknown';
 };
 
+// Cards live only in Supabase. They used to be cached in localStorage under one key for every user who
+// signed in on the browser, which outlived sign-out and brought deleted cards back; that copy is cleared here.
+try { localStorage.removeItem('all-cards-storage'); } catch { /* storage may be blocked */ }
+
 export const useCardStore = create<CardState>()((set, get) => ({
     cards: [],
     isLoading: false,
     currentUserId: null,
 
-    // Initialize cards for a specific user - FETCH FROM SUPABASE FIRST
     initializeCards: async (userId: string) => {
-        set({ isLoading: true });
-
+        set({ isLoading: true, currentUserId: userId });
         try {
-            // FIRST: Try to fetch from Supabase
-            const { supabase } = await import('../config/supabase');
-            const { data, error } = await supabase
-                .from('cards')
-                .select('*')
-                .eq('user_id', userId)
-                .order('created_at', { ascending: false });
-
-            if (!error && data && data.length > 0) {
-                // Map Supabase data to Card format - SECURITY: Extract only last4 digits
-                const cards: Card[] = data.map(card => {
-                    // Extract last 4 digits from stored number (for backwards compatibility)
-                    const cardNumber = card.number || '';
-                    const last4 = card.last4 || cardNumber.slice(-4) || '****';
-
-                    return {
-                        id: card.id,
-                        user_id: card.user_id,
-                        last4: last4,
-                        holder: card.holder,
-                        expiry: card.expiry,
-                        type: card.card_type || card.type || 'unknown',
-                        theme: card.theme,
-                        // Keep number for backwards compatibility (will be deprecated)
-                        number: cardNumber ? `**** **** **** ${last4}` : undefined
-                    };
-                });
-
-                console.log('✅ Loaded', cards.length, 'cards from Supabase');
-                set({ cards, currentUserId: userId, isLoading: false });
-
-                // Also cache to localStorage
-                const allCards = getAllCardsFromStorage();
-                allCards[userId] = cards;
-                saveAllCardsToStorage(allCards);
-                return;
-            }
+            const rows = await cardService.getAll(userId);
+            set({
+                cards: rows.map((c) => ({
+                    id: c.id, user_id: c.user_id, last4: c.last4, holder: c.holder, expiry: c.expiry,
+                    type: (c.card_type || 'unknown') as CardBrand, theme: c.theme,
+                    nickname: c.nickname ?? undefined, spending_limit: c.spending_limit ?? undefined,
+                    is_frozen: Boolean(c.is_frozen), is_default: Boolean(c.is_default),
+                })),
+                isLoading: false,
+            });
+            return true;
         } catch (e) {
-            console.error('Error fetching cards from Supabase:', e);
-        }
-
-        // FALLBACK: Load from localStorage
-        const allCards = getAllCardsFromStorage();
-        const userCards = allCards[userId] || [];
-        console.log('📦 Loaded', userCards.length, 'cards from localStorage');
-        set({ cards: userCards, currentUserId: userId, isLoading: false });
-    },
-
-    setCards: (cards) => {
-        const { currentUserId } = get();
-        set({ cards });
-
-        // Persist to storage
-        if (currentUserId) {
-            const allCards = getAllCardsFromStorage();
-            allCards[currentUserId] = cards;
-            saveAllCardsToStorage(allCards);
+            console.error('Error fetching cards:', e);
+            set({ isLoading: false });
+            return false;
         }
     },
+
+    setCards: (cards) => set({ cards }),
 
     addCard: (card) => {
         const { currentUserId, cards } = get();
-        if (!currentUserId) {
-            console.error('No user logged in, cannot add card');
-            return;
-        }
-
-        const newCard: Card = {
-            ...card,
-            id: (card as any).id || crypto.randomUUID(), // Use provided id (from Supabase) or generate new
-            user_id: card.user_id || currentUserId,
-        };
-
-        const updatedCards = [newCard, ...cards];
-        set({ cards: updatedCards });
-
-        // Persist to storage
-        const allCards = getAllCardsFromStorage();
-        allCards[currentUserId] = updatedCards;
-        saveAllCardsToStorage(allCards);
+        if (!currentUserId) return;
+        set({ cards: [{ ...card, id: card.id || crypto.randomUUID(), user_id: card.user_id || currentUserId }, ...cards] });
     },
 
     removeCard: async (id) => {
-        const { currentUserId, cards } = get();
-        const updatedCards = cards.filter((c) => c.id !== id);
-        set({ cards: updatedCards });
-
-        // Delete from Supabase backend
-        try {
-            await cardService.delete(id);
-        } catch (error) {
-            console.error('Failed to delete card from backend:', error);
-        }
-
-        // Persist to local storage
-        if (currentUserId) {
-            const allCards = getAllCardsFromStorage();
-            allCards[currentUserId] = updatedCards;
-            saveAllCardsToStorage(allCards);
+        const before = get().cards;
+        set({ cards: before.filter((c) => c.id !== id) });
+        if (!(await cardService.delete(id))) {
+            set({ cards: before });
+            throw new Error('Could not remove the card');
         }
     },
 
     updateCard: async (id, updates) => {
-        const { currentUserId, cards } = get();
-        const updatedCards = cards.map((c) => c.id === id ? { ...c, ...updates } : c);
-        set({ cards: updatedCards });
-
-        // Persist to localStorage
-        if (currentUserId) {
-            const allCards = getAllCardsFromStorage();
-            allCards[currentUserId] = updatedCards;
-            saveAllCardsToStorage(allCards);
-        }
-
-        // Sync to Supabase
-        try {
-            await cardService.update(id, updates);
-            console.log('✅ Card updated in Supabase');
-        } catch (e) {
-            console.error('Error syncing card update to Supabase:', e);
+        const before = get().cards;
+        set({ cards: before.map((c) => (c.id === id ? { ...c, ...updates } : c)) });
+        if (!(await cardService.update(id, updates))) {
+            set({ cards: before });
+            throw new Error('Could not save the card');
         }
     },
 
-    clearCards: () => {
-        const { currentUserId } = get();
-        set({ cards: [] });
-
-        // Persist to storage
-        if (currentUserId) {
-            const allCards = getAllCardsFromStorage();
-            allCards[currentUserId] = [];
-            saveAllCardsToStorage(allCards);
-        }
-    },
+    clearCards: () => set({ cards: [] }),
 }));
