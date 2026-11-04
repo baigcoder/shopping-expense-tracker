@@ -78,6 +78,34 @@ function SpendChart({ daily, money }: { daily: HomeModel['daily']; money: (n: nu
     );
 }
 
+// First run: the four things that make the numbers on Home mean something.
+function Setup({ basePath, hasBudgets, hasBills }: { basePath: string; hasBudgets: boolean; hasBills: boolean }) {
+    const steps = [
+        { label: 'Install the browser extension', to: '/extension-health', done: false },
+        { label: 'Add your bank accounts', to: '/cards', done: false },
+        { label: 'Add rent, bills and subscriptions', to: '/subscriptions', done: hasBills },
+        { label: 'Set a monthly budget', to: '/budgets', done: hasBudgets },
+    ];
+    return (
+        <section className="rounded-[20px] bg-[var(--color-surface)] p-5 sm:p-6" aria-labelledby="h-setup" data-tour="safe">
+            <h2 id="h-setup" className="font-display text-[22px] font-bold tracking-tight">Set up Cashly</h2>
+            <ol className="mt-4 grid gap-2 sm:grid-cols-2">
+                {steps.map((st, i) => (
+                    <li key={st.to}>
+                        <Link to={`${basePath}${st.to}`} className="flex h-full items-center gap-3 rounded-[14px] bg-[var(--color-canvas)] p-4 text-[15px] font-medium hover:bg-[var(--color-surface-2)]">
+                            <span className={cn('flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] tabular-nums', st.done ? 'bg-[var(--color-success)] text-white' : 'bg-[var(--color-surface)]')}>
+                                {st.done ? <Check size={14} aria-label="Done" /> : i + 1}
+                            </span>
+                            <span className={cn('flex-1', st.done && 'text-[var(--color-muted)] line-through')}>{st.label}</span>
+                            <ArrowRight size={16} aria-hidden />
+                        </Link>
+                    </li>
+                ))}
+            </ol>
+        </section>
+    );
+}
+
 export function HomeView({ model, firstName, money, basePath = '', busyId, onApprove, onDismiss, onAdd }: HomeViewProps) {
     const budgetLines = useMemo(() => model.categories.filter((c) => c.budget !== null).slice(0, 5), [model.categories]);
     const figures: { label: string; value: string; note?: string; positive?: boolean }[] = [
@@ -98,12 +126,18 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                 </button>
             </header>
 
-            {/* The question this screen answers first */}
+            {model.isNew ? <Setup basePath={basePath} hasBudgets={model.budgetTotal > 0} hasBills={model.upcoming.length > 0} /> : (
+            /* The question this screen answers first */
             <section className="grid grid-cols-[minmax(0,1fr)] gap-6 rounded-[20px] bg-[var(--color-surface)] p-5 sm:p-6 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" data-tour="safe" aria-labelledby="h-safe">
                 <div className="flex flex-col justify-between gap-6">
                     <div>
                         <h2 id="h-safe" className="text-[15px] text-[var(--color-ink-secondary)]">Safe to spend</h2>
                         <p className="mt-1 font-display text-[clamp(40px,5vw,60px)] font-bold leading-none tracking-tight tabular-nums">{money(model.safeToSpend)}</p>
+                        <p className="mt-3 text-[14px] leading-relaxed text-[var(--color-ink-secondary)] tabular-nums">
+                            {money(model.balance)} {model.balanceFrom === 'accounts' ? 'in your accounts' : 'balance'}
+                            {model.committed30 > 0 && <> − {money(model.committed30)} due in 30 days</>}
+                            {model.plannedSavings > 0 && <> − {money(model.plannedSavings)} for goals</>}
+                        </p>
                     </div>
                     <dl className="grid grid-cols-2 gap-4 rounded-[14px] bg-[var(--color-canvas)] p-4">
                         <div>
@@ -131,6 +165,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                     </div>
                 </div>
             </section>
+            )}
 
             <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
                 <div className="flex flex-col gap-4">

@@ -3,12 +3,12 @@ import { demoAnswer } from './demoAnswers';
 import { buildHomeModel } from '../home/homeModel';
 import { buildBudgets } from '../budgets/budgetModel';
 import { buildCommitments } from '../commitments/commitmentsModel';
-import { DEMO_NOW, demoBudgets, demoCommitments, demoGoals, demoInbox, demoTransactions, toHomeSubscriptions } from './demoData';
+import { DEMO_NOW, demoBudgets, demoCommitments, demoGoals, demoInbox, demoTransactions } from './demoData';
 
 const money = (n: number) => `Rs ${Math.round(n).toLocaleString('en-US')}`;
 
 describe('demoAnswer', () => {
-    const home = buildHomeModel({ transactions: demoTransactions(), budgets: demoBudgets(), subscriptions: toHomeSubscriptions(demoCommitments()), goals: demoGoals(), pending: demoInbox(), now: DEMO_NOW });
+    const home = buildHomeModel({ transactions: demoTransactions(), budgets: demoBudgets(), commitments: demoCommitments(), goals: demoGoals(), pending: demoInbox(), now: DEMO_NOW });
     const budgets = buildBudgets(demoBudgets(), demoTransactions(), DEMO_NOW);
     const bills = buildCommitments(demoCommitments(), DEMO_NOW);
 

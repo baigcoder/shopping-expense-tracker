@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { HomeInput, HomeTransaction } from '../home/homeModel';
 import type { Edits, InboxItem, InboxRule } from '../inbox/InboxView';
-import { demoBudgets, demoCommitments, demoGoals, demoInbox, demoRules, demoTransactions, toHomeSubscriptions } from './demoData';
+import { demoBudgets, demoCommitments, demoGoals, demoInbox, demoRules, demoTransactions } from './demoData';
 import type { CommitmentInput } from '../commitments/commitmentsModel';
 
 interface DemoState {
@@ -124,7 +124,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 
     const value = useMemo<DemoState>(() => ({
         input: {
-            transactions, budgets, subscriptions: toHomeSubscriptions(commitments), goals,
+            transactions, budgets, commitments, goals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
         budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,

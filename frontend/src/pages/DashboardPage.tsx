@@ -7,6 +7,9 @@ import { useAuthStore, useModalStore } from '../store/useStore';
 import { supabaseTransactionService } from '../services/supabaseTransactionService';
 import { budgetService } from '../services/budgetService';
 import { subscriptionService } from '../services/subscriptionService';
+import { billService } from '../services/billService';
+import bankAccountService from '../services/bankAccountService';
+import { fromBill, fromSub } from '../features/commitments/fromServices';
 import { goalService } from '../services/goalService';
 import { transactionInboxApi, type TransactionCandidate } from '../services/featureExpansionApi';
 import { usePaymentCaptureSync } from '../hooks/usePaymentCaptureSync';
@@ -14,7 +17,7 @@ import { formatCurrency } from '../services/currencyService';
 import { supabase } from '../config/supabase';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
 
-const EMPTY: Omit<HomeInput, 'now'> = { transactions: [], budgets: [], subscriptions: [], goals: [], pending: [] };
+const EMPTY: Omit<HomeInput, 'now'> = { transactions: [], budgets: [], commitments: [], goals: [], pending: [] };
 
 const settle = <T,>(p: Promise<T>, fallback: T, ms = 4000) =>
     Promise.race([p, new Promise<T>((r) => setTimeout(() => r(fallback), ms))]).catch(() => fallback);
@@ -31,19 +34,26 @@ export function DashboardPage() {
         if (!userId) userId = (await supabase.auth.getSession()).data.session?.user?.id;
         if (!userId) { setLoading(false); return; }
 
-        const [transactions, budgets, subscriptions, goals, inbox] = await Promise.all([
+        const [transactions, budgets, subscriptions, bills, goals, accounts, inbox] = await Promise.all([
             settle(supabaseTransactionService.getAll(userId, { force: true }), []),
             settle(budgetService.getAll(userId), []),
             settle(subscriptionService.getAll(userId), []),
+            settle(billService.getAll(userId), []),
             settle(goalService.getAll(userId), []),
+            settle(bankAccountService.getAll(userId), []),
             settle(transactionInboxApi.list({ status: 'pending', limit: 8 }), { data: [] as TransactionCandidate[] }),
         ]);
+
+        // With accounts, the balance is what they hold minus card debt; without any, Home falls back to the ledger.
+        const live = accounts.filter((a) => a.is_active);
+        const accountsBalance = live.length ? live.reduce((s, a) => s + (a.account_type === 'credit' ? -Math.abs(a.balance) : a.balance), 0) : null;
 
         setInput({
             transactions,
             budgets,
-            subscriptions,
+            commitments: [...subscriptions.map(fromSub), ...bills.map(fromBill)],
             goals,
+            accountsBalance,
             pending: ((inbox?.data || []) as TransactionCandidate[]).map((c) => ({
                 id: c.id,
                 merchant: c.merchant_name || c.description,

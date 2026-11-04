@@ -1,5 +1,5 @@
 // Sample month for the demo, anchored to the 20th of the current month so it always shows a full month.
-import type { HomeBudget, HomeGoal, HomeSubscription, HomeTransaction } from '../home/homeModel';
+import type { HomeBudget, HomeGoal, HomeTransaction } from '../home/homeModel';
 import type { InboxItem, InboxRule } from '../inbox/InboxView';
 import type { CommitmentInput } from '../commitments/commitmentsModel';
 
@@ -67,10 +67,6 @@ export const demoCommitments = (): CommitmentInput[] => [
 ];
 
 /** Home reads commitments in the shape the dashboard uses. */
-export const toHomeSubscriptions = (list: CommitmentInput[]): HomeSubscription[] => list
-    .filter((c) => c.active && !(c.kind === 'bill' && c.paid))
-    .map((c) => ({ id: c.id, name: c.name, price: c.amount, is_active: true, is_trial: c.isTrial, next_payment_date: c.isTrial ? null : c.nextDate, trial_end_date: c.isTrial ? c.nextDate : null }));
-
 export const demoGoals = (): (HomeGoal & { id: string; name: string; deadline?: string | null })[] => [
     { id: 'g1', name: 'New laptop', target: 300000, saved: 112000, deadline: day(160) },
     { id: 'g2', name: 'Umrah fund', target: 80000, saved: 64000, deadline: day(70) },
