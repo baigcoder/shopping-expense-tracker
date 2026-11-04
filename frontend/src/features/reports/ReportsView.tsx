@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils';
 
 interface ReportsViewProps { transactions: ReportTx[]; money: (n: number) => string; now?: Date; loading?: boolean }
 
-const RANGES: [ReportRange, string][] = [['month', 'Month'], ['quarter', '3 months'], ['year', 'Year'], ['all', 'All']];
+const RANGES: [ReportRange, string][] = [['month', 'This month'], ['last-month', 'Last month'], ['quarter', '3 months'], ['tax-year', 'Tax year'], ['year', 'This year'], ['all', 'All']];
+const fmt = (iso: string) => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }); };
 const FORMATS = [['csv', 'CSV'], ['excel', 'Excel'], ['pdf', 'PDF']] as const;
 
 export function ReportsView({ transactions, money, now = new Date(), loading }: ReportsViewProps) {
@@ -20,10 +21,10 @@ export function ReportsView({ transactions, money, now = new Date(), loading }: 
         try {
             const x = await import('@/services/exportService');
             const rows = r.rows.map(({ id, date, description, amount, type, category }) => ({ id, date, description, amount, type, category }));
-            const filename = `cashly-${range}-${now.toISOString().slice(0, 10)}`;
+            const filename = `cashly-${r.from || r.rows[r.rows.length - 1]?.date.slice(0, 10) || 'start'}-to-${r.to}`;
             if (format === 'csv') x.exportToCSV(rows, { filename, includeSummary: true });
             else if (format === 'excel') await x.exportToExcel(rows, { filename });
-            else await x.exportTransactionsToPDF(rows, { filename, dateRange: { start: rows[rows.length - 1]?.date || '', end: rows[0]?.date || '' } });
+            else await x.exportTransactionsToPDF(rows, { filename, dateRange: { start: r.from || rows[rows.length - 1]?.date || '', end: r.to } });
         } catch {
             toast.error('That download did not work. Try again.');
         } finally {
@@ -41,7 +42,11 @@ export function ReportsView({ transactions, money, now = new Date(), loading }: 
         <div className="flex flex-col gap-4">
             <header className="flex flex-wrap items-end justify-between gap-4 pb-2">
                 <h1 className="font-display text-[28px] font-bold tracking-tight sm:text-[32px]">Reports</h1>
-                <div role="tablist" aria-label="Period" className="inline-flex max-w-full overflow-x-auto rounded-full bg-[var(--color-surface)] p-1">
+                {/* Six periods do not fit a phone's width, so phones get the same choice as a list. */}
+                <select aria-label="Period" value={range} onChange={(e) => setRange(e.target.value as ReportRange)} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[15px] font-medium md:hidden">
+                    {RANGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+                <div role="tablist" aria-label="Period" className="hidden max-w-full overflow-x-auto rounded-full bg-[var(--color-surface)] p-1 md:inline-flex">
                     {RANGES.map(([v, l]) => (
                         <button key={v} type="button" role="tab" aria-selected={range === v} onClick={() => setRange(v)}
                             className={cn('h-9 shrink-0 rounded-full px-4 text-[14px] font-medium', range === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
@@ -49,6 +54,9 @@ export function ReportsView({ transactions, money, now = new Date(), loading }: 
                 </div>
             </header>
 
+            {!loading && r.rows.length > 0 && (
+                <p className="-mb-2 px-1 text-[15px] tabular-nums text-[var(--color-ink-secondary)]">{fmt(r.from || r.rows[r.rows.length - 1].date.slice(0, 10))} to {fmt(r.to)}</p>
+            )}
             <section className="grid grid-cols-[minmax(0,1fr)] gap-6 rounded-[20px] bg-[var(--color-surface)] p-5 sm:grid-cols-3 sm:p-6" aria-label="Totals" data-tour="reports-totals">
                 {figures.map((f) => (
                     <div key={f.label}>

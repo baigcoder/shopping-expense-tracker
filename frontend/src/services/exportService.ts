@@ -33,6 +33,16 @@ export interface ExportOptions {
 // ================================
 // CSV EXPORT
 // ================================
+/**
+ * One CSV text cell: quoted, inner quotes doubled, and a leading = + - @ (or tab/CR) prefixed with '
+ * so a spreadsheet shows a description like "=HYPERLINK(...)" as text instead of running it.
+ */
+export function csvCell(value: unknown): string {
+    let text = String(value ?? '');
+    if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g, '""')}"`;
+}
+
 export function exportToCSV(transactions: ExportTransaction[], options: ExportOptions = {}): void {
     const filename = options.filename || `cashly-transactions-${new Date().toISOString().split('T')[0]}`;
 
@@ -40,18 +50,18 @@ export function exportToCSV(transactions: ExportTransaction[], options: ExportOp
     const headers = ['Date', 'Description', 'Category', 'Type', 'Amount'];
 
     // Convert transactions to rows
-    const rows = transactions.map(t => [
-        t.date,
-        `"${t.description?.replace(/"/g, '""') || ''}"`,
-        t.category || 'Other',
+    const rows: (string | number)[][] = transactions.map(t => [
+        t.date.slice(0, 10),
+        csvCell(t.description),
+        csvCell(t.category || 'Other'),
         t.type,
         t.type === 'expense' ? -Math.abs(t.amount) : Math.abs(t.amount)
     ]);
 
     // Add summary if requested
     if (options.includeSummary) {
-        const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-        const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+        const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + Math.abs(t.amount), 0);
+        const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + Math.abs(t.amount), 0);
         rows.push([]);
         rows.push(['', '', '', 'Total Income', totalIncome]);
         rows.push(['', '', '', 'Total Expenses', -totalExpense]);
@@ -64,8 +74,8 @@ export function exportToCSV(transactions: ExportTransaction[], options: ExportOp
         ...rows.map(row => row.join(','))
     ].join('\n');
 
-    // Download
-    downloadFile(csvContent, `${filename}.csv`, 'text/csv;charset=utf-8');
+    // The byte-order mark makes Excel read the file as UTF-8, so Urdu and other non-Latin names stay readable.
+    downloadFile(`\uFEFF${csvContent}`, `${filename}.csv`, 'text/csv;charset=utf-8');
 }
 
 // ================================
@@ -103,8 +113,8 @@ export async function exportToExcel(transactions: ExportTransaction[], options: 
 
     // Add summary sheet if requested
     if (options.includeSummary) {
-        const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-        const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+        const totalIncome = transactions.filter(t => t.type === 'income').reduce((s, t) => s + Math.abs(t.amount), 0);
+        const totalExpense = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + Math.abs(t.amount), 0);
 
         // Category breakdown
         const categoryTotals: Record<string, number> = {};

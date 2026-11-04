@@ -22,4 +22,17 @@ describe('buildReport', () => {
         expect(buildReport([tx('x', '2026-11-02', 10)], 'all', now).rate).toBeNull();
         expect(buildReport(list, 'all', now).rows).toHaveLength(5);
     });
+
+    it('covers last month in full, and the tax year from 1 July', () => {
+        const last = buildReport(list, 'last-month', now);
+        expect([last.from, last.to]).toEqual(['2026-10-01', '2026-10-31']);
+        const tax = buildReport(list, 'tax-year', now);
+        expect(tax.from).toBe('2026-07-01');
+        expect(tax.rows.map((t) => t.id)).toEqual(['a', 'b', 'c', 'd']);
+        expect(buildReport(list, 'tax-year', new Date(2027, 2, 1)).from).toBe('2026-07-01'); // March is still the 2026-27 tax year
+    });
+
+    it('leaves out entries dated in the future', () => {
+        expect(buildReport([...list, tx('f', '2026-12-25', 999)], 'all', now).rows.map((t) => t.id)).not.toContain('f');
+    });
 });
