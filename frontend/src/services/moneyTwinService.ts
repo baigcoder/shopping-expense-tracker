@@ -155,7 +155,7 @@ class MoneyTwinService {
 
         // Fetch all user data AND backend AI in parallel
         const [transactions, subscriptions, budgets, goals, backendAI] = await Promise.all([
-            supabaseTransactionService.getAll(userId, { force: forceRefresh, limit: 1000 }),
+            supabaseTransactionService.getAll(userId, { force: forceRefresh, limit: 1000 }).catch(() => []),
             subscriptionService.getAll(userId).catch(() => []),
             budgetService.getAll(userId).catch(() => []),
             goalService.getAll(userId).catch(() => []),

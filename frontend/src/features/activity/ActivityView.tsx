@@ -21,22 +21,26 @@ interface ActivityViewProps<T extends ActivityTx> {
 
 const DAY = 86400000;
 const PAGE = 60;
+// Local calendar day: "2026-11-20" parsed as UTC would be the 19th for anyone west of Greenwich.
+const localDay = (iso: string) => { const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
 
 export function filterActivity<T extends ActivityTx>(list: T[], q: string, kind: Kind, category: string, period: Period, now: Date) {
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
     const from = period === 'today' ? start : period === 'week' ? start - 6 * DAY : period === 'month' ? new Date(now.getFullYear(), now.getMonth(), 1).getTime() : -Infinity;
     const needle = q.trim().toLowerCase();
+    const digits = needle.replace(/[^\d.]/g, ''); // "Rs 8,499" and "8499" both find 8499
     return list
         .filter((t) => (kind === 'all' || t.type === kind)
             && (category === 'all' || t.category === category)
-            && new Date(t.date).getTime() >= from
-            && (!needle || t.description.toLowerCase().includes(needle) || t.category.toLowerCase().includes(needle)))
+            && localDay(t.date).getTime() >= from
+            && (!needle || t.description.toLowerCase().includes(needle) || t.category.toLowerCase().includes(needle)
+                || (digits.length >= 2 && digits === needle.replace(/[\s,rs]/g, '') && String(Math.abs(t.amount)).startsWith(digits))))
         .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 const dayHeading = (iso: string, now: Date) => {
-    const d = new Date(iso);
-    const diff = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() - new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()) / DAY);
+    const d = localDay(iso);
+    const diff = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() - d.getTime()) / DAY);
     return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday' : d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
 };
 
@@ -81,15 +85,15 @@ export function ActivityView<T extends ActivityTx>({ transactions, money, loadin
                 </label>
                 <div role="tablist" aria-label="Type" className="inline-flex rounded-full bg-[var(--color-surface)] p-1">
                     {([['all', 'All'], ['expense', 'Spent'], ['income', 'Received']] as const).map(([v, l]) => (
-                        <button key={v} type="button" role="tab" aria-selected={kind === v} onClick={() => setKind(v)}
+                        <button key={v} type="button" role="tab" aria-selected={kind === v} onClick={() => { setKind(v); setLimit(PAGE); }}
                             className={cn('h-9 rounded-full px-4 text-[14px] font-medium', kind === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                     ))}
                 </div>
-                <select aria-label="Category" value={category} onChange={(e) => setCategory(e.target.value)} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
+                <select aria-label="Category" value={category} onChange={(e) => { setCategory(e.target.value); setLimit(PAGE); }} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
                     <option value="all">Every category</option>
                     {categories.map((c) => <option key={c}>{c}</option>)}
                 </select>
-                <select aria-label="Period" value={period} onChange={(e) => setPeriod(e.target.value as Period)} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
+                <select aria-label="Period" value={period} onChange={(e) => { setPeriod(e.target.value as Period); setLimit(PAGE); }} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
                     <option value="all">All time</option><option value="month">This month</option><option value="week">Last 7 days</option><option value="today">Today</option>
                 </select>
             </div>

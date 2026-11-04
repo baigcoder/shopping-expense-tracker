@@ -23,4 +23,10 @@ describe('filterActivity', () => {
         expect(ids(filterActivity(list, '', 'all', 'Food', 'all', now))).toEqual(['1', '4']);
         expect(ids(filterActivity(list, 'dar', 'all', 'all', 'all', now))).toEqual(['3']);
     });
+
+    it('finds an entry by its amount, written either way', () => {
+        expect(ids(filterActivity(list, '8000', 'all', 'all', 'all', now))).toEqual(['3']);
+        expect(ids(filterActivity(list, 'Rs 8,000', 'all', 'all', 'all', now))).toEqual(['3']);
+        expect(ids(filterActivity(list, 'food', 'all', 'all', 'all', now))).toEqual(['1', '4']);
+    });
 });

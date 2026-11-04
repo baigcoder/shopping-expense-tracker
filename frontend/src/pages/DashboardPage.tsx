@@ -34,8 +34,9 @@ export function DashboardPage() {
         if (!userId) userId = (await supabase.auth.getSession()).data.session?.user?.id;
         if (!userId) { setLoading(false); return; }
 
+        // Transactions are not raced against a timeout: an empty list would show a long-time user the new-user setup.
         const [transactions, budgets, subscriptions, bills, goals, accounts, inbox] = await Promise.all([
-            settle(supabaseTransactionService.getAll(userId, { force: true }), []),
+            supabaseTransactionService.getAll(userId, { force: true }).catch(() => null),
             settle(budgetService.getAll(userId), []),
             settle(subscriptionService.getAll(userId), []),
             settle(billService.getAll(userId), []),
@@ -43,6 +44,12 @@ export function DashboardPage() {
             settle(bankAccountService.getAll(userId), []),
             settle(transactionInboxApi.list({ status: 'pending', limit: 8 }), { data: [] as TransactionCandidate[] }),
         ]);
+
+        if (transactions === null) {
+            toast.error('Could not load your money. Check your connection and try again.');
+            setLoading(false);
+            return;
+        }
 
         setInput({
             transactions,
