@@ -62,9 +62,9 @@ export const PlanNavigationTabs: React.FC<PlanNavigationTabsProps> = ({ badges, 
                         key={tab.path}
                         to={tab.path}
                         className={cn(
-                            'relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-tight transition-all duration-200 whitespace-nowrap select-none shrink-0',
+                            'relative flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-medium tracking-tight transition-all duration-200 whitespace-nowrap select-none shrink-0',
                             tab.active
-                                ? 'bg-[var(--color-ink)] text-white shadow-xs font-bold'
+                                ? 'bg-[var(--color-ink)] text-white font-bold'
                                 : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-white/60'
                         )}
                     >
@@ -73,7 +73,7 @@ export const PlanNavigationTabs: React.FC<PlanNavigationTabsProps> = ({ badges, 
                         {tab.badge !== undefined && tab.badge > 0 && (
                             <span
                                 className={cn(
-                                    'ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold tabular-nums font-mono',
+                                    'ml-0.5 px-1.5 py-0.5 rounded-full text-[13px] font-bold tabular-nums tabular-nums',
                                     tab.active
                                         ? 'bg-[var(--color-brand)]/10 text-[var(--color-brand)]'
                                         : 'bg-[var(--color-border-subtle)] text-[var(--color-text-muted)]'

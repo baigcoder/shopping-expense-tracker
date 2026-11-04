@@ -4,11 +4,11 @@ const PrivacyPolicyPage = () => {
     return (
         <StaticPageTemplate
             title="Privacy Policy"
-            subtitle="Last updated: December 2024"
+            subtitle="What Cashly collects, why, and how you control it. Last updated: December 2024"
         >
             <h2>Introduction</h2>
             <p>
-                At SpendSync, we take your privacy seriously. This Privacy Policy explains how we collect,
+                At Cashly, we take your privacy seriously. This Privacy Policy explains how we collect,
                 use, disclose, and safeguard your information when you use our application.
             </p>
 

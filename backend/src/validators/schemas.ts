@@ -53,6 +53,7 @@ export const detectedTransactionSchema = z.object({
     is_subscription: z.boolean().optional(),
     trialDays: z.coerce.number().int().nonnegative().optional(),
     trial_days: z.coerce.number().int().nonnegative().optional(),
+    trialEndDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), // read from the merchant's page
     source_url: z.string().max(1000).optional(),
     planTier: z.string().max(100).optional(),
     confidence: z.coerce.number().min(0).max(1).optional(),

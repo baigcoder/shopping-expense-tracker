@@ -223,7 +223,7 @@ const CardPreviewModal = ({ card, isOpen, onClose, onDelete }: CardPreviewModalP
                                 {onDelete && (
                                     <button
                                         onClick={handleDelete}
-                                        className="w-full flex items-center justify-center gap-2 p-4 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition-colors font-semibold"
+                                        className="w-full flex items-center justify-center gap-2 p-4 bg-[var(--color-brand-soft)] text-[var(--color-brand)] rounded-xl hover:bg-[var(--color-brand-soft)] transition-colors font-semibold"
                                     >
                                         <Trash2 size={18} />
                                         Remove Card

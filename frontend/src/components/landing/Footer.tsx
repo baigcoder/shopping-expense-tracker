@@ -35,9 +35,9 @@ export default function Footer() {
                 <div className="mt-10 grid gap-4 sm:grid-cols-3">
                     {STEPS.map(({ icon: Icon, title, body }, index) => (
                         <article key={title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                            <p className="text-xs font-medium text-[#FDA4AF]">{index + 1}</p>
+                            <p className="text-xs font-medium text-[var(--color-pink)]">{index + 1}</p>
                             <div className="mt-3 flex items-center gap-2">
-                                <Icon className="h-4 w-4 text-[#FDA4AF]" />
+                                <Icon className="h-4 w-4 text-[var(--color-pink)]" />
                                 <h3 className="font-display font-semibold">{title}</h3>
                             </div>
                             <p className="mt-2 text-sm leading-relaxed text-[#A8A29E]">{body}</p>

@@ -7,7 +7,7 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     /* Cool dark mesh gradient */
     background: radial-gradient(circle at top right, #1F2937, #000);
     position: relative;
@@ -54,7 +54,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     text-transform: none;
-    letter-spacing: 2px;
+    letter-spacing: 0;
 }
 
 .levelBadge {
@@ -63,10 +63,10 @@
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     text-transform: none;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transform: rotate(2deg);
 }
 
@@ -153,7 +153,7 @@
     font-size: 0.9rem;
     font-weight: 700;
     text-transform: none;
-    letter-spacing: 4px;
+    letter-spacing: 0;
     color: #6B7280;
 }
 
@@ -192,7 +192,7 @@
 }
 
 .nextLevel {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: #9CA3AF;
 }
 
@@ -250,7 +250,7 @@
     font-weight: 600;
     font-family: 'Space Grotesk', sans-serif;
     text-transform: none;
-    letter-spacing: 1px;
+    letter-spacing: 0;
     border: 2px solid transparent;
 }
 

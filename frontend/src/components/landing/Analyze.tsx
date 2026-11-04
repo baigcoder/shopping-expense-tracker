@@ -27,7 +27,7 @@ export default function Analyze() {
                                 <p className="text-xs font-medium text-[#78716C]">Analytics</p>
                                 <h3 className="font-display text-lg font-semibold text-[#1C1917]">This week vs last week</h3>
                             </div>
-                            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FFE4E6] text-[#E11D48]">
+                            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
                                 <BarChart3 className="h-4 w-4" />
                             </span>
                         </div>
@@ -36,7 +36,7 @@ export default function Analyze() {
                                 <div key={day.label} className="flex min-w-0 flex-1 flex-col items-center gap-2">
                                     <div className="flex h-36 w-full items-end justify-center gap-0.5">
                                         <div className="w-[45%] rounded-t-md bg-[#1C1917]" style={{ height: `${day.thisWeek}%` }} />
-                                        <div className="w-[45%] rounded-t-md bg-[#E11D48]/80" style={{ height: `${day.lastWeek}%` }} />
+                                        <div className="w-[45%] rounded-t-md bg-[var(--color-brand)]/80" style={{ height: `${day.lastWeek}%` }} />
                                     </div>
                                     <span className="text-[11px] font-medium text-[#78716C]">{day.label}</span>
                                 </div>
@@ -44,7 +44,7 @@ export default function Analyze() {
                         </div>
                         <div className="mt-4 flex gap-4 text-xs text-[#57534E]">
                             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#1C1917]" /> This week</span>
-                            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#E11D48]/80" /> Last week</span>
+                            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[var(--color-brand)]/80" /> Last week</span>
                         </div>
                     </div>
 
@@ -54,10 +54,10 @@ export default function Analyze() {
                             return (
                                 <article key={item.title} className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-sm)]">
                                     <div className="mb-2 flex items-center gap-2">
-                                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FFE4E6] text-[#E11D48]">
+                                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
                                             <Icon className="h-4 w-4" />
                                         </span>
-                                        <p className="text-xs font-medium text-[#E11D48]">{item.eyebrow}</p>
+                                        <p className="text-xs font-medium text-[var(--color-brand)]">{item.eyebrow}</p>
                                     </div>
                                     <h3 className="font-display font-semibold text-[#1C1917]">{item.title}</h3>
                                     <p className="mt-1.5 text-sm leading-relaxed text-[#57534E]">{item.body}</p>

@@ -25,7 +25,6 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TransactionsPage = lazy(() => import('./pages/TransactionsPage'));
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage'));
 const CardsPage = lazy(() => import('./pages/CardsPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 // Feature Pages
@@ -43,7 +42,7 @@ const ShoppingActivityPage = lazy(() => import('./pages/ShoppingActivityPage'));
 // Public Pages
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
-const DemoOSPage = lazy(() => import('./pages/DemoOSPage'));
+const DemoApp = lazy(() => import('./features/demo/DemoApp'));
 
 // Legal & Support Pages
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
@@ -144,7 +143,7 @@ function App() {
                             <Route path="/analyze" element={<Navigate to="/analytics" replace />} />
                             <Route path="/cards" element={<CardsPage />} />
                             <Route path="/expenses" element={<Navigate to="/transactions" replace />} />
-                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/profile" element={<Navigate to="/settings" replace />} />
                             <Route path="/settings" element={<SettingsPage />} />
                             <Route path="/setting" element={<Navigate to="/settings" replace />} />
                             {/* Feature Routes */}
@@ -173,7 +172,7 @@ function App() {
                         <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
                         {/* Public Legal & Support Pages */}
-                        <Route path="/demo" element={<DemoOSPage />} />
+                        <Route path="/demo/*" element={<DemoApp />} />
                         <Route path="/privacy" element={<PrivacyPolicyPage />} />
                         <Route path="/terms" element={<TermsOfServicePage />} />
                         <Route path="/faq" element={<FAQPage />} />

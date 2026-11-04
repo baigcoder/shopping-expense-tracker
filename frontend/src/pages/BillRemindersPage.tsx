@@ -88,7 +88,7 @@ const BillRemindersPage = () => {
                                 Liability Audit
                                 <div className={styles.liveBadge}>Active</div>
                             </h1>
-                            <p className="text-black/50 font-black text-xs uppercase tracking-widest mt-1">
+                            <p className="text-black/50 font-black text-[13px] mt-1">
                                 Watching {unpaidReminders.length} upcoming bills
                             </p>
                         </div>
@@ -96,14 +96,14 @@ const BillRemindersPage = () => {
 
                     <div className="flex gap-4">
                         <button
-                            className="h-14 px-8 border-4 border-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors flex items-center gap-2"
+                            className="h-14 px-8 border-4 border-black font-black text-[13px] hover:bg-black hover:text-white transition-colors flex items-center gap-2"
                             onClick={loadData}
                         >
                             <RefreshCw size={18} strokeWidth={3} />
                             Refresh_Nodes
                         </button>
                         <button
-                            className="h-14 px-8 bg-black text-white font-black text-xs uppercase hover:bg-[#E11D48] transition-colors flex items-center gap-2"
+                            className="h-14 px-8 bg-black text-white font-black text-[13px] hover:bg-[var(--color-brand)] transition-colors flex items-center gap-2"
                             onClick={() => setShowAddModal(true)}
                         >
                             <Plus size={18} strokeWidth={3} />
@@ -121,7 +121,7 @@ const BillRemindersPage = () => {
                 >
                     {[
                         { icon: <Clock size={24} strokeWidth={2} />, label: "Pending bills", value: unpaidReminders.length, progress: (unpaidReminders.length / 10) * 100, color: "#1C1917" },
-                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Overdue", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "#E11D48" },
+                        { icon: <AlertTriangle size={24} strokeWidth={2} />, label: "Overdue", value: overdueReminders.length, progress: overdueReminders.length > 0 ? 80 : 0, color: "var(--color-brand)" },
                         { icon: <DollarSign size={24} strokeWidth={2} />, label: "Total due", value: currencyService.formatCurrency(totalDue), progress: totalDue > 0 ? 60 : 0, color: "#1C1917" }
                     ].map((stat, i) => (
                         <motion.div key={i} className={styles.premiumStatCard} variants={itemVariants}>
@@ -149,7 +149,7 @@ const BillRemindersPage = () => {
                         Audit_Pipeline
                     </h2>
                     <div className="h-1 bg-black flex-1 mx-8" />
-                    <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[10px] font-medium text-[#57534E]">In sync</div>
+                    <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[13px] font-medium text-[#57534E]">In sync</div>
                 </div>
 
                 <motion.div
@@ -167,7 +167,7 @@ const BillRemindersPage = () => {
                                 No bills waiting right now
                             </p>
                             <button
-                                className="h-14 px-10 bg-black text-white font-black text-xs uppercase hover:bg-[#E11D48] transition-colors"
+                                className="h-14 px-10 bg-black text-white font-black text-[13px] hover:bg-[var(--color-brand)] transition-colors"
                                 onClick={() => setShowAddModal(true)}
                             >
                                 Schedule_Audit
@@ -207,11 +207,11 @@ const BillRemindersPage = () => {
                         <div className={styles.sectionHeader}>
                             <div className="flex items-center gap-4">
                                 <h2 className={styles.sectionTitle}>
-                                    <Sparkles size={32} strokeWidth={3} className="text-[#E11D48]" />
+                                    <Sparkles size={32} strokeWidth={3} className="text-[var(--color-brand)]" />
                                     AI_Predicted_Flow
                                 </h2>
                             </div>
-                            <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[10px] font-medium text-[#57534E]">Coming up</div>
+                            <div className="rounded-full bg-[#F4F0EB] px-3 py-1 text-[13px] font-medium text-[#57534E]">Coming up</div>
                         </div>
 
                         <div className={styles.predictionGrid}>
@@ -222,13 +222,13 @@ const BillRemindersPage = () => {
                                             {bill.confidence}%
                                         </div>
                                         <div>
-                                            <p className="font-black text-black text-lg leading-tight uppercase italic">{bill.name}</p>
-                                            <p className="mt-1 text-xs text-[var(--text-muted)]">Due {new Date(bill.dueDate).toLocaleDateString()}</p>
+                                            <p className="font-black text-black text-lg leading-tight italic">{bill.name}</p>
+                                            <p className="mt-1 text-[13px] text-[var(--text-muted)]">Due {new Date(bill.dueDate).toLocaleDateString()}</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <p className="font-black text-black text-xl leading-none mb-2">~{currencyService.formatCurrency(bill.amount)}</p>
-                                        <span className="text-[9px] font-black text-white bg-black px-3 py-1 uppercase tracking-widest">
+                                        <span className="text-[13px] font-black text-white bg-black px-3 py-1">
                                             {bill.source.toUpperCase()}
                                         </span>
                                     </div>
@@ -268,7 +268,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                 <div
                     className={styles.tileIcon}
                     style={{
-                        background: isOverdue ? '#E11D48' : isDueSoon ? '#000000' : '#FFFFFF',
+                        background: isOverdue ? 'var(--color-brand)' : isDueSoon ? '#000000' : '#FFFFFF',
                         color: isOverdue ? '#FFFFFF' : isDueSoon ? '#FFFFFF' : '#000000'
                     }}
                 >
@@ -280,7 +280,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                         <div
                             className={styles.statusBadge}
                             style={{
-                                background: isOverdue ? '#E11D48' : isDueSoon ? '#000000' : '#FFFFFF',
+                                background: isOverdue ? 'var(--color-brand)' : isDueSoon ? '#000000' : '#FFFFFF',
                                 color: isOverdue || isDueSoon ? 'white' : 'black',
                                 borderColor: 'black'
                             }}
@@ -292,7 +292,7 @@ const ReminderTile = ({ reminder, onPay, onDelete, idx }: any) => {
                         <Clock size={16} strokeWidth={3} />
                         <span>DUE_{dueDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}</span>
                         {reminder.frequency !== 'once' && (
-                            <span className="bg-black text-white px-2 py-0.5 text-[9px] uppercase font-black tracking-widest">
+                            <span className="bg-black text-white px-2 py-0.5 text-[13px] font-black">
                                 {reminder.frequency.toUpperCase()}
                             </span>
                         )}
@@ -361,9 +361,9 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                                 <div className="p-4 bg-white text-black border-4 border-black">
                                     <Plus size={32} strokeWidth={4} />
                                 </div>
-                                <DialogTitle className="text-4xl font-black text-white tracking-tighter uppercase italic">Deploy Tracker</DialogTitle>
+                                <DialogTitle className="text-4xl font-black text-white tracking-tighter italic">Deploy Tracker</DialogTitle>
                             </div>
-                            <DialogDescription className="font-black text-white/50 uppercase tracking-widest text-xs">Initialize new liability monitoring node</DialogDescription>
+                            <DialogDescription className="font-black text-white/50 text-[13px]">Initialize new liability monitoring node</DialogDescription>
                         </DialogHeader>
                     </div>
                 </div>
@@ -371,10 +371,10 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                 <div className="p-12 space-y-10">
                     <div className="grid gap-8">
                         <div className="space-y-3">
-                            <Label className="text-xs font-black text-black/40 uppercase tracking-widest ml-1">Service Identifier</Label>
+                            <Label className="text-[13px] font-black text-black/40 ml-1">Service Identifier</Label>
                             <Input
                                 placeholder="E.G. ELECTRIC, RENT, INTERNET..."
-                                className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-xl font-black uppercase"
+                                className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-xl font-black"
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                             />
@@ -382,19 +382,19 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
 
                         <div className="grid grid-cols-2 gap-8">
                             <div className="space-y-3">
-                                <Label className="text-xs font-black text-black/40 uppercase tracking-widest ml-1">Quantum (RS)</Label>
+                                <Label className="text-[13px] font-black text-black/40 ml-1">Quantum (RS)</Label>
                                 <Input
                                     type="number"
-                                    className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-xl font-black uppercase"
+                                    className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-xl font-black"
                                     value={amount}
                                     onChange={e => setAmount(e.target.value)}
                                 />
                             </div>
                             <div className="space-y-3">
-                                <Label className="text-xs font-black text-black/40 uppercase tracking-widest ml-1">Target Date</Label>
+                                <Label className="text-[13px] font-black text-black/40 ml-1">Target Date</Label>
                                 <Input
                                     type="date"
-                                    className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-lg font-black uppercase"
+                                    className="h-16 border-4 border-black bg-white focus:bg-black focus:text-white text-lg font-black"
                                     value={dueDate}
                                     onChange={e => setDueDate(e.target.value)}
                                 />
@@ -402,9 +402,9 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                         </div>
 
                         <div className="space-y-3">
-                            <Label className="text-xs font-black text-black/40 uppercase tracking-widest ml-1">Frequency Cycle</Label>
+                            <Label className="text-[13px] font-black text-black/40 ml-1">Frequency Cycle</Label>
                             <Select value={frequency} onValueChange={setFrequency}>
-                                <SelectTrigger className="h-16 border-4 border-black bg-white text-xl font-black uppercase">
+                                <SelectTrigger className="h-16 border-4 border-black bg-white text-xl font-black">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent className="border-4 border-black rounded-none">
@@ -416,28 +416,28 @@ const AddReminderModal = ({ isOpen, onClose, onSave }: any) => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-6 bg-black text-white border-4 border-black shadow-[8px_8px_0px_#E11D48]">
+                    <div className="flex items-center justify-between p-6 bg-black text-white border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]">
                         <div className="flex items-center gap-6">
                             <div className={cn("p-3 border-2 border-white", emailEnabled ? "bg-white text-black" : "bg-black text-white/30")}>
                                 <Mail size={24} strokeWidth={3} />
                             </div>
                             <div>
-                                <p className="text-sm font-black uppercase italic">Email Sync</p>
-                                <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Inbound Alert Protocol</p>
+                                <p className="text-sm font-black italic">Email Sync</p>
+                                <p className="text-[13px] font-black opacity-50">Inbound Alert Protocol</p>
                             </div>
                         </div>
-                        <Switch checked={emailEnabled} onCheckedChange={setEmailEnabled} className="data-[state=checked]:bg-[#E11D48]" />
+                        <Switch checked={emailEnabled} onCheckedChange={setEmailEnabled} className="data-[state=checked]:bg-[var(--color-brand)]" />
                     </div>
 
                     <div className="flex gap-6 pt-4">
                         <button 
-                            className="flex-1 h-16 border-4 border-black font-black uppercase text-xs hover:bg-black hover:text-white transition-colors" 
+                            className="flex-1 h-16 border-4 border-black font-black text-[13px] hover:bg-black hover:text-white transition-colors" 
                             onClick={onClose}
                         >
                             ABORT
                         </button>
                         <button 
-                            className="flex-[2] h-16 bg-black text-white font-black uppercase text-xs hover:bg-[#E11D48] transition-colors" 
+                            className="flex-[2] h-16 bg-black text-white font-black text-[13px] hover:bg-[var(--color-brand)] transition-colors" 
                             onClick={handleSubmit}
                         >
                             Add reminder

@@ -18,7 +18,7 @@ const error = (...args) => console.error('ðŸ’¸ BG:', ...args);
 
 const getSupabaseUrl = () => self.CONFIG?.SUPABASE_URL || '';
 const getSupabaseAnonKey = () => self.CONFIG?.SUPABASE_ANON_KEY || '';
-const getApiBaseUrl = () => (self.CONFIG?.API_BASE_URL || 'https://shopping-expense-tracker.vercel.app/api').replace(/\/$/, '');
+const getApiBaseUrl = () => (self.CONFIG?.API_BASE_URL || 'https://shopping-expense-tracker-svas.vercel.app/api').replace(/\/$/, '');
 const WEBSITE_ORIGINS = self.CONFIG?.WEBSITE_ORIGINS || [];
 
 // Exact origin match: substring checks let https://evil.vercel.app/?https://<our-site> through.
@@ -1407,6 +1407,8 @@ async function handleExtensionStatusCheck(sendResponse) {
             version: chrome.runtime.getManifest().version,
             loggedIn: !!(data.accessToken && data.userEmail),
             userEmail: data.userEmail || null,
+            // The website compares this with its own signed-in user before showing the dashboard.
+            userId: data.userId || null,
             lastSync: data.lastSync || null
         });
     } catch (error) {
@@ -1704,6 +1706,7 @@ async function handleSubscriptionDetected(data = {}) {
         isTrial: !!(data.isTrial || data.is_trial),
         isSubscription: true,
         trialDays: data.trialDays || data.trial_days || (data.isTrial || data.is_trial ? 7 : 0),
+        trialEndDate: data.trialEndDate || undefined,
     };
 
     const accessToken = await getValidAccessToken();
@@ -1817,6 +1820,7 @@ async function handleBehaviorTransaction(data) {
             isTrial: !!data.isTrial,
             isSubscription: !!data.isSubscription || data.type === 'subscription',
             trialDays: data.trialDays || 0,
+            trialEndDate: data.trialEndDate || undefined,
             planTier: data.planTier,
             confidence: data.confidence || data.detectionConfidence,
             detectionConfidence: data.detectionConfidence || data.confidence,
@@ -1923,7 +1927,8 @@ async function handleBehaviorTransaction(data) {
             });
             console.error('Failed to save behavior transaction:', error);
             // Auth/server/rate-limit failures are retryable; keep the capture instead of dropping it.
-            const retryable = response.status === 401 || response.status === 429 || response.status >= 500;
+            // Only bad data is final. A 404/405 means the API address was wrong, so keep the purchase and retry.
+            const retryable = ![400, 409, 422].includes(response.status);
             if (retryable) await queuePendingTransaction(data);
             await postExtensionHealthEvent(authData, {
                 eventType: 'detected_transaction',

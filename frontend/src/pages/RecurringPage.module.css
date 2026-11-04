@@ -129,7 +129,7 @@
 }
 
 .statLabel {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: none;
@@ -231,7 +231,7 @@
 }
 
 .nextDate {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--text-muted);
 }
 

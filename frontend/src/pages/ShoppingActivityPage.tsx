@@ -221,7 +221,7 @@ const ShoppingActivityPage = () => {
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--color-border)] pb-6">
                 <div>
-                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[13px] font-semibold text-emerald-700">
                         <Radio className="h-3.5 w-3.5 animate-pulse" />
                         <span>Companion Telemetry</span>
                     </div>
@@ -237,7 +237,7 @@ const ShoppingActivityPage = () => {
                     size="sm"
                     onClick={fetchSiteVisits}
                     disabled={isRefreshing}
-                    className="h-9 gap-2 border-[var(--color-border)] text-xs text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
+                    className="h-9 gap-2 border-[var(--color-border)] text-[13px] text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]"
                 >
                     <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
                     <span>{isRefreshing ? 'Refreshing…' : 'Sync Telemetry'}</span>
@@ -259,7 +259,7 @@ const ShoppingActivityPage = () => {
                                 <Icon className="h-5 w-5" />
                             </div>
                             <div className="min-w-0">
-                                <p className="text-xs font-medium text-[var(--color-muted)] truncate">{stat.label}</p>
+                                <p className="text-[13px] font-medium text-[var(--color-muted)] truncate">{stat.label}</p>
                                 <p className="mt-0.5 font-display text-xl sm:text-2xl font-bold tabular-nums text-[var(--color-ink)]">
                                     {stat.value}
                                 </p>
@@ -277,9 +277,9 @@ const ShoppingActivityPage = () => {
                         type="button"
                         onClick={() => setActiveFilter(filter)}
                         className={cn(
-                            "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-medium transition-colors border",
+                            "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors border",
                             activeFilter === filter
-                                ? "bg-[var(--color-brand)] border-[var(--color-brand)] text-white shadow-xs"
+                                ? "bg-[var(--color-brand)] border-[var(--color-brand)] text-white"
                                 : "bg-[var(--color-surface)] border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-2)]"
                         )}
                     >
@@ -299,7 +299,7 @@ const ShoppingActivityPage = () => {
                                 <h3 className="mt-3 font-display text-base font-semibold text-[var(--color-ink)]">
                                     No sessions recorded
                                 </h3>
-                                <p className="mt-1 text-xs text-[var(--color-muted)]">
+                                <p className="mt-1 text-[13px] text-[var(--color-muted)]">
                                     As you browse online checkout flows, captured sessions and domains will appear here.
                                 </p>
                             </Surface>
@@ -315,7 +315,7 @@ const ShoppingActivityPage = () => {
                                     animate="visible"
                                     layout
                                 >
-                                    <Surface className="p-4 sm:p-5 flex flex-col justify-between h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                                    <Surface className="p-4 sm:p-5 flex flex-col justify-between h-full transition-all duration-200 hover:-translate-y-0.5 hover:">
                                         <div className="flex items-start justify-between gap-3">
                                             <div className="flex items-center gap-3 min-w-0">
                                                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-surface-2)] text-[var(--color-ink)] border border-[var(--color-border)]">
@@ -325,7 +325,7 @@ const ShoppingActivityPage = () => {
                                                     <h3 className="font-display text-sm font-bold text-[var(--color-ink)] truncate">
                                                         {site.site_name}
                                                     </h3>
-                                                    <p className="text-xs text-[var(--color-muted)] truncate font-mono">
+                                                    <p className="text-[13px] text-[var(--color-muted)] truncate tabular-nums">
                                                         {site.hostname}
                                                     </p>
                                                 </div>
@@ -341,12 +341,12 @@ const ShoppingActivityPage = () => {
                                             </a>
                                         </div>
 
-                                        <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-xs text-[var(--color-ink-secondary)]">
+                                        <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-[13px] text-[var(--color-ink-secondary)]">
                                             <div className="flex items-center gap-1.5">
                                                 <Clock className="h-3.5 w-3.5 text-[var(--color-muted)]" />
                                                 <span>{timeAgo(site.last_visited)}</span>
                                             </div>
-                                            <Badge variant="outline" className="text-[10px] font-mono tabular-nums uppercase border-[var(--color-border)]">
+                                            <Badge variant="outline" className="text-[13px] tabular-nums tabular-nums border-[var(--color-border)]">
                                                 {site.visit_count} {site.visit_count === 1 ? 'visit' : 'visits'}
                                             </Badge>
                                         </div>

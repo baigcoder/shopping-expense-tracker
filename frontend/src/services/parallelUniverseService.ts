@@ -69,7 +69,7 @@ class ParallelUniverseService {
     // Get all parallel universes for a user
     async getAllUniverses(userId: string, monthsBack: number = 6): Promise<ParallelUniverse[]> {
         const [transactions, subscriptions, budgets] = await Promise.all([
-            supabaseTransactionService.getAll(userId, { limit: 1000 }),
+            supabaseTransactionService.getAll(userId, { limit: 1000 }).catch(() => []),
             subscriptionService.getAll(userId).catch(() => []),
             budgetService.getAll(userId).catch(() => [])
         ]);
@@ -92,7 +92,7 @@ class ParallelUniverseService {
     // Get a specific parallel universe
     async getUniverse(userId: string, type: UniverseType, monthsBack: number = 6): Promise<ParallelUniverse> {
         const [transactions, subscriptions, budgets] = await Promise.all([
-            supabaseTransactionService.getAll(userId),
+            supabaseTransactionService.getAll(userId).catch(() => []),
             subscriptionService.getAll(userId).catch(() => []),
             budgetService.getAll(userId).catch(() => [])
         ]);

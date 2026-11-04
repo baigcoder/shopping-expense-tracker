@@ -1,6 +1,7 @@
 // Bill Service - Manage Bills and Reminders
 import { supabase } from '../config/supabase';
 import { emitFinancialDataEvent } from './financialDataEvents';
+import { nextBillDue } from '../features/commitments/billSchedule';
 
 export interface Bill {
     id: string;
@@ -28,20 +29,6 @@ export interface BillReminder {
 class BillService {
     private normalizeDate(date: Date): Date {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    }
-
-    private getRecurringDay(dueDate: string): number {
-        const parsedNumber = Number.parseInt(dueDate, 10);
-        if (Number.isFinite(parsedNumber) && parsedNumber >= 1 && parsedNumber <= 31) {
-            return parsedNumber;
-        }
-
-        const parsedDate = new Date(dueDate);
-        if (!Number.isNaN(parsedDate.getTime())) {
-            return parsedDate.getDate();
-        }
-
-        return 1;
     }
 
     // Create a new bill
@@ -116,40 +103,9 @@ class BillService {
     }
 
     // Calculate next due date based on bill frequency
+    // Uses last_paid_date, so a paid bill moves to its next due date and an unpaid one stays overdue.
     getNextDueDate(bill: Bill): Date {
-        const today = this.normalizeDate(new Date());
-
-        if (bill.frequency === 'one-time') {
-            return this.normalizeDate(new Date(bill.due_date));
-        }
-
-        // For recurring bills, calculate next occurrence
-        const dueDay = this.getRecurringDay(bill.due_date);
-        const currentMonth = today.getMonth();
-        const currentYear = today.getFullYear();
-
-        const lastDayOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        let nextDue = new Date(currentYear, currentMonth, Math.min(dueDay, lastDayOfCurrentMonth));
-
-        // If due date has passed this month, move to next period
-        if (nextDue < today) {
-            switch (bill.frequency) {
-                case 'monthly':
-                    nextDue.setMonth(nextDue.getMonth() + 1);
-                    break;
-                case 'quarterly':
-                    nextDue.setMonth(nextDue.getMonth() + 3);
-                    break;
-                case 'yearly':
-                    nextDue.setFullYear(nextDue.getFullYear() + 1);
-                    break;
-            }
-
-            const correctedLastDay = new Date(nextDue.getFullYear(), nextDue.getMonth() + 1, 0).getDate();
-            nextDue = new Date(nextDue.getFullYear(), nextDue.getMonth(), Math.min(dueDay, correctedLastDay));
-        }
-
-        return this.normalizeDate(nextDue);
+        return nextBillDue(bill, new Date());
     }
 
     // Mark bill as paid

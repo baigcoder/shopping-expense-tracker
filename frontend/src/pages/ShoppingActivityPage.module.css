@@ -21,7 +21,7 @@
     padding: 32px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerLeft h1 {
@@ -50,9 +50,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     padding: 4px 12px;
     border: 1px solid var(--border);
@@ -77,9 +77,9 @@
 }
 
 .refreshBtn:hover:not(:disabled) {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .spinner {
@@ -106,13 +106,13 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
 .statCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIcon {
@@ -135,7 +135,7 @@
 }
 
 .statLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -170,7 +170,7 @@
 }
 
 .filterTab:hover {
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .filterTab.active {
@@ -194,12 +194,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .siteCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .siteHeader {
@@ -230,7 +230,7 @@
 }
 
 .siteHostname {
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
     text-transform: lowercase;
@@ -250,7 +250,7 @@
 }
 
 .visitLink:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: scale(1.1);
 }
 
@@ -268,7 +268,7 @@
     align-items: center;
     gap: 8px;
     color: #000000;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;
@@ -278,7 +278,7 @@
     position: absolute;
     bottom: 24px;
     right: 24px;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
     padding: 4px 12px;
@@ -288,7 +288,7 @@
     letter-spacing: -0.02em;
 }
 
-.siteCard.shopping .categoryBadge { background: #E11D48; }
+.siteCard.shopping .categoryBadge { background: var(--color-brand); }
 .siteCard.payment .categoryBadge { background: #000000; }
 .siteCard.finance .categoryBadge { background: #000000; color: #FFFFFF; }
 

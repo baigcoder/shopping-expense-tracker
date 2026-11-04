@@ -113,8 +113,8 @@ const ExtensionStatsCard = () => {
                             <RefreshCw size={20} className={styles.spinning} strokeWidth={2.5} />
                         ) : (
                             <div className="flex items-center gap-2">
-                                <div className={cn("w-2 h-2 rounded-full", isConnected ? "bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" : "bg-rose-500 shadow-[0_0_8px_#e11d48]")} />
-                                <span className={cn("text-xs font-bold", isConnected ? "text-emerald-500" : "text-rose-500")}>
+                                <div className={cn("w-2 h-2 rounded-full", isConnected ? "bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" : "bg-[var(--color-brand)] shadow-[0_0_8px_var(--color-brand)]")} />
+                                <span className={cn("text-xs font-bold", isConnected ? "text-emerald-500" : "text-[var(--color-brand)]")}>
                                     {isConnected ? "Live" : "Offline"}
                                 </span>
                             </div>

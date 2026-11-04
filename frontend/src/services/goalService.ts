@@ -9,7 +9,7 @@ export interface Goal {
     icon: string;
     target: number;
     saved: number;
-    deadline?: string;
+    deadline?: string | null;
     created_at?: string;
 }
 

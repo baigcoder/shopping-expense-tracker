@@ -346,9 +346,9 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                             </div>
 
                             {error && (
-                                <div className="mt-4 flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-xl">
-                                    <AlertTriangle size={20} className="text-rose-500" />
-                                    <p className="text-sm text-rose-600 font-bold">{error}</p>
+                                <div className="mt-4 flex items-center gap-3 p-4 bg-[var(--color-brand-soft)] border border-[var(--color-brand-soft)] rounded-xl">
+                                    <AlertTriangle size={20} className="text-[var(--color-brand)]" />
+                                    <p className="text-sm text-[var(--color-brand)] font-bold">{error}</p>
                                 </div>
                             )}
 
@@ -374,7 +374,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                     animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0.2, 0.5] }}
                                     transition={{ duration: 2, repeat: Infinity }}
                                 />
-                                <div className="relative w-24 h-24 bg-rose-600 rounded-full flex items-center justify-center shadow-lg">
+                                <div className="relative w-24 h-24 bg-[var(--color-brand)] rounded-full flex items-center justify-center shadow-lg">
                                     <Loader2 size={40} className="text-white animate-spin" />
                                 </div>
                             </div>
@@ -397,14 +397,14 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                         <Calendar size={14} /> Statement Period
                                     </label>
                                     {detectedPeriod && (
-                                        <Badge className="bg-rose-100 text-rose-700 border-none font-bold">Auto-detected</Badge>
+                                        <Badge className="bg-[var(--color-brand-soft)] text-[var(--color-brand)] border-none font-bold">Auto-detected</Badge>
                                     )}
                                 </div>
                                 <div className="flex gap-3 mt-2">
                                     <select
                                         value={selectedMonth}
                                         onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                                        className="flex-1 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-rose-300 transition-all"
+                                        className="flex-1 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-[var(--color-pink)] transition-all"
                                     >
                                         {monthNames.map((m, i) => (
                                             <option key={m} value={i + 1}>{m}</option>
@@ -413,7 +413,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                     <select
                                         value={selectedYear}
                                         onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                                        className="w-28 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-rose-300 transition-all"
+                                        className="w-28 px-4 py-2 bg-white border-2 border-slate-100 rounded-xl font-bold text-slate-700 outline-none focus:border-[var(--color-pink)] transition-all"
                                     >
                                         {[2023, 2024, 2025, 2026].map(y => (
                                             <option key={y} value={y}>{y}</option>
@@ -428,7 +428,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                 </h3>
                                 <div className="flex gap-4">
                                     <button onClick={deselectAll} className="text-xs font-black text-slate-400 hover:text-slate-600 uppercase transition-colors">Clear</button>
-                                    <button onClick={selectAll} className="text-xs font-black text-rose-600 hover:text-rose-700 uppercase transition-colors">Select All</button>
+                                    <button onClick={selectAll} className="text-xs font-black text-[var(--color-brand)] hover:text-[var(--color-brand)] uppercase transition-colors">Select All</button>
                                 </div>
                             </div>
 
@@ -444,7 +444,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                         </div>
                                         <div className={cn(
                                             "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
-                                            tx.type === 'income' ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"
+                                            tx.type === 'income' ? "bg-emerald-50 text-emerald-600" : "bg-[var(--color-brand-soft)] text-[var(--color-brand)]"
                                         )}>
                                             {tx.type === 'income' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
                                         </div>
@@ -458,7 +458,7 @@ const DocumentImportModal: React.FC<DocumentImportModalProps> = ({
                                         </div>
                                         <div className={cn(
                                             "text-lg font-black",
-                                            tx.type === 'income' ? "text-emerald-600" : "text-rose-600"
+                                            tx.type === 'income' ? "text-emerald-600" : "text-[var(--color-brand)]"
                                         )}>
                                             {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                                         </div>

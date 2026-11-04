@@ -213,7 +213,7 @@ export default function LifecycleScroller() {
                                 className="flex items-center gap-1.5 rounded-lg bg-[#1C1917] px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-[#2E2A27] transition-all"
                             >
                                 <span>{activeStageIndex === STAGES.length - 1 ? 'Back to Start' : 'Next Stage'}</span>
-                                <ArrowRight className="h-3.5 w-3.5 text-[#FDA4AF]" />
+                                <ArrowRight className="h-3.5 w-3.5 text-[var(--color-pink)]" />
                             </button>
                             <span className="font-mono text-xs text-[#78716C]">
                                 {activeStageIndex + 1} / {STAGES.length}

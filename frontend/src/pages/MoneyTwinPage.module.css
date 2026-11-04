@@ -28,7 +28,7 @@
     padding: 32px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerContent {
@@ -70,13 +70,13 @@
     align-items: center;
     justify-content: center;
     background: #FFFFFF;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
 .scoreCircle:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .scoreValue {
@@ -87,7 +87,7 @@
 }
 
 .scoreLabel {
-    font-size: 10px;
+    font-size: 13px;
     text-transform: none;
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -111,9 +111,9 @@
 }
 
 .refreshBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .spin {
@@ -140,13 +140,13 @@
     display: flex;
     align-items: center;
     gap: 24px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
 .statCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIcon {
@@ -169,7 +169,7 @@
 }
 
 .statLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -205,7 +205,7 @@
 }
 
 .tab:hover {
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .activeTab {
@@ -220,7 +220,7 @@
     border: 1px solid var(--border);
     padding: 64px;
     min-height: 600px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .tabContent h2 {
@@ -253,14 +253,14 @@
     padding: 40px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
     position: relative;
 }
 
 .forecastCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .forecastHeader {
@@ -281,7 +281,7 @@
 }
 
 .riskBadge {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     padding: 6px 16px;
     text-transform: none;
@@ -289,7 +289,7 @@
     border: 1px solid var(--border);
 }
 
-.forecastCard.critical .riskBadge { background: #E11D48; color: #FFFFFF; }
+.forecastCard.critical .riskBadge { background: var(--color-brand); color: #FFFFFF; }
 .forecastCard.high .riskBadge { background: #000000; color: #FFFFFF; }
 .forecastCard.medium .riskBadge { background: #FFFFFF; color: #000000; }
 .forecastCard.low .riskBadge { background: #FFFFFF; color: #000000; border-color: #000000; }
@@ -330,7 +330,7 @@
     background: #000000;
     border: 1px solid var(--border);
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -338,7 +338,7 @@
     text-transform: none;
 }
 
-.negative { color: #E11D48; }
+.negative { color: var(--color-brand); }
 .positive { color: #000000; }
 
 /* === WHAT IF === */
@@ -360,7 +360,7 @@
     padding: 32px 20px;
     color: #000000;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.1s;
     text-transform: none;
@@ -381,10 +381,10 @@
 .scenarioBtn:hover svg { color: #FFFFFF; }
 
 .scenarioBtn.active {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border-color: #000000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .scenarioBtn.active svg { color: #FFFFFF; }
@@ -394,11 +394,11 @@
     border: 1px solid var(--border);
     padding: 48px;
     max-width: 800px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .formGroup label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: #000000;
     text-transform: none;
@@ -421,7 +421,7 @@
 .formInput:focus {
     outline: none;
     background: #F8FAFC;
-    border-color: #E11D48;
+    border-color: var(--color-brand);
 }
 
 .runBtn {
@@ -444,9 +444,9 @@
 }
 
 .runBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 /* === RESULTS === */
@@ -455,7 +455,7 @@
     border: 6px solid #000000;
     padding: 48px;
     margin-top: 40px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .resultStats {
@@ -466,7 +466,7 @@
 }
 
 .resultLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -499,7 +499,7 @@
 }
 
 .recommendation.negative {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
 }
 
@@ -521,7 +521,7 @@
     flex-direction: column;
     align-items: center;
     gap: 16px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .universeCard:hover,
@@ -529,7 +529,7 @@
     background: #000000;
     color: #FFFFFF;
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .universeEmoji {
@@ -540,7 +540,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     padding: 64px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .comparisonStats {
@@ -556,7 +556,7 @@
 .vsCircle {
     width: 64px;
     height: 64px;
-    background: #E11D48;
+    background: var(--color-brand);
     color: white;
     border: 1px solid var(--border);
     display: flex;
@@ -582,7 +582,7 @@
 }
 
 .loading svg {
-    color: #E11D48;
+    color: var(--color-brand);
     width: 80px;
     height: 80px;
 }

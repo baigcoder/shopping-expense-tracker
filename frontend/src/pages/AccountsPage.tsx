@@ -14,12 +14,12 @@ import { AccountsSkeleton } from '../components/LoadingSkeleton';
 const ACCOUNT_TYPES = {
     checking: { label: 'Checking', icon: Building2, color: '#000000' },
     savings: { label: 'Savings', icon: PiggyBank, color: '#000000' },
-    credit: { label: 'Credit Card', icon: CreditCard, color: '#E11D48' },
+    credit: { label: 'Credit Card', icon: CreditCard, color: 'var(--color-brand)' },
     investment: { label: 'Investment', icon: Briefcase, color: '#000000' },
     cash: { label: 'Cash', icon: Banknote, color: '#000000' }
 };
 
-const BANK_COLORS = ['#E11D48', '#000000', '#FFFFFF', '#FFD700', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF'];
+const BANK_COLORS = ['var(--color-brand)', '#000000', '#FFFFFF', '#FFD700', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF'];
 
 const AccountsPage = () => {
     const { user } = useAuthStore();
@@ -182,7 +182,7 @@ const AccountsPage = () => {
                             <span className={`${styles.netWorthValue} ${totals.netWorth < 0 ? styles.negative : ''}`}>
                                 ${totals.netWorth.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                             </span>
-                            <span className="text-[10px] font-black uppercase tracking-widest bg-black text-white px-1.5 py-0.5">Live Ledger</span>
+                            <span className="text-[13px] font-black bg-black text-white px-1.5 py-0.5">Live Ledger</span>
                         </div>
                     </div>
                 </div>
@@ -196,8 +196,8 @@ const AccountsPage = () => {
                             <strong>${totals.assets.toLocaleString()}</strong>
                         </div>
                     </div>
-                    <div className={styles.breakdownItem} style={{ borderColor: '#E11D48' }}>
-                        <div className={styles.breakdownIcon} style={{ background: '#E11D48', color: '#FFFFFF' }}>
+                    <div className={styles.breakdownItem} style={{ borderColor: 'var(--color-brand)' }}>
+                        <div className={styles.breakdownIcon} style={{ background: 'var(--color-brand)', color: '#FFFFFF' }}>
                             <TrendingDown size={18} />
                         </div>
                         <div>
@@ -241,9 +241,9 @@ const AccountsPage = () => {
                                     <div className={styles.cardInfo}>
                                         <div className="flex items-center gap-2">
                                             <h3>{account.name}</h3>
-                                            {account.balance > 1000 && <span className="text-[9px] font-black bg-[#E11D48] text-white px-1 py-0.5 tracking-tighter">HYPE</span>}
+                                            {account.balance > 1000 && <span className="text-[13px] font-black bg-[var(--color-brand)] text-white px-1 py-0.5 tracking-tighter">HYPE</span>}
                                         </div>
-                                        <p className="uppercase tracking-widest text-[10px] font-bold opacity-60">{account.bank_name}</p>
+                                        <p className=" text-[13px] font-bold opacity-60">{account.bank_name}</p>
                                     </div>
                                     <div className={styles.cardActions}>
                                         <button onClick={() => openEdit(account)}><Edit2 size={14} /></button>

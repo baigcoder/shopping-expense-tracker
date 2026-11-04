@@ -9,14 +9,14 @@ export default function ExtensionScene() {
     return (
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#141210] p-8 sm:p-12 lg:p-16 text-white shadow-2xl">
             {/* Ambient subtle rose depth lighting */}
-            <div className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full bg-[#E11D48]/15 blur-3xl" />
-            <div className="pointer-events-none absolute -left-20 -bottom-20 h-96 w-96 rounded-full bg-[#E11D48]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full bg-[var(--color-brand)]/15 blur-3xl" />
+            <div className="pointer-events-none absolute -left-20 -bottom-20 h-96 w-96 rounded-full bg-[var(--color-brand)]/10 blur-3xl" />
 
             <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-12 items-center">
                 {/* Left: Editorial Narrative & Action */}
                 <div className="space-y-6">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold text-[#FDA4AF] backdrop-blur-sm">
-                        <Chrome className="h-3.5 w-3.5 text-[#FDA4AF]" />
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold text-[var(--color-pink)] backdrop-blur-sm">
+                        <Chrome className="h-3.5 w-3.5 text-[var(--color-pink)]" />
                         <span>The Browser Companion</span>
                     </div>
 
@@ -43,7 +43,7 @@ export default function ExtensionScene() {
                                     {platform}
                                 </span>
                             ))}
-                            <span className="rounded-full border border-[#FDA4AF]/30 bg-[#E11D48]/20 px-3 py-1 text-xs font-semibold text-[#FDA4AF]">
+                            <span className="rounded-full border border-[var(--color-pink)]/30 bg-[var(--color-brand)]/20 px-3 py-1 text-xs font-semibold text-[var(--color-pink)]">
                                 + 20 more
                             </span>
                         </div>
@@ -54,7 +54,7 @@ export default function ExtensionScene() {
                         <Button
                             asChild
                             size="lg"
-                            className="h-12 bg-[#E11D48] text-white hover:bg-[#BE123C] shadow-lg shadow-[#E11D48]/20"
+                            className="h-12 bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-hover)] shadow-lg shadow-[var(--color-brand)]/20"
                         >
                             <a href="/cashly-extension.zip" download>
                                 <Download className="mr-2 h-4 w-4" />
@@ -118,15 +118,15 @@ export default function ExtensionScene() {
 
                             <div className="flex items-center justify-between border-t border-white/10 pt-2 text-sm font-bold text-white">
                                 <span>Order Grand Total</span>
-                                <span className="font-mono text-[#FDA4AF]">$87.42</span>
+                                <span className="font-mono text-[var(--color-pink)]">$87.42</span>
                             </div>
                         </div>
 
                         {/* Layer 2: Docked Cashly Companion Popover */}
-                        <div className="mt-4 rounded-xl border border-[#FDA4AF] bg-gradient-to-b from-[#1C1917] to-[#25211E] p-4 shadow-xl">
+                        <div className="mt-4 rounded-xl border border-[var(--color-pink)] bg-gradient-to-b from-[#1C1917] to-[#25211E] p-4 shadow-xl">
                             <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                                 <div className="flex items-center gap-2">
-                                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#E11D48] text-[11px] font-bold text-white">
+                                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--color-brand)] text-[11px] font-bold text-white">
                                         C
                                     </div>
                                     <span className="text-xs font-bold text-white">Cashly Detected Checkout</span>
@@ -138,12 +138,12 @@ export default function ExtensionScene() {
 
                             <div className="mt-3 flex items-center justify-between text-xs">
                                 <span className="text-[#D6D3D1]">Staged to Review Inbox:</span>
-                                <span className="font-mono font-bold text-[#FDA4AF] tabular-nums">$87.42</span>
+                                <span className="font-mono font-bold text-[var(--color-pink)] tabular-nums">$87.42</span>
                             </div>
 
                             <div className="mt-3 flex items-center justify-between rounded-lg bg-black/40 px-3 py-2 text-[11px] text-[#A8A29E]">
                                 <div className="flex items-center gap-1.5 text-white">
-                                    <Inbox className="h-3.5 w-3.5 text-[#FDA4AF]" />
+                                    <Inbox className="h-3.5 w-3.5 text-[var(--color-pink)]" />
                                     <span>Awaiting your decision in Cashly</span>
                                 </div>
                                 <span className="font-semibold text-[#059669]">Unposted</span>

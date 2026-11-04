@@ -24,7 +24,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerTitle {
@@ -68,7 +68,7 @@
 }
 
 .secureBadge {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     color: #FFFFFF;
     background: #000000;
@@ -99,12 +99,12 @@
     position: relative;
     overflow: hidden;
     transition: all 0.1s;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .premiumStatCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statHeader {
@@ -126,7 +126,7 @@
 }
 
 .statLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -142,7 +142,7 @@
 }
 
 .statSubtext {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -202,7 +202,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #FFFFFF;
     background: #000000;
@@ -252,7 +252,7 @@
 
 .addCardTile:hover .addCardIcon {
     background: #FFFFFF;
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 .addCardText {
@@ -272,7 +272,7 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     margin-bottom: 48px;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .banksHeader {
@@ -324,7 +324,7 @@
     padding: 0;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .modalHeader {
@@ -371,11 +371,11 @@
     background: #000000;
     color: #FFFFFF;
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .infoLabel {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;
@@ -419,7 +419,7 @@
         width: calc(100vw - 1.5rem);
         max-height: calc(100dvh - 1.5rem);
         border-width: 4px;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .detailRow,

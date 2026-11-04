@@ -35,7 +35,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerLeft {
@@ -68,7 +68,7 @@
     border: none;
     border-radius: 999px;
     color: var(--brand);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 0;
     text-transform: none;
@@ -113,13 +113,13 @@
     position: relative;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .premiumStatCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
-    border-color: #E11D48;
+    box-shadow: none;
+    border-color: var(--color-brand);
 }
 
 .statIconBox {
@@ -132,8 +132,8 @@
     margin-bottom: 1.25rem;
     background: #000000;
     color: #FFFFFF;
-    border: 2px solid #E11D48;
-    box-shadow: var(--shadow-md);
+    border: 2px solid var(--color-brand);
+    box-shadow: none;
 }
 
 .statValue {
@@ -145,11 +145,11 @@
 }
 
 .statLabel {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: none;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
 }
 
 .statProgress {
@@ -164,7 +164,7 @@
 
 .progressFill {
     height: 100%;
-    background: #E11D48;
+    background: var(--color-brand);
     border-radius: var(--r-lg);
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -172,7 +172,7 @@
 /* === AI SUMMARY CARD === */
 .aiSummaryCard {
     background: #000000;
-    border: 3px solid #E11D48;
+    border: 3px solid var(--color-brand);
     border-radius: var(--r-lg);
     padding: 2.25rem;
     display: flex;
@@ -180,20 +180,20 @@
     gap: 2rem;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .aiMagicCircle {
     width: 5rem;
     height: 5rem;
     border-radius: var(--r-lg);
-    background: #E11D48;
+    background: var(--color-brand);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     flex-shrink: 0;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     border: 1px solid var(--border);
     animation: premium-float 3s ease-in-out infinite;
 }
@@ -211,12 +211,12 @@
     background: #FFFFFF;
     color: #000000;
     border-radius: var(--r-lg);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-transform: none;
     letter-spacing: 0.05em;
     margin-bottom: 0.75rem;
-    border: 2px solid #E11D48;
+    border: 2px solid var(--color-brand);
 }
 
 .aiMessage {
@@ -261,13 +261,13 @@
     gap: 1.5rem;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .insightGlassCard:hover {
     transform: none;
-    border-color: #E11D48;
-    box-shadow: var(--shadow-md);
+    border-color: var(--color-brand);
+    box-shadow: none;
 }
 
 .insightIconBox {
@@ -280,8 +280,8 @@
     flex-shrink: 0;
     background: #000000;
     color: #FFFFFF;
-    border: 2px solid #E11D48;
-    box-shadow: var(--shadow-md);
+    border: 2px solid var(--color-brand);
+    box-shadow: none;
 }
 
 .insightTitle {
@@ -306,7 +306,7 @@
     border-radius: var(--r-lg);
     padding: 2rem;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .categoryProgressBar {
@@ -329,9 +329,9 @@
     background: #000000;
     color: #FFFFFF;
     border-radius: var(--r-lg);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: bold;
-    border: 1px solid #E11D48;
+    border: 1px solid var(--color-brand);
 }
 
 .progressTrack {
@@ -344,7 +344,7 @@
 
 .progressThumb {
     height: 100%;
-    background: #E11D48;
+    background: var(--color-brand);
     border-radius: var(--r-lg);
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -365,15 +365,15 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     margin-bottom: 1rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .actionBtn:hover {
     background: #000000;
     color: #FFFFFF;
-    border-color: #E11D48;
+    border-color: var(--color-brand);
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .actionBtnIcon {
@@ -383,7 +383,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border: 1px solid var(--border);
 }
@@ -401,7 +401,7 @@
     width: 3.5rem;
     height: 3.5rem;
     background: #000000;
-    border: 2px solid #E11D48;
+    border: 2px solid var(--color-brand);
     border-radius: var(--r-lg);
     color: #FFFFFF;
     display: flex;
@@ -409,14 +409,14 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .refreshCircle:hover {
     border-color: #FFFFFF;
-    color: #E11D48;
+    color: var(--color-brand);
     transform: translate(-2px, -2px) rotate(30deg);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 /* Responsive */

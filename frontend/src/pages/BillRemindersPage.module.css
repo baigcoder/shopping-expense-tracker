@@ -29,7 +29,7 @@
     margin-bottom: 48px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerLeft {
@@ -62,7 +62,7 @@
 }
 
 .liveBadge {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     padding: 2px 10px;
     background: #000000;
@@ -83,7 +83,7 @@
     background: #FFFFFF;
     padding: 40px;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     position: relative;
     overflow: hidden;
     transition: all 0.1s;
@@ -91,7 +91,7 @@
 
 .premiumStatCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIconBox {
@@ -107,7 +107,7 @@
 }
 
 .statLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -161,7 +161,7 @@
     padding: 40px;
     margin-bottom: 64px;
     position: relative;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .reminderGrid {
@@ -182,8 +182,8 @@
 
 .reminderTile:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
-    border-color: #E11D48;
+    box-shadow: none;
+    border-color: var(--color-brand);
 }
 
 .tileLeft {
@@ -213,7 +213,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -221,7 +221,7 @@
 
 .statusBadge {
     padding: 2px 10px;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;
@@ -247,7 +247,7 @@
 }
 
 .amountLabel {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -282,7 +282,7 @@
 }
 
 .deleteBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
 }
 
@@ -293,7 +293,7 @@
     padding: 40px;
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .predictionGrid {
@@ -316,11 +316,11 @@
     background: #000000;
     color: #FFFFFF;
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .predictCard:hover .predictRate {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border-color: #FFFFFF;
 }
@@ -332,7 +332,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #000000;
     border: 1px solid var(--border);

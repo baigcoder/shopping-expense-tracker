@@ -19,6 +19,8 @@ export interface SupabaseTransaction {
 }
 
 const TRANSACTION_CACHE_TTL = 30 * 1000;
+const PAGE_ROWS = 1000;
+const MAX_ROWS = 20000;
 const transactionCache = new Map<string, { data: SupabaseTransaction[]; timestamp: number }>();
 
 export const invalidateTransactionCache = (userId?: string) => {
@@ -31,30 +33,33 @@ export const invalidateTransactionCache = (userId?: string) => {
 };
 
 export const supabaseTransactionService = {
-    // Get all transactions for current user
+    // Every transaction for the user, newest first. Supabase returns at most 1,000 rows per request,
+    // so this pages through them; the old single 100-row query left balances and year totals short.
+    // A failed load throws instead of returning [], which would make an existing user look brand new.
     getAll: async (userId: string, options: { force?: boolean; limit?: number } = {}): Promise<SupabaseTransaction[]> => {
         const cached = transactionCache.get(userId);
         if (!options.force && !options.limit && cached && Date.now() - cached.timestamp < TRANSACTION_CACHE_TTL) {
             return cached.data;
         }
 
-        const { data, error } = await supabase
-            .from('transactions')
-            .select('*')
-            .eq('user_id', userId)
-            .order('date', { ascending: false })
-            .limit(options.limit || 100);
-
-        if (error) {
-            console.error('Error fetching transactions:', error);
-            return [];
+        // shortcut: stops at MAX_ROWS; move totals to a server-side query if users ever pass that.
+        const want = options.limit || MAX_ROWS;
+        const transactions: SupabaseTransaction[] = [];
+        for (let from = 0; from < want; from += PAGE_ROWS) {
+            const to = Math.min(from + PAGE_ROWS, want) - 1;
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .eq('user_id', userId)
+                .order('date', { ascending: false })
+                .order('id', { ascending: false }) // stable order, so pages never skip or repeat a row
+                .range(from, to);
+            if (error) throw new Error(`Could not load transactions: ${error.message}`);
+            transactions.push(...(data || []));
+            if (!data || data.length < to - from + 1) break;
         }
 
-        const transactions = data || [];
-        if (!options.limit || options.limit === 100) {
-            transactionCache.set(userId, { data: transactions, timestamp: Date.now() });
-        }
-
+        if (!options.limit) transactionCache.set(userId, { data: transactions, timestamp: Date.now() });
         return transactions;
     },
 

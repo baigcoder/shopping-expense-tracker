@@ -64,14 +64,14 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     margin-bottom: 3rem;
     transition: all 0.2s;
 }
 
 .profileCard:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .avatarWrapper {
@@ -91,7 +91,7 @@
     justify-content: center;
     font-size: 4rem;
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .avatarInitials {
@@ -121,7 +121,7 @@
     justify-content: center;
     cursor: pointer;
     transition: transform 0.2s;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .editAvatarBtn:hover {
@@ -163,7 +163,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 2.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     height: fit-content;
 }
 
@@ -209,7 +209,7 @@
 .input:focus {
     outline: none;
     background: var(--bg-card);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transform: none;
 }
 
@@ -258,7 +258,7 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 1.25rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -267,7 +267,7 @@
 
 .statCard:hover {
     transform: translate(-3px, -3px);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statIconBox {
@@ -296,7 +296,7 @@
 .statLabel {
     text-transform: none;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: var(--text-secondary);
     margin-top: 0.1rem;
 }
@@ -323,7 +323,7 @@
     font-weight: 700;
     color: #000;
     text-transform: none;
-    letter-spacing: 1px;
+    letter-spacing: 0;
 }
 
 .loaderCard {
@@ -331,7 +331,7 @@
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 2rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 @media (max-width: 768px) {

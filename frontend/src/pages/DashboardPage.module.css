@@ -150,7 +150,7 @@
 }
 
 .trendUp { color: #10b981; }
-.trendDown { color: #E11D48; }
+.trendDown { color: var(--color-brand); }
 
 /* === MAIN SECTION CARDS === */
 .whiteCard {
@@ -412,7 +412,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #E11D48;
+  background: var(--color-brand);
   color: #fff;
   border: 1px solid var(--border);
   flex-shrink: 0;
@@ -429,7 +429,7 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   text-transform: none;
-  color: #E11D48;
+  color: var(--color-brand);
   display: flex;
   align-items: center;
   gap: 0.5rem;

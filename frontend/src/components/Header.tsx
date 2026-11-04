@@ -66,8 +66,8 @@ const Header = () => {
                     whileTap={{ scale: 0.93 }}
                     onClick={openModalQuickAdd || openQuickAdd}
                     aria-label="Add transaction"
-                    className="flex items-center gap-2 border-3 border-black bg-black px-4 py-2 text-sm font-black uppercase tracking-widest text-white shadow-[4px_4px_0px_#E11D48] transition-all"
-                    whileHover={{ translateX: -2, translateY: -2, boxShadow: '6px 6px 0px #E11D48' }}
+                    className="flex items-center gap-2 border-3 border-black bg-black px-4 py-2 text-sm font-black uppercase tracking-widest text-white shadow-[4px_4px_0px_var(--color-brand)] transition-all"
+                    whileHover={{ translateX: -2, translateY: -2, boxShadow: '6px 6px 0px var(--color-brand)' }}
                 >
                     <Plus className="h-4 w-4" strokeWidth={4} />
                     <span className="hidden sm:inline">Add</span>

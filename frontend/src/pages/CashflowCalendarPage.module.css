@@ -38,7 +38,7 @@
 .calendarWrapper {
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .calendarHeader {
@@ -52,7 +52,7 @@
 .dayLabel {
     padding: 1rem;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-transform: none;
     letter-spacing: -0.02em;
@@ -81,7 +81,7 @@
 }
 
 .cellToday {
-    background: #fff1f2;
+    background: var(--color-brand-soft);
 }
 
 .cellToday::after {
@@ -89,9 +89,9 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     padding: 2px 6px;
 }
@@ -111,7 +111,7 @@
 }
 
 .eventItem {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     padding: 2px 6px;
     border: 1px solid var(--border);
@@ -132,10 +132,10 @@
 }
 
 .eventBill {
-    background: #E11D48;
+    background: var(--color-brand);
     color: #FFFFFF;
     border-color: #000000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 /* === HEATMAP INTENSITY === */
@@ -157,11 +157,11 @@
     background: #FFFFFF;
     border: 1px solid var(--border);
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .statLabel {
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #64748b;
     text-transform: none;
@@ -215,7 +215,7 @@
     }
 
     .titleSection p {
-        font-size: 0.72rem;
+        font-size: 0.8125rem;
         line-height: 1.5;
     }
 
@@ -226,16 +226,16 @@
 
     .statCard {
         padding: 1.1rem;
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .calendarWrapper {
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
     }
 
     .dayLabel {
         padding: 0.75rem 0.5rem;
-        font-size: 0.65rem;
+        font-size: 0.8125rem;
     }
 
     .cell {

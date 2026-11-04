@@ -281,7 +281,8 @@ function getRandomTip(): string {
 }
 
 // Main export - FAST AI response using frontend cache
-export const getAIResponse = async (message: string, userId?: string): Promise<string> => {
+/** `facts` are the Home screen figures; they go first so the backend's 8,000-character cut never drops them. */
+export const getAIResponse = async (message: string, userId?: string, facts?: string): Promise<string> => {
     if (!userId) {
         return generateSmartResponse(message, {
             userId: '',
@@ -304,7 +305,8 @@ export const getAIResponse = async (message: string, userId?: string): Promise<s
     try {
         const { aiDataCache } = await import('./aiDataCacheService');
         const cachedData = await aiDataCache.getCachedData(userId);
-        const contextString = aiDataCache.buildContextString(cachedData);
+        const cacheText = aiDataCache.buildContextString(cachedData);
+        const contextString = facts ? `${facts}\n\n${cacheText}` : cacheText;
 
         // Try FAST endpoint
         try {

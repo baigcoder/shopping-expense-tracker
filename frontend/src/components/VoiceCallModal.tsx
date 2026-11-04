@@ -284,7 +284,7 @@ const VoiceCallModal: React.FC<VoiceCallModalProps> = ({
                                         isAISpeaking 
                                             ? "bg-gradient-to-tr from-[var(--color-ai)] to-violet-400 text-white shadow-[0_0_24px_rgba(117,71,199,0.35)]" 
                                             : isThinking 
-                                                ? "bg-gradient-to-tr from-[var(--color-brand)] to-rose-400 text-white shadow-[0_0_24px_rgba(217,47,87,0.35)]"
+                                                ? "bg-gradient-to-tr from-[var(--color-brand)] to-[var(--color-pink)] text-white shadow-[0_0_24px_rgba(217,47,87,0.35)]"
                                                 : "bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)]"
                                     )}
                                     animate={isAISpeaking ? { 

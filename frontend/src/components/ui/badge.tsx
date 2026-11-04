@@ -22,7 +22,7 @@ const badgeVariants = cva(
         info:
           "border-blue-200/60 bg-blue-50 text-blue-800 dark:border-blue-800/40 dark:bg-blue-950/40 dark:text-blue-300",
         brand:
-          "border-rose-200/60 bg-rose-50 text-rose-800 dark:border-rose-800/40 dark:bg-rose-950/40 dark:text-rose-300",
+          "border-[var(--color-pink)]/60 bg-[var(--color-brand-soft)] text-[var(--color-wine)] dark:border-[var(--color-wine)]/40 dark:bg-[var(--color-wine)]/40 dark:text-[var(--color-pink)]",
       },
     },
     defaultVariants: {

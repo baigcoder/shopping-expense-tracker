@@ -1,93 +1,79 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
-import TopBar from '../components/TopBar';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { AppShell } from '../components/app/AppShell';
 import CommandPalette from '../components/CommandPalette';
-import MobileBottomNav from '../components/MobileBottomNav';
-import MobileHelpButton from '../components/MobileHelpButton';
 import AddCardModal from '../components/AddCardModal';
 import TransactionModal from '../components/TransactionModal';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useRealtimeSync } from '../hooks/useRealtimeSync';
-import { useUIStore, useModalStore } from '../store/useStore';
-import styles from './DashboardLayout.module.css';
+import { useAuthStore, useModalStore } from '../store/useStore';
+import { logout as supabaseLogout } from '../config/supabase';
+import { transactionInboxApi } from '../services/featureExpansionApi';
+import { ExtensionRequired, useExtensionLink } from '../features/extension/ExtensionRequired';
 
 const AIChatbot = lazy(() => import('../components/AIChatbot'));
 
 const DashboardLayout = () => {
-    const { sidebarOpen, sidebarHovered, setSidebarOpen } = useUIStore();
+    const navigate = useNavigate();
+    const { user, logout: storeLogout } = useAuthStore();
     const isAddCardOpen = useModalStore((s) => s.isAddCardOpen);
     const isAddTransactionOpen = useModalStore((s) => s.isAddTransactionOpen);
     const [assistantReady, setAssistantReady] = useState(false);
     const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+    const [inboxCount, setInboxCount] = useState(0);
 
     useRealtimeSync();
+    // The dashboard opens only when the extension is installed here and signed in to this same account.
+    const link = useExtensionLink({ id: user?.id, email: user?.email });
 
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 1024) {
-                setSidebarOpen(false);
-            }
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [setSidebarOpen]);
-
-    useEffect(() => {
-        const loadAssistant = () => setAssistantReady(true);
-        const win = window as any;
-        const idleId = typeof win.requestIdleCallback === 'function'
-            ? win.requestIdleCallback(loadAssistant, { timeout: 1500 })
-            : window.setTimeout(loadAssistant, 900);
-
-        return () => {
-            if (typeof win.cancelIdleCallback === 'function' && typeof idleId === 'number') {
-                win.cancelIdleCallback(idleId);
-            } else {
-                window.clearTimeout(idleId as number);
-            }
-        };
+        let alive = true;
+        const refresh = () => transactionInboxApi.list({ status: 'pending', limit: 1 })
+            .then((r) => alive && setInboxCount(r?.pagination?.total || r?.data?.length || 0))
+            .catch(() => undefined);
+        refresh();
+        const id = window.setInterval(refresh, 60000);
+        return () => { alive = false; window.clearInterval(id); };
     }, []);
 
+    useEffect(() => {
+        // Load the assistant after the page settles so it never delays the first paint.
+        const id = window.setTimeout(() => setAssistantReady(true), 900);
+        return () => window.clearTimeout(id);
+    }, []);
+
+    const signOut = async () => {
+        try { await supabaseLogout(); } finally {
+            storeLogout();
+            localStorage.clear();
+            navigate('/login');
+        }
+    };
+
+    if (link.state !== 'linked') {
+        return <ExtensionRequired state={link.state} email={user?.email} extensionEmail={link.extensionEmail} onCheck={link.check} onSignOut={() => void signOut()} />;
+    }
+
     return (
-        <div className={`${styles.appContainer} ${styles.withSidebar} ${sidebarOpen || sidebarHovered ? styles.sidebarExpanded : ''}`}>
-            {/* Desktop & Mobile Responsive Sidebar */}
-            <Sidebar />
+        <AppShell
+            userName={user?.name || user?.email?.split('@')[0] || 'You'}
+            userDetail={user?.email || ''}
+            inboxCount={inboxCount}
+            onSignOut={() => void signOut()}
+        >
+            <ErrorBoundary>
+                <Outlet />
+            </ErrorBoundary>
 
-            <div className="flex-1 flex flex-col min-w-0 min-h-screen">
-                {/* Universal Top Header Bar */}
-                <TopBar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
-
-                {/* Main Content Area */}
-                <main className={`${styles.contentWrapper} flex-1 pb-24 lg:pb-8`}>
-                    <ErrorBoundary>
-                        <Outlet />
-                    </ErrorBoundary>
-                </main>
-            </div>
-
-            {/* Universal Command Palette (⌘K) */}
-            <CommandPalette
-                open={commandPaletteOpen}
-                onOpenChange={setCommandPaletteOpen}
-            />
-
-            {/* Mobile Bottom Navigation (5 Canonical Pillars + Quick Action) */}
-            <MobileBottomNav />
-
-            {/* Modal Portals */}
+            <CommandPalette open={commandPaletteOpen} onOpenChange={setCommandPaletteOpen} />
             {isAddCardOpen && <AddCardModal />}
             {isAddTransactionOpen && <TransactionModal />}
-            <MobileHelpButton />
-
-            {/* Embedded AI Assistant */}
             {assistantReady && (
                 <Suspense fallback={null}>
                     <AIChatbot />
                 </Suspense>
             )}
-        </div>
+        </AppShell>
     );
 };
 

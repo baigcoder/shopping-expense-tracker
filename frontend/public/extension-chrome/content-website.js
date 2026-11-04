@@ -538,6 +538,11 @@
                 localStorage.removeItem(LAST_SYNC_KEY);
                 await chrome.runtime.sendMessage({ type: 'USER_LOGGED_OUT' });
             } catch (e) { }
+        } else if (message.action === 'STATUS') {
+            // A live answer for the website's sign-in gate: who the extension is signed in as, right now.
+            let status = { installed: true, loggedIn: false, userId: null, userEmail: null };
+            try { status = { ...status, ...(await chrome.runtime.sendMessage({ type: 'CHECK_EXTENSION_STATUS' })) }; } catch (e) { }
+            window.postMessage({ source: 'cashly-extension', type: 'EXTENSION_STATUS', requestId: message.requestId, data: status }, window.location.origin);
         } else if (message.action === 'CHECK_STATUS') {
             try {
                 await setExtensionFlag();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, Lock, Mail, User, Check, ArrowRight } from 'lucide-react';
 import { signInWithGoogle } from '../config/supabase';
 import { sendSignupOTP } from '../services/otpService';
@@ -34,7 +34,8 @@ const GoogleIcon = () => (
 
 const SignupPage = () => {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [searchParams] = useSearchParams();
+    const [email, setEmail] = useState(() => searchParams.get('email') || '');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
     const [showPw, setShowPw] = useState(false);
@@ -112,7 +113,7 @@ const SignupPage = () => {
         >
             <form onSubmit={handleSignup} className="space-y-3.5">
                 <div className="space-y-1.5">
-                    <label htmlFor="signup-name" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-name" className="text-[14px] font-medium text-[var(--color-ink)]">
                         Your Name
                     </label>
                     <div className="relative">
@@ -120,7 +121,7 @@ const SignupPage = () => {
                         <Input
                             id="signup-name"
                             autoComplete="name"
-                            className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', nameError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 text-[15px] focus-visible:ring-[var(--color-brand)]', nameError && 'border-[var(--color-danger)]')}
                             placeholder="Alex Morgan"
                             value={name}
                             onChange={e => setName(e.target.value)}
@@ -132,8 +133,8 @@ const SignupPage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label htmlFor="signup-email" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
-                        Email Address
+                    <label htmlFor="signup-email" className="text-[14px] font-medium text-[var(--color-ink)]">
+                        Email
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
@@ -141,7 +142,7 @@ const SignupPage = () => {
                             id="signup-email"
                             autoComplete="email"
                             type="email"
-                            className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 text-[15px] focus-visible:ring-[var(--color-brand)]', emailError && 'border-[var(--color-danger)]')}
                             placeholder="you@example.com"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
@@ -150,11 +151,11 @@ const SignupPage = () => {
                             required
                         />
                     </div>
-                    {emailError && <p className="text-xs font-medium text-[var(--color-danger)]">Please enter a valid email</p>}
+                    {emailError && <p className="text-[13px] font-medium text-[var(--color-danger)]">Please enter a valid email</p>}
                 </div>
 
                 <div className="space-y-1.5">
-                    <label htmlFor="signup-password" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-password" className="text-[14px] font-medium text-[var(--color-ink)]">
                         Password
                     </label>
                     <div className="relative">
@@ -163,7 +164,7 @@ const SignupPage = () => {
                             id="signup-password"
                             autoComplete="new-password"
                             type={showPw ? 'text' : 'password'}
-                            className={cn('h-11 pl-10 pr-11 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 pr-11 text-[15px] focus-visible:ring-[var(--color-brand)]', pwError && 'border-[var(--color-danger)]')}
                             placeholder="At least 6 characters"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
@@ -174,7 +175,7 @@ const SignupPage = () => {
                         <button 
                             type="button" 
                             onClick={() => setShowPw(v => !v)} 
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#78716C] hover:text-[#1C1917]"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[var(--color-muted)] hover:text-[var(--color-ink)]"
                             aria-label={showPw ? 'Hide password' : 'Show password'}
                         >
                             {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -183,7 +184,7 @@ const SignupPage = () => {
 
                     {/* Dynamic Password Check Requirements */}
                     {password && (
-                        <div className="mt-1 flex flex-wrap gap-2 text-[11px] text-[#78716C] pt-1">
+                        <div className="mt-1 flex flex-wrap gap-2 text-[13px] text-[var(--color-muted)] pt-1">
                             <span className={cn('flex items-center gap-1', hasMinLength ? 'text-[#059669] font-medium' : 'text-[#A8A29E]')}>
                                 <Check className="h-3 w-3" /> 6+ chars
                             </span>
@@ -198,7 +199,7 @@ const SignupPage = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                    <label htmlFor="signup-confirm" className="text-xs font-semibold uppercase tracking-wider text-[var(--color-secondary-ink)]">
+                    <label htmlFor="signup-confirm" className="text-[14px] font-medium text-[var(--color-ink)]">
                         Confirm Password
                     </label>
                     <div className="relative">
@@ -207,7 +208,7 @@ const SignupPage = () => {
                             id="signup-confirm"
                             autoComplete="new-password"
                             type={showPw ? 'text' : 'password'}
-                            className={cn('h-11 pl-10 text-sm border-[var(--color-border)] focus-visible:ring-[var(--color-brand)]', confirmError && 'border-[var(--color-danger)]')}
+                            className={cn('pl-10 text-[15px] focus-visible:ring-[var(--color-brand)]', confirmError && 'border-[var(--color-danger)]')}
                             placeholder="Repeat password"
                             value={confirm}
                             onChange={e => setConfirm(e.target.value)}
@@ -216,13 +217,13 @@ const SignupPage = () => {
                             required
                         />
                     </div>
-                    {confirmError && <p className="text-xs font-medium text-[var(--color-danger)]">Passwords do not match</p>}
+                    {confirmError && <p className="text-[13px] font-medium text-[var(--color-danger)]">Passwords do not match</p>}
                 </div>
 
                 <Button 
                     type="submit" 
                     disabled={isLoading} 
-                    className="mt-2 h-12 w-full rounded-full bg-[var(--color-brand)] text-sm font-bold text-white shadow-md hover:bg-[var(--color-brand-hover)] hover:-translate-y-0.5 transition-all"
+                    className="mt-2 h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)]"
                 >
                     {isLoading ? (
                         <>
@@ -240,9 +241,9 @@ const SignupPage = () => {
 
             <div className="relative my-5">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[var(--color-border)]" />
+                    <div className="w-full" />
                 </div>
-                <div className="relative flex justify-center text-xs">
+                <div className="relative flex justify-center text-[13px]">
                     <span className="bg-[var(--color-surface)] px-3 font-medium text-[var(--color-muted)]">or continue with</span>
                 </div>
             </div>
@@ -258,9 +259,9 @@ const SignupPage = () => {
                 Continue with Google
             </Button>
 
-            <p className="mt-6 border-t border-[var(--color-border)] pt-4 text-center text-xs text-[var(--color-muted)]">
+            <p className="mt-8 text-center text-[15px] text-[var(--color-ink-secondary)]">
                 Already have an account?{' '}
-                <Link to="/login" className="font-semibold text-[var(--color-brand)] hover:underline">
+                <Link to="/login" className="font-semibold text-[var(--color-ink)] underline underline-offset-2">
                     Sign in
                 </Link>
             </p>

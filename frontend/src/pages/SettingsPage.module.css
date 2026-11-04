@@ -29,7 +29,7 @@
     padding: 32px 40px;
     background: #FFFFFF;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .headerLeft {
@@ -60,7 +60,7 @@
 }
 
 .subtitle {
-    font-size: 11px;
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
     text-transform: none;
@@ -75,12 +75,12 @@
     margin-bottom: 40px;
     overflow: hidden;
     transition: all 0.1s;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .section:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .sectionHeader {
@@ -113,7 +113,7 @@
 }
 
 .sectionSubtitle {
-    font-size: 10px;
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
     text-transform: none;
@@ -173,7 +173,7 @@
 }
 
 .rowDesc {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     opacity: 0.5;
     text-transform: none;
@@ -200,7 +200,7 @@
 }
 
 .fieldLabel {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.4);
     text-transform: none;
@@ -223,7 +223,7 @@
     background: #000000;
     color: #FFFFFF;
     outline: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .premiumInput:disabled {
@@ -246,13 +246,13 @@
     cursor: pointer;
     transition: all 0.1s;
     width: fit-content;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .primaryBtn:hover {
-    background: #E11D48;
+    background: var(--color-brand);
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .actionBtn {
@@ -278,7 +278,7 @@
 }
 
 .actionBtn.danger:hover {
-    background: #E11D48;
+    background: var(--color-brand);
 }
 
 .chevron {
@@ -293,7 +293,7 @@
 
 .dangerSection {
     border-color: #000000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .dangerHeader {
@@ -301,7 +301,7 @@
 }
 
 .dangerTitle {
-    color: #E11D48;
+    color: var(--color-brand);
 }
 
 /* Volume Slider */
@@ -319,7 +319,7 @@
 }
 
 .sliderValue {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: #FFFFFF;
     background: #000000;
@@ -361,7 +361,7 @@
     border: 1px solid var(--border);
     color: #000000;
     font-weight: 600;
-    font-size: 11px;
+    font-size: 13px;
     text-transform: none;
     cursor: pointer;
     transition: all 0.1s;
@@ -379,7 +379,7 @@
 }
 
 .footerText {
-    font-size: 12px;
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.3);
     font-weight: 600;
     letter-spacing: -0.02em;

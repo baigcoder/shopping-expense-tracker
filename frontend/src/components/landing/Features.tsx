@@ -16,7 +16,7 @@ export default function Features() {
                         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             {group.features.map(({ icon: Icon, title, description }) => (
                                 <article key={title} className="rounded-2xl border border-[#E7E5E4] bg-white p-5 shadow-[var(--shadow-sm)]">
-                                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFE4E6] text-[#E11D48]">
+                                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-brand-soft)] text-[var(--color-brand)]">
                                         <Icon className="h-5 w-5" />
                                     </div>
                                     <h4 className="font-display font-semibold text-[#1C1917]">{title}</h4>

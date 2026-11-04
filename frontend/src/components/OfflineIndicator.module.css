@@ -52,7 +52,7 @@
 }
 
 .subtitle {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     opacity: 0.8;
 }
 
@@ -69,7 +69,7 @@
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -100,7 +100,7 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
 }
 

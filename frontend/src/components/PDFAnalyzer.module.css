@@ -24,7 +24,7 @@
     max-width: 580px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     position: relative;
 }
 
@@ -60,7 +60,7 @@
     margin: 0 auto 1.5rem;
     color: #fff;
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .uploadStep h2 {
@@ -162,7 +162,7 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: #64748b;
     font-weight: 600;
 }
@@ -349,7 +349,7 @@
 }
 
 .summaryLabel {
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     color: #64748b;
     font-weight: 600;
     text-transform: none;
@@ -385,7 +385,7 @@
 .categoryRank {
     background: #000;
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     padding: 0.2rem 0.5rem;
     border-radius: 6px;
@@ -440,7 +440,7 @@
     content: '💡';
     position: absolute;
     left: 0;
-    font-size: 0.7rem;
+    font-size: 0.8125rem;
 }
 
 /* Transaction Preview */
@@ -486,7 +486,7 @@
 }
 
 .txMeta {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: #94a3b8;
 }
 
@@ -546,13 +546,13 @@
     font-weight: 700;
     cursor: pointer;
     font-family: 'Space Grotesk', sans-serif;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transition: all 0.1s;
 }
 
 .saveBtn:hover {
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .loginPrompt {

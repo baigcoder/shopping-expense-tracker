@@ -207,7 +207,7 @@ const AddCardModal = () => {
                                                 key={t.id}
                                                 className={cn(
                                                     "w-12 h-12 p-0 transition-all duration-200 border-4",
-                                                    selectedTheme === t.id ? "border-[#E11D48] translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_#E11D48]" : "border-white hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#FFFFFF]"
+                                                    selectedTheme === t.id ? "border-[var(--color-brand)] translate-x-[-2px] translate-y-[-2px] shadow-[4px_4px_0px_var(--color-brand)]" : "border-white hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_#FFFFFF]"
                                                 )}
                                                 onClick={() => setSelectedTheme(t.id)}
                                             >
@@ -223,7 +223,7 @@ const AddCardModal = () => {
                                 </div>
                             </div>
 
-                            <div className="hidden md:flex items-center gap-3 text-[#E11D48] mt-8">
+                            <div className="hidden md:flex items-center gap-3 text-[var(--color-brand)] mt-8">
                                 <Shield className="h-5 w-5" />
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">Bank-Grade Security</span>
                             </div>
@@ -246,7 +246,7 @@ const AddCardModal = () => {
                                             <CreditCard className="h-5 w-5" strokeWidth={2.5} />
                                         </div>
                                         <Input
-                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                             placeholder="0000 0000 0000 0000"
                                             value={cardNumber}
                                             onChange={handleCardNumberChange}
@@ -262,7 +262,7 @@ const AddCardModal = () => {
                                             <User className="h-5 w-5" strokeWidth={2.5} />
                                         </div>
                                         <Input
-                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                            className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                             placeholder="Name on card"
                                             value={cardHolder}
                                             onChange={e => setCardHolder(e.target.value.toUpperCase())}
@@ -278,7 +278,7 @@ const AddCardModal = () => {
                                                 <Calendar className="h-5 w-5" strokeWidth={2.5} />
                                             </div>
                                             <Input
-                                                className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                className="h-14 pl-12 pr-6 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                                 placeholder="MM/YY"
                                                 value={expiry}
                                                 onChange={e => {
@@ -299,7 +299,7 @@ const AddCardModal = () => {
                                             </div>
                                             <Input
                                                 type={showCvv ? "text" : "password"}
-                                                className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                                 placeholder="CVV"
                                                 value={cvv}
                                                 onChange={e => setCvv(e.target.value.slice(0, 4))}
@@ -331,7 +331,7 @@ const AddCardModal = () => {
                                                 </div>
                                                 <Input
                                                     type={showPassword ? "text" : "password"}
-                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                                     placeholder="SET"
                                                     value={cvvPassword}
                                                     onChange={e => setCvvPassword(e.target.value)}
@@ -353,7 +353,7 @@ const AddCardModal = () => {
                                                 </div>
                                                 <Input
                                                     type={showPassword ? "text" : "password"}
-                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_#E11D48] transition-all shadow-[4px_4px_0px_#000000]"
+                                                    className="h-14 pl-12 pr-12 rounded-none border-4 border-black bg-white placeholder:text-slate-400 text-black font-black text-lg focus:ring-0 focus:outline-none focus:translate-x-[-2px] focus:translate-y-[-2px] focus:shadow-[4px_4px_0px_var(--color-brand)] transition-all shadow-[4px_4px_0px_#000000]"
                                                     placeholder="CONFIRM"
                                                     value={confirmCvvPassword}
                                                     onChange={e => setConfirmCvvPassword(e.target.value)}
@@ -366,7 +366,7 @@ const AddCardModal = () => {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-16 mt-6 rounded-none bg-[#E11D48] hover:bg-black text-white font-black uppercase tracking-widest text-lg border-4 border-black shadow-[8px_8px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#000000] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[8px_8px_0px_#000000]"
+                                    className="w-full h-16 mt-6 rounded-none bg-[var(--color-brand)] hover:bg-black text-white font-black uppercase tracking-widest text-lg border-4 border-black shadow-[8px_8px_0px_#000000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#000000] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[8px_8px_0px_#000000]"
                                 >
                                     {isSubmitting ? (
                                         <Loader2 className="h-6 w-6 animate-spin" />

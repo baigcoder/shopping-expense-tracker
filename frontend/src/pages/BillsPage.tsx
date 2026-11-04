@@ -74,7 +74,7 @@ const getBillToneClasses = (tone: BillStatusTone) => {
         case 'paid':
             return 'border-emerald-200 bg-emerald-50 text-emerald-700';
         case 'overdue':
-            return 'border-rose-200 bg-rose-50 text-rose-700';
+            return 'border-[var(--color-pink)] bg-[var(--color-brand-soft)] text-[var(--color-brand)]';
         case 'soon':
             return 'border-amber-200 bg-amber-50 text-amber-700';
         default:
@@ -340,9 +340,9 @@ const BillsPage = () => {
                 </div>
 
                 {error && (
-                    <section className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900 shadow-sm">
+                    <section className="rounded-2xl border border-[var(--color-pink)] bg-[var(--color-brand-soft)] px-4 py-3 text-sm text-[var(--color-wine)]">
                         <div className="flex items-start gap-3">
-                            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-700" />
+                            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-brand)]" />
                             <p>{error}</p>
                         </div>
                     </section>
@@ -361,7 +361,7 @@ const BillsPage = () => {
                     <div className="flex min-h-[400px] items-center justify-center">
                         <div className="flex items-center gap-4 border-4 border-black p-8 bg-white shadow-[8px_8px_0px_#000000]">
                             <Loader2 className="h-8 w-8 animate-spin text-red-600" />
-                            <span className="font-black uppercase italic text-xl">Loading Intel...</span>
+                            <span className="font-black italic text-xl">Loading Intel...</span>
                         </div>
                     </div>
                 ) : decoratedBills.length === 0 ? (
@@ -369,10 +369,10 @@ const BillsPage = () => {
                         <div className="mx-auto flex h-24 w-24 items-center justify-center border-4 border-black bg-red-100 text-red-600 mb-8 shadow-[6px_6px_0px_#000000]">
                             <FileText className="h-10 w-10" strokeWidth={3} />
                         </div>
-                        <h3 className="text-3xl font-black uppercase italic mb-4">Zero Obligations</h3>
+                        <h3 className="text-3xl font-black italic mb-4">Zero Obligations</h3>
                         <p className="text-black opacity-60 font-bold max-w-md mx-auto mb-8">Deploy your first bill mission to start tracking your financial battlefield.</p>
                         <button
-                            className="h-16 px-10 bg-black text-white font-black uppercase tracking-widest border-4 border-black shadow-[8px_8px_0px_#E11D48]"
+                            className="h-16 px-10 bg-black text-white font-black border-4 border-black shadow-[8px_8px_0px_var(--color-brand)]"
                             onClick={() => setDialogOpen(true)}
                         >
                             DEPLOY FIRST MISSION
@@ -503,14 +503,14 @@ const BillsPage = () => {
                                 value={form.notes}
                                 onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
                                 placeholder="Optional note or account reference"
-                                className="min-h-[96px] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                                className="min-h-[96px] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
                             />
                         </div>
                     </div>
 
                     <DialogFooter className="mt-4 gap-2">
                         <Button variant="outline" className="rounded-none border-white/10 bg-white/5 text-white hover:bg-white/10 hover:text-white" onClick={() => setDialogOpen(false)}>Cancel</Button>
-                        <Button className="rounded-none bg-black text-white border-2 border-black shadow-[3px_3px_0_#E11D48] hover:bg-[#E11D48]" onClick={() => void handleCreateBill()} disabled={saving}>
+                        <Button className="rounded-none bg-black text-white border-2 border-black shadow-[3px_3px_0_var(--color-brand)] hover:bg-[var(--color-brand)]" onClick={() => void handleCreateBill()} disabled={saving}>
                             {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
                             Save bill
                         </Button>

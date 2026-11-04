@@ -160,19 +160,19 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
                     transition={{ type: 'spring', duration: 0.5 }}
-                    className="relative w-full max-w-md bg-white border-4 border-black shadow-[10px_10px_0_#E11D48] overflow-hidden"
+                    className="relative w-full max-w-md bg-white border-4 border-black shadow-[10px_10px_0_var(--color-brand)] overflow-hidden"
                 >
                     {/* Danger Header */}
-                    <div className="bg-black p-6 text-white relative border-b-4 border-[#E11D48]">
+                    <div className="bg-black p-6 text-white relative border-b-4 border-[var(--color-brand)]">
                         <button
                             onClick={handleClose}
-                            className="absolute top-4 right-4 p-2 border-2 border-white hover:bg-[#E11D48] transition-colors"
+                            className="absolute top-4 right-4 p-2 border-2 border-white hover:bg-[var(--color-brand)] transition-colors"
                         >
                             <X size={20} />
                         </button>
 
                         <div className="relative z-10 flex items-center gap-4">
-                            <div className="p-3 bg-[#E11D48] border-2 border-white">
+                            <div className="p-3 bg-[var(--color-brand)] border-2 border-white">
                                 <AlertTriangle size={28} />
                             </div>
                             <div>
@@ -190,7 +190,7 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                 animate={{ opacity: 1, y: 0 }}
                                 className="space-y-6"
                             >
-                                <div className="bg-[#FFF1F2] border-[3px] border-black p-4 shadow-[4px_4px_0_#E11D48]">
+                                <div className="bg-[var(--color-brand-soft)] border-[3px] border-black p-4 shadow-[4px_4px_0_var(--color-brand)]">
                                     <p className="text-sm text-black font-bold uppercase tracking-wide">
                                         ⚠️ You are about to permanently delete all your <strong>{categoryLabel.toLowerCase()}</strong> data.
                                         This action is irreversible.
@@ -198,14 +198,14 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                 </div>
 
                                 <div className="flex items-center gap-3 p-4 bg-white border-[3px] border-black shadow-[4px_4px_0_#09090B]">
-                                    <Mail size={20} className="text-[#E11D48]" />
+                                    <Mail size={20} className="text-[var(--color-brand)]" />
                                     <p className="text-sm text-zinc-700 font-bold uppercase tracking-wide">
                                         A verification code will be sent to your email
                                     </p>
                                 </div>
 
                                 {error && (
-                                    <p className="text-sm text-[#E11D48] font-black uppercase text-center">{error}</p>
+                                    <p className="text-sm text-[var(--color-brand)] font-black uppercase text-center">{error}</p>
                                 )}
 
                                 <div className="flex gap-3">
@@ -218,7 +218,7 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                     <button
                                         onClick={requestOTP}
                                         disabled={loading}
-                                        className="flex-1 py-3 px-4 bg-[#E11D48] border-2 border-black shadow-[3px_3px_0_#09090B] font-black uppercase text-xs tracking-widest text-white hover:bg-[#BE123C] transition-colors flex items-center justify-center gap-2"
+                                        className="flex-1 py-3 px-4 bg-[var(--color-brand)] border-2 border-black shadow-[3px_3px_0_#09090B] font-black uppercase text-xs tracking-widest text-white hover:bg-[var(--color-brand-hover)] transition-colors flex items-center justify-center gap-2"
                                     >
                                         {loading ? (
                                             <Loader2 size={18} className="animate-spin" />
@@ -251,11 +251,11 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                                     placeholder="000000"
-                                    className="w-full text-center text-3xl font-black tracking-[0.5em] py-4 px-6 bg-white border-[3px] border-black focus:border-[#E11D48] focus:shadow-[4px_4px_0_#E11D48] focus:outline-none transition-all"
+                                    className="w-full text-center text-3xl font-black tracking-[0.5em] py-4 px-6 bg-white border-[3px] border-black focus:border-[var(--color-brand)] focus:shadow-[4px_4px_0_var(--color-brand)] focus:outline-none transition-all"
                                 />
 
                                 {error && (
-                                    <p className="text-sm text-[#E11D48] font-black uppercase text-center">{error}</p>
+                                    <p className="text-sm text-[var(--color-brand)] font-black uppercase text-center">{error}</p>
                                 )}
 
                                 <div className="flex gap-3">
@@ -271,7 +271,7 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                         className={cn(
                                             "flex-1 py-3 px-4 border-2 border-black font-black uppercase text-xs tracking-widest transition-colors flex items-center justify-center gap-2",
                                             otp.length === 6
-                                                ? "bg-[#E11D48] text-white shadow-[3px_3px_0_#09090B] hover:bg-[#BE123C]"
+                                                ? "bg-[var(--color-brand)] text-white shadow-[3px_3px_0_#09090B] hover:bg-[var(--color-brand-hover)]"
                                                 : "bg-zinc-100 text-zinc-400 border-zinc-300 cursor-not-allowed"
                                         )}
                                     >
@@ -298,9 +298,9 @@ const ResetConfirmModal: React.FC<ResetConfirmModalProps> = ({
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: 'spring', delay: 0.2 }}
-                                    className="w-20 h-20 bg-black border-2 border-black shadow-[6px_6px_0_#E11D48] flex items-center justify-center mx-auto"
+                                    className="w-20 h-20 bg-black border-2 border-black shadow-[6px_6px_0_var(--color-brand)] flex items-center justify-center mx-auto"
                                 >
-                                    <CheckCircle size={40} className="text-[#E11D48]" />
+                                    <CheckCircle size={40} className="text-[var(--color-brand)]" />
                                 </motion.div>
                                 <h3 className="text-xl font-black uppercase tracking-wide text-black">Data Reset Complete</h3>
                                 <p className="text-sm text-zinc-500 font-medium">

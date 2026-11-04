@@ -112,7 +112,7 @@ const TransactionModal = () => {
                         <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-4">
                             <div>
                                 <h2 className="font-display text-lg font-semibold">Add a transaction</h2>
-                                <p className="text-xs text-[var(--text-muted)]">Saved to your ledger</p>
+                                <p className="text-[13px] text-[var(--text-muted)]">Saved to your ledger</p>
                             </div>
                             <button
                                 className="rounded-[var(--r-md)] p-2 text-[var(--text-muted)] hover:bg-[var(--bg-subtle)]"
@@ -151,12 +151,12 @@ const TransactionModal = () => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] font-mono">
+                                <label className="flex items-center gap-1.5 text-[13px] font-semibold text-[var(--color-muted)] tabular-nums">
                                     <span>Amount</span>
                                     <span className="text-[var(--color-ink)] font-bold">({currencySymbol})</span>
                                 </label>
                                 <div className="relative">
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-base font-bold font-mono text-[var(--color-muted)]">
+                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-base font-bold tabular-nums text-[var(--color-muted)]">
                                         {currencySymbol}
                                     </div>
                                     <input
@@ -166,7 +166,7 @@ const TransactionModal = () => {
                                         value={formData.amount}
                                         onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                                         placeholder="0.00"
-                                        className="w-full rounded-xl border border-[var(--color-border)] pl-14 pr-4 py-3 text-2xl font-bold font-mono outline-none text-[var(--color-ink)] bg-[var(--color-surface)] placeholder:text-stone-300 focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20 tabular-nums transition-all"
+                                        className="w-full rounded-xl border border-[var(--color-border)] pl-14 pr-4 py-3 text-2xl font-bold tabular-nums outline-none text-[var(--color-ink)] bg-[var(--color-surface)] placeholder:text-stone-300 focus:border-[var(--color-brand)] focus:ring-2 focus:ring-[var(--color-brand)]/20 tabular-nums transition-all"
                                         required
                                         autoFocus
                                     />

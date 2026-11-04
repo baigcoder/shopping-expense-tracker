@@ -147,7 +147,7 @@
 
 .dropzoneActive {
     border-color: #f43f5e;
-    background: #fff1f2;
+    background: var(--color-brand-soft);
     transform: scale(0.98);
 }
 
@@ -209,7 +209,7 @@
 }
 
 .fileTypeBadge span {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     color: #94a3b8;
     text-transform: none;
@@ -270,14 +270,14 @@
 }
 
 .transactionCard:hover {
-    border-color: #fda4af;
+    border-color: var(--color-pink);
     background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .transactionCardSelected {
     border-color: #f43f5e;
-    background: #fff1f2;
+    background: var(--color-brand-soft);
 }
 
 .checkbox {
@@ -327,7 +327,7 @@
 .btnPrimary {
     flex: 2;
     padding: 1rem;
-    background: linear-gradient(135deg, #f43f5e, #e11d48);
+    background: linear-gradient(135deg, #f43f5e, var(--color-brand));
     border: none;
     border-radius: 1rem;
     font-weight: 600;

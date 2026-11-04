@@ -103,7 +103,7 @@
 }
 
 .accountInfo span {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: #64748b;
 }
 
@@ -123,7 +123,7 @@
     align-items: center;
     justify-content: flex-end;
     gap: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: #94a3b8;
 }
 

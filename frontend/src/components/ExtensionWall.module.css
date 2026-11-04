@@ -24,7 +24,7 @@
 }
 
 .title {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--brand);
     margin: 0 0 0.4rem;
@@ -96,7 +96,7 @@
 .ghost {
     margin-top: 0.35rem;
     padding: 0.5rem;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     color: var(--text-muted);
     background: none;
@@ -110,7 +110,7 @@
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 400;
     color: var(--text-muted);
     line-height: 1.5;

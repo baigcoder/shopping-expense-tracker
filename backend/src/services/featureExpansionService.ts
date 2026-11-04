@@ -154,6 +154,36 @@ export async function getSubscriptionCommandCenter(userId: string) {
     };
 }
 
+// A captured checkout is either sent straight to the ledger ('sync') or held for review ('detected_transaction').
+const isCapture = (eventType: string, status: string) => status === 'success' && (eventType === 'sync' || eventType === 'detected_transaction');
+
+/** Site counters after one more event: counts add up instead of being overwritten with 0 or 1. */
+export function nextSiteStats(
+    existing: { visit_count?: number | null; detection_count?: number | null; last_detection_at?: string | null } | null,
+    eventType: string, status: string, nowIso: string,
+) {
+    const caught = isCapture(eventType, status) ? 1 : 0;
+    return {
+        visit_count: (existing?.visit_count || 0) + (eventType === 'site_visit' ? 1 : 0),
+        detection_count: (existing?.detection_count || 0) + caught,
+        last_detection_at: caught ? nowIso : existing?.last_detection_at ?? null,
+    };
+}
+
+const RECENT_ERRORS_DAYS = 7;
+
+/** What the Browser extension screen shows, from the latest events (newest first). */
+export function summarizeExtensionHealth(events: any[], now = new Date()) {
+    const since = now.getTime() - RECENT_ERRORS_DAYS * 86400000;
+    return {
+        // The latest event says what is waiting now; an old backlog that has since cleared does not count.
+        queuedSyncs: Number(events[0]?.queued_count) || 0,
+        failedDetections: events.filter((e) => new Date(e.created_at).getTime() >= since && (e.status === 'error' || Number(e.failed_count) > 0)).length,
+        lastSuccessfulSync: events.find((e) => isCapture(e.event_type, e.status))?.created_at || null,
+        permissionStatus: events.find((e) => e.permission_status)?.permission_status || 'unknown',
+    };
+}
+
 export async function recordExtensionHealthEvent(userId: string, input: Record<string, any>) {
     const eventType = input.eventType || input.event_type || 'status';
     const siteHostname = input.siteHostname || input.site_hostname || null;
@@ -179,17 +209,24 @@ export async function recordExtensionHealthEvent(userId: string, input: Record<s
     if (error) throw error;
 
     if (siteHostname) {
+        // shortcut: read-then-write, so two events for one site in the same instant can lose a count;
+        // move to an increment RPC if counts ever need to be exact.
+        const { data: existing } = await supabase
+            .from('extension_site_stats')
+            .select('visit_count, detection_count, last_detection_at')
+            .eq('user_id', userId)
+            .eq('hostname', siteHostname)
+            .maybeSingle();
+        const nowIso = new Date().toISOString();
         await supabase
             .from('extension_site_stats')
             .upsert({
                 user_id: userId,
                 hostname: siteHostname,
                 site_name: siteName,
-                visit_count: eventType === 'site_visit' ? 1 : 0,
-                detection_count: eventType === 'detected_transaction' ? 1 : 0,
-                last_visited: new Date().toISOString(),
-                last_detection_at: eventType === 'detected_transaction' ? new Date().toISOString() : null,
-                updated_at: new Date().toISOString(),
+                ...nextSiteStats(existing, eventType, payload.status, nowIso),
+                last_visited: nowIso,
+                updated_at: nowIso,
             }, { onConflict: 'user_id,hostname' });
     }
 
@@ -206,14 +243,7 @@ export async function getExtensionHealth(userId: string) {
     if (sitesResult.error) throw sitesResult.error;
 
     const events = asRows(eventsResult.data);
-    return {
-        sites: asRows(sitesResult.data),
-        recentEvents: events,
-        queuedSyncs: events.find((event) => Number(event.queued_count) > 0)?.queued_count || 0,
-        failedDetections: events.filter((event) => event.status === 'error' || Number(event.failed_count) > 0).length,
-        lastSuccessfulSync: events.find((event) => event.event_type === 'sync' && event.status === 'success')?.created_at || null,
-        permissionStatus: events.find((event) => event.permission_status)?.permission_status || 'unknown',
-    };
+    return { sites: asRows(sitesResult.data), recentEvents: events, ...summarizeExtensionHealth(events) };
 }
 
 export async function generateReport(userId: string, input: GenerateReportInput) {

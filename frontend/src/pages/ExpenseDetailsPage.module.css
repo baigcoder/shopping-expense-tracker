@@ -278,7 +278,7 @@
     opacity: 1;
     font-weight: 700;
     text-transform: none;
-    letter-spacing: 1px;
+    letter-spacing: 0;
     color: #111827;
 }
 
@@ -287,7 +287,7 @@
     color: #fff;
     padding: 0.3rem 0.8rem;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -384,7 +384,7 @@
     margin: 0;
     font-weight: 700;
     text-transform: none;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: #4B5563;
 }
 
@@ -431,7 +431,7 @@
     color: #fff;
     padding: 0.3rem 0.8rem;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     border: 1px solid var(--border);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -482,7 +482,7 @@
     padding: 0.3rem 0.6rem;
     border-radius: 6px;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
@@ -556,7 +556,7 @@
 
 .catRow:hover {
     border-color: #000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transform: none;
     background: var(--bg-card);
 }
@@ -706,7 +706,7 @@
 
 .txRow:hover {
     border-color: #000;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
     transform: none;
 }
 
@@ -733,7 +733,7 @@
 }
 
 .txTime {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     color: #6B7280;
     font-weight: 600;
 }
@@ -767,7 +767,7 @@
     width: 100%;
     max-width: 450px;
     position: relative;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .closeBtn {
@@ -801,7 +801,7 @@
     display: block;
     font-weight: 600;
     text-transform: none;
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     margin-bottom: 0.5rem;
     color: #4B5563;
 }
@@ -823,7 +823,7 @@
 .formGroup select:focus {
     outline: none;
     background: var(--bg-card);
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .saveBtn {
@@ -869,7 +869,7 @@
     background: #FEF3C7;
     border-color: #000;
     transform: none;
-    box-shadow: var(--shadow-md);
+    box-shadow: none;
 }
 
 .infoText {
