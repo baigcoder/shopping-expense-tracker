@@ -49,7 +49,7 @@ export function ReportsView({ transactions, money, now = new Date(), loading }: 
                 <div role="tablist" aria-label="Period" className="hidden max-w-full overflow-x-auto rounded-full bg-[var(--color-surface)] p-1 md:inline-flex">
                     {RANGES.map(([v, l]) => (
                         <button key={v} type="button" role="tab" aria-selected={range === v} onClick={() => setRange(v)}
-                            className={cn('h-9 shrink-0 rounded-full px-4 text-[14px] font-medium', range === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
+                            className={cn('h-9 shrink-0 rounded-full px-4 text-[14px] font-medium', range === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                     ))}
                 </div>
             </header>

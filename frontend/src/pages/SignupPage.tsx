@@ -223,7 +223,7 @@ const SignupPage = () => {
                 <Button 
                     type="submit" 
                     disabled={isLoading} 
-                    className="mt-2 h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]"
+                    className="mt-2 h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)]"
                 >
                     {isLoading ? (
                         <>

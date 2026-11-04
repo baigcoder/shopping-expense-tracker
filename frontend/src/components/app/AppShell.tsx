@@ -95,7 +95,7 @@ export function AppShell({ basePath = '', userName, userDetail, inboxCount, onSi
                                     <Icon size={16} strokeWidth={1.75} aria-hidden />
                                     <span className="flex-1 truncate">{label}</span>
                                     {!!count && (
-                                        <span className="min-w-[22px] rounded-full bg-[var(--color-brand)] px-1.5 text-center text-[12px] font-semibold leading-[20px] text-white tabular-nums">
+                                        <span className="min-w-[22px] rounded-full bg-[var(--color-brand)] px-1.5 text-center text-[12px] font-semibold leading-[20px] text-[var(--color-on-brand)] tabular-nums">
                                             {count}
                                         </span>
                                     )}

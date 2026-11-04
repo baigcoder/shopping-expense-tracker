@@ -73,7 +73,7 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onUpdate, on
                     <div role="tablist" aria-label="Show" className="inline-flex w-fit rounded-full bg-[var(--color-surface)] p-1">
                         {([['all', `All ${model.lines.length}`], ['watch', `Watch ${watch.length}`], ['ok', 'On track']] as const).map(([v, l]) => (
                             <button key={v} type="button" role="tab" aria-selected={filter === v} onClick={() => setFilter(v)}
-                                className={cn('h-9 rounded-full px-4 text-[14px] font-medium', filter === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
+                                className={cn('h-9 rounded-full px-4 text-[14px] font-medium', filter === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                         ))}
                     </div>
                     {loading && <p className="rounded-[20px] bg-[var(--color-surface)] p-6 text-[15px] text-[var(--color-ink-secondary)]">Loading budgets…</p>}
@@ -95,7 +95,7 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onUpdate, on
                                                 <form className="flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); const n = Number(limitFor.value); if (Number.isFinite(n) && n > 0) { onUpdate(l, n); setLimitFor(null); } }}>
                                                     <input autoFocus inputMode="decimal" aria-label={`${l.category} monthly limit`} value={limitFor.value} onChange={(e) => setLimitFor({ id: l.id, value: e.target.value })}
                                                         className="h-9 w-28 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[15px] tabular-nums" />
-                                                    <button type="submit" className="h-9 rounded-full bg-[var(--color-ink)] px-3 text-[14px] font-semibold text-white">Save</button>
+                                                    <button type="submit" className="h-9 rounded-full bg-[var(--color-ink)] px-3 text-[14px] font-semibold text-[var(--color-on-ink)]">Save</button>
                                                     <button type="button" onClick={() => setLimitFor(null)} className="h-9 rounded-full px-2 text-[14px] text-[var(--color-ink-secondary)]">Cancel</button>
                                                 </form>
                                             ) : (
@@ -153,7 +153,7 @@ export function BudgetsView({ model, money, loading, saving, onAdd, onUpdate, on
                             className="h-10 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-[15px] tabular-nums" />
                     </label>
                     <button type="submit" disabled={saving || !free.length}
-                        className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
+                        className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
                         <Plus size={16} /> {saving ? 'Saving' : 'Add budget'}
                     </button>
                 </form>

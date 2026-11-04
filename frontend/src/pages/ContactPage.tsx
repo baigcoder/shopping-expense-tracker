@@ -53,7 +53,7 @@ const ContactPage = () => {
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <p className="text-[14px] text-[var(--color-ink-secondary)]" id="send-note">Opens your email app with this message ready to send.</p>
                         <button type="submit" aria-describedby="send-note"
-                            className="inline-flex h-12 items-center rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">
+                            className="inline-flex h-12 items-center rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)]">
                             Open email
                         </button>
                     </div>

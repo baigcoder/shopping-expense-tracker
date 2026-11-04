@@ -49,7 +49,7 @@ export function SpendingView({ transactions, money, now = new Date(), loading, b
                 <div role="tablist" aria-label="Period" className="inline-flex rounded-full bg-[var(--color-surface)] p-1">
                     {PERIODS.map(([v, l]) => (
                         <button key={v} type="button" role="tab" aria-selected={period === v} onClick={() => setPeriod(v)}
-                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium', period === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
+                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium', period === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                     ))}
                 </div>
             </header>

@@ -52,7 +52,7 @@ export function ExtensionView({ state, lastSync, queued, failed, sites, events, 
                             <RefreshCw size={15} className={cn(checking && 'animate-spin')} aria-hidden /> Check again
                         </button>
                         {(state === 'missing' || state === 'signed-out') && (
-                            <a href="/cashly-extension.zip" download className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-brand)] px-4 text-[14px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">
+                            <a href="/cashly-extension.zip" download className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-brand)] px-4 text-[14px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)]">
                                 <Download size={15} aria-hidden /> Download
                             </a>
                         )}

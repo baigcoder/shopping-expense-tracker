@@ -92,7 +92,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                 </div>
                 {pending && confident.length > 0 && (
                     <button type="button" onClick={() => onBulk(confident.map((i) => i.id), 'approve')} data-tour="inbox-confident"
-                        className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">
+                        className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)]">
                         <Check size={17} /> Approve the {confident.length} sure {confident.length === 1 ? 'one' : 'ones'}
                     </button>
                 )}
@@ -102,7 +102,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                 <div role="tablist" aria-label="Show" className="inline-flex rounded-full bg-[var(--color-surface)] p-1">
                     {([['pending', 'Waiting'], ['approved', 'Approved'], ['rejected', 'Not mine']] as const).map(([v, l]) => (
                         <button key={v} type="button" role="tab" aria-selected={status === v} onClick={() => onStatus(v)}
-                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium transition-colors', status === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>
+                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium transition-colors', status === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>
                             {l}
                         </button>
                     ))}
@@ -118,7 +118,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
             </div>
 
             {selected.length > 0 && (
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-[16px] bg-[var(--color-ink)] px-4 py-3 text-white">
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-[16px] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-on-ink)]">
                     <p className="text-[15px]">{selected.length} selected</p>
                     <div className="flex gap-2">
                         <button type="button" onClick={() => { onBulk(selected, 'reject'); setSelected([]); }} className="h-9 rounded-full px-4 text-[14px] hover:bg-white/10">Not mine</button>
@@ -200,7 +200,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                                             <button type="button" onClick={() => setEditing((d) => ({ ...d, [item.id]: { description: item.description, amount: String(item.amount), category: item.category } }))}
                                                 className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-canvas)] px-4 text-[14px] hover:bg-[var(--color-surface-2)]"><Pencil size={14} /> Edit</button>
                                         )}
-                                        <button type="button" onClick={() => submit(item)} title="A" className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-white hover:bg-black">
+                                        <button type="button" onClick={() => submit(item)} title="A" className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-[var(--color-on-ink)] hover:opacity-90">
                                             <Check size={15} /> {draft ? 'Save and approve' : 'Approve'}
                                         </button>
                                     </div>

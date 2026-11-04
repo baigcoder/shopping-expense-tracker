@@ -85,7 +85,7 @@ export function CommitmentsView({ model, tab, money, loading, saving, onTab, onT
                     <div role="tablist" aria-label="Show" className="inline-flex w-fit max-w-full overflow-x-auto rounded-full bg-[var(--color-surface)] p-1">
                         {([['all', 'All'], ['subscriptions', 'Subscriptions'], ['bills', 'Bills'], ['trials', `Trials ${model.trials.length}`]] as const).map(([v, l]) => (
                             <button key={v} type="button" role="tab" aria-selected={tab === v} onClick={() => onTab(v)}
-                                className={cn('h-9 shrink-0 rounded-full px-4 text-[14px] font-medium', tab === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
+                                className={cn('h-9 shrink-0 rounded-full px-4 text-[14px] font-medium', tab === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                         ))}
                     </div>
                     {loading && <p className="rounded-[20px] bg-[var(--color-surface)] p-6 text-[15px] text-[var(--color-ink-secondary)]">Loading…</p>}
@@ -129,7 +129,7 @@ export function CommitmentsView({ model, tab, money, loading, saving, onTab, onT
                     <div role="radiogroup" aria-label="Kind" className="mt-3 grid grid-cols-2 gap-1 rounded-full bg-[var(--color-canvas)] p-1">
                         {(['subscription', 'bill'] as const).map((k) => (
                             <button key={k} type="button" role="radio" aria-checked={form.kind === k} onClick={() => setForm({ ...form, kind: k, cycle: 'monthly' })}
-                                className={cn('h-9 rounded-full text-[14px] font-medium capitalize', form.kind === k ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)]')}>{k}</button>
+                                className={cn('h-9 rounded-full text-[14px] font-medium capitalize', form.kind === k ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)]')}>{k}</button>
                         ))}
                     </div>
                     {([['name', 'Name', form.kind === 'bill' ? 'K-Electric' : 'Netflix'], ['amount', 'Amount', '1100']] as const).map(([k, l, ph]) => (
@@ -156,7 +156,7 @@ export function CommitmentsView({ model, tab, money, loading, saving, onTab, onT
                                 className="h-8 w-14 rounded-[8px] border border-[var(--color-border)] px-2 text-[14px] disabled:opacity-50" /> days
                         </label>
                     )}
-                    <button type="submit" disabled={saving} className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
+                    <button type="submit" disabled={saving} className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
                         <Plus size={16} /> {saving ? 'Saving' : `Add ${form.kind}`}
                     </button>
                 </form>

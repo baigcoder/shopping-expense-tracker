@@ -40,7 +40,7 @@ function AccountForm({ initial, saving, onSave, onCancel }: { initial?: AccountR
                 <input inputMode="decimal" value={d.balance} onChange={(e) => setD({ ...d, balance: e.target.value })} placeholder="0" className={cn(field, 'tabular-nums')} />
             </label>
             <div className="flex gap-2 sm:col-span-2">
-                <button type="submit" disabled={saving} className="inline-flex h-10 items-center rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">{saving ? 'Saving' : 'Save'}</button>
+                <button type="submit" disabled={saving} className="inline-flex h-10 items-center rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">{saving ? 'Saving' : 'Save'}</button>
                 <button type="button" onClick={onCancel} className={quiet}>Cancel</button>
             </div>
         </form>
@@ -73,7 +73,7 @@ export function CardsView({ accounts, cards, money, loading, onSaveAccount, onRe
                         <p className="mt-2 text-[15px] text-[var(--color-ink-secondary)] tabular-nums">You have {money(own)} · you owe {money(owe)}</p>
                     </div>
                     {editing !== 'new' && (
-                        <button type="button" onClick={() => setEditing('new')} className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-white">
+                        <button type="button" onClick={() => setEditing('new')} className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-[var(--color-on-ink)]">
                             <Plus size={16} /> Add account
                         </button>
                     )}
@@ -111,7 +111,7 @@ export function CardsView({ accounts, cards, money, loading, onSaveAccount, onRe
                 <ul>
                     {cards.map((c) => (
                         <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--color-surface-2)] py-3 first:border-t-0">
-                            <span className={cn('flex h-10 w-16 shrink-0 items-end rounded-[8px] p-1.5 text-[13px] font-semibold tabular-nums text-white', c.frozen ? 'bg-[var(--color-muted)]' : 'bg-[var(--color-ink)]')} aria-hidden>{c.last4}</span>
+                            <span className={cn('flex h-10 w-16 shrink-0 items-end rounded-[8px] p-1.5 text-[13px] font-semibold tabular-nums text-[var(--color-on-ink)]', c.frozen ? 'bg-[var(--color-muted)]' : 'bg-[var(--color-ink)]')} aria-hidden>{c.last4}</span>
                             <span className="min-w-0 flex-1">
                                 {renaming?.id === c.id ? (
                                     <form className="flex items-center gap-2" onSubmit={(e) => { e.preventDefault(); const n = renaming.value.trim(); if (n) { onRename(c.id, n); setRenaming(null); } }}>

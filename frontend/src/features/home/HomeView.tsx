@@ -93,7 +93,7 @@ function Setup({ basePath, hasBudgets, hasBills }: { basePath: string; hasBudget
                 {steps.map((st, i) => (
                     <li key={st.to}>
                         <Link to={`${basePath}${st.to}`} className="flex h-full items-center gap-3 rounded-[14px] bg-[var(--color-canvas)] p-4 text-[15px] font-medium hover:bg-[var(--color-surface-2)]">
-                            <span className={cn('flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] tabular-nums', st.done ? 'bg-[var(--color-success)] text-white' : 'bg-[var(--color-surface)]')}>
+                            <span className={cn('flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] tabular-nums', st.done ? 'bg-[var(--color-success)] text-[var(--color-on-ink)]' : 'bg-[var(--color-surface)]')}>
                                 {st.done ? <Check size={14} aria-label="Done" /> : i + 1}
                             </span>
                             <span className={cn('flex-1', st.done && 'text-[var(--color-muted)] line-through')}>{st.label}</span>
@@ -121,7 +121,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                     <h1 className="font-display text-[28px] font-bold tracking-tight sm:text-[32px]">{greeting()}, {firstName}</h1>
                 </div>
                 <button type="button" onClick={onAdd} data-tour="add"
-                    className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]">
+                    className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]">
                     <Plus size={18} /> Add a purchase
                 </button>
             </header>
@@ -197,7 +197,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                                                 <X size={15} /> Not mine
                                             </button>
                                             <button type="button" onClick={() => onApprove(item)} disabled={busyId === item.id}
-                                                className="inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-white hover:bg-black disabled:opacity-50">
+                                                className="inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-[var(--color-on-ink)] hover:opacity-90 disabled:opacity-50">
                                                 <Check size={15} /> {busyId === item.id ? 'Saving' : 'Approve'}
                                             </button>
                                         </div>

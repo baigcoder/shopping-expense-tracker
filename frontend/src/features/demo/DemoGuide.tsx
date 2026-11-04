@@ -65,7 +65,7 @@ export function DemoGuide() {
     if (!open) {
         return (
             <button type="button" onClick={() => setOpen(true)}
-                className="fixed bottom-5 right-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-ink)] px-5 text-[15px] font-semibold text-white">
+                className="fixed bottom-5 right-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-night)] px-5 text-[15px] font-semibold text-white">
                 Resume the tour
             </button>
         );
@@ -73,7 +73,7 @@ export function DemoGuide() {
 
     return (
         <aside aria-label="Demo guide" aria-live="polite"
-            className="fixed inset-x-2 bottom-2 z-40 max-h-[46svh] overflow-y-auto rounded-[18px] bg-[var(--color-ink)] p-4 text-white sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-h-none sm:w-[380px] sm:p-5">
+            className="fixed inset-x-2 bottom-2 z-40 max-h-[46svh] overflow-y-auto rounded-[18px] bg-[var(--color-night)] p-4 text-white sm:inset-x-auto sm:right-5 sm:bottom-5 sm:max-h-none sm:w-[380px] sm:p-5">
             <div className="flex items-center justify-between gap-3">
                 <p className="text-[13px] text-white/70">Demo tour · {index + 1} of {DEMO_STEPS.length}</p>
                 <button type="button" onClick={() => setOpen(false)} aria-label="Hide the tour" className="-mr-2 rounded-full p-2 text-white/70 hover:bg-white/10 hover:text-white">
@@ -104,7 +104,7 @@ export function DemoGuide() {
                         </Link>
                     ) : (
                         <button type="button" onClick={() => setIndex((i) => i + 1)}
-                            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-white px-4 text-[14px] font-semibold text-[var(--color-ink)] hover:bg-white/90">
+                            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-white px-4 text-[14px] font-semibold text-[var(--color-on-brand)] hover:bg-white/90">
                             Next <ArrowRight size={15} />
                         </button>
                     )}

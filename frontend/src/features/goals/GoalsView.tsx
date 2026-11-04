@@ -38,7 +38,7 @@ function EditGoal({ goal, onSave, onCancel }: { goal: GoalLine; onSave: (e: Goal
                 <input type="date" value={d.deadline} onChange={(e) => setD({ ...d, deadline: e.target.value })} className={cn(field, 'px-2')} />
             </label>
             <div className="flex gap-2 sm:col-span-3">
-                <button type="submit" className="h-10 rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-white">Save</button>
+                <button type="submit" className="h-10 rounded-full bg-[var(--color-ink)] px-5 text-[14px] font-semibold text-[var(--color-on-ink)]">Save</button>
                 <button type="button" onClick={onCancel} className="h-10 rounded-full px-4 text-[14px] text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-2)]">Cancel</button>
             </div>
         </form>
@@ -52,7 +52,7 @@ function Deposit({ goal, money, onDeposit }: { goal: GoalLine; money: (n: number
             <label className="sr-only" htmlFor={`dep-${goal.id}`}>Amount to add to {goal.name}</label>
             <input id={`dep-${goal.id}`} inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder={money(5000)}
                 className="h-10 w-32 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-[15px] tabular-nums" />
-            <button type="submit" className="h-10 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-white hover:bg-black">Add money</button>
+            <button type="submit" className="h-10 whitespace-nowrap rounded-full bg-[var(--color-ink)] px-4 text-[14px] font-semibold text-[var(--color-on-ink)] hover:opacity-90">Add money</button>
         </form>
     );
 }
@@ -125,7 +125,7 @@ export function GoalsView({ model, money, loading, saving, onAdd, onDeposit, onE
                     <label className="mt-3 flex flex-col gap-1.5 text-[13px] font-medium">By
                         <input type="date" min={isoDay(new Date())} value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} className="h-10 rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-2 text-[15px]" />
                     </label>
-                    <button type="submit" disabled={saving} className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
+                    <button type="submit" disabled={saving} className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] text-[15px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)] disabled:opacity-50">
                         <Plus size={16} /> {saving ? 'Saving' : 'Add goal'}
                     </button>
                 </form>

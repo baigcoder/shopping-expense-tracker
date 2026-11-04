@@ -248,7 +248,7 @@ function DemoShell() {
             onSignOut={() => navigate('/')}
             signOutLabel="Leave the demo"
             banner={
-                <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--color-ink)] px-4 py-2.5 text-[14px] text-white sm:px-6 lg:px-10">
+                <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--color-night)] px-4 py-2.5 text-[14px] text-white sm:px-6 lg:px-10">
                     <p>Demo · sample data</p>
                     <Link to="/signup" className="font-semibold underline underline-offset-4">Create a free account</Link>
                 </div>

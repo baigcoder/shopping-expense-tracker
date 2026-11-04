@@ -52,11 +52,11 @@ export function CalendarView({ transactions, charges, money, now = new Date(), l
                                                 aria-label={`${new Date(`${d.date}T00:00`).toLocaleDateString(undefined, { day: 'numeric', month: 'long' })}${d.out ? `, spent ${money(d.out)}` : ''}${d.in ? `, received ${money(d.in)}` : ''}${due.length ? `, ${due.length} due` : ''}`}
                                                 className={cn('flex min-h-[52px] flex-col items-center gap-1 rounded-[12px] p-1.5 sm:items-start text-left sm:min-h-[84px] sm:p-2', d.inMonth ? 'hover:bg-[var(--color-canvas)]' : 'opacity-40',
                                                     picked === d.date && 'bg-[var(--color-canvas)] outline outline-2 outline-[var(--color-ink)]')}>
-                                                <span className={cn('flex h-6 w-6 items-center justify-center rounded-full text-[13px] tabular-nums', d.isToday && 'bg-[var(--color-brand)] font-semibold text-[var(--color-ink)]')}>{Number(d.date.slice(8))}</span>
+                                                <span className={cn('flex h-6 w-6 items-center justify-center rounded-full text-[13px] tabular-nums', d.isToday && 'bg-[var(--color-brand)] font-semibold text-[var(--color-on-brand)]')}>{Number(d.date.slice(8))}</span>
                                                 <span className="hidden flex-col items-start gap-1 sm:flex">
                                                     {d.in > 0 && <span className="text-[13px] font-semibold leading-none text-[var(--color-success)] tabular-nums">+{short(d.in)}</span>}
                                                     {d.out > 0 && <span className="text-[13px] leading-none text-[var(--color-ink-secondary)] tabular-nums">−{short(d.out)}</span>}
-                                                    {due.length > 0 && <span className={cn('rounded-full px-1.5 text-[13px] font-medium leading-[18px] text-white tabular-nums', late ? 'bg-[var(--color-danger)]' : trial ? 'bg-[var(--color-wine)]' : 'bg-[var(--color-ink)]')}>{short(due.reduce((s, e) => s + e.amount, 0))}</span>}
+                                                    {due.length > 0 && <span className={cn('rounded-full px-1.5 text-[13px] font-medium leading-[18px] text-[var(--color-on-ink)] tabular-nums', late ? 'bg-[var(--color-danger)]' : trial ? 'bg-[var(--color-wine)]' : 'bg-[var(--color-ink)]')}>{short(due.reduce((s, e) => s + e.amount, 0))}</span>}
                                                 </span>
                                                 {/* Phones: a dot per kind; the day list below carries the amounts. */}
                                                 <span className="flex gap-1 sm:hidden" aria-hidden>

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 const rs = (n: number) => `Rs ${n.toLocaleString('en-PK')}`;
 const wrap = 'mx-auto w-full max-w-[1320px] px-5 sm:px-8';
-const btnPrimary = 'inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]';
+const btnPrimary = 'inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]';
 
 /* ── What you get: four outputs, one true-size sheet at a time ───────────────── */
 
@@ -182,7 +182,7 @@ function Features() {
             <div className={wrap}>
                 <h2 id="feat-h" className="sr-only">What it does</h2>
                 <p className="max-w-[34ch] font-display text-[length:clamp(22px,2.2vw,30px)] font-medium leading-[1.35] tracking-tight" data-reveal>
-                    Cashly catches a checkout on any store<Slot className="bg-[var(--color-ink)] text-white">daraz.pk</Slot>, holds it in one inbox<Slot className="bg-[var(--color-brand)] text-[var(--color-ink)]">3 waiting</Slot>, fills your budgets as you approve<Slot className="bg-[var(--cat-food-soft)] text-[var(--cat-food)]">Food 74%</Slot>, and warns you before a free trial turns into a charge<Slot className="bg-[var(--color-wine-soft)] text-[var(--color-wine)]">ends in 2 days</Slot>.
+                    Cashly catches a checkout on any store<Slot className="bg-[var(--color-ink)] text-white">daraz.pk</Slot>, holds it in one inbox<Slot className="bg-[var(--color-brand)] text-[var(--color-on-brand)]">3 waiting</Slot>, fills your budgets as you approve<Slot className="bg-[var(--cat-food-soft)] text-[var(--cat-food)]">Food 74%</Slot>, and warns you before a free trial turns into a charge<Slot className="bg-[var(--color-wine-soft)] text-[var(--color-wine)]">ends in 2 days</Slot>.
                 </p>
                 <div className="mt-16 flex flex-wrap items-center gap-6 lg:ml-[50%]" data-reveal>
                     <p className="max-w-[40ch] text-[18px] leading-relaxed text-[var(--color-ink-secondary)]">No bank password, ever. It reads the order total on the page you are already looking at.</p>
@@ -211,7 +211,7 @@ function Close() {
                     <label className="sr-only" htmlFor="close-email">Your email</label>
                     <input id="close-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your email"
                         className="inline-block h-[1.15em] w-full max-w-[7.5em] rounded-[0.2em] bg-[var(--color-surface)] px-[0.25em] align-baseline font-display font-bold tracking-[-0.03em] text-[var(--color-ink)] placeholder:text-[var(--color-ink)]/35 focus:outline focus:outline-[3px] focus:outline-[var(--color-brand)] sm:w-[7.5em]" />{' '}
-                    <button type="submit" className="inline-block h-[1.15em] rounded-[0.2em] bg-[var(--color-brand)] px-[0.3em] align-baseline font-bold tracking-[-0.03em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]">today</button>
+                    <button type="submit" className="inline-block h-[1.15em] rounded-[0.2em] bg-[var(--color-brand)] px-[0.3em] align-baseline font-bold tracking-[-0.03em] text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)]">today</button>
                 </h2>
                 <p className="mt-6 text-[16px] text-[var(--color-ink-secondary)]">Takes you to sign up with your email filled in. Or <Link to="/demo" className="font-semibold text-[var(--color-ink)] underline underline-offset-4">try the demo first</Link>.</p>
             </form>

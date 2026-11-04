@@ -17,7 +17,7 @@ const FAQPage = () => {
                     <h2 id="still-h" className="max-w-[18ch] font-display text-[length:clamp(28px,3.4vw,48px)] font-bold leading-[1.05] tracking-[-0.03em]">Still wondering? Try it with sample money.</h2>
                     <div className="flex flex-wrap items-center gap-5">
                         <Link to="/contact" className="text-[16px] font-medium underline underline-offset-4">Ask us directly</Link>
-                        <Link to="/demo" className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">
+                        <Link to="/demo" className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)]">
                             Try the demo <ArrowRight size={18} />
                         </Link>
                     </div>

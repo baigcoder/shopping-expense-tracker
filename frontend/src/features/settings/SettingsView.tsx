@@ -66,7 +66,7 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
                     <label className="flex min-w-0 flex-1 flex-col gap-1.5 text-[13px] font-medium">Name
                         <input value={draft} onChange={(e) => setDraft(e.target.value)} className={field} autoComplete="name" />
                     </label>
-                    <button type="submit" disabled={busy === 'name' || draft.trim() === name || !draft.trim()} className={cn(pill, 'bg-[var(--color-ink)] text-white')}>
+                    <button type="submit" disabled={busy === 'name' || draft.trim() === name || !draft.trim()} className={cn(pill, 'bg-[var(--color-ink)] text-[var(--color-on-ink)]')}>
                         {busy === 'name' ? 'Saving' : 'Save'}
                     </button>
                 </form>
@@ -85,7 +85,7 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
                         <div className="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-[12px] bg-[var(--color-canvas)] p-3 text-[14px]">
                             <span>Amounts are not converted: 50,000 {prefs.currency} would show as 50,000 {newCurrency}.</span>
                             <span className="flex gap-2">
-                                <button type="button" onClick={() => { onPref({ currency: newCurrency }); setNewCurrency(null); }} className={cn(pill, 'h-9 bg-[var(--color-ink)] text-white')}>Switch to {newCurrency}</button>
+                                <button type="button" onClick={() => { onPref({ currency: newCurrency }); setNewCurrency(null); }} className={cn(pill, 'h-9 bg-[var(--color-ink)] text-[var(--color-on-ink)]')}>Switch to {newCurrency}</button>
                                 <button type="button" onClick={() => setNewCurrency(null)} className={cn(pill, 'h-9 text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-2)]')}>Keep {prefs.currency}</button>
                             </span>
                         </div>
@@ -133,7 +133,7 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
                             <label className="flex flex-col gap-1.5 text-[13px] font-medium">Type DELETE
                                 <input value={typed} onChange={(e) => setTyped(e.target.value)} className={cn(field, 'w-32')} autoComplete="off" />
                             </label>
-                            <button type="submit" disabled={typed.trim().toUpperCase() !== 'DELETE' || busy === 'code'} className={cn(pill, 'bg-[var(--color-danger)] text-white')}>
+                            <button type="submit" disabled={typed.trim().toUpperCase() !== 'DELETE' || busy === 'code'} className={cn(pill, 'bg-[var(--color-danger)] text-[var(--color-on-ink)]')}>
                                 {busy === 'code' ? 'Sending' : 'Send code'}
                             </button>
                         </form>
@@ -145,7 +145,7 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
                             <label className="flex flex-col gap-1.5 text-[13px] font-medium">Code from {email || 'your email'}
                                 <input value={code} onChange={(e) => setCode(e.target.value)} inputMode="numeric" autoComplete="one-time-code" className={cn(field, 'w-40 tabular-nums')} />
                             </label>
-                            <button type="submit" disabled={code.trim().length < 4 || busy === 'delete'} className={cn(pill, 'bg-[var(--color-danger)] text-white')}>
+                            <button type="submit" disabled={code.trim().length < 4 || busy === 'delete'} className={cn(pill, 'bg-[var(--color-danger)] text-[var(--color-on-ink)]')}>
                                 {busy === 'delete' ? 'Deleting' : `Delete all ${category}`}
                             </button>
                             <button type="button" onClick={() => setCodeSent(false)} className={cn(pill, 'text-[var(--color-ink-secondary)] hover:bg-[var(--color-canvas)]')}>Cancel</button>

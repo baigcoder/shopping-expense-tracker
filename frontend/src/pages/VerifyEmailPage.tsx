@@ -114,7 +114,7 @@ const VerifyEmailPage = () => {
                         Welcome to Cashly! Your workspace is initialized and ready to start capturing checkouts.
                     </p>
                     <Button 
-                        className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]" 
+                        className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)]" 
                         onClick={() => navigate('/login')}
                     >
                         Go to sign in
@@ -163,7 +163,7 @@ const VerifyEmailPage = () => {
                 <Button
                     onClick={handleVerify}
                     disabled={status === 'verifying' || otp.join('').length !== OTP_LENGTH}
-                    className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)]"
+                    className="h-12 w-full rounded-full bg-[var(--color-brand)] text-[16px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)]"
                 >
                     {status === 'verifying' ? (
                         <>

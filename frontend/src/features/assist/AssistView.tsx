@@ -71,7 +71,7 @@ export function AssistView({ messages, sending, suggestions, onSend, onVoice, pl
                             <button type="button" onClick={onVoice} aria-label="Talk instead" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-canvas)] hover:bg-[var(--color-surface-2)]"><Mic size={18} /></button>
                         )}
                         <button type="submit" disabled={!text.trim() || sending} aria-label="Send"
-                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)] disabled:opacity-40"><ArrowUp size={20} /></button>
+                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)] disabled:opacity-40"><ArrowUp size={20} /></button>
                     </form>
                 </section>
 
@@ -83,14 +83,14 @@ export function AssistView({ messages, sending, suggestions, onSend, onVoice, pl
                         </div>
                         {!plan || plan.length === 0 ? (
                             <button type="button" onClick={onMakePlan} disabled={planning}
-                                className="mt-4 h-11 w-full rounded-full bg-[var(--color-ink)] text-[15px] font-semibold text-white hover:bg-black disabled:opacity-50">{planning ? 'Making a plan…' : 'Make this week’s plan'}</button>
+                                className="mt-4 h-11 w-full rounded-full bg-[var(--color-ink)] text-[15px] font-semibold text-[var(--color-on-ink)] hover:opacity-90 disabled:opacity-50">{planning ? 'Making a plan…' : 'Make this week’s plan'}</button>
                         ) : (
                             <ul className="mt-3 flex flex-col gap-1">
                                 {plan.map((a) => (
                                     <li key={a.id}>
                                         <label className="flex cursor-pointer items-start gap-3 rounded-[12px] p-2 hover:bg-[var(--color-canvas)]">
                                             <input type="checkbox" checked={a.status === 'done'} onChange={() => onToggle(a)} className="peer sr-only" />
-                                            <span className={cn('mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-brand)]', a.status === 'done' ? 'border-[var(--color-success)] bg-[var(--color-success)] text-white' : 'border-[var(--color-border-strong)]')} aria-hidden>
+                                            <span className={cn('mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 peer-focus-visible:ring-2 peer-focus-visible:ring-[var(--color-brand)]', a.status === 'done' ? 'border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-on-ink)]' : 'border-[var(--color-border-strong)]')} aria-hidden>
                                                 {a.status === 'done' && <Check size={12} strokeWidth={3} />}
                                             </span>
                                             <span className={cn('text-[15px] leading-snug', a.status === 'done' && 'text-[var(--color-muted)] line-through')}>{a.title}</span>

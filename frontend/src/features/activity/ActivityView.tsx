@@ -88,7 +88,7 @@ export function ActivityView<T extends ActivityTx>({ transactions, money, loadin
                 <div role="tablist" aria-label="Type" className="inline-flex rounded-full bg-[var(--color-surface)] p-1">
                     {([['all', 'All'], ['expense', 'Spent'], ['income', 'Received']] as const).map(([v, l]) => (
                         <button key={v} type="button" role="tab" aria-selected={kind === v} onClick={() => { setKind(v); setLimit(PAGE); }}
-                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium', kind === v ? 'bg-[var(--color-ink)] text-white' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
+                            className={cn('h-9 rounded-full px-4 text-[14px] font-medium', kind === v ? 'bg-[var(--color-ink)] text-[var(--color-on-ink)]' : 'text-[var(--color-ink-secondary)] hover:text-[var(--color-ink)]')}>{l}</button>
                     ))}
                 </div>
                 <select aria-label="Category" value={category} onChange={(e) => { setCategory(e.target.value); setLimit(PAGE); }} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">

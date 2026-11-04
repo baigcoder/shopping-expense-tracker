@@ -9,7 +9,7 @@ const links = [
     { href: '/#faq', label: 'Questions' },
 ];
 
-const btnPrimary = 'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]';
+const btnPrimary = 'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-brand)] px-5 text-[15px] font-semibold text-[var(--color-on-brand)] transition-colors hover:bg-[var(--color-brand-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand)]';
 
 export function MarketingNav({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
     const [open, setOpen] = useState(false);
@@ -76,7 +76,7 @@ export function MarketingFooter() {
                 <div className="flex min-h-[220px] items-center justify-center overflow-hidden rounded-[20px] bg-[var(--color-ink)] sm:col-span-8 sm:min-h-[300px]">
                     <span className="select-none font-display text-[22vw] font-bold leading-none tracking-[-0.05em] text-[var(--color-canvas)] sm:text-[12vw]" aria-hidden>Cashly</span>
                 </div>
-                <Link to="/signup" className="group flex min-h-[220px] flex-col justify-between rounded-[20px] bg-[var(--color-brand)] p-6 text-[var(--color-ink)] sm:col-span-4 sm:min-h-[300px]">
+                <Link to="/signup" className="group flex min-h-[220px] flex-col justify-between rounded-[20px] bg-[var(--color-brand)] p-6 text-[var(--color-on-brand)] sm:col-span-4 sm:min-h-[300px]">
                     <span className="font-display text-[28px] font-semibold leading-tight tracking-tight">Start with your own money</span>
                     <ArrowUpRight size={44} strokeWidth={2.5} className="self-end transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
                 </Link>

@@ -23,7 +23,7 @@ const FeaturesPage = () => {
                             It starts with one card like this one. Approved purchases then feed your budgets, your calendar, your forecast and every answer the AI gives.
                         </p>
                         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 pr-2" data-reveal>
-                            <Link to="/demo" className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">Try the demo <ArrowRight size={18} /></Link>
+                            <Link to="/demo" className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--color-brand)] px-6 text-[16px] font-semibold text-[var(--color-on-brand)] hover:bg-[var(--color-brand-hover)]">Try the demo <ArrowRight size={18} /></Link>
                             <Link to="/signup" className="text-[16px] font-medium underline underline-offset-4">Create a free account</Link>
                         </div>
                     </div>
