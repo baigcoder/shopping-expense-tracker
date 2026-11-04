@@ -1,7 +1,7 @@
 import { Download, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export type ExtensionState = 'connected' | 'signed-out' | 'missing';
+export type ExtensionState = 'connected' | 'elsewhere' | 'signed-out' | 'missing';
 export interface ExtSite { hostname: string; name?: string; visits: number; caught: number; lastSeen: string }
 export interface ExtEvent { id: string; type: string; status: string; message?: string; site?: string; at: string }
 
@@ -20,6 +20,7 @@ const ago = (iso: string, now: Date) => {
 
 const STATE: Record<ExtensionState, { title: string; dot: string }> = {
     connected: { title: 'Connected', dot: 'bg-[var(--color-success)]' },
+    elsewhere: { title: 'Working in another browser', dot: 'bg-[var(--color-success)]' },
     'signed-out': { title: 'Installed, not signed in', dot: 'bg-[var(--color-brand)]' },
     missing: { title: 'Not installed', dot: 'bg-[var(--color-muted)]' },
 };
@@ -50,14 +51,14 @@ export function ExtensionView({ state, lastSync, queued, failed, sites, events, 
                             className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-canvas)] px-4 text-[14px] font-semibold hover:bg-[var(--color-surface-2)] disabled:opacity-50">
                             <RefreshCw size={15} className={cn(checking && 'animate-spin')} aria-hidden /> Check again
                         </button>
-                        {state !== 'connected' && (
+                        {(state === 'missing' || state === 'signed-out') && (
                             <a href="/cashly-extension.zip" download className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--color-brand)] px-4 text-[14px] font-semibold text-[var(--color-ink)] hover:bg-[var(--color-brand-hover)]">
                                 <Download size={15} aria-hidden /> Download
                             </a>
                         )}
                     </div>
                 </div>
-                {state === 'connected' ? (
+                {state === 'connected' || state === 'elsewhere' ? (
                     <dl className="mt-5 grid grid-cols-3 gap-4">
                         {facts.map((f) => (
                             <div key={f.label}>

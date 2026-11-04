@@ -19,9 +19,12 @@ export const ExtensionHealthPage = () => {
         catch { /* the status line still comes from the extension itself */ }
     }, []);
 
-    useEffect(() => { void load(); }, [load]);
+    // Ask the extension directly on open; the cached status can be stale after an install or uninstall.
+    useEffect(() => { void load(); void checkExtension(); }, [load, checkExtension]);
 
-    const state: ExtensionState = !extensionStatus.installed ? 'missing' : extensionStatus.loggedIn ? 'connected' : 'signed-out';
+    // Captures in the last 3 days mean it works, just not in this browser: do not ask them to install it again.
+    const recent = !!health.lastSuccessfulSync && Date.now() - new Date(health.lastSuccessfulSync).getTime() < 3 * 86400000;
+    const state: ExtensionState = extensionStatus.installed ? (extensionStatus.loggedIn ? 'connected' : 'signed-out') : recent ? 'elsewhere' : 'missing';
 
     return (
         <ExtensionView
