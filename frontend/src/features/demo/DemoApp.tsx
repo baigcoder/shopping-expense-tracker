@@ -19,6 +19,7 @@ import { ActivityView } from '../activity/ActivityView';
 import { CalendarView } from '../calendar/CalendarView';
 import { SpendingView } from '../spending/SpendingView';
 import { ReportsView } from '../reports/ReportsView';
+import { CardsView, type AccountRow, type CardRow } from '../cards/CardsView';
 import { TransactionSideSheet } from '@/components/TransactionSideSheet';
 import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
@@ -158,6 +159,34 @@ function DemoReports() {
     return <ReportsView transactions={input.transactions} money={money} now={DEMO_NOW} />;
 }
 
+// Sample accounts and cards live only in this screen; Reset on the tour reloads them with the page.
+const DEMO_ACCOUNTS: AccountRow[] = [
+    { id: 'a1', name: 'Salary account', bank: 'Meezan Bank', type: 'checking', balance: 182400 },
+    { id: 'a2', name: 'Savings', bank: 'HBL', type: 'savings', balance: 240000 },
+    { id: 'a3', name: 'Cash at home', bank: '', type: 'cash', balance: 12000 },
+    { id: 'a4', name: 'Credit card', bank: 'Alfalah', type: 'credit', balance: 38750 },
+];
+const DEMO_CARDS: CardRow[] = [
+    { id: 'c1', name: 'Everyday card', brand: 'visa', last4: '4021', expiry: '08/28', limit: 60000, primary: true },
+    { id: 'c2', name: 'Online shopping', brand: 'mastercard', last4: '7716', expiry: '02/27', limit: 15000 },
+];
+
+function DemoCards() {
+    const [accounts, setAccounts] = useState(DEMO_ACCOUNTS);
+    const [cards, setCards] = useState(DEMO_CARDS);
+    const patch = (id: string, p: Partial<CardRow>) => setCards((l) => l.map((c) => (c.id === id ? { ...c, ...p } : c)));
+    return (
+        <CardsView accounts={accounts} cards={cards} money={money}
+            onSaveAccount={(d, id) => setAccounts((l) => (id ? l.map((a) => (a.id === id ? { ...d, id } : a)) : [...l, { ...d, id: `a${Date.now()}` }]))}
+            onRemoveAccount={(id) => setAccounts((l) => l.filter((a) => a.id !== id))}
+            onAddCard={() => setCards((l) => [...l, { id: `c${Date.now()}`, name: 'New card', brand: 'visa', last4: String(1000 + l.length * 1111).slice(-4), expiry: '12/29' }])}
+            onFreeze={(id, frozen) => patch(id, { frozen })}
+            onPrimary={(id) => setCards((l) => l.map((c) => ({ ...c, primary: c.id === id })))}
+            onLimit={(id, limit) => patch(id, { limit })}
+            onRemoveCard={(id) => setCards((l) => l.filter((c) => c.id !== id))} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -204,7 +233,8 @@ function DemoShell() {
                 <Route path="cashflow-calendar" element={<DemoCalendar />} />
                 <Route path="analytics" element={<DemoSpending />} />
                 <Route path="reports" element={<DemoReports />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports'].includes(s.to)).map((s) => (
+                <Route path="cards" element={<DemoCards />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
