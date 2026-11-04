@@ -16,13 +16,13 @@ const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart
 /** Ranges are [from, to) in local days; "previous" covers the same number of days one period earlier. */
 function ranges(period: SpendPeriod, now: Date) {
     const today = startOfDay(now);
-    const end = new Date(today.getTime() + DAY);
-    if (period === 'week') return { from: new Date(end.getTime() - 7 * DAY), to: end, prevFrom: new Date(end.getTime() - 14 * DAY), prevTo: new Date(end.getTime() - 7 * DAY) };
-    if (period === 'month') {
-        const from = new Date(today.getFullYear(), today.getMonth(), 1);
-        return { from, to: end, prevFrom: new Date(today.getFullYear(), today.getMonth() - 1, 1), prevTo: new Date(today.getFullYear(), today.getMonth() - 1, today.getDate() + 1) };
-    }
-    return { from: new Date(today.getFullYear(), 0, 1), to: end, prevFrom: new Date(today.getFullYear() - 1, 0, 1), prevTo: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate() + 1) };
+    const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+    const end = new Date(y, m, d + 1);
+    if (period === 'week') return { from: new Date(y, m, d - 6), to: end, prevFrom: new Date(y, m, d - 13), prevTo: new Date(y, m, d - 6) };
+    // Same days of the earlier period, clamped: 31 March compares with all of February, never with 3 March.
+    const upTo = (yy: number, mm: number) => new Date(yy, mm, Math.min(d, new Date(yy, mm + 1, 0).getDate()) + 1);
+    if (period === 'month') return { from: new Date(y, m, 1), to: end, prevFrom: new Date(y, m - 1, 1), prevTo: upTo(y, m - 1) };
+    return { from: new Date(y, 0, 1), to: end, prevFrom: new Date(y - 1, 0, 1), prevTo: upTo(y - 1, m) };
 }
 
 export function buildSpending(transactions: SpendTx[], period: SpendPeriod, now = new Date()): SpendingModel {
@@ -48,14 +48,20 @@ export function buildSpending(transactions: SpendTx[], period: SpendPeriod, now 
         for (const t of inRange) { const i = at.get(t.date.slice(0, 10)); if (i !== undefined) bars[i].value += Math.abs(t.amount); }
     }
 
+    // Grouped case- and space-insensitively ("Daraz" and "DARAZ "), shown under the first spelling seen.
     const sum = (key: (t: SpendTx) => string) => {
-        const m = new Map<string, { amount: number; count: number }>();
-        for (const t of inRange) { const k = key(t) || 'Other'; const v = m.get(k) || { amount: 0, count: 0 }; m.set(k, { amount: v.amount + Math.abs(t.amount), count: v.count + 1 }); }
-        return [...m.entries()].sort((a, b) => b[1].amount - a[1].amount);
+        const m = new Map<string, { name: string; amount: number; count: number }>();
+        for (const t of inRange) {
+            const name = key(t).trim().replace(/\s+/g, ' ') || 'Other';
+            const k = name.toLowerCase();
+            const v = m.get(k) || { name, amount: 0, count: 0 };
+            m.set(k, { name: v.name, amount: v.amount + Math.abs(t.amount), count: v.count + 1 });
+        }
+        return [...m.values()].sort((a, b) => b.amount - a.amount);
     };
     return {
         total, previous, count: inRange.length, bars,
-        categories: sum((t) => t.category).map(([name, v]) => ({ name, amount: v.amount, share: total ? v.amount / total : 0 })),
-        merchants: sum((t) => t.description.trim()).slice(0, 6).map(([name, v]) => ({ name, ...v })),
+        categories: sum((t) => t.category || '').map((v) => ({ name: v.name, amount: v.amount, share: total ? v.amount / total : 0 })),
+        merchants: sum((t) => t.description || '').slice(0, 6),
     };
 }

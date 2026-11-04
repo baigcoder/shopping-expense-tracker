@@ -1,6 +1,6 @@
 // /demo: the real app shell and screens, fed with sample data and walked through by the guide.
 import { useMemo, useState } from 'react';
-import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
 import { AppShell } from '@/components/app/AppShell';
 import { HomeView } from '../home/HomeView';
 import { InboxView, type InboxStatus } from '../inbox/InboxView';
@@ -15,7 +15,7 @@ import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistV
 import { linkFor } from '../assist/linkFor';
 import { demoAnswer } from './demoAnswers';
 import { TwinView } from '../twin/TwinView';
-import { ActivityView } from '../activity/ActivityView';
+import { ActivityView, type Period } from '../activity/ActivityView';
 import { CalendarView } from '../calendar/CalendarView';
 import { SpendingView } from '../spending/SpendingView';
 import { ReportsView } from '../reports/ReportsView';
@@ -141,12 +141,14 @@ function DemoTwin() {
 }
 
 function DemoActivity() {
+    const [params] = useSearchParams();
     const { input, updateTx, deleteTx } = useDemo();
     const [open, setOpen] = useState<SupabaseTransaction | null>(null);
     const rows = useMemo(() => input.transactions.map((t) => ({ ...t, user_id: 'demo', created_at: t.date })), [input.transactions]);
     return (
         <>
-            <ActivityView transactions={rows} money={money} now={DEMO_NOW} onOpen={(t) => setOpen(t as SupabaseTransaction)} />
+            <ActivityView key={params.toString()} transactions={rows} money={money} now={DEMO_NOW} onOpen={(t) => setOpen(t as SupabaseTransaction)}
+                initial={{ q: params.get('q') || undefined, category: params.get('category') || undefined, period: (params.get('period') as Period) || undefined }} />
             <TransactionSideSheet transaction={open} open={open !== null} onOpenChange={(o) => !o && setOpen(null)}
                 onUpdate={async (u) => { updateTx(u); setOpen(null); }} onDelete={async (id) => { deleteTx(id); setOpen(null); }} />
         </>
@@ -161,7 +163,7 @@ function DemoCalendar() {
 
 function DemoSpending() {
     const { input } = useDemo();
-    return <SpendingView transactions={input.transactions} money={money} now={DEMO_NOW} />;
+    return <SpendingView transactions={input.transactions} money={money} now={DEMO_NOW} basePath="/demo" />;
 }
 
 function DemoReports() {

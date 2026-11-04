@@ -33,4 +33,16 @@ describe('buildSpending', () => {
         expect(y.bars[9].value).toBe(12000);
         expect(y.previous).toBe(7000);
     });
+
+    it('compares 31 March with all of February, not with the first days of March', () => {
+        const mar31 = new Date(2026, 2, 31, 12);
+        const m = buildSpending([tx('a', '2026-02-27', 100), tx('b', '2026-03-02', 999), tx('c', '2026-03-31', 50)], 'month', mar31);
+        expect(m.previous).toBe(100);
+        expect(m.total).toBe(1049);
+    });
+
+    it('groups a shop however its name was typed', () => {
+        const m = buildSpending([tx('a', '2026-11-03', 100, 'Shopping', 'Daraz'), tx('b', '2026-11-04', 200, 'Shopping', 'DARAZ ')], 'month', now);
+        expect(m.merchants).toEqual([{ name: 'Daraz', amount: 300, count: 2 }]);
+    });
 });

@@ -2,7 +2,8 @@
 // Review of pending captures lives on the Review inbox screen.
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { ActivityView } from '../features/activity/ActivityView';
+import { useSearchParams } from 'react-router-dom';
+import { ActivityView, type Period } from '../features/activity/ActivityView';
 import { useAuthStore } from '../store/useStore';
 import { formatCurrency } from '../services/currencyService';
 import { supabaseTransactionService, type SupabaseTransaction } from '../services/supabaseTransactionService';
@@ -15,6 +16,7 @@ const PDFAnalyzer = lazy(() => import('../components/PDFAnalyzer'));
 
 export function TransactionsPage() {
     const { user } = useAuthStore();
+    const [params] = useSearchParams();
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState<SupabaseTransaction | null>(null);
@@ -35,6 +37,7 @@ export function TransactionsPage() {
     return (
         <>
             <ActivityView
+                key={params.toString()}
                 transactions={transactions}
                 money={(n) => formatCurrency(n)}
                 loading={loading}
@@ -42,6 +45,7 @@ export function TransactionsPage() {
                 onImportFile={() => setModal('csv')}
                 onImportStatement={() => setModal('pdf')}
                 onExport={(shown) => setModal({ export: shown })}
+                initial={{ q: params.get('q') || undefined, category: params.get('category') || undefined, period: (params.get('period') as Period) || undefined }}
             />
             <TransactionSideSheet
                 transaction={open}

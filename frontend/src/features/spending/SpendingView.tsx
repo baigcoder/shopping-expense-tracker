@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { buildSpending, type SpendPeriod, type SpendTx, type SpendingModel } from './spendingModel';
 import { categoryTint } from '@/components/app/categoryTint';
 import { cn } from '@/lib/utils';
 
-interface SpendingViewProps { transactions: SpendTx[]; money: (n: number) => string; now?: Date; loading?: boolean }
+interface SpendingViewProps { transactions: SpendTx[]; money: (n: number) => string; now?: Date; loading?: boolean; basePath?: string }
 
 const PERIODS: [SpendPeriod, string, string][] = [['week', 'Week', 'the 7 days before'], ['month', 'Month', 'the same days last month'], ['year', 'Year', 'the same time last year']];
 
@@ -33,7 +34,9 @@ function Bars({ bars, money }: { bars: SpendingModel['bars']; money: (n: number)
     );
 }
 
-export function SpendingView({ transactions, money, now = new Date(), loading }: SpendingViewProps) {
+export function SpendingView({ transactions, money, now = new Date(), loading, basePath = '' }: SpendingViewProps) {
+    // Each category and shop opens Activity filtered to it, over the same period.
+    const activity = (filter: Record<string, string>) => `${basePath}/transactions?${new URLSearchParams({ ...filter, period }).toString()}`;
     const [period, setPeriod] = useState<SpendPeriod>('month');
     const m = useMemo(() => buildSpending(transactions, period, now), [transactions, period, now]);
     const diff = m.total - m.previous;
@@ -76,6 +79,7 @@ export function SpendingView({ transactions, money, now = new Date(), loading }:
                                 const tint = categoryTint(c.name);
                                 return (
                                     <li key={c.name}>
+                                        <Link to={activity({ category: c.name })} className="-mx-2 block rounded-[12px] px-2 py-1 hover:bg-[var(--color-canvas)]">
                                         <div className="flex items-baseline justify-between gap-3 text-[15px]">
                                             <span className="font-medium">{c.name}</span>
                                             <span className="tabular-nums"><span className="mr-2 text-[var(--color-muted)]">{Math.round(c.share * 100)}%</span>{money(c.amount)}</span>
@@ -83,6 +87,7 @@ export function SpendingView({ transactions, money, now = new Date(), loading }:
                                         <div className="mt-2 h-2 rounded-full" style={{ background: tint.soft }}>
                                             <div className="h-full rounded-full" style={{ width: `${Math.max(2, c.share * 100)}%`, background: tint.ink }} />
                                         </div>
+                                        </Link>
                                     </li>
                                 );
                             })}
@@ -95,13 +100,15 @@ export function SpendingView({ transactions, money, now = new Date(), loading }:
                     {m.merchants.length === 0 ? <p className="text-[15px] text-[var(--color-ink-secondary)]">No spending in this period.</p> : (
                         <ol>
                             {m.merchants.map((s, i) => (
-                                <li key={s.name} className="flex items-center gap-3 py-2.5">
+                                <li key={s.name}>
+                                    <Link to={activity({ q: s.name })} className="-mx-2 flex items-center gap-3 rounded-[12px] px-2 py-2.5 hover:bg-[var(--color-canvas)]">
                                     <span className="w-5 text-[14px] text-[var(--color-muted)] tabular-nums">{i + 1}</span>
                                     <span className="min-w-0 flex-1">
                                         <span className="block truncate text-[15px] font-medium">{s.name}</span>
                                         <span className="block text-[13px] text-[var(--color-muted)]">{s.count === 1 ? 'Once' : `${s.count} times`}</span>
                                     </span>
                                     <span className="font-display text-[16px] font-semibold tabular-nums">{money(s.amount)}</span>
+                                    </Link>
                                 </li>
                             ))}
                         </ol>

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 export interface ActivityTx { id: string; date: string; description: string; amount: number; type: 'income' | 'expense'; category: string }
 
 type Kind = 'all' | 'expense' | 'income';
-type Period = 'all' | 'month' | 'week' | 'today';
+export type Period = 'all' | 'year' | 'month' | 'week' | 'today';
 
 interface ActivityViewProps<T extends ActivityTx> {
     transactions: T[];
@@ -17,6 +17,8 @@ interface ActivityViewProps<T extends ActivityTx> {
     onImportFile?: () => void;
     onImportStatement?: () => void;
     onExport?: (shown: T[]) => void;
+    /** Starting filters, e.g. from a Spending link: /transactions?category=Food&period=month */
+    initial?: { q?: string; category?: string; period?: Period };
 }
 
 const DAY = 86400000;
@@ -26,12 +28,12 @@ const localDay = (iso: string) => { const [y, m, d] = iso.slice(0, 10).split('-'
 
 export function filterActivity<T extends ActivityTx>(list: T[], q: string, kind: Kind, category: string, period: Period, now: Date) {
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-    const from = period === 'today' ? start : period === 'week' ? start - 6 * DAY : period === 'month' ? new Date(now.getFullYear(), now.getMonth(), 1).getTime() : -Infinity;
+    const from = period === 'today' ? start : period === 'week' ? start - 6 * DAY : period === 'month' ? new Date(now.getFullYear(), now.getMonth(), 1).getTime() : period === 'year' ? new Date(now.getFullYear(), 0, 1).getTime() : -Infinity;
     const needle = q.trim().toLowerCase();
     const digits = needle.replace(/[^\d.]/g, ''); // "Rs 8,499" and "8499" both find 8499
     return list
         .filter((t) => (kind === 'all' || t.type === kind)
-            && (category === 'all' || t.category === category)
+            && (category === 'all' || (t.category || '').toLowerCase() === category.toLowerCase())
             && localDay(t.date).getTime() >= from
             && (!needle || t.description.toLowerCase().includes(needle) || t.category.toLowerCase().includes(needle)
                 || (digits.length >= 2 && digits === needle.replace(/[\s,rs]/g, '') && String(Math.abs(t.amount)).startsWith(digits))))
@@ -44,11 +46,11 @@ const dayHeading = (iso: string, now: Date) => {
     return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday' : d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
 };
 
-export function ActivityView<T extends ActivityTx>({ transactions, money, loading, now = new Date(), onOpen, onImportFile, onImportStatement, onExport }: ActivityViewProps<T>) {
-    const [q, setQ] = useState('');
+export function ActivityView<T extends ActivityTx>({ transactions, money, loading, now = new Date(), onOpen, onImportFile, onImportStatement, onExport, initial }: ActivityViewProps<T>) {
+    const [q, setQ] = useState(initial?.q || '');
     const [kind, setKind] = useState<Kind>('all');
-    const [category, setCategory] = useState('all');
-    const [period, setPeriod] = useState<Period>('all');
+    const [category, setCategory] = useState(initial?.category || 'all');
+    const [period, setPeriod] = useState<Period>(initial?.period || 'all');
     const [limit, setLimit] = useState(PAGE);
 
     const categories = useMemo(() => [...new Set(transactions.map((t) => t.category))].sort(), [transactions]);
@@ -91,10 +93,10 @@ export function ActivityView<T extends ActivityTx>({ transactions, money, loadin
                 </div>
                 <select aria-label="Category" value={category} onChange={(e) => { setCategory(e.target.value); setLimit(PAGE); }} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
                     <option value="all">Every category</option>
-                    {categories.map((c) => <option key={c}>{c}</option>)}
+                    {[...new Set([...categories, ...(category === 'all' ? [] : [category])])].map((c) => <option key={c}>{c}</option>)}
                 </select>
                 <select aria-label="Period" value={period} onChange={(e) => { setPeriod(e.target.value as Period); setLimit(PAGE); }} className="h-11 rounded-full bg-[var(--color-surface)] px-4 text-[14px]">
-                    <option value="all">All time</option><option value="month">This month</option><option value="week">Last 7 days</option><option value="today">Today</option>
+                    <option value="all">All time</option><option value="year">This year</option><option value="month">This month</option><option value="week">Last 7 days</option><option value="today">Today</option>
                 </select>
             </div>
 
