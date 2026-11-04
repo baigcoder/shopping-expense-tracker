@@ -4,23 +4,14 @@ import { toast } from 'sonner';
 import { HomeView } from '../features/home/HomeView';
 import { buildHomeModel, type HomeInput, type PendingLine } from '../features/home/homeModel';
 import { useAuthStore, useModalStore } from '../store/useStore';
-import { supabaseTransactionService } from '../services/supabaseTransactionService';
-import { budgetService } from '../services/budgetService';
-import { subscriptionService } from '../services/subscriptionService';
-import { billService } from '../services/billService';
-import bankAccountService from '../services/bankAccountService';
-import { accountsBalance, fromBill, fromSub } from '../features/commitments/fromServices';
-import { goalService } from '../services/goalService';
-import { transactionInboxApi, type TransactionCandidate } from '../services/featureExpansionApi';
+import { transactionInboxApi } from '../services/featureExpansionApi';
+import { loadHomeInput } from '../features/home/loadHomeInput';
 import { usePaymentCaptureSync } from '../hooks/usePaymentCaptureSync';
 import { formatCurrency } from '../services/currencyService';
 import { supabase } from '../config/supabase';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
 
 const EMPTY: Omit<HomeInput, 'now'> = { transactions: [], budgets: [], commitments: [], goals: [], pending: [] };
-
-const settle = <T,>(p: Promise<T>, fallback: T, ms = 4000) =>
-    Promise.race([p, new Promise<T>((r) => setTimeout(() => r(fallback), ms))]).catch(() => fallback);
 
 export function DashboardPage() {
     const { user } = useAuthStore();
@@ -34,40 +25,9 @@ export function DashboardPage() {
         if (!userId) userId = (await supabase.auth.getSession()).data.session?.user?.id;
         if (!userId) { setLoading(false); return; }
 
-        // Transactions are not raced against a timeout: an empty list would show a long-time user the new-user setup.
-        const [transactions, budgets, subscriptions, bills, goals, accounts, inbox] = await Promise.all([
-            supabaseTransactionService.getAll(userId, { force: true }).catch(() => null),
-            settle(budgetService.getAll(userId), []),
-            settle(subscriptionService.getAll(userId), []),
-            settle(billService.getAll(userId), []),
-            settle(goalService.getAll(userId), []),
-            settle(bankAccountService.getAll(userId), []),
-            settle(transactionInboxApi.list({ status: 'pending', limit: 8 }), { data: [] as TransactionCandidate[] }),
-        ]);
-
-        if (transactions === null) {
-            toast.error('Could not load your money. Check your connection and try again.');
-            setLoading(false);
-            return;
-        }
-
-        setInput({
-            transactions,
-            budgets,
-            commitments: [...subscriptions.map(fromSub), ...bills.map(fromBill)],
-            goals,
-            accountsBalance: accountsBalance(accounts),
-            pending: ((inbox?.data || []) as TransactionCandidate[]).map((c) => ({
-                id: c.id,
-                merchant: c.merchant_name || c.description,
-                description: c.description,
-                amount: Math.abs(c.amount),
-                category: c.category || 'Other',
-                date: c.date,
-                source: c.source,
-                type: c.type === 'income' ? 'income' as const : 'expense' as const,
-            })),
-        });
+        const next = await loadHomeInput(userId);
+        if (next === null) toast.error('Could not load your money. Check your connection and try again.');
+        else setInput(next);
         setLoading(false);
     }, [user?.id]);
 

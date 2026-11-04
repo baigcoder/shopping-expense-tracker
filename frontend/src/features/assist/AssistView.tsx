@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUp, Check, Mic } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export interface ChatMessage { role: 'user' | 'assistant'; text: string; link?: { label: string; path: string } }
+export interface ChatMessage { role: 'user' | 'assistant'; text: string; link?: { label: string; path: string }; retry?: string /* the question to ask again after a failure */ }
 export interface PlanAction { id: string; title: string; description?: string; status: 'pending' | 'done' | 'skipped' }
 export interface Insight { id: string; title: string; message: string; path?: string; urgent?: boolean }
 
@@ -55,6 +55,9 @@ export function AssistView({ messages, sending, suggestions, onSend, onVoice, pl
                             <div key={i} className={cn('max-w-[85%] rounded-[18px] px-4 py-3 text-[15px] leading-relaxed', m.role === 'user' ? 'ml-auto bg-[var(--color-canvas)]' : 'bg-[var(--color-wine-soft)]')}>
                                 <p className="whitespace-pre-wrap">{m.text}</p>
                                 {m.link && <Link to={`${basePath}${m.link.path}`} className="mt-2 inline-block font-semibold underline underline-offset-4">{m.link.label}</Link>}
+                                {m.retry && i === messages.length - 1 && !sending && (
+                                    <button type="button" onClick={() => onSend(m.retry!)} className="mt-2 block font-semibold underline underline-offset-4">Try again</button>
+                                )}
                             </div>
                         ))}
                         {sending && <p className="w-fit rounded-[18px] bg-[var(--color-wine-soft)] px-4 py-3 text-[15px] text-[var(--color-ink-secondary)]">Working it out…</p>}

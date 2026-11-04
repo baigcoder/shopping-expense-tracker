@@ -1,5 +1,5 @@
 // Ask Cashly: live AI chat, weekly plan and insights around the shared AssistView (the demo renders the same view).
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { AssistView, type ChatMessage, type Insight, type PlanAction } from '../features/assist/AssistView';
 import { linkFor } from '../features/assist/linkFor';
@@ -8,6 +8,11 @@ import { generateSmartInsights } from '../services/smartInsightsService';
 import { getAIResponse, getBackendInsights } from '../services/aiService';
 import { featureExpansionApi } from '../services/featureExpansionApi';
 import VoiceCallModal from '../components/VoiceCallModal';
+import { loadHomeInput } from '../features/home/loadHomeInput';
+import { buildHomeModel, type HomeInput } from '../features/home/homeModel';
+import { homeFacts } from '../features/assist/homeFacts';
+import { formatCurrency } from '../services/currencyService';
+import { FINANCIAL_DATA_EVENTS } from '../services/financialDataEvents';
 
 const SUGGESTIONS = ['Can I afford a Rs 30,000 phone?', 'Where did my money go this month?', 'Which subscriptions should I cancel?'];
 
@@ -19,9 +24,13 @@ export const InsightsPage = () => {
     const [planning, setPlanning] = useState(false);
     const [insights, setInsights] = useState<Insight[]>([]);
     const [voice, setVoice] = useState(false);
+    const [home, setHome] = useState<Omit<HomeInput, 'now'> | null>(null);
+    // The same figures Home shows, sent with every question.
+    const facts = useMemo(() => (home ? homeFacts(buildHomeModel(home), (n) => formatCurrency(n)) : undefined), [home]);
 
     const load = useCallback(async () => {
         if (!user?.id) return;
+        void loadHomeInput(user.id, false).then((h) => h && setHome(h)).catch(() => undefined);
         try {
             const local = await generateSmartInsights(user.id);
             setInsights(local.insights.map((i) => ({ id: i.id, title: i.title, message: i.message, path: i.actionPath, urgent: i.severity === 'high' })));
@@ -36,16 +45,24 @@ export const InsightsPage = () => {
     }, [user?.id]);
 
     useEffect(() => { void load(); }, [load]);
+    // Approvals and edits elsewhere update the figures the next answer uses.
+    useEffect(() => {
+        if (!user?.id) return;
+        const refresh = () => void loadHomeInput(user.id, true).then((h) => h && setHome(h)).catch(() => undefined);
+        FINANCIAL_DATA_EVENTS.forEach((e) => window.addEventListener(e, refresh));
+        return () => FINANCIAL_DATA_EVENTS.forEach((e) => window.removeEventListener(e, refresh));
+    }, [user?.id]);
 
     const send = async (text: string) => {
         if (!user?.id) return;
-        setMessages((m) => [...m, { role: 'user', text }]);
+        // A retry replaces the failure message instead of repeating the question in the thread.
+        setMessages((m) => (m[m.length - 1]?.retry === text ? m.slice(0, -1) : [...m, { role: 'user', text }]));
         setSending(true);
         try {
-            const answer = await getAIResponse(text, user.id);
+            const answer = await getAIResponse(text, user.id, facts);
             setMessages((m) => [...m, { role: 'assistant', text: answer, link: linkFor(answer) }]);
         } catch {
-            setMessages((m) => [...m, { role: 'assistant', text: 'I could not reach the AI just now. Try again in a moment.' }]);
+            setMessages((m) => [...m, { role: 'assistant', text: 'I could not reach the AI just now.', retry: text }]);
         } finally {
             setSending(false);
         }
