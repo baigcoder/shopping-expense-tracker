@@ -21,6 +21,9 @@ import { SpendingView } from '../spending/SpendingView';
 import { ReportsView } from '../reports/ReportsView';
 import { CardsView, type AccountRow, type CardRow } from '../cards/CardsView';
 import { ExtensionView } from '../extension/ExtensionView';
+import { SettingsView, type SettingsPrefs } from '../settings/SettingsView';
+import { SUPPORTED_CURRENCIES } from '@/services/currencyService';
+import { toast } from 'sonner';
 import { TransactionSideSheet } from '@/components/TransactionSideSheet';
 import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
@@ -209,6 +212,22 @@ function DemoExtension() {
     );
 }
 
+function DemoSettings() {
+    const [name, setName] = useState(DEMO_USER.name);
+    const [prefs, setPrefs] = useState<SettingsPrefs>({
+        currency: 'PKR', theme: 'light', soundEnabled: true, reducedMotion: false, emailNotifications: true, weeklyReport: true,
+        aiLiveEnabled: true, aiMemoryEnabled: true, aiIncludePendingCandidates: true,
+    });
+    const update = (u: Partial<SettingsPrefs>) => setPrefs((p) => ({ ...p, ...u }));
+    const noAccount = () => toast('The demo has no account. Create one to use this.');
+    return (
+        <SettingsView key={name} name={name} email="ayesha@cashly.app" prefs={prefs} currencies={SUPPORTED_CURRENCIES}
+            onSaveName={async (n) => setName(n)} onPref={update} onAI={update} onClearChat={async () => { toast('Conversation cleared'); }}
+            onPasswordReset={noAccount} onSignOut={noAccount}
+            onRequestCode={async () => { noAccount(); return false; }} onConfirmDelete={async () => false} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -257,7 +276,8 @@ function DemoShell() {
                 <Route path="reports" element={<DemoReports />} />
                 <Route path="cards" element={<DemoCards />} />
                 <Route path="extension-health" element={<DemoExtension />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards', '/extension-health'].includes(s.to)).map((s) => (
+                <Route path="settings" element={<DemoSettings />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards', '/extension-health', '/settings'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
