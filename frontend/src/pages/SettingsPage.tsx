@@ -8,6 +8,9 @@ import { soundManager } from '@/lib/sounds';
 import { currencyService, SUPPORTED_CURRENCIES } from '../services/currencyService';
 import settingsApi, { type UserSettingsPreferences } from '../services/settingsApi';
 import { SettingsView } from '../features/settings/SettingsView';
+import { invalidateTransactionCache } from '../services/supabaseTransactionService';
+import { invalidateInboxCache } from '../services/featureExpansionApi';
+import { emitFinancialDataEvent } from '../services/financialDataEvents';
 
 const defaultPreferences: UserSettingsPreferences = {
     emailNotifications: true, pushNotifications: true, weeklyReport: true, monthlyReport: true,
@@ -101,6 +104,10 @@ export const SettingsPage = () => {
             onConfirmDelete={async (code) => {
                 try {
                     await settingsApi.confirmReset(code);
+                    // Cached lists would still show what was just deleted; drop them and tell every screen.
+                    invalidateTransactionCache();
+                    invalidateInboxCache();
+                    emitFinancialDataEvent('cashly-data-updated', { area: 'all', source: 'settings-reset' });
                     await settingsApi.refreshAI().catch(() => undefined);
                     toast.success('Deleted');
                     return true;

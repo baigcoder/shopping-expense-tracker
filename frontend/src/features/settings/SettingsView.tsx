@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 export interface SettingsPrefs {
     currency: string; theme: 'light' | 'dark'; soundEnabled: boolean; reducedMotion: boolean;
-    emailNotifications: boolean; weeklyReport: boolean;
+    emailNotifications: boolean;
     aiLiveEnabled: boolean; aiMemoryEnabled: boolean; aiIncludePendingCandidates: boolean;
 }
 export type PurgeCategory = 'transactions' | 'budgets' | 'subscriptions' | 'goals';
@@ -51,6 +51,7 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
     const [typed, setTyped] = useState('');
     const [code, setCode] = useState('');
     const [codeSent, setCodeSent] = useState(false);
+    const [newCurrency, setNewCurrency] = useState<string | null>(null);
 
     const run = async (key: string, work: () => Promise<unknown>) => { setBusy(key); try { await work(); } finally { setBusy(null); } };
 
@@ -73,16 +74,27 @@ export function SettingsView({ name, email, prefs, currencies, onSaveName, onPre
             </Section>
 
             <Section id="app" title="App">
-                <label className="flex min-h-[52px] items-center justify-between gap-4 py-2 text-[15px]">Currency
-                    <select value={prefs.currency} onChange={(e) => onPref({ currency: e.target.value })} className={cn(field, 'max-w-[220px] px-2')}>
-                        {currencies.map((c) => <option key={c.code} value={c.code}>{c.code} · {c.name}</option>)}
-                    </select>
-                </label>
+                <div className="py-2">
+                    <label className="flex min-h-[44px] items-center justify-between gap-4 text-[15px]">Currency
+                        <select value={newCurrency ?? prefs.currency} onChange={(e) => setNewCurrency(e.target.value === prefs.currency ? null : e.target.value)} className={cn(field, 'max-w-[220px] px-2')}>
+                            {currencies.map((c) => <option key={c.code} value={c.code}>{c.code} · {c.name}</option>)}
+                        </select>
+                    </label>
+                    {/* Amounts are stored as entered, so switching only changes the symbol. Say so before it happens. */}
+                    {newCurrency && (
+                        <div className="mt-2 flex flex-wrap items-center justify-between gap-3 rounded-[12px] bg-[var(--color-canvas)] p-3 text-[14px]">
+                            <span>Amounts are not converted: 50,000 {prefs.currency} would show as 50,000 {newCurrency}.</span>
+                            <span className="flex gap-2">
+                                <button type="button" onClick={() => { onPref({ currency: newCurrency }); setNewCurrency(null); }} className={cn(pill, 'h-9 bg-[var(--color-ink)] text-white')}>Switch to {newCurrency}</button>
+                                <button type="button" onClick={() => setNewCurrency(null)} className={cn(pill, 'h-9 text-[var(--color-ink-secondary)] hover:bg-[var(--color-surface-2)]')}>Keep {prefs.currency}</button>
+                            </span>
+                        </div>
+                    )}
+                </div>
                 <Toggle label="Dark mode" checked={prefs.theme === 'dark'} onChange={(v) => onPref({ theme: v ? 'dark' : 'light' })} />
                 <Toggle label="Sounds" checked={prefs.soundEnabled} onChange={(v) => onPref({ soundEnabled: v })} />
                 <Toggle label="Less motion" checked={prefs.reducedMotion} onChange={(v) => onPref({ reducedMotion: v })} />
-                <Toggle label="Email me about new purchases" checked={prefs.emailNotifications} onChange={(v) => onPref({ emailNotifications: v })} />
-                <Toggle label="Weekly summary email" checked={prefs.weeklyReport} onChange={(v) => onPref({ weeklyReport: v })} />
+                <Toggle label="Email me before a free trial charges" checked={prefs.emailNotifications} onChange={(v) => onPref({ emailNotifications: v })} />
             </Section>
 
             <Section id="ai" title="Ask Cashly">

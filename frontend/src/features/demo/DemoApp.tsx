@@ -223,7 +223,7 @@ function DemoExtension() {
 function DemoSettings() {
     const [name, setName] = useState(DEMO_USER.name);
     const [prefs, setPrefs] = useState<SettingsPrefs>({
-        currency: 'PKR', theme: 'light', soundEnabled: true, reducedMotion: false, emailNotifications: true, weeklyReport: true,
+        currency: 'PKR', theme: 'light', soundEnabled: true, reducedMotion: false, emailNotifications: true,
         aiLiveEnabled: true, aiMemoryEnabled: true, aiIncludePendingCandidates: true,
     });
     const update = (u: Partial<SettingsPrefs>) => setPrefs((p) => ({ ...p, ...u }));
