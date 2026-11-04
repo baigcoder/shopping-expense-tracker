@@ -4,12 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { TwinView, type TwinAlert } from '../features/twin/TwinView';
 import type { TwinCharge } from '../features/twin/twinModel';
-import { buildCommitments } from '../features/commitments/commitmentsModel';
-import { fromBill, fromSub } from '../features/commitments/fromServices';
+import { accountsBalance, fromBill, fromSub } from '../features/commitments/fromServices';
 import { useAuthStore } from '../store/useStore';
 import { supabaseTransactionService, type SupabaseTransaction } from '../services/supabaseTransactionService';
 import { subscriptionService } from '../services/subscriptionService';
 import { billService } from '../services/billService';
+import bankAccountService from '../services/bankAccountService';
 import { moneyTwinService } from '../services/moneyTwinService';
 import { formatCurrency } from '../services/currencyService';
 import { useDataRealtime } from '../hooks/useDataRealtime';
@@ -19,21 +19,21 @@ export const MoneyTwinPage = () => {
     const [transactions, setTransactions] = useState<SupabaseTransaction[]>([]);
     const [charges, setCharges] = useState<TwinCharge[]>([]);
     const [alerts, setAlerts] = useState<TwinAlert[]>([]);
+    const [startBalance, setStartBalance] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
 
     const load = useCallback(async () => {
         if (!user?.id) return;
         try {
-            const [txs, subs, bills] = await Promise.all([
+            const [txs, subs, bills, accounts] = await Promise.all([
                 supabaseTransactionService.getAll(user.id),
                 subscriptionService.getAll(user.id),
                 billService.getAll(user.id),
+                bankAccountService.getAll(user.id).catch(() => []),
             ]);
             setTransactions(txs);
-            setCharges(buildCommitments([...subs.map(fromSub), ...bills.map(fromBill)]).lines.map((l) => ({
-                id: l.id, name: l.name, amount: l.amount, daysUntil: l.daysUntil, cycle: l.cycle, kind: l.kind,
-                active: l.active && !(l.kind === 'bill' && l.paid && l.cycle === 'one-time'), isTrial: l.isTrial,
-            })));
+            setCharges([...subs.map(fromSub), ...bills.map(fromBill)]);
+            setStartBalance(accountsBalance(accounts));
         } catch {
             toast.error('Could not load your forecast.');
         } finally {
@@ -50,7 +50,7 @@ export const MoneyTwinPage = () => {
 
     const tx = useMemo(() => transactions.map((t) => ({ date: t.date, amount: t.amount, type: t.type, category: t.category, description: t.description })), [transactions]);
 
-    return <TwinView transactions={tx} charges={charges} alerts={alerts} money={(n) => formatCurrency(n)} loading={loading} />;
+    return <TwinView transactions={tx} charges={charges} alerts={alerts} money={(n) => formatCurrency(n)} loading={loading} startBalance={startBalance} />;
 };
 
 export default MoneyTwinPage;

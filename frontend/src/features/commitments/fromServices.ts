@@ -2,6 +2,7 @@
 import type { CommitmentInput } from './commitmentsModel';
 import type { Subscription } from '@/services/subscriptionService';
 import { billService, type Bill } from '@/services/billService';
+import type { BankAccount } from '@/services/bankAccountService';
 
 export const fromSub = (s: Subscription): CommitmentInput => ({
     id: s.id, kind: 'subscription', name: s.name, category: s.category, amount: s.price, cycle: s.cycle,
@@ -13,3 +14,9 @@ export const fromBill = (b: Bill): CommitmentInput => ({
     id: b.id, kind: 'bill', name: b.name, category: b.category, amount: b.amount, cycle: b.frequency,
     nextDate: billService.getNextDueDate(b).toISOString(), active: true, paid: b.is_paid,
 });
+
+/** What active accounts hold minus card debt, or null with no accounts so callers fall back to the ledger. Home and Money Twin share it. */
+export const accountsBalance = (accounts: BankAccount[]): number | null => {
+    const live = accounts.filter((a) => a.is_active);
+    return live.length ? live.reduce((s, a) => s + (a.account_type === 'credit' ? -Math.abs(a.balance) : a.balance), 0) : null;
+};

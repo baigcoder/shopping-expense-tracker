@@ -124,11 +124,8 @@ function DemoAssist() {
 
 function DemoTwin() {
     const { input, commitments } = useDemo();
-    const charges = useMemo(() => buildCommitments(commitments, DEMO_NOW).lines.map((l) => ({
-        id: l.id, name: l.name, amount: l.amount, daysUntil: l.daysUntil, cycle: l.cycle, kind: l.kind, active: l.active && !l.paid, isTrial: l.isTrial,
-    })), [commitments]);
     return (
-        <TwinView transactions={input.transactions} charges={charges} money={money} now={DEMO_NOW}
+        <TwinView transactions={input.transactions} charges={commitments} money={money} now={DEMO_NOW}
             alerts={[{ id: 'w1', title: 'Rent lands in 16 days', message: 'Keep about Rs 65,000 free until then.', urgent: false }]} />
     );
 }

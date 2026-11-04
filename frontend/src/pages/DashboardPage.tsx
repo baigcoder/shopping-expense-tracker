@@ -9,7 +9,7 @@ import { budgetService } from '../services/budgetService';
 import { subscriptionService } from '../services/subscriptionService';
 import { billService } from '../services/billService';
 import bankAccountService from '../services/bankAccountService';
-import { fromBill, fromSub } from '../features/commitments/fromServices';
+import { accountsBalance, fromBill, fromSub } from '../features/commitments/fromServices';
 import { goalService } from '../services/goalService';
 import { transactionInboxApi, type TransactionCandidate } from '../services/featureExpansionApi';
 import { usePaymentCaptureSync } from '../hooks/usePaymentCaptureSync';
@@ -44,16 +44,12 @@ export function DashboardPage() {
             settle(transactionInboxApi.list({ status: 'pending', limit: 8 }), { data: [] as TransactionCandidate[] }),
         ]);
 
-        // With accounts, the balance is what they hold minus card debt; without any, Home falls back to the ledger.
-        const live = accounts.filter((a) => a.is_active);
-        const accountsBalance = live.length ? live.reduce((s, a) => s + (a.account_type === 'credit' ? -Math.abs(a.balance) : a.balance), 0) : null;
-
         setInput({
             transactions,
             budgets,
             commitments: [...subscriptions.map(fromSub), ...bills.map(fromBill)],
             goals,
-            accountsBalance,
+            accountsBalance: accountsBalance(accounts),
             pending: ((inbox?.data || []) as TransactionCandidate[]).map((c) => ({
                 id: c.id,
                 merchant: c.merchant_name || c.description,

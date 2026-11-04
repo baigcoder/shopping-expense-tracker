@@ -11,9 +11,11 @@ interface TwinViewProps {
     money: (n: number) => string;
     now?: Date;
     loading?: boolean;
+    startBalance?: number | null; // account total, as on Home
 }
 
 const W = 720, H = 220, PAD = 24;
+const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'}`;
 
 function Forecast({ base, plan, money }: { base: ReturnType<typeof buildTwin>; plan: ReturnType<typeof buildTwin> | null; money: (n: number) => string }) {
     const all = [...base.days, ...(plan?.days || [])].map((d) => d.balance);
@@ -36,11 +38,11 @@ function Forecast({ base, plan, money }: { base: ReturnType<typeof buildTwin>; p
     );
 }
 
-export function TwinView({ transactions, charges, alerts = [], money, now, loading }: TwinViewProps) {
+export function TwinView({ transactions, charges, alerts = [], money, now, loading, startBalance = null }: TwinViewProps) {
     const [whatIf, setWhatIf] = useState<WhatIf>({ cutCategory: null, cutAmount: 0, cancelled: [], purchase: 0 });
-    const base = useMemo(() => buildTwin(transactions, charges, { cutCategory: null, cutAmount: 0, cancelled: [], purchase: 0 }, now), [transactions, charges, now]);
+    const base = useMemo(() => buildTwin(transactions, charges, { cutCategory: null, cutAmount: 0, cancelled: [], purchase: 0 }, now, startBalance), [transactions, charges, now, startBalance]);
     const changed = whatIf.cutAmount > 0 || whatIf.cancelled.length > 0 || whatIf.purchase > 0;
-    const plan = useMemo(() => (changed ? buildTwin(transactions, charges, whatIf, now) : null), [changed, transactions, charges, whatIf, now]);
+    const plan = useMemo(() => (changed ? buildTwin(transactions, charges, whatIf, now, startBalance) : null), [changed, transactions, charges, whatIf, now, startBalance]);
     const shown = plan || base;
     const cat = whatIf.cutCategory || base.categories[0]?.category || null;
     const catMax = base.categories.find((c) => c.category === cat)?.monthly || 0;
@@ -67,6 +69,11 @@ export function TwinView({ transactions, charges, alerts = [], money, now, loadi
                     </dl>
                 </div>
                 <div className="mt-6"><Forecast base={base} plan={plan} money={money} /></div>
+                {/* What the line assumes, so the forecast can be checked against reality. */}
+                <p className="mt-3 text-[14px] leading-relaxed text-[var(--color-ink-secondary)] tabular-nums">
+                    Starts at {money(shown.days[0].balance)} · spends about {money(Math.round(shown.dailyBurn))} a day
+                    {base.payDay !== null && base.monthlyIncome > 0 ? <> · {money(base.monthlyIncome)} comes in on the {ordinal(base.payDay)}</> : <> · no regular income yet</>}
+                </p>
             </section>
 
             <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)]">
