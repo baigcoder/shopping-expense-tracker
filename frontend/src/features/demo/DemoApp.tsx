@@ -20,6 +20,7 @@ import { CalendarView } from '../calendar/CalendarView';
 import { SpendingView } from '../spending/SpendingView';
 import { ReportsView } from '../reports/ReportsView';
 import { CardsView, type AccountRow, type CardRow } from '../cards/CardsView';
+import { ExtensionView } from '../extension/ExtensionView';
 import { TransactionSideSheet } from '@/components/TransactionSideSheet';
 import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
@@ -187,6 +188,27 @@ function DemoCards() {
     );
 }
 
+function DemoExtension() {
+    const [checking, setChecking] = useState(false);
+    const at = (minutesAgo: number) => new Date(DEMO_NOW.getTime() - minutesAgo * 60000).toISOString();
+    return (
+        <ExtensionView state="connected" lastSync={at(4)} queued={0} failed={1} now={DEMO_NOW} checking={checking}
+            onCheck={() => { setChecking(true); setTimeout(() => setChecking(false), 600); }}
+            sites={[
+                { hostname: 'daraz.pk', name: 'Daraz', visits: 14, caught: 6, lastSeen: at(4) },
+                { hostname: 'foodpanda.pk', name: 'Foodpanda', visits: 9, caught: 5, lastSeen: at(95) },
+                { hostname: 'open.spotify.com', name: 'Spotify', visits: 3, caught: 1, lastSeen: at(60 * 26) },
+                { hostname: 'paypro.com.pk', visits: 1, caught: 1, lastSeen: at(60 * 30) },
+            ]}
+            events={[
+                { id: 'e1', type: 'capture', status: 'success', message: 'Caught a Daraz checkout for Rs 8,499', site: 'daraz.pk', at: at(4) },
+                { id: 'e2', type: 'capture', status: 'success', message: 'Caught a Foodpanda order for Rs 3,260', site: 'foodpanda.pk', at: at(95) },
+                { id: 'e3', type: 'capture', status: 'error', message: 'Could not read the total on this page', site: 'paypro.com.pk', at: at(60 * 30) },
+                { id: 'e4', type: 'sync', status: 'success', message: 'Signed in as Ayesha', at: at(60 * 72) },
+            ]} />
+    );
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -234,7 +256,8 @@ function DemoShell() {
                 <Route path="analytics" element={<DemoSpending />} />
                 <Route path="reports" element={<DemoReports />} />
                 <Route path="cards" element={<DemoCards />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards'].includes(s.to)).map((s) => (
+                <Route path="extension-health" element={<DemoExtension />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards', '/extension-health'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />

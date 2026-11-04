@@ -29,7 +29,7 @@ export const DEMO_STEPS: Step[] = [
     { route: '/demo/insights', target: 'assist-chat', title: 'Ask Cashly', body: 'Ask in plain words. Answers use your approved numbers and say when something is still waiting.', tryIt: 'Ask “Can I afford a Rs 30,000 phone?”, approve something in the inbox, then ask again.' },
     { route: '/demo/insights', target: 'assist-plan', title: 'A plan for the week', body: 'Three small actions picked from your own month. Tick them off as you go.' },
     { route: '/demo/cards', target: 'cards-list', title: 'Cards and accounts', body: 'Balances you enter add up to your net worth. Cards keep only their last four digits.', tryIt: 'Freeze the online shopping card.' },
-    { route: '/demo/dashboard', target: 'nav-extension', title: 'The browser extension', body: 'Install it once. It works on any checkout page, never asks for a bank password, and shows you what it caught.' },
+    { route: '/demo/extension-health', target: 'extension-status', title: 'The browser extension', body: 'Install it once. It works on any checkout page, never asks for a bank password, and shows you what it caught.' },
     { route: '/demo/dashboard', title: 'That is Cashly', body: 'Everything you did here stayed in this browser. Create a free account to use it with your own money.' },
 ];
 
