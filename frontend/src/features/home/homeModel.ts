@@ -30,6 +30,7 @@ export interface HomePending {
     category: string;
     date: string;
     source: string;
+    type?: 'income' | 'expense'; // a refund or payment in raises safe to spend instead of lowering it
 }
 
 export interface HomeInput {
@@ -161,7 +162,7 @@ export function buildHomeModel({ transactions, budgets, commitments, goals, pend
     // Approving items in order lowers what is safe to spend; show each item's effect before the user commits.
     let running = safeToSpend;
     const pendingLines = pending.map((p) => {
-        running = Math.max(0, running - Math.abs(p.amount));
+        running = Math.max(0, running + (p.type === 'income' ? 1 : -1) * Math.abs(p.amount));
         return { ...p, safeAfter: running };
     });
 

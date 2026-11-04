@@ -62,6 +62,7 @@ export function DashboardPage() {
                 category: c.category || 'Other',
                 date: c.date,
                 source: c.source,
+                type: c.type === 'income' ? 'income' as const : 'expense' as const,
             })),
         });
         setLoading(false);

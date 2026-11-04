@@ -50,11 +50,11 @@ function DemoHome() {
 }
 
 function DemoInbox() {
-    const { inbox, rules, approve, dismiss, merge, bulk, addRule } = useDemo();
+    const { inbox, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule } = useDemo();
     const [status, setStatus] = useState<InboxStatus>('pending');
     return (
         <InboxView items={inbox[status]} rules={rules} status={status} money={money} onStatus={setStatus}
-            onApprove={approve} onReject={dismiss} onMerge={merge} onBulk={bulk} onAddRule={addRule} />
+            onApprove={approve} onReject={dismiss} onMerge={merge} onBulk={bulk} onAddRule={addRule} onToggleRule={toggleRule} onRemoveRule={removeRule} />
     );
 }
 

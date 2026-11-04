@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import type { HomeInput, HomeTransaction } from '../home/homeModel';
 import type { Edits, InboxItem, InboxRule } from '../inbox/InboxView';
+import { withRules } from '../inbox/inboxRules';
 import { demoBudgets, demoCommitments, demoGoals, demoInbox, demoRules, demoTransactions } from './demoData';
 import type { CommitmentInput } from '../commitments/commitmentsModel';
 
@@ -25,6 +26,8 @@ interface DemoState {
     merge: (item: InboxItem) => void;
     bulk: (ids: string[], action: 'approve' | 'reject') => void;
     addRule: (r: { pattern: string; category: string; matchType: string }) => void;
+    toggleRule: (r: InboxRule) => void;
+    removeRule: (r: InboxRule) => void;
     reset: () => void;
     lastAction: string | null;
 }
@@ -50,17 +53,17 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     };
 
     const book = (items: InboxItem[]) => {
-        setTransactions((t) => [...items.map((i) => ({ id: `a-${i.id}`, date: i.date, description: i.merchant, amount: i.amount, type: 'expense' as const, category: i.category })), ...t]);
+        setTransactions((t) => [...items.map((i) => ({ id: `a-${i.id}`, date: i.date, description: i.merchant, amount: i.amount, type: i.type ?? 'expense', category: i.category })), ...t]);
         setApproved((a) => [...items, ...a]);
     };
 
     const approve = useCallback((ref: InboxItem | { id: string }, edits?: Edits) => {
         const [item] = take([ref.id]);
         if (!item) return;
-        const final = edits ? { ...item, ...edits } : item;
+        const final = edits ? { ...item, ...edits } : withRules([item], rules)[0];
         book([final]);
         setLastAction(`${final.merchant} approved. It now counts toward ${final.category} and your safe-to-spend.`);
-    }, [pending]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [pending, rules]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const dismiss = useCallback((ref: InboxItem | { id: string }) => {
         const [item] = take([ref.id]);
@@ -76,14 +79,16 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 
     const bulk = useCallback((ids: string[], action: 'approve' | 'reject') => {
         const items = take(ids);
-        if (action === 'approve') book(items); else setRejected((r) => [...items, ...r]);
+        if (action === 'approve') book(withRules(items, rules)); else setRejected((r) => [...items, ...r]);
         setLastAction(`${items.length} ${action === 'approve' ? 'approved' : 'marked not yours'} in one go.`);
-    }, [pending]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [pending, rules]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const addRule = useCallback((r: { pattern: string; category: string; matchType: string }) => {
         setRules((list) => [{ id: `r-${Date.now()}`, enabled: true, ...r }, ...list]);
-        setLastAction(`Rule saved. Purchases from “${r.pattern}” will skip the inbox and go to ${r.category}.`);
+        setLastAction(`Rule saved. Purchases from “${r.pattern}”, including any already waiting, go to ${r.category}.`);
     }, []);
+    const toggleRule = useCallback((r: InboxRule) => setRules((list) => list.map((x) => (x.id === r.id ? { ...x, enabled: !x.enabled } : x))), []);
+    const removeRule = useCallback((r: InboxRule) => setRules((list) => list.filter((x) => x.id !== r.id)), []);
 
     const addBudget = useCallback((category: string, amount: number) => {
         setBudgets((b) => [...b, { id: `b-${Date.now()}`, category, amount }]);
@@ -128,9 +133,9 @@ export function DemoProvider({ children }: { children: ReactNode }) {
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
         budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,
-        inbox: { pending, approved, rejected }, rules,
-        approve, dismiss, merge, bulk, addRule, reset, lastAction,
-    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, reset, lastAction]);
+        inbox: { pending: withRules(pending, rules), approved, rejected }, rules,
+        approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction,
+    }), [transactions, budgets, addBudget, removeBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }

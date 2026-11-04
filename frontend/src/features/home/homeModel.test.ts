@@ -44,6 +44,13 @@ describe('buildHomeModel', () => {
         expect(model.pending.map((p) => p.safeAfter)).toEqual([101000 - 8000, 101000 - 9500]);
     });
 
+    it('raises safe to spend for a refund waiting in the inbox', () => {
+        const m = buildHomeModel({ now, transactions: [], budgets: [], commitments: [], goals: [], pending: [
+            { id: 'r', merchant: 'Daraz', description: 'Refund', amount: 2000, category: 'Shopping', date: '2026-11-15', source: 'extension', type: 'income' },
+        ], accountsBalance: 10000 });
+        expect(m.pending[0].safeAfter).toBe(12000);
+    });
+
     it('lists bills and subscriptions coming up, soonest first', () => {
         expect(model.upcoming.map((u) => [u.name, u.daysUntil, u.kind])).toEqual([['Netflix', 5, 'subscription'], ['Rent', 16, 'bill']]);
         expect(model.categories.find((c) => c.category === 'Health')).toEqual({ category: 'Health', spent: 0, budget: 5000 });

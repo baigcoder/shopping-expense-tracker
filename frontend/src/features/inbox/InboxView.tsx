@@ -13,6 +13,8 @@ export interface InboxItem {
     source: string;
     confidence: number;
     duplicateOf?: string | null;
+    type?: 'income' | 'expense';
+    ruled?: boolean; // category came from a merchant rule saved after capture
 }
 
 export interface InboxRule { id: string; pattern: string; category: string; matchType: string; enabled: boolean }
@@ -35,9 +37,11 @@ interface InboxViewProps {
     onMerge: (item: InboxItem) => void;
     onBulk: (ids: string[], action: 'approve' | 'reject') => void;
     onAddRule: (rule: { pattern: string; category: string; matchType: string }) => void;
+    onToggleRule: (rule: InboxRule) => void;
+    onRemoveRule: (rule: InboxRule) => void;
 }
 
-export function InboxView({ items, rules, status, loading, money, onStatus, onApprove, onReject, onMerge, onBulk, onAddRule }: InboxViewProps) {
+export function InboxView({ items, rules, status, loading, money, onStatus, onApprove, onReject, onMerge, onBulk, onAddRule, onToggleRule, onRemoveRule }: InboxViewProps) {
     const [sort, setSort] = useState<'date' | 'amount' | 'confidence'>('date');
     const [selected, setSelected] = useState<string[]>([]);
     const [editing, setEditing] = useState<Record<string, { description: string; amount: string; category: string }>>({});
@@ -154,7 +158,7 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                                     <div className="min-w-0 flex-1">
                                         <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                                             <h2 className="truncate font-display text-[17px] font-semibold">{item.merchant}</h2>
-                                            <p className="font-display text-[19px] font-bold tabular-nums">{money(item.amount)}</p>
+                                            <p className={cn('font-display text-[19px] font-bold tabular-nums', item.type === 'income' && 'text-[var(--color-success)]')}>{item.type === 'income' ? '+' : ''}{money(item.amount)}</p>
                                         </div>
                                         <p className="truncate text-[15px] text-[var(--color-ink-secondary)]">{item.description}</p>
                                         <p className="mt-1 text-[13px] text-[var(--color-muted)]">
@@ -224,9 +228,13 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
                         {rules.length === 0 ? <p className="mt-2 text-[14px] text-[var(--color-ink-secondary)]">None yet.</p> : (
                             <ul className="mt-2">
                                 {rules.map((r) => (
-                                    <li key={r.id} className="flex items-center justify-between gap-3 py-2 text-[14px]">
-                                        <span className="truncate">“{r.pattern}”</span>
-                                        <span className="shrink-0 text-[var(--color-ink-secondary)]">{r.category}</span>
+                                    <li key={r.id} className="flex flex-wrap items-center gap-x-3 py-2 text-[14px]">
+                                        <span className={cn('min-w-0 flex-1', !r.enabled && 'text-[var(--color-muted)]')}>
+                                            <span className="block truncate font-medium">“{r.pattern}”</span>
+                                            <span className="block text-[13px] text-[var(--color-ink-secondary)]">{r.enabled ? r.category : `Paused · ${r.category}`}</span>
+                                        </span>
+                                        <button type="button" onClick={() => onToggleRule(r)} className="h-8 rounded-full px-2.5 text-[13px] font-medium text-[var(--color-ink-secondary)] hover:bg-[var(--color-canvas)] hover:text-[var(--color-ink)]">{r.enabled ? 'Pause' : 'Turn on'}</button>
+                                        <button type="button" onClick={() => onRemoveRule(r)} aria-label={`Remove rule ${r.pattern}`} className="h-8 rounded-full px-2.5 text-[13px] font-medium text-[var(--color-ink-secondary)] hover:bg-[var(--color-canvas)] hover:text-[var(--color-danger)]">Remove</button>
                                     </li>
                                 ))}
                             </ul>

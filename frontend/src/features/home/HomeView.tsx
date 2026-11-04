@@ -185,7 +185,7 @@ export function HomeView({ model, firstName, money, basePath = '', busyId, onApp
                                             <p className="truncate text-[15px] font-semibold">{item.merchant}</p>
                                             <p className="truncate text-[14px] text-[var(--color-ink-secondary)]">{item.description}</p>
                                         </div>
-                                        <p className="shrink-0 font-display text-[17px] font-semibold tabular-nums">{money(item.amount)}</p>
+                                        <p className={cn('shrink-0 font-display text-[17px] font-semibold tabular-nums', item.type === 'income' && 'text-[var(--color-success)]')}>{item.type === 'income' ? '+' : ''}{money(item.amount)}</p>
                                     </div>
                                     <div className="mt-3 flex flex-wrap items-center justify-between gap-3 sm:pl-[52px]">
                                         <p className="text-[13px] text-[var(--color-muted)]">
