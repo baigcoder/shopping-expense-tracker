@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from 'react';
-import { Check, Plus, Trash2 } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import type { CommitmentKind, CommitmentLine, CommitmentsModel, Cycle } from './commitmentsModel';
 import { categoryTint } from '@/components/app/categoryTint';
 import { cn } from '@/lib/utils';
+import { isoDay } from './billSchedule';
 
 export type CommitmentTab = 'all' | 'subscriptions' | 'bills' | 'trials';
 
@@ -25,8 +26,9 @@ const when = (d: number | null) => d === null ? 'No date set' : d < 0 ? `${-d} $
 const cycleText: Record<Cycle, string> = { weekly: 'every week', monthly: 'every month', quarterly: 'every 3 months', yearly: 'every year', 'one-time': 'once' };
 
 export function CommitmentsView({ model, tab, money, loading, saving, onTab, onToggle, onPaid, onRemove, onAdd }: CommitmentsViewProps) {
-    const [form, setForm] = useState({ kind: 'subscription' as CommitmentKind, name: '', amount: '', cycle: 'monthly' as Cycle, date: new Date().toISOString().slice(0, 10), category: 'Entertainment', isTrial: false, trialDays: '7' });
+    const [form, setForm] = useState({ kind: 'subscription' as CommitmentKind, name: '', amount: '', cycle: 'monthly' as Cycle, date: isoDay(new Date()), category: 'Entertainment', isTrial: false, trialDays: '7' });
     const shown = model.lines.filter((l) => tab === 'all' || (tab === 'trials' ? l.isTrial : tab === 'bills' ? l.kind === 'bill' : l.kind === 'subscription' && !l.isTrial));
+    const [confirm, setConfirm] = useState<string | null>(null);
     const peak = Math.max(1, ...model.month.map((d) => d.items.reduce((s, i) => s + i.amount, 0)));
 
     const submit = (e: FormEvent) => {
@@ -50,9 +52,16 @@ export function CommitmentsView({ model, tab, money, loading, saving, onTab, onT
                         <p className="mt-1 font-display text-[clamp(32px,4vw,44px)] font-bold leading-none tabular-nums">{money(model.monthly)}</p>
                         <p className="mt-2 text-[14px] text-[var(--color-muted)]">{money(model.yearly)} a year</p>
                     </div>
-                    <p className="max-w-[30ch] text-right text-[15px] text-[var(--color-ink-secondary)]">
-                        <b className="font-display text-[20px] text-[var(--color-ink)] tabular-nums">{money(model.next7.amount)}</b><br />due in the next 7 days, {model.next7.count} {model.next7.count === 1 ? 'charge' : 'charges'}
-                    </p>
+                    <div className="flex gap-8 text-right">
+                        {model.overdue.count > 0 && (
+                            <p className="text-[15px] text-[var(--color-danger)]">
+                                <b className="font-display text-[20px] tabular-nums">{money(model.overdue.amount)}</b><br />overdue, {model.overdue.count} {model.overdue.count === 1 ? 'bill' : 'bills'}
+                            </p>
+                        )}
+                        <p className="max-w-[30ch] text-[15px] text-[var(--color-ink-secondary)]">
+                            <b className="font-display text-[20px] text-[var(--color-ink)] tabular-nums">{money(model.next7.amount)}</b><br />due in the next 7 days, {model.next7.count} {model.next7.count === 1 ? 'charge' : 'charges'}
+                        </p>
+                    </div>
                 </div>
                 <div className="mt-6" role="img" aria-label="Charges over the next 30 days">
                     <div className="flex h-24 items-end gap-[3px]">
@@ -104,7 +113,9 @@ export function CommitmentsView({ model, tab, money, loading, saving, onTab, onT
                                             {l.kind === 'subscription' && (
                                                 <button type="button" onClick={() => onToggle(l)} className="inline-flex h-9 items-center rounded-full bg-[var(--color-canvas)] px-3 text-[14px] hover:bg-[var(--color-surface-2)]">{l.active ? 'Cancel' : 'Resume'}</button>
                                             )}
-                                            <button type="button" onClick={() => onRemove(l)} aria-label={`Remove ${l.name}`} className="rounded-full p-2 text-[var(--color-muted)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-ink)]"><Trash2 size={15} /></button>
+                                            <button type="button" onClick={() => { if (confirm === l.id) { onRemove(l); setConfirm(null); } else setConfirm(l.id); }} onBlur={() => setConfirm(null)}
+                                                aria-label={confirm === l.id ? `Confirm removing ${l.name}` : `Remove ${l.name}`}
+                                                className={cn('h-9 rounded-full px-3 text-[14px] hover:bg-[var(--color-surface-2)]', confirm === l.id ? 'font-medium text-[var(--color-danger)]' : 'text-[var(--color-muted)] hover:text-[var(--color-ink)]')}>{confirm === l.id ? 'Remove it?' : 'Remove'}</button>
                                         </div>
                                     </li>
                                 );

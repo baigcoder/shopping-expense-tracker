@@ -62,7 +62,7 @@ export const demoCommitments = (): CommitmentInput[] => [
     { id: 's3', kind: 'subscription', name: 'Spotify Duo', category: 'Subscriptions', amount: 579, cycle: 'monthly', nextDate: day(9), active: true },
     { id: 's4', kind: 'subscription', name: 'iCloud 200 GB', category: 'Software', amount: 3900, cycle: 'yearly', nextDate: day(41), active: true },
     { id: 'bl1', kind: 'bill', name: 'Rent', category: 'Bills', amount: 65000, cycle: 'monthly', nextDate: day(16), active: true, paid: false },
-    { id: 'bl2', kind: 'bill', name: 'PTCL internet', category: 'Bills', amount: 4999, cycle: 'monthly', nextDate: day(28), active: true, paid: false },
+    { id: 'bl2', kind: 'bill', name: 'PTCL internet', category: 'Bills', amount: 4999, cycle: 'monthly', nextDate: day(-3), active: true, paid: false }, // overdue, to show Mark paid
     { id: 'bl3', kind: 'bill', name: 'K-Electric', category: 'Bills', amount: 9800, cycle: 'monthly', nextDate: day(6), active: true, paid: false },
 ];
 

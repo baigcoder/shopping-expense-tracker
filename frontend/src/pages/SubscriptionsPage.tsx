@@ -68,7 +68,7 @@ const SubscriptionsPage = () => {
             onTab={(t) => setParams(t === 'all' ? {} : { tab: t })}
             onToggle={(l) => void act(() => subscriptionService.update(l.id, { is_active: !l.active, status: l.active ? 'cancelled' : 'active' }), l.active ? `${l.name} cancelled` : `${l.name} resumed`)}
             onPaid={(l) => void act(() => billService.markAsPaid(l.id), `${l.name} marked paid`)}
-            onRemove={(l) => { if (confirm(`Remove ${l.name}?`)) void act(() => l.kind === 'bill' ? billService.delete(l.id) : subscriptionService.delete(l.id), `${l.name} removed`); }}
+            onRemove={(l) => void act(() => l.kind === 'bill' ? billService.delete(l.id) : subscriptionService.delete(l.id), `${l.name} removed`)}
             onAdd={(c) => void add(c)}
         />
     );

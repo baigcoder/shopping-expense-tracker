@@ -8,6 +8,7 @@ import { BudgetsView } from '../budgets/BudgetsView';
 import { buildBudgets } from '../budgets/budgetModel';
 import { CommitmentsView, type CommitmentTab } from '../commitments/CommitmentsView';
 import { buildCommitments } from '../commitments/commitmentsModel';
+import { isoDay } from '../commitments/billSchedule';
 import { GoalsView } from '../goals/GoalsView';
 import { buildGoals } from '../goals/goalsModel';
 import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistView';
@@ -64,6 +65,13 @@ function DemoBudgets() {
     return <BudgetsView model={model} money={money} onAdd={addBudget} onUpdate={(l, n) => updateBudget(l.id, n)} onRemove={(l) => removeBudget(l.id)} />;
 }
 
+const localDate = (iso: string) => { const [y, m, d] = iso.slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
+const nextCycle = (iso: string, cycle: string) => {
+    const d = localDate(iso);
+    if (cycle === 'weekly') return isoDay(new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7));
+    return isoDay(new Date(d.getFullYear(), d.getMonth() + (cycle === 'quarterly' ? 3 : cycle === 'yearly' ? 12 : 1), d.getDate()));
+};
+
 function DemoCommitments() {
     const { commitments, updateCommitment, addCommitment } = useDemo();
     const [tab, setTab] = useState<CommitmentTab>('all');
@@ -71,12 +79,13 @@ function DemoCommitments() {
     return (
         <CommitmentsView model={model} tab={tab} money={money} onTab={setTab}
             onToggle={(l) => updateCommitment(l.id, { active: !l.active, isTrial: l.active ? false : l.isTrial })}
-            onPaid={(l) => updateCommitment(l.id, { paid: true })}
+            // Like the live app: a one-off is done, a recurring bill moves to its next due date.
+            onPaid={(l) => updateCommitment(l.id, l.cycle === 'one-time' || !l.nextDate ? { paid: true } : { nextDate: nextCycle(l.nextDate, l.cycle) })}
             onRemove={(l) => updateCommitment(l.id, null)}
             onAdd={(c) => {
-                const start = new Date(c.date);
+                const start = localDate(c.date);
                 if (c.isTrial) start.setDate(start.getDate() + c.trialDays);
-                addCommitment({ id: `c-${Date.now()}`, kind: c.kind, name: c.name, category: c.category, amount: c.amount, cycle: c.cycle, nextDate: start.toISOString().slice(0, 10), active: true, isTrial: c.isTrial, paid: false });
+                addCommitment({ id: `c-${Date.now()}`, kind: c.kind, name: c.name, category: c.category, amount: c.amount, cycle: c.cycle, nextDate: isoDay(start), active: true, isTrial: c.isTrial, paid: false });
             }} />
     );
 }

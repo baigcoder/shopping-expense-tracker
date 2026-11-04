@@ -25,4 +25,14 @@ describe('buildCommitments', () => {
         expect(m.month[3].items.map((i) => i.name)).toEqual(['Netflix']);
         expect(m.month[15].items.map((i) => i.name)).toEqual(['Rent']);
     });
+
+    it('totals overdue unpaid bills and rolls a stale subscription renewal forward', () => {
+        const x = buildCommitments([
+            { id: 'k', kind: 'bill', name: 'K-Electric', category: 'Bills', amount: 9800, cycle: 'monthly', nextDate: '2026-11-10', active: true },
+            { id: 'p', kind: 'bill', name: 'Old fine', category: 'Bills', amount: 500, cycle: 'one-time', nextDate: '2026-11-01', active: true, paid: true },
+            { id: 'n', kind: 'subscription', name: 'Netflix', category: 'Entertainment', amount: 1100, cycle: 'monthly', nextDate: '2026-09-05', active: true },
+        ], now);
+        expect(x.overdue).toEqual({ count: 1, amount: 9800 });
+        expect(x.lines.find((l) => l.id === 'n')?.daysUntil).toBe(15); // 5 Dec, not 76 days overdue
+    });
 });
