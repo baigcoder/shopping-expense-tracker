@@ -24,17 +24,14 @@ function Forecast({ base, plan, money }: { base: ReturnType<typeof buildTwin>; p
     const end = (plan || base).days[60];
     return (
         <figure>
-            <svg viewBox={`0 0 ${W} ${H + 20}`} className="w-full" role="img" aria-label={`Balance over the next 60 days, ending at ${money(end.balance)}`}>
+            <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`Balance over the next 60 days, ending at ${money(end.balance)}`}>
                 <line x1={0} x2={W} y1={y(0)} y2={y(0)} stroke="var(--color-danger)" strokeWidth={1} strokeDasharray="4 4" />
                 <path d={path(base.days)} fill="none" stroke={plan ? 'var(--color-border-strong)' : 'var(--color-ink)'} strokeWidth={plan ? 2 : 2.5} />
                 {plan && <path d={path(plan.days)} fill="none" stroke="var(--color-ink)" strokeWidth={2.5} />}
                 <circle cx={x(0)} cy={y((plan || base).days[0].balance)} r={5} fill="var(--color-brand)" />
-                {[0, 30, 60].map((d) => (
-                    <text key={d} x={Math.min(W - 4, Math.max(4, x(d)))} y={H + 16} textAnchor={d === 0 ? 'start' : d === 60 ? 'end' : 'middle'} fontSize={10} fill="var(--color-muted)">
-                        {d === 0 ? 'Today' : `${d} days`}
-                    </text>
-                ))}
             </svg>
+            {/* Axis labels in HTML so they keep their size when the chart scales down. */}
+            <div className="mt-1 flex justify-between text-[13px] text-[var(--color-muted)]" aria-hidden><span>Today</span><span>30 days</span><span>60 days</span></div>
         </figure>
     );
 }

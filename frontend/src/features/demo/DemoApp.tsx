@@ -1,8 +1,7 @@
 // /demo: the real app shell and screens, fed with sample data and walked through by the guide.
 import { useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { AppShell, appNav } from '@/components/app/AppShell';
+import { AppShell } from '@/components/app/AppShell';
 import { HomeView } from '../home/HomeView';
 import { InboxView, type InboxStatus } from '../inbox/InboxView';
 import { BudgetsView } from '../budgets/BudgetsView';
@@ -228,25 +227,9 @@ function DemoSettings() {
     );
 }
 
-// Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
-function DemoScreenNote({ label }: { label: string }) {
-    return (
-        <section className="rounded-[20px] bg-[var(--color-surface)] p-8">
-            <h1 className="font-display text-[28px] font-bold tracking-tight">{label}</h1>
-            <p className="mt-3 max-w-[56ch] text-[16px] leading-relaxed text-[var(--color-ink-secondary)]">
-                This screen is part of the full app. Follow the tour on Home to see how it fits in, or create a free account to use it with your own money.
-            </p>
-            <Link to="/demo/dashboard" className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-[var(--color-ink)] px-5 text-[15px] font-semibold text-white">
-                Back to Home <ArrowRight size={16} />
-            </Link>
-        </section>
-    );
-}
-
 function DemoShell() {
     const { input } = useDemo();
     const navigate = useNavigate();
-    const screens = appNav(0).flatMap((g) => g.items).filter((i) => i.to !== '/dashboard');
     return (
         <AppShell
             basePath="/demo"
@@ -277,9 +260,6 @@ function DemoShell() {
                 <Route path="cards" element={<DemoCards />} />
                 <Route path="extension-health" element={<DemoExtension />} />
                 <Route path="settings" element={<DemoSettings />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports', '/cards', '/extension-health', '/settings'].includes(s.to)).map((s) => (
-                    <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
-                ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
             </Routes>
             <DemoGuide />

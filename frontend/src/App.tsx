@@ -25,7 +25,6 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TransactionsPage = lazy(() => import('./pages/TransactionsPage'));
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage'));
 const CardsPage = lazy(() => import('./pages/CardsPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 // Feature Pages
@@ -144,7 +143,7 @@ function App() {
                             <Route path="/analyze" element={<Navigate to="/analytics" replace />} />
                             <Route path="/cards" element={<CardsPage />} />
                             <Route path="/expenses" element={<Navigate to="/transactions" replace />} />
-                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/profile" element={<Navigate to="/settings" replace />} />
                             <Route path="/settings" element={<SettingsPage />} />
                             <Route path="/setting" element={<Navigate to="/settings" replace />} />
                             {/* Feature Routes */}

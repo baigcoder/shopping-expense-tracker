@@ -79,7 +79,6 @@ export function InboxView({ items, rules, status, loading, money, onStatus, onAp
         return () => window.removeEventListener('keydown', onKey);
     });
 
-    const total = items.reduce((s, i) => s + i.amount, 0);
 
     return (
         <div className="flex flex-col gap-4">

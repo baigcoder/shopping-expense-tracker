@@ -79,7 +79,6 @@ function SpendChart({ daily, money }: { daily: HomeModel['daily']; money: (n: nu
 }
 
 export function HomeView({ model, firstName, money, basePath = '', busyId, onApprove, onDismiss, onAdd }: HomeViewProps) {
-    const change = model.lastMonthOut > 0 ? Math.round(((model.monthOut - model.lastMonthOut) / model.lastMonthOut) * 100) : null;
     const budgetLines = useMemo(() => model.categories.filter((c) => c.budget !== null).slice(0, 5), [model.categories]);
     const figures: { label: string; value: string; note?: string; positive?: boolean }[] = [
         { label: 'Spent this month', value: money(model.monthOut), },
