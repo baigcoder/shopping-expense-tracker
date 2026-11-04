@@ -88,6 +88,35 @@ type DetectedSubscriptionInput = DetectedTransactionInput & {
     source_url?: string;
 };
 
+const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
+const addDays = (iso: string, days: number) => {
+    const d = new Date(`${iso}T00:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + days);
+    return d.toISOString().slice(0, 10);
+};
+const daysBetween = (from: string, to: string) => Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
+
+/**
+ * A trial's start and end. A date read from the merchant's page wins when it is believable (today to 400 days ahead);
+ * otherwise the length counts from the shopper's own day. A trial already running keeps its dates when seen again,
+ * so revisiting the confirmation page no longer pushes the end date out.
+ */
+export function trialDates(
+    input: { date?: string | null; trialEndDate?: string | null; trialDays?: number | null },
+    existing: { is_trial?: boolean | null; trial_start_date?: string | null; trial_end_date?: string | null } | null,
+    serverToday: string,
+) {
+    const today = input.date && ISO_DAY.test(input.date.slice(0, 10)) ? input.date.slice(0, 10) : serverToday;
+    const pageEnd = input.trialEndDate && ISO_DAY.test(input.trialEndDate) ? input.trialEndDate : null;
+    const believable = pageEnd !== null && daysBetween(today, pageEnd) >= 0 && daysBetween(today, pageEnd) <= 400;
+    if (!believable && existing?.is_trial && existing.trial_end_date && existing.trial_end_date >= today) {
+        return { trial_start_date: existing.trial_start_date || today, trial_end_date: existing.trial_end_date, trial_days: daysBetween(existing.trial_start_date || today, existing.trial_end_date) };
+    }
+    const start = existing?.is_trial && existing.trial_start_date && existing.trial_end_date && existing.trial_end_date >= today ? existing.trial_start_date : today;
+    const end = believable ? pageEnd! : addDays(today, Math.max(1, Number(input.trialDays) || 7));
+    return { trial_start_date: start, trial_end_date: end, trial_days: daysBetween(start, end) };
+}
+
 // Marks the matching subscription cancelled when the user confirmed a cancellation on the merchant site.
 export async function cancelDetectedSubscription(userId: string, data: { name?: string; hostname?: string }) {
     const keys = [data.name, data.hostname?.replace(/^www\./, '').split('.')[0]]
@@ -123,8 +152,6 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
     const name = compact(data.merchantName, data.merchant_name, data.storeName, data.name, data.serviceName, data.hostname, 'Detected Subscription')!;
     const trialDays = Number(data.trialDays || data.trial_days || (isTrial ? 7 : 0)) || (isTrial ? 7 : 0);
     const today = new Date();
-    const trialEnd = new Date(today);
-    trialEnd.setDate(trialEnd.getDate() + trialDays);
     const cycle = data.billingCycle === 'yearly' || data.billingCycle === 'weekly' ? data.billingCycle : 'monthly';
     const todayIso = today.toISOString().slice(0, 10);
 
@@ -139,9 +166,10 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
         is_active: true,
         is_trial: isTrial,
         status: isTrial ? 'trial' : 'active',
-        trial_days: isTrial ? trialDays : 0,
-        trial_start_date: isTrial ? todayIso : null,
-        trial_end_date: isTrial ? trialEnd.toISOString().slice(0, 10) : null,
+        // Filled in by trialDates() once any existing row is known.
+        trial_days: 0,
+        trial_start_date: null as string | null,
+        trial_end_date: null as string | null,
         start_date: todayIso,
         source_url: data.sourceUrl || data.source_url || data.storeUrl || null,
         detected_at: new Date().toISOString(),
@@ -149,10 +177,11 @@ export async function upsertDetectedSubscription(userId: string, data: DetectedS
 
     const { data: existing } = await supabase
         .from('subscriptions')
-        .select('id')
+        .select('id, is_trial, trial_start_date, trial_end_date')
         .eq('user_id', userId)
         .ilike('name', name)
         .maybeSingle();
+    if (isTrial) Object.assign(row, trialDates({ date: data.date, trialEndDate: data.trialEndDate, trialDays }, existing, todayIso));
 
     if (existing?.id) {
         const { data: updated, error } = await supabase

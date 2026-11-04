@@ -1,6 +1,6 @@
 (() => {
     const CONFIG_DATA = window.CONFIG || {};
-    const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'https://shopping-expense-tracker.vercel.app/api').replace(/\/$/, '');
+    const API_BASE_URL = (CONFIG_DATA.API_BASE_URL || 'https://shopping-expense-tracker-svas.vercel.app/api').replace(/\/$/, '');
     const WEBSITE_URL = CONFIG_DATA.WEBSITE_URL || 'https://shopping-expense-tracker.vercel.app';
     const WEBSITE_ORIGINS = CONFIG_DATA.WEBSITE_ORIGINS || [
         WEBSITE_URL,

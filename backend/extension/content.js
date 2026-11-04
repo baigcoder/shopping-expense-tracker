@@ -219,10 +219,13 @@
     }
 
     // Generate transaction hash for deduplication
+    // The shopper's calendar day, not UTC: in Pakistan a 2 am purchase on 1 December belongs to December.
+    function localDay(d = new Date()) {
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
     function generateTransactionHash(data) {
-        const detectedDay = data.detectedAt
-            ? new Date(data.detectedAt).toISOString().slice(0, 10)
-            : new Date().toISOString().slice(0, 10);
+        const detectedDay = data.date || localDay(data.detectedAt ? new Date(data.detectedAt) : new Date());
         const merchant = (data.merchantName || data.storeName || data.name || data.hostname || '').toLowerCase().trim();
         const amount = Number(data.amount ?? data.price ?? 0).toFixed(2);
         const str = `${data.hostname || ''}-${merchant}-${amount}-${data.type || 'purchase'}-${detectedDay}`;
@@ -244,6 +247,13 @@
         } catch (e) {
             return false;
         }
+    }
+
+    async function unmarkTransactionSaved(hash) {
+        try {
+            const result = await chrome.storage.local.get(['savedTransactionHashes']);
+            await chrome.storage.local.set({ savedTransactionHashes: (result.savedTransactionHashes || []).filter((h) => h !== hash) });
+        } catch (e) { /* storage unavailable */ }
     }
 
     // Mark transaction as saved
@@ -991,6 +1001,8 @@
             const isTrial = !!(this.transactionData.isTrial || pending.isTrial
                 || /trial\s*(has\s*)?(started|begun|is\s*active|activated|confirmed)|enjoy\s*your\s*(free\s*)?trial|no\s*charge\s*today/i.test(pageText));
             const trialDays = isTrial ? this.extractTrialDays(pageText) : 0;
+            // A date printed on the page ("trial ends on 4 December") beats a length; a length beats the 7-day guess.
+            const trialEndDate = isTrial ? (this.extractTrialEndDate(rawPageText) || (trialDays ? localDay(new Date(Date.now() + trialDays * 86400000)) : null)) : null;
             const isSubscription = !!(this.transactionData.isSubscription || pending.isSubscription || this.detectSubscription(pageText));
             const billingCycle = this.transactionData.billingCycle || this.detectBillingCycle(pageText);
             const planTier = this.detectPlanTier(pageText);  // NEW
@@ -1035,6 +1047,7 @@
                 currency,
                 isTrial,
                 trialDays: trialDays || (isTrial ? 7 : 0),
+                trialEndDate: trialEndDate || undefined,
                 recurringAmount: recurringAmount || undefined,
                 category: this.siteInfo.category,
                 billingCycle,
@@ -1046,7 +1059,7 @@
                 sourceUrl: window.location.href,
                 favicon: this.siteInfo.favicon,
                 detectedAt: new Date().toISOString(),
-                date: new Date().toISOString().slice(0, 10),
+                date: localDay(),
                 behaviorFlow: this.stateHistory,
                 rawPayload: {
                     title: document.title,
@@ -1083,6 +1096,8 @@
                         : result?.success ? 'saved'
                         : result?.reason === 'not_authenticated' ? 'signin' : 'retry';
                     this.showNotification(transaction, status);
+                    // Neither saved nor queued: forget the hash so reloading the confirmation page can capture it again.
+                    if (!result?.success && !result?.pending) unmarkTransactionSaved(txHash);
                 });
             } catch (e) { this.showNotification(transaction, 'retry'); }
 
@@ -1103,6 +1118,7 @@
                         is_trial: isTrial,
                         trialDays,
                         trial_days: trialDays,
+                        trialEndDate: trialEndDate || undefined,
                         recurringAmount: transaction.recurringAmount,
                         productName: transaction.productName,
                         planTier: transaction.planTier,
@@ -1295,22 +1311,53 @@
         }
 
         extractTrialDays(pageText) {
+            const text = pageText.replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\bthree\b/g, '3').replace(/\bfirst\b/g, '1');
+            // Months and weeks count too: "1 month free" used to fall back to 7 days and end three weeks early.
+            const units = { day: 1, days: 1, week: 7, weeks: 7, month: 30, months: 30 };
             const patterns = [
-                /(\d+)\s*[-–]?\s*day\s*(free\s*)?trial/i,
-                /free\s*for\s*(\d+)\s*days?/i,
-                /(\d+)\s*days?\s*free/i,
-                /try\s*free\s*for\s*(\d+)/i,
-                /(\d+)\s*[-–]?\s*day\s*free/i
+                /(\d+)\s*[-–]?\s*(days?|weeks?|months?)\s*(free\s*)?trial/i,
+                /free\s*for\s*(\d+)\s*(days?|weeks?|months?)/i,
+                /(\d+)\s*(days?|weeks?|months?)\s*(for\s*)?free/i,
+                /try\s*(it\s*)?free\s*for\s*(\d+)\s*(days?|weeks?|months?)/i,
+                /trial\s*(period\s*)?(of\s*)?(\d+)\s*(days?|weeks?|months?)/i
             ];
-
             for (const p of patterns) {
-                const match = pageText.match(p);
-                if (match && match[1]) return parseInt(match[1], 10);
+                const m = text.match(p);
+                if (!m) continue;
+                const n = parseInt(m.find((g, i) => i > 0 && /^\d+$/.test(g || '')), 10);
+                const unit = m.find((g, i) => i > 0 && /^(days?|weeks?|months?)$/i.test(g || ''));
+                if (n > 0 && n <= 366 && unit) return n * units[unit.toLowerCase()];
             }
-            if (/free\s*trial|start\s*trial|try\s*(it\s*)?free|no\s*charge\s*today/i.test(pageText)) {
+            if (/free\s*trial|start\s*trial|try\s*(it\s*)?free|no\s*charge\s*today/i.test(text)) {
                 return 7;
             }
             return 0;
+        }
+
+        // "Your trial ends on December 4, 2026", "you'll be charged on 04/12/2026", "renews 4 Dec": the real end date, as YYYY-MM-DD.
+        extractTrialEndDate(rawText) {
+            const lead = /(trial\s*(ends|expires|will\s*end)|(first\s*)?(charge|bill|payment)\s*(will\s*be\s*)?(on|date)|charged\s*on|billed\s*on|renews?\s*(on)?|starts?\s*charging(\s*on)?)\s*[:\-]?\s*/i;
+            const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+            const m = rawText.match(new RegExp(lead.source + '([^\n]{0,40})', 'i'));
+            if (!m) return null;
+            const tail = m[m.length - 1];
+            let y, mo, d;
+            let r;
+            if ((r = tail.match(/(\d{4})-(\d{1,2})-(\d{1,2})/))) [y, mo, d] = [+r[1], +r[2], +r[3]];
+            else if ((r = tail.match(/(\d{1,2})\s+([a-z]{3})[a-z]*\.?,?\s+(\d{4})/i))) [d, mo, y] = [+r[1], months.indexOf(r[2].toLowerCase()) + 1, +r[3]];
+            else if ((r = tail.match(/([a-z]{3})[a-z]*\.?\s+(\d{1,2})(st|nd|rd|th)?,?\s+(\d{4})/i))) [mo, d, y] = [months.indexOf(r[1].toLowerCase()) + 1, +r[2], +r[4]];
+            // Numeric dates are read day-first, as in Pakistan and most of the world.
+            else if ((r = tail.match(/(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})/))) [d, mo, y] = [+r[1], +r[2], +r[3]];
+            else if ((r = tail.match(/(\d{1,2})\s+([a-z]{3})[a-z]*/i)) && months.includes(r[2].toLowerCase())) {
+                [d, mo] = [+r[1], months.indexOf(r[2].toLowerCase()) + 1];
+                const now = new Date();
+                y = now.getFullYear() + (mo - 1 < now.getMonth() ? 1 : 0);
+            } else return null;
+            const date = new Date(y, mo - 1, d);
+            const days = (date - new Date()) / 86400000;
+            // Only a date a few days to a year ahead is a believable trial end.
+            if (Number.isNaN(days) || mo < 1 || date.getDate() !== d || days < -1 || days > 400) return null;
+            return localDay(date);
         }
 
         detectSubscription(pageText) {

@@ -5,7 +5,8 @@
 const DEFAULT_CONFIG = {
     SUPABASE_URL: 'https://ynmvjnsdygimhjxcjvzp.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlubXZqbnNkeWdpbWhqeGNqdnpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxMzIwMzgsImV4cCI6MjA4MDcwODAzOH0.yzygIuk3wWRKPNVHCze3HegdeMVHZPj2caNdqZ9O_vY',
-    API_BASE_URL: 'https://shopping-expense-tracker.vercel.app/api',
+    // The backend itself: the website's /api path is served by the static host and answers 405.
+    API_BASE_URL: 'https://shopping-expense-tracker-svas.vercel.app/api',
 
     WEBSITE_ORIGINS: [
         'http://localhost:5173',
@@ -18,7 +19,7 @@ const DEFAULT_CONFIG = {
 
     WEBSITE_URL: 'https://shopping-expense-tracker.vercel.app',
 
-    VERSION: '9.0.1',
+    VERSION: '9.2.0',
 
     FEATURES: {
         BEHAVIOR_TRACKING: true,
@@ -62,7 +63,8 @@ async function loadConfigFromStorage() {
                 if (stored.CASHLY_CONFIG.WEBSITE_URL) {
                     CONFIG.WEBSITE_URL = stored.CASHLY_CONFIG.WEBSITE_URL;
                 }
-                if (stored.CASHLY_CONFIG.API_BASE_URL) {
+                // The old default pointed at the website's /api, which never reaches the backend; ignore it if it was saved.
+                if (stored.CASHLY_CONFIG.API_BASE_URL && !/^https:\/\/shopping-expense-tracker\.vercel\.app\/api\/?$/.test(stored.CASHLY_CONFIG.API_BASE_URL)) {
                     CONFIG.API_BASE_URL = stored.CASHLY_CONFIG.API_BASE_URL;
                 }
                 console.log('📋 Config loaded from storage');

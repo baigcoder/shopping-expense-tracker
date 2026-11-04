@@ -9,6 +9,7 @@ import { useRealtimeSync } from '../hooks/useRealtimeSync';
 import { useAuthStore, useModalStore } from '../store/useStore';
 import { logout as supabaseLogout } from '../config/supabase';
 import { transactionInboxApi } from '../services/featureExpansionApi';
+import { ExtensionRequired, useExtensionLink } from '../features/extension/ExtensionRequired';
 
 const AIChatbot = lazy(() => import('../components/AIChatbot'));
 
@@ -22,6 +23,8 @@ const DashboardLayout = () => {
     const [inboxCount, setInboxCount] = useState(0);
 
     useRealtimeSync();
+    // The dashboard opens only when the extension is installed here and signed in to this same account.
+    const link = useExtensionLink({ id: user?.id, email: user?.email });
 
     useEffect(() => {
         let alive = true;
@@ -46,6 +49,10 @@ const DashboardLayout = () => {
             navigate('/login');
         }
     };
+
+    if (link.state !== 'linked') {
+        return <ExtensionRequired state={link.state} email={user?.email} extensionEmail={link.extensionEmail} onCheck={link.check} onSignOut={() => void signOut()} />;
+    }
 
     return (
         <AppShell
