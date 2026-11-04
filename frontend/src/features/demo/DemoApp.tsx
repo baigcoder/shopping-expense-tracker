@@ -18,6 +18,7 @@ import { TwinView } from '../twin/TwinView';
 import { ActivityView } from '../activity/ActivityView';
 import { CalendarView } from '../calendar/CalendarView';
 import { SpendingView } from '../spending/SpendingView';
+import { ReportsView } from '../reports/ReportsView';
 import { TransactionSideSheet } from '@/components/TransactionSideSheet';
 import type { SupabaseTransaction } from '@/services/supabaseTransactionService';
 import { buildHomeModel } from '../home/homeModel';
@@ -152,6 +153,11 @@ function DemoSpending() {
     return <SpendingView transactions={input.transactions} money={money} now={DEMO_NOW} />;
 }
 
+function DemoReports() {
+    const { input } = useDemo();
+    return <ReportsView transactions={input.transactions} money={money} now={DEMO_NOW} />;
+}
+
 // Screens not yet rebuilt on the shared views say what they do instead of showing a fake.
 function DemoScreenNote({ label }: { label: string }) {
     return (
@@ -197,7 +203,8 @@ function DemoShell() {
                 <Route path="transactions" element={<DemoActivity />} />
                 <Route path="cashflow-calendar" element={<DemoCalendar />} />
                 <Route path="analytics" element={<DemoSpending />} />
-                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics'].includes(s.to)).map((s) => (
+                <Route path="reports" element={<DemoReports />} />
+                {screens.filter((s) => !['/transaction-inbox', '/budgets', '/subscriptions', '/goals', '/insights', '/money-twin', '/transactions', '/cashflow-calendar', '/analytics', '/reports'].includes(s.to)).map((s) => (
                     <Route key={s.to} path={s.to.slice(1)} element={<DemoScreenNote label={s.label} />} />
                 ))}
                 <Route path="*" element={<Navigate to="/demo/dashboard" replace />} />
