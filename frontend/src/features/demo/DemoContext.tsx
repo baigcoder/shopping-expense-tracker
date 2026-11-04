@@ -17,6 +17,7 @@ interface DemoState {
     goals: ReturnType<typeof demoGoals>;
     addGoal: (g: { name: string; target: number; deadline: string | null }) => void;
     depositGoal: (id: string, amount: number) => void;
+    editGoal: (id: string, edit: { saved: number; target: number; deadline: string | null }) => void;
     removeGoal: (id: string) => void;
     updateTx: (t: HomeTransaction) => void;
     deleteTx: (id: string) => void;
@@ -120,6 +121,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         setGoals((list) => list.map((g) => (g.id === id ? { ...g, saved: g.saved + amount } : g)));
         setLastAction('Added. The goal moves closer and its monthly amount shrinks.');
     }, []);
+    const editGoal = useCallback((id: string, edit: { saved: number; target: number; deadline: string | null }) => {
+        setGoals((list) => list.map((g) => (g.id === id ? { ...g, ...edit } : g)));
+        setLastAction('Goal updated. Its monthly amount follows the new numbers.');
+    }, []);
     const removeGoal = useCallback((id: string) => { setGoals((list) => list.filter((g) => g.id !== id)); setLastAction('Goal removed.'); }, []);
 
     const updateTx = useCallback((t: HomeTransaction) => { setTransactions((list) => list.map((x) => (x.id === t.id ? { ...x, ...t } : x))); setLastAction('Saved. Every chart and total uses the change.'); }, []);
@@ -134,10 +139,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
             transactions, budgets, commitments, goals,
             pending: pending.map(({ id, merchant, description, amount, category, date, source }) => ({ id, merchant, description, amount, category, date, source })),
         },
-        budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx,
+        budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, editGoal, removeGoal, updateTx, deleteTx,
         inbox: { pending: withRules(pending, rules), approved, rejected }, rules,
         approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction,
-    }), [transactions, budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction]);
+    }), [transactions, budgets, addBudget, removeBudget, updateBudget, commitments, updateCommitment, addCommitment, goals, addGoal, depositGoal, editGoal, removeGoal, updateTx, deleteTx, pending, approved, rejected, rules, approve, dismiss, merge, bulk, addRule, toggleRule, removeRule, reset, lastAction]);
 
     return <DemoCtx.Provider value={value}>{children}</DemoCtx.Provider>;
 }

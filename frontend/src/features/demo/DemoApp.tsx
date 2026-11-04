@@ -10,7 +10,7 @@ import { CommitmentsView, type CommitmentTab } from '../commitments/CommitmentsV
 import { buildCommitments } from '../commitments/commitmentsModel';
 import { isoDay } from '../commitments/billSchedule';
 import { GoalsView } from '../goals/GoalsView';
-import { buildGoals } from '../goals/goalsModel';
+import { buildGoals, monthlyKept } from '../goals/goalsModel';
 import { AssistView, type ChatMessage, type PlanAction } from '../assist/AssistView';
 import { linkFor } from '../assist/linkFor';
 import { demoAnswer } from './demoAnswers';
@@ -91,9 +91,10 @@ function DemoCommitments() {
 }
 
 function DemoGoals() {
-    const { goals, addGoal, depositGoal, removeGoal } = useDemo();
+    const { goals, input, addGoal, depositGoal, editGoal, removeGoal } = useDemo();
     const model = useMemo(() => buildGoals(goals, DEMO_NOW), [goals]);
-    return <GoalsView model={model} money={money} onAdd={addGoal} onDeposit={(g, n) => depositGoal(g.id, n)} onRemove={(g) => removeGoal(g.id)} />;
+    const kept = useMemo(() => monthlyKept(input.transactions, DEMO_NOW), [input.transactions]);
+    return <GoalsView model={model} money={money} kept={kept} onAdd={addGoal} onDeposit={(g, n) => depositGoal(g.id, n)} onEdit={(g, e) => editGoal(g.id, e)} onRemove={(g) => removeGoal(g.id)} />;
 }
 
 const DEMO_PLAN: PlanAction[] = [

@@ -15,7 +15,8 @@ export function buildGoals(goals: GoalInput[], now = new Date()): { lines: GoalL
         const done = left === 0 && g.target > 0;
         let monthsLeft: number | null = null;
         if (g.deadline) {
-            const d = new Date(g.deadline);
+            const [y, mo, da] = g.deadline.slice(0, 10).split('-').map(Number);
+            const d = new Date(y, mo - 1, da); // local day: "2026-12-31" must not become the 30th in UTC-5
             monthsLeft = (d.getFullYear() - now.getFullYear()) * 12 + (d.getMonth() - now.getMonth()) + (d.getDate() >= now.getDate() ? 0 : -1);
         }
         const late = !done && monthsLeft !== null && monthsLeft < 0;
@@ -30,4 +31,22 @@ export function buildGoals(goals: GoalInput[], now = new Date()): { lines: GoalL
         target: goals.reduce((s, g) => s + g.target, 0),
         perMonth: lines.reduce((s, l) => s + (l.perMonth || 0), 0),
     };
+}
+
+export interface KeptTx { date: string; amount: number; type: 'income' | 'expense' }
+
+/**
+ * What the user usually keeps a month (money in minus money out), averaged over the last three
+ * finished months that have any activity. Null until there is a finished month to go on.
+ */
+export function monthlyKept(transactions: KeptTx[], now = new Date()): number | null {
+    const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const byMonth = new Map<string, number>();
+    for (const t of transactions) {
+        const key = t.date.slice(0, 7);
+        if (key >= thisMonth) continue;
+        byMonth.set(key, (byMonth.get(key) || 0) + (t.type === 'income' ? 1 : -1) * Math.abs(t.amount));
+    }
+    const recent = [...byMonth.entries()].sort((a, b) => b[0].localeCompare(a[0])).slice(0, 3);
+    return recent.length ? Math.round(recent.reduce((s, [, v]) => s + v, 0) / recent.length) : null;
 }
